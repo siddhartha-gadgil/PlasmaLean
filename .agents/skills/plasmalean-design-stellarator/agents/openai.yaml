@@ -1,0 +1,4 @@
+interface:
+  display_name: "Design verified stellarators"
+  short_description: "Compose field, stability, and design certificates"
+  default_prompt: "Use $plasmalean-design-stellarator to design a stellarator against a precise operating envelope."

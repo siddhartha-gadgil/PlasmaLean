@@ -1,0 +1,4 @@
+interface:
+  display_name: "Discover plasma theory"
+  short_description: "Generate and test new mathematical conjectures"
+  default_prompt: "Use $plasmalean-discover-theory to seek a stronger stability or design theorem."

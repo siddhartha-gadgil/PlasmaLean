@@ -1,0 +1,4 @@
+interface:
+  display_name: "Formalize plasma mathematics"
+  short_description: "Build reusable Lean theory from precise sources"
+  default_prompt: "Use $plasmalean-formalize-theory to formalize the next sourced plasma theorem."
