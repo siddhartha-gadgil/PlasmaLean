@@ -103,22 +103,25 @@
 <!-- Application Structure Plan:
      Designed as an interactive AI-driven theoretical discovery and formal verification platform for constructible stellarator design (PlasmaLean: https://github.com/siddhartha-gadgil/PlasmaLean):
      Primary Goal: Develop new mathematical theory for magnetic geometry and prove plasma stability ($\delta W > 0$), utilizing Lean 4 as an unyielding correctness check while leveraging AI to explore high-dimensional design spaces.
-     1. Platform Vision & Architecture: Explains the core mission—building theory to design stellarators and prove stability, referencing GitHub repo siddhartha-gadgil/PlasmaLean.
-     2. The Core Kernel: Foundational definitions of MHD equilibrium (J x B = grad p, div B = 0), differential 2-forms, Boozer charts, and Biot-Savart magnetodynamics (Zero Axioms).
-     3. Boundary & Sanity Checks: Validates kernel consistency against known mathematical limits (Grad-Shafranov collapse, vacuum Laplace limit, Garren-Boozer O(rho^3) overdetermination).
-     4. Mathematical Theory Engine: Developing theory for plasma stability (Sobolev space non-axisymmetric existence, KAM surface persistence, Mercier local criteria, and energy spectrum stability bounds).
-     5. Reference Literature & Benchmarks: Separate reference tab cataloging foundational papers (arXiv:2609.26742 & arXiv:2609.24739) as benchmarks and source material rather than the primary goal.
-     6. AI Agent Blueprint & Spec: Guidelines for AI coding agents to actively propose candidate geometries, synthesize Lean 4 proofs, and maintain PlasmaLean library modules.
-     7. Interactive Design & Stability Studio: Parameter search sandbox where users and AI agents co-design stellarator geometries and run automated Lean 4 verification audits.
+     1. Background & Fundamentals (NEW): Comprehensive background section explaining magnetic confinement fusion, 3D helical field lines vs tokamaks, quasisymmetry, drift orbits, and why formal verification is critical.
+     2. Platform Vision & Architecture: Explains the core mission—building theory to design stellarators and prove stability, referencing GitHub repo siddhartha-gadgil/PlasmaLean.
+     3. The Core Kernel: Foundational definitions of MHD equilibrium (J x B = grad p, div B = 0), differential 2-forms, Boozer charts, and Biot-Savart magnetodynamics (Zero Axioms).
+     4. Boundary & Sanity Checks: Validates kernel consistency against known mathematical limits (Grad-Shafranov collapse, vacuum Laplace limit, Garren-Boozer O(rho^3) overdetermination).
+     5. Mathematical Theory Engine: Developing theory for plasma stability (Sobolev space non-axisymmetric existence, KAM surface persistence, Mercier local criteria, and energy spectrum stability bounds).
+     6. Reference Literature & Benchmarks: Separate reference tab cataloging foundational papers (arXiv:2609.26742 & arXiv:2609.24739) as benchmarks and source material rather than the primary goal.
+     7. AI Agent Blueprint & Spec: Guidelines for AI coding agents to actively propose candidate geometries, synthesize Lean 4 proofs, and maintain PlasmaLean library modules.
+     8. Interactive Design & Stability Studio: Parameter search sandbox where users and AI agents co-design stellarator geometries and run automated Lean 4 verification audits.
 -->
 <!-- Visualization & Content Choices:
+     - Interactive Stellarator Field Line & Particle Drift Canvas: Canvas-rendered 2D/3D toroidal geometry visualizer showing rotational transform twist and particle drift orbits.
+     - Tokamak vs Stellarator Dynamic Comparison Matrix: Interactive comparison tool with slider-driven performance trade-offs.
      - Boozer Coordinate Volume Element: Chart.js plot showing metric non-singularity across poloidal angle theta.
      - Garren-Boozer Expansion Constraint Chart: Chart.js visualization comparing Fourier degrees of freedom against overdetermined quasisymmetry constraints at O(rho^3).
      - MHD Stability Spectrum (delta W): Chart.js plot showing energy eigenvalue spectrum for axisymmetric vs asymmetric equilibria.
      - KAM Surface Persistence: Chart.js curve illustrating flux surface retention vs perturbation magnitude.
      - Interactive AI Prompt Generator & Co-Design Studio: Sandbox for synthesizing Lean 4 proof scripts and running mathematical audit certificates.
      - KaTeX Rendering Engine for full LaTeX support.
-     - NO SVG graphics used. NO Mermaid JS used. Canvas (Chart.js) and structured Tailwind layout used exclusively.
+     - NO SVG graphics used. NO Mermaid JS used. Canvas (Chart.js & HTML5 Canvas) and structured Tailwind layouts used exclusively.
 -->
 <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
 
@@ -141,6 +144,7 @@
                 <!-- Navigation Tabs & GitHub Link -->
                 <div class="hidden lg:flex items-center space-x-2">
                     <nav class="flex space-x-1 text-xs font-medium">
+                        <button onclick="switchTab('background')" id="tab-background" class="nav-btn px-2.5 py-1.5 rounded-md text-purple-900 bg-purple-100 hover:bg-purple-200 transition-colors font-bold">Stellarator Concepts</button>
                         <button onclick="switchTab('vision')" id="tab-vision" class="nav-btn px-2.5 py-1.5 rounded-md text-stone-700 hover:text-stone-900 hover:bg-stone-100 transition-colors">Vision & Architecture</button>
                         <button onclick="switchTab('kernel')" id="tab-kernel" class="nav-btn px-2.5 py-1.5 rounded-md text-stone-700 hover:text-stone-900 hover:bg-stone-100 transition-colors">The Kernel</button>
                         <button onclick="switchTab('sanity')" id="tab-sanity" class="nav-btn px-2.5 py-1.5 rounded-md text-stone-700 hover:text-stone-900 hover:bg-stone-100 transition-colors">Boundary Checks</button>
@@ -170,6 +174,7 @@
 
         <!-- Mobile Menu Dropdown -->
         <div id="mobile-menu" class="hidden lg:hidden bg-stone-100 border-b border-stone-200 px-4 pt-2 pb-4 space-y-1">
+            <button onclick="switchTab('background'); toggleMobileMenu()" class="block w-full text-left px-3 py-2 rounded-md bg-purple-100 text-purple-900 font-bold">Stellarator Concepts</button>
             <button onclick="switchTab('vision'); toggleMobileMenu()" class="block w-full text-left px-3 py-2 rounded-md text-stone-800 hover:bg-stone-200">Vision & Architecture</button>
             <button onclick="switchTab('kernel'); toggleMobileMenu()" class="block w-full text-left px-3 py-2 rounded-md text-stone-800 hover:bg-stone-200">The Kernel</button>
             <button onclick="switchTab('sanity'); toggleMobileMenu()" class="block w-full text-left px-3 py-2 rounded-md text-stone-800 hover:bg-stone-200">Boundary Checks</button>
@@ -186,8 +191,203 @@
     <!-- Main Content Container -->
     <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
 
+        <!-- ================= SECTION 0: BACKGROUND & STELLARATOR CONCEPTS (NEW) ================= -->
+        <section id="sec-background" class="tab-content space-y-8">
+            
+            <div class="bg-white rounded-2xl p-6 sm:p-8 border border-stone-200 shadow-sm">
+                <div class="max-w-4xl">
+                    <div class="flex flex-wrap items-center gap-2 mb-3">
+                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-purple-100 text-purple-800">
+                            Fundamentals & Physics Principles
+                        </span>
+                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-amber-100 text-amber-800">
+                            Magnetic Confinement Fusion
+                        </span>
+                    </div>
+                    <h1 class="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight mb-4 leading-tight">
+                        What is a Stellarator? Physics Concepts, Geometry & Importance
+                    </h1>
+                    <p class="text-stone-600 leading-relaxed text-base sm:text-lg mb-4">
+                        Nuclear fusion requires heating hydrogen isotopes (Deuterium & Tritium) to over <strong>100 million degrees Celsius</strong>—far hotter than the core of the Sun. At these extreme temperatures, matter becomes fully ionized plasma. To prevent this ultra-hot plasma from touching solid walls, magnetic fields trap charged particles inside a toroidal "magnetic bottle."
+                    </p>
+                    <p class="text-stone-600 leading-relaxed text-sm sm:text-base">
+                        A <strong>Stellarator</strong> is an advanced magnetic confinement device that relies entirely on <strong>external 3D modular coils</strong> to twist magnetic field lines. Unlike its counterpart, the Tokamak, a stellarator requires <em>zero internal plasma current</em>, making it inherently immune to violent plasma disruptions and capable of true continuous steady-state operation.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Visual Concept Diagram 1: Interactive Canvas for Magnetic Topology -->
+            <div class="bg-white p-6 sm:p-8 rounded-2xl border border-stone-200 shadow-sm space-y-6">
+                <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-stone-100 pb-4">
+                    <div>
+                        <span class="px-2.5 py-0.5 rounded text-xs font-bold bg-purple-100 text-purple-900">INTERACTIVE DIAGRAM</span>
+                        <h2 class="text-xl font-bold text-slate-900 mt-1">1. Toroidal Geometry & Helical Field Twist ($\iota$)</h2>
+                        <p class="text-xs text-stone-600">Simulates magnetic field lines wrapping around a torus. Toggle between Tokamak (driven current) vs. Stellarator (3D coil twist).</p>
+                    </div>
+                    <div class="flex items-center space-x-2 shrink-0">
+                        <button onclick="setConceptMode('stellarator')" id="btn-mode-stellarator" class="px-3 py-1.5 rounded-lg text-xs font-bold bg-purple-700 text-white transition-all shadow-sm">
+                            🌀 3D Stellarator Coils
+                        </button>
+                        <button onclick="setConceptMode('tokamak')" id="btn-mode-tokamak" class="px-3 py-1.5 rounded-lg text-xs font-bold bg-stone-100 text-stone-700 hover:bg-stone-200 transition-all border border-stone-300">
+                            ⚡ Tokamak Current
+                        </button>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 items-center">
+                    <!-- Canvas Visualization Box -->
+                    <div class="lg:col-span-2 bg-slate-950 rounded-2xl p-4 shadow-inner relative flex flex-col items-center justify-center border border-slate-800">
+                        <canvas id="stellaratorConceptCanvas" class="w-full h-80 rounded-xl cursor-pointer" width="600" height="340"></canvas>
+                        <div class="absolute bottom-6 left-6 right-6 flex justify-between items-center bg-slate-900/80 backdrop-blur px-3 py-2 rounded-lg text-white text-[11px] font-mono border border-slate-700">
+                            <span id="canvas-status-mode" class="text-purple-300 font-bold">Mode: 3D Helical Stellarator Coils</span>
+                            <span id="canvas-status-iota" class="text-amber-400">Rotational Transform $\iota \approx 0.85$</span>
+                        </div>
+                    </div>
+
+                    <!-- Explanatory Concepts Box -->
+                    <div id="concept-info-card" class="bg-purple-50/70 p-5 rounded-2xl border border-purple-200 space-y-3 text-xs leading-relaxed text-purple-950">
+                        <div class="font-bold text-sm text-purple-900 flex items-center space-x-2">
+                            <span>🧲 Why Field Line Twist is Essential:</span>
+                        </div>
+                        <p class="text-stone-700">
+                            Simple toroidal magnetic fields cause charged particles to drift vertically due to magnetic field gradients ($\nabla B$) and curvature ($\mathbf{v}_d \propto \mathbf{B} \times \nabla B$). Ions drift up, electrons drift down, creating a huge electric field that blows the plasma apart.
+                        </p>
+                        <p class="text-stone-700">
+                            By twisting magnetic field lines into a <strong>helical trajectory</strong>, a field line spends time on both top and bottom of the torus. This short-circuits the charge separation and confines the plasma!
+                        </p>
+                        <div class="p-3 bg-white/80 rounded-xl border border-purple-200 font-mono text-[11px] text-purple-900 space-y-1">
+                            <div class="font-bold">Rotational Transform Metric:</div>
+                            <div>$$\iota(\psi) = \frac{d\theta}{d\phi} = \text{Poloidal Turns per Toroidal Turn}$$</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Comparison Matrix: Tokamak vs Stellarator -->
+            <div class="bg-white p-6 sm:p-8 rounded-2xl border border-stone-200 shadow-sm space-y-6">
+                <div>
+                    <h2 class="text-xl font-bold text-slate-900 mb-1">2. Tokamaks vs. Stellarators: Key Trade-offs & Physics Architecture</h2>
+                    <p class="text-xs text-stone-600">Why the world is shifting toward stellarators for commercial power generation.</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    
+                    <!-- Tokamak Card -->
+                    <div class="bg-stone-50 p-6 rounded-2xl border border-stone-200 space-y-4 flex flex-col justify-between">
+                        <div class="space-y-3">
+                            <div class="flex justify-between items-center border-b border-stone-200 pb-3">
+                                <span class="px-2.5 py-1 text-xs font-bold bg-amber-100 text-amber-900 rounded-md">TOKAMAK ARCHITECTURE</span>
+                                <span class="text-xs font-mono text-stone-500">2D Axi-symmetric</span>
+                            </div>
+                            <h3 class="text-base font-bold text-slate-900">High Current, High Disruption Risk</h3>
+                            <p class="text-xs text-stone-600 leading-relaxed">
+                                Uses planar toroidal coils combined with a massive central solenoid transformer to induce millions of Amperes of electric current ($I_p$) directly inside the plasma.
+                            </p>
+                            <ul class="space-y-2 text-xs text-stone-700 font-medium">
+                                <li class="flex items-start space-x-2">
+                                    <span class="text-red-500 font-bold">✗</span>
+                                    <span><strong>Major Disruptions:</strong> Sudden instability collapses destroy vacuum chamber walls within milliseconds.</span>
+                                </li>
+                                <li class="flex items-start space-x-2">
+                                    <span class="text-red-500 font-bold">✗</span>
+                                    <span><strong>Pulsed Operation:</strong> Solenoid flux runs out, requiring complex external current drive.</span>
+                                </li>
+                                <li class="flex items-start space-x-2">
+                                    <span class="text-emerald-600 font-bold">✓</span>
+                                    <span><strong>Simple Coils:</strong> Planar circular magnets are much easier to manufacture.</span>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="p-3 bg-stone-200/60 rounded-xl text-[11px] font-mono text-stone-800">
+                            Primary Bottleneck: Disruption avoidance & non-inductive current drive.
+                        </div>
+                    </div>
+
+                    <!-- Stellarator Card -->
+                    <div class="bg-purple-50/50 p-6 rounded-2xl border-2 border-purple-200 space-y-4 flex flex-col justify-between shadow-sm">
+                        <div class="space-y-3">
+                            <div class="flex justify-between items-center border-b border-purple-200 pb-3">
+                                <span class="px-2.5 py-1 text-xs font-bold bg-purple-700 text-white rounded-md">STELLARATOR ARCHITECTURE</span>
+                                <span class="text-xs font-mono text-purple-700 font-bold">3D Non-symmetric</span>
+                            </div>
+                            <h3 class="text-base font-bold text-slate-900">Zero Current, Disruption-Free Steady State</h3>
+                            <p class="text-xs text-stone-600 leading-relaxed">
+                                Generates 100% of the confining magnetic field twist using external, complex 3D non-planar modular coils surrounding the vacuum vessel.
+                            </p>
+                            <ul class="space-y-2 text-xs text-stone-700 font-medium">
+                                <li class="flex items-start space-x-2">
+                                    <span class="text-emerald-600 font-bold">✓</span>
+                                    <span><strong>Disruption-Free:</strong> Zero driven plasma current means zero current-driven disruptions!</span>
+                                </li>
+                                <li class="flex items-start space-x-2">
+                                    <span class="text-emerald-600 font-bold">✓</span>
+                                    <span><strong>True Steady-State:</strong> Operates continuously like a standard baseload power plant.</span>
+                                </li>
+                                <li class="flex items-start space-x-2">
+                                    <span class="text-amber-600 font-bold">⚠️</span>
+                                    <span><strong>Complex Geometry:</strong> Highly complex 3D coils and high neoclassical drift losses unless quasisymmetric.</span>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="p-3 bg-purple-100 rounded-xl text-[11px] font-mono text-purple-900 font-semibold">
+                            Primary Requirement: Mathematical optimization of 3D field geometry (Quasisymmetry).
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Concept Card 3: Why Formal Verification and Math Matter -->
+            <div class="bg-stone-900 text-white rounded-2xl p-6 sm:p-8 shadow-md space-y-6">
+                <div class="max-w-3xl space-y-2">
+                    <span class="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-purple-500/30 text-purple-200 border border-purple-400/30">
+                        The Core Challenge
+                    </span>
+                    <h2 class="text-2xl font-extrabold text-white">Why Formal Verification (Lean 4) & Mathematical Theory are Essential</h2>
+                    <p class="text-xs text-stone-300 leading-relaxed">
+                        Because a stellarator lacks 2D rotational symmetry, particle orbits do not automatically conserve canonical toroidal momentum ($P_\phi$). Unoptimized 3D magnetic fields lead to severe particle drift losses where alpha particles ($\text{He}^{2+}$) escape before heating the plasma!
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-xs">
+                    
+                    <div class="bg-stone-800 p-4 rounded-xl border border-stone-700 space-y-2">
+                        <div class="text-purple-300 font-bold text-sm">1. Quasisymmetry (QS)</div>
+                        <p class="text-stone-300 leading-relaxed">
+                            Ensures magnetic field magnitude $|B(s, \theta, \phi)| = B(s, M\theta - N\phi)$ depends on only a single helicity combination, restoring continuous drift invariants!
+                        </p>
+                    </div>
+
+                    <div class="bg-stone-800 p-4 rounded-xl border border-stone-700 space-y-2">
+                        <div class="text-purple-300 font-bold text-sm">2. High-Dimensional Design Space</div>
+                        <p class="text-stone-300 leading-relaxed">
+                            Stellarator plasma boundaries are defined by dozens of Fourier coefficients ($R_{m,n}, Z_{m,n}$). Finding stable shapes ($\delta W > 0$) requires exploring infinite-dimensional functional spaces.
+                        </p>
+                    </div>
+
+                    <div class="bg-stone-800 p-4 rounded-xl border border-stone-700 space-y-2">
+                        <div class="text-purple-300 font-bold text-sm">3. The PlasmaLean Solution</div>
+                        <p class="text-stone-300 leading-relaxed">
+                            <strong>PlasmaLean</strong> provides a zero-axiom formal mathematical foundation in Lean 4. It enables AI agents to discover candidate geometries and prove plasma stability with absolute machine-checked certainty!
+                        </p>
+                    </div>
+
+                </div>
+
+                <div class="pt-2 flex flex-col sm:flex-row items-center justify-between gap-4 border-t border-stone-800">
+                    <span class="text-xs text-stone-400 font-mono">
+                        Target Goal: Mathematically proven stable, constructible 3D magnetic bottles.
+                    </span>
+                    <button onclick="switchTab('vision')" class="px-4 py-2 rounded-xl bg-purple-700 hover:bg-purple-600 text-white font-semibold text-xs transition-colors shrink-0">
+                        Explore PlasmaLean Architecture →
+                    </button>
+                </div>
+            </div>
+
+        </section>
+
         <!-- ================= SECTION 1: VISION & ARCHITECTURE ================= -->
-        <section id="sec-vision" class="tab-content space-y-8">
+        <section id="sec-vision" class="tab-content hidden space-y-8">
             
             <div class="bg-white rounded-2xl p-6 sm:p-8 border border-stone-200 shadow-sm">
                 <div class="max-w-4xl">
@@ -1231,6 +1431,10 @@ mathlib = { git = "https://github.com/leanprover-community/mathlib4.git", rev = 
             }
         }
 
+        // --- Global State ---
+        let currentConceptMode = 'stellarator';
+        let conceptAnimFrame = null;
+
         // --- Navigation Logic ---
         function switchTab(tabId) {
             document.querySelectorAll('.tab-content').forEach(sec => sec.classList.add('hidden'));
@@ -1239,7 +1443,8 @@ mathlib = { git = "https://github.com/leanprover-community/mathlib4.git", rev = 
 
             document.querySelectorAll('.nav-btn').forEach(btn => {
                 if (btn.id !== 'tab-agent' && btn.id !== 'tab-realization') {
-                    btn.classList.remove('bg-stone-200', 'text-stone-900', 'font-bold');
+                    btn.classList.remove('bg-purple-100', 'text-purple-900', 'bg-stone-200', 'text-stone-900', 'font-bold');
+                    btn.classList.add('text-stone-700');
                 }
             });
 
@@ -1251,6 +1456,9 @@ mathlib = { git = "https://github.com/leanprover-community/mathlib4.git", rev = 
             window.scrollTo({ top: 0, behavior: 'smooth' });
 
             // Resize charts on view switch
+            if (tabId === 'background') {
+                initConceptCanvas();
+            }
             if (tabId === 'kernel' && window.boozerChart) window.boozerChart.resize();
             if (tabId === 'sanity' && window.gbChart) window.gbChart.resize();
             if (tabId === 'theory') {
@@ -1271,6 +1479,7 @@ mathlib = { git = "https://github.com/leanprover-community/mathlib4.git", rev = 
         }
 
         document.addEventListener("DOMContentLoaded", () => {
+            initConceptCanvas();
             initBoozerChart();
             initGarrenBoozerChart();
             initKAMChart();
@@ -1279,6 +1488,149 @@ mathlib = { git = "https://github.com/leanprover-community/mathlib4.git", rev = 
             updateStudioSim();
             renderMath();
         });
+
+        // --- Interactive Stellarator Concept Canvas ---
+        function setConceptMode(mode) {
+            currentConceptMode = mode;
+            const btnStell = document.getElementById('btn-mode-stellarator');
+            const btnTok = document.getElementById('btn-mode-tokamak');
+            const statusMode = document.getElementById('canvas-status-mode');
+            const statusIota = document.getElementById('canvas-status-iota');
+            const infoCard = document.getElementById('concept-info-card');
+
+            if (mode === 'stellarator') {
+                btnStell.className = "px-3 py-1.5 rounded-lg text-xs font-bold bg-purple-700 text-white transition-all shadow-sm";
+                btnTok.className = "px-3 py-1.5 rounded-lg text-xs font-bold bg-stone-100 text-stone-700 hover:bg-stone-200 transition-all border border-stone-300";
+                statusMode.innerText = "Mode: 3D Helical Stellarator Coils";
+                statusMode.className = "text-purple-300 font-bold";
+                statusIota.innerText = "Rotational Transform ι ≈ 0.85 (Zero Plasma Current)";
+
+                infoCard.innerHTML = `
+                    <div class="font-bold text-sm text-purple-900 flex items-center space-x-2">
+                        <span>🌀 Stellarator Concept (External 3D Field):</span>
+                    </div>
+                    <p class="text-stone-700">
+                        Modular 3D non-planar coils wrap around the vessel. The twist ($\iota$) is created entirely by external geometry.
+                    </p>
+                    <p class="text-stone-700">
+                        <strong>Key Advantage:</strong> Operates at true steady state without needing transformer action or driven plasma currents. Disruption risk is eliminated!
+                    </p>
+                    <div class="p-3 bg-white/80 rounded-xl border border-purple-200 font-mono text-[11px] text-purple-900 space-y-1">
+                        <div class="font-bold">Zero-Current Equilibrium:</div>
+                        <div>$$\nabla \times \mathbf{B}_{ext} = 0 \quad \text{outside plasma}$$</div>
+                    </div>
+                `;
+            } else {
+                btnTok.className = "px-3 py-1.5 rounded-lg text-xs font-bold bg-amber-600 text-white transition-all shadow-sm";
+                btnStell.className = "px-3 py-1.5 rounded-lg text-xs font-bold bg-stone-100 text-stone-700 hover:bg-stone-200 transition-all border border-stone-300";
+                statusMode.innerText = "Mode: Tokamak Transformer Induced Current";
+                statusMode.className = "text-amber-300 font-bold";
+                statusIota.innerText = "Driven Plasma Current Ip ≈ 15 MA (Pulsed Operation)";
+
+                infoCard.innerHTML = `
+                    <div class="font-bold text-sm text-amber-900 flex items-center space-x-2">
+                        <span>⚡ Tokamak Concept (Plasma Current Drive):</span>
+                    </div>
+                    <p class="text-stone-700">
+                        A central solenoid acts as a transformer core, inducing a massive axial electric current ($I_p$) inside the plasma ring.
+                    </p>
+                    <p class="text-stone-700">
+                        <strong>Major Limitation:</strong> Solenoids can only drive current in pulses. High current stores free energy that can trigger violent disruptions ($I_p \to 0$ in ms).
+                    </p>
+                    <div class="p-3 bg-white/80 rounded-xl border border-amber-200 font-mono text-[11px] text-amber-900 space-y-1">
+                        <div class="font-bold">Ampère Current Drive:</div>
+                        <div>$$\oint \mathbf{B}_\theta \cdot d\mathbf{l} = \mu_0 I_{plasma}$$</div>
+                    </div>
+                `;
+            }
+            renderMath();
+        }
+
+        function initConceptCanvas() {
+            const canvas = document.getElementById('stellaratorConceptCanvas');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+            let angle = 0;
+
+            function animate() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+                const cx = canvas.width / 2;
+                const cy = canvas.height / 2;
+                const R = 150; // Major radius
+                const r = 50;  // Minor radius
+
+                // Draw Torus Outline (2D projection)
+                ctx.beginPath();
+                ctx.ellipse(cx, cy, R + r, (R + r) * 0.45, 0, 0, Math.PI * 2);
+                ctx.strokeStyle = '#334155';
+                ctx.lineWidth = 1.5;
+                ctx.stroke();
+
+                ctx.beginPath();
+                ctx.ellipse(cx, cy, R - r, (R - r) * 0.45, 0, 0, Math.PI * 2);
+                ctx.strokeStyle = '#334155';
+                ctx.lineWidth = 1.5;
+                ctx.stroke();
+
+                // Draw Helical Magnetic Field Lines or Plasma Rings
+                const points = 180;
+                ctx.beginPath();
+                for (let i = 0; i <= points; i++) {
+                    const phi = (i / points) * Math.PI * 2;
+                    let theta;
+                    
+                    if (currentConceptMode === 'stellarator') {
+                        // Helical twist with N=5 field periods
+                        theta = phi * 3.5 + angle;
+                    } else {
+                        // Slower twist driven by Ip
+                        theta = phi * 1.2 + angle;
+                    }
+
+                    const currR = R + r * Math.cos(theta);
+                    const x = cx + currR * Math.cos(phi);
+                    const y = cy + currR * Math.sin(phi) * 0.45 - r * Math.sin(theta) * 0.4;
+
+                    if (i === 0) ctx.moveTo(x, y);
+                    else ctx.lineTo(x, y);
+                }
+
+                if (currentConceptMode === 'stellarator') {
+                    ctx.strokeStyle = '#c084fc'; // Purple glow
+                    ctx.lineWidth = 3;
+                    ctx.shadowColor = '#a855f7';
+                    ctx.shadowBlur = 10;
+                } else {
+                    ctx.strokeStyle = '#fbbf24'; // Amber current glow
+                    ctx.lineWidth = 3.5;
+                    ctx.shadowColor = '#f59e0b';
+                    ctx.shadowBlur = 12;
+                }
+                ctx.stroke();
+                ctx.shadowBlur = 0;
+
+                // Draw Particle Drift Indicators
+                for (let p = 0; p < 5; p++) {
+                    const pPhi = ((p / 5) * Math.PI * 2 + angle * 0.8) % (Math.PI * 2);
+                    const pTheta = pPhi * (currentConceptMode === 'stellarator' ? 3.5 : 1.2) + angle;
+                    const pR = R + (r * 0.7) * Math.cos(pTheta);
+                    const px = cx + pR * Math.cos(pPhi);
+                    const py = cy + pR * Math.sin(pPhi) * 0.45 - (r * 0.7) * Math.sin(pTheta) * 0.4;
+
+                    ctx.beginPath();
+                    ctx.arc(px, py, 4, 0, Math.PI * 2);
+                    ctx.fillStyle = p % 2 === 0 ? '#38bdf8' : '#f43f5e';
+                    ctx.fill();
+                }
+
+                angle += 0.015;
+                conceptAnimFrame = requestAnimationFrame(animate);
+            }
+
+            if (conceptAnimFrame) cancelAnimationFrame(conceptAnimFrame);
+            animate();
+        }
 
         // 1. Boozer Coordinate Chart
         function initBoozerChart() {
