@@ -1,10 +1,16 @@
-# Domain Libraries in Lean
+# Domain Library for PlasmaLean in Lean
 
-These are instructions for modelling real-world domains in Lean to allow auditing cleanly. The lean library has a *kernel*, *sanity checks* for the kernel and a *library* of functions with *verification theorems*.
+These are instructions for modelling real-world domains in Lean to allow auditing cleanly, customized for PlasmaLean. The lean library has a *kernel*, *sanity checks* for the kernel and a *library* of functions with *verification theorems*.
 
-When building such a library, add a `[[lean_lib]]` entry to `lakefile.toml`. Before building, look up (non-standard) dependencies in `lakefile.toml` and read and use their code.
+When building such a library, add a `[[lean_lib]]` entry to `lakefile.toml`. You can use Mathlib and TauCeti as dependencies.
 
 Add documentation strings for all definitions and theorems, and module documentation for each module. Use Lean's module system and ensure the correct functions and theorems are marked public or exposed.
+
+## Looping/Incremental building
+
+When following these instructions for the first time, build the kernel as in the following section, then sanity checks. Loop through the library building steps accumulating theory as code until progress halts.
+
+For subsequent runs, examine the kernel and fix errors if any, noting carefully changes as comments. Add to the kernel only if more empirical facts or real-world concepts need to be modelled. It is encouraged, but not essential, to add sanity steps. The main goal of subsequent runs is to assess what has been done and what remains for the core goals as well as the prompt, and to augment the library with verified code.
 
 ## Kernel
 
@@ -24,6 +30,8 @@ To ensure correctness of the definitions in the kernel, state results that are t
 
 ## Library with verification
 
-List functions that answer various queries a user may have about the domain and which are helpful in some way or the other in working with the domain. Implement functions, definitions, types etc for these. In each case state and prove properties of the definitions. This is meant to ensure the definitions are correct. If a definition has characterizing properties, state and prove them. In addition, state consequences, results for special cases (especially degenerate ones) etc and prove these. In case of failure check and correct definition. Following the Mathlib idiom, immediately after a definition include enough characterizing properties so that subsequently we do not have to unfold (or `simp` or `rw` with) the definition but can use the properties instead.
+The core goal of the library is to enable design of stellerators with proofs that plasmas will be stable in them. The conditions such as strengths of magnetic fields, temperatures etc should be realistic. We will incrementally work towards this.
 
-The library should constitute a reasonably complete and verified API, so that function calls or small functions building on those in the library should suffice for most uses. Organize into files and if appropriate directories.
+The library builds on the kernel incrementally adding discoveries starting with those from the literature and subsequently by Autoformalizing AI discoveries. In PlasmaLean, we will use both theoretical advances and exact numerical calculations (using interval arithmetic etc). However, we prioritize theoretical advances. Use all mathematical skills to add to the theory as far as possible, using numerical experiments to help discovery. Use proofs based on exact computations to go beyond the theory where it is not clear how to extend it.
+
+Whenever a definition or type is introduced, state and prove properties. This is meant to ensure the definitions are correct. If a definition has characterizing properties, state and prove them. In addition, state consequences, results for special cases (especially degenerate ones) etc and prove these. In case of failure check and correct definition. When a theorem is proved that is supposed to be useful, make similar sanity checks by proving corollaries, deducing special cases etc to ensure that the statements are correct.
