@@ -18,4 +18,8 @@ jobs:
     steps:
       - uses: actions/checkout@v5
       - uses: leanprover/lean-action@v1
+      - name: Audit logical dependencies
+        run: lake env lean scripts/check_axioms.lean
+      - name: Check generated handbook and local links
+        run: node scripts/check_site.mjs
       # - uses: leanprover-community/docgen-action@v1

@@ -54,10 +54,10 @@
     "text": "library method how plasmalean separates domain assumptions, sanity checks, and verified theory."
   },
   {
-    "title": "Looping/Incremental building",
+    "title": "Agent Runs and Loops",
     "section": "Library method",
-    "url": "domain-library.html#loopingincremental-building",
-    "text": "looping/incremental building library method"
+    "url": "domain-library.html#agent-runs-and-loops",
+    "text": "agent runs and loops library method"
   },
   {
     "title": "Kernel",
@@ -127,33 +127,33 @@
   },
   {
     "title": "I1 · Define a small algebraic equilibrium interface with `μ₀ > 0` and exact force balance; prove field/current tangency.",
-    "section": "Model contracts · Planning only — no Lean code written",
+    "section": "Model contracts · Partially implemented — algebraic force balance and tangency; positive permeability and actual differential laws in the restricted slab model.",
     "url": "model-contracts.html",
-    "text": "i1 define a small algebraic equilibrium interface with `μ₀ > 0` and exact force balance; prove field/current tangency. first implementation targets"
+    "text": "i1 define a small algebraic equilibrium interface with `μ₀ > 0` and exact force balance; prove field/current tangency. first implementation targets partially implemented — algebraic force balance and tangency; positive permeability and actual differential laws in the restricted slab model."
   },
   {
     "title": "I2 · Construct uniform-field, constant-pressure witnesses and a nonzero-current force-free example.",
-    "section": "Model contracts · Planning only — no Lean code written",
+    "section": "Model contracts · Lean verified — uniform-field and nonzero-current force-free witnesses in the Cartesian slab model; not toroidal confinement.",
     "url": "model-contracts.html",
-    "text": "i2 construct uniform-field, constant-pressure witnesses and a nonzero-current force-free example. first implementation targets"
+    "text": "i2 construct uniform-field, constant-pressure witnesses and a nonzero-current force-free example. first implementation targets lean verified — uniform-field and nonzero-current force-free witnesses in the cartesian slab model; not toroidal confinement."
   },
   {
     "title": "I3 · Define the certificate/assumption record without any physics-specific global theorem.",
-    "section": "Model contracts · Planning only — no Lean code written",
+    "section": "Model contracts · Partially implemented — common-witness contracts and an assumption ledger; full decoded candidate identity remains pending.",
     "url": "model-contracts.html",
-    "text": "i3 define the certificate/assumption record without any physics-specific global theorem. first implementation targets"
+    "text": "i3 define the certificate/assumption record without any physics-specific global theorem. first implementation targets partially implemented — common-witness contracts and an assumption ledger; full decoded candidate identity remains pending."
   },
   {
     "title": "I4 · Formalize exact interval containment and one useful geometric or thermal bound.",
-    "section": "Model contracts · Planning only — no Lean code written",
+    "section": "Model contracts · Partially implemented — interval containment, continuous clearance, and exact whole-box slab margin; text parsing and general signed multiplication remain pending.",
     "url": "model-contracts.html",
-    "text": "i4 formalize exact interval containment and one useful geometric or thermal bound. first implementation targets"
+    "text": "i4 formalize exact interval containment and one useful geometric or thermal bound. first implementation targets partially implemented — interval containment, continuous clearance, and exact whole-box slab margin; text parsing and general signed multiplication remain pending."
   },
   {
     "title": "I5 · Define an abstract symmetric energy form and prove the elementary conservation/coercivity theorem before implementing the continuum MHD bridge.",
-    "section": "Model contracts · Planning only — no Lean code written",
+    "section": "Model contracts · Partially implemented — conditional conservation and coercivity bounds for continuous symmetric forms on one normed space; no MHD PDE bridge.",
     "url": "model-contracts.html",
-    "text": "i5 define an abstract symmetric energy form and prove the elementary conservation/coercivity theorem before implementing the continuum mhd bridge. first implementation targets"
+    "text": "i5 define an abstract symmetric energy form and prove the elementary conservation/coercivity theorem before implementing the continuum mhd bridge. first implementation targets partially implemented — conditional conservation and coercivity bounds for continuous symmetric forms on one normed space; no mhd pde bridge."
   },
   {
     "title": "Geometry & fields",
@@ -205,63 +205,63 @@
   },
   {
     "title": "G1 · Pressure tangency and uniform-field witness",
-    "section": "Geometry & fields · Planning only — no Lean code written",
+    "section": "Geometry & fields · Lean verified — field/current tangency and uniform-field witness; the analytic instance is Cartesian, not toroidal.",
     "url": "geometry-and-fields.html",
-    "text": "g1 pressure tangency and uniform-field witness theorem backlog"
+    "text": "g1 pressure tangency and uniform-field witness theorem backlog lean verified — field/current tangency and uniform-field witness; the analytic instance is cartesian, not toroidal."
   },
   {
     "title": "G2 · div(curl A)=0 and reciprocal-basis identities",
     "section": "Geometry & fields · Planning only — no Lean code written",
     "url": "geometry-and-fields.html",
-    "text": "g2 div(curl a)=0 and reciprocal-basis identities theorem backlog"
+    "text": "g2 div(curl a)=0 and reciprocal-basis identities theorem backlog planning only — no lean code written"
   },
   {
     "title": "G3 · Boozer Jacobian and average normalization",
     "section": "Geometry & fields · Planning only — no Lean code written",
     "url": "geometry-and-fields.html",
-    "text": "g3 boozer jacobian and average normalization theorem backlog"
+    "text": "g3 boozer jacobian and average normalization theorem backlog planning only — no lean code written"
   },
   {
     "title": "G4 · Continuous Fourier surface regularity and clearance",
-    "section": "Geometry & fields · Planning only — no Lean code written",
+    "section": "Geometry & fields · Partially implemented — Lipschitz-cover clearance at every parameter point; Fourier bounds, regularity, and embedding certificates remain pending.",
     "url": "geometry-and-fields.html",
-    "text": "g4 continuous fourier surface regularity and clearance theorem backlog"
+    "text": "g4 continuous fourier surface regularity and clearance theorem backlog partially implemented — lipschitz-cover clearance at every parameter point; fourier bounds, regularity, and embedding certificates remain pending."
   },
   {
     "title": "G5 · Regular compact pressure component is a torus",
     "section": "Geometry & fields · Planning only — no Lean code written",
     "url": "geometry-and-fields.html",
-    "text": "g5 regular compact pressure component is a torus theorem backlog"
+    "text": "g5 regular compact pressure component is a torus theorem backlog planning only — no lean code written"
   },
   {
     "title": "G6 · Field-line flow/return map preserves flux measure",
     "section": "Geometry & fields · Planning only — no Lean code written",
     "url": "geometry-and-fields.html",
-    "text": "g6 field-line flow/return map preserves flux measure theorem backlog"
+    "text": "g6 field-line flow/return map preserves flux measure theorem backlog planning only — no lean code written"
   },
   {
     "title": "G7 · Quasisymmetry Fourier characterization",
     "section": "Geometry & fields · Planning only — no Lean code written",
     "url": "geometry-and-fields.html",
-    "text": "g7 quasisymmetry fourier characterization theorem backlog"
+    "text": "g7 quasisymmetry fourier characterization theorem backlog planning only — no lean code written"
   },
   {
     "title": "G8 · Near-axis recursion with remainder bounds",
     "section": "Geometry & fields · Planning only — no Lean code written",
     "url": "geometry-and-fields.html",
-    "text": "g8 near-axis recursion with remainder bounds theorem backlog"
+    "text": "g8 near-axis recursion with remainder bounds theorem backlog planning only — no lean code written"
   },
   {
     "title": "G9 · One certified invariant torus and barrier",
     "section": "Geometry & fields · Planning only — no Lean code written",
     "url": "geometry-and-fields.html",
-    "text": "g9 one certified invariant torus and barrier theorem backlog"
+    "text": "g9 one certified invariant torus and barrier theorem backlog planning only — no lean code written"
   },
   {
     "title": "G10 · Quantitative perturbation theory over useful parameter sets",
     "section": "Geometry & fields · Planning only — no Lean code written",
     "url": "geometry-and-fields.html",
-    "text": "g10 quantitative perturbation theory over useful parameter sets theorem backlog"
+    "text": "g10 quantitative perturbation theory over useful parameter sets theorem backlog planning only — no lean code written"
   },
   {
     "title": "Models & equilibrium",
@@ -319,57 +319,57 @@
   },
   {
     "title": "E1 · Force balance implies tangency; force-free/vacuum distinction",
-    "section": "Models & equilibrium · Planning only — no Lean code written",
+    "section": "Models & equilibrium · Lean verified — tangency and a smooth zero-pressure, nonvacuum force-free slab example.",
     "url": "plasma-models-and-equilibrium.html",
-    "text": "e1 force balance implies tangency; force-free/vacuum distinction theorem backlog"
+    "text": "e1 force balance implies tangency; force-free/vacuum distinction theorem backlog lean verified — tangency and a smooth zero-pressure, nonvacuum force-free slab example."
   },
   {
     "title": "E2 · MHD conservation identities on smooth closed domains",
     "section": "Models & equilibrium · Planning only — no Lean code written",
     "url": "plasma-models-and-equilibrium.html",
-    "text": "e2 mhd conservation identities on smooth closed domains theorem backlog"
+    "text": "e2 mhd conservation identities on smooth closed domains theorem backlog planning only — no lean code written"
   },
   {
     "title": "E3 · Grad–Shafranov equivalence and explicit examples",
     "section": "Models & equilibrium · Planning only — no Lean code written",
     "url": "plasma-models-and-equilibrium.html",
-    "text": "e3 grad–shafranov equivalence and explicit examples theorem backlog"
+    "text": "e3 grad–shafranov equivalence and explicit examples theorem backlog planning only — no lean code written"
   },
   {
     "title": "E4 · Distributional stress and magnetic interface jump conditions",
     "section": "Models & equilibrium · Planning only — no Lean code written",
     "url": "plasma-models-and-equilibrium.html",
-    "text": "e4 distributional stress and magnetic interface jump conditions theorem backlog"
+    "text": "e4 distributional stress and magnetic interface jump conditions theorem backlog planning only — no lean code written"
   },
   {
     "title": "E5 · Validated equilibrium in a specified simpler PDE class",
     "section": "Models & equilibrium · Planning only — no Lean code written",
     "url": "plasma-models-and-equilibrium.html",
-    "text": "e5 validated equilibrium in a specified simpler pde class theorem backlog"
+    "text": "e5 validated equilibrium in a specified simpler pde class theorem backlog planning only — no lean code written"
   },
   {
     "title": "E6 · Formalize a sourced piecewise smooth nonaxisymmetric existence theorem",
     "section": "Models & equilibrium · Planning only — no Lean code written",
     "url": "plasma-models-and-equilibrium.html",
-    "text": "e6 formalize a sourced piecewise smooth nonaxisymmetric existence theorem theorem backlog"
+    "text": "e6 formalize a sourced piecewise smooth nonaxisymmetric existence theorem theorem backlog planning only — no lean code written"
   },
   {
     "title": "E7 · Certified finite-pressure free-boundary equilibrium for external coils",
     "section": "Models & equilibrium · Planning only — no Lean code written",
     "url": "plasma-models-and-equilibrium.html",
-    "text": "e7 certified finite-pressure free-boundary equilibrium for external coils theorem backlog"
+    "text": "e7 certified finite-pressure free-boundary equilibrium for external coils theorem backlog planning only — no lean code written"
   },
   {
     "title": "E8 · Constructive smooth/weak equilibrium branches over useful uncertainty sets",
     "section": "Models & equilibrium · Planning only — no Lean code written",
     "url": "plasma-models-and-equilibrium.html",
-    "text": "e8 constructive smooth/weak equilibrium branches over useful uncertainty sets theorem backlog"
+    "text": "e8 constructive smooth/weak equilibrium branches over useful uncertainty sets theorem backlog planning only — no lean code written"
   },
   {
     "title": "E9 · Quantified kinetic/fluid or resistive/ideal model comparison",
     "section": "Models & equilibrium · Planning only — no Lean code written",
     "url": "plasma-models-and-equilibrium.html",
-    "text": "e9 quantified kinetic/fluid or resistive/ideal model comparison theorem backlog"
+    "text": "e9 quantified kinetic/fluid or resistive/ideal model comparison theorem backlog planning only — no lean code written"
   },
   {
     "title": "MHD stability",
@@ -433,63 +433,63 @@
   },
   {
     "title": "S1 · Abstract energy conservation and coercivity bound",
-    "section": "MHD stability · Planning only — no Lean code written",
+    "section": "MHD stability · Partially implemented — abstract energy conservation and norm bounds conditional on a differentiable solution; same-space variant only.",
     "url": "mhd-stability.html",
-    "text": "s1 abstract energy conservation and coercivity bound theorem backlog"
+    "text": "s1 abstract energy conservation and coercivity bound theorem backlog partially implemented — abstract energy conservation and norm bounds conditional on a differentiable solution; same-space variant only."
   },
   {
     "title": "S2 · Linearized MHD identities and fixed-boundary energy",
     "section": "MHD stability · Planning only — no Lean code written",
     "url": "mhd-stability.html",
-    "text": "s2 linearized mhd identities and fixed-boundary energy theorem backlog"
+    "text": "s2 linearized mhd identities and fixed-boundary energy theorem backlog planning only — no lean code written"
   },
   {
     "title": "S3 · Young-inequality drive bound above",
-    "section": "MHD stability · Planning only — no Lean code written",
+    "section": "MHD stability · Partially implemented — scalar two-channel Young drive inequality; integral MHD identity and geometric coercivity remain pending.",
     "url": "mhd-stability.html",
-    "text": "s3 young-inequality drive bound above theorem backlog"
+    "text": "s3 young-inequality drive bound above theorem backlog partially implemented — scalar two-channel young drive inequality; integral mhd identity and geometric coercivity remain pending."
   },
   {
     "title": "S4 · Neutral-mode counterexample and quotient definition",
-    "section": "MHD stability · Planning only — no Lean code written",
+    "section": "MHD stability · Partially implemented — exact neutral-drift counterexample; the MHD quotient and admissible-space characterization remain pending.",
     "url": "mhd-stability.html",
-    "text": "s4 neutral-mode counterexample and quotient definition theorem backlog"
+    "text": "s4 neutral-mode counterexample and quotient definition theorem backlog partially implemented — exact neutral-drift counterexample; the mhd quotient and admissible-space characterization remain pending."
   },
   {
     "title": "S5 · Self-adjoint realization and precise energy principle",
     "section": "MHD stability · Planning only — no Lean code written",
     "url": "mhd-stability.html",
-    "text": "s5 self-adjoint realization and precise energy principle theorem backlog"
+    "text": "s5 self-adjoint realization and precise energy principle theorem backlog planning only — no lean code written"
   },
   {
     "title": "S6 · Source-specific local stability criteria",
     "section": "MHD stability · Planning only — no Lean code written",
     "url": "mhd-stability.html",
-    "text": "s6 source-specific local stability criteria theorem backlog"
+    "text": "s6 source-specific local stability criteria theorem backlog planning only — no lean code written"
   },
   {
     "title": "S7 · All-mode certified bound for a restricted useful configuration",
     "section": "MHD stability · Planning only — no Lean code written",
     "url": "mhd-stability.html",
-    "text": "s7 all-mode certified bound for a restricted useful configuration theorem backlog"
+    "text": "s7 all-mode certified bound for a restricted useful configuration theorem backlog planning only — no lean code written"
   },
   {
     "title": "S8 · Free-boundary certificate with coils/vacuum/wall",
     "section": "MHD stability · Planning only — no Lean code written",
     "url": "mhd-stability.html",
-    "text": "s8 free-boundary certificate with coils/vacuum/wall theorem backlog"
+    "text": "s8 free-boundary certificate with coils/vacuum/wall theorem backlog planning only — no lean code written"
   },
   {
     "title": "S9 · Nonlinear orbital stability with quantitative basin",
     "section": "MHD stability · Planning only — no Lean code written",
     "url": "mhd-stability.html",
-    "text": "s9 nonlinear orbital stability with quantitative basin theorem backlog"
+    "text": "s9 nonlinear orbital stability with quantitative basin theorem backlog planning only — no lean code written"
   },
   {
     "title": "S10 · Finite-beta robust stability for a constructible 3-D family",
     "section": "MHD stability · Planning only — no Lean code written",
     "url": "mhd-stability.html",
-    "text": "s10 finite-beta robust stability for a constructible 3-d family theorem backlog"
+    "text": "s10 finite-beta robust stability for a constructible 3-d family theorem backlog planning only — no lean code written"
   },
   {
     "title": "Particles & transport",
@@ -549,61 +549,61 @@
     "title": "K1 · Full-orbit energy and uniform-field solution",
     "section": "Particles & transport · Planning only — no Lean code written",
     "url": "particles-and-transport.html",
-    "text": "k1 full-orbit energy and uniform-field solution theorem backlog"
+    "text": "k1 full-orbit energy and uniform-field solution theorem backlog planning only — no lean code written"
   },
   {
     "title": "K2 · Reduced Hamiltonian and conserved quantities",
     "section": "Particles & transport · Planning only — no Lean code written",
     "url": "particles-and-transport.html",
-    "text": "k2 reduced hamiltonian and conserved quantities theorem backlog"
+    "text": "k2 reduced hamiltonian and conserved quantities theorem backlog planning only — no lean code written"
   },
   {
     "title": "K3 · Approximate-invariant finite-time confinement",
-    "section": "Particles & transport · Planning only — no Lean code written",
+    "section": "Particles & transport · Partially implemented — finite-time observable drift and loss-threshold exclusion; no certified trajectory or physical loss set yet.",
     "url": "particles-and-transport.html",
-    "text": "k3 approximate-invariant finite-time confinement theorem backlog"
+    "text": "k3 approximate-invariant finite-time confinement theorem backlog partially implemented — finite-time observable drift and loss-threshold exclusion; no certified trajectory or physical loss set yet."
   },
   {
     "title": "K4 · Omnigeneity/action relation in a specified class",
     "section": "Particles & transport · Planning only — no Lean code written",
     "url": "particles-and-transport.html",
-    "text": "k4 omnigeneity/action relation in a specified class theorem backlog"
+    "text": "k4 omnigeneity/action relation in a specified class theorem backlog planning only — no lean code written"
   },
   {
     "title": "K5 · Certified finite-time orbit bundle",
     "section": "Particles & transport · Planning only — no Lean code written",
     "url": "particles-and-transport.html",
-    "text": "k5 certified finite-time orbit bundle theorem backlog"
+    "text": "k5 certified finite-time orbit bundle theorem backlog planning only — no lean code written"
   },
   {
     "title": "K6 · Drift-kinetic conservation, solvability, and flux bounds",
     "section": "Particles & transport · Planning only — no Lean code written",
     "url": "particles-and-transport.html",
-    "text": "k6 drift-kinetic conservation, solvability, and flux bounds theorem backlog"
+    "text": "k6 drift-kinetic conservation, solvability, and flux bounds theorem backlog planning only — no lean code written"
   },
   {
     "title": "K7 · Ambipolar root/current closure certificate",
     "section": "Particles & transport · Planning only — no Lean code written",
     "url": "particles-and-transport.html",
-    "text": "k7 ambipolar root/current closure certificate theorem backlog"
+    "text": "k7 ambipolar root/current closure certificate theorem backlog planning only — no lean code written"
   },
   {
     "title": "K8 · Source-specific maximum-J microstability",
     "section": "Particles & transport · Planning only — no Lean code written",
     "url": "particles-and-transport.html",
-    "text": "k8 source-specific maximum-j microstability theorem backlog"
+    "text": "k8 source-specific maximum-j microstability theorem backlog planning only — no lean code written"
   },
   {
     "title": "K9 · Robust kinetic stability and heat-flux bounds",
     "section": "Particles & transport · Planning only — no Lean code written",
     "url": "particles-and-transport.html",
-    "text": "k9 robust kinetic stability and heat-flux bounds theorem backlog"
+    "text": "k9 robust kinetic stability and heat-flux bounds theorem backlog planning only — no lean code written"
   },
   {
     "title": "K10 · Quantified reduced-to-full-orbit and kinetic-to-profile transfer",
     "section": "Particles & transport · Planning only — no Lean code written",
     "url": "particles-and-transport.html",
-    "text": "k10 quantified reduced-to-full-orbit and kinetic-to-profile transfer theorem backlog"
+    "text": "k10 quantified reduced-to-full-orbit and kinetic-to-profile transfer theorem backlog planning only — no lean code written"
   },
   {
     "title": "Verified numerics",
@@ -667,57 +667,57 @@
   },
   {
     "title": "N1 · Exact rational parser and arithmetic containment",
-    "section": "Verified numerics · Planning only — no Lean code written",
+    "section": "Verified numerics · Partially implemented — exact mantissa/scale decoding, interval containment, addition, negation, and nonnegative products; no text parser yet.",
     "url": "verified-numerics.html",
-    "text": "n1 exact rational parser and arithmetic containment theorem backlog"
+    "text": "n1 exact rational parser and arithmetic containment theorem backlog partially implemented — exact mantissa/scale decoding, interval containment, addition, negation, and nonnegative products; no text parser yet."
   },
   {
     "title": "N2 · Grid/Lipschitz and Fourier-tail bounds",
-    "section": "Verified numerics · Planning only — no Lean code written",
+    "section": "Verified numerics · Partially implemented — continuous Lipschitz-cover clearance; Fourier and tail estimates remain pending.",
     "url": "verified-numerics.html",
-    "text": "n2 grid/lipschitz and fourier-tail bounds theorem backlog"
+    "text": "n2 grid/lipschitz and fourier-tail bounds theorem backlog partially implemented — continuous lipschitz-cover clearance; fourier and tail estimates remain pending."
   },
   {
     "title": "N3 · Matrix factorization and block positivity",
-    "section": "Verified numerics · Planning only — no Lean code written",
+    "section": "Verified numerics · Partially implemented — exact two-block margin checker with accepted/rejected fixtures; matrix factorization and analytic tail bounds remain pending.",
     "url": "verified-numerics.html",
-    "text": "n3 matrix factorization and block positivity theorem backlog"
+    "text": "n3 matrix factorization and block positivity theorem backlog partially implemented — exact two-block margin checker with accepted/rejected fixtures; matrix factorization and analytic tail bounds remain pending."
   },
   {
     "title": "N4 · Generic contraction/radii-polynomial soundness",
-    "section": "Verified numerics · Planning only — no Lean code written",
+    "section": "Verified numerics · Lean verified — local contraction existence/uniqueness, radii inequalities, and the injective equation bridge; operator-specific bounds are hypotheses.",
     "url": "verified-numerics.html",
-    "text": "n4 generic contraction/radii-polynomial soundness theorem backlog"
+    "text": "n4 generic contraction/radii-polynomial soundness theorem backlog lean verified — local contraction existence/uniqueness, radii inequalities, and the injective equation bridge; operator-specific bounds are hypotheses."
   },
   {
     "title": "N5 · A validated scalar/ODE/axisymmetric equilibrium",
-    "section": "Verified numerics · Planning only — no Lean code written",
+    "section": "Verified numerics · Lean verified — nonlinear scalar x²=2 validation on [1,2], with residual 1/12 and Lipschitz constant 1/3; not a plasma PDE.",
     "url": "verified-numerics.html",
-    "text": "n5 a validated scalar/ode/axisymmetric equilibrium theorem backlog"
+    "text": "n5 a validated scalar/ode/axisymmetric equilibrium theorem backlog lean verified — nonlinear scalar x²=2 validation on [1,2], with residual 1/12 and lipschitz constant 1/3; not a plasma pde."
   },
   {
     "title": "N6 · MHD equilibrium/operator tail estimates",
     "section": "Verified numerics · Planning only — no Lean code written",
     "url": "verified-numerics.html",
-    "text": "n6 mhd equilibrium/operator tail estimates theorem backlog"
+    "text": "n6 mhd equilibrium/operator tail estimates theorem backlog planning only — no lean code written"
   },
   {
     "title": "N7 · All-mode robust energy certificate",
     "section": "Verified numerics · Planning only — no Lean code written",
     "url": "verified-numerics.html",
-    "text": "n7 all-mode robust energy certificate theorem backlog"
+    "text": "n7 all-mode robust energy certificate theorem backlog planning only — no lean code written"
   },
   {
     "title": "N8 · Invariant-torus and finite-time orbit certificates",
     "section": "Verified numerics · Planning only — no Lean code written",
     "url": "verified-numerics.html",
-    "text": "n8 invariant-torus and finite-time orbit certificates theorem backlog"
+    "text": "n8 invariant-torus and finite-time orbit certificates theorem backlog planning only — no lean code written"
   },
   {
     "title": "N9 · Certificate composition over correlated uncertainty",
-    "section": "Verified numerics · Planning only — no Lean code written",
+    "section": "Verified numerics · Partially implemented — common-witness composition and restriction of uncertainty sets; candidate decoding and physical feedback closure remain pending.",
     "url": "verified-numerics.html",
-    "text": "n9 certificate composition over correlated uncertainty theorem backlog"
+    "text": "n9 certificate composition over correlated uncertainty theorem backlog partially implemented — common-witness composition and restriction of uncertainty sets; candidate decoding and physical feedback closure remain pending."
   },
   {
     "title": "Coils & design",
@@ -775,57 +775,57 @@
   },
   {
     "title": "D1 · Biot–Savart algebra, smoothness, and field/derivative bounds",
-    "section": "Coils & design · Planning only — no Lean code written",
+    "section": "Coils & design · Partially implemented — continuous filament integral, current linearity, source-distance and whole-region amplitude/variation bounds, plus a spatial inverse-cube derivative bound; differentiating the field integral and Maxwell proofs remain pending.",
     "url": "coils-and-design.html",
-    "text": "d1 biot–savart algebra, smoothness, and field/derivative bounds theorem backlog"
+    "text": "d1 biot–savart algebra, smoothness, and field/derivative bounds theorem backlog partially implemented — continuous filament integral, current linearity, source-distance and whole-region amplitude/variation bounds, plus a spatial inverse-cube derivative bound; differentiating the field integral and maxwell proofs remain pending."
   },
   {
     "title": "D2 · Circular-loop and orientation sanity cases",
-    "section": "Coils & design · Planning only — no Lean code written",
+    "section": "Coils & design · Lean verified — exact circular-loop vector field on its axis and orientation reversal; the two-loop fixture has a positive midpoint field for positive equal currents.",
     "url": "coils-and-design.html",
-    "text": "d2 circular-loop and orientation sanity cases theorem backlog"
+    "text": "d2 circular-loop and orientation sanity cases theorem backlog lean verified — exact circular-loop vector field on its axis and orientation reversal; the two-loop fixture has a positive midpoint field for positive equal currents."
   },
   {
     "title": "D3 · Continuous curve/surface/solid geometric certificate",
-    "section": "Coils & design · Planning only — no Lean code written",
+    "section": "Coils & design · Partially implemented — exact closed, regular, non-self-intersecting circular centerlines, continuous pair/source clearance and displacement-margin transfer; no swept-solid certificate.",
     "url": "coils-and-design.html",
-    "text": "d3 continuous curve/surface/solid geometric certificate theorem backlog"
+    "text": "d3 continuous curve/surface/solid geometric certificate theorem backlog partially implemented — exact closed, regular, non-self-intersecting circular centerlines, continuous pair/source clearance and displacement-margin transfer; no swept-solid certificate."
   },
   {
     "title": "D4 · Finite-width-to-filament error and conductor field",
     "section": "Coils & design · Planning only — no Lean code written",
     "url": "coils-and-design.html",
-    "text": "d4 finite-width-to-filament error and conductor field theorem backlog"
+    "text": "d4 finite-width-to-filament error and conductor field theorem backlog planning only — no lean code written"
   },
   {
     "title": "D5 · Coil perturbation bounds in C^k norms",
     "section": "Coils & design · Planning only — no Lean code written",
     "url": "coils-and-design.html",
-    "text": "d5 coil perturbation bounds in c^k norms theorem backlog"
+    "text": "d5 coil perturbation bounds in c^k norms theorem backlog planning only — no lean code written"
   },
   {
     "title": "D6 · Certified inverse field reconstruction",
     "section": "Coils & design · Planning only — no Lean code written",
     "url": "coils-and-design.html",
-    "text": "d6 certified inverse field reconstruction theorem backlog"
+    "text": "d6 certified inverse field reconstruction theorem backlog planning only — no lean code written"
   },
   {
     "title": "D7 · Free-boundary plasma/coil consistency",
     "section": "Coils & design · Planning only — no Lean code written",
     "url": "coils-and-design.html",
-    "text": "d7 free-boundary plasma/coil consistency theorem backlog"
+    "text": "d7 free-boundary plasma/coil consistency theorem backlog planning only — no lean code written"
   },
   {
     "title": "D8 · Robust physics–engineering candidate",
     "section": "Coils & design · Planning only — no Lean code written",
     "url": "coils-and-design.html",
-    "text": "d8 robust physics–engineering candidate theorem backlog"
+    "text": "d8 robust physics–engineering candidate theorem backlog planning only — no lean code written"
   },
   {
     "title": "D9 · Removal paths and robust manufacturing margins",
     "section": "Coils & design · Planning only — no Lean code written",
     "url": "coils-and-design.html",
-    "text": "d9 removal paths and robust manufacturing margins theorem backlog"
+    "text": "d9 removal paths and robust manufacturing margins theorem backlog planning only — no lean code written"
   },
   {
     "title": "Materials & engineering",
@@ -903,61 +903,61 @@
     "title": "M1 · Material envelope semantics and consistent examples",
     "section": "Materials & engineering · Planning only — no Lean code written",
     "url": "materials-and-engineering.html",
-    "text": "m1 material envelope semantics and consistent examples theorem backlog"
+    "text": "m1 material envelope semantics and consistent examples theorem backlog planning only — no lean code written"
   },
   {
     "title": "M2 · Exact slab heat bound and coolant energy identity",
-    "section": "Materials & engineering · Planning only — no Lean code written",
+    "section": "Materials & engineering · Partially implemented — slab existence, uniqueness, maximum, whole-box bound and exact 998/45 K synthetic margin; coolant-flow identity remains pending.",
     "url": "materials-and-engineering.html",
-    "text": "m2 exact slab heat bound and coolant energy identity theorem backlog"
+    "text": "m2 exact slab heat bound and coolant energy identity theorem backlog partially implemented — slab existence, uniqueness, maximum, whole-box bound and exact 998/45 k synthetic margin; coolant-flow identity remains pending."
   },
   {
     "title": "M3 · Restrained-bar stress and elastic-energy positivity",
     "section": "Materials & engineering · Planning only — no Lean code written",
     "url": "materials-and-engineering.html",
-    "text": "m3 restrained-bar stress and elastic-energy positivity theorem backlog"
+    "text": "m3 restrained-bar stress and elastic-energy positivity theorem backlog planning only — no lean code written"
   },
   {
     "title": "M4 · Ribbon stretch, bend/twist cases, continuous strain bounds",
     "section": "Materials & engineering · Planning only — no Lean code written",
     "url": "materials-and-engineering.html",
-    "text": "m4 ribbon stretch, bend/twist cases, continuous strain bounds theorem backlog"
+    "text": "m4 ribbon stretch, bend/twist cases, continuous strain bounds theorem backlog planning only — no lean code written"
   },
   {
     "title": "M5 · Current/temperature/field critical-surface margin",
     "section": "Materials & engineering · Planning only — no Lean code written",
     "url": "materials-and-engineering.html",
-    "text": "m5 current/temperature/field critical-surface margin theorem backlog"
+    "text": "m5 current/temperature/field critical-surface margin theorem backlog planning only — no lean code written"
   },
   {
     "title": "M6 · Lumped dump/quench energy and hotspot bound",
     "section": "Materials & engineering · Planning only — no Lean code written",
     "url": "materials-and-engineering.html",
-    "text": "m6 lumped dump/quench energy and hotspot bound theorem backlog"
+    "text": "m6 lumped dump/quench energy and hotspot bound theorem backlog planning only — no lean code written"
   },
   {
     "title": "M7 · Thermal/elastic PDE a posteriori certificates",
     "section": "Materials & engineering · Planning only — no Lean code written",
     "url": "materials-and-engineering.html",
-    "text": "m7 thermal/elastic pde a posteriori certificates theorem backlog"
+    "text": "m7 thermal/elastic pde a posteriori certificates theorem backlog planning only — no lean code written"
   },
   {
     "title": "M8 · Absorption shield, inventory positivity, erosion/fatigue arithmetic",
     "section": "Materials & engineering · Planning only — no Lean code written",
     "url": "materials-and-engineering.html",
-    "text": "m8 absorption shield, inventory positivity, erosion/fatigue arithmetic theorem backlog"
+    "text": "m8 absorption shield, inventory positivity, erosion/fatigue arithmetic theorem backlog planning only — no lean code written"
   },
   {
     "title": "M9 · Full neutronics/breeding/damage certificate",
     "section": "Materials & engineering · Planning only — no Lean code written",
     "url": "materials-and-engineering.html",
-    "text": "m9 full neutronics/breeding/damage certificate theorem backlog"
+    "text": "m9 full neutronics/breeding/damage certificate theorem backlog planning only — no lean code written"
   },
   {
     "title": "M10 · Robust lifetime and net-power design contract",
     "section": "Materials & engineering · Planning only — no Lean code written",
     "url": "materials-and-engineering.html",
-    "text": "m10 robust lifetime and net-power design contract theorem backlog"
+    "text": "m10 robust lifetime and net-power design contract theorem backlog planning only — no lean code written"
   },
   {
     "title": "Roadmap",
@@ -1069,159 +1069,159 @@
   },
   {
     "title": "P0: honest kernel · F",
-    "section": "Roadmap · Planning only — no Lean code written",
+    "section": "Roadmap · Partially implemented — limited MHD/thermal law bundles, analytic witnesses, counterexamples, and a dated assumption ledger; no full 3-D domain model.",
     "url": "roadmap.html",
-    "text": "p0: honest kernel f milestones and evidence gates"
+    "text": "p0: honest kernel f milestones and evidence gates partially implemented — limited mhd/thermal law bundles, analytic witnesses, counterexamples, and a dated assumption ledger; no full 3-d domain model."
   },
   {
     "title": "P1: useful exact building blocks · F/V",
-    "section": "Roadmap · Planning only — no Lean code written",
+    "section": "Roadmap · Partially implemented — energy, intervals, contraction, clearance, filament field and slab thermal results; remaining field/engineering targets are explicit.",
     "url": "roadmap.html",
-    "text": "p1: useful exact building blocks f/v milestones and evidence gates"
+    "text": "p1: useful exact building blocks f/v milestones and evidence gates partially implemented — energy, intervals, contraction, clearance, filament field and slab thermal results; remaining field/engineering targets are explicit."
   },
   {
     "title": "P2: continuous vacuum candidate · V",
-    "section": "Roadmap · Planning only — no Lean code written",
+    "section": "Roadmap · Partially implemented — 10 cm-radius loops at z=±20 cm, continuous geometry, 15 cm source clearance over a 5 cm ball, amplitude/3-D variation bounds and exact on-axis field; derivative/Maxwell and finite-solid certificates remain pending.",
     "url": "roadmap.html",
-    "text": "p2: continuous vacuum candidate v milestones and evidence gates"
+    "text": "p2: continuous vacuum candidate v milestones and evidence gates partially implemented — 10 cm-radius loops at z=±20 cm, continuous geometry, 15 cm source clearance over a 5 cm ball, amplitude/3-d variation bounds and exact on-axis field; derivative/maxwell and finite-solid certificates remain pending."
   },
   {
     "title": "P3: confined reduced orbits · F/V/R",
     "section": "Roadmap · Planning only — no Lean code written",
     "url": "roadmap.html",
-    "text": "p3: confined reduced orbits f/v/r milestones and evidence gates"
+    "text": "p3: confined reduced orbits f/v/r milestones and evidence gates planning only — no lean code written"
   },
   {
     "title": "P4: finite-pressure equilibrium · F/V/R",
     "section": "Roadmap · Planning only — no Lean code written",
     "url": "roadmap.html",
-    "text": "p4: finite-pressure equilibrium f/v/r milestones and evidence gates"
+    "text": "p4: finite-pressure equilibrium f/v/r milestones and evidence gates planning only — no lean code written"
   },
   {
     "title": "P5: all-mode MHD result · F/V/R",
     "section": "Roadmap · Planning only — no Lean code written",
     "url": "roadmap.html",
-    "text": "p5: all-mode mhd result f/v/r milestones and evidence gates"
+    "text": "p5: all-mode mhd result f/v/r milestones and evidence gates planning only — no lean code written"
   },
   {
     "title": "P6: kinetic and exhaust closure · F/V/R",
     "section": "Roadmap · Planning only — no Lean code written",
     "url": "roadmap.html",
-    "text": "p6: kinetic and exhaust closure f/v/r milestones and evidence gates"
+    "text": "p6: kinetic and exhaust closure f/v/r milestones and evidence gates planning only — no lean code written"
   },
   {
     "title": "P7: buildable component system · F/V",
     "section": "Roadmap · Planning only — no Lean code written",
     "url": "roadmap.html",
-    "text": "p7: buildable component system f/v milestones and evidence gates"
+    "text": "p7: buildable component system f/v milestones and evidence gates planning only — no lean code written"
   },
   {
     "title": "P8: robust integrated candidate · V/R",
     "section": "Roadmap · Planning only — no Lean code written",
     "url": "roadmap.html",
-    "text": "p8: robust integrated candidate v/r milestones and evidence gates"
+    "text": "p8: robust integrated candidate v/r milestones and evidence gates planning only — no lean code written"
   },
   {
     "title": "P9: practical design basis · Mathematical work plus empirical/engineering validation",
     "section": "Roadmap · Planning only — no Lean code written",
     "url": "roadmap.html",
-    "text": "p9: practical design basis mathematical work plus empirical/engineering validation milestones and evidence gates"
+    "text": "p9: practical design basis mathematical work plus empirical/engineering validation milestones and evidence gates planning only — no lean code written"
   },
   {
     "title": "1 · Kernel.Equilibrium, Sanity.Equilibrium",
-    "section": "Roadmap · Planning only — no Lean code written",
+    "section": "Roadmap · Partially implemented — tangency and genuine slab witnesses; full toroidal MHDEquilibrium interface remains pending.",
     "url": "roadmap.html",
-    "text": "1 kernel.equilibrium, sanity.equilibrium the first coding sequence"
+    "text": "1 kernel.equilibrium, sanity.equilibrium the first coding sequence partially implemented — tangency and genuine slab witnesses; full toroidal mhdequilibrium interface remains pending."
   },
   {
     "title": "2 · Theory.Stability.AbstractEnergy",
-    "section": "Roadmap · Planning only — no Lean code written",
+    "section": "Roadmap · Partially implemented — conditional energy theorem, coercivity and neutral drift; V-to-H embedding and MHD bridge remain pending.",
     "url": "roadmap.html",
-    "text": "2 theory.stability.abstractenergy the first coding sequence"
+    "text": "2 theory.stability.abstractenergy the first coding sequence partially implemented — conditional energy theorem, coercivity and neutral drift; v-to-h embedding and mhd bridge remain pending."
   },
   {
     "title": "3 · Certificates.RationalIntervals",
-    "section": "Roadmap · Planning only — no Lean code written",
+    "section": "Roadmap · Partially implemented — rational interval core and acceptance/rejection proofs; no general text parser.",
     "url": "roadmap.html",
-    "text": "3 certificates.rationalintervals the first coding sequence"
+    "text": "3 certificates.rationalintervals the first coding sequence partially implemented — rational interval core and acceptance/rejection proofs; no general text parser."
   },
   {
     "title": "4 · Theory.Geometry.ParametricBounds",
-    "section": "Roadmap · Planning only — no Lean code written",
+    "section": "Roadmap · Partially implemented — continuous Lipschitz-cover clearance; Fourier derivative bounds remain pending.",
     "url": "roadmap.html",
-    "text": "4 theory.geometry.parametricbounds the first coding sequence"
+    "text": "4 theory.geometry.parametricbounds the first coding sequence partially implemented — continuous lipschitz-cover clearance; fourier derivative bounds remain pending."
   },
   {
     "title": "5 · Theory.Engineering.SlabHeat",
-    "section": "Roadmap · Planning only — no Lean code written",
+    "section": "Roadmap · Lean verified — slab laws, unique solution, whole-box maximum and exact synthetic temperature margin; no material qualification claim.",
     "url": "roadmap.html",
-    "text": "5 theory.engineering.slabheat the first coding sequence"
+    "text": "5 theory.engineering.slabheat the first coding sequence lean verified — slab laws, unique solution, whole-box maximum and exact synthetic temperature margin; no material qualification claim."
   },
   {
     "title": "6 · Theory.Fields.BiotSavart",
-    "section": "Roadmap · Planning only — no Lean code written",
+    "section": "Roadmap · Partially implemented — current linearity, continuous source-distance bound, exact loop-axis formula, kernel derivative and full-region spatial variation; field differentiation/Maxwell proofs remain pending.",
     "url": "roadmap.html",
-    "text": "6 theory.fields.biotsavart the first coding sequence"
+    "text": "6 theory.fields.biotsavart the first coding sequence partially implemented — current linearity, continuous source-distance bound, exact loop-axis formula, kernel derivative and full-region spatial variation; field differentiation/maxwell proofs remain pending."
   },
   {
     "title": "7 · Theory.Stability.BlockBounds",
-    "section": "Roadmap · Planning only — no Lean code written",
+    "section": "Roadmap · Lean verified — scalar two-block positivity/margin checker; no claimed MHD tail estimate.",
     "url": "roadmap.html",
-    "text": "7 theory.stability.blockbounds the first coding sequence"
+    "text": "7 theory.stability.blockbounds the first coding sequence lean verified — scalar two-block positivity/margin checker; no claimed mhd tail estimate."
   },
   {
     "title": "8 · Bridge.Candidate, Design.Specification",
-    "section": "Roadmap · Planning only — no Lean code written",
+    "section": "Roadmap · Partially implemented — common-witness contracts; decoded geometry identity, source data and complete candidate ledger remain pending.",
     "url": "roadmap.html",
-    "text": "8 bridge.candidate, design.specification the first coding sequence"
+    "text": "8 bridge.candidate, design.specification the first coding sequence partially implemented — common-witness contracts; decoded geometry identity, source data and complete candidate ledger remain pending."
   },
   {
     "title": "R1 · R1. Constructive three-dimensional finite-pressure equilibrium",
     "section": "Roadmap · Planning only — no Lean code written",
     "url": "roadmap.html",
-    "text": "r1 r1. constructive three-dimensional finite-pressure equilibrium r1. constructive three-dimensional finite-pressure equilibrium"
+    "text": "r1 r1. constructive three-dimensional finite-pressure equilibrium r1. constructive three-dimensional finite-pressure equilibrium planning only — no lean code written"
   },
   {
     "title": "R2 · R2. All-mode stability in a nonaxisymmetric practical class",
     "section": "Roadmap · Planning only — no Lean code written",
     "url": "roadmap.html",
-    "text": "r2 r2. all-mode stability in a nonaxisymmetric practical class r2. all-mode stability in a nonaxisymmetric practical class"
+    "text": "r2 r2. all-mode stability in a nonaxisymmetric practical class r2. all-mode stability in a nonaxisymmetric practical class planning only — no lean code written"
   },
   {
     "title": "R3 · R3. Nonlinear stability with a useful basin",
     "section": "Roadmap · Planning only — no Lean code written",
     "url": "roadmap.html",
-    "text": "r3 r3. nonlinear stability with a useful basin r3. nonlinear stability with a useful basin"
+    "text": "r3 r3. nonlinear stability with a useful basin r3. nonlinear stability with a useful basin planning only — no lean code written"
   },
   {
     "title": "R4 · R4. Quantitative imperfect-symmetry confinement and transport",
     "section": "Roadmap · Planning only — no Lean code written",
     "url": "roadmap.html",
-    "text": "r4 r4. quantitative imperfect-symmetry confinement and transport r4. quantitative imperfect-symmetry confinement and transport"
+    "text": "r4 r4. quantitative imperfect-symmetry confinement and transport r4. quantitative imperfect-symmetry confinement and transport planning only — no lean code written"
   },
   {
     "title": "R5 · R5. Geometry-based kinetic stability and heat-flux bounds",
     "section": "Roadmap · Planning only — no Lean code written",
     "url": "roadmap.html",
-    "text": "r5 r5. geometry-based kinetic stability and heat-flux bounds r5. geometry-based kinetic stability and heat-flux bounds"
+    "text": "r5 r5. geometry-based kinetic stability and heat-flux bounds r5. geometry-based kinetic stability and heat-flux bounds planning only — no lean code written"
   },
   {
     "title": "R6 · R6. Controlled model reduction for design",
     "section": "Roadmap · Planning only — no Lean code written",
     "url": "roadmap.html",
-    "text": "r6 r6. controlled model reduction for design r6. controlled model reduction for design"
+    "text": "r6 r6. controlled model reduction for design r6. controlled model reduction for design planning only — no lean code written"
   },
   {
     "title": "R7 · R7. Coupled robust operation and lifetime",
     "section": "Roadmap · Planning only — no Lean code written",
     "url": "roadmap.html",
-    "text": "r7 r7. coupled robust operation and lifetime r7. coupled robust operation and lifetime"
+    "text": "r7 r7. coupled robust operation and lifetime r7. coupled robust operation and lifetime planning only — no lean code written"
   },
   {
     "title": "R8 · R8. Scalable proof certificates for practical resolution",
     "section": "Roadmap · Planning only — no Lean code written",
     "url": "roadmap.html",
-    "text": "r8 r8. scalable proof certificates for practical resolution r8. scalable proof certificates for practical resolution"
+    "text": "r8 r8. scalable proof certificates for practical resolution r8. scalable proof certificates for practical resolution planning only — no lean code written"
   },
   {
     "title": "Literature",
@@ -1281,54 +1281,138 @@
     "title": "Force-balance tangency and a vacuum/force-free distinction · Freidberg14; [02](02-plasma-models-and-equilibrium.md)",
     "section": "Literature · Planning only — no Lean code written",
     "url": "literature.html",
-    "text": "force-balance tangency and a vacuum/force-free distinction freidberg14; [02](02-plasma-models-and-equilibrium.md) reading order and theorem targets"
+    "text": "force-balance tangency and a vacuum/force-free distinction freidberg14; [02](02-plasma-models-and-equilibrium.md) reading order and theorem targets planning only — no lean code written"
   },
   {
     "title": "Static fixed-boundary quadratic energy · BFKK58; Freidberg14; [03](03-mhd-stability.md)",
     "section": "Literature · Planning only — no Lean code written",
     "url": "literature.html",
-    "text": "static fixed-boundary quadratic energy bfkk58; freidberg14; [03](03-mhd-stability.md) reading order and theorem targets"
+    "text": "static fixed-boundary quadratic energy bfkk58; freidberg14; [03](03-mhd-stability.md) reading order and theorem targets planning only — no lean code written"
   },
   {
     "title": "Boozer/near-axis coefficient identities · Boozer81; GB91-field; GB91-existence; LS19 Appendix A",
     "section": "Literature · Planning only — no Lean code written",
     "url": "literature.html",
-    "text": "boozer/near-axis coefficient identities boozer81; gb91-field; gb91-existence; ls19 appendix a reading order and theorem targets"
+    "text": "boozer/near-axis coefficient identities boozer81; gb91-field; gb91-existence; ls19 appendix a reading order and theorem targets planning only — no lean code written"
   },
   {
     "title": "Invariant barrier or approximate-invariant loss time · BKM20; Littlejohn83; Helander14; [04](04-particles-and-transport.md)",
     "section": "Literature · Planning only — no Lean code written",
     "url": "literature.html",
-    "text": "invariant barrier or approximate-invariant loss time bkm20; littlejohn83; helander14; [04](04-particles-and-transport.md) reading order and theorem targets"
+    "text": "invariant barrier or approximate-invariant loss time bkm20; littlejohn83; helander14; [04](04-particles-and-transport.md) reading order and theorem targets planning only — no lean code written"
   },
   {
     "title": "Exact retained-mode / continuous-clearance checker · Rump10; [05](05-verified-numerics.md)",
     "section": "Literature · Planning only — no Lean code written",
     "url": "literature.html",
-    "text": "exact retained-mode / continuous-clearance checker rump10; [05](05-verified-numerics.md) reading order and theorem targets"
+    "text": "exact retained-mode / continuous-clearance checker rump10; [05](05-verified-numerics.md) reading order and theorem targets planning only — no lean code written"
   },
   {
     "title": "Validated equilibrium or invariant torus · ELPS; Parameterization16; NPW19",
     "section": "Literature · Planning only — no Lean code written",
     "url": "literature.html",
-    "text": "validated equilibrium or invariant torus elps; parameterization16; npw19 reading order and theorem targets"
+    "text": "validated equilibrium or invariant torus elps; parameterization16; npw19 reading order and theorem targets planning only — no lean code written"
   },
   {
     "title": "Coils producing the intended field · REGCOIL17; Coils22; DESC23; [06](06-coils-and-design.md)",
     "section": "Literature · Planning only — no Lean code written",
     "url": "literature.html",
-    "text": "coils producing the intended field regcoil17; coils22; desc23; [06](06-coils-and-design.md) reading order and theorem targets"
+    "text": "coils producing the intended field regcoil17; coils22; desc23; [06](06-coils-and-design.md) reading order and theorem targets planning only — no lean code written"
   },
   {
     "title": "Slab heat, ribbon strain, and dump-energy margins · DEMO18; REBCO25; Ciarlet88; [07](07-materials-and-engineering.md)",
     "section": "Literature · Planning only — no Lean code written",
     "url": "literature.html",
-    "text": "slab heat, ribbon strain, and dump-energy margins demo18; rebco25; ciarlet88; [07](07-materials-and-engineering.md) reading order and theorem targets"
+    "text": "slab heat, ribbon strain, and dump-energy margins demo18; rebco25; ciarlet88; [07](07-materials-and-engineering.md) reading order and theorem targets planning only — no lean code written"
   },
   {
     "title": "Fuel, shielding, lifetime, and practical integration · BH92-reactivity; FENDL-data; KMM16; HELIAS13",
     "section": "Literature · Planning only — no Lean code written",
     "url": "literature.html",
-    "text": "fuel, shielding, lifetime, and practical integration bh92-reactivity; fendl-data; kmm16; helias13 reading order and theorem targets"
+    "text": "fuel, shielding, lifetime, and practical integration bh92-reactivity; fendl-data; kmm16; helias13 reading order and theorem targets planning only — no lean code written"
+  },
+  {
+    "title": "Verified progress",
+    "section": "Compiled foundations, synthetic certificates, and a small two-loop vacuum-field fixture. P0/P1 and parts of P2 are underway; no practical stellarator is certified.",
+    "url": "progress.html",
+    "text": "verified progress compiled foundations, synthetic certificates, and a small two-loop vacuum-field fixture. p0/p1 and parts of p2 are underway; no practical stellarator is certified."
+  },
+  {
+    "title": "Result and limits",
+    "section": "Verified progress",
+    "url": "progress.html#result-and-limits",
+    "text": "result and limits verified progress"
+  },
+  {
+    "title": "Reproducibility",
+    "section": "Verified progress",
+    "url": "progress.html#reproducibility",
+    "text": "reproducibility verified progress"
+  },
+  {
+    "title": "Implementation loops",
+    "section": "Verified progress",
+    "url": "progress.html#implementation-loops",
+    "text": "implementation loops verified progress"
+  },
+  {
+    "title": "Compiled declaration inventory",
+    "section": "Verified progress",
+    "url": "progress.html#compiled-declaration-inventory",
+    "text": "compiled declaration inventory verified progress"
+  },
+  {
+    "title": "Quantitative fixtures",
+    "section": "Verified progress",
+    "url": "progress.html#quantitative-fixtures",
+    "text": "quantitative fixtures verified progress"
+  },
+  {
+    "title": "Small vacuum-field demonstrator",
+    "section": "Verified progress",
+    "url": "progress.html#small-vacuum-field-demonstrator",
+    "text": "small vacuum-field demonstrator verified progress"
+  },
+  {
+    "title": "Thermal boundary-value problem",
+    "section": "Verified progress",
+    "url": "progress.html#thermal-boundary-value-problem",
+    "text": "thermal boundary-value problem verified progress"
+  },
+  {
+    "title": "Nonlinear scalar root",
+    "section": "Verified progress",
+    "url": "progress.html#nonlinear-scalar-root",
+    "text": "nonlinear scalar root verified progress"
+  },
+  {
+    "title": "Two-block form and rejection tests",
+    "section": "Verified progress",
+    "url": "progress.html#two-block-form-and-rejection-tests",
+    "text": "two-block form and rejection tests verified progress"
+  },
+  {
+    "title": "Assumption ledger",
+    "section": "Verified progress",
+    "url": "progress.html#assumption-ledger",
+    "text": "assumption ledger verified progress"
+  },
+  {
+    "title": "Source and dependency locators",
+    "section": "Verified progress",
+    "url": "progress.html#source-and-dependency-locators",
+    "text": "source and dependency locators verified progress"
+  },
+  {
+    "title": "Remaining integration boundary",
+    "section": "Verified progress",
+    "url": "progress.html#remaining-integration-boundary",
+    "text": "remaining integration boundary verified progress"
+  },
+  {
+    "title": "Validation results",
+    "section": "Verified progress",
+    "url": "progress.html#validation-results",
+    "text": "validation results verified progress"
   }
 ]

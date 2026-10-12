@@ -21,4 +21,12 @@ interactions live in `docs/assets/`.
 Preview with `python3 -m http.server 8765 --directory docs`, then open
 `http://localhost:8765/`. The overview uses the original Tailwind, Chart.js, and
 KaTeX CDN dependencies. Its graphics and sandbox values are illustrative.
-All formalization tasks start with planning-only progress.
+Current task status comes from `progress/status.json`, with declaration names,
+assumptions and build evidence in the dated report it names. Unimplemented tasks
+retain planning-only status. The report is rendered as `progress.html`, reachable
+from the original landing page and all handbook chapters.
+
+After regeneration, run `node scripts/check_site.mjs` to check local links,
+fragments, search destinations, task coverage and preserved landing-page graphics.
+`node scripts/generate_handbook.mjs --check` checks reproducibility without writing
+files. These checks do not replace browser-rendered visual or interaction testing.
