@@ -1,0 +1,94 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="Biot–Savart fields, inverse coil design, manufacturing geometry, and robust workflows."><title>Coils &amp; design · PlasmaLean</title><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css"><link rel="stylesheet" href="assets/site.css"><script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script><script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"></script><script defer src="assets/site.js"></script></head><body>
+  <header class="site-header"><div class="header-inner">
+    <a class="brand" href="index.html"><span class="brand-mark">λ</span><span>PlasmaLean<small>Verified stellarator design</small></span></a>
+    <div class="header-links"><a href="index.html">Home</a><a href="handbook.html">Handbook</a><a href="roadmap.html">Roadmap</a><a href="literature.html">Sources</a><a href="#" class="search-link" data-search>Search <span aria-hidden="true">⌘K</span></a><a href="https://github.com/siddhartha-gadgil/PlasmaLean">GitHub ↗</a></div>
+    <button class="menu-toggle" data-menu aria-label="Open handbook navigation" aria-expanded="false">☰</button>
+  </div></header><div class="app-shell"><nav class="side-nav" aria-label="Handbook chapters"><div class="nav-kicker">Explore</div><a href="index.html">Home · illustrated overview</a><a href="handbook.html">Handbook &amp; tasks</a><a href="#" data-search>Search handbook</a><div class="nav-kicker">Foundation</div><a href="domain-library.html"><span class="nav-number">00</span>Library method</a><a href="model-contracts.html"><span class="nav-number">01</span>Model contracts</a><div class="nav-kicker">Physics</div><a href="geometry-and-fields.html"><span class="nav-number">02</span>Geometry & fields</a><a href="plasma-models-and-equilibrium.html"><span class="nav-number">03</span>Models & equilibrium</a><a href="mhd-stability.html"><span class="nav-number">04</span>MHD stability</a><a href="particles-and-transport.html"><span class="nav-number">05</span>Particles & transport</a><div class="nav-kicker">Verification</div><a href="verified-numerics.html"><span class="nav-number">06</span>Verified numerics</a><div class="nav-kicker">Design</div><a href="coils-and-design.html" aria-current="page"><span class="nav-number">07</span>Coils & design</a><a href="materials-and-engineering.html"><span class="nav-number">08</span>Materials & engineering</a><div class="nav-kicker">Program</div><a href="roadmap.html"><span class="nav-number">09</span>Roadmap</a><a href="literature.html"><span class="nav-number">10</span>Literature</a></nav><main class="doc">
+    <section class="doc-hero"><div class="eyebrow">Design · PlasmaLean handbook</div><h1>Coil fields, optimization, and constructible stellarator geometry</h1><p>Biot–Savart fields, inverse coil design, manufacturing geometry, and robust workflows.</p><div class="hero-meta"><span>Lean 4.34.1</span><span>Mathlib 4.34.1</span><span>9 tracked tasks</span></div></section>
+    <div class="progress-banner"><span class="progress-dot"></span><div><strong>Current implementation status</strong>Planning only — no Lean code written. The material below is a specification and roadmap, not a report of compiled declarations or completed certificates.</div></div>
+    <p class="overview-return"><a href="index.html#realization">← Illustrated introduction: Illustrative design studio</a></p><article class="prose"><p>This note supplies the geometric and electromagnetic bridge from mathematical fields to hardware. Material/thermal constraints are in <a href="materials-and-engineering.html">07</a>; continuous checker methods are in <a href="verified-numerics.html">05</a>.</p>
+<h2 id="contents">Contents</h2>
+<ul>
+<li><a href="#filament-fields">Filament fields</a></li>
+<li><a href="#finite-conductors-and-plasma-coupling">Finite conductors and plasma coupling</a></li>
+<li><a href="#inverse-coil-design">Inverse coil design</a></li>
+<li><a href="#geometry-and-manufacturing">Geometry and manufacturing</a></li>
+<li><a href="#robust-design-specifications">Robust design specifications</a></li>
+<li><a href="#a-complete-candidate-workflow">A complete candidate workflow</a></li>
+<li><a href="#theorem-backlog">Theorem backlog</a></li>
+</ul>
+<h2 id="filament-fields">Filament fields</h2>
+<p>Let <code>c:[0,2π]→ℝ³</code> be a regular closed parametrized curve and <code>I</code> its oriented current. At points away from the curve define</p>
+<div class="math-block">$$B_c(x)=\frac{\mu_0 I}{4\pi}
+\int_0^{2\pi}
+\frac{c'(t)\times(x-c(t))}{|x-c(t)|^3}\,dt.$$</div>
+<p>Define multi-coil fields by finite sums. Prove:</p>
+<ul>
+<li>linearity in current and superposition;</li>
+<li>reparametrization invariance;</li>
+<li>reversal of curve orientation/current and their sign effects;</li>
+<li>smoothness away from sources;</li>
+<li><code>div B=0</code> and <code>curl B=0</code> in a current-free region;</li>
+<li>the chosen Ampère circulation/flux properties with their topological hypotheses.</li>
+</ul>
+<p>For <code>dist(x,c)≥d&gt;0</code> and curve length <code>L</code>, direct kernel estimates give</p>
+<div class="math-block">$$|B_c(x)|\le\frac{\mu_0|I|L}{4\pi d^2},\qquad
+\|DB_c(x)\|\le\frac{2\mu_0|I|L}{4\pi d^3}.$$</div>
+<p>The derivative bound uses the operator norm of <code>D(r/|r|³)</code>, whose largest absolute eigenvalue is <code>2/|r|³</code>. Derive higher derivative constants when needed. These are useful for interval quadrature, orbit error, and tolerance propagation.</p>
+<p>Prove the circular-loop field on its axis as a sanity example:</p>
+<div class="math-block">$$B_z(z)=\frac{\mu_0 I R^2}{2(R^2+z^2)^{3/2}}.$$</div>
+<p>Keep direction determined by the actual current orientation.</p>
+<h2 id="finite-conductors-and-plasma-coupling">Finite conductors and plasma coupling</h2>
+<p>A filament field is singular on its source and cannot supply its own peak conductor field or self-force. Introduce a finite conductor <code>Ω_c</code> with vector current density <code>J_cond</code>:</p>
+<div class="math-block">$$B_c(x)=\frac{\mu_0}{4\pi}\int_{\Omega_c}
+\frac{J_{\rm cond}(y)\times(x-y)}{|x-y|^3}\,dy,$$</div>
+<p>under adequate integrability/current closure conditions. Handle points in or near the conductor through the appropriate regularity/PDE theory and quadrature, not by evaluating a singular filament formula there.</p>
+<p>Prove a far-field/finite-width comparison between a specified winding-pack distribution and its centreline approximation, with distance and current-moment bounds. Use the finite-conductor field for critical-current and load certificates.</p>
+<p>At finite plasma pressure the equilibrium field is not merely the vacuum field generated by coils:</p>
+<div class="math-block">$$B_{\rm total}=B_{\rm coils}+B_{\rm plasma}$$</div>
+<p>with interface/boundary conditions and self-consistent plasma currents. A virtual-casing calculation can propose the external field to reproduce a fixed-boundary equilibrium, but needs a sound reconstruction/error theorem before certification.</p>
+<p>For a conductor in an external field the force density is <code>J_cond×B</code>. Include self-consistent finite-width electromagnetic stress/self-force appropriately. Distinguish the magnetic pressure scale <code>B²/(2μ₀)</code> from a universal support-stress formula. The structural model must transmit the actual distributed loads.</p>
+<h2 id="inverse-coil-design">Inverse coil design</h2>
+<p>Use <a href="literature.html#design-algorithms-and-software">SIMSOPT, DESC, REGCOIL, and coil-design papers</a> as candidate generators. Record software version and conventions, particularly field periods, stellarator symmetry, Fourier signs, currents, and units.</p>
+<p>For a winding surface <code>S_w</code> a surface-current potential has the form</p>
+<div class="math-block">$$K=n\times\nabla_s\Phi,$$</div>
+<p>with periodic and prescribed multivalued/circulation components as required by the chosen topology. Prove surface-current conservation and the field representation. Single-valued <code>Φ</code> alone omits possible net current periods.</p>
+<p>The inverse problem may minimize</p>
+<div class="math-block">$$\|B\cdot n_{\rm target}\|^2_{L^2(S_p)}
++\lambda\|K\|^2_{L^2(S_w)}$$</div>
+<p>or optimize explicit curves. The achieved objective is evidence about that objective. It is not by itself a proof of a nearby exact equilibrium, invariant tori, robust confinement, or coil feasibility.</p>
+<p>For practical bounds, prove how a field or normal-field residual in a declared norm controls the next physical quantity. An <code>L²</code> boundary residual does not imply a pointwise residual without extra regularity/inverse estimates.</p>
+<p>For quasisymmetry define the intended residual precisely, including radial weights, angle measure, normalization, and omitted modes. Prove its zero characterization within the chosen function class. Compare near-axis, global-boundary, and simultaneous coil/plasma design formulations without identifying their objectives.</p>
+<h2 id="geometry-and-manufacturing">Geometry and manufacturing</h2>
+<p>Represent each physical coil by its centreline, a material frame, cross-section, casing, insulation, supports, and assembly state. Use an oriented ribbon or winding-pack model for tape; curvature of the centreline alone does not determine hard-way bending or torsional strain.</p>
+<p>Required continuous properties include:</p>
+<div class="table-wrap"><table><thead><tr><th>Constraint</th><th>Mathematical statement</th></tr></thead><tbody><tr><td>Regular coil</td><td>`\</td><td>c'\</td><td>≥v_*&gt;0` and periodic smoothness</td></tr><tr><td>Nonintersecting pack</td><td>Embedded swept solid with positive Jacobian and nonlocal separation</td></tr><tr><td>Curvature/strain</td><td>Pointwise limits everywhere along every turn and across the pack</td></tr><tr><td>Coil–coil clearance</td><td>Separation of physical swept solids including casings/tolerances</td></tr><tr><td>Plasma–coil budget</td><td>Space for vacuum gap, wall, blanket, shielding, supports, and allowable motion</td></tr><tr><td>Ports and divertor access</td><td>Exclusion/clearance constraints for concrete service volumes</td></tr><tr><td>Manufacturable winding</td><td>Material frame and allowed bend/twist/length constraints</td></tr><tr><td>Maintainability</td><td>A continuous collision-free removal/installation path for selected components</td></tr></tbody></table></div>
+<p>Prove continuous bounds via <a href="verified-numerics.html">05</a>. Avoid self-distance checks that reject adjacent points on the same coil simply because parameter values differ.</p>
+<p>The distances <code>0.52 m</code>, <code>0.83 m</code>, and <code>1.4 m</code> in the starting note are not established universal limits. Select a machine/material source and an engineering budget. Scaling a geometry by <code>s</code> scales length and clearances by <code>s</code> and curvature by <code>1/s</code>; required current and component forces have additional scaling laws to derive, so geometric scale invariance does not imply equal feasibility.</p>
+<p>Intentional edge islands can serve an island divertor. Distinguish the confinement core from the exhaust region instead of forbidding every magnetic island. See <a href="literature.html#engineering-materials-and-experiment">W7-X divertor studies</a>.</p>
+<h2 id="robust-design-specifications">Robust design specifications</h2>
+<p>Let <code>a</code> be nominal design coefficients and <code>θ∈U</code> manufacturing/operating variations. Include coil displacements, current calibration, pressure/current-profile changes, thermal expansion, and material degradation.</p>
+<p>Prove field perturbation bounds in the norms needed downstream, for example</p>
+<div class="math-block">$$\|B(a,\theta)-B(a,\theta_0)\|_{C^k(\Omega)}
+\le L_k\|\theta-\theta_0\|,$$</div>
+<p>with a common positive conductor-distance margin. A symmetry-breaking or normal-field scalar objective does not automatically yield this bound.</p>
+<p>Translate downstream margins into tolerance budgets. Clearance margins use finite-solid displacement bounds. Stability margins require form perturbation bounds. Orbit margins require field derivatives and a time-dependent comparison. Magnet margins require field orientation, temperature, and strain.</p>
+<p>Prove robust feasibility for a useful candidate before attempting global optimality. Keep objectives and hard certified constraints separate; a penalty term does not turn a violation into a theorem.</p>
+<h2 id="a-complete-candidate-workflow">A complete candidate workflow</h2>
+<ol>
+<li>Specify the machine class and operating/material envelope.</li>
+<li>Propose an axis/surface/coil/current parameterization from theory.</li>
+<li>Search candidate geometries and choose a useful finite representation.</li>
+<li>Certify embeddings, regularity, swept-solid clearances, and fields.</li>
+<li>Validate a model-consistent equilibrium and its boundary conditions.</li>
+<li>Certify the chosen MHD stability property on its full admissible space.</li>
+<li>Certify particle loss/transport/exhaust quantities at the required level.</li>
+<li>Bound heat, mechanical, magnet, irradiation, and lifetime constraints.</li>
+<li>Propagate common uncertainties and compose the contracts for one candidate.</li>
+<li>Record remaining model-validity evidence and the next physical validation step.</li>
+</ol>
+<p>Separate proofs for different equilibria or operating profiles cannot be combined into one design certificate without a common-witness theorem.</p>
+<h2 id="theorem-backlog">Theorem backlog</h2>
+<div class="table-wrap"><table><thead><tr><th>ID</th><th>Target</th><th>Main dependency</th><th>Progress so far</th></tr></thead><tbody><tr><td>D1</td><td>Biot–Savart algebra, smoothness, and field/derivative bounds</td><td>Integration and source separation</td><td class="progress-cell">Planning only — no Lean code written</td></tr><tr><td>D2</td><td>Circular-loop and orientation sanity cases</td><td>Exact integration</td><td class="progress-cell">Planning only — no Lean code written</td></tr><tr><td>D3</td><td>Continuous curve/surface/solid geometric certificate</td><td>Interval coverage, embedding/reach</td><td class="progress-cell">Planning only — no Lean code written</td></tr><tr><td>D4</td><td>Finite-width-to-filament error and conductor field</td><td>Current distributions and magnetostatics</td><td class="progress-cell">Planning only — no Lean code written</td></tr><tr><td>D5</td><td>Coil perturbation bounds in <code>C^k</code> norms</td><td>D1/D4 and quantified geometric perturbations</td><td class="progress-cell">Planning only — no Lean code written</td></tr><tr><td>D6</td><td>Certified inverse field reconstruction</td><td>Boundary/inverse estimates and regularization</td><td class="progress-cell">Planning only — no Lean code written</td></tr><tr><td>D7</td><td>Free-boundary plasma/coil consistency</td><td><a href="plasma-models-and-equilibrium.html">02</a> and <a href="mhd-stability.html">03</a></td><td class="progress-cell">Planning only — no Lean code written</td></tr><tr><td>D8</td><td>Robust physics–engineering candidate</td><td>All contracts; major development/research</td><td class="progress-cell">Planning only — no Lean code written</td></tr><tr><td>D9</td><td>Removal paths and robust manufacturing margins</td><td>Configuration-space geometry</td><td class="progress-cell">Planning only — no Lean code written</td></tr></tbody></table></div>
+</article>
+  </main><aside class="toc" aria-label="On this page"><div class="nav-kicker">On this page</div><ul><a href="#contents">Contents</a><a href="#filament-fields">Filament fields</a><a href="#finite-conductors-and-plasma-coupling">Finite conductors and plasma coupling</a><a href="#inverse-coil-design">Inverse coil design</a><a href="#geometry-and-manufacturing">Geometry and manufacturing</a><a href="#robust-design-specifications">Robust design specifications</a><a href="#a-complete-candidate-workflow">A complete candidate workflow</a><a href="#theorem-backlog">Theorem backlog</a></ul></aside></div><dialog id="search-dialog" class="search-dialog"><div class="search-box"><input id="search-input" type="search" placeholder="Search the handbook…" aria-label="Search handbook"><div id="search-results" class="search-results"><p>Search topics and task IDs across the handbook.</p></div></div></dialog><footer class="site-footer">PlasmaLean · Plans are not proofs. Every implemented claim must identify its assumptions, declaration, and build result.</footer></body></html>

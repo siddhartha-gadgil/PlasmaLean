@@ -1,0 +1,96 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="Exact inputs, continuous bounds, equilibrium validation, and certificate identity."><title>Verified numerics · PlasmaLean</title><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css"><link rel="stylesheet" href="assets/site.css"><script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script><script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"></script><script defer src="assets/site.js"></script></head><body>
+  <header class="site-header"><div class="header-inner">
+    <a class="brand" href="index.html"><span class="brand-mark">λ</span><span>PlasmaLean<small>Verified stellarator design</small></span></a>
+    <div class="header-links"><a href="index.html">Home</a><a href="handbook.html">Handbook</a><a href="roadmap.html">Roadmap</a><a href="literature.html">Sources</a><a href="#" class="search-link" data-search>Search <span aria-hidden="true">⌘K</span></a><a href="https://github.com/siddhartha-gadgil/PlasmaLean">GitHub ↗</a></div>
+    <button class="menu-toggle" data-menu aria-label="Open handbook navigation" aria-expanded="false">☰</button>
+  </div></header><div class="app-shell"><nav class="side-nav" aria-label="Handbook chapters"><div class="nav-kicker">Explore</div><a href="index.html">Home · illustrated overview</a><a href="handbook.html">Handbook &amp; tasks</a><a href="#" data-search>Search handbook</a><div class="nav-kicker">Foundation</div><a href="domain-library.html"><span class="nav-number">00</span>Library method</a><a href="model-contracts.html"><span class="nav-number">01</span>Model contracts</a><div class="nav-kicker">Physics</div><a href="geometry-and-fields.html"><span class="nav-number">02</span>Geometry & fields</a><a href="plasma-models-and-equilibrium.html"><span class="nav-number">03</span>Models & equilibrium</a><a href="mhd-stability.html"><span class="nav-number">04</span>MHD stability</a><a href="particles-and-transport.html"><span class="nav-number">05</span>Particles & transport</a><div class="nav-kicker">Verification</div><a href="verified-numerics.html" aria-current="page"><span class="nav-number">06</span>Verified numerics</a><div class="nav-kicker">Design</div><a href="coils-and-design.html"><span class="nav-number">07</span>Coils & design</a><a href="materials-and-engineering.html"><span class="nav-number">08</span>Materials & engineering</a><div class="nav-kicker">Program</div><a href="roadmap.html"><span class="nav-number">09</span>Roadmap</a><a href="literature.html"><span class="nav-number">10</span>Literature</a></nav><main class="doc">
+    <section class="doc-hero"><div class="eyebrow">Verification · PlasmaLean handbook</div><h1>Verified numerics and continuous certificates</h1><p>Exact inputs, continuous bounds, equilibrium validation, and certificate identity.</p><div class="hero-meta"><span>Lean 4.34.1</span><span>Mathlib 4.34.1</span><span>9 tracked tasks</span></div></section>
+    <div class="progress-banner"><span class="progress-dot"></span><div><strong>Current implementation status</strong>Planning only — no Lean code written. The material below is a specification and roadmap, not a report of compiled declarations or completed certificates.</div></div>
+    <p class="overview-return"><a href="index.html#theory">← Illustrated introduction: Theory engine &amp; graphics</a></p><article class="prose"><p>External computation proposes candidates. A small proved checker and analytic soundness theorems turn selected candidates into mathematical evidence. This is a development specification, not an assertion that these checkers already exist.</p>
+<h2 id="contents">Contents</h2>
+<ul>
+<li><a href="#exact-inputs-and-interval-arithmetic">Exact inputs and interval arithmetic</a></li>
+<li><a href="#continuous-geometry-and-quadrature">Continuous geometry and quadrature</a></li>
+<li><a href="#finite-dimensional-certificates">Finite-dimensional certificates</a></li>
+<li><a href="#continuum-equilibrium-validation">Continuum equilibrium validation</a></li>
+<li><a href="#continuum-stability-validation">Continuum stability validation</a></li>
+<li><a href="#kam-and-orbit-certificates">KAM and orbit certificates</a></li>
+<li><a href="#uncertainty-and-certificate-identity">Uncertainty and certificate identity</a></li>
+<li><a href="#theorem-backlog">Theorem backlog</a></li>
+</ul>
+<h2 id="exact-inputs-and-interval-arithmetic">Exact inputs and interval arithmetic</h2>
+<p>Use rational/dyadic endpoints and a semantic predicate <code>x ∈ [l,u]</code> with <code>l≤u</code>. Prove soundness of arithmetic, comparison, powers, roots, and transcendental enclosures. Exclude zero for reciprocals. Rational arithmetic avoids floating-rounding trust initially; faster arithmetic requires its own soundness bridge.</p>
+<p>Decode a decimal token as the exact rational it denotes, or as an uncertainty interval if it represents a measurement/rounded quantity. A float converted to a real without a declared interpretation does not identify a physical coefficient.</p>
+<p>For a checker <code>check</code> prove</p>
+<div class="math-block">$$\operatorname{check}(c)=\mathrm{true}
+\quad\Longrightarrow\quad
+\operatorname{Claim}(\operatorname{decode}(c)).$$</div>
+<p>Keep all semantics, domain coverage, and remainder obligations in this theorem. Treat results returned by Python, CUDA, SMT, an optimizer, or an external interval package as certificate data rather than assertions accepted by Lean.</p>
+<p>Inspect axioms and execution trust of certificate entry points. Prefer proof-producing arithmetic and a kernel-checked soundness theorem. <a href="literature.html#validated-computation-and-analysis">Rump</a> is the general validated-computation reference.</p>
+<h2 id="continuous-geometry-and-quadrature">Continuous geometry and quadrature</h2>
+<p>For a Fourier curve <code>c(t)</code>, bound <code>c,c',c''</code> on every parameter box. Prove regularity <code>|c'|≥v_*&gt;0</code> and use</p>
+<div class="math-block">$$\kappa(t)=\frac{|c'(t)\times c''(t)|}{|c'(t)|^3}.$$</div>
+<p>For disjoint coils/surfaces, cover the entire product parameter domain and bound squared distances. For self-clearance, distinguish neighboring parameters from genuinely separate curve segments and use a tubular-radius/reach argument where necessary.</p>
+<p>A simple between-sample lemma is already useful: if <code>c₁,c₂</code> have derivative bounds <code>L₁,L₂</code>, their parameter grids have fill distances <code>h₁,h₂</code>, and every grid-pair distance is at least <code>d₀</code>, then</p>
+<div class="math-block">$$|c_1(t)-c_2(s)|\ge d_0-L_1h_1-L_2h_2.$$</div>
+<p>Prove grid coverage and the mean-value bounds. The same idea certifies a scalar inequality from sampled values plus a Lipschitz bound. Sampling without those ingredients is not a proof.</p>
+<p>For integrals use interval quadrature with explicit remainder, or analytic bounds on Fourier tails. For <code>‖f‖_ν=Σ_k|f_k|ν^{|k|}</code> with <code>ν&gt;1</code>,</p>
+<div class="math-block">$$\sum_{|k|&gt;N}|f_k|\le\nu^{-N}\|f\|_\nu.$$</div>
+<p>Derivatives require weighted factors <code>|k|^j</code> and generally a narrower analyticity strip/weight. Prove convolution-algebra and derivative-loss estimates before using them in a PDE proof. A finite Fourier polynomial has no unknown coefficient tail, but the exact equilibrium validated near it generally does.</p>
+<p>For Biot–Savart, prove a positive distance to conductor sources before using integrand derivative and quadrature bounds.</p>
+<h2 id="finite-dimensional-certificates">Finite-dimensional certificates</h2>
+<p>For a symmetric exact matrix <code>A</code>, validate an exact factorization</p>
+<div class="math-block">$$A=LDL^\mathsf T,\qquad D_{ii}&gt;0,$$</div>
+<p>with diagonal <code>D</code> and invertible <code>L</code>. This proves positive definiteness. For a claimed quantitative margin use a factorization of <code>A-cM</code>, where <code>M</code> is the positive inertia/Gram matrix.</p>
+<p>If a numerical matrix approximates an exact matrix, prove the enclosure or form error and subtract it from the margin. A floating Cholesky success flag is not a certificate.</p>
+<p>For nonlinear finite systems validate a contraction/Newton/Krawczyk-style inclusion with its precise existence and uniqueness theorem. Handle gauge and phase symmetries so that the intended Jacobian/inverse is nonsingular. A root of projected equations is only a projected solution until the continuum/tail conditions are supplied.</p>
+<h2 id="continuum-equilibrium-validation">Continuum equilibrium validation</h2>
+<p>Let <code>X</code> be a complete Banach space, <code>F:X→X</code> the gauge-fixed continuum equation, <code>x̂</code> a candidate, and <code>A</code> a bounded linear approximate inverse. Require <code>F</code> to be continuously Fréchet differentiable on an open neighborhood of the closed ball used below, so its derivative bound yields a Lipschitz bound along segments. Put</p>
+<div class="math-block">$$T(x)=x-AF(x).$$</div>
+<p>On the closed radius-<code>r</code> ball around <code>x̂</code>, prove:</p>
+<div class="math-block">$$\|T(\hat x)-\hat x\|\le Y,\qquad
+\sup\|DT(x)\|\le Z(r)&lt;1,\qquad
+Y+Z(r)r\le r.$$</div>
+<p>Then <code>T</code> has a unique fixed point in that ball. To conclude <code>F(x)=0</code>, additionally prove <code>AF(x)=0 ⇒ F(x)=0</code>, for example by injectivity of <code>A</code>. Uniqueness is in the certified ball and gauge; it is not global uniqueness of equilibria.</p>
+<p>With <code>Z(r)=Z₀+Z₂r</code>, an admissible <code>r&gt;0</code> satisfying</p>
+<div class="math-block">$$p(r)=Y+(Z_0-1)r+Z_2r^2&lt;0$$</div>
+<p>implies the required strict inequalities when the bounds are nonnegative and the map/domain hypotheses hold. One needs a negative value at a positive radius, not a “negative root.”</p>
+<p>Include:</p>
+<ul>
+<li>finite modes and analytic infinite-tail bounds;</li>
+<li>boundary/interface residuals;</li>
+<li>flux/current/profile constraints;</li>
+<li>coordinate Jacobian and embedding control throughout the ball;</li>
+<li>regularity sufficient to interpret the resulting solution;</li>
+<li>approximate-inverse and derivative estimates in the actual norm.</li>
+</ul>
+<p>The equilibrium operator may have derivative loss, small divisors, or lack a bounded inverse in the chosen space. In that case an elementary radii-polynomial argument may be unavailable. Explore an appropriate a posteriori KAM/Nash–Moser theorem, a weaker equilibrium class, or a restricted model; do not invent invertibility.</p>
+<p><a href="literature.html#validated-computation-and-analysis">Nakao–Plum–Watanabe</a> and <a href="literature.html#validated-computation-and-analysis">Lessard's tutorial</a> are entry points for validation methods. Transferring their machinery to full three-dimensional MHD is a research task.</p>
+<h2 id="continuum-stability-validation">Continuum stability validation</h2>
+<p>First validate an actual equilibrium <code>e</code> or carry the difference from a valid reference explicitly. Take a Hilbert energy space <code>V</code> and a proved orthogonal decomposition <code>V=V_N⊕V_tail</code>, so <code>‖u+v‖²_V=‖u‖²_V+‖v‖²_V</code>. Suppose the symmetric form satisfies</p>
+<div class="math-block">$$q(u+v)=q_N(u)+2b(u,v)+q_{\rm tail}(v),$$</div>
+<div class="math-block">$$q_N(u)\ge a\|u\|^2,\quad
+q_{\rm tail}(v)\ge b_*\|v\|^2,\quad
+|b(u,v)|\le\gamma\|u\|\|v\|.$$</div>
+<p>If <code>a&gt;0</code>, <code>b_*&gt;0</code>, <code>γ≥0</code>, and <code>γ²&lt;a b_*</code>, then <code>q(ξ)≥c‖ξ‖²_V</code>. One explicit margin is</p>
+<div class="math-block">$$c=\frac{a+b_*-\sqrt{(a-b_*)^2+4\gamma^2}}2&gt;0.$$</div>
+<p>For another decomposition/norm, prove <code>‖u+v‖_V≤C_d√(‖u‖²+‖v‖²)</code> and use margin <code>c/C_d²</code>. With ambient norms and only the triangle inequality, <code>C_d=√2</code> gives <code>c/2</code>. Convert the margin to the advertised norm before subtracting form errors.</p>
+<p>A rational checker can avoid the square root by accepting a proposed <code>c&gt;0</code> when <code>a-c≥0</code>, <code>b_*-c≥0</code>, and <code>γ²≤(a-c)(b_*-c)</code>. For an exact orthogonal two-block sanity example, <code>a=5</code>, <code>b_*=2</code>, <code>γ=2</code> and <code>c=1</code> satisfy these inequalities, and</p>
+<div class="math-block">$$5x^2-4xy+2y^2=x^2+y^2+(2x-y)^2\ge x^2+y^2.$$</div>
+<p>This is finite block algebra; it supplies no missing MHD tail estimate.</p>
+<p>This elementary block lemma is an early reusable theorem. For MHD, proving the tail bound in the correct space is the difficult part; ideal MHD is not a uniformly elliptic operator with an automatic increasing high-frequency spectrum.</p>
+<p>Subtract rigorous form errors for coefficient enclosure, quadrature, geometry, and approximate-equilibrium replacement. If</p>
+<div class="math-block">$$|q_e(\xi)-q_{\hat e}(\xi)|\le\varepsilon_{\rm eq}\|\xi\|_V^2,$$</div>
+<p>and every other nonnegative form-error bound is in the same norm, define <code>ε_tot=Σ_j ε_j</code>, including <code>ε_eq</code> once. The full-space bound is <code>q_e(ξ)≥(c_eff-ε_tot)‖ξ‖²_V</code>, with <code>c_eff=c</code> in the orthogonal case or <code>c/C_d²</code> otherwise. Require <code>c_eff&gt;ε_tot</code>; separately exceeding each error is insufficient. Derive the equilibrium estimate from enough derivative/trace control of the validated solution; a small force residual alone is not such control.</p>
+<p>Treat generalized eigenproblems with the actual mass/Gram form. Account for neutral modes and boundary/interface terms. Retain the label “finite-dimensional stability” if any continuum transfer ingredient is missing.</p>
+<h2 id="kam-and-orbit-certificates">KAM and orbit certificates</h2>
+<p>For a selected KAM theorem, prove regularity, symplectic/flux-preserving structure, nondegeneracy, residual bounds, and the infinite Diophantine condition. An interval containing an unknown frequency does not certify that every value in it is Diophantine. Use the theorem's frequency/parameter setup correctly.</p>
+<p>For finite-time trajectories, enclose the full initial set and every time segment, bound the vector field/Jacobian on the enclosure, and prove the integration remainder and boundary separation. Distinguish numerical integrator error from guiding-centre/full-orbit model error.</p>
+<h2 id="uncertainty-and-certificate-identity">Uncertainty and certificate identity</h2>
+<p>A design certificate must identify geometry, coefficient serialization, species/profiles, material data version, field conventions, source commit, and checker version. A cryptographic hash can identify bytes but is not itself the theorem linking bytes to semantics; prove/use a well-defined decoder and attach the decoded value to the property.</p>
+<p>Define the uncertainty set <code>U</code>, including correlations. For boxes, prove a finite box cover and each bound on the full box. An uncertainty parameter may change the equilibrium witness; use a validated branch or a parameter-wise existence theorem.</p>
+<p>Monte Carlo confidence intervals require explicit probabilistic/statistical hypotheses and coverage theorems. They are not deterministic enclosures. Physical data intervals remain supplied assumptions unless their derivation is itself formalized.</p>
+<h2 id="theorem-backlog">Theorem backlog</h2>
+<div class="table-wrap"><table><thead><tr><th>ID</th><th>Target</th><th>Scope</th><th>Progress so far</th></tr></thead><tbody><tr><td>N1</td><td>Exact rational parser and arithmetic containment</td><td>Small trusted certificate core</td><td class="progress-cell">Planning only — no Lean code written</td></tr><tr><td>N2</td><td>Grid/Lipschitz and Fourier-tail bounds</td><td>Continuous geometric certificates</td><td class="progress-cell">Planning only — no Lean code written</td></tr><tr><td>N3</td><td>Matrix factorization and block positivity</td><td>Finite algebra and reusable form theory</td><td class="progress-cell">Planning only — no Lean code written</td></tr><tr><td>N4</td><td>Generic contraction/radii-polynomial soundness</td><td>Banach spaces, explicit hypotheses</td><td class="progress-cell">Planning only — no Lean code written</td></tr><tr><td>N5</td><td>A validated scalar/ODE/axisymmetric equilibrium</td><td>First continuum examples</td><td class="progress-cell">Planning only — no Lean code written</td></tr><tr><td>N6</td><td>MHD equilibrium/operator tail estimates</td><td>Substantial analysis/research</td><td class="progress-cell">Planning only — no Lean code written</td></tr><tr><td>N7</td><td>All-mode robust energy certificate</td><td>N6 plus <a href="mhd-stability.html">03</a></td><td class="progress-cell">Planning only — no Lean code written</td></tr><tr><td>N8</td><td>Invariant-torus and finite-time orbit certificates</td><td>Source-specific KAM and validated ODEs</td><td class="progress-cell">Planning only — no Lean code written</td></tr><tr><td>N9</td><td>Certificate composition over correlated uncertainty</td><td>Common witnesses, norms, and data</td><td class="progress-cell">Planning only — no Lean code written</td></tr></tbody></table></div>
+</article>
+  </main><aside class="toc" aria-label="On this page"><div class="nav-kicker">On this page</div><ul><a href="#contents">Contents</a><a href="#exact-inputs-and-interval-arithmetic">Exact inputs and interval arithmetic</a><a href="#continuous-geometry-and-quadrature">Continuous geometry and quadrature</a><a href="#finite-dimensional-certificates">Finite-dimensional certificates</a><a href="#continuum-equilibrium-validation">Continuum equilibrium validation</a><a href="#continuum-stability-validation">Continuum stability validation</a><a href="#kam-and-orbit-certificates">KAM and orbit certificates</a><a href="#uncertainty-and-certificate-identity">Uncertainty and certificate identity</a><a href="#theorem-backlog">Theorem backlog</a></ul></aside></div><dialog id="search-dialog" class="search-dialog"><div class="search-box"><input id="search-input" type="search" placeholder="Search the handbook…" aria-label="Search handbook"><div id="search-results" class="search-results"><p>Search topics and task IDs across the handbook.</p></div></div></dialog><footer class="site-footer">PlasmaLean · Plans are not proofs. Every implemented claim must identify its assumptions, declaration, and build result.</footer></body></html>

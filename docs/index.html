@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PlasmaLean: Lean 4 Theoretical Platform for AI Stellarator Design & Plasma Stability</title>
+    <title>PlasmaLean: Lean 4 Theoretical Platform for AI Stellarator Design &amp; Plasma Stability</title>
+    <link rel="stylesheet" href="assets/overview.css">
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Chart.js CDN -->
@@ -127,6 +128,7 @@
 
 <body class="bg-[#f9f8f6] text-slate-800 font-sans antialiased min-h-screen flex flex-col selection:bg-brand-200 selection:text-brand-900">
 
+    <nav class="handbook-bar" aria-label="PlasmaLean website"><a href="index.html" aria-current="page">λ PlasmaLean · Home</a><a href="handbook.html">Formalization handbook</a><a href="roadmap.html">Roadmap &amp; progress</a><a href="model-contracts.html">Model contracts</a></nav>
     <!-- Header / Global Navigation -->
     <header class="sticky top-0 z-50 bg-[#f9f8f6]/90 backdrop-blur-md border-b border-stone-200">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -191,8 +193,15 @@
     <!-- Main Content Container -->
     <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
 
+        <details class="landing-chapters"><summary>Formalization handbook · all 11 chapters</summary><p>Detailed plans and progress for every workstream.</p><nav aria-label="All handbook chapters"><a href="domain-library.html">Library method</a><a href="model-contracts.html">Model contracts</a><a href="geometry-and-fields.html">Geometry &amp; fields</a><a href="plasma-models-and-equilibrium.html">Models &amp; equilibrium</a><a href="mhd-stability.html">MHD stability</a><a href="particles-and-transport.html">Particles &amp; transport</a><a href="verified-numerics.html">Verified numerics</a><a href="coils-and-design.html">Coils &amp; design</a><a href="materials-and-engineering.html">Materials &amp; engineering</a><a href="roadmap.html">Roadmap</a><a href="literature.html">Literature</a></nav><a href="handbook.html">Handbook overview &amp; task progress →</a></details>
+
         <!-- ================= SECTION 0: BACKGROUND & STELLARATOR CONCEPTS (NEW) ================= -->
         <section id="sec-background" class="tab-content space-y-8">
+            <aside class="chapter-bridge" aria-label="Related handbook chapters">
+                <strong>Why stellarators?</strong>
+                <p><b>Progress so far:</b> Only plans have been made and no Lean code has been written for these tasks. Diagrams, code sketches, and the sandbox illustrate the intended program.</p>
+                <a href="geometry-and-fields.html">Geometry & fields →</a><a href="particles-and-transport.html">Particles & transport →</a>
+            </aside>
             
             <div class="bg-white rounded-2xl p-6 sm:p-8 border border-stone-200 shadow-sm">
                 <div class="max-w-4xl">
@@ -211,7 +220,7 @@
                         Nuclear fusion requires heating hydrogen isotopes (Deuterium & Tritium) to over <strong>100 million degrees Celsius</strong>—far hotter than the core of the Sun. At these extreme temperatures, matter becomes fully ionized plasma. To prevent this ultra-hot plasma from touching solid walls, magnetic fields trap charged particles inside a toroidal "magnetic bottle."
                     </p>
                     <p class="text-stone-600 leading-relaxed text-sm sm:text-base">
-                        A <strong>Stellarator</strong> is an advanced magnetic confinement device that relies entirely on <strong>external 3D modular coils</strong> to twist magnetic field lines. Unlike its counterpart, the Tokamak, a stellarator requires <em>zero internal plasma current</em>, making it inherently immune to violent plasma disruptions and capable of true continuous steady-state operation.
+                        A <strong>stellarator</strong> uses <strong>external three-dimensional coils</strong> to create magnetic-field twist without requiring a large inductive plasma current. This supports the goal of steady-state operation. Finite plasma currents and instability mechanisms remain possible, so confinement, stability, and engineering feasibility each need their own analysis.
                     </p>
                 </div>
             </div>
@@ -237,7 +246,8 @@
                 <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 items-center">
                     <!-- Canvas Visualization Box -->
                     <div class="lg:col-span-2 bg-slate-950 rounded-2xl p-4 shadow-inner relative flex flex-col items-center justify-center border border-slate-800">
-                        <canvas id="stellaratorConceptCanvas" class="w-full h-80 rounded-xl cursor-pointer" width="600" height="340"></canvas>
+                        <canvas id="stellaratorConceptCanvas" class="w-full h-80 rounded-xl cursor-pointer" width="600" height="340" role="img" aria-label="Schematic torus, field lines, and particle motion; no computed equilibrium or orbit solution.">Schematic torus, field lines, and particle motion; no computed equilibrium or orbit solution.</canvas>
+<p class="graphic-caption">Schematic torus, field lines, and particle motion; no computed equilibrium or orbit solution.</p>
                         <div class="absolute bottom-6 left-6 right-6 flex justify-between items-center bg-slate-900/80 backdrop-blur px-3 py-2 rounded-lg text-white text-[11px] font-mono border border-slate-700">
                             <span id="canvas-status-mode" class="text-purple-300 font-bold">Mode: 3D Helical Stellarator Coils</span>
                             <span id="canvas-status-iota" class="text-amber-400">Rotational Transform $\iota \approx 0.85$</span>
@@ -310,18 +320,18 @@
                                 <span class="px-2.5 py-1 text-xs font-bold bg-purple-700 text-white rounded-md">STELLARATOR ARCHITECTURE</span>
                                 <span class="text-xs font-mono text-purple-700 font-bold">3D Non-symmetric</span>
                             </div>
-                            <h3 class="text-base font-bold text-slate-900">Zero Current, Disruption-Free Steady State</h3>
+                            <h3 class="text-base font-bold text-slate-900">External Field Twist & Steady-State Potential</h3>
                             <p class="text-xs text-stone-600 leading-relaxed">
-                                Generates 100% of the confining magnetic field twist using external, complex 3D non-planar modular coils surrounding the vacuum vessel.
+                                Uses external three-dimensional coils to supply field twist; plasma currents can also affect the operating equilibrium.
                             </p>
                             <ul class="space-y-2 text-xs text-stone-700 font-medium">
                                 <li class="flex items-start space-x-2">
                                     <span class="text-emerald-600 font-bold">✓</span>
-                                    <span><strong>Disruption-Free:</strong> Zero driven plasma current means zero current-driven disruptions!</span>
+                                    <span><strong>Reduced reliance on plasma current:</strong> Large inductive current is not required for confinement.</span>
                                 </li>
                                 <li class="flex items-start space-x-2">
                                     <span class="text-emerald-600 font-bold">✓</span>
-                                    <span><strong>True Steady-State:</strong> Operates continuously like a standard baseload power plant.</span>
+                                    <span><strong>Steady-state potential:</strong> Continuous operation also requires heat removal, transport control, and component margins.</span>
                                 </li>
                                 <li class="flex items-start space-x-2">
                                     <span class="text-amber-600 font-bold">⚠️</span>
@@ -388,6 +398,11 @@
 
         <!-- ================= SECTION 1: VISION & ARCHITECTURE ================= -->
         <section id="sec-vision" class="tab-content hidden space-y-8">
+            <aside class="chapter-bridge" aria-label="Related handbook chapters">
+                <strong>From motivation to a library</strong>
+                <p><b>Progress so far:</b> Only plans have been made and no Lean code has been written for these tasks. Diagrams, code sketches, and the sandbox illustrate the intended program.</p>
+                <a href="domain-library.html">Library method →</a><a href="model-contracts.html">Model contracts →</a>
+            </aside>
             
             <div class="bg-white rounded-2xl p-6 sm:p-8 border border-stone-200 shadow-sm">
                 <div class="max-w-4xl">
@@ -558,6 +573,11 @@
 
         <!-- ================= SECTION 2: THE KERNEL ================= -->
         <section id="sec-kernel" class="tab-content hidden space-y-8">
+            <aside class="chapter-bridge" aria-label="Related handbook chapters">
+                <strong>Foundations and precise hypotheses</strong>
+                <p><b>Progress so far:</b> Only plans have been made and no Lean code has been written for these tasks. Diagrams, code sketches, and the sandbox illustrate the intended program.</p>
+                <a href="model-contracts.html">Model contracts →</a><a href="plasma-models-and-equilibrium.html">Models & equilibrium →</a>
+            </aside>
             
             <div class="bg-white rounded-2xl p-6 sm:p-8 border border-stone-200 shadow-sm">
                 <div class="max-w-3xl">
@@ -607,14 +627,14 @@
                         <span class="font-bold block text-amber-900">Direct Deductions Planned for the Kernel:</span>
                         <p class="text-sm font-semibold">$$\mathbf{B} \cdot \nabla p = 0 \quad \text{and} \quad \mathbf{J} \cdot \nabla p = 0$$</p>
                         <p class="leading-relaxed text-amber-800">
-                            Magnetic field lines and current densities are everywhere tangent to scalar pressure isosurfaces $p(\mathbf{x}) = c$. By Poincaré-Hopf theorem, these compact regular surfaces form nested topological tori.
+                            Magnetic field lines and current densities are everywhere tangent to scalar pressure isosurfaces $p(\mathbf{x}) = c$. By Poincaré-Hopf theorem, a connected, compact, boundaryless, orientable regular surface with a nonvanishing tangent field has genus one. A global nested foliation requires additional hypotheses.
                         </p>
                     </div>
 
                     <!-- Code Snippet -->
                     <div>
                         <div class="flex justify-between items-center mb-2">
-                            <span class="text-xs font-semibold uppercase text-stone-500">Lean 4 Definition (`PlasmaLean/Kernel/MHD.lean`)</span>
+                            <span class="text-xs font-semibold uppercase text-stone-500">Illustrative Lean sketch (`PlasmaLean/Kernel/MHD.lean`)</span>
                             <button onclick="toggleCode('lean-mhd')" class="text-xs text-amber-700 hover:text-amber-900 font-medium">Toggle Code</button>
                         </div>
                         <pre id="lean-mhd" class="bg-stone-900 text-stone-100 p-4 rounded-xl text-xs font-mono overflow-x-auto leading-relaxed border border-stone-800"><code>-- PlasmaLean/Kernel/MHD.lean
@@ -678,7 +698,8 @@ theorem field_tangent_to_pressure (eq : MHDEquilibrium Ω) :
                             <span class="text-[10px] text-stone-400">Chart.js Simulation</span>
                         </div>
                         <div class="chart-container">
-                            <canvas id="boozerJacobianChart"></canvas>
+                            <canvas id="boozerJacobianChart" role="img" aria-label="Illustrative supplied-chart Jacobian. Chart existence and regularity are separate theorem targets.">Illustrative supplied-chart Jacobian. Chart existence and regularity are separate theorem targets.</canvas>
+<p class="graphic-caption">Illustrative supplied-chart Jacobian. Chart existence and regularity are separate theorem targets.</p>
                         </div>
                     </div>
 
@@ -721,6 +742,11 @@ theorem field_tangent_to_pressure (eq : MHDEquilibrium Ω) :
 
         <!-- ================= SECTION 3: BOUNDARY & SANITY CHECKS ================= -->
         <section id="sec-sanity" class="tab-content hidden space-y-8">
+            <aside class="chapter-bridge" aria-label="Related handbook chapters">
+                <strong>Limiting cases and sanity checks</strong>
+                <p><b>Progress so far:</b> Only plans have been made and no Lean code has been written for these tasks. Diagrams, code sketches, and the sandbox illustrate the intended program.</p>
+                <a href="model-contracts.html#corrections-to-the-starting-notes">Corrections & scope →</a><a href="geometry-and-fields.html">Geometry & fields →</a>
+            </aside>
             
             <div class="bg-white rounded-2xl p-6 sm:p-8 border border-stone-200 shadow-sm">
                 <div class="max-w-3xl">
@@ -823,11 +849,12 @@ theorem field_tangent_to_pressure (eq : MHDEquilibrium Ω) :
 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
                     <div class="chart-container">
-                        <canvas id="garrenBoozerChart"></canvas>
+                        <canvas id="garrenBoozerChart" role="img" aria-label="Schematic counts, not extracted theorem data. Equation counts alone do not prove impossibility.">Schematic counts, not extracted theorem data. Equation counts alone do not prove impossibility.</canvas>
+<p class="graphic-caption">Schematic counts, not extracted theorem data. Equation counts alone do not prove impossibility.</p>
                     </div>
 
                     <div id="gb-explanation-box" class="bg-stone-50 p-5 rounded-xl border border-stone-200 text-xs leading-relaxed space-y-3">
-                        <div class="font-bold text-indigo-900 text-sm">Theorem Statement (Garren & Boozer 1993):</div>
+                        <div class="font-bold text-indigo-900 text-sm">Schematic near-axis constraint count:</div>
                         <p class="text-stone-700">
                             At order $O(\rho^1)$ and $O(\rho^2)$, the number of shape degrees of freedom matches the MHD force balance and quasisymmetry conditions exactly.
                         </p>
@@ -835,7 +862,7 @@ theorem field_tangent_to_pressure (eq : MHDEquilibrium Ω) :
                             However, at <strong class="text-indigo-900">order $O(\rho^3)$</strong>, 12 independent constraint equations must be satisfied, but only 10 Fourier harmonics remain free. The system is strictly overdetermined by 2 constraints!
                         </p>
                         <div class="p-3 bg-indigo-100/60 rounded-lg text-indigo-950 font-mono">
-                            Lean Proof Result: Exact Global Quasisymmetry $\implies$ Axisymmetry
+                            Illustration only: source-specific compatibility must be proved.
                         </div>
                     </div>
                 </div>
@@ -845,6 +872,11 @@ theorem field_tangent_to_pressure (eq : MHDEquilibrium Ω) :
 
         <!-- ================= SECTION 4: MATHEMATICAL THEORY ENGINE ================= -->
         <section id="sec-theory" class="tab-content hidden space-y-8">
+            <aside class="chapter-bridge" aria-label="Related handbook chapters">
+                <strong>From conceptual plots to theorem targets</strong>
+                <p><b>Progress so far:</b> Only plans have been made and no Lean code has been written for these tasks. Diagrams, code sketches, and the sandbox illustrate the intended program.</p>
+                <a href="mhd-stability.html">MHD stability →</a><a href="verified-numerics.html">Verified numerics →</a>
+            </aside>
             
             <div class="bg-white rounded-2xl p-6 sm:p-8 border border-stone-200 shadow-sm">
                 <div class="max-w-3xl">
@@ -886,7 +918,7 @@ theorem field_tangent_to_pressure (eq : MHDEquilibrium Ω) :
                     <!-- Code Snippet -->
                     <div>
                         <div class="flex justify-between items-center mb-1">
-                            <span class="text-[11px] font-semibold uppercase text-stone-500">Lean 4 Definition (`PlasmaLean/Theory/AsymmetricExistence.lean`)</span>
+                            <span class="text-[11px] font-semibold uppercase text-stone-500">Illustrative Lean sketch (`PlasmaLean/Theory/AsymmetricExistence.lean`)</span>
                             <button onclick="toggleCode('lean-asym')" class="text-xs text-purple-700 hover:text-purple-900 font-medium">Toggle Code</button>
                         </div>
                         <pre id="lean-asym" class="bg-stone-900 text-stone-100 p-3.5 rounded-xl text-xs font-mono overflow-x-auto leading-relaxed border border-stone-800"><code>-- PlasmaLean/Theory/AsymmetricExistence.lean
@@ -930,7 +962,8 @@ theorem asymmetric_stable_equilibrium_exists
                             <span class="text-[10px] text-stone-400">KAM Persistence Curve</span>
                         </div>
                         <div class="chart-container">
-                            <canvas id="kamPersistenceChart"></canvas>
+                            <canvas id="kamPersistenceChart" role="img" aria-label="Synthetic curve for intuition. A quantitative KAM theorem needs explicit hypotheses; no retained-volume bound is certified here.">Synthetic curve for intuition. A quantitative KAM theorem needs explicit hypotheses; no retained-volume bound is certified here.</canvas>
+<p class="graphic-caption">Synthetic curve for intuition. A quantitative KAM theorem needs explicit hypotheses; no retained-volume bound is certified here.</p>
                         </div>
                     </div>
                 </div>
@@ -943,7 +976,7 @@ theorem asymmetric_stable_equilibrium_exists
                     <div>
                         <h3 class="text-xl font-bold text-slate-900">3. Linear MHD Stability Spectrum & Energy Principle ($\delta W > 0$)</h3>
                         <p class="text-sm text-stone-600">
-                            A plasma equilibrium is linearly stable if and only if the self-adjoint energy operator $K$ yields strictly positive quadratic potential energy $\delta W(\mathbf{\xi}, \mathbf{\xi}) > 0$ for all valid displacement fields $\mathbf{\xi} \in H^1(\Omega)$.
+                            An energy principle relates a specified equilibrium and admissible displacement space to a precise stability conclusion. Coercivity can give norm bounds; neutral modes, boundary conditions, and continuous spectrum require separate treatment. The handbook states these obligations explicitly.
                         </p>
                     </div>
                     <span class="text-xs bg-purple-100 text-purple-800 px-3 py-1 rounded-full font-bold">Spectral Analysis</span>
@@ -951,9 +984,9 @@ theorem asymmetric_stable_equilibrium_exists
 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
                     <div class="bg-stone-50 p-4 rounded-xl border border-stone-200 text-xs text-stone-800 space-y-3">
-                        <div class="font-bold text-purple-900 text-sm border-b border-stone-200 pb-2">Bernstein-Frieman-Kruskal-Kulsrud Energy Integral:</div>
+                        <div class="font-bold text-purple-900 text-sm border-b border-stone-200 pb-2">Fixed-boundary energy integral (zero-trace displacements):</div>
                         <div class="text-xs leading-relaxed text-purple-950">
-                            $$\delta W_p = \frac{1}{2} \int_V \left[ \frac{|\mathbf{Q}|^2}{\mu_0} + \frac{\mathbf{J} \cdot \mathbf{B}}{B^2} (\mathbf{Q} \times \mathbf{B}) \cdot \mathbf{\xi} + \gamma p (\nabla \cdot \mathbf{\xi})^2 + (\mathbf{\xi} \cdot \nabla p)(\nabla \cdot \mathbf{\xi}) - 2(\mathbf{\xi} \cdot \nabla p)(\mathbf{\xi} \cdot \mathbf{\kappa}) \right] d^3x$$
+                            $\delta W_p = \frac{1}{2} \int_V \left[ \frac{|\mathbf{Q}|^2}{\mu_0} - \mathbf{\xi}\cdot(\mathbf{J}\times\mathbf{Q}) + \gamma p (\nabla \cdot \mathbf{\xi})^2 + (\mathbf{\xi} \cdot \nabla p)(\nabla \cdot \mathbf{\xi}) \right] d^3x$
                         </div>
                         <div class="pt-2 text-[11px] text-stone-600 border-t border-stone-200">
                             Where $\mathbf{Q} = \nabla \times (\mathbf{\xi} \times \mathbf{B})$ is the perturbed magnetic field and $\mathbf{\kappa} = (\mathbf{b} \cdot \nabla)\mathbf{b}$ is field line curvature.
@@ -961,7 +994,8 @@ theorem asymmetric_stable_equilibrium_exists
                     </div>
 
                     <div class="chart-container">
-                        <canvas id="mhdSpectrumChart"></canvas>
+                        <canvas id="mhdSpectrumChart" role="img" aria-label="Invented mode energies for illustration. Positive values in a finite set of modes do not establish continuum stability.">Invented mode energies for illustration. Positive values in a finite set of modes do not establish continuum stability.</canvas>
+<p class="graphic-caption">Invented mode energies for illustration. Positive values in a finite set of modes do not establish continuum stability.</p>
                     </div>
                 </div>
             </div>
@@ -970,6 +1004,11 @@ theorem asymmetric_stable_equilibrium_exists
 
         <!-- ================= SECTION 5: LITERATURE & REFERENCE SOURCES ================= -->
         <section id="sec-references" class="tab-content hidden space-y-8">
+            <aside class="chapter-bridge" aria-label="Related handbook chapters">
+                <strong>Read and extract the primary sources</strong>
+                <p><b>Progress so far:</b> Only plans have been made and no Lean code has been written for these tasks. Diagrams, code sketches, and the sandbox illustrate the intended program.</p>
+                <a href="literature.html">Literature & source extraction →</a><a href="roadmap.html">Formalization roadmap →</a>
+            </aside>
             
             <div class="bg-white rounded-2xl p-6 sm:p-8 border border-stone-200 shadow-sm">
                 <div class="max-w-3xl">
@@ -1046,6 +1085,11 @@ theorem asymmetric_stable_equilibrium_exists
 
         <!-- ================= SECTION 6: CODING AGENT SPECIFICATION & BLUEPRINT ================= -->
         <section id="sec-agent" class="tab-content hidden space-y-8">
+            <aside class="chapter-bridge" aria-label="Related handbook chapters">
+                <strong>Turn the architecture into tasks</strong>
+                <p><b>Progress so far:</b> Only plans have been made and no Lean code has been written for these tasks. Diagrams, code sketches, and the sandbox illustrate the intended program.</p>
+                <a href="roadmap.html#the-first-coding-sequence">First coding sequence →</a><a href="domain-library.html">Library method →</a>
+            </aside>
             
             <div class="bg-white rounded-2xl p-6 sm:p-8 border border-sky-200 shadow-sm">
                 <div class="max-w-3xl">
@@ -1086,7 +1130,7 @@ name = "PlasmaLean"
 srcDir = "src"
 
 [dependencies]
-mathlib = { git = "https://github.com/leanprover-community/mathlib4.git", rev = "v4.8.0" }</code></pre>
+mathlib = { git = "https://github.com/leanprover-community/mathlib4.git", rev = "v4.34.1" }</code></pre>
 
                     <div class="p-3 bg-sky-50 rounded-xl border border-sky-200 text-xs text-sky-950 space-y-1">
                         <span class="font-bold text-sky-900">Mandatory Mathlib Imports for AI Agents:</span>
@@ -1110,19 +1154,19 @@ mathlib = { git = "https://github.com/leanprover-community/mathlib4.git", rev = 
 
                     <div class="space-y-2 text-xs font-mono">
                         <div class="p-2.5 bg-amber-50 rounded-lg border border-amber-200">
-                            <span class="font-bold text-amber-900">src/PlasmaLean/Kernel/</span>
+                            <span class="font-bold text-amber-900">PlasmaLean/Kernel/</span>
                             <span class="block text-[11px] text-amber-800 font-sans mt-0.5">Axiom-Free Core: `MHD.lean`, `Boozer.lean`, `BiotSavart.lean`. ZERO `axiom` declarations permitted!</span>
                         </div>
                         <div class="p-2.5 bg-indigo-50 rounded-lg border border-indigo-200">
-                            <span class="font-bold text-indigo-900">src/PlasmaLean/Sanity/</span>
+                            <span class="font-bold text-indigo-900">PlasmaLean/Sanity/</span>
                             <span class="block text-[11px] text-indigo-800 font-sans mt-0.5">Planned boundary limits: `GradShafranov.lean`, `VacuumLaplace.lean`, `GarrenBoozer.lean`. Will test Kernel consistency.</span>
                         </div>
                         <div class="p-2.5 bg-purple-50 rounded-lg border border-purple-200">
-                            <span class="font-bold text-purple-900">src/PlasmaLean/Theory/</span>
+                            <span class="font-bold text-purple-900">PlasmaLean/Theory/</span>
                             <span class="block text-[11px] text-purple-800 font-sans mt-0.5">Planned theoretical API: `AsymmetricExistence.lean`, `KAM.lean`, `EnergySpectrum.lean`. Will express precisely scoped stability results.</span>
                         </div>
                         <div class="p-2.5 bg-emerald-50 rounded-lg border border-emerald-200">
-                            <span class="font-bold text-emerald-900">src/PlasmaLean/Bridge/</span>
+                            <span class="font-bold text-emerald-900">PlasmaLean/Bridge/</span>
                             <span class="block text-[11px] text-emerald-800 font-sans mt-0.5">Constructible Realization: `RadiiPolynomials.lean`, `CoilBounds.lean`. Interval-checked hardware parameters.</span>
                         </div>
                     </div>
@@ -1153,7 +1197,7 @@ mathlib = { git = "https://github.com/leanprover-community/mathlib4.git", rev = 
                     <div class="p-4 bg-stone-50 rounded-xl border border-stone-200 space-y-2">
                         <div class="font-bold text-slate-900 text-sm">Rule 3: Zero Unverified Axioms</div>
                         <p class="text-stone-600 leading-relaxed">
-                            Agents must never introduce unverified `axiom` assumptions in `src/PlasmaLean/Kernel/`. All physical hypotheses must be explicit fields inside Lean structures.
+                            Agents must never introduce unverified `axiom` assumptions in `PlasmaLean/Kernel/`. All physical hypotheses must be explicit fields inside Lean structures.
                         </p>
                     </div>
 
@@ -1208,6 +1252,11 @@ mathlib = { git = "https://github.com/leanprover-community/mathlib4.git", rev = 
 
         <!-- ================= SECTION 7: CO-DESIGN & STABILITY STUDIO ================= -->
         <section id="sec-realization" class="tab-content hidden space-y-8">
+            <aside class="chapter-bridge" aria-label="Related handbook chapters">
+                <strong>From demonstration to design contracts</strong>
+                <p><b>Progress so far:</b> Only plans have been made and no Lean code has been written for these tasks. Diagrams, code sketches, and the sandbox illustrate the intended program.</p>
+                <a href="coils-and-design.html">Coils & design →</a><a href="materials-and-engineering.html">Materials & engineering →</a>
+            </aside>
             
             <div class="bg-white rounded-2xl p-6 sm:p-8 border border-stone-200 shadow-sm">
                 <div class="max-w-3xl">
@@ -1242,7 +1291,7 @@ mathlib = { git = "https://github.com/leanprover-community/mathlib4.git", rev = 
                             <thead>
                                 <tr class="bg-stone-100 text-stone-700 border-b border-stone-200">
                                     <th class="p-2.5 font-bold">Physical Metric</th>
-                                    <th class="p-2.5 font-bold">Minimum Bound</th>
+                                    <th class="p-2.5 font-bold">Illustrative Bound</th>
                                     <th class="p-2.5 font-bold">Engineering Justification</th>
                                 </tr>
                             </thead>
@@ -1250,17 +1299,17 @@ mathlib = { git = "https://github.com/leanprover-community/mathlib4.git", rev = 
                                 <tr>
                                     <td class="p-2.5 font-semibold text-slate-900">Coil Bend Radius ($\rho_{min}$)</td>
                                     <td class="p-2.5 text-emerald-800 font-bold">&gt; 0.52 m</td>
-                                    <td class="p-2.5 text-stone-500">Prevents strain degradation in superconducting tape</td>
+                                    <td class="p-2.5 text-stone-500">Example only; allowable strain requires sourced conductor data</td>
                                 </tr>
                                 <tr>
                                     <td class="p-2.5 font-semibold text-slate-900">Coil Clearance ($d_{c-c}$)</td>
                                     <td class="p-2.5 text-emerald-800 font-bold">&gt; 0.83 m</td>
-                                    <td class="p-2.5 text-stone-500">Allows structural support casing & assembly access</td>
+                                    <td class="p-2.5 text-stone-500">Example space budget; confirm for the selected device</td>
                                 </tr>
                                 <tr>
                                     <td class="p-2.5 font-semibold text-slate-900">Plasma-Coil Gap ($d_{p-c}$)</td>
                                     <td class="p-2.5 text-emerald-800 font-bold">&gt; 1.40 m</td>
-                                    <td class="p-2.5 text-stone-500">Houses tritium breeding blanket & radiation shield</td>
+                                    <td class="p-2.5 text-stone-500">Example space budget; shielding needs its own model</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -1346,7 +1395,7 @@ mathlib = { git = "https://github.com/leanprover-community/mathlib4.git", rev = 
                         </div>
 
                         <button onclick="runAuditAgent()" class="w-full py-3 px-4 rounded-xl bg-purple-800 hover:bg-purple-900 text-white font-bold text-xs transition-all shadow-md flex items-center justify-center space-x-2">
-                            <span>⚡ Run Lean 4 Verification Audit</span>
+                            <span>⚡ Preview illustrative audit</span>
                         </button>
                     </div>
 
@@ -1356,7 +1405,7 @@ mathlib = { git = "https://github.com/leanprover-community/mathlib4.git", rev = 
                             <div class="flex items-center justify-between border-b border-stone-200 pb-2">
                                 <h4 class="text-sm font-bold text-slate-900">Illustrative Future Certificate Output</h4>
                                 <span id="audit-badge" class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-stone-200 text-stone-700">
-                                    Awaiting Execution
+                                    Demo ready
                                 </span>
                             </div>
 
@@ -1382,7 +1431,7 @@ mathlib = { git = "https://github.com/leanprover-community/mathlib4.git", rev = 
                             <!-- Lean Proof Stream -->
                             <div class="space-y-1">
                                 <span class="text-[11px] font-semibold text-stone-600 uppercase tracking-wider block">Simulated Future Lean 4 Proof Log:</span>
-                                <pre id="audit-log" class="bg-stone-900 text-stone-200 p-3.5 rounded-xl text-xs font-mono h-44 overflow-y-auto leading-relaxed border border-stone-800"><code>-- Click "Run Lean 4 Verification Audit" to test geometry...
+                                <pre id="audit-log" class="bg-stone-900 text-stone-200 p-3.5 rounded-xl text-xs font-mono h-44 overflow-y-auto leading-relaxed border border-stone-800"><code>-- Click "Preview illustrative audit" to test geometry...
 -- Parameters: Aspect=6.5, Rotational Transform=0.85, Shaping=0.18
 -- Field Coils/Period=10, Plasma Beta=3.2%</code></pre>
                             </div>
@@ -1436,7 +1485,12 @@ mathlib = { git = "https://github.com/leanprover-community/mathlib4.git", rev = 
         let conceptAnimFrame = null;
 
         // --- Navigation Logic ---
-        function switchTab(tabId) {
+        function switchTab(tabId, updateHash = true) {
+            if (!document.getElementById('sec-' + tabId)) tabId = 'background';
+            if (updateHash && location.hash !== '#' + tabId) history.pushState(null, '', '#' + tabId);
+            document.querySelectorAll('.nav-btn').forEach(button => {
+                button.setAttribute('aria-pressed', String(button.id === 'tab-' + tabId));
+            });
             document.querySelectorAll('.tab-content').forEach(sec => sec.classList.add('hidden'));
             const activeSec = document.getElementById('sec-' + tabId);
             if (activeSec) activeSec.classList.remove('hidden');
@@ -1478,12 +1532,17 @@ mathlib = { git = "https://github.com/leanprover-community/mathlib4.git", rev = 
             document.getElementById(codeId).classList.toggle('hidden');
         }
 
+        window.addEventListener('popstate', () => switchTab(location.hash.slice(1), false));
+        window.addEventListener('hashchange', () => switchTab(location.hash.slice(1), false));
         document.addEventListener("DOMContentLoaded", () => {
             initConceptCanvas();
-            initBoozerChart();
-            initGarrenBoozerChart();
-            initKAMChart();
-            initMHDSpectrumChart();
+            if (typeof Chart !== 'undefined') {
+                initBoozerChart();
+                initGarrenBoozerChart();
+                initKAMChart();
+                initMHDSpectrumChart();
+            }
+            switchTab(location.hash.slice(1) || 'background', false);
             generateAgentPrompt();
             updateStudioSim();
             renderMath();
@@ -1503,9 +1562,9 @@ mathlib = { git = "https://github.com/leanprover-community/mathlib4.git", rev = 
                 btnTok.className = "px-3 py-1.5 rounded-lg text-xs font-bold bg-stone-100 text-stone-700 hover:bg-stone-200 transition-all border border-stone-300";
                 statusMode.innerText = "Mode: 3D Helical Stellarator Coils";
                 statusMode.className = "text-purple-300 font-bold";
-                statusIota.innerText = "Rotational Transform ι ≈ 0.85 (Zero Plasma Current)";
+                statusIota.innerText = "Rotational Transform ι ≈ 0.85 (External Coil Twist)";
 
-                infoCard.innerHTML = `
+                infoCard.innerHTML = String.raw`
                     <div class="font-bold text-sm text-purple-900 flex items-center space-x-2">
                         <span>🌀 Stellarator Concept (External 3D Field):</span>
                     </div>
@@ -1513,7 +1572,7 @@ mathlib = { git = "https://github.com/leanprover-community/mathlib4.git", rev = 
                         Modular 3D non-planar coils wrap around the vessel. The twist ($\iota$) is created entirely by external geometry.
                     </p>
                     <p class="text-stone-700">
-                        <strong>Key Advantage:</strong> Operates at true steady state without needing transformer action or driven plasma currents. Disruption risk is eliminated!
+                        <strong>Key Advantage:</strong> Operates at true steady state without needing transformer action or driven plasma currents. Finite currents and instabilities still need to be assessed.
                     </p>
                     <div class="p-3 bg-white/80 rounded-xl border border-purple-200 font-mono text-[11px] text-purple-900 space-y-1">
                         <div class="font-bold">Zero-Current Equilibrium:</div>
@@ -1527,7 +1586,7 @@ mathlib = { git = "https://github.com/leanprover-community/mathlib4.git", rev = 
                 statusMode.className = "text-amber-300 font-bold";
                 statusIota.innerText = "Driven Plasma Current Ip ≈ 15 MA (Pulsed Operation)";
 
-                infoCard.innerHTML = `
+                infoCard.innerHTML = String.raw`
                     <div class="font-bold text-sm text-amber-900 flex items-center space-x-2">
                         <span>⚡ Tokamak Concept (Plasma Current Drive):</span>
                     </div>
@@ -1713,13 +1772,13 @@ mathlib = { git = "https://github.com/leanprover-community/mathlib4.git", rev = 
                 expBox.innerHTML = `
                     <div class="font-bold text-indigo-900 text-sm">Order $O(\\rho^1)$ Analysis:</div>
                     <p class="text-stone-700">At first order in minor radius, Near-Axis Expansion equations determine magnetic axis curvature, torsion, and surface ellipticity.</p>
-                    <div class="p-2.5 bg-indigo-100/60 rounded-lg text-indigo-950 font-mono">4 Constraints = 4 Parameters (Exactly Solvable)</div>
+                    <div class="p-2.5 bg-indigo-100/60 rounded-lg text-indigo-950 font-mono">4 Constraints = 4 Parameters (Illustrative equal counts)</div>
                 `;
             } else if (selectVal === 'rho2') {
                 expBox.innerHTML = `
                     <div class="font-bold text-indigo-900 text-sm">Order $O(\\rho^2)$ Analysis:</div>
                     <p class="text-stone-700">At second order, triangularity and Shafranov position shifts are uniquely set. Available shape degrees of freedom match constraints.</p>
-                    <div class="p-2.5 bg-indigo-100/60 rounded-lg text-indigo-950 font-mono">8 Constraints = 8 Parameters (Exactly Solvable)</div>
+                    <div class="p-2.5 bg-indigo-100/60 rounded-lg text-indigo-950 font-mono">8 Constraints = 8 Parameters (Illustrative equal counts)</div>
                 `;
             } else if (selectVal === 'rho3') {
                 expBox.innerHTML = `
@@ -1729,10 +1788,10 @@ mathlib = { git = "https://github.com/leanprover-community/mathlib4.git", rev = 
                 `;
             } else {
                 expBox.innerHTML = `
-                    <div class="font-bold text-indigo-900 text-sm">Theorem Statement (Garren & Boozer 1993):</div>
+                    <div class="font-bold text-indigo-900 text-sm">Schematic near-axis constraint count:</div>
                     <p class="text-stone-700">At $O(\\rho^1)$ and $O(\\rho^2)$, degrees of freedom match constraint equations exactly.</p>
                     <p class="text-stone-700">However, at <strong class="text-indigo-900">order $O(\\rho^3)$</strong>, 12 constraint equations must be satisfied, but only 10 harmonics remain free!</p>
-                    <div class="p-2.5 bg-indigo-100/60 rounded-lg text-indigo-950 font-mono">Lean Proof Result: Exact Global Quasisymmetry $\\implies$ Axisymmetry</div>
+                    <div class="p-2.5 bg-indigo-100/60 rounded-lg text-indigo-950 font-mono">Illustration only: source-specific compatibility must be proved.</div>
                 `;
             }
             renderMath();
@@ -1780,8 +1839,8 @@ mathlib = { git = "https://github.com/leanprover-community/mathlib4.git", rev = 
                 data: {
                     labels: modeIndices,
                     datasets: [
-                        { label: 'Symmetric Tokamak δW Spectrum', data: symmetricDW, backgroundColor: '#6366f1' },
-                        { label: 'Asymmetric Stellarator δW Spectrum (Provably > 0)', data: asymmetricDW, backgroundColor: '#9333ea' }
+                        { label: 'Illustrative tokamak mode energies', data: symmetricDW, backgroundColor: '#6366f1' },
+                        { label: 'Illustrative stellarator mode energies', data: asymmetricDW, backgroundColor: '#9333ea' }
                     ]
                 },
                 options: {
@@ -1803,32 +1862,32 @@ mathlib = { git = "https://github.com/leanprover-community/mathlib4.git", rev = 
 
             let promptText = `You are an AI formalization and plasma stability theory agent working on the PlasmaLean repository (https://github.com/siddhartha-gadgil/PlasmaLean).\n\n`;
             promptText += `### REPOSITORY CONSTRAINTS & CODING RULES:\n`;
-            promptText += `1. Mathlib Compatibility: Use Mathlib4 (v4.8.0).\n`;
+            promptText += `1. Mathlib Compatibility: Use Mathlib4 (v4.34.1).\n`;
             promptText += `2. Repository Context: https://github.com/siddhartha-gadgil/PlasmaLean\n`;
 
             if (target === 'kernel_mhd') {
-                promptText += `3. TARGET FILE: src/PlasmaLean/Kernel/MHD.lean\n`;
+                promptText += `3. TARGET FILE: PlasmaLean/Kernel/MHD.lean\n`;
                 promptText += `4. STRICT KERNEL RULE: DO NOT use the \`axiom\` keyword under any circumstance. All facts must be structures, typeclasses, or proven definitions.\n`;
                 promptText += `5. FORMALIZE:\n`;
                 promptText += `   - \`structure MHDEquilibrium (Ω : SmoothManifold 3)\` containing fields for B, J, p, mu_0, force_balance (J × B = ∇p), solenoidal (∇ · B = 0), and Ampere (∇ × B = mu_0 J).\n`;
                 promptText += `   - Theorem: Prove B · ∇p = 0 directly from force_balance.\n`;
             } else if (target === 'sanity_garren') {
-                promptText += `3. TARGET FILE: src/PlasmaLean/Sanity/GarrenBoozer.lean\n`;
+                promptText += `3. TARGET FILE: PlasmaLean/Sanity/GarrenBoozer.lean\n`;
                 promptText += `4. ROLE: Prove consistency and overdetermination of Near-Axis Expansion at O(ρ³).\n`;
                 promptText += `5. FORMALIZE:\n`;
                 promptText += `   - Near-Axis Fourier mode counting at order O(ρ³).\n`;
-                promptText += `   - Theorem: GarrenBoozerOverdetermined (12 constraints > 10 degrees of freedom).\n`;
+                promptText += `   - Target: extract and prove the source-specific near-axis compatibility conditions; the plotted counts are illustrative.\n`;
             } else if (target === 'theory_asym') {
-                promptText += `3. TARGET FILE: src/PlasmaLean/Theory/AsymmetricExistence.lean\n`;
+                promptText += `3. TARGET FILE: PlasmaLean/Theory/AsymmetricExistence.lean\n`;
                 promptText += `4. THEORETICAL GOAL: Develop Sobolev space stability theory for non-axisymmetric magnetic fields.\n`;
                 promptText += `5. FORMALIZE:\n`;
                 promptText += `   - Theorem: \`asymmetric_stable_equilibrium_exists\` in Sobolev space H²(Ω).\n`;
-                promptText += `   - Prove that non-axisymmetric magnetic fields satisfy δW > 0 under small boundary perturbations.\n`;
+                promptText += `   - State a restricted admissible class and its hypotheses; investigate the existence and stability targets in notes/formalization/08-roadmap.md.\n`;
             } else {
-                promptText += `3. TARGET FILE: src/PlasmaLean/Bridge/RadiiPolynomials.lean\n`;
+                promptText += `3. TARGET FILE: PlasmaLean/Bridge/RadiiPolynomials.lean\n`;
                 promptText += `4. COMPUTER-ASSISTED PROOF: Interval arithmetic & Banach contraction for constructible hardware.\n`;
                 promptText += `5. FORMALIZE:\n`;
-                promptText += `   - Polynomial P(r) = Y + (Z - 1)r + W r² with root bounds.\n`;
+                promptText += `   - Polynomial P(r) = Y + (Z - 1)r + W r²: certify a negative value at an admissible positive radius, with contraction and injectivity hypotheses.\n`;
                 promptText += `   - Theorem: \`banach_fixed_point_radii\` verifying distance to numerical solution.\n`;
             }
 
@@ -1882,7 +1941,7 @@ mathlib = { git = "https://github.com/leanprover-community/mathlib4.git", rev = 
             document.getElementById('res-bnet').innerText = bnet;
 
             document.getElementById('audit-badge').className = 'px-2.5 py-0.5 rounded-full text-xs font-bold bg-amber-100 text-amber-800';
-            document.getElementById('audit-badge').innerText = 'Modified - Requires Audit';
+            document.getElementById('audit-badge').innerText = 'Demo parameters changed';
         }
 
         function runAuditAgent() {
@@ -1919,13 +1978,13 @@ mathlib = { git = "https://github.com/leanprover-community/mathlib4.git", rev = 
                     logBox.innerText += `SIMULATED STATUS: The completed PlasmaLean workflow would report a constructible configuration as mathematically stable only after checking all stated hypotheses.`;
                 } else {
                     badge.className = 'px-2.5 py-0.5 rounded-full text-xs font-bold bg-red-100 text-red-800';
-                    badge.innerText = '✗ Verification Rejected';
+                    badge.innerText = 'Illustrative checks unmet';
 
-                    logBox.innerText += `[4/4] Formal Verification Failed!\n`;
+                    logBox.innerText += `[4/4] Illustrative checks unmet; no Lean verification was run.\n`;
                     logBox.innerText += `--------------------------------------------------\n`;
                     if (!isStable) logBox.innerText += `ERROR: Instability detected! Potential energy spectrum δW ≤ 0.\n`;
                     if (!isGapValid) logBox.innerText += `ERROR: Inter-coil clearance metric d_c-c < 0.83m threshold.\n`;
-                    logBox.innerText += `STATUS: Geometry rejected by PlasmaLean kernel. Adjust parameters and re-audit.`;
+                    logBox.innerText += `DEMO STATUS: Adjust parameters to explore this schematic workflow. No candidate has been verified.`;
                 }
                 logBox.scrollTop = logBox.scrollHeight;
             }, 600);

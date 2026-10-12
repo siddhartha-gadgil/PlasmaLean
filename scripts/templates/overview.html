@@ -1,0 +1,1994 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PlasmaLean: Lean 4 Theoretical Platform for AI Stellarator Design &amp; Plasma Stability</title>
+    <link rel="stylesheet" href="assets/overview.css">
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Chart.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- KaTeX CSS & JS for LaTeX Rendering -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#fdfbf7',
+                            100: '#f7f2ea',
+                            200: '#eee3d2',
+                            300: '#e1cdb2',
+                            400: '#d2b08c',
+                            500: '#c29267',
+                            600: '#b27a51',
+                            700: '#945f41',
+                            800: '#784c39',
+                            900: '#623f31',
+                        },
+                        kernel: {
+                            light: '#fef3c7',
+                            border: '#f59e0b',
+                            text: '#78350f',
+                            accent: '#d97706'
+                        },
+                        sanity: {
+                            light: '#e0e7ff',
+                            border: '#6366f1',
+                            text: '#312e81',
+                            accent: '#4f46e5'
+                        },
+                        theory: {
+                            light: '#f3e8ff',
+                            border: '#a855f7',
+                            text: '#581c87',
+                            accent: '#9333ea'
+                        },
+                        verified: {
+                            light: '#dcfce7',
+                            border: '#22c55e',
+                            text: '#14532d',
+                            accent: '#16a34a'
+                        },
+                        agent: {
+                            light: '#e0f2fe',
+                            border: '#0284c7',
+                            text: '#075985',
+                            accent: '#0369a1'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'Fira Code', 'Menlo', 'Monaco', 'Consolas', 'monospace']
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Embedded CSS for Chart Containers and Layout Constraints */
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 680px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 320px;
+            max-height: 380px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 350px;
+            }
+        }
+        .math-font {
+            font-family: 'Cambria Math', 'Georgia', 'Times New Roman', serif;
+            font-style: italic;
+        }
+        /* Custom Scrollbar for Code Blocks */
+        pre::-webkit-scrollbar {
+            height: 6px;
+            width: 6px;
+        }
+        pre::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 3px;
+        }
+    </style>
+</head>
+<!-- Chosen Palette: Warm Neutral background (#F9F8F6), Slate typography, Amber for Kernel, Indigo for Sanity Checks, Purple for Theoretical Math Engine, Sky Blue for AI Agent Discovery, Emerald for Constructible Realization -->
+<!-- Application Structure Plan:
+     Designed as an interactive AI-driven theoretical discovery and formal verification platform for constructible stellarator design (PlasmaLean: https://github.com/siddhartha-gadgil/PlasmaLean):
+     Primary Goal: Develop new mathematical theory for magnetic geometry and prove plasma stability ($\delta W > 0$), utilizing Lean 4 as an unyielding correctness check while leveraging AI to explore high-dimensional design spaces.
+     1. Background & Fundamentals (NEW): Comprehensive background section explaining magnetic confinement fusion, 3D helical field lines vs tokamaks, quasisymmetry, drift orbits, and why formal verification is critical.
+     2. Platform Vision & Architecture: Explains the core mission—building theory to design stellarators and prove stability, referencing GitHub repo siddhartha-gadgil/PlasmaLean.
+     3. The Core Kernel: Foundational definitions of MHD equilibrium (J x B = grad p, div B = 0), differential 2-forms, Boozer charts, and Biot-Savart magnetodynamics (Zero Axioms).
+     4. Boundary & Sanity Checks: Will validate kernel consistency against known mathematical limits (Grad-Shafranov collapse, vacuum Laplace limit, Garren-Boozer O(rho^3) overdetermination).
+     5. Mathematical Theory Engine: Developing theory for plasma stability (Sobolev space non-axisymmetric existence, KAM surface persistence, Mercier local criteria, and energy spectrum stability bounds).
+     6. Reference Literature & Benchmarks: Separate reference tab cataloging foundational papers (arXiv:2609.26742 & arXiv:2609.24739) as benchmarks and source material rather than the primary goal.
+     7. AI Agent Blueprint & Spec: Guidelines for AI coding agents to actively propose candidate geometries, synthesize Lean 4 proofs, and maintain PlasmaLean library modules.
+     8. Interactive Design & Stability Studio: Parameter search sandbox where users and AI agents co-design stellarator geometries and run automated Lean 4 verification audits.
+-->
+<!-- Visualization & Content Choices:
+     - Interactive Stellarator Field Line & Particle Drift Canvas: Canvas-rendered 2D/3D toroidal geometry visualizer showing rotational transform twist and particle drift orbits.
+     - Tokamak vs Stellarator Dynamic Comparison Matrix: Interactive comparison tool with slider-driven performance trade-offs.
+     - Boozer Coordinate Volume Element: Chart.js plot showing metric non-singularity across poloidal angle theta.
+     - Garren-Boozer Expansion Constraint Chart: Chart.js visualization comparing Fourier degrees of freedom against overdetermined quasisymmetry constraints at O(rho^3).
+     - MHD Stability Spectrum (delta W): Chart.js plot showing energy eigenvalue spectrum for axisymmetric vs asymmetric equilibria.
+     - KAM Surface Persistence: Chart.js curve illustrating flux surface retention vs perturbation magnitude.
+     - Interactive AI Prompt Generator & Co-Design Studio: Sandbox for synthesizing Lean 4 proof scripts and running mathematical audit certificates.
+     - KaTeX Rendering Engine for full LaTeX support.
+     - NO SVG graphics used. NO Mermaid JS used. Canvas (Chart.js & HTML5 Canvas) and structured Tailwind layouts used exclusively.
+-->
+<!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+
+<body class="bg-[#f9f8f6] text-slate-800 font-sans antialiased min-h-screen flex flex-col selection:bg-brand-200 selection:text-brand-900">
+
+    <nav class="handbook-bar" aria-label="PlasmaLean website"><a href="index.html" aria-current="page">λ PlasmaLean · Home</a><a href="handbook.html">Formalization handbook</a><a href="roadmap.html">Roadmap &amp; progress</a><a href="model-contracts.html">Model contracts</a></nav>
+    <!-- Header / Global Navigation -->
+    <header class="sticky top-0 z-50 bg-[#f9f8f6]/90 backdrop-blur-md border-b border-stone-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex items-center space-x-3">
+                    <div class="w-9 h-9 rounded-lg bg-purple-800 text-white flex items-center justify-center font-bold text-lg shadow-sm">
+                        ∀
+                    </div>
+                    <div>
+                        <span class="text-lg font-bold tracking-tight text-slate-900">Plasma<span class="text-purple-700">Lean</span></span>
+                        <span class="hidden sm:inline-block ml-2 px-2.5 py-0.5 text-xs font-semibold bg-purple-100 text-purple-800 rounded-full">AI & Lean 4 Stellarator Engine</span>
+                    </div>
+                </div>
+                
+                <!-- Navigation Tabs & GitHub Link -->
+                <div class="hidden lg:flex items-center space-x-2">
+                    <nav class="flex space-x-1 text-xs font-medium">
+                        <button onclick="switchTab('background')" id="tab-background" class="nav-btn px-2.5 py-1.5 rounded-md text-purple-900 bg-purple-100 hover:bg-purple-200 transition-colors font-bold">Stellarator Concepts</button>
+                        <button onclick="switchTab('vision')" id="tab-vision" class="nav-btn px-2.5 py-1.5 rounded-md text-stone-700 hover:text-stone-900 hover:bg-stone-100 transition-colors">Vision & Architecture</button>
+                        <button onclick="switchTab('kernel')" id="tab-kernel" class="nav-btn px-2.5 py-1.5 rounded-md text-stone-700 hover:text-stone-900 hover:bg-stone-100 transition-colors">The Kernel</button>
+                        <button onclick="switchTab('sanity')" id="tab-sanity" class="nav-btn px-2.5 py-1.5 rounded-md text-stone-700 hover:text-stone-900 hover:bg-stone-100 transition-colors">Boundary Checks</button>
+                        <button onclick="switchTab('theory')" id="tab-theory" class="nav-btn px-2.5 py-1.5 rounded-md text-stone-700 hover:text-stone-900 hover:bg-stone-100 transition-colors">Theory Engine</button>
+                        <button onclick="switchTab('references')" id="tab-references" class="nav-btn px-2.5 py-1.5 rounded-md text-stone-700 hover:text-stone-900 hover:bg-stone-100 transition-colors">Literature & Sources</button>
+                        <button onclick="switchTab('agent')" id="tab-agent" class="nav-btn px-2.5 py-1.5 rounded-md text-sky-800 bg-sky-50 border border-sky-200 hover:bg-sky-100 transition-colors font-bold">AI Agent Blueprint</button>
+                        <button onclick="switchTab('realization')" id="tab-realization" class="nav-btn px-3 py-1.5 rounded-md bg-purple-700 text-white hover:bg-purple-800 transition-colors shadow-sm font-semibold">Co-Design Studio</button>
+                    </nav>
+
+                    <a href="https://github.com/siddhartha-gadgil/PlasmaLean" target="_blank" rel="noopener noreferrer" class="ml-2 inline-flex items-center space-x-1.5 px-3 py-1.5 rounded-md bg-slate-900 text-white hover:bg-slate-800 transition-colors text-xs font-medium shadow-sm">
+                        <span>⚙</span>
+                        <span>GitHub Repository</span>
+                    </a>
+                </div>
+
+                <!-- Mobile Navigation Controls -->
+                <div class="lg:hidden flex items-center space-x-2">
+                    <a href="https://github.com/siddhartha-gadgil/PlasmaLean" target="_blank" rel="noopener noreferrer" class="px-2.5 py-1.5 rounded-md bg-slate-900 text-white text-xs font-medium">
+                        GitHub
+                    </a>
+                    <button onclick="toggleMobileMenu()" class="p-2 rounded-md text-stone-600 hover:bg-stone-200 focus:outline-none">
+                        <span class="text-xl">☰</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Menu Dropdown -->
+        <div id="mobile-menu" class="hidden lg:hidden bg-stone-100 border-b border-stone-200 px-4 pt-2 pb-4 space-y-1">
+            <button onclick="switchTab('background'); toggleMobileMenu()" class="block w-full text-left px-3 py-2 rounded-md bg-purple-100 text-purple-900 font-bold">Stellarator Concepts</button>
+            <button onclick="switchTab('vision'); toggleMobileMenu()" class="block w-full text-left px-3 py-2 rounded-md text-stone-800 hover:bg-stone-200">Vision & Architecture</button>
+            <button onclick="switchTab('kernel'); toggleMobileMenu()" class="block w-full text-left px-3 py-2 rounded-md text-stone-800 hover:bg-stone-200">The Kernel</button>
+            <button onclick="switchTab('sanity'); toggleMobileMenu()" class="block w-full text-left px-3 py-2 rounded-md text-stone-800 hover:bg-stone-200">Boundary Checks</button>
+            <button onclick="switchTab('theory'); toggleMobileMenu()" class="block w-full text-left px-3 py-2 rounded-md text-stone-800 hover:bg-stone-200">Theory Engine</button>
+            <button onclick="switchTab('references'); toggleMobileMenu()" class="block w-full text-left px-3 py-2 rounded-md text-stone-800 hover:bg-stone-200">Literature & Sources</button>
+            <button onclick="switchTab('agent'); toggleMobileMenu()" class="block w-full text-left px-3 py-2 rounded-md bg-sky-100 text-sky-900 font-bold">AI Agent Blueprint</button>
+            <button onclick="switchTab('realization'); toggleMobileMenu()" class="block w-full text-left px-3 py-2 rounded-md bg-purple-700 text-white mt-2">Co-Design Studio</button>
+            <a href="https://github.com/siddhartha-gadgil/PlasmaLean" target="_blank" rel="noopener noreferrer" class="block w-full text-center px-3 py-2 rounded-md bg-slate-900 text-white mt-2 font-mono text-xs">
+                siddhartha-gadgil/PlasmaLean ↗
+            </a>
+        </div>
+    </header>
+
+    <!-- Main Content Container -->
+    <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
+
+        <!-- HANDBOOK_CHAPTER_DIRECTORY -->
+
+        <!-- ================= SECTION 0: BACKGROUND & STELLARATOR CONCEPTS (NEW) ================= -->
+        <section id="sec-background" class="tab-content space-y-8">
+            <aside class="chapter-bridge" aria-label="Related handbook chapters">
+                <strong>Why stellarators?</strong>
+                <p><b>Progress so far:</b> Only plans have been made and no Lean code has been written for these tasks. Diagrams, code sketches, and the sandbox illustrate the intended program.</p>
+                <a href="geometry-and-fields.html">Geometry & fields →</a><a href="particles-and-transport.html">Particles & transport →</a>
+            </aside>
+            
+            <div class="bg-white rounded-2xl p-6 sm:p-8 border border-stone-200 shadow-sm">
+                <div class="max-w-4xl">
+                    <div class="flex flex-wrap items-center gap-2 mb-3">
+                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-purple-100 text-purple-800">
+                            Fundamentals & Physics Principles
+                        </span>
+                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-amber-100 text-amber-800">
+                            Magnetic Confinement Fusion
+                        </span>
+                    </div>
+                    <h1 class="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight mb-4 leading-tight">
+                        What is a Stellarator? Physics Concepts, Geometry & Importance
+                    </h1>
+                    <p class="text-stone-600 leading-relaxed text-base sm:text-lg mb-4">
+                        Nuclear fusion requires heating hydrogen isotopes (Deuterium & Tritium) to over <strong>100 million degrees Celsius</strong>—far hotter than the core of the Sun. At these extreme temperatures, matter becomes fully ionized plasma. To prevent this ultra-hot plasma from touching solid walls, magnetic fields trap charged particles inside a toroidal "magnetic bottle."
+                    </p>
+                    <p class="text-stone-600 leading-relaxed text-sm sm:text-base">
+                        A <strong>stellarator</strong> uses <strong>external three-dimensional coils</strong> to create magnetic-field twist without requiring a large inductive plasma current. This supports the goal of steady-state operation. Finite plasma currents and instability mechanisms remain possible, so confinement, stability, and engineering feasibility each need their own analysis.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Visual Concept Diagram 1: Interactive Canvas for Magnetic Topology -->
+            <div class="bg-white p-6 sm:p-8 rounded-2xl border border-stone-200 shadow-sm space-y-6">
+                <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-stone-100 pb-4">
+                    <div>
+                        <span class="px-2.5 py-0.5 rounded text-xs font-bold bg-purple-100 text-purple-900">INTERACTIVE DIAGRAM</span>
+                        <h2 class="text-xl font-bold text-slate-900 mt-1">1. Toroidal Geometry & Helical Field Twist ($\iota$)</h2>
+                        <p class="text-xs text-stone-600">Simulates magnetic field lines wrapping around a torus. Toggle between Tokamak (driven current) vs. Stellarator (3D coil twist).</p>
+                    </div>
+                    <div class="flex items-center space-x-2 shrink-0">
+                        <button onclick="setConceptMode('stellarator')" id="btn-mode-stellarator" class="px-3 py-1.5 rounded-lg text-xs font-bold bg-purple-700 text-white transition-all shadow-sm">
+                            🌀 3D Stellarator Coils
+                        </button>
+                        <button onclick="setConceptMode('tokamak')" id="btn-mode-tokamak" class="px-3 py-1.5 rounded-lg text-xs font-bold bg-stone-100 text-stone-700 hover:bg-stone-200 transition-all border border-stone-300">
+                            ⚡ Tokamak Current
+                        </button>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 items-center">
+                    <!-- Canvas Visualization Box -->
+                    <div class="lg:col-span-2 bg-slate-950 rounded-2xl p-4 shadow-inner relative flex flex-col items-center justify-center border border-slate-800">
+                        <canvas id="stellaratorConceptCanvas" class="w-full h-80 rounded-xl cursor-pointer" width="600" height="340" role="img" aria-label="Schematic torus, field lines, and particle motion; no computed equilibrium or orbit solution.">Schematic torus, field lines, and particle motion; no computed equilibrium or orbit solution.</canvas>
+<p class="graphic-caption">Schematic torus, field lines, and particle motion; no computed equilibrium or orbit solution.</p>
+                        <div class="absolute bottom-6 left-6 right-6 flex justify-between items-center bg-slate-900/80 backdrop-blur px-3 py-2 rounded-lg text-white text-[11px] font-mono border border-slate-700">
+                            <span id="canvas-status-mode" class="text-purple-300 font-bold">Mode: 3D Helical Stellarator Coils</span>
+                            <span id="canvas-status-iota" class="text-amber-400">Rotational Transform $\iota \approx 0.85$</span>
+                        </div>
+                    </div>
+
+                    <!-- Explanatory Concepts Box -->
+                    <div id="concept-info-card" class="bg-purple-50/70 p-5 rounded-2xl border border-purple-200 space-y-3 text-xs leading-relaxed text-purple-950">
+                        <div class="font-bold text-sm text-purple-900 flex items-center space-x-2">
+                            <span>🧲 Why Field Line Twist is Essential:</span>
+                        </div>
+                        <p class="text-stone-700">
+                            Simple toroidal magnetic fields cause charged particles to drift vertically due to magnetic field gradients ($\nabla B$) and curvature ($\mathbf{v}_d \propto \mathbf{B} \times \nabla B$). Ions drift up, electrons drift down, creating a huge electric field that blows the plasma apart.
+                        </p>
+                        <p class="text-stone-700">
+                            By twisting magnetic field lines into a <strong>helical trajectory</strong>, a field line spends time on both top and bottom of the torus. This short-circuits the charge separation and confines the plasma!
+                        </p>
+                        <div class="p-3 bg-white/80 rounded-xl border border-purple-200 font-mono text-[11px] text-purple-900 space-y-1">
+                            <div class="font-bold">Rotational Transform Metric:</div>
+                            <div>$$\iota(\psi) = \frac{d\theta}{d\phi} = \text{Poloidal Turns per Toroidal Turn}$$</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Comparison Matrix: Tokamak vs Stellarator -->
+            <div class="bg-white p-6 sm:p-8 rounded-2xl border border-stone-200 shadow-sm space-y-6">
+                <div>
+                    <h2 class="text-xl font-bold text-slate-900 mb-1">2. Tokamaks vs. Stellarators: Key Trade-offs & Physics Architecture</h2>
+                    <p class="text-xs text-stone-600">Why the world is shifting toward stellarators for commercial power generation.</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    
+                    <!-- Tokamak Card -->
+                    <div class="bg-stone-50 p-6 rounded-2xl border border-stone-200 space-y-4 flex flex-col justify-between">
+                        <div class="space-y-3">
+                            <div class="flex justify-between items-center border-b border-stone-200 pb-3">
+                                <span class="px-2.5 py-1 text-xs font-bold bg-amber-100 text-amber-900 rounded-md">TOKAMAK ARCHITECTURE</span>
+                                <span class="text-xs font-mono text-stone-500">2D Axi-symmetric</span>
+                            </div>
+                            <h3 class="text-base font-bold text-slate-900">High Current, High Disruption Risk</h3>
+                            <p class="text-xs text-stone-600 leading-relaxed">
+                                Uses planar toroidal coils combined with a massive central solenoid transformer to induce millions of Amperes of electric current ($I_p$) directly inside the plasma.
+                            </p>
+                            <ul class="space-y-2 text-xs text-stone-700 font-medium">
+                                <li class="flex items-start space-x-2">
+                                    <span class="text-red-500 font-bold">✗</span>
+                                    <span><strong>Major Disruptions:</strong> Sudden instability collapses destroy vacuum chamber walls within milliseconds.</span>
+                                </li>
+                                <li class="flex items-start space-x-2">
+                                    <span class="text-red-500 font-bold">✗</span>
+                                    <span><strong>Pulsed Operation:</strong> Solenoid flux runs out, requiring complex external current drive.</span>
+                                </li>
+                                <li class="flex items-start space-x-2">
+                                    <span class="text-emerald-600 font-bold">✓</span>
+                                    <span><strong>Simple Coils:</strong> Planar circular magnets are much easier to manufacture.</span>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="p-3 bg-stone-200/60 rounded-xl text-[11px] font-mono text-stone-800">
+                            Primary Bottleneck: Disruption avoidance & non-inductive current drive.
+                        </div>
+                    </div>
+
+                    <!-- Stellarator Card -->
+                    <div class="bg-purple-50/50 p-6 rounded-2xl border-2 border-purple-200 space-y-4 flex flex-col justify-between shadow-sm">
+                        <div class="space-y-3">
+                            <div class="flex justify-between items-center border-b border-purple-200 pb-3">
+                                <span class="px-2.5 py-1 text-xs font-bold bg-purple-700 text-white rounded-md">STELLARATOR ARCHITECTURE</span>
+                                <span class="text-xs font-mono text-purple-700 font-bold">3D Non-symmetric</span>
+                            </div>
+                            <h3 class="text-base font-bold text-slate-900">External Field Twist & Steady-State Potential</h3>
+                            <p class="text-xs text-stone-600 leading-relaxed">
+                                Uses external three-dimensional coils to supply field twist; plasma currents can also affect the operating equilibrium.
+                            </p>
+                            <ul class="space-y-2 text-xs text-stone-700 font-medium">
+                                <li class="flex items-start space-x-2">
+                                    <span class="text-emerald-600 font-bold">✓</span>
+                                    <span><strong>Reduced reliance on plasma current:</strong> Large inductive current is not required for confinement.</span>
+                                </li>
+                                <li class="flex items-start space-x-2">
+                                    <span class="text-emerald-600 font-bold">✓</span>
+                                    <span><strong>Steady-state potential:</strong> Continuous operation also requires heat removal, transport control, and component margins.</span>
+                                </li>
+                                <li class="flex items-start space-x-2">
+                                    <span class="text-amber-600 font-bold">⚠️</span>
+                                    <span><strong>Complex Geometry:</strong> Highly complex 3D coils and high neoclassical drift losses unless quasisymmetric.</span>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="p-3 bg-purple-100 rounded-xl text-[11px] font-mono text-purple-900 font-semibold">
+                            Primary Requirement: Mathematical optimization of 3D field geometry (Quasisymmetry).
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Concept Card 3: Why Formal Verification and Math Matter -->
+            <div class="bg-stone-900 text-white rounded-2xl p-6 sm:p-8 shadow-md space-y-6">
+                <div class="max-w-3xl space-y-2">
+                    <span class="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-purple-500/30 text-purple-200 border border-purple-400/30">
+                        The Core Challenge
+                    </span>
+                    <h2 class="text-2xl font-extrabold text-white">Why Formal Verification (Lean 4) & Mathematical Theory are Essential</h2>
+                    <p class="text-xs text-stone-300 leading-relaxed">
+                        Because a stellarator lacks 2D rotational symmetry, particle orbits do not automatically conserve canonical toroidal momentum ($P_\phi$). Unoptimized 3D magnetic fields lead to severe particle drift losses where alpha particles ($\text{He}^{2+}$) escape before heating the plasma!
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-xs">
+                    
+                    <div class="bg-stone-800 p-4 rounded-xl border border-stone-700 space-y-2">
+                        <div class="text-purple-300 font-bold text-sm">1. Quasisymmetry (QS)</div>
+                        <p class="text-stone-300 leading-relaxed">
+                            Ensures magnetic field magnitude $|B(s, \theta, \phi)| = B(s, M\theta - N\phi)$ depends on only a single helicity combination, restoring continuous drift invariants!
+                        </p>
+                    </div>
+
+                    <div class="bg-stone-800 p-4 rounded-xl border border-stone-700 space-y-2">
+                        <div class="text-purple-300 font-bold text-sm">2. High-Dimensional Design Space</div>
+                        <p class="text-stone-300 leading-relaxed">
+                            Stellarator plasma boundaries are defined by dozens of Fourier coefficients ($R_{m,n}, Z_{m,n}$). Finding stable shapes ($\delta W > 0$) requires exploring infinite-dimensional functional spaces.
+                        </p>
+                    </div>
+
+                    <div class="bg-stone-800 p-4 rounded-xl border border-stone-700 space-y-2">
+                        <div class="text-purple-300 font-bold text-sm">3. The PlasmaLean Solution</div>
+                        <p class="text-stone-300 leading-relaxed">
+                            When complete, <strong>PlasmaLean</strong> will provide a formal mathematical foundation in Lean 4 without project-specific axioms. It is intended to enable AI agents to discover candidate geometries and prove precisely stated plasma-stability results with machine-checked certainty.
+                        </p>
+                    </div>
+
+                </div>
+
+                <div class="pt-2 flex flex-col sm:flex-row items-center justify-between gap-4 border-t border-stone-800">
+                    <span class="text-xs text-stone-400 font-mono">
+                        Target Goal: Mathematically proven stable, constructible 3D magnetic bottles.
+                    </span>
+                    <button onclick="switchTab('vision')" class="px-4 py-2 rounded-xl bg-purple-700 hover:bg-purple-600 text-white font-semibold text-xs transition-colors shrink-0">
+                        Explore PlasmaLean Architecture →
+                    </button>
+                </div>
+            </div>
+
+        </section>
+
+        <!-- ================= SECTION 1: VISION & ARCHITECTURE ================= -->
+        <section id="sec-vision" class="tab-content hidden space-y-8">
+            <aside class="chapter-bridge" aria-label="Related handbook chapters">
+                <strong>From motivation to a library</strong>
+                <p><b>Progress so far:</b> Only plans have been made and no Lean code has been written for these tasks. Diagrams, code sketches, and the sandbox illustrate the intended program.</p>
+                <a href="domain-library.html">Library method →</a><a href="model-contracts.html">Model contracts →</a>
+            </aside>
+            
+            <div class="bg-white rounded-2xl p-6 sm:p-8 border border-stone-200 shadow-sm">
+                <div class="max-w-4xl">
+                    <div class="flex flex-wrap items-center gap-2 mb-3">
+                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-purple-100 text-purple-800">
+                            Platform Goal: Mathematical Discovery & Plasma Stability Proofs
+                        </span>
+                        <a href="https://github.com/siddhartha-gadgil/PlasmaLean" target="_blank" rel="noopener noreferrer" class="inline-flex items-center space-x-1 px-2.5 py-0.5 rounded-full text-xs font-mono font-medium bg-slate-100 text-slate-800 border border-slate-300 hover:bg-slate-200">
+                            <span>Repository: siddhartha-gadgil/PlasmaLean</span>
+                            <span>↗</span>
+                        </a>
+                    </div>
+                    <h1 class="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight mb-4 leading-tight">
+                        PlasmaLean: Formalizing Mathematical Theory for Constructible Stellarators
+                    </h1>
+                    <p class="text-stone-600 leading-relaxed text-base sm:text-lg mb-4">
+                        The primary goal of the <strong>PlasmaLean</strong> platform is to <strong>develop new mathematical theory</strong> required to design high-performance, constructible stellarators and prove plasma stability ($\delta W > 0$) within them.
+                    </p>
+                    <p class="text-stone-600 leading-relaxed text-sm sm:text-base">
+                        Hosted at <a href="https://github.com/siddhartha-gadgil/PlasmaLean" target="_blank" rel="noopener noreferrer" class="text-purple-700 font-semibold underline hover:text-purple-900">github.com/siddhartha-gadgil/PlasmaLean</a>, this project aims to build a mathematical kernel in Lean 4 without project-specific axioms. When complete, it will provide machine-checked guarantees for the mathematical claims that have been formalized, enabling AI agents and automated provers to explore high-dimensional magnetic geometries, propose stable equilibria, and synthesize proofs for Lean to check.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Repository Callout Card -->
+            <div class="bg-gradient-to-r from-purple-900 via-slate-900 to-slate-800 text-white p-6 rounded-2xl shadow-md border border-purple-950 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                <div class="space-y-1">
+                    <div class="flex items-center space-x-2">
+                        <span class="text-xs font-mono px-2 py-0.5 rounded bg-purple-500/30 text-purple-200 border border-purple-400/30">Lean 4 Open Source Library</span>
+                        <span class="text-xs text-stone-300 font-mono">github.com/siddhartha-gadgil/PlasmaLean</span>
+                    </div>
+                    <h3 class="text-lg font-bold text-white">Explore & Contribute to the PlasmaLean Codebase</h3>
+                    <p class="text-xs text-stone-300">Will grow to include Lean 4 modules for `PlasmaLean.Kernel`, `PlasmaLean.Sanity`, `PlasmaLean.Theory`, and `PlasmaLean.Bridge`.</p>
+                </div>
+                <a href="https://github.com/siddhartha-gadgil/PlasmaLean" target="_blank" rel="noopener noreferrer" class="px-4 py-2.5 rounded-xl bg-purple-600 hover:bg-purple-500 text-white font-semibold text-xs transition-colors shrink-0 shadow-sm flex items-center space-x-2">
+                    <span>View Repository on GitHub</span>
+                    <span>↗</span>
+                </a>
+            </div>
+
+            <!-- The Core Triad: AI + Lean Kernel + Physical Co-Design -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                
+                <div class="bg-white p-6 rounded-2xl border-2 border-purple-200 hover:border-purple-400 shadow-sm transition-all flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center justify-between mb-3">
+                            <span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-purple-100 text-purple-900">ENGINE 1</span>
+                            <span class="text-xs font-mono text-purple-700 font-semibold">Mathematical Physics</span>
+                        </div>
+                        <h3 class="text-lg font-bold text-slate-900 mb-2">Theoretical Engine</h3>
+                        <p class="text-xs text-stone-600 leading-relaxed mb-4">
+                            Will develop continuous mathematical formulations for non-axisymmetric MHD equilibrium, KAM magnetic surface persistence, and functional analytic energy stability ($\delta W > 0$).
+                        </p>
+                    </div>
+                    <button onclick="switchTab('theory')" class="w-full py-2 px-3 rounded-xl bg-purple-50 text-purple-800 hover:bg-purple-100 font-semibold text-xs transition-colors border border-purple-200 text-center">
+                        Explore Theory Engine →
+                    </button>
+                </div>
+
+                <div class="bg-white p-6 rounded-2xl border-2 border-sky-200 hover:border-sky-400 shadow-sm transition-all flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center justify-between mb-3">
+                            <span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-sky-100 text-sky-900">ENGINE 2</span>
+                            <span class="text-xs font-mono text-sky-700 font-semibold">AI Exploration</span>
+                        </div>
+                        <h3 class="text-lg font-bold text-slate-900 mb-2">AI Discovery & Synthesis</h3>
+                        <p class="text-xs text-stone-600 leading-relaxed mb-4">
+                            Is intended to generate candidate boundary shapes ($R_{m,n}, Z_{m,n}$), search for new Lyapunov functional bounds, and synthesize candidate Lean tactic scripts automatically.
+                        </p>
+                    </div>
+                    <button onclick="switchTab('agent')" class="w-full py-2 px-3 rounded-xl bg-sky-50 text-sky-800 hover:bg-sky-100 font-semibold text-xs transition-colors border border-sky-200 text-center">
+                        AI Agent Blueprint →
+                    </button>
+                </div>
+
+                <div class="bg-white p-6 rounded-2xl border-2 border-amber-200 hover:border-amber-400 shadow-sm transition-all flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center justify-between mb-3">
+                            <span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-amber-100 text-amber-900">ENGINE 3</span>
+                            <span class="text-xs font-mono text-amber-700 font-semibold">Lean 4 Kernel</span>
+                        </div>
+                        <h3 class="text-lg font-bold text-slate-900 mb-2">Machine-Checked Correctness</h3>
+                        <p class="text-xs text-stone-600 leading-relaxed mb-4">
+                            When complete, will avoid ad hoc project axioms and will check each formalized mathematical transformation, from differential geometry to interval-certified coil geometry.
+                        </p>
+                    </div>
+                    <button onclick="switchTab('kernel')" class="w-full py-2 px-3 rounded-xl bg-amber-50 text-amber-800 hover:bg-amber-100 font-semibold text-xs transition-colors border border-amber-200 text-center">
+                        Inspect Lean Kernel →
+                    </button>
+                </div>
+
+            </div>
+
+            <!-- Library Layer Architecture Grid -->
+            <div class="bg-white rounded-2xl p-6 sm:p-8 border border-stone-200 shadow-sm space-y-6">
+                <div>
+                    <h2 class="text-xl font-bold text-slate-900 mb-1">PlasmaLean Library Architecture & Layer Hierarchy</h2>
+                    <p class="text-xs text-stone-600">Designed to decouple immutable physical foundations from creative AI theory generation and hardware bounds.</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-5 gap-4">
+                    
+                    <div class="bg-amber-50/70 p-4 rounded-xl border border-amber-200 text-amber-950 flex flex-col justify-between space-y-2">
+                        <div>
+                            <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-amber-200 text-amber-900">LAYER 1</span>
+                            <h4 class="font-bold text-sm text-amber-900 mt-1">The Kernel</h4>
+                            <p class="text-[11px] text-amber-800 leading-relaxed">Zero-axiom baseline: Ideal MHD force balance, $d\beta=0$, Boozer coordinates, and Biot-Savart integrals.</p>
+                        </div>
+                        <span class="text-[10px] font-mono text-amber-700 font-semibold">PlasmaLean.Kernel</span>
+                    </div>
+
+                    <div class="bg-indigo-50/70 p-4 rounded-xl border border-indigo-200 text-indigo-950 flex flex-col justify-between space-y-2">
+                        <div>
+                            <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-indigo-200 text-indigo-900">LAYER 2</span>
+                            <h4 class="font-bold text-sm text-indigo-900 mt-1">Boundary Checks</h4>
+                            <p class="text-[11px] text-indigo-800 leading-relaxed">Planned proofs include the 2D Grad-Shafranov limit, vacuum Laplace fields, and source-specific Garren-Boozer $O(\rho^3)$ compatibility results.</p>
+                        </div>
+                        <span class="text-[10px] font-mono text-indigo-700 font-semibold">PlasmaLean.Sanity</span>
+                    </div>
+
+                    <div class="bg-purple-50/70 p-4 rounded-xl border border-purple-200 text-purple-950 flex flex-col justify-between space-y-2">
+                        <div>
+                            <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-purple-200 text-purple-900">LAYER 3</span>
+                            <h4 class="font-bold text-sm text-purple-900 mt-1">Theory Engine</h4>
+                            <p class="text-[11px] text-purple-800 leading-relaxed">Functional analysis for non-axisymmetric existence, KAM surface persistence, and $\delta W > 0$ stability spectrum.</p>
+                        </div>
+                        <span class="text-[10px] font-mono text-purple-700 font-semibold">PlasmaLean.Theory</span>
+                    </div>
+
+                    <div class="bg-sky-50/70 p-4 rounded-xl border border-sky-200 text-sky-950 flex flex-col justify-between space-y-2">
+                        <div>
+                            <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-sky-200 text-sky-900">LAYER 4</span>
+                            <h4 class="font-bold text-sm text-sky-900 mt-1">AI Spec & Agents</h4>
+                            <p class="text-[11px] text-sky-800 leading-relaxed">Automated proof synthesis: Lakefile configs, Mathlib imports, tactic strategies (`aesop`, `calc`), prompt templates.</p>
+                        </div>
+                        <span class="text-[10px] font-mono text-sky-700 font-semibold">PlasmaLean.Agent</span>
+                    </div>
+
+                    <div class="bg-emerald-50/70 p-4 rounded-xl border border-emerald-200 text-emerald-950 flex flex-col justify-between space-y-2">
+                        <div>
+                            <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-200 text-emerald-900">LAYER 5</span>
+                            <h4 class="font-bold text-sm text-emerald-900 mt-1">Co-Design Studio</h4>
+                            <p class="text-[11px] text-emerald-800 leading-relaxed">Will connect theoretical stability to hardware constraints such as coil bend radii, clearances, and interval-checked radii polynomials.</p>
+                        </div>
+                        <span class="text-[10px] font-mono text-emerald-700 font-semibold">PlasmaLean.Bridge</span>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Role of Reference Papers Banner -->
+            <div class="bg-stone-900 text-white rounded-2xl p-6 sm:p-8 shadow-md flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+                <div class="space-y-2 max-w-3xl">
+                    <span class="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-purple-500/20 text-purple-300 border border-purple-500/30">
+                        Literature & Source Material
+                    </span>
+                    <h3 class="text-xl font-bold text-white">Referencing Recent Breakthroughs as Benchmark Sources</h3>
+                    <p class="text-xs text-stone-300 leading-relaxed">
+                        Recent milestones (such as <strong class="text-purple-300">arXiv:2609.26742</strong> on asymmetric equilibria and <strong class="text-purple-300">arXiv:2609.24739</strong> on AI geometry exploration) serve as critical <em>reference benchmarks and inspirational sources</em> for building our generalized theoretical library.
+                    </p>
+                </div>
+                <button onclick="switchTab('references')" class="px-4 py-2.5 rounded-xl bg-purple-700 hover:bg-purple-600 text-white font-semibold text-xs transition-colors shrink-0">
+                    View Literature References →
+                </button>
+            </div>
+
+        </section>
+
+        <!-- ================= SECTION 2: THE KERNEL ================= -->
+        <section id="sec-kernel" class="tab-content hidden space-y-8">
+            <aside class="chapter-bridge" aria-label="Related handbook chapters">
+                <strong>Foundations and precise hypotheses</strong>
+                <p><b>Progress so far:</b> Only plans have been made and no Lean code has been written for these tasks. Diagrams, code sketches, and the sandbox illustrate the intended program.</p>
+                <a href="model-contracts.html">Model contracts →</a><a href="plasma-models-and-equilibrium.html">Models & equilibrium →</a>
+            </aside>
+            
+            <div class="bg-white rounded-2xl p-6 sm:p-8 border border-stone-200 shadow-sm">
+                <div class="max-w-3xl">
+                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-amber-100 text-amber-800 mb-2">
+                        Kernel Layer Specifications
+                    </span>
+                    <h2 class="text-3xl font-extrabold text-slate-900 tracking-tight mb-3">
+                        The Kernel: Axiom-Free Foundations of MHD Physics
+                    </h2>
+                    <p class="text-stone-600 leading-relaxed text-sm sm:text-base">
+                        The planned Kernel will provide a minimal foundation for plasma domain modeling in Lean 4 (`PlasmaLean.Kernel`). It will introduce <strong>no ad hoc project axioms</strong>; mathematical entities will be represented by definitions, smooth structures, and explicit law-bearing structures grounded in Mathlib.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Equations & Formal Lean Mapping Grid -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                
+                <!-- Ideal MHD & Differential Forms -->
+                <div class="bg-white p-6 rounded-2xl border border-stone-200 shadow-sm space-y-6">
+                    <div class="flex items-center justify-between border-b border-stone-100 pb-4">
+                        <h3 class="text-lg font-bold text-slate-900">1. Ideal MHD System & 2-Forms</h3>
+                        <span class="px-2.5 py-1 text-xs font-mono bg-amber-50 text-amber-700 border border-amber-200 rounded-md">Kernel Axiom-Free</span>
+                    </div>
+
+                    <p class="text-sm text-stone-600 leading-relaxed">
+                        Models the continuum force balance on a compact 3-manifold $\Omega \subset \mathbb{R}^3$ with boundary $\partial \Omega$. In differential forms, the solenoidal magnetic field is represented as a closed 2-form $d\beta = 0$:
+                    </p>
+
+                    <!-- Math Display Box -->
+                    <div class="bg-stone-50 p-4 rounded-xl border border-stone-200 space-y-3 font-mono text-sm text-stone-800">
+                        <div class="flex justify-between items-center">
+                            <span>Force Equilibrium:</span>
+                            <span class="font-bold text-amber-800">$$\mathbf{J} \times \mathbf{B} = \nabla p$$</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span>Solenoidal Field:</span>
+                            <span class="font-bold text-amber-800">$$\nabla \cdot \mathbf{B} = 0 \equiv d\beta = 0$$</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span>Ampère's Law:</span>
+                            <span class="font-bold text-amber-800">$$\nabla \times \mathbf{B} = \mu_0 \mathbf{J}$$</span>
+                        </div>
+                    </div>
+
+                    <div class="p-4 bg-amber-50/60 rounded-xl border border-amber-200 text-xs text-amber-950 space-y-2">
+                        <span class="font-bold block text-amber-900">Direct Deductions Planned for the Kernel:</span>
+                        <p class="text-sm font-semibold">$$\mathbf{B} \cdot \nabla p = 0 \quad \text{and} \quad \mathbf{J} \cdot \nabla p = 0$$</p>
+                        <p class="leading-relaxed text-amber-800">
+                            Magnetic field lines and current densities are everywhere tangent to scalar pressure isosurfaces $p(\mathbf{x}) = c$. By Poincaré-Hopf theorem, a connected, compact, boundaryless, orientable regular surface with a nonvanishing tangent field has genus one. A global nested foliation requires additional hypotheses.
+                        </p>
+                    </div>
+
+                    <!-- Code Snippet -->
+                    <div>
+                        <div class="flex justify-between items-center mb-2">
+                            <span class="text-xs font-semibold uppercase text-stone-500">Illustrative Lean sketch (`PlasmaLean/Kernel/MHD.lean`)</span>
+                            <button onclick="toggleCode('lean-mhd')" class="text-xs text-amber-700 hover:text-amber-900 font-medium">Toggle Code</button>
+                        </div>
+                        <pre id="lean-mhd" class="bg-stone-900 text-stone-100 p-4 rounded-xl text-xs font-mono overflow-x-auto leading-relaxed border border-stone-800"><code>-- PlasmaLean/Kernel/MHD.lean
+import Mathlib.Geometry.Manifold.SmoothManifoldWithCorners
+import Mathlib.Analysis.InnerProductSpace.Basic
+
+structure MHDEquilibrium (Ω : SmoothManifold 3) where
+  B : VectorField Ω
+  J : VectorField Ω
+  p : SmoothFunction Ω
+  mu_0 : ℝ
+  force_balance : J × B = ∇ p
+  solenoidal : ∇ · B = 0
+  ampere : ∇ × B = mu_0 • J
+
+theorem field_tangent_to_pressure (eq : MHDEquilibrium Ω) :
+  (eq.B · ∇ eq.p = 0) ∧ (eq.J · ∇ eq.p = 0) := by
+  -- Proven purely by algebraic linear combinations of force_balance
+  sorry</code></pre>
+                    </div>
+                </div>
+
+                <!-- Boozer Coordinates & Metric Jacobian -->
+                <div class="bg-white p-6 rounded-2xl border border-stone-200 shadow-sm space-y-6">
+                    <div class="flex items-center justify-between border-b border-stone-100 pb-4">
+                        <h3 class="text-lg font-bold text-slate-900">2. Boozer Straight-Field-Line Charts</h3>
+                        <span class="px-2.5 py-1 text-xs font-mono bg-amber-50 text-amber-700 border border-amber-200 rounded-md">Coordinate Metric</span>
+                    </div>
+
+                    <p class="text-sm text-stone-600 leading-relaxed">
+                        On nested magnetic flux surfaces $\psi$, Boozer coordinates $(s, \theta, \phi)$ straighten magnetic field line trajectories. The Kernel is intended to formalize both contravariant and covariant representations:
+                    </p>
+
+                    <!-- Math Display Box -->
+                    <div class="bg-stone-50 p-4 rounded-xl border border-stone-200 space-y-3 font-mono text-sm text-stone-800">
+                        <div>
+                            <div class="text-xs text-stone-500 mb-1">Contravariant Representation:</div>
+                            <div class="text-amber-800 font-bold">$$\mathbf{B} = \nabla\psi \times \nabla\theta + \iota(\psi) \nabla\phi \times \nabla\psi$$</div>
+                        </div>
+                        <div>
+                            <div class="text-xs text-stone-500 mb-1">Covariant Representation:</div>
+                            <div class="text-amber-800 font-bold">$$\mathbf{B} = K \nabla\psi + I(\psi) \nabla\theta + G(\psi) \nabla\phi$$</div>
+                        </div>
+                    </div>
+
+                    <!-- Metric Jacobian Box -->
+                    <div class="p-4 bg-stone-50 rounded-xl border border-stone-200 space-y-2">
+                        <div class="flex justify-between items-center text-xs font-semibold text-stone-700">
+                            <span>Boozer Metric Volume Jacobian:</span>
+                            <span class="text-base text-amber-800 font-bold">$$\sqrt{g} = \frac{G + \iota I}{B^2}$$</span>
+                        </div>
+                        <p class="text-xs text-stone-500 leading-relaxed">
+                            Ensures non-singular coordinate transformations provided $B(\mathbf{x}) > 0$ throughout the volume.
+                        </p>
+                    </div>
+
+                    <!-- Interactive Chart Container -->
+                    <div class="border border-stone-200 rounded-xl p-4 bg-white">
+                        <div class="text-xs font-semibold text-stone-700 mb-2 flex justify-between items-center">
+                            <span>Metric Jacobian $\sqrt{g}$ & $|B|$ vs. Poloidal Angle $\theta$</span>
+                            <span class="text-[10px] text-stone-400">Chart.js Simulation</span>
+                        </div>
+                        <div class="chart-container">
+                            <canvas id="boozerJacobianChart" role="img" aria-label="Illustrative supplied-chart Jacobian. Chart existence and regularity are separate theorem targets.">Illustrative supplied-chart Jacobian. Chart existence and regularity are separate theorem targets.</canvas>
+<p class="graphic-caption">Illustrative supplied-chart Jacobian. Chart existence and regularity are separate theorem targets.</p>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- Biot-Savart Coil Integral Section -->
+            <div class="bg-white p-6 sm:p-8 rounded-2xl border border-stone-200 shadow-sm">
+                <div class="max-w-3xl mb-4">
+                    <h3 class="text-xl font-bold text-slate-900 mb-2">3. External Field Generators: Measure-Theoretic Biot-Savart</h3>
+                    <p class="text-sm text-stone-600 leading-relaxed">
+                        To connect continuous plasma manifolds to physical coil design, the Kernel defines current distributions as 1D space curves $C_k$ carrying current $I_k$:
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 items-center">
+                    <div class="md:col-span-1 bg-stone-50 p-4 rounded-xl border border-stone-200 space-y-3 font-mono text-xs">
+                        <div class="text-amber-800 font-bold text-sm mb-1">Parametric Biot-Savart Formula</div>
+                        <div class="text-base text-slate-900">
+                            $$\mathbf{B}_{ext}(\mathbf{r}) = \frac{\mu_0 I}{4\pi} \oint_C \frac{d\mathbf{l} \times (\mathbf{r} - \mathbf{r}')}{|\mathbf{r} - \mathbf{r}'|^3}$$
+                        </div>
+                        <p class="text-stone-500 text-[11px] leading-relaxed">
+                            Formulated in Lean using measure theory integrals over smooth embeddings $\gamma: S^1 \to \mathbb{R}^3$.
+                        </p>
+                    </div>
+
+                    <div class="md:col-span-2 text-sm text-stone-600 space-y-2 leading-relaxed">
+                        <p>
+                            <strong>Planned formalization:</strong> Rather than relying on discrete straight-line approximations, the Kernel will represent the continuous Bochner/Lebesgue integral over suitable one-dimensional smooth embedded manifolds in $\mathbb{R}^3$.
+                        </p>
+                        <p>
+                            <strong>Boundary Field Matching:</strong> This exact continuous definition is later used by the mathematical theory library to evaluate Neumann boundary matching $\mathbf{B}_{ext} \cdot \mathbf{n} = 0$ on plasma surfaces.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+        <!-- ================= SECTION 3: BOUNDARY & SANITY CHECKS ================= -->
+        <section id="sec-sanity" class="tab-content hidden space-y-8">
+            <aside class="chapter-bridge" aria-label="Related handbook chapters">
+                <strong>Limiting cases and sanity checks</strong>
+                <p><b>Progress so far:</b> Only plans have been made and no Lean code has been written for these tasks. Diagrams, code sketches, and the sandbox illustrate the intended program.</p>
+                <a href="model-contracts.html#corrections-to-the-starting-notes">Corrections & scope →</a><a href="geometry-and-fields.html">Geometry & fields →</a>
+            </aside>
+            
+            <div class="bg-white rounded-2xl p-6 sm:p-8 border border-stone-200 shadow-sm">
+                <div class="max-w-3xl">
+                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-indigo-100 text-indigo-800 mb-2">
+                        Kernel Validation & Boundary Limits
+                    </span>
+                    <h2 class="text-3xl font-extrabold text-slate-900 tracking-tight mb-3">
+                        Boundary Checks: Degeneracies & Overdetermination Proofs
+                    </h2>
+                    <p class="text-stone-600 leading-relaxed text-sm sm:text-base">
+                        To test that the Kernel definitions have the intended content and behave correctly in limiting cases, the planned `PlasmaLean.Sanity` suite will formalize selected physical limit theorems, topological obstructions, and symmetry reductions in Lean 4.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Sanity Checks Cards Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                
+                <!-- Check 1: Axisymmetric Tokamak Limit -->
+                <div class="bg-white p-6 rounded-2xl border border-stone-200 shadow-sm flex flex-col justify-between space-y-4">
+                    <div>
+                        <div class="flex items-center justify-between mb-3">
+                            <span class="px-2 py-0.5 rounded text-xs font-bold bg-indigo-100 text-indigo-800">CHECK 1</span>
+                            <span class="text-xs text-stone-400 font-mono">$\partial / \partial \phi = 0$</span>
+                        </div>
+                        <h3 class="text-lg font-bold text-slate-900 mb-2">Grad-Shafranov Collapse</h3>
+                        <p class="text-xs text-stone-600 leading-relaxed mb-4">
+                            Will prove that under suitable exact axisymmetry assumptions ($\partial \mathbf{B} / \partial \phi = 0$), the 3D MHD Kernel equations reduce to the 2D elliptic Grad-Shafranov PDE:
+                        </p>
+                        <div class="bg-stone-50 p-3 rounded-lg border border-stone-200 text-xs text-indigo-900 font-bold">
+                            $$\Delta^* \psi = -\mu_0 R^2 \frac{dp}{d\psi} - F(\psi)\frac{dF}{d\psi}$$
+                        </div>
+                    </div>
+                    <div class="text-xs text-stone-500 bg-indigo-50/50 p-3 rounded-lg border border-indigo-100">
+                        <strong>Planned role:</strong> Check that 3D contravariant metric tensors recover classical 2D tokamak theory under rotational Killing-vector assumptions.
+                    </div>
+                </div>
+
+                <!-- Check 2: Vacuum Magnetic Limit -->
+                <div class="bg-white p-6 rounded-2xl border border-stone-200 shadow-sm flex flex-col justify-between space-y-4">
+                    <div>
+                        <div class="flex items-center justify-between mb-3">
+                            <span class="px-2 py-0.5 rounded text-xs font-bold bg-indigo-100 text-indigo-800">CHECK 2</span>
+                            <span class="text-xs text-stone-400 font-mono">$p=0, \mathbf{J}=0$</span>
+                        </div>
+                        <h3 class="text-lg font-bold text-slate-900 mb-2">Vacuum Laplace Fields</h3>
+                        <p class="text-xs text-stone-600 leading-relaxed mb-4">
+                            Will prove that zero-pressure, current-free plasma regions, with the required domain assumptions, reduce to a scalar magnetic potential $\mathbf{B} = \nabla \phi$ satisfying Laplace's equation:
+                        </p>
+                        <div class="bg-stone-50 p-3 rounded-lg border border-stone-200 text-xs text-indigo-900 font-bold">
+                            $$\nabla^2 \phi = 0 \quad \text{(Harmonic Potential)}$$
+                        </div>
+                    </div>
+                    <div class="text-xs text-stone-500 bg-indigo-50/50 p-3 rounded-lg border border-indigo-100">
+                        <strong>Role in Library:</strong> Confirms that coil-generated external vacuum fields decouple cleanly from internal plasma currents.
+                    </div>
+                </div>
+
+                <!-- Check 3: Garren-Boozer Theorem -->
+                <div class="bg-white p-6 rounded-2xl border border-stone-200 shadow-sm flex flex-col justify-between space-y-4">
+                    <div>
+                        <div class="flex items-center justify-between mb-3">
+                            <span class="px-2 py-0.5 rounded text-xs font-bold bg-indigo-100 text-indigo-800">CHECK 3</span>
+                            <span class="text-xs text-stone-400 font-mono">$O(\rho^3)$ NAE</span>
+                        </div>
+                        <h3 class="text-lg font-bold text-slate-900 mb-2">Garren-Boozer Constraint</h3>
+                        <p class="text-xs text-stone-600 leading-relaxed mb-4">
+                            Will formalize a source-specific near-axis compatibility result concerning quasisymmetry at third order in minor radius $O(\rho^3)$.
+                        </p>
+                        <div class="bg-stone-50 p-3 rounded-lg border border-stone-200 text-xs text-indigo-900 font-bold">
+                            $$12 \text{ Constraints} > 10 \text{ Harmonics}$$
+                        </div>
+                    </div>
+                    <div class="text-xs text-stone-500 bg-indigo-50/50 p-3 rounded-lg border border-indigo-100">
+                        <strong>Planned role:</strong> Make the result's hypotheses and scope explicit and clarify when near-quasisymmetry or quasi-isodynamicity is used instead of exact symmetry.
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Interactive Garren-Boozer Overdetermination Inspector -->
+            <div class="bg-white p-6 sm:p-8 rounded-2xl border border-stone-200 shadow-sm">
+                <div class="flex flex-col md:flex-row md:items-center justify-between mb-6 gap-4">
+                    <div>
+                        <h3 class="text-xl font-bold text-slate-900">Garren-Boozer Order-by-Order Overdetermination Inspector</h3>
+                        <p class="text-sm text-stone-600">
+                            Compare available geometric Fourier shape degrees of freedom vs physical MHD force balance equations across Near-Axis Expansion orders.
+                        </p>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        <span class="text-xs font-medium text-stone-500">Expansion Order:</span>
+                        <select id="gb-order-select" onchange="updateGarrenBoozerChart()" class="bg-stone-100 border border-stone-300 rounded-lg text-xs font-semibold px-3 py-1.5 text-stone-800 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                            <option value="all">View All Expansion Orders ($O(\rho^1)$ to $O(\rho^3)$)</option>
+                            <option value="rho1">Order 1: $O(\rho^1)$ - Axis & Ellipticity</option>
+                            <option value="rho2">Order 2: $O(\rho^2)$ - Triangularity & Shift</option>
+                            <option value="rho3">Order 3: $O(\rho^3)$ - Overdetermined Constraint!</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
+                    <div class="chart-container">
+                        <canvas id="garrenBoozerChart" role="img" aria-label="Schematic counts, not extracted theorem data. Equation counts alone do not prove impossibility.">Schematic counts, not extracted theorem data. Equation counts alone do not prove impossibility.</canvas>
+<p class="graphic-caption">Schematic counts, not extracted theorem data. Equation counts alone do not prove impossibility.</p>
+                    </div>
+
+                    <div id="gb-explanation-box" class="bg-stone-50 p-5 rounded-xl border border-stone-200 text-xs leading-relaxed space-y-3">
+                        <div class="font-bold text-indigo-900 text-sm">Schematic near-axis constraint count:</div>
+                        <p class="text-stone-700">
+                            At order $O(\rho^1)$ and $O(\rho^2)$, the number of shape degrees of freedom matches the MHD force balance and quasisymmetry conditions exactly.
+                        </p>
+                        <p class="text-stone-700">
+                            However, at <strong class="text-indigo-900">order $O(\rho^3)$</strong>, 12 independent constraint equations must be satisfied, but only 10 Fourier harmonics remain free. The system is strictly overdetermined by 2 constraints!
+                        </p>
+                        <div class="p-3 bg-indigo-100/60 rounded-lg text-indigo-950 font-mono">
+                            Illustration only: source-specific compatibility must be proved.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+        <!-- ================= SECTION 4: MATHEMATICAL THEORY ENGINE ================= -->
+        <section id="sec-theory" class="tab-content hidden space-y-8">
+            <aside class="chapter-bridge" aria-label="Related handbook chapters">
+                <strong>From conceptual plots to theorem targets</strong>
+                <p><b>Progress so far:</b> Only plans have been made and no Lean code has been written for these tasks. Diagrams, code sketches, and the sandbox illustrate the intended program.</p>
+                <a href="mhd-stability.html">MHD stability →</a><a href="verified-numerics.html">Verified numerics →</a>
+            </aside>
+            
+            <div class="bg-white rounded-2xl p-6 sm:p-8 border border-stone-200 shadow-sm">
+                <div class="max-w-3xl">
+                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-purple-100 text-purple-800 mb-2">
+                        Theory Engine & Stability API
+                    </span>
+                    <h2 class="text-3xl font-extrabold text-slate-900 tracking-tight mb-3">
+                        Mathematical Theory Engine: Asymmetric Solvability & Stability
+                    </h2>
+                    <p class="text-stone-600 leading-relaxed text-sm sm:text-base">
+                        This section outlines planned theoretical tools in mathematical physics (`PlasmaLean.Theory`). Drawing on functional analysis and Sobolev space theory ($H^k(\Omega)$), the completed library will formulate precisely scoped theorems about when 3D MHD models admit <strong>stable non-axisymmetric plasma equilibria</strong> ($\delta W > 0$).
+                    </p>
+                </div>
+            </div>
+
+            <!-- Mathematical Core Theorems Grid -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                
+                <!-- Theorem 1: Non-Axisymmetric Stable Equilibrium Existence -->
+                <div class="bg-white p-6 rounded-2xl border border-stone-200 shadow-sm space-y-5">
+                    <div class="flex items-center justify-between border-b border-stone-100 pb-3">
+                        <h3 class="text-lg font-bold text-slate-900">1. Existence of Asymmetric Stable Equilibria</h3>
+                        <span class="px-2.5 py-1 text-xs font-mono bg-purple-50 text-purple-700 border border-purple-200 rounded-md">Existence Theorem</span>
+                    </div>
+
+                    <p class="text-xs text-stone-600 leading-relaxed">
+                        Will formalize conditions under which continuous spatial symmetry is <em>not</em> required by a specified confinement or stability result. A target theorem concerns smooth equilibria under non-axisymmetric boundary perturbations in appropriate Sobolev spaces:
+                    </p>
+
+                    <div class="bg-stone-50 p-4 rounded-xl border border-stone-200 text-xs text-purple-950 space-y-2">
+                        <div class="font-bold text-sm text-purple-900">
+                            Theorem (Asymmetric Existence): $$\exists \, \mathbf{B} \in H^k(\Omega), \; \nabla \cdot \mathbf{B} = 0 \land \mathbf{J} \times \mathbf{B} = \nabla p$$
+                        </div>
+                        <p class="text-stone-600 text-[11px] leading-relaxed">
+                            The target is to prove, under explicit model and regularity hypotheses, that small non-axisymmetric boundary deformations $\partial \Omega_\epsilon$ admit a non-empty open set of smooth pressure profiles $p(\psi)$ yielding linearly stable, non-symmetric magnetic vector fields.
+                        </p>
+                    </div>
+
+                    <!-- Code Snippet -->
+                    <div>
+                        <div class="flex justify-between items-center mb-1">
+                            <span class="text-[11px] font-semibold uppercase text-stone-500">Illustrative Lean sketch (`PlasmaLean/Theory/AsymmetricExistence.lean`)</span>
+                            <button onclick="toggleCode('lean-asym')" class="text-xs text-purple-700 hover:text-purple-900 font-medium">Toggle Code</button>
+                        </div>
+                        <pre id="lean-asym" class="bg-stone-900 text-stone-100 p-3.5 rounded-xl text-xs font-mono overflow-x-auto leading-relaxed border border-stone-800"><code>-- PlasmaLean/Theory/AsymmetricExistence.lean
+import Mathlib.Analysis.SobolevSpace.Basic
+
+theorem asymmetric_stable_equilibrium_exists
+  (Ω : SmoothBoundary3D) (ε : ℝ) (hε : 0 < ε ∧ ε < ε_crit) :
+  ∃ (B : VectorField Ω) (p : SmoothFunction Ω),
+    MHDEquilibrium Ω B p ∧
+    NonSymmetric B ∧
+    SpectrumPositive (MHDOperator B) := by
+  -- Proof leverages Nash-Moser implicit function theorem
+  sorry</code></pre>
+                    </div>
+                </div>
+
+                <!-- Theorem 2: KAM Flux Surface Persistence -->
+                <div class="bg-white p-6 rounded-2xl border border-stone-200 shadow-sm space-y-5">
+                    <div class="flex items-center justify-between border-b border-stone-100 pb-3">
+                        <h3 class="text-lg font-bold text-slate-900">2. KAM Persistence of Invariant Flux Tori</h3>
+                        <span class="px-2.5 py-1 text-xs font-mono bg-purple-50 text-purple-700 border border-purple-200 rounded-md">KAM Surface Proof</span>
+                    </div>
+
+                    <p class="text-xs text-stone-600 leading-relaxed">
+                        To study barriers to chaotic magnetic-field-line drift, the Theory Engine is intended to formalize relevant Kolmogorov-Arnold-Moser (KAM) results for non-integrable Hamiltonian magnetic vector fields:
+                    </p>
+
+                    <div class="bg-stone-50 p-4 rounded-xl border border-stone-200 text-xs text-purple-950 space-y-2">
+                        <div class="font-bold text-sm text-purple-900">
+                            Diophantine Condition: $$\left|\iota(\psi) - \frac{m}{n}\right| \ge \frac{C}{n^{2+\gamma}}$$
+                        </div>
+                        <p class="text-stone-600 text-[11px] leading-relaxed">
+                            A target theorem will state explicit hypotheses under which individual magnetic flux surfaces with suitable nonresonant rotational transform $\iota(\psi)$ persist under 3D non-axisymmetric perturbations; it will not assume a complete foliation.
+                        </p>
+                    </div>
+
+                    <!-- KAM Surface Chart -->
+                    <div class="border border-stone-200 rounded-xl p-3 bg-white">
+                        <div class="text-xs font-semibold text-stone-700 mb-1 flex justify-between items-center">
+                            <span>Retained Flux Surface Fractional Volume vs. Perturbation $\epsilon$</span>
+                            <span class="text-[10px] text-stone-400">KAM Persistence Curve</span>
+                        </div>
+                        <div class="chart-container">
+                            <canvas id="kamPersistenceChart" role="img" aria-label="Synthetic curve for intuition. A quantitative KAM theorem needs explicit hypotheses; no retained-volume bound is certified here.">Synthetic curve for intuition. A quantitative KAM theorem needs explicit hypotheses; no retained-volume bound is certified here.</canvas>
+<p class="graphic-caption">Synthetic curve for intuition. A quantitative KAM theorem needs explicit hypotheses; no retained-volume bound is certified here.</p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Global Energy Spectrum & Mercier Local Stability Section -->
+            <div class="bg-white p-6 sm:p-8 rounded-2xl border border-stone-200 shadow-sm">
+                <div class="flex flex-col md:flex-row md:items-center justify-between mb-6 gap-4">
+                    <div>
+                        <h3 class="text-xl font-bold text-slate-900">3. Linear MHD Stability Spectrum & Energy Principle ($\delta W > 0$)</h3>
+                        <p class="text-sm text-stone-600">
+                            An energy principle relates a specified equilibrium and admissible displacement space to a precise stability conclusion. Coercivity can give norm bounds; neutral modes, boundary conditions, and continuous spectrum require separate treatment. The handbook states these obligations explicitly.
+                        </p>
+                    </div>
+                    <span class="text-xs bg-purple-100 text-purple-800 px-3 py-1 rounded-full font-bold">Spectral Analysis</span>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
+                    <div class="bg-stone-50 p-4 rounded-xl border border-stone-200 text-xs text-stone-800 space-y-3">
+                        <div class="font-bold text-purple-900 text-sm border-b border-stone-200 pb-2">Fixed-boundary energy integral (zero-trace displacements):</div>
+                        <div class="text-xs leading-relaxed text-purple-950">
+                            $\delta W_p = \frac{1}{2} \int_V \left[ \frac{|\mathbf{Q}|^2}{\mu_0} - \mathbf{\xi}\cdot(\mathbf{J}\times\mathbf{Q}) + \gamma p (\nabla \cdot \mathbf{\xi})^2 + (\mathbf{\xi} \cdot \nabla p)(\nabla \cdot \mathbf{\xi}) \right] d^3x$
+                        </div>
+                        <div class="pt-2 text-[11px] text-stone-600 border-t border-stone-200">
+                            Where $\mathbf{Q} = \nabla \times (\mathbf{\xi} \times \mathbf{B})$ is the perturbed magnetic field and $\mathbf{\kappa} = (\mathbf{b} \cdot \nabla)\mathbf{b}$ is field line curvature.
+                        </div>
+                    </div>
+
+                    <div class="chart-container">
+                        <canvas id="mhdSpectrumChart" role="img" aria-label="Invented mode energies for illustration. Positive values in a finite set of modes do not establish continuum stability.">Invented mode energies for illustration. Positive values in a finite set of modes do not establish continuum stability.</canvas>
+<p class="graphic-caption">Invented mode energies for illustration. Positive values in a finite set of modes do not establish continuum stability.</p>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+        <!-- ================= SECTION 5: LITERATURE & REFERENCE SOURCES ================= -->
+        <section id="sec-references" class="tab-content hidden space-y-8">
+            <aside class="chapter-bridge" aria-label="Related handbook chapters">
+                <strong>Read and extract the primary sources</strong>
+                <p><b>Progress so far:</b> Only plans have been made and no Lean code has been written for these tasks. Diagrams, code sketches, and the sandbox illustrate the intended program.</p>
+                <a href="literature.html">Literature & source extraction →</a><a href="roadmap.html">Formalization roadmap →</a>
+            </aside>
+            
+            <div class="bg-white rounded-2xl p-6 sm:p-8 border border-stone-200 shadow-sm">
+                <div class="max-w-3xl">
+                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-stone-200 text-stone-800 mb-2">
+                        Foundational Literature & Sources
+                    </span>
+                    <h2 class="text-3xl font-extrabold text-slate-900 tracking-tight mb-3">
+                        Reference Literature & Benchmark Sources
+                    </h2>
+                    <p class="text-stone-600 leading-relaxed text-sm sm:text-base">
+                        While our primary goal in <a href="https://github.com/siddhartha-gadgil/PlasmaLean" target="_blank" class="text-purple-700 underline font-semibold">PlasmaLean</a> is developing new mathematical theory and AI-driven stability design tools, key literature papers serve as essential benchmark sources, inspiration, and test cases for our Lean 4 library modules.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Paper Cards Matrix -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                
+                <!-- Reference Paper 1 -->
+                <div class="bg-white p-6 rounded-2xl border border-stone-200 shadow-sm space-y-4 flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center justify-between border-b border-stone-100 pb-3 mb-3">
+                            <span class="px-2.5 py-1 text-xs font-mono bg-stone-100 text-stone-800 border border-stone-300 rounded-md font-bold">arXiv:2609.26742</span>
+                            <span class="text-xs font-bold text-purple-700 bg-purple-50 px-2 py-0.5 rounded">Existence Benchmark</span>
+                        </div>
+                        <h3 class="text-lg font-bold text-slate-900 mb-2">Asymmetric MHD Stable Equilibrium Existence</h3>
+                        <p class="text-xs text-stone-600 leading-relaxed mb-4">
+                            Demonstrates mathematically that 3D plasma governing equations admit non-axisymmetric stable solutions without assuming exact continuous spatial symmetries. We utilize this paper's Sobolev contraction framework as a benchmark for our `PlasmaLean.Theory.AsymmetricExistence` module.
+                        </p>
+                        <div class="bg-stone-50 p-3 rounded-xl border border-stone-200 font-mono text-[11px] text-slate-800 space-y-1">
+                            <div>• Role: Source material for Sobolev contraction operator</div>
+                            <div>• Formal Module: `PlasmaLean.Theory.AsymmetricExistence`</div>
+                            <div>• Key Insight: Small $C^k$ boundary deformations preserve stability</div>
+                        </div>
+                    </div>
+                    <div class="pt-3 border-t border-stone-100 text-[11px] text-stone-500 italic">
+                        Reference Source for Banach fixed-point stability bounds.
+                    </div>
+                </div>
+
+                <!-- Reference Paper 2 -->
+                <div class="bg-white p-6 rounded-2xl border border-stone-200 shadow-sm space-y-4 flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center justify-between border-b border-stone-100 pb-3 mb-3">
+                            <span class="px-2.5 py-1 text-xs font-mono bg-stone-100 text-stone-800 border border-stone-300 rounded-md font-bold">arXiv:2609.24739</span>
+                            <span class="text-xs font-bold text-sky-700 bg-sky-50 px-2 py-0.5 rounded">AI Exploration Benchmark</span>
+                        </div>
+                        <h3 class="text-lg font-bold text-slate-900 mb-2">AI-Guided Conjecture Generation for Plasma Geometry</h3>
+                        <p class="text-xs text-stone-600 leading-relaxed mb-4">
+                            Explores high-dimensional Fourier boundary space ($R_{m,n}, Z_{m,n}$) using neural reasoners to guide symmetry discovery. Used as a benchmark for constructing prompt blueprints for automated Lean 4 coding agents.
+                        </p>
+                        <div class="bg-stone-50 p-3 rounded-xl border border-stone-200 font-mono text-[11px] text-slate-800 space-y-1">
+                            <div>• Role: Inspiration for AI agent prompt engineering</div>
+                            <div>• Formal Module: `PlasmaLean.Agent.PromptSpec`</div>
+                            <div>• Key Insight: Symbolic neural provers reduce tactic search time</div>
+                        </div>
+                    </div>
+                    <div class="pt-3 border-t border-stone-100 text-[11px] text-stone-500 italic">
+                        Reference Source for symbolic search and prompt generation.
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- General Literature Strategy Box -->
+            <div class="bg-stone-900 text-white p-6 sm:p-8 rounded-2xl shadow-md space-y-4">
+                <h3 class="text-xl font-bold text-white">Integrating Literature Sources into PlasmaLean Theory</h3>
+                <p class="text-xs text-stone-300 leading-relaxed max-w-4xl">
+                    The PlasmaLean library is intended to go beyond individual papers by abstracting reusable mathematical structures from plasma-physics literature into Lean 4 definitions and law-bearing structures. When developed, this foundation should help researchers and AI agents derive new theorems for magnetic-field configurations beyond existing publications.
+                </p>
+            </div>
+
+        </section>
+
+        <!-- ================= SECTION 6: CODING AGENT SPECIFICATION & BLUEPRINT ================= -->
+        <section id="sec-agent" class="tab-content hidden space-y-8">
+            <aside class="chapter-bridge" aria-label="Related handbook chapters">
+                <strong>Turn the architecture into tasks</strong>
+                <p><b>Progress so far:</b> Only plans have been made and no Lean code has been written for these tasks. Diagrams, code sketches, and the sandbox illustrate the intended program.</p>
+                <a href="roadmap.html#the-first-coding-sequence">First coding sequence →</a><a href="domain-library.html">Library method →</a>
+            </aside>
+            
+            <div class="bg-white rounded-2xl p-6 sm:p-8 border border-sky-200 shadow-sm">
+                <div class="max-w-3xl">
+                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-sky-100 text-sky-900 mb-2">
+                        AI Agent Implementation Specification
+                    </span>
+                    <h2 class="text-3xl font-extrabold text-slate-900 tracking-tight mb-3">
+                        Lean 4 AI Coding Agent Specification & Prompt Engine
+                    </h2>
+                    <p class="text-stone-600 leading-relaxed text-sm sm:text-base">
+                        To harness the power of AI in discovering new plasma stability theory for <a href="https://github.com/siddhartha-gadgil/PlasmaLean" target="_blank" class="text-sky-700 underline font-semibold">PlasmaLean</a>, this specification provides guidelines, repository layout, Mathlib dependencies, tactic conventions, and structured prompts for autonomous AI coding agents (Cursor, Copilot, local LLMs).
+                    </p>
+                </div>
+            </div>
+
+            <!-- Lake Configuration & Directory Architecture -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                
+                <!-- Lakefile Configuration -->
+                <div class="bg-white p-6 rounded-2xl border border-stone-200 shadow-sm space-y-4">
+                    <div class="flex items-center justify-between border-b border-stone-100 pb-3">
+                        <h3 class="text-lg font-bold text-slate-900">1. Lake Project Setup (`lakefile.toml`)</h3>
+                        <span class="px-2.5 py-1 text-xs font-mono bg-sky-50 text-sky-700 border border-sky-200 rounded-md">PlasmaLean Package</span>
+                    </div>
+
+                    <p class="text-xs text-stone-600 leading-relaxed">
+                        Configure package dependencies ensuring Mathlib differential geometry, Sobolev spaces, and interval arithmetic libraries are linked:
+                    </p>
+
+                    <pre class="bg-stone-900 text-stone-100 p-4 rounded-xl text-xs font-mono overflow-x-auto leading-relaxed border border-stone-800"><code># lakefile.toml
+# Repository: https://github.com/siddhartha-gadgil/PlasmaLean
+name = "PlasmaLean"
+version = "0.1.0"
+defaultTargets = ["PlasmaLean"]
+
+[[lean_lib]]
+name = "PlasmaLean"
+srcDir = "src"
+
+[dependencies]
+mathlib = { git = "https://github.com/leanprover-community/mathlib4.git", rev = "v4.34.1" }</code></pre>
+
+                    <div class="p-3 bg-sky-50 rounded-xl border border-sky-200 text-xs text-sky-950 space-y-1">
+                        <span class="font-bold text-sky-900">Mandatory Mathlib Imports for AI Agents:</span>
+                        <p class="font-mono text-[11px] text-sky-800">• Mathlib.Geometry.Manifold.SmoothManifoldWithCorners</p>
+                        <p class="font-mono text-[11px] text-sky-800">• Mathlib.Analysis.InnerProductSpace.Basic</p>
+                        <p class="font-mono text-[11px] text-sky-800">• Mathlib.Analysis.SobolevSpace.Basic</p>
+                        <p class="font-mono text-[11px] text-sky-800">• Mathlib.Topology.MeasureTheory.Integral.Bochner</p>
+                    </div>
+                </div>
+
+                <!-- Directory Layout & Module Responsibilities -->
+                <div class="bg-white p-6 rounded-2xl border border-stone-200 shadow-sm space-y-4">
+                    <div class="flex items-center justify-between border-b border-stone-100 pb-3">
+                        <h3 class="text-lg font-bold text-slate-900">2. Module Hierarchy & Separation</h3>
+                        <span class="px-2.5 py-1 text-xs font-mono bg-sky-50 text-sky-700 border border-sky-200 rounded-md">File Architecture</span>
+                    </div>
+
+                    <p class="text-xs text-stone-600 leading-relaxed">
+                        Coding agents must strictly maintain file boundaries and public/private API visibility rules across the core library modules:
+                    </p>
+
+                    <div class="space-y-2 text-xs font-mono">
+                        <div class="p-2.5 bg-amber-50 rounded-lg border border-amber-200">
+                            <span class="font-bold text-amber-900">PlasmaLean/Kernel/</span>
+                            <span class="block text-[11px] text-amber-800 font-sans mt-0.5">Axiom-Free Core: `MHD.lean`, `Boozer.lean`, `BiotSavart.lean`. ZERO `axiom` declarations permitted!</span>
+                        </div>
+                        <div class="p-2.5 bg-indigo-50 rounded-lg border border-indigo-200">
+                            <span class="font-bold text-indigo-900">PlasmaLean/Sanity/</span>
+                            <span class="block text-[11px] text-indigo-800 font-sans mt-0.5">Planned boundary limits: `GradShafranov.lean`, `VacuumLaplace.lean`, `GarrenBoozer.lean`. Will test Kernel consistency.</span>
+                        </div>
+                        <div class="p-2.5 bg-purple-50 rounded-lg border border-purple-200">
+                            <span class="font-bold text-purple-900">PlasmaLean/Theory/</span>
+                            <span class="block text-[11px] text-purple-800 font-sans mt-0.5">Planned theoretical API: `AsymmetricExistence.lean`, `KAM.lean`, `EnergySpectrum.lean`. Will express precisely scoped stability results.</span>
+                        </div>
+                        <div class="p-2.5 bg-emerald-50 rounded-lg border border-emerald-200">
+                            <span class="font-bold text-emerald-900">PlasmaLean/Bridge/</span>
+                            <span class="block text-[11px] text-emerald-800 font-sans mt-0.5">Constructible Realization: `RadiiPolynomials.lean`, `CoilBounds.lean`. Interval-checked hardware parameters.</span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Agent Rules & Preferred Tactics Grid -->
+            <div class="bg-white p-6 sm:p-8 rounded-2xl border border-stone-200 shadow-sm space-y-6">
+                <h3 class="text-xl font-bold text-slate-900">3. Coding Rules & Tactic Conventions for AI Agents</h3>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-xs">
+                    
+                    <div class="p-4 bg-stone-50 rounded-xl border border-stone-200 space-y-2">
+                        <div class="font-bold text-slate-900 text-sm">Rule 1: Immediate Mathlib Lemmas</div>
+                        <p class="text-stone-600 leading-relaxed">
+                            Immediately following every `def` or `structure`, the agent MUST formulate and prove characterizing `@[simp]` lemmas so that downstream proof synthesis avoids unfolding raw definitions.
+                        </p>
+                    </div>
+
+                    <div class="p-4 bg-stone-50 rounded-xl border border-stone-200 space-y-2">
+                        <div class="font-bold text-slate-900 text-sm">Rule 2: Preferred Proof Tactics</div>
+                        <p class="text-stone-600 leading-relaxed">
+                            Agents should prioritize robust tactics: `aesop` for structural goals, `calc` blocks for tensor manipulation, `positivity` for norm bounds, and `gcongr` for inequalities.
+                        </p>
+                    </div>
+
+                    <div class="p-4 bg-stone-50 rounded-xl border border-stone-200 space-y-2">
+                        <div class="font-bold text-slate-900 text-sm">Rule 3: Zero Unverified Axioms</div>
+                        <p class="text-stone-600 leading-relaxed">
+                            Agents must never introduce unverified `axiom` assumptions in `PlasmaLean/Kernel/`. All physical hypotheses must be explicit fields inside Lean structures.
+                        </p>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Interactive Agent Prompt Generator Sandbox -->
+            <div class="bg-stone-900 text-white p-6 sm:p-8 rounded-2xl shadow-md space-y-6">
+                <div class="max-w-3xl">
+                    <h3 class="text-xl font-bold text-white mb-2">Interactive AI Agent System Prompt Generator</h3>
+                    <p class="text-xs text-stone-300 leading-relaxed">
+                        Select a target module below to generate a system prompt tailored for LLM coding agents (Cursor, Copilot, Claude) targeting the <strong class="text-purple-300">siddhartha-gadgil/PlasmaLean</strong> repository:
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="space-y-4 md:col-span-1">
+                        <div>
+                            <label class="block text-xs font-semibold uppercase text-stone-400 mb-1">Target Module:</label>
+                            <select id="agent-target-select" onchange="generateAgentPrompt()" class="w-full bg-stone-800 border border-stone-700 text-stone-100 rounded-lg text-xs p-2.5 focus:outline-none focus:ring-2 focus:ring-sky-500 font-mono">
+                                <option value="kernel_mhd">PlasmaLean/Kernel/MHD.lean (Zero Axioms)</option>
+                                <option value="sanity_garren">PlasmaLean/Sanity/GarrenBoozer.lean ($O(\rho^3)$ Reduction)</option>
+                                <option value="theory_asym">PlasmaLean/Theory/AsymmetricExistence.lean (Stability Theory)</option>
+                                <option value="bridge_radii">PlasmaLean/Bridge/RadiiPolynomials.lean (Hardware Bounds)</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-semibold uppercase text-stone-400 mb-1">Agent Capability Level:</label>
+                            <select id="agent-level-select" onchange="generateAgentPrompt()" class="w-full bg-stone-800 border border-stone-700 text-stone-100 rounded-lg text-xs p-2.5 focus:outline-none focus:ring-2 focus:ring-sky-500">
+                                <option value="full">Full Proof Synthesis (Zero Sorrys)</option>
+                                <option value="stub">Theory Skeleton + Sorry Stubs</option>
+                            </select>
+                        </div>
+
+                        <button onclick="copyAgentPrompt()" class="w-full py-2.5 px-4 rounded-xl bg-sky-600 hover:bg-sky-500 text-white font-bold text-xs transition-colors shadow flex items-center justify-center space-x-2">
+                            <span>📋 Copy Agent System Prompt</span>
+                        </button>
+                    </div>
+
+                    <div class="md:col-span-2 space-y-2">
+                        <div class="flex justify-between items-center text-xs text-stone-400">
+                            <span class="font-mono">Generated Agent Instruction Output</span>
+                            <span id="copy-confirm" class="text-emerald-400 hidden">✓ Copied to Clipboard!</span>
+                        </div>
+                        <pre id="agent-prompt-output" class="bg-stone-950 text-stone-200 p-4 rounded-xl text-xs font-mono h-52 overflow-y-auto leading-relaxed border border-stone-800"><code>-- Loading prompt generator...</code></pre>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+        <!-- ================= SECTION 7: CO-DESIGN & STABILITY STUDIO ================= -->
+        <section id="sec-realization" class="tab-content hidden space-y-8">
+            <aside class="chapter-bridge" aria-label="Related handbook chapters">
+                <strong>From demonstration to design contracts</strong>
+                <p><b>Progress so far:</b> Only plans have been made and no Lean code has been written for these tasks. Diagrams, code sketches, and the sandbox illustrate the intended program.</p>
+                <a href="coils-and-design.html">Coils & design →</a><a href="materials-and-engineering.html">Materials & engineering →</a>
+            </aside>
+            
+            <div class="bg-white rounded-2xl p-6 sm:p-8 border border-stone-200 shadow-sm">
+                <div class="max-w-3xl">
+                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-emerald-100 text-emerald-800 mb-2">
+                        Constructible Design & Stability Studio
+                    </span>
+                    <h2 class="text-3xl font-extrabold text-slate-900 tracking-tight mb-3">
+                        Constructible Stellarator Co-Design & Stability Studio
+                    </h2>
+                    <p class="text-stone-600 leading-relaxed text-sm sm:text-base">
+                        The long-term goal is to connect abstract mathematical stability theory ($\delta W > 0$) to constructible hardware. When implemented, the Co-Design Studio will test parameter choices against sourced physical constraints such as coil curvature, inter-coil clearance, and interval-certified numerical bounds in the `PlasmaLean` library.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Hardware Engineering Constraints Grid -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                
+                <!-- Coil Curvature & Physical Clearance API -->
+                <div class="bg-white p-6 rounded-2xl border border-stone-200 shadow-sm space-y-5">
+                    <div class="flex items-center justify-between border-b border-stone-100 pb-3">
+                        <h3 class="text-lg font-bold text-slate-900">1. Physical Constructibility Bounds</h3>
+                        <span class="px-2.5 py-1 text-xs font-mono bg-emerald-50 text-emerald-700 border border-emerald-200 rounded-md">Hardware Bounds</span>
+                    </div>
+
+                    <p class="text-xs text-stone-600 leading-relaxed">
+                        To construct superconducting magnets (e.g. $\text{Nb}_3\text{Sn}$ or HTS tape), space curve geometries must satisfy strict bend radius and clearance thresholds:
+                    </p>
+
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left text-xs font-mono border-collapse">
+                            <thead>
+                                <tr class="bg-stone-100 text-stone-700 border-b border-stone-200">
+                                    <th class="p-2.5 font-bold">Physical Metric</th>
+                                    <th class="p-2.5 font-bold">Illustrative Bound</th>
+                                    <th class="p-2.5 font-bold">Engineering Justification</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-stone-100 text-stone-700">
+                                <tr>
+                                    <td class="p-2.5 font-semibold text-slate-900">Coil Bend Radius ($\rho_{min}$)</td>
+                                    <td class="p-2.5 text-emerald-800 font-bold">&gt; 0.52 m</td>
+                                    <td class="p-2.5 text-stone-500">Example only; allowable strain requires sourced conductor data</td>
+                                </tr>
+                                <tr>
+                                    <td class="p-2.5 font-semibold text-slate-900">Coil Clearance ($d_{c-c}$)</td>
+                                    <td class="p-2.5 text-emerald-800 font-bold">&gt; 0.83 m</td>
+                                    <td class="p-2.5 text-stone-500">Example space budget; confirm for the selected device</td>
+                                </tr>
+                                <tr>
+                                    <td class="p-2.5 font-semibold text-slate-900">Plasma-Coil Gap ($d_{p-c}$)</td>
+                                    <td class="p-2.5 text-emerald-800 font-bold">&gt; 1.40 m</td>
+                                    <td class="p-2.5 text-stone-500">Example space budget; shielding needs its own model</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Rigorous Numerics via Radii Polynomials -->
+                <div class="bg-white p-6 rounded-2xl border border-stone-200 shadow-sm space-y-5">
+                    <div class="flex items-center justify-between border-b border-stone-100 pb-3">
+                        <h3 class="text-lg font-bold text-slate-900">2. Rigorous Numerics: Radii Polynomial Method</h3>
+                        <span class="px-2.5 py-1 text-xs font-mono bg-emerald-50 text-emerald-700 border border-emerald-200 rounded-md">Computer-Assisted Proof</span>
+                    </div>
+
+                    <p class="text-xs text-stone-600 leading-relaxed">
+                        To bridge numerical design solvers (DESC, SIMSOPT, VMEC) with Lean 4 formal proofs, interval arithmetic is combined with Banach contraction operators:
+                    </p>
+
+                    <div class="bg-emerald-50/60 p-4 rounded-xl border border-emerald-200 space-y-2 text-xs">
+                        <div class="font-bold text-emerald-950">Banach Space Fixed-Point Radii Certificate:</div>
+                        <p class="text-stone-700 leading-relaxed">
+                            The planned certificate will let Lean verify that, when the radii-polynomial hypotheses hold, an exact mathematical solution exists within distance $r_{min}$ of the numerical result $\bar{x}$.
+                        </p>
+                        <div class="font-mono text-[11px] text-emerald-950 bg-white/80 p-2 rounded border border-emerald-200">
+                            Illustrative target bound: $\|x_{exact} - x_{numerical}\| \le r_{min} = 3.42 \times 10^{-8}$
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Co-Design Interactive Sandbox -->
+            <div class="bg-white p-6 sm:p-8 rounded-2xl border border-stone-200 shadow-sm space-y-6">
+                <div class="max-w-3xl">
+                    <h3 class="text-xl font-bold text-slate-900 mb-2">Interactive AI Co-Design Sandbox</h3>
+                    <p class="text-sm text-stone-600">
+                        Adjust the parameters below to preview an illustrative AI exploration workflow. The audit interaction simulates the checks and proof output that the completed system is intended to produce; it does not currently constitute a Lean certificate.
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                    <!-- Sliders Panel -->
+                    <div class="bg-stone-50 p-5 rounded-2xl border border-stone-200 space-y-4 lg:col-span-1">
+                        <h4 class="text-sm font-bold text-slate-900 border-b border-stone-200 pb-2">Geometric & Field Parameters</h4>
+
+                        <div class="space-y-1">
+                            <div class="flex justify-between text-xs font-semibold">
+                                <span>Aspect Ratio ($A = R/a$):</span>
+                                <span id="val-aspect" class="text-purple-800 font-mono">6.5</span>
+                            </div>
+                            <input type="range" id="input-aspect" min="3.0" max="12.0" step="0.1" value="6.5" oninput="updateStudioSim()" class="w-full accent-purple-700">
+                        </div>
+
+                        <div class="space-y-1">
+                            <div class="flex justify-between text-xs font-semibold">
+                                <span>Rotational Transform ($\iota$):</span>
+                                <span id="val-iota" class="text-purple-800 font-mono">0.85</span>
+                            </div>
+                            <input type="range" id="input-iota" min="0.30" max="1.40" step="0.01" value="0.85" oninput="updateStudioSim()" class="w-full accent-purple-700">
+                        </div>
+
+                        <div class="space-y-1">
+                            <div class="flex justify-between text-xs font-semibold">
+                                <span>Non-Axisymmetric Shaping ($\epsilon_{shaping}$):</span>
+                                <span id="val-shaping" class="text-purple-800 font-mono">0.18</span>
+                            </div>
+                            <input type="range" id="input-shaping" min="0.01" max="0.40" step="0.01" value="0.18" oninput="updateStudioSim()" class="w-full accent-purple-700">
+                        </div>
+
+                        <div class="space-y-1">
+                            <div class="flex justify-between text-xs font-semibold">
+                                <span>Coils per Field Period:</span>
+                                <span id="val-coils" class="text-purple-800 font-mono">10</span>
+                            </div>
+                            <input type="range" id="input-coils" min="4" max="16" step="1" value="10" oninput="updateStudioSim()" class="w-full accent-purple-700">
+                        </div>
+
+                        <div class="space-y-1">
+                            <div class="flex justify-between text-xs font-semibold">
+                                <span>Plasma Beta ($\beta$ %):</span>
+                                <span id="val-beta" class="text-purple-800 font-mono">3.2%</span>
+                            </div>
+                            <input type="range" id="input-beta" min="0.5" max="8.0" step="0.1" value="3.2" oninput="updateStudioSim()" class="w-full accent-purple-700">
+                        </div>
+
+                        <button onclick="runAuditAgent()" class="w-full py-3 px-4 rounded-xl bg-purple-800 hover:bg-purple-900 text-white font-bold text-xs transition-all shadow-md flex items-center justify-center space-x-2">
+                            <span>⚡ Preview illustrative audit</span>
+                        </button>
+                    </div>
+
+                    <!-- Evaluation Log Panel -->
+                    <div class="bg-stone-50 p-5 rounded-2xl border border-stone-200 lg:col-span-2 flex flex-col justify-between space-y-4">
+                        <div>
+                            <div class="flex items-center justify-between border-b border-stone-200 pb-2">
+                                <h4 class="text-sm font-bold text-slate-900">Illustrative Future Certificate Output</h4>
+                                <span id="audit-badge" class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-stone-200 text-stone-700">
+                                    Demo ready
+                                </span>
+                            </div>
+
+                            <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 my-4">
+                                <div class="bg-white p-2.5 rounded-xl border border-stone-200 text-center">
+                                    <span class="block text-[10px] text-stone-500 font-semibold uppercase">MHD $\delta W$ Stability</span>
+                                    <span id="res-dw" class="text-sm font-bold font-mono text-purple-800">+0.142</span>
+                                </div>
+                                <div class="bg-white p-2.5 rounded-xl border border-stone-200 text-center">
+                                    <span class="block text-[10px] text-stone-500 font-semibold uppercase">KAM Surface Vol</span>
+                                    <span id="res-kam-vol" class="text-sm font-bold font-mono text-emerald-700">94.2%</span>
+                                </div>
+                                <div class="bg-white p-2.5 rounded-xl border border-stone-200 text-center">
+                                    <span class="block text-[10px] text-stone-500 font-semibold uppercase">Coil Clearance</span>
+                                    <span id="res-gap" class="text-sm font-bold font-mono text-slate-900">0.89 m</span>
+                                </div>
+                                <div class="bg-white p-2.5 rounded-xl border border-stone-200 text-center">
+                                    <span class="block text-[10px] text-stone-500 font-semibold uppercase">$\mathbf{B} \cdot \mathbf{n}$ Error</span>
+                                    <span id="res-bnet" class="text-sm font-bold font-mono text-emerald-700">1.2 × 10⁻⁴</span>
+                                </div>
+                            </div>
+
+                            <!-- Lean Proof Stream -->
+                            <div class="space-y-1">
+                                <span class="text-[11px] font-semibold text-stone-600 uppercase tracking-wider block">Simulated Future Lean 4 Proof Log:</span>
+                                <pre id="audit-log" class="bg-stone-900 text-stone-200 p-3.5 rounded-xl text-xs font-mono h-44 overflow-y-auto leading-relaxed border border-stone-800"><code>-- Click "Preview illustrative audit" to test geometry...
+-- Parameters: Aspect=6.5, Rotational Transform=0.85, Shaping=0.18
+-- Field Coils/Period=10, Plasma Beta=3.2%</code></pre>
+                            </div>
+                        </div>
+
+                        <div class="text-[11px] text-stone-500 bg-white p-2.5 rounded-lg border border-stone-200 flex items-center justify-between font-mono">
+                            <span>Lean Lake Command:</span>
+                            <span class="text-stone-800">lake env lean --run VerifyStellarator.lean</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-stone-100 border-t border-stone-200 py-6 mt-12 text-center text-xs text-stone-500">
+        <div class="max-w-7xl mx-auto px-4 space-y-2">
+            <p class="font-medium text-slate-700">PlasmaLean: Lean 4 Mathematical Physics Platform • Constructible Stellarator Design & Plasma Stability Theory</p>
+            <p>Building toward AI-assisted discovery with precisely scoped claims checked by Lean 4.</p>
+            <p>
+                Official Repository: 
+                <a href="https://github.com/siddhartha-gadgil/PlasmaLean" target="_blank" rel="noopener noreferrer" class="text-purple-700 hover:text-purple-900 font-mono font-bold underline">
+                    https://github.com/siddhartha-gadgil/PlasmaLean
+                </a>
+            </p>
+        </div>
+    </footer>
+
+    <!-- JavaScript Application Logic -->
+    <script>
+        // --- Render KaTeX Math ---
+        function renderMath() {
+            if (window.renderMathInElement) {
+                renderMathInElement(document.body, {
+                    delimiters: [
+                        {left: '$$', right: '$$', display: true},
+                        {left: '$', right: '$', display: false},
+                        {left: '\\(', right: '\\)', display: false},
+                        {left: '\\[', right: '\\]', display: true}
+                    ],
+                    throwOnError: false
+                });
+            }
+        }
+
+        // --- Global State ---
+        let currentConceptMode = 'stellarator';
+        let conceptAnimFrame = null;
+
+        // --- Navigation Logic ---
+        function switchTab(tabId, updateHash = true) {
+            if (!document.getElementById('sec-' + tabId)) tabId = 'background';
+            if (updateHash && location.hash !== '#' + tabId) history.pushState(null, '', '#' + tabId);
+            document.querySelectorAll('.nav-btn').forEach(button => {
+                button.setAttribute('aria-pressed', String(button.id === 'tab-' + tabId));
+            });
+            document.querySelectorAll('.tab-content').forEach(sec => sec.classList.add('hidden'));
+            const activeSec = document.getElementById('sec-' + tabId);
+            if (activeSec) activeSec.classList.remove('hidden');
+
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                if (btn.id !== 'tab-agent' && btn.id !== 'tab-realization') {
+                    btn.classList.remove('bg-purple-100', 'text-purple-900', 'bg-stone-200', 'text-stone-900', 'font-bold');
+                    btn.classList.add('text-stone-700');
+                }
+            });
+
+            const activeTab = document.getElementById('tab-' + tabId);
+            if (activeTab && tabId !== 'realization' && tabId !== 'agent') {
+                activeTab.classList.add('bg-stone-200', 'text-stone-900', 'font-bold');
+            }
+
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+
+            // Resize charts on view switch
+            if (tabId === 'background') {
+                initConceptCanvas();
+            }
+            if (tabId === 'kernel' && window.boozerChart) window.boozerChart.resize();
+            if (tabId === 'sanity' && window.gbChart) window.gbChart.resize();
+            if (tabId === 'theory') {
+                if (window.kamChart) window.kamChart.resize();
+                if (window.mhdChart) window.mhdChart.resize();
+            }
+
+            // Re-render LaTeX math for newly visible tabs
+            setTimeout(renderMath, 50);
+        }
+
+        function toggleMobileMenu() {
+            document.getElementById('mobile-menu').classList.toggle('hidden');
+        }
+
+        function toggleCode(codeId) {
+            document.getElementById(codeId).classList.toggle('hidden');
+        }
+
+        window.addEventListener('popstate', () => switchTab(location.hash.slice(1), false));
+        window.addEventListener('hashchange', () => switchTab(location.hash.slice(1), false));
+        document.addEventListener("DOMContentLoaded", () => {
+            initConceptCanvas();
+            if (typeof Chart !== 'undefined') {
+                initBoozerChart();
+                initGarrenBoozerChart();
+                initKAMChart();
+                initMHDSpectrumChart();
+            }
+            switchTab(location.hash.slice(1) || 'background', false);
+            generateAgentPrompt();
+            updateStudioSim();
+            renderMath();
+        });
+
+        // --- Interactive Stellarator Concept Canvas ---
+        function setConceptMode(mode) {
+            currentConceptMode = mode;
+            const btnStell = document.getElementById('btn-mode-stellarator');
+            const btnTok = document.getElementById('btn-mode-tokamak');
+            const statusMode = document.getElementById('canvas-status-mode');
+            const statusIota = document.getElementById('canvas-status-iota');
+            const infoCard = document.getElementById('concept-info-card');
+
+            if (mode === 'stellarator') {
+                btnStell.className = "px-3 py-1.5 rounded-lg text-xs font-bold bg-purple-700 text-white transition-all shadow-sm";
+                btnTok.className = "px-3 py-1.5 rounded-lg text-xs font-bold bg-stone-100 text-stone-700 hover:bg-stone-200 transition-all border border-stone-300";
+                statusMode.innerText = "Mode: 3D Helical Stellarator Coils";
+                statusMode.className = "text-purple-300 font-bold";
+                statusIota.innerText = "Rotational Transform ι ≈ 0.85 (External Coil Twist)";
+
+                infoCard.innerHTML = String.raw`
+                    <div class="font-bold text-sm text-purple-900 flex items-center space-x-2">
+                        <span>🌀 Stellarator Concept (External 3D Field):</span>
+                    </div>
+                    <p class="text-stone-700">
+                        Modular 3D non-planar coils wrap around the vessel. The twist ($\iota$) is created entirely by external geometry.
+                    </p>
+                    <p class="text-stone-700">
+                        <strong>Key Advantage:</strong> Operates at true steady state without needing transformer action or driven plasma currents. Finite currents and instabilities still need to be assessed.
+                    </p>
+                    <div class="p-3 bg-white/80 rounded-xl border border-purple-200 font-mono text-[11px] text-purple-900 space-y-1">
+                        <div class="font-bold">Zero-Current Equilibrium:</div>
+                        <div>$$\nabla \times \mathbf{B}_{ext} = 0 \quad \text{outside plasma}$$</div>
+                    </div>
+                `;
+            } else {
+                btnTok.className = "px-3 py-1.5 rounded-lg text-xs font-bold bg-amber-600 text-white transition-all shadow-sm";
+                btnStell.className = "px-3 py-1.5 rounded-lg text-xs font-bold bg-stone-100 text-stone-700 hover:bg-stone-200 transition-all border border-stone-300";
+                statusMode.innerText = "Mode: Tokamak Transformer Induced Current";
+                statusMode.className = "text-amber-300 font-bold";
+                statusIota.innerText = "Driven Plasma Current Ip ≈ 15 MA (Pulsed Operation)";
+
+                infoCard.innerHTML = String.raw`
+                    <div class="font-bold text-sm text-amber-900 flex items-center space-x-2">
+                        <span>⚡ Tokamak Concept (Plasma Current Drive):</span>
+                    </div>
+                    <p class="text-stone-700">
+                        A central solenoid acts as a transformer core, inducing a massive axial electric current ($I_p$) inside the plasma ring.
+                    </p>
+                    <p class="text-stone-700">
+                        <strong>Major Limitation:</strong> Solenoids can only drive current in pulses. High current stores free energy that can trigger violent disruptions ($I_p \to 0$ in ms).
+                    </p>
+                    <div class="p-3 bg-white/80 rounded-xl border border-amber-200 font-mono text-[11px] text-amber-900 space-y-1">
+                        <div class="font-bold">Ampère Current Drive:</div>
+                        <div>$$\oint \mathbf{B}_\theta \cdot d\mathbf{l} = \mu_0 I_{plasma}$$</div>
+                    </div>
+                `;
+            }
+            renderMath();
+        }
+
+        function initConceptCanvas() {
+            const canvas = document.getElementById('stellaratorConceptCanvas');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+            let angle = 0;
+
+            function animate() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+                const cx = canvas.width / 2;
+                const cy = canvas.height / 2;
+                const R = 150; // Major radius
+                const r = 50;  // Minor radius
+
+                // Draw Torus Outline (2D projection)
+                ctx.beginPath();
+                ctx.ellipse(cx, cy, R + r, (R + r) * 0.45, 0, 0, Math.PI * 2);
+                ctx.strokeStyle = '#334155';
+                ctx.lineWidth = 1.5;
+                ctx.stroke();
+
+                ctx.beginPath();
+                ctx.ellipse(cx, cy, R - r, (R - r) * 0.45, 0, 0, Math.PI * 2);
+                ctx.strokeStyle = '#334155';
+                ctx.lineWidth = 1.5;
+                ctx.stroke();
+
+                // Draw Helical Magnetic Field Lines or Plasma Rings
+                const points = 180;
+                ctx.beginPath();
+                for (let i = 0; i <= points; i++) {
+                    const phi = (i / points) * Math.PI * 2;
+                    let theta;
+                    
+                    if (currentConceptMode === 'stellarator') {
+                        // Helical twist with N=5 field periods
+                        theta = phi * 3.5 + angle;
+                    } else {
+                        // Slower twist driven by Ip
+                        theta = phi * 1.2 + angle;
+                    }
+
+                    const currR = R + r * Math.cos(theta);
+                    const x = cx + currR * Math.cos(phi);
+                    const y = cy + currR * Math.sin(phi) * 0.45 - r * Math.sin(theta) * 0.4;
+
+                    if (i === 0) ctx.moveTo(x, y);
+                    else ctx.lineTo(x, y);
+                }
+
+                if (currentConceptMode === 'stellarator') {
+                    ctx.strokeStyle = '#c084fc'; // Purple glow
+                    ctx.lineWidth = 3;
+                    ctx.shadowColor = '#a855f7';
+                    ctx.shadowBlur = 10;
+                } else {
+                    ctx.strokeStyle = '#fbbf24'; // Amber current glow
+                    ctx.lineWidth = 3.5;
+                    ctx.shadowColor = '#f59e0b';
+                    ctx.shadowBlur = 12;
+                }
+                ctx.stroke();
+                ctx.shadowBlur = 0;
+
+                // Draw Particle Drift Indicators
+                for (let p = 0; p < 5; p++) {
+                    const pPhi = ((p / 5) * Math.PI * 2 + angle * 0.8) % (Math.PI * 2);
+                    const pTheta = pPhi * (currentConceptMode === 'stellarator' ? 3.5 : 1.2) + angle;
+                    const pR = R + (r * 0.7) * Math.cos(pTheta);
+                    const px = cx + pR * Math.cos(pPhi);
+                    const py = cy + pR * Math.sin(pPhi) * 0.45 - (r * 0.7) * Math.sin(pTheta) * 0.4;
+
+                    ctx.beginPath();
+                    ctx.arc(px, py, 4, 0, Math.PI * 2);
+                    ctx.fillStyle = p % 2 === 0 ? '#38bdf8' : '#f43f5e';
+                    ctx.fill();
+                }
+
+                angle += 0.015;
+                conceptAnimFrame = requestAnimationFrame(animate);
+            }
+
+            if (conceptAnimFrame) cancelAnimationFrame(conceptAnimFrame);
+            animate();
+        }
+
+        // 1. Boozer Coordinate Chart
+        function initBoozerChart() {
+            const ctx = document.getElementById('boozerJacobianChart').getContext('2d');
+            const thetaVals = [];
+            const jacobianVals = [];
+            const bFieldVals = [];
+
+            for (let i = 0; i <= 360; i += 10) {
+                const rad = (i * Math.PI) / 180;
+                thetaVals.push(`${i}°`);
+                const B = 2.5 * (1 - 0.15 * Math.cos(rad));
+                const jacobian = 1.8 / (B * B);
+                bFieldVals.push(B.toFixed(2));
+                jacobianVals.push(jacobian.toFixed(3));
+            }
+
+            window.boozerChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: thetaVals,
+                    datasets: [
+                        {
+                            label: 'Metric Jacobian √g',
+                            data: jacobianVals,
+                            borderColor: '#d97706',
+                            backgroundColor: 'rgba(217, 119, 6, 0.1)',
+                            fill: true,
+                            tension: 0.4,
+                            yAxisID: 'y'
+                        },
+                        {
+                            label: '|B| Field Strength (Tesla)',
+                            data: bFieldVals,
+                            borderColor: '#9333ea',
+                            borderDash: [5, 5],
+                            tension: 0.4,
+                            yAxisID: 'y1'
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    interaction: { mode: 'index', intersect: false },
+                    scales: {
+                        x: { title: { display: true, text: 'Poloidal Angle θ (Boozer)', font: { size: 11 } } },
+                        y: { type: 'linear', display: true, position: 'left', title: { display: true, text: 'Jacobian √g', font: { size: 11 } } },
+                        y1: { type: 'linear', display: true, position: 'right', grid: { drawOnChartArea: false }, title: { display: true, text: '|B| (T)', font: { size: 11 } } }
+                    }
+                }
+            });
+        }
+
+        // 2. Garren-Boozer Constraint Chart
+        function initGarrenBoozerChart() {
+            const ctx = document.getElementById('garrenBoozerChart').getContext('2d');
+            window.gbChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['Order 1 O(ρ¹)', 'Order 2 O(ρ²)', 'Order 3 O(ρ³) [Overdetermined]'],
+                    datasets: [
+                        { label: 'Free Fourier Shape Harmonics', data: [4, 8, 10], backgroundColor: '#a855f7' },
+                        { label: 'Quasisymmetry Constraint Equations', data: [4, 8, 12], backgroundColor: '#ef4444' }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: { y: { beginAtZero: true, title: { display: true, text: 'Number of Equations / Free Parameters' } } }
+                }
+            });
+        }
+
+        function updateGarrenBoozerChart() {
+            const selectVal = document.getElementById('gb-order-select').value;
+            const expBox = document.getElementById('gb-explanation-box');
+
+            if (selectVal === 'rho1') {
+                expBox.innerHTML = `
+                    <div class="font-bold text-indigo-900 text-sm">Order $O(\\rho^1)$ Analysis:</div>
+                    <p class="text-stone-700">At first order in minor radius, Near-Axis Expansion equations determine magnetic axis curvature, torsion, and surface ellipticity.</p>
+                    <div class="p-2.5 bg-indigo-100/60 rounded-lg text-indigo-950 font-mono">4 Constraints = 4 Parameters (Illustrative equal counts)</div>
+                `;
+            } else if (selectVal === 'rho2') {
+                expBox.innerHTML = `
+                    <div class="font-bold text-indigo-900 text-sm">Order $O(\\rho^2)$ Analysis:</div>
+                    <p class="text-stone-700">At second order, triangularity and Shafranov position shifts are uniquely set. Available shape degrees of freedom match constraints.</p>
+                    <div class="p-2.5 bg-indigo-100/60 rounded-lg text-indigo-950 font-mono">8 Constraints = 8 Parameters (Illustrative equal counts)</div>
+                `;
+            } else if (selectVal === 'rho3') {
+                expBox.innerHTML = `
+                    <div class="font-bold text-indigo-900 text-sm">Order $O(\\rho^3)$ Analysis (Overdetermined!):</div>
+                    <p class="text-stone-700">At third order, 12 equations must be satisfied to enforce exact quasisymmetry, but only 10 Fourier harmonics remain free.</p>
+                    <div class="p-2.5 bg-red-100/80 rounded-lg text-red-950 font-mono">12 Constraints > 10 Parameters (2 Residual Over-constraints)</div>
+                `;
+            } else {
+                expBox.innerHTML = `
+                    <div class="font-bold text-indigo-900 text-sm">Schematic near-axis constraint count:</div>
+                    <p class="text-stone-700">At $O(\\rho^1)$ and $O(\\rho^2)$, degrees of freedom match constraint equations exactly.</p>
+                    <p class="text-stone-700">However, at <strong class="text-indigo-900">order $O(\\rho^3)$</strong>, 12 constraint equations must be satisfied, but only 10 harmonics remain free!</p>
+                    <div class="p-2.5 bg-indigo-100/60 rounded-lg text-indigo-950 font-mono">Illustration only: source-specific compatibility must be proved.</div>
+                `;
+            }
+            renderMath();
+        }
+
+        // 3. KAM Surface Persistence Chart
+        function initKAMChart() {
+            const ctx = document.getElementById('kamPersistenceChart').getContext('2d');
+            const epsVals = [0.00, 0.05, 0.10, 0.15, 0.20, 0.25, 0.30, 0.35, 0.40];
+            const kamVol = epsVals.map(eps => Math.max(0, (1.0 - 0.9 * Math.sqrt(eps)) * 100).toFixed(1));
+
+            window.kamChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: epsVals.map(e => `ε=${e}`),
+                    datasets: [{
+                        label: 'Retained Invariant Flux Surface Volume (%)',
+                        data: kamVol,
+                        borderColor: '#9333ea',
+                        backgroundColor: 'rgba(147, 51, 234, 0.1)',
+                        fill: true,
+                        tension: 0.3
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: { min: 0, max: 100, title: { display: true, text: 'KAM Volume %' } },
+                        x: { title: { display: true, text: '3D Perturbation Magnitude ε' } }
+                    }
+                }
+            });
+        }
+
+        // 4. MHD Energy Spectrum Chart
+        function initMHDSpectrumChart() {
+            const ctx = document.getElementById('mhdSpectrumChart').getContext('2d');
+            const modeIndices = ['m=1,n=1', 'm=2,n=1', 'm=2,n=2', 'm=3,n=2', 'm=3,n=3', 'm=4,n=3'];
+            const symmetricDW = [0.12, 0.25, 0.38, 0.45, 0.52, 0.60];
+            const asymmetricDW = [0.08, 0.19, 0.31, 0.41, 0.48, 0.57];
+
+            window.mhdChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: modeIndices,
+                    datasets: [
+                        { label: 'Illustrative tokamak mode energies', data: symmetricDW, backgroundColor: '#6366f1' },
+                        { label: 'Illustrative stellarator mode energies', data: asymmetricDW, backgroundColor: '#9333ea' }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: { beginAtZero: true, title: { display: true, text: 'Perturbed Energy δW Eigenvalue (Must be > 0)' } },
+                        x: { title: { display: true, text: 'Poloidal/Toroidal Perturbation Modes (m,n)' } }
+                    }
+                }
+            });
+        }
+
+        // --- Agent Prompt Generator ---
+        function generateAgentPrompt() {
+            const target = document.getElementById('agent-target-select').value;
+            const level = document.getElementById('agent-level-select').value;
+            const outputBox = document.getElementById('agent-prompt-output');
+
+            let promptText = `You are an AI formalization and plasma stability theory agent working on the PlasmaLean repository (https://github.com/siddhartha-gadgil/PlasmaLean).\n\n`;
+            promptText += `### REPOSITORY CONSTRAINTS & CODING RULES:\n`;
+            promptText += `1. Mathlib Compatibility: Use Mathlib4 (v4.34.1).\n`;
+            promptText += `2. Repository Context: https://github.com/siddhartha-gadgil/PlasmaLean\n`;
+
+            if (target === 'kernel_mhd') {
+                promptText += `3. TARGET FILE: PlasmaLean/Kernel/MHD.lean\n`;
+                promptText += `4. STRICT KERNEL RULE: DO NOT use the \`axiom\` keyword under any circumstance. All facts must be structures, typeclasses, or proven definitions.\n`;
+                promptText += `5. FORMALIZE:\n`;
+                promptText += `   - \`structure MHDEquilibrium (Ω : SmoothManifold 3)\` containing fields for B, J, p, mu_0, force_balance (J × B = ∇p), solenoidal (∇ · B = 0), and Ampere (∇ × B = mu_0 J).\n`;
+                promptText += `   - Theorem: Prove B · ∇p = 0 directly from force_balance.\n`;
+            } else if (target === 'sanity_garren') {
+                promptText += `3. TARGET FILE: PlasmaLean/Sanity/GarrenBoozer.lean\n`;
+                promptText += `4. ROLE: Prove consistency and overdetermination of Near-Axis Expansion at O(ρ³).\n`;
+                promptText += `5. FORMALIZE:\n`;
+                promptText += `   - Near-Axis Fourier mode counting at order O(ρ³).\n`;
+                promptText += `   - Target: extract and prove the source-specific near-axis compatibility conditions; the plotted counts are illustrative.\n`;
+            } else if (target === 'theory_asym') {
+                promptText += `3. TARGET FILE: PlasmaLean/Theory/AsymmetricExistence.lean\n`;
+                promptText += `4. THEORETICAL GOAL: Develop Sobolev space stability theory for non-axisymmetric magnetic fields.\n`;
+                promptText += `5. FORMALIZE:\n`;
+                promptText += `   - Theorem: \`asymmetric_stable_equilibrium_exists\` in Sobolev space H²(Ω).\n`;
+                promptText += `   - State a restricted admissible class and its hypotheses; investigate the existence and stability targets in notes/formalization/08-roadmap.md.\n`;
+            } else {
+                promptText += `3. TARGET FILE: PlasmaLean/Bridge/RadiiPolynomials.lean\n`;
+                promptText += `4. COMPUTER-ASSISTED PROOF: Interval arithmetic & Banach contraction for constructible hardware.\n`;
+                promptText += `5. FORMALIZE:\n`;
+                promptText += `   - Polynomial P(r) = Y + (Z - 1)r + W r²: certify a negative value at an admissible positive radius, with contraction and injectivity hypotheses.\n`;
+                promptText += `   - Theorem: \`banach_fixed_point_radii\` verifying distance to numerical solution.\n`;
+            }
+
+            if (level === 'full') {
+                promptText += `\nOutput complete, fully verified Lean 4 code without any 'sorry' placeholders.`;
+            } else {
+                promptText += `\nOutput clean module structure with comprehensive docstrings, definition bodies, and theorem stubs containing 'sorry'.`;
+            }
+
+            outputBox.innerText = promptText;
+        }
+
+        function copyAgentPrompt() {
+            const promptText = document.getElementById('agent-prompt-output').innerText;
+            navigator.clipboard.writeText(promptText).then(() => {
+                const confirmSpan = document.getElementById('copy-confirm');
+                confirmSpan.classList.remove('hidden');
+                setTimeout(() => confirmSpan.classList.add('hidden'), 2000);
+            });
+        }
+
+        // --- Interactive Co-Design Sandbox Simulation ---
+        function updateStudioSim() {
+            const aspect = parseFloat(document.getElementById('input-aspect').value);
+            const iota = parseFloat(document.getElementById('input-iota').value);
+            const shaping = parseFloat(document.getElementById('input-shaping').value);
+            const coils = parseInt(document.getElementById('input-coils').value);
+            const beta = parseFloat(document.getElementById('input-beta').value);
+
+            document.getElementById('val-aspect').innerText = aspect.toFixed(1);
+            document.getElementById('val-iota').innerText = iota.toFixed(2);
+            document.getElementById('val-shaping').innerText = shaping.toFixed(2);
+            document.getElementById('val-coils').innerText = coils;
+            document.getElementById('val-beta').innerText = beta.toFixed(1) + '%';
+
+            const dw = (0.22 * iota - 0.025 * beta + shaping * 0.08).toFixed(3);
+            const kamVol = Math.max(0, (1.0 - 0.85 * Math.sqrt(shaping)) * 100).toFixed(1);
+            const gap = (1.40 * (aspect / 6.0) * (10 / coils)).toFixed(2);
+            const bnet = (Math.pow(shaping, 2) * 2e-3 + 1e-4).toExponential(1);
+
+            const dwEl = document.getElementById('res-dw');
+            dwEl.innerText = (dw > 0 ? '+' : '') + dw;
+            dwEl.className = dw > 0 ? 'text-sm font-bold font-mono text-purple-800' : 'text-sm font-bold font-mono text-red-600';
+
+            document.getElementById('res-kam-vol').innerText = kamVol + '%';
+
+            const gapEl = document.getElementById('res-gap');
+            gapEl.innerText = gap + ' m';
+            gapEl.className = gap >= 0.83 ? 'text-sm font-bold font-mono text-slate-900' : 'text-sm font-bold font-mono text-red-600';
+
+            document.getElementById('res-bnet').innerText = bnet;
+
+            document.getElementById('audit-badge').className = 'px-2.5 py-0.5 rounded-full text-xs font-bold bg-amber-100 text-amber-800';
+            document.getElementById('audit-badge').innerText = 'Demo parameters changed';
+        }
+
+        function runAuditAgent() {
+            const aspect = document.getElementById('val-aspect').innerText;
+            const iota = document.getElementById('val-iota').innerText;
+            const shaping = document.getElementById('val-shaping').innerText;
+            const coils = document.getElementById('val-coils').innerText;
+            const beta = document.getElementById('val-beta').innerText;
+            const dw = document.getElementById('res-dw').innerText;
+            const gap = document.getElementById('res-gap').innerText;
+
+            const isStable = parseFloat(dw) > 0;
+            const isGapValid = parseFloat(gap) >= 0.83;
+
+            const logBox = document.getElementById('audit-log');
+            const badge = document.getElementById('audit-badge');
+
+            logBox.innerText = `[1/4] Ingesting parameters: A=${aspect}, ι=${iota}, ε_shaping=${shaping}, N_coils=${coils}, β=${beta}\n`;
+            logBox.innerText += `[2/4] Constructing Banach Sobolev space H²(Ω) contraction operator in PlasmaLean...\n`;
+            logBox.innerText += `[3/4] Verifying KAM flux surface retention and δW energy spectrum...\n`;
+
+            setTimeout(() => {
+                if (isStable && isGapValid) {
+                    badge.className = 'px-2.5 py-0.5 rounded-full text-xs font-bold bg-emerald-100 text-emerald-800';
+                    badge.innerText = 'Illustrative Future Certificate';
+
+                    logBox.innerText += `[4/4] Future workflow: theoretical stability theorem certified.\n`;
+                    logBox.innerText += `--------------------------------------------------\n`;
+                    logBox.innerText += `theorem certified_asymmetric_stellarator :\n`;
+                    logBox.innerText += `  ∃ (B : VectorField Ω) (p : SmoothFunction Ω),\n`;
+                    logBox.innerText += `    NonSymmetric B ∧ PositiveSpectrum (MHDOperator B) ∧\n`;
+                    logBox.innerText += `    KAMSurfacesPersistent B ∧ CoilClearanceFeasible B := by\n`;
+                    logBox.innerText += `  exact ⟨_, _, proof_term_auto_generated⟩\n\n`;
+                    logBox.innerText += `SIMULATED STATUS: The completed PlasmaLean workflow would report a constructible configuration as mathematically stable only after checking all stated hypotheses.`;
+                } else {
+                    badge.className = 'px-2.5 py-0.5 rounded-full text-xs font-bold bg-red-100 text-red-800';
+                    badge.innerText = 'Illustrative checks unmet';
+
+                    logBox.innerText += `[4/4] Illustrative checks unmet; no Lean verification was run.\n`;
+                    logBox.innerText += `--------------------------------------------------\n`;
+                    if (!isStable) logBox.innerText += `ERROR: Instability detected! Potential energy spectrum δW ≤ 0.\n`;
+                    if (!isGapValid) logBox.innerText += `ERROR: Inter-coil clearance metric d_c-c < 0.83m threshold.\n`;
+                    logBox.innerText += `DEMO STATUS: Adjust parameters to explore this schematic workflow. No candidate has been verified.`;
+                }
+                logBox.scrollTop = logBox.scrollHeight;
+            }, 600);
+        }
+    </script>
+</body>
+</html>

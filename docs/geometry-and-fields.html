@@ -1,0 +1,87 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="Pressure surfaces, flux coordinates, field-line dynamics, quasisymmetry, and near-axis theory."><title>Geometry &amp; fields · PlasmaLean</title><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css"><link rel="stylesheet" href="assets/site.css"><script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script><script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"></script><script defer src="assets/site.js"></script></head><body>
+  <header class="site-header"><div class="header-inner">
+    <a class="brand" href="index.html"><span class="brand-mark">λ</span><span>PlasmaLean<small>Verified stellarator design</small></span></a>
+    <div class="header-links"><a href="index.html">Home</a><a href="handbook.html">Handbook</a><a href="roadmap.html">Roadmap</a><a href="literature.html">Sources</a><a href="#" class="search-link" data-search>Search <span aria-hidden="true">⌘K</span></a><a href="https://github.com/siddhartha-gadgil/PlasmaLean">GitHub ↗</a></div>
+    <button class="menu-toggle" data-menu aria-label="Open handbook navigation" aria-expanded="false">☰</button>
+  </div></header><div class="app-shell"><nav class="side-nav" aria-label="Handbook chapters"><div class="nav-kicker">Explore</div><a href="index.html">Home · illustrated overview</a><a href="handbook.html">Handbook &amp; tasks</a><a href="#" data-search>Search handbook</a><div class="nav-kicker">Foundation</div><a href="domain-library.html"><span class="nav-number">00</span>Library method</a><a href="model-contracts.html"><span class="nav-number">01</span>Model contracts</a><div class="nav-kicker">Physics</div><a href="geometry-and-fields.html" aria-current="page"><span class="nav-number">02</span>Geometry & fields</a><a href="plasma-models-and-equilibrium.html"><span class="nav-number">03</span>Models & equilibrium</a><a href="mhd-stability.html"><span class="nav-number">04</span>MHD stability</a><a href="particles-and-transport.html"><span class="nav-number">05</span>Particles & transport</a><div class="nav-kicker">Verification</div><a href="verified-numerics.html"><span class="nav-number">06</span>Verified numerics</a><div class="nav-kicker">Design</div><a href="coils-and-design.html"><span class="nav-number">07</span>Coils & design</a><a href="materials-and-engineering.html"><span class="nav-number">08</span>Materials & engineering</a><div class="nav-kicker">Program</div><a href="roadmap.html"><span class="nav-number">09</span>Roadmap</a><a href="literature.html"><span class="nav-number">10</span>Literature</a></nav><main class="doc">
+    <section class="doc-hero"><div class="eyebrow">Physics · PlasmaLean handbook</div><h1>Geometry, magnetic fields, and coordinates</h1><p>Pressure surfaces, flux coordinates, field-line dynamics, quasisymmetry, and near-axis theory.</p><div class="hero-meta"><span>Lean 4.34.1</span><span>Mathlib 4.34.1</span><span>10 tracked tasks</span></div></section>
+    <div class="progress-banner"><span class="progress-dot"></span><div><strong>Current implementation status</strong>Planning only — no Lean code written. The material below is a specification and roadmap, not a report of compiled declarations or completed certificates.</div></div>
+    <p class="overview-return"><a href="index.html#background">← Illustrated introduction: Stellarator concepts</a></p><article class="prose"><p>This is a formalization specification. The elementary deductions below are derived explicitly; the analytic/topological results are targets whose source hypotheses must be extracted before use.</p>
+<h2 id="contents">Contents</h2>
+<ul>
+<li><a href="#euclidean-foundations">Euclidean foundations</a></li>
+<li><a href="#pressure-surfaces-and-topology">Pressure surfaces and topology</a></li>
+<li><a href="#flux-coordinates-and-boozer-charts">Flux coordinates and Boozer charts</a></li>
+<li><a href="#field-line-dynamics">Field-line dynamics</a></li>
+<li><a href="#quasisymmetry-and-near-axis-theory">Quasisymmetry and near-axis theory</a></li>
+<li><a href="#theorem-backlog">Theorem backlog</a></li>
+</ul>
+<h2 id="euclidean-foundations">Euclidean foundations</h2>
+<p>Start with bounded open <code>Ω ⊂ ℝ³</code> and explicitly stated boundary regularity, rather than requiring an entire manifold-with-boundary API immediately. Use <code>E = EuclideanSpace ℝ (Fin 3)</code> or the pinned Mathlib equivalent. Define smooth vector fields, weak fields when needed, <code>grad</code>, <code>div</code>, <code>curl</code>, and surface normals through reusable interfaces with concrete implementations.</p>
+<p>Require an orientation and specify SI units. Model scalar fields with their dimensions and prove nondimensionalization identities, even if the first implementation uses ordinary real-valued functions with documented units.</p>
+<p>Two useful divergence-free representations:</p>
+<ol>
+<li><code>B = curl A</code> locally or globally where an appropriate potential exists.</li>
+<li>A flux 2-form <code>β = ι_B vol</code> with <code>dβ = 0</code>.</li>
+</ol>
+<p>Prove the relation between these and <code>div B = 0</code> under the required smoothness. Keep nonexact closed forms and circulation/flux periods in multiply connected domains. A global vector/scalar potential has additional topological and boundary obligations.</p>
+<p>For static isotropic MHD with <code>μ₀ &gt; 0</code>:</p>
+<div class="math-block">$$\nabla\cdot B=0,\qquad \nabla\times B=\mu_0J,\qquad J\times B=\nabla p.$$</div>
+<p>Dotting force balance with <code>B</code> and <code>J</code> gives</p>
+<div class="math-block">$$B\cdot\nabla p=0,\qquad J\cdot\nabla p=0.$$</div>
+<p>This is an algebraic cross-product identity, independent of a foliation theorem.</p>
+<h2 id="pressure-surfaces-and-topology">Pressure surfaces and topology</h2>
+<p>Let <code>Σ</code> be a connected, compact, boundaryless regular level surface of <code>p</code> in <code>ℝ³</code>. The gradient supplies an orientation. If <code>B</code> is nonzero everywhere on <code>Σ</code>, tangency yields a nowhere-vanishing tangent vector field. Poincaré–Hopf gives <code>χ(Σ)=0</code>; classification of compact orientable surfaces then gives genus one.</p>
+<p>Do not omit the hypotheses. The argument fails at magnetic nulls, critical pressure levels, noncompact level sets, and surfaces with boundary. It proves the topology of each such component, not that every point belongs to one of a globally nested family.</p>
+<p>To obtain a flux annulus, separately prove or supply a proper submersion</p>
+<div class="math-block">$$\psi:\overline{\Omega}_{\rm ann}\longrightarrow[\psi_0,\psi_1],$$</div>
+<p>with compact connected torus fibres, no critical points, and compatible boundary fibres. Establish a product trivialization under an appropriate theorem. Handle the magnetic axis using a separate solid-torus/tubular-neighborhood construction. Avoid treating the radial label as a regular coordinate at the axis.</p>
+<p>An early Lean development can use a <code>FluxAnnulus</code> structure containing a concrete parametrization and proofs of injectivity, nondegenerate Jacobian, and field tangency. Later prove that suitable equilibria supply such a structure.</p>
+<h2 id="flux-coordinates-and-boozer-charts">Flux coordinates and Boozer charts</h2>
+<p>Use <code>(ψ,θ,φ) ∈ (ψ₀,ψ₁) × 𝕋²</code>, with angles modulo <code>2π</code>. Define <code>ψ</code> as toroidal flux divided by <code>2π</code>. Let <code>x(ψ,θ,φ)</code> be an oriented regular embedding and</p>
+<div class="math-block">$$\mathcal J=\partial_\psi x\cdot(\partial_\theta x\times\partial_\phi x)&gt;0.$$</div>
+<p>A selected Boozer representation is</p>
+<div class="math-block">$$B=\nabla\psi\times\nabla\theta
++\iota(\psi)\nabla\phi\times\nabla\psi
+=K\nabla\psi+I(\psi)\nabla\theta+G(\psi)\nabla\phi.$$</div>
+<p>Here <code>I,G</code> are covariant coefficients with their associated SI factors; do not identify them with currents without proving the relevant Ampère integral and normalization.</p>
+<p>Reciprocal-basis identities give</p>
+<div class="math-block">$$B\cdot\nabla\phi=\mathcal J^{-1},\qquad
+B\cdot\nabla\theta=\iota\,\mathcal J^{-1},\qquad
+\mathcal J=\frac{G+\iota I}{|B|^2}.$$</div>
+<p>These algebraic identities require <code>|B|&gt;0</code> and a valid chart. The difficult result is the chart's existence/regularity with the prescribed representations. Separate that result from checking the identities in a supplied chart. <a href="literature.html#geometry-equilibrium-and-symmetry">Boozer 1981</a> is a source for conventions and rational-surface issues.</p>
+<p>For any scalar <code>h</code>,</p>
+<div class="math-block">$$V'(\psi)=\int_{\mathbb T^2}\mathcal J\,d\theta\,d\phi,\qquad
+\langle h\rangle_\psi=\frac{1}{V'(\psi)}
+\int_{\mathbb T^2}h\mathcal J\,d\theta\,d\phi.$$</div>
+<p>Prove <code>V' &gt; 0</code>, <code>⟨1⟩=1</code>, positivity, and coordinate-change invariance under the specified measure convention.</p>
+<h2 id="field-line-dynamics">Field-line dynamics</h2>
+<p>The ODE <code>ẋ=B(x)</code> preserves the volume measure when <code>div B=0</code>. A return map on a transverse section preserves the flux measure <code>B·n dS</code>, rather than automatically preserving ordinary area. Prove this through the flow and flux theorem.</p>
+<p>On an annulus where <code>B·∇φ</code> is nonzero, use <code>φ</code> as the time variable. Straight-field-line coordinates yield <code>dθ/dφ = ι(ψ)</code>. For nonintegrable fields, formulate a return map and its symplectic/area-preserving property.</p>
+<p>An embedded invariant torus separating a region is a field-line barrier if the ODE is unique and tangent to it. This is not a barrier for all finite-gyroradius particle orbits.</p>
+<p>For quantitative KAM work, record:</p>
+<ul>
+<li>a specified exact symplectic map or divergence-free flow;</li>
+<li>analytic strips or finite differentiability and their norm bounds;</li>
+<li>an invariant-torus approximation and its residual;</li>
+<li>twist/nondegeneracy conditions;</li>
+<li>a frequency satisfying an infinite Diophantine inequality;</li>
+<li>constants of a particular a posteriori theorem.</li>
+</ul>
+<p>For a scalar rotation number <code>α</code>, use specified <code>γ&gt;0</code> and <code>τ≥1</code>. One convention is <code>|qα-p| ≥ γ/|q|^τ</code> for all integers <code>p</code> and nonzero <code>q</code>. A finite resonance scan does not prove it. Rational decimal frequencies fail it. Quadratic irrational frequencies offer a tractable arithmetic lemma; the validated torus theorem must actually enforce that frequency.</p>
+<p>Diophantine properties with a fixed constant are not robust over an arbitrary open frequency interval, because rationals are dense. A parameter-dependent KAM result must retain its nonresonant/Cantor restrictions or adjust parameters to preserve the selected frequency. See <a href="literature.html#validated-computation-and-analysis">Haro et al.</a>.</p>
+<h2 id="quasisymmetry-and-near-axis-theory">Quasisymmetry and near-axis theory</h2>
+<p>In a chosen Boozer chart, define field-strength quasisymmetry by</p>
+<div class="math-block">$$|B|=b(\psi,M\theta-N\phi),\qquad M,N\in\mathbb Z,\quad \gcd(M,N)=1.$$</div>
+<p>For a Fourier mode <code>e^{i(mθ-nφ)}</code>, the symmetry condition is <code>Nm-Mn=0</code>. Prove the equivalence of this mode condition and the PDE <code>(N∂θ+M∂φ)|B|=0</code> with the relevant regularity. Define symmetry-breaking norms including radial and Fourier tails, not merely values on selected surfaces.</p>
+<p>Do not identify this scalar condition with every geometric/Hamiltonian definition of quasisymmetry without a bridge theorem. <a href="literature.html#geometry-equilibrium-and-symmetry">Burby–Kallinikos–MacKay</a> separates the guiding-centre symmetry questions from MHD force balance.</p>
+<p>For a magnetic axis <code>r₀(s)</code> use a smooth material/Bishop frame when curvature may vanish. The Frenet frame requires <code>κ&gt;0</code>. Represent general near-axis surfaces by</p>
+<div class="math-block">$$x=r_0+X(r,\theta,s)n_1(s)+Y(r,\theta,s)n_2(s)+Z(r,\theta,s)t(s),$$</div>
+<p>with Taylor–Fourier expansions and the source's chosen radial scaling. A circular normal tube is a geometric example, not the general Garren–Boozer construction.</p>
+<p>Formal series agreement through order <code>k</code> is a useful algebraic result. A finite-radius design additionally needs</p>
+<div class="math-block">$$\|F(x^{[k]})\|\le C r^{k+1}$$</div>
+<p>in a declared norm and a theorem producing an exact nearby solution or a controlled model error. Do not infer convergence of the infinite series from coefficient recursion. Extract the actual compatibility restrictions from <a href="literature.html#geometry-equilibrium-and-symmetry">Garren–Boozer and Landreman–Sengupta</a>.</p>
+<h2 id="theorem-backlog">Theorem backlog</h2>
+<div class="table-wrap"><table><thead><tr><th>ID</th><th>Target</th><th>Dependencies / useful scope</th><th>Progress so far</th></tr></thead><tbody><tr><td>G1</td><td>Pressure tangency and uniform-field witness</td><td>Cross-product algebra; immediate kernel sanity</td><td class="progress-cell">Planning only — no Lean code written</td></tr><tr><td>G2</td><td><code>div(curl A)=0</code> and reciprocal-basis identities</td><td>Concrete differentiability assumptions</td><td class="progress-cell">Planning only — no Lean code written</td></tr><tr><td>G3</td><td>Boozer Jacobian and average normalization</td><td>Supplied chart; no existence claim</td><td class="progress-cell">Planning only — no Lean code written</td></tr><tr><td>G4</td><td>Continuous Fourier surface regularity and clearance</td><td>Interval bounds; <a href="verified-numerics.html">05</a></td><td class="progress-cell">Planning only — no Lean code written</td></tr><tr><td>G5</td><td>Regular compact pressure component is a torus</td><td>Surface topology and Poincaré–Hopf</td><td class="progress-cell">Planning only — no Lean code written</td></tr><tr><td>G6</td><td>Field-line flow/return map preserves flux measure</td><td>ODE uniqueness and integration</td><td class="progress-cell">Planning only — no Lean code written</td></tr><tr><td>G7</td><td>Quasisymmetry Fourier characterization</td><td>Fourier convergence and circle actions</td><td class="progress-cell">Planning only — no Lean code written</td></tr><tr><td>G8</td><td>Near-axis recursion with remainder bounds</td><td>Analytic sequence spaces</td><td class="progress-cell">Planning only — no Lean code written</td></tr><tr><td>G9</td><td>One certified invariant torus and barrier</td><td>A posteriori KAM, embedding and separation</td><td class="progress-cell">Planning only — no Lean code written</td></tr><tr><td>G10</td><td>Quantitative perturbation theory over useful parameter sets</td><td>Research target; preserve resonance restrictions</td><td class="progress-cell">Planning only — no Lean code written</td></tr></tbody></table></div>
+</article>
+  </main><aside class="toc" aria-label="On this page"><div class="nav-kicker">On this page</div><ul><a href="#contents">Contents</a><a href="#euclidean-foundations">Euclidean foundations</a><a href="#pressure-surfaces-and-topology">Pressure surfaces and topology</a><a href="#flux-coordinates-and-boozer-charts">Flux coordinates and Boozer charts</a><a href="#field-line-dynamics">Field-line dynamics</a><a href="#quasisymmetry-and-near-axis-theory">Quasisymmetry and near-axis theory</a><a href="#theorem-backlog">Theorem backlog</a></ul></aside></div><dialog id="search-dialog" class="search-dialog"><div class="search-box"><input id="search-input" type="search" placeholder="Search the handbook…" aria-label="Search handbook"><div id="search-results" class="search-results"><p>Search topics and task IDs across the handbook.</p></div></div></dialog><footer class="site-footer">PlasmaLean · Plans are not proofs. Every implemented claim must identify its assumptions, declaration, and build result.</footer></body></html>

@@ -1,0 +1,166 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="Primary sources, extraction discipline, software roles, and theorem reading order."><title>Literature · PlasmaLean</title><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css"><link rel="stylesheet" href="assets/site.css"><script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script><script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"></script><script defer src="assets/site.js"></script></head><body>
+  <header class="site-header"><div class="header-inner">
+    <a class="brand" href="index.html"><span class="brand-mark">λ</span><span>PlasmaLean<small>Verified stellarator design</small></span></a>
+    <div class="header-links"><a href="index.html">Home</a><a href="handbook.html">Handbook</a><a href="roadmap.html">Roadmap</a><a href="literature.html">Sources</a><a href="#" class="search-link" data-search>Search <span aria-hidden="true">⌘K</span></a><a href="https://github.com/siddhartha-gadgil/PlasmaLean">GitHub ↗</a></div>
+    <button class="menu-toggle" data-menu aria-label="Open handbook navigation" aria-expanded="false">☰</button>
+  </div></header><div class="app-shell"><nav class="side-nav" aria-label="Handbook chapters"><div class="nav-kicker">Explore</div><a href="index.html">Home · illustrated overview</a><a href="handbook.html">Handbook &amp; tasks</a><a href="#" data-search>Search handbook</a><div class="nav-kicker">Foundation</div><a href="domain-library.html"><span class="nav-number">00</span>Library method</a><a href="model-contracts.html"><span class="nav-number">01</span>Model contracts</a><div class="nav-kicker">Physics</div><a href="geometry-and-fields.html"><span class="nav-number">02</span>Geometry & fields</a><a href="plasma-models-and-equilibrium.html"><span class="nav-number">03</span>Models & equilibrium</a><a href="mhd-stability.html"><span class="nav-number">04</span>MHD stability</a><a href="particles-and-transport.html"><span class="nav-number">05</span>Particles & transport</a><div class="nav-kicker">Verification</div><a href="verified-numerics.html"><span class="nav-number">06</span>Verified numerics</a><div class="nav-kicker">Design</div><a href="coils-and-design.html"><span class="nav-number">07</span>Coils & design</a><a href="materials-and-engineering.html"><span class="nav-number">08</span>Materials & engineering</a><div class="nav-kicker">Program</div><a href="roadmap.html"><span class="nav-number">09</span>Roadmap</a><a href="literature.html" aria-current="page"><span class="nav-number">10</span>Literature</a></nav><main class="doc">
+    <section class="doc-hero"><div class="eyebrow">Program · PlasmaLean handbook</div><h1>Literature and source-extraction guide</h1><p>Primary sources, extraction discipline, software roles, and theorem reading order.</p><div class="hero-meta"><span>Lean 4.34.1</span><span>Mathlib 4.34.1</span><span>9 tracked tasks</span></div></section>
+    <div class="progress-banner"><span class="progress-dot"></span><div><strong>Current implementation status</strong>Planning only — no Lean code written. The material below is a specification and roadmap, not a report of compiled declarations or completed certificates.</div></div>
+    <p class="overview-return"><a href="index.html#references">← Illustrated introduction: Literature overview</a></p><article class="prose"><p>These are entry points for a coding agent, organized around the theorem backlogs in this directory. Prefer the primary paper, author's manuscript, publisher record, or official software documentation. Read the source before importing a theorem: a review, numerical demonstration, or bibliography entry does not supply missing hypotheses.</p>
+<p>The guide was assembled on 2026-10-10. Publication metadata and primary entry points were checked where accessible; it is not a claim that every full text has been audited. Exact theorem/equation locators must be recorded during extraction, rather than invented from an abstract. Links to arXiv are unversioned entry points: pin the version actually used.</p>
+<h2 id="contents">Contents</h2>
+<ul>
+<li><a href="#source-extraction-protocol">Source extraction protocol</a></li>
+<li><a href="#geometry-equilibrium-and-symmetry">Geometry, equilibrium, and symmetry</a></li>
+<li><a href="#stability-and-kinetic-theory">Stability and kinetic theory</a></li>
+<li><a href="#validated-computation-and-analysis">Validated computation and analysis</a></li>
+<li><a href="#design-algorithms-and-software">Design algorithms and software</a></li>
+<li><a href="#engineering-materials-and-experiment">Engineering, materials, and experiment</a></li>
+<li><a href="#reading-order-and-theorem-targets">Reading order and theorem targets</a></li>
+</ul>
+<h2 id="source-extraction-protocol">Source extraction protocol</h2>
+<p>For each imported result, record:</p>
+<ol>
+<li>Authors, title, year, DOI/arXiv version, stable URL, and access date.</li>
+<li>Exact theorem, section, equation, or page, including any erratum.</li>
+<li>Model, units, coordinate normalization, domain, boundary conditions, regularity, and parameter range.</li>
+<li>All quantifiers and nondegeneracy/positivity assumptions; identify hidden existence, uniqueness, spectral, or convergence assumptions.</li>
+<li>The precise conclusion and whether it is exact, asymptotic, conditional, numerical, or empirical.</li>
+<li>The proposed Lean statement, definition correspondence, required Mathlib lemmas, and a sanity example.</li>
+<li>Any gap between the source result and the desired design contract.</li>
+</ol>
+<p>For data, additionally record material grade, experimental conditions, processing/version, uncertainty interpretation, interpolation domain, and conservative envelopes. For software, pin the release/commit, input conventions, normalization, and source of numerical error. A solver's self-reported residual is candidate data until its enclosure is checked.</p>
+<h2 id="geometry-equilibrium-and-symmetry">Geometry, equilibrium, and symmetry</h2>
+<ul>
+<li><strong>Boozer81.</strong> A. H. Boozer (1981), <em>Plasma equilibrium with rational magnetic surfaces</em>, Physics of Fluids 24, 1999–2003. <a href="https://doi.org/10.1063/1.863297">DOI: 10.1063/1.863297</a>. Starting point for magnetic-coordinate conventions. Translate flux and angle normalization explicitly; construct charts on an annulus and handle the axis separately.</li>
+</ul>
+<ul>
+<li><strong>GB91-field.</strong> D. A. Garren and A. H. Boozer (1991), <em>Magnetic field strength of toroidal plasma equilibria</em>, Physics of Fluids B 3, 2805–2821. <a href="https://doi.org/10.1063/1.859915">DOI: 10.1063/1.859915</a>. Extract near-axis expansion equations, ordering, and equilibrium compatibility conditions.</li>
+</ul>
+<ul>
+<li><strong>GB91-existence.</strong> D. A. Garren and A. H. Boozer (1991), <em>Existence of quasihelically symmetric stellarators</em>, Physics of Fluids B 3, 2822–2834. <a href="https://doi.org/10.1063/1.859916">DOI: 10.1063/1.859916</a>. Extract the actual source-specific restrictions; do not turn a generic overdetermined expansion into a universal nonexistence claim.</li>
+</ul>
+<ul>
+<li><strong>LS19.</strong> M. Landreman and W. Sengupta (2019), <em>Constructing stellarators with quasisymmetry to high order</em>. <a href="https://arxiv.org/abs/1908.10253">arXiv:1908.10253</a>; <a href="https://www.cambridge.org/core/journals/journal-of-plasma-physics/article/constructing-stellarators-with-quasisymmetry-to-high-order/A7D61D398C54B95EB3881F499457D4B7">publisher full text</a>. Use the explicit near-axis construction and <strong>Appendix A</strong>, which identifies corrections and convention changes relative to the original Garren–Boozer formulas. Prove coefficient identities first; convergence and remainder bounds are separate targets.</li>
+</ul>
+<ul>
+<li><strong>BKM20.</strong> J. W. Burby, N. Kallinikos, and R. S. MacKay (2020), <em>Some mathematics for quasi-symmetry</em>. <a href="https://arxiv.org/abs/1912.06468">arXiv:1912.06468</a>. Useful for geometric definitions, reduced dynamics, and conservation laws. Extract which notion of quasisymmetry and which guiding-centre approximation each theorem uses.</li>
+</ul>
+<ul>
+<li><strong>ELPS.</strong> A. Enciso, A. Luque, and D. Peralta-Salas, <em>MHD equilibria with nonconstant pressure in nondegenerate toroidal domains</em>, Journal of the European Mathematical Society 27 (2025), 2251–2291. <a href="https://doi.org/10.4171/JEMS/1410">DOI: 10.4171/JEMS/1410</a>; <a href="https://arxiv.org/abs/2104.08149">arXiv:2104.08149</a>. A rigorous existence reference involving piecewise-smooth equilibria and invariant structures. Preserve the interface regularity and nondegeneracy assumptions instead of claiming a global smooth nested equilibrium.</li>
+</ul>
+<ul>
+<li><strong>CDG21.</strong> P. Constantin, T. D. Drivas, and D. Ginsberg (2021), <em>On quasisymmetric plasma equilibria sustained by small force</em>, Journal of Plasma Physics 87, 905870111. <a href="https://www.cambridge.org/core/journals/journal-of-plasma-physics/article/abs/on-quasisymmetric-plasma-equilibria-sustained-by-small-force/AAB0DCC82FDBD028AE1F26841E583CA1">Publisher record</a>. The additional force is part of the result. Quantifying or removing it requires another argument.</li>
+</ul>
+<ul>
+<li><strong>MRxMHD12.</strong> S. R. Hudson et al. (2012), <em>Computation of multi-region relaxed magnetohydrodynamic equilibria</em>, Physics of Plasmas 19, 112502. <a href="https://doi.org/10.1063/1.4765691">DOI: 10.1063/1.4765691</a>; <a href="https://arxiv.org/abs/1211.3072">arXiv:1211.3072</a>. Defines a useful stepped-pressure/relaxed model and SPEC computation. Formalize interface conditions and distinguish this model from smooth ideal MHD.</li>
+</ul>
+<ul>
+<li><strong>LP22.</strong> M. Landreman and E. Paul (2022), <em>Magnetic fields with precise quasisymmetry for plasma confinement</em>, Physical Review Letters 128, 035001. <a href="https://doi.org/10.1103/PhysRevLett.128.035001">DOI: 10.1103/PhysRevLett.128.035001</a>; <a href="https://arxiv.org/abs/2108.03711">arXiv:2108.03711</a>. Numerical candidates and useful quantitative targets; numerical precision does not establish exact quasisymmetry or an all-orbit confinement theorem.</li>
+</ul>
+<ul>
+<li><strong>EPS-relaxation.</strong> A. Enciso and D. Peralta-Salas, <em>Obstructions to Topological Relaxation for Generic Magnetic Fields</em>. <a href="https://arxiv.org/abs/2308.15383">arXiv:2308.15383</a>; <a href="https://doi.org/10.1007/s00205-024-02078-5">DOI: 10.1007/s00205-024-02078-5</a>. Read the precise genericity, topology, and relaxation class before assuming arbitrary magnetic data can be relaxed to the desired equilibrium.</li>
+</ul>
+<h2 id="stability-and-kinetic-theory">Stability and kinetic theory</h2>
+<ul>
+<li><strong>BFKK58.</strong> I. B. Bernstein, E. A. Frieman, M. D. Kruskal, and R. M. Kulsrud (1958), <em>An energy principle for hydromagnetic stability problems</em>, Proceedings of the Royal Society A 244, 17–40. <a href="https://doi.org/10.1098/rspa.1958.0023">DOI: 10.1098/rspa.1958.0023</a>; <a href="https://www.hao.ucar.edu/people/phil-judge/Book/preparations/bernstein58.pdf">institution-hosted scan</a>. Start with <strong>Section 2</strong> for linearization and <strong>Section 3</strong> for the energy principle, including plasma, surface, and vacuum terms. Convert its rationalized Gaussian units to SI. Supply a modern functional-analytic treatment where the source's modal reasoning requires one.</li>
+</ul>
+<ul>
+<li><strong>Freidberg14.</strong> J. P. Freidberg (2014), <em>Ideal MHD</em>, Cambridge University Press. <a href="https://doi.org/10.1017/CBO9780511795046">DOI: 10.1017/CBO9780511795046</a>. Main textbook entry point for equilibrium, energy-principle derivations, boundary conditions, and restricted stability criteria. Record the actual chapter/equation and sign conventions used.</li>
+</ul>
+<ul>
+<li><strong>MG80.</strong> P. J. Morrison and J. M. Greene (1980), <em>Noncanonical Hamiltonian Density Formulation of Hydrodynamics and Ideal Magnetohydrodynamics</em>, Physical Review Letters 45, 790. <a href="https://doi.org/10.1103/PhysRevLett.45.790">Original DOI</a>; <a href="https://doi.org/10.1103/PhysRevLett.48.569">erratum, Physical Review Letters 48, 569</a>. An entry point for Hamiltonian/Casimir methods. A bracket or conserved functional alone does not prove coercivity, a nonlinear basin, or global existence.</li>
+</ul>
+<ul>
+<li><strong>Littlejohn83.</strong> R. G. Littlejohn (1983), <em>Variational principles of guiding centre motion</em>, Journal of Plasma Physics 29, 111–125. <a href="https://doi.org/10.1017/S002237780000060X">DOI: 10.1017/S002237780000060X</a>. Extract the variational model, ordering, symplectic structure, and reduced conservation laws. A guiding-centre theorem must retain its reduction assumptions.</li>
+</ul>
+<ul>
+<li><strong>Helander14.</strong> P. Helander (2014), <em>Theory of plasma confinement in non-axisymmetric magnetic fields</em>, Reports on Progress in Physics 77, 087001. <a href="https://doi.org/10.1088/0034-4885/77/8/087001">Original DOI</a>; <a href="https://doi.org/10.1088/1361-6633/aac9f0">2018 corrigendum</a>. Main review for stellarator confinement, omnigenity, symmetry, and neoclassical theory. Use it to locate primary results and definitions; read the corrigendum before copying formulas.</li>
+</ul>
+<ul>
+<li><strong>CS97.</strong> J. R. Cary and S. G. Shasharina (1997), <em>Helical Plasma Confinement Devices with Good Confinement Properties</em>, Physical Review Letters 78, 674. <a href="https://doi.org/10.1103/PhysRevLett.78.674">DOI: 10.1103/PhysRevLett.78.674</a>. Starting point for omnigenity and its relationship to quasisymmetry. Follow the primary derivation of bounce-action constraints and the treatment of trapped/passing particles.</li>
+</ul>
+<ul>
+<li><strong>BH07.</strong> A. J. Brizard and T. S. Hahm (2007), <em>Foundations of nonlinear gyrokinetic theory</em>, Reviews of Modern Physics 79, 421–468. <a href="https://doi.org/10.1103/RevModPhys.79.421">DOI: 10.1103/RevModPhys.79.421</a>. Extract ordering, field equations, polarization, and energy identities for one explicitly chosen gyrokinetic model; do not mix equations from different truncation orders.</li>
+</ul>
+<ul>
+<li><strong>SFINCS14.</strong> M. Landreman, H. M. Smith, A. Mollén, and P. Helander (2014), <em>Comparison of particle trajectories and collision operators for collisional transport in nonaxisymmetric plasmas</em>, Physics of Plasmas 21, 042503. <a href="https://doi.org/10.1063/1.4870077">DOI: 10.1063/1.4870077</a>; <a href="https://github.com/landreman/sfincs">SFINCS source</a>. Concrete drift-kinetic models, collision choices, and transport calculations. Prove nullspace/solvability and error bounds for the selected operator before certifying a flux.</li>
+</ul>
+<ul>
+<li><strong>MaxJ12.</strong> J. H. E. Proll et al. (2012), <em>Resilience of Quasi-Isodynamic Stellarators against Trapped-Particle Instabilities</em>, Physical Review Letters 108, 245002. <a href="https://doi.org/10.1103/PhysRevLett.108.245002">DOI: 10.1103/PhysRevLett.108.245002</a>. A restricted kinetic stability result: extract species, gradient, frequency, and ordering assumptions rather than asserting stability to all microinstabilities.</li>
+</ul>
+<ul>
+<li><strong>TP13.</strong> P. Helander, J. H. E. Proll, and G. G. Plunk (2013), <em>Collisionless microinstabilities in stellarators. I. Analytical theory of trapped-particle modes</em>, Physics of Plasmas 20, 122505. <a href="https://arxiv.org/abs/1311.3095">arXiv:1311.3095</a>; <a href="https://doi.org/10.1063/1.4977907">2017 erratum, 24, 039901</a>. Read both before deriving a sign or stability criterion.</li>
+</ul>
+<ul>
+<li><strong>TP17.</strong> G. G. Plunk, J. H. E. Proll, and P. Helander (2017), <em>Collisionless microinstabilities in stellarators. IV. The ion-driven trapped-electron mode</em>. <a href="https://arxiv.org/abs/1708.04085">arXiv:1708.04085</a>. A useful check on the scope of simplified “maximum-J implies stability” claims.</li>
+</ul>
+<h2 id="validated-computation-and-analysis">Validated computation and analysis</h2>
+<ul>
+<li><strong>Rump10.</strong> S. M. Rump (2010), <em>Verification methods: Rigorous results using floating-point arithmetic</em>, Acta Numerica 19, 287–449. <a href="https://doi.org/10.1017/S096249291000005X">DOI: 10.1017/S096249291000005X</a>; <a href="https://www.tuhh.de/ti3/rump/intlab/ActaNumerica2010.pdf">author PDF</a>. Basis for interval verification and matrix enclosures. An external verified numerical routine still needs a sound import/checker boundary in Lean.</li>
+</ul>
+<ul>
+<li><strong>NPW19.</strong> M. T. Nakao, M. Plum, and Y. Watanabe (2019), <em>Numerical Verification Methods and Computer-Assisted Proofs for Partial Differential Equations</em>. <a href="https://doi.org/10.1007/978-981-13-7669-6">DOI: 10.1007/978-981-13-7669-6</a>. Source for analytic error bounds and verified PDE methods. Check whether the specific operator is coercive/elliptic; ideal MHD does not inherit that property automatically.</li>
+</ul>
+<ul>
+<li><strong>Parameterization16.</strong> À. Haro, M. Canadell, J.-L. Figueras, A. Luque, and J. M. Mondelo (2016), <em>The Parameterization Method for Invariant Manifolds: From Rigorous Results to Effective Computations</em>. <a href="https://doi.org/10.1007/978-3-319-29662-3">DOI: 10.1007/978-3-319-29662-3</a>. Entry point for constructive invariant-manifold methods. For a KAM certificate, select a precise a posteriori theorem and extract every regularity, twist, and small-divisor constant.</li>
+</ul>
+<ul>
+<li><strong>Lessard-tutorial.</strong> J.-P. Lessard's <a href="https://www.math.mcgill.ca/jplessard/Publications_files/compuproofsDEs.pdf">computer-assisted proof tutorial entry point</a>. Use to locate explicit Newton/radii-polynomial arguments and their hypotheses. Retrieve the full document and establish the exact bibliographic/theorem locator before use; the existence of a tutorial does not validate an MHD operator.</li>
+</ul>
+<ul>
+<li><strong>Ciarlet88.</strong> P. G. Ciarlet (1988), <em>Mathematical Elasticity, Volume I: Three-Dimensional Elasticity</em>, North-Holland. <a href="https://www.elsevier.com/books/three-dimensional-elasticity/ciarlet/978-0-444-70259-3">Publisher entry</a>. Functional-analytic foundation for elasticity, boundary conditions, and existence questions. Use a linear supported-body submodel first; nonlinear/contact problems need their own assumptions.</li>
+</ul>
+<h2 id="design-algorithms-and-software">Design algorithms and software</h2>
+<ul>
+<li><strong>Hirshman83.</strong> S. P. Hirshman and J. C. Whitson (1983), <em>Steepest-descent moment method for three-dimensional magnetohydrodynamic equilibria</em>, Physics of Fluids 26, 3553–3568. <a href="https://doi.org/10.1063/1.864116">DOI: 10.1063/1.864116</a>. VMEC's variational/computational starting point. Nested-surface assumptions and a computed stationary point do not supply continuum existence or stability.</li>
+</ul>
+<ul>
+<li><strong>REGCOIL17.</strong> M. Landreman (2017), <em>An improved current potential method for fast computation of stellarator coil shapes</em>, Nuclear Fusion 57, 046003. <a href="https://arxiv.org/abs/1609.04378">arXiv:1609.04378</a>; <a href="https://regcoil.readthedocs.io/en/latest/">official documentation</a>. Surface-current inverse design and regularization. Keep normal-field mismatch, current density, and realizable finite-coil geometry as separate quantities.</li>
+</ul>
+<ul>
+<li><strong>Coils22.</strong> F. Wechsung, M. Landreman, A. Giuliani, A. Cerfon, and G. Stadler (2022), <em>Precise stellarator quasi-symmetry can be achieved with electromagnetic coils</em>, PNAS 119, e2202084119. <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC9060451/">Primary article</a>; <a href="https://github.com/florianwechsung/CoilsForPreciseQS">reproduction repository</a>. Useful candidate-generation and finite-coil examples. Recheck continuous clearance, finite conductor field, tolerance, and orbit claims.</li>
+</ul>
+<ul>
+<li><strong>SingleStage22.</strong> A. Giuliani, F. Wechsung, A. Cerfon, G. Stadler, and M. Landreman (2022), <em>Single-stage gradient-based stellarator coil design: Optimization for near-axis quasi-symmetry</em>. <a href="https://www.sciencedirect.com/science/article/pii/S0021999122002091">Publisher article</a>. Shows an optimization route coupling coil design and near-axis objectives; optimizer convergence is evidence about a candidate rather than a proof certificate.</li>
+</ul>
+<ul>
+<li><strong>Direct23.</strong> A. Giuliani, F. Wechsung, A. Cerfon, M. Landreman, and G. Stadler, <em>Direct stellarator coil optimization for nested magnetic surfaces with precise quasi-symmetry</em>. <a href="https://arxiv.org/abs/2210.03248">arXiv:2210.03248</a>. Check the nested-surface representation and residual measure before choosing what to certify.</li>
+</ul>
+<ul>
+<li><strong>DESC23.</strong> D. Panici, R. Conlin, D. W. Dudt, K. Unalmis, and E. Kolemen (2023), <em>The DESC stellarator code suite. Part 1. Quick and accurate equilibria computations</em>, Journal of Plasma Physics 89, 955890303. <a href="https://doi.org/10.1017/S0022377823000272">DOI: 10.1017/S0022377823000272</a>; <a href="https://arxiv.org/abs/2203.17173">arXiv:2203.17173</a>. An equilibrium candidate generator with explicit discretization conventions, not a checked continuum proof.</li>
+</ul>
+<p>Official implementation/documentation entry points:</p>
+<div class="table-wrap"><table><thead><tr><th>Tool</th><th>Primary entry point</th><th>Role in PlasmaLean</th></tr></thead><tbody><tr><td>Lean/Mathlib</td><td><a href="https://leanprover-community.github.io/mathlib4_docs/">Mathlib documentation</a></td><td>Search the pinned source before relying on current online API names</td></tr><tr><td>SIMSOPT</td><td><a href="https://simsopt.readthedocs.io/en/latest/">Documentation</a></td><td>Candidate optimization, geometry, coils, diagnostics</td></tr><tr><td>DESC</td><td><a href="https://desc-docs.readthedocs.io/en/stable/">Documentation</a></td><td>Spectral equilibrium candidates and residuals</td></tr><tr><td>REGCOIL</td><td><a href="https://regcoil.readthedocs.io/en/latest/">Documentation</a></td><td>Surface-current inverse design</td></tr><tr><td>SFINCS</td><td><a href="https://github.com/landreman/sfincs">Source</a></td><td>Selected neoclassical transport models</td></tr><tr><td>OpenMC</td><td><a href="https://docs.openmc.org/en/stable/">Documentation</a></td><td>Neutron transport, material definitions, tally normalization and uncertainty</td></tr></tbody></table></div>
+<p>Pin versions and read their conventions. None is automatically part of the trusted Lean theorem path.</p>
+<h2 id="engineering-materials-and-experiment">Engineering, materials, and experiment</h2>
+<ul>
+<li><strong>KMM16.</strong> J. Knaster, A. Moeslang, and T. Muroga (2016), <em>Materials research for fusion</em>. <a href="https://doi.org/10.1038/nphys3735">DOI: 10.1038/nphys3735</a>; <a href="https://publikationen.bibliothek.kit.edu/1000054752">author-institution record</a>. Map irradiation, thermal, and mechanical challenges to material-law inputs and explicit validity limits.</li>
+</ul>
+<ul>
+<li><strong>DEMO18.</strong> J.-H. You et al. (2018), <em>European divertor target concepts for DEMO: Design rationales and high heat flux performance</em>, Nuclear Materials and Energy 16, 1–11. <a href="https://doi.org/10.1016/j.nme.2018.05.012">DOI: 10.1016/j.nme.2018.05.012</a>; <a href="https://publikationen.bibliothek.kit.edu/1000085927">author-institution record</a>. A concrete source for component models, cooling concepts, and load tests. Transfer a numerical limit only with the original geometry/material/operation assumptions.</li>
+</ul>
+<ul>
+<li><strong>REBCO25.</strong> P. Huslage et al. (2025), <em>Strain optimisation for ReBCO high-temperature superconducting stellarator coils in SIMSOPT</em>, Journal of Plasma Physics 91, E71. <a href="https://doi.org/10.1017/S0022377825000224">DOI: 10.1017/S0022377825000224</a>; <a href="https://arxiv.org/abs/2409.01925">arXiv:2409.01925</a>. Source for tape-frame, hard-way bending, and torsion objectives. Full conductor critical-surface, irradiation, pack mechanics, and quench constraints still require additional data/models.</li>
+</ul>
+<ul>
+<li><strong>HELIAS13.</strong> F. Schauer et al. (2013), <em>HELIAS 5-B magnet system structure and maintenance concept</em>. <a href="https://doi.org/10.1016/j.fusengdes.2013.01.035">DOI: 10.1016/j.fusengdes.2013.01.035</a>; <a href="https://pure.mpg.de/pubman/item/item_2145357">author-institution record</a>. Reactor magnet/support/maintenance integration; source design-specific requirements instead of imposing universal clearances.</li>
+</ul>
+<ul>
+<li><strong>W7X-transport21.</strong> C. D. Beidler et al. (2021), <em>Demonstration of reduced neoclassical energy transport in Wendelstein 7-X</em>, Nature 596, 221–226. <a href="https://doi.org/10.1038/s41586-021-03687-w">DOI: 10.1038/s41586-021-03687-w</a>; <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC8357633/">primary article</a>. Validation evidence for selected transport predictions and regimes, not a theorem for arbitrary future stellarators.</li>
+</ul>
+<ul>
+<li><strong>W7X-divertor21.</strong> M. Jakubowski et al. (2021), <em>Overview of the results from divertor experiments with attached and detached plasmas at Wendelstein 7-X and their implications for steady-state operation</em>, Nuclear Fusion 61, 106003. <a href="https://doi.org/10.1088/1741-4326/ac1b68">DOI: 10.1088/1741-4326/ac1b68</a>; <a href="https://www.ornl.gov/publication/overview-results-divertor-experiments-attached-and-detached-plasmas-wendelstein-7-x-0">author-institution record</a>. Source edge/exhaust operating envelopes and their measured conditions.</li>
+</ul>
+<ul>
+<li><strong>BH92-reactivity.</strong> H.-S. Bosch and G. M. Hale (1992), <em>Improved formulas for fusion cross-sections and thermal reactivities</em>, Nuclear Fusion 32, 611–631. <a href="https://doi.org/10.1088/0029-5515/32/4/I07">Original DOI</a>; <a href="https://doi.org/10.1088/0029-5515/33/12/513">1993 corrigendum</a>. Useful fit for a declared fuel/temperature domain. Preserve units, species conventions, coefficients, and fit uncertainty; do not treat the fit as an exact physical law.</li>
+</ul>
+<ul>
+<li><strong>FENDL-data.</strong> IAEA, <a href="https://www-nds.iaea.org/fendl/">Fusion Evaluated Nuclear Data Library</a>. Pin the dataset release, nuclide files, processing, energy groups, and response definitions. Evaluated cross sections are supplied physical data; a deterministic proof needs declared envelopes, while a probabilistic claim needs its statistical assumptions.</li>
+</ul>
+<p>These references establish starting points rather than a complete component qualification dataset. For a chosen material/device, additionally retrieve the primary conductivity, critical-current, fracture/fatigue, irradiation, coolant, and joint data. Formalize the envelope interpretation before consuming it in a design proof.</p>
+<h2 id="reading-order-and-theorem-targets">Reading order and theorem targets</h2>
+<div class="table-wrap"><table><thead><tr><th>First target</th><th>Read first</th><th>Follow-on obligation</th><th>Progress so far</th></tr></thead><tbody><tr><td>Force-balance tangency and a vacuum/force-free distinction</td><td>Freidberg14; <a href="plasma-models-and-equilibrium.html">02</a></td><td>Construct consistent instances in Lean</td><td class="progress-cell">Planning only — no Lean code written</td></tr><tr><td>Static fixed-boundary quadratic energy</td><td>BFKK58; Freidberg14; <a href="mhd-stability.html">03</a></td><td>Boundary terms, operator domain, quotient and all-mode bound</td><td class="progress-cell">Planning only — no Lean code written</td></tr><tr><td>Boozer/near-axis coefficient identities</td><td>Boozer81; GB91-field; GB91-existence; LS19 Appendix A</td><td>Annular chart, regularity and series remainder</td><td class="progress-cell">Planning only — no Lean code written</td></tr><tr><td>Invariant barrier or approximate-invariant loss time</td><td>BKM20; Littlejohn83; Helander14; <a href="particles-and-transport.html">04</a></td><td>Particle initial set, reduction error and horizon</td><td class="progress-cell">Planning only — no Lean code written</td></tr><tr><td>Exact retained-mode / continuous-clearance checker</td><td>Rump10; <a href="verified-numerics.html">05</a></td><td>Infinite tails and full domain coverage</td><td class="progress-cell">Planning only — no Lean code written</td></tr><tr><td>Validated equilibrium or invariant torus</td><td>ELPS; Parameterization16; NPW19</td><td>Source-specific constructive constants and derivative loss</td><td class="progress-cell">Planning only — no Lean code written</td></tr><tr><td>Coils producing the intended field</td><td>REGCOIL17; Coils22; DESC23; <a href="coils-and-design.html">06</a></td><td>Finite conductor, plasma-current response and tolerances</td><td class="progress-cell">Planning only — no Lean code written</td></tr><tr><td>Slab heat, ribbon strain, and dump-energy margins</td><td>DEMO18; REBCO25; Ciarlet88; <a href="materials-and-engineering.html">07</a></td><td>Primary material data and coupled PDE/ODE extensions</td><td class="progress-cell">Planning only — no Lean code written</td></tr><tr><td>Fuel, shielding, lifetime, and practical integration</td><td>BH92-reactivity; FENDL-data; KMM16; HELIAS13</td><td>Neutronics, inventory, degradation and net-power certificates</td><td class="progress-cell">Planning only — no Lean code written</td></tr></tbody></table></div>
+<p>Use <a href="roadmap.html">08-roadmap.md</a> to select a milestone. Existing literature supports substantial parts of the program; the research targets require separate novelty review and new mathematics where the available hypotheses or quantitative conclusions fall short.</p>
+</article>
+  </main><aside class="toc" aria-label="On this page"><div class="nav-kicker">On this page</div><ul><a href="#contents">Contents</a><a href="#source-extraction-protocol">Source extraction protocol</a><a href="#geometry-equilibrium-and-symmetry">Geometry, equilibrium, and symmetry</a><a href="#stability-and-kinetic-theory">Stability and kinetic theory</a><a href="#validated-computation-and-analysis">Validated computation and analysis</a><a href="#design-algorithms-and-software">Design algorithms and software</a><a href="#engineering-materials-and-experiment">Engineering, materials, and experiment</a><a href="#reading-order-and-theorem-targets">Reading order and theorem targets</a></ul></aside></div><dialog id="search-dialog" class="search-dialog"><div class="search-box"><input id="search-input" type="search" placeholder="Search the handbook…" aria-label="Search handbook"><div id="search-results" class="search-results"><p>Search topics and task IDs across the handbook.</p></div></div></dialog><footer class="site-footer">PlasmaLean · Plans are not proofs. Every implemented claim must identify its assumptions, declaration, and build result.</footer></body></html>

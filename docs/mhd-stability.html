@@ -1,0 +1,122 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="Energy principles, continuum operators, neutral modes, and honest stability certificates."><title>MHD stability · PlasmaLean</title><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css"><link rel="stylesheet" href="assets/site.css"><script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script><script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"></script><script defer src="assets/site.js"></script></head><body>
+  <header class="site-header"><div class="header-inner">
+    <a class="brand" href="index.html"><span class="brand-mark">λ</span><span>PlasmaLean<small>Verified stellarator design</small></span></a>
+    <div class="header-links"><a href="index.html">Home</a><a href="handbook.html">Handbook</a><a href="roadmap.html">Roadmap</a><a href="literature.html">Sources</a><a href="#" class="search-link" data-search>Search <span aria-hidden="true">⌘K</span></a><a href="https://github.com/siddhartha-gadgil/PlasmaLean">GitHub ↗</a></div>
+    <button class="menu-toggle" data-menu aria-label="Open handbook navigation" aria-expanded="false">☰</button>
+  </div></header><div class="app-shell"><nav class="side-nav" aria-label="Handbook chapters"><div class="nav-kicker">Explore</div><a href="index.html">Home · illustrated overview</a><a href="handbook.html">Handbook &amp; tasks</a><a href="#" data-search>Search handbook</a><div class="nav-kicker">Foundation</div><a href="domain-library.html"><span class="nav-number">00</span>Library method</a><a href="model-contracts.html"><span class="nav-number">01</span>Model contracts</a><div class="nav-kicker">Physics</div><a href="geometry-and-fields.html"><span class="nav-number">02</span>Geometry & fields</a><a href="plasma-models-and-equilibrium.html"><span class="nav-number">03</span>Models & equilibrium</a><a href="mhd-stability.html" aria-current="page"><span class="nav-number">04</span>MHD stability</a><a href="particles-and-transport.html"><span class="nav-number">05</span>Particles & transport</a><div class="nav-kicker">Verification</div><a href="verified-numerics.html"><span class="nav-number">06</span>Verified numerics</a><div class="nav-kicker">Design</div><a href="coils-and-design.html"><span class="nav-number">07</span>Coils & design</a><a href="materials-and-engineering.html"><span class="nav-number">08</span>Materials & engineering</a><div class="nav-kicker">Program</div><a href="roadmap.html"><span class="nav-number">09</span>Roadmap</a><a href="literature.html"><span class="nav-number">10</span>Literature</a></nav><main class="doc">
+    <section class="doc-hero"><div class="eyebrow">Physics · PlasmaLean handbook</div><h1>Ideal-MHD stability: from energy identities to useful certificates</h1><p>Energy principles, continuum operators, neutral modes, and honest stability certificates.</p><div class="hero-meta"><span>Lean 4.34.1</span><span>Mathlib 4.34.1</span><span>10 tracked tasks</span></div></section>
+    <div class="progress-banner"><span class="progress-dot"></span><div><strong>Current implementation status</strong>Planning only — no Lean code written. The material below is a specification and roadmap, not a report of compiled declarations or completed certificates.</div></div>
+    <p class="overview-return"><a href="index.html#theory">← Illustrated introduction: Theory engine &amp; graphics</a></p><article class="prose"><p>This note separates directly derived algebraic identities, established source theory to formalize, and new research targets. Read <a href="model-contracts.html">00</a>, <a href="plasma-models-and-equilibrium.html">02</a>, and the stability entries in <a href="literature.html#stability-and-kinetic-theory">09</a>.</p>
+<h2 id="contents">Contents</h2>
+<ul>
+<li><a href="#start-with-an-abstract-energy-theorem">Start with an abstract energy theorem</a></li>
+<li><a href="#the-continuum-mhd-bridge">The continuum MHD bridge</a></li>
+<li><a href="#elementary-sufficient-bounds">Elementary sufficient bounds</a></li>
+<li><a href="#neutral-modes-and-continuous-spectrum">Neutral modes and continuous spectrum</a></li>
+<li><a href="#free-boundaries-and-local-criteria">Free boundaries and local criteria</a></li>
+<li><a href="#discretization-and-nonlinear-targets">Discretization and nonlinear targets</a></li>
+<li><a href="#theorem-backlog">Theorem backlog</a></li>
+</ul>
+<h2 id="start-with-an-abstract-energy-theorem">Start with an abstract energy theorem</h2>
+<p>Let <code>H</code> be a real Hilbert space and <code>V</code> a real normed displacement space continuously embedded in <code>H</code>. Let <code>m:H×H→ℝ</code> be a continuous, symmetric, time-independent positive bilinear inertia form, and <code>a:V×V→ℝ</code> a continuous, symmetric, time-independent bilinear potential-energy form. On a connected time interval containing <code>0</code>, take <code>ξ∈C¹(I,V)</code> whose embedded curve is <code>C²(I,H)</code>. Thus <code>ξ̇∈V</code> is an admissible test vector. For a solution of</p>
+<div class="math-block">$$m(\ddot\xi,\eta)+a(\xi,\eta)=0\qquad(\eta\in V),$$</div>
+<p>prove</p>
+<div class="math-block">$$\frac{d}{dt}\left[\tfrac12m(\dot\xi,\dot\xi)
+                  +\tfrac12a(\xi,\xi)\right]=0.$$</div>
+<p>If <code>m(v,v) ≥ m₀ ‖v‖²_H</code> and <code>a(ξ,ξ) ≥ c ‖ξ‖²_V</code> with positive constants, then</p>
+<div class="math-block">$$\|\dot\xi(t)\|_H^2\le 2E(0)/m_0,\qquad
+\|\xi(t)\|_V^2\le 2E(0)/c.$$</div>
+<p>State this conditional on existence and regularity first; prove evolution well-posedness separately. This theorem can be formalized before any continuum MHD PDE.</p>
+<p>For a self-adjoint realization <code>A</code> of the form with inertia normalized to the Hilbert inner product, distinguish:</p>
+<ul>
+<li><code>a≥0</code> and no negative spectral part;</li>
+<li>absence of exponentially growing modes;</li>
+<li>uniform boundedness in a specified norm;</li>
+<li>a positive spectral gap/coercivity;</li>
+<li>decay or asymptotic stability.</li>
+</ul>
+<p>They are different conclusions. A conservative positive system oscillates; energy conservation alone gives no decay.</p>
+<h2 id="the-continuum-mhd-bridge">The continuum MHD bridge</h2>
+<p>Choose a static isotropic equilibrium <code>(ρ,p,B,J)</code> with <code>ρ ≥ ρ_* &gt;0</code>, <code>μ₀&gt;0</code>, and <code>Γ&gt;1</code>. Start with a bounded smooth fixed domain and displacements of zero boundary trace, so the boundary terms can be handled explicitly.</p>
+<p>The Eulerian perturbations are</p>
+<div class="math-block">$$\delta B=Q=\nabla\times(\xi\times B),\quad
+\delta\rho=-\nabla\cdot(\rho\xi),\quad
+\delta p=-\xi\cdot\nabla p-\Gamma p\,\nabla\cdot\xi.$$</div>
+<p>The no-flow linearized force is</p>
+<div class="math-block">$$F\xi=\frac{(\nabla\times Q)\times B}{\mu_0}
+      +J\times Q
+      +\nabla\!\left(\xi\cdot\nabla p+\Gamma p\,\nabla\cdot\xi\right),
+\qquad \rho\ddot\xi=F\xi.$$</div>
+<p>Derive rather than postulate these expressions from the selected MHD model. Define</p>
+<div class="math-block">$$q(\xi)=-\int_\Omega \xi\cdot F\xi\,dx,\qquad
+\delta W(\xi)=\tfrac12 q(\xi).$$</div>
+<p>Integration by parts under the stated boundary conditions gives</p>
+<div class="math-block">$$q(\xi)=\int_\Omega\left[
+\frac{|Q|^2}{\mu_0}
+-\xi\cdot(J\times Q)
++\Gamma p\,(\nabla\cdot\xi)^2
++(\xi\cdot\nabla p)\nabla\cdot\xi
+\right]dx.$$</div>
+<p>Prove symmetry of the polarized form using equilibrium and boundary conditions. Symmetry of a formal differential expression is not already a self-adjoint operator theorem: specify the closed form/domain, density, and analytic realization before invoking spectral theory.</p>
+<p>The abstract theorem then applies with <code>m(v,v)=∫ρ|v|²</code> and <code>a</code> the polarization of <code>q</code>. The <a href="literature.html#stability-and-kinetic-theory">Bernstein–Frieman–Kruskal–Kulsrud energy principle</a> is the historical source; <a href="literature.html#stability-and-kinetic-theory">Freidberg</a> gives the broader model context.</p>
+<h3 id="sign-sanity-check">Sign sanity check</h3>
+<p>For <code>ξ(t)=e^{λt}ξ₀</code>, the equation is <code>Fξ₀=λ²ρξ₀</code>. Multiplication by <code>ξ₀</code> gives</p>
+<div class="math-block">$$q(\xi_0)=-\lambda^2\int_\Omega\rho|\xi_0|^2dx.$$</div>
+<p>Thus positive <code>q</code> corresponds to oscillatory time dependence. Equivalently define the positive stability operator <code>A=-ρ^{-1}F</code> and write <code>Aξ₀=ω²ξ₀</code>. Do not label positive eigenvalues of <code>F</code> as stable.</p>
+<h2 id="elementary-sufficient-bounds">Elementary sufficient bounds</h2>
+<p>Let <code>p≥p_*&gt;0</code>, <code>J_∞=‖J‖_∞</code>, <code>P_∞=‖∇p‖_∞</code>. Put <code>d=div ξ</code>. Two applications of Young's inequality yield</p>
+<div class="math-block">$$q(\xi)\ge
+\frac{1}{2\mu_0}\|Q\|_2^2
++\frac{\Gamma p_*}{2}\|d\|_2^2
+-C_{\rm drive}\|\xi\|_2^2,$$</div>
+<div class="math-block">$$C_{\rm drive}=
+\frac{\mu_0J_\infty^2}{2}
++\frac{P_\infty^2}{2\Gamma p_*}.$$</div>
+<p>This is a concrete early theorem. If a separate geometry theorem establishes, on the chosen admissible quotient,</p>
+<div class="math-block">$$\frac{1}{2\mu_0}\|Q\|_2^2
++\frac{\Gamma p_*}{2}\|d\|_2^2
+\ge C_{\rm geom}\|\xi\|_2^2,$$</div>
+<p>then <code>C_geom &gt; C_drive</code> supplies an <code>L²</code> coercivity margin. The missing geometry inequality is the central difficulty, and may be false for the full displacement space. Do not insert it as an unnamed universal law.</p>
+<p>More useful bounds may exploit parallel/perpendicular decomposition, field-line derivatives, pressure/curvature cancellation, square completion, or a stable reference form:</p>
+<div class="math-block">$$q=q_{\rm ref}+r,\quad
+q_{\rm ref}\ge c_{\rm ref}\|\xi\|_V^2,\quad
+|r|\le c_{\rm err}\|\xi\|_V^2.$$</div>
+<p>Then <code>c_ref &gt; c_err</code> certifies stability in that norm. State which norm controls the physical perturbation and prove the necessary comparison. Seeking sharp geometry-sensitive versions of these estimates is a useful AI theory-discovery task.</p>
+<h2 id="neutral-modes-and-continuous-spectrum">Neutral modes and continuous spectrum</h2>
+<p>For a uniform nonzero field, constant pressure, and constant positive density on a periodic domain, put <code>b₀=B/|B|</code> and choose a nonzero constant speed <code>v₀</code>. The displacement <code>ξ(t)=t v₀b₀</code> has <code>Q=0</code> and <code>div ξ=0</code>. It solves the linearized equation and grows as a displacement, while the Eulerian magnetic/density/pressure perturbations vanish and the velocity is constant. This example uses periodic boundary conditions rather than the zero-trace fixed boundary above; nonconstant density would additionally require <code>B·∇ρ=0</code> for the density perturbation to vanish.</p>
+<p>This exact example shows why nonnegative <code>q</code> does not imply bounded displacement in every norm. Clarify whether the theorem controls physical Eulerian observables, a quotient by relabelings, or the full Lagrangian displacement.</p>
+<p>On quasiperiodic field lines, small denominators can destroy a simple Poincaré inequality for the field-aligned derivative in a strong isotropic norm. Ideal MHD can have Alfvén/slow continua and singular modes; do not assume a compact resolvent, uniform ellipticity, or a discrete complete eigenbasis merely to use finite-element spectral machinery.</p>
+<p>Develop a correct energy space and a justified closed operator realization. Alternatives to a positive gap include:</p>
+<ul>
+<li>nonnegative form plus a characterization of its kernel;</li>
+<li>coercivity on a symmetry-reduced subspace;</li>
+<li>control of an observable rather than every derivative;</li>
+<li>finite-time bounds for the relevant initial class;</li>
+<li>a rigorous negative-energy test displacement demonstrating failure of a proposed stability condition.</li>
+</ul>
+<h2 id="free-boundaries-and-local-criteria">Free boundaries and local criteria</h2>
+<p>For a moving plasma–vacuum interface, the potential energy contains</p>
+<div class="math-block">$$\delta W=\delta W_{\rm plasma}+\delta W_{\rm interface}
+          +\delta W_{\rm vacuum},
+\qquad
+\delta W_{\rm vacuum}
+=\frac1{2\mu_0}\int_{\Omega_v}|\delta B_v|^2dx,$$</div>
+<p>with the appropriate vacuum constraints, interface displacement, pressure jump derivatives, and outer wall conditions. Extract and formalize the interface term from the chosen source; it cannot be dropped because the vacuum term is nonnegative.</p>
+<p>A resistive wall and plasma flow require their own dynamical analysis. A fixed perfectly conducting wall changes the perturbation class and can change stability.</p>
+<p>Formalize Mercier/Suydam/ballooning results as separate local or asymptotic theorems with precise hypotheses and sign conventions. A magnetic well is one ingredient, not an all-mode sufficient criterion. A rational-surface current singularity requires its actual compatibility analysis; do not assume every such singularity produces a negative Mercier discriminant.</p>
+<p>Use local criteria to eliminate candidates and sharpen global estimates. Use the full energy/operator theorem for any advertised global ideal-MHD conclusion.</p>
+<h2 id="discretization-and-nonlinear-targets">Discretization and nonlinear targets</h2>
+<p>For <code>V_N ⊂ V</code>,</p>
+<div class="math-block">$$\inf_{\xi\in V\setminus\{0\}}\frac{q(\xi)}{m(\xi,\xi)}
+\le
+\inf_{\xi\in V_N\setminus\{0\}}\frac{q(\xi)}{m(\xi,\xi)}.$$</div>
+<p>A positive trial-space minimum is therefore insufficient. A rigorously evaluated admissible negative test direction, however, establishes a negative form value. Turning that into dynamical instability needs the appropriate energy-principle/operator hypotheses.</p>
+<p><a href="verified-numerics.html">05-verified-numerics.md</a> gives a retained/tail block criterion and error budget. Prove it for the correct MHD space; a high-mode elliptic tail estimate may not be available.</p>
+<p>For nonlinear stability, specify dynamically accessible perturbations or a constrained energy/Casimir construction. If a proved conserved functional <code>ℰ</code> satisfies, for a distance <code>d</code> to the equilibrium orbit,</p>
+<div class="math-block">$$c_- d(z,z_*)^2\le \mathcal E(z)-\mathcal E(z_*)
+\le c_+ d(z,z_*)^2$$</div>
+<p>on an admissible neighborhood of radius <code>r</code>, with <code>0&lt;c_-≤c_+</code>, conservation and continuity give an energy barrier. Initial distance less than <code>r√(c_-/c_+)</code> cannot reach the neighborhood boundary while the solution exists continuously in this class; within it, <code>d(t)≤√(c_+/c_-)d(0)</code>. Prove continuation/global existence separately if claiming an all-time theorem. A positive Hessian without a remainder bound, constraint treatment, and norm control does not supply this conclusion. See <a href="literature.html#stability-and-kinetic-theory">Morrison–Greene</a> for the Hamiltonian starting point, not a ready-made stellarator stability theorem.</p>
+<h2 id="theorem-backlog">Theorem backlog</h2>
+<div class="table-wrap"><table><thead><tr><th>ID</th><th>Target</th><th>Main missing ingredient</th><th>Progress so far</th></tr></thead><tbody><tr><td>S1</td><td>Abstract energy conservation and coercivity bound</td><td>Hilbert-space differentiation</td><td class="progress-cell">Planning only — no Lean code written</td></tr><tr><td>S2</td><td>Linearized MHD identities and fixed-boundary energy</td><td>Calculus and justified integration</td><td class="progress-cell">Planning only — no Lean code written</td></tr><tr><td>S3</td><td>Young-inequality drive bound above</td><td>Exact norm inequalities</td><td class="progress-cell">Planning only — no Lean code written</td></tr><tr><td>S4</td><td>Neutral-mode counterexample and quotient definition</td><td>Admissible-space characterization</td><td class="progress-cell">Planning only — no Lean code written</td></tr><tr><td>S5</td><td>Self-adjoint realization and precise energy principle</td><td>Closed forms, domains, spectral/evolution theory</td><td class="progress-cell">Planning only — no Lean code written</td></tr><tr><td>S6</td><td>Source-specific local stability criteria</td><td>Exact hypotheses and normalization</td><td class="progress-cell">Planning only — no Lean code written</td></tr><tr><td>S7</td><td>All-mode certified bound for a restricted useful configuration</td><td>Tail/coupling analysis; potentially research</td><td class="progress-cell">Planning only — no Lean code written</td></tr><tr><td>S8</td><td>Free-boundary certificate with coils/vacuum/wall</td><td>Interface operator and trace bounds</td><td class="progress-cell">Planning only — no Lean code written</td></tr><tr><td>S9</td><td>Nonlinear orbital stability with quantitative basin</td><td>Conservation, constraints, remainders, continuation</td><td class="progress-cell">Planning only — no Lean code written</td></tr><tr><td>S10</td><td>Finite-beta robust stability for a constructible 3-D family</td><td>Major research target; may require a weaker stability notion</td><td class="progress-cell">Planning only — no Lean code written</td></tr></tbody></table></div>
+</article>
+  </main><aside class="toc" aria-label="On this page"><div class="nav-kicker">On this page</div><ul><a href="#contents">Contents</a><a href="#start-with-an-abstract-energy-theorem">Start with an abstract energy theorem</a><a href="#the-continuum-mhd-bridge">The continuum MHD bridge</a><a href="#sign-sanity-check">Sign sanity check</a><a href="#elementary-sufficient-bounds">Elementary sufficient bounds</a><a href="#neutral-modes-and-continuous-spectrum">Neutral modes and continuous spectrum</a><a href="#free-boundaries-and-local-criteria">Free boundaries and local criteria</a><a href="#discretization-and-nonlinear-targets">Discretization and nonlinear targets</a><a href="#theorem-backlog">Theorem backlog</a></ul></aside></div><dialog id="search-dialog" class="search-dialog"><div class="search-box"><input id="search-input" type="search" placeholder="Search the handbook…" aria-label="Search handbook"><div id="search-results" class="search-results"><p>Search topics and task IDs across the handbook.</p></div></div></dialog><footer class="site-footer">PlasmaLean · Plans are not proofs. Every implemented claim must identify its assumptions, declaration, and build result.</footer></body></html>
