@@ -14,6 +14,10 @@ For subsequent runs, examine the kernel and fix errors if any, noting carefully 
 
 After each run, write a markdown report in the `progress/` directory with filename `{yyyy-mm-dd}-progress.md`, i.e., beginning with the date. In case of more than one report in a day, add appropriate suffix. Also update the progress in the website at `docs/` in the appropriate pages.
 
+After **every run**, including a run that stagnates or is blocked, refresh the website's progress slideshow. Edit `progress/slideshow.json`, the source for `docs/slides.html`, which is linked from the original landing page. Keep its `updated` date and `report` filename aligned with `progress/status.json`. Update the latest results, progress so far, evidence links, assumptions, remaining gaps and next targets; if nothing new was proved, say so and record the blocker. Review any counts against the actual build/audit report. Distinguish compiled theorems from synthetic examples, supplied physical data and planned work; never imply practical confinement or construction readiness from a fixture alone. Keep the brief progress summary in `README.md` consistent too.
+
+Regenerate the website and slideshow with `node scripts/generate_handbook.mjs`, then run `node scripts/check_site.mjs`. Fix stale output, broken evidence links or failed checks before finishing the run. Edit the source JSON and Markdown rather than generated HTML. Preserve the original landing-page motivations and graphics, and keep the slideshow reachable from it.
+
 ## Kernel
 
 This is the layer that models the domain with definitions and empirically (or more generally externally) known facts. It should be kept as small as reasonable while being a complete model. By complete we mean all relevant facts should be consequences and all queries we wish to answer should be answerable in terms of functions that can be built from the kernel.

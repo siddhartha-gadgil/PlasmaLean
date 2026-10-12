@@ -62,6 +62,12 @@ for (const tab of ['background', 'vision', 'kernel', 'sanity', 'theory', 'refere
   assert.ok(ids.get('index.html').has(`sec-${tab}`) && ids.get('index.html').has(`tab-${tab}`), `Original tab is missing: ${tab}`);
 }
 assert.ok(landing.includes('href="progress.html"'), 'Progress must be reachable from the original landing page');
+assert.ok(landing.match(/<nav class="handbook-bar"[^>]*>[\s\S]*?href="slides.html"[\s\S]*?<\/nav>/), 'Slideshow must be directly reachable from the landing navigation');
+const slideshow = JSON.parse(fs.readFileSync(path.join(root, 'progress/slideshow.json'), 'utf8'));
+assert.ok(search.some(entry => entry.url === 'slides.html'), 'Slideshow must be searchable');
+for (const slide of slideshow.slides) {
+  assert.ok(search.some(entry => entry.url === `slides.html#${slide.id}`), `Unsearchable slide: ${slide.id}`);
+}
 assert.ok(landing.includes('href="vacuum-demonstrator.html"'), 'Device basis must be reachable from the original landing page');
 assert.ok(contents.get('vacuum-demonstrator.html').includes('97/250'), 'Tube clearance certificate is missing');
 assert.ok(contents.get('vacuum-demonstrator.html').includes('not seconds'), 'Field-line parameter must not be labelled as particle time');
@@ -69,4 +75,5 @@ assert.ok(!landing.includes('Only plans have been made and no Lean code'), 'Land
 assert.ok(contents.get('progress.html').includes('998/45'), 'Exact thermal margin is missing');
 assert.ok(contents.get('overview.html').includes("location.search + location.hash"), 'Legacy overview bookmarks must survive');
 execFileSync(process.execPath, ['scripts/generate_handbook.mjs', '--check'], { cwd: root, stdio: 'inherit' });
+execFileSync(process.execPath, ['scripts/check_slideshow.mjs'], { cwd: root, stdio: 'inherit' });
 console.log(`Site checks passed: ${files.length} pages, ${checkedLinks} local links/search targets, ${checkedScripts} inline scripts, ${taskEntries.length} task entries, original graphics preserved.`);

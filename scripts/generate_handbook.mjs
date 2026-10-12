@@ -1,5 +1,6 @@
 import fs from 'node:fs';
 import path from 'node:path';
+import { renderSlideshow } from './render_slideshow.mjs';
 
 const root = path.resolve(import.meta.dirname, '..');
 const docsDir = path.join(root, 'docs');
@@ -32,6 +33,7 @@ const aliases = new Map(pages.map(page => [path.basename(page.source), `${page.s
 const pageBySlug = new Map(pages.map(page => [page.slug, page]));
 const progressText = 'Planning only — no Lean code written';
 const progress = JSON.parse(fs.readFileSync(path.join(root, 'progress/status.json'), 'utf8'));
+const slideshow = JSON.parse(fs.readFileSync(path.join(root, 'progress/slideshow.json'), 'utf8'));
 const usedProgressKeys = new Set();
 function taskProgress(page, id) {
   const key = `${page.slug}:${id}`;
@@ -205,7 +207,7 @@ function nav(currentSlug) {
     const item = `<a href="${page.slug}.html"${page.slug === currentSlug ? ' aria-current="page"' : ''}><span class="nav-number">${String(number++).padStart(2, '0')}</span>${page.short}</a>`;
     return `${heading}${item}`;
   }).join('');
-  return `<nav class="side-nav" aria-label="Handbook chapters"><div class="nav-kicker">Explore</div><a href="index.html">Home · illustrated overview</a><a href="handbook.html">Handbook &amp; tasks</a><a href="progress.html">Verified progress &amp; assumptions</a><a href="#" data-search>Search handbook</a>${content}</nav>`;
+  return `<nav class="side-nav" aria-label="Handbook chapters"><div class="nav-kicker">Explore</div><a href="index.html">Home · illustrated overview</a><a href="handbook.html">Handbook &amp; tasks</a><a href="slides.html">Progress slideshow</a><a href="progress.html">Verified progress &amp; assumptions</a><a href="#" data-search>Search handbook</a>${content}</nav>`;
 }
 
 function header() {
@@ -248,6 +250,7 @@ const reportPage = { source: `progress/${progress.report}`, slug: 'progress', sh
 const reportMarkdown = fs.readFileSync(path.join(root, reportPage.source), 'utf8');
 const reportRendered = renderMarkdown(reportMarkdown, reportPage);
 writeOutput(path.join(docsDir, 'progress.html'), documentPage(reportPage, `Progress · ${progress.updated}`, reportRendered));
+writeOutput(path.join(docsDir, 'slides.html'), renderSlideshow(slideshow, progress));
 
 const workstreams = results.map((page, index) => `<a class="workstream-card" href="${page.slug}.html"><span class="index">${String(index).padStart(2, '0')} · ${page.group}</span><h3>${escapeHtml(page.short)}</h3><p>${escapeHtml(page.summary)}</p><span class="task-count">${page.tasks.length} tracked tasks</span></a>`).join('');
 const sequence = [
@@ -272,6 +275,10 @@ const handbookHtml = `<!doctype html><html lang="en"><head><meta charset="utf-8"
 writeOutput(path.join(docsDir, 'handbook.html'), handbookHtml);
 
 const searchIndex = [];
+searchIndex.push({ title: 'Progress slideshow', section: `Evidence updated ${slideshow.updated} · ${progress.summary}`, url: 'slides.html', text: 'progress slideshow presentation latest run evidence vacuum fixture' });
+for (const slide of slideshow.slides) {
+  searchIndex.push({ title: slide.title, section: 'Progress slideshow', url: `slides.html#${slide.id}`, text: `${slide.title} ${slide.lead} ${slide.progress}`.toLowerCase() });
+}
 for (const [id, title] of overviewSections) {
   searchIndex.push({ title, section: 'Illustrated overview · interactive graphics and motivation', url: `index.html#${id}`, text: `${title} illustrated overview graphics motivation`.toLowerCase() });
 }
@@ -292,4 +299,4 @@ writeOutput(path.join(docsDir, 'overview.html'), `<!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>PlasmaLean · Overview moved</title><link rel="canonical" href="index.html"><script>location.replace('index.html' + location.search + location.hash);</script></head>
 <body><p>The illustrated overview is now the <a href="index.html">PlasmaLean home page</a>.</p></body></html>
 `);
-console.log(`${checkOnly ? 'Checked' : 'Generated'} ${results.length + 3} content pages plus an overview redirect with ${totalTasks} task entries (${progressedTasks} with progress).`);
+console.log(`${checkOnly ? 'Checked' : 'Generated'} ${results.length + 4} content pages (including ${slideshow.slides.length} progress slides) plus an overview redirect with ${totalTasks} task entries (${progressedTasks} with progress).`);

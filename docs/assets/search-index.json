@@ -1,5 +1,65 @@
 [
   {
+    "title": "Progress slideshow",
+    "section": "Evidence updated 2026-10-12 · Continuous field derivatives, manufacturing/current error budgets, robust probe-field margins and tube clearances now compile. The vacuum fixture remains partial P2; a practical stellarator is not yet certified.",
+    "url": "slides.html",
+    "text": "progress slideshow presentation latest run evidence vacuum fixture"
+  },
+  {
+    "title": "From proof foundations to a checked coil fixture.",
+    "section": "Progress slideshow",
+    "url": "slides.html#where-we-are",
+    "text": "from proof foundations to a checked coil fixture. plasmalean is building a lean library for stellarator design. the current result is a tolerance-aware two-coil calibration fixture: a useful step, not a practical stellarator. foundations and exact building blocks are implemented; the continuous vacuum-candidate milestone (p2) is partial."
+  },
+  {
+    "title": "Small assumptions. Reusable proofs. One candidate.",
+    "section": "Progress slideshow",
+    "url": "slides.html#proof-architecture",
+    "text": "small assumptions. reusable proofs. one candidate. physical model laws are explicit hypotheses. derived mathematics and candidate certificates live above that small domain kernel. the public library separates all six layers. the last audit found only lean/mathlib's standard logical axioms, with no added domain axioms."
+  },
+  {
+    "title": "The foundations have executable proof content.",
+    "section": "Progress slideshow",
+    "url": "slides.html#mathematical-foundations",
+    "text": "the foundations have executable proof content. simple models make the definitions testable before tackling three-dimensional plasma physics. these are compiled elementary results and sanity checks, not just declarations of future tasks."
+  },
+  {
+    "title": "From a numerical proposal to a proved bound.",
+    "section": "Progress slideshow",
+    "url": "slides.html#exact-certificates",
+    "text": "from a numerical proposal to a proved bound. rational interval soundness and contraction arguments give small end-to-end tests of the verification path. exact arithmetic is connected to mathematical soundness theorems and explicit test fixtures."
+  },
+  {
+    "title": "Two circular coils. Precisely stated regions.",
+    "section": "Progress slideshow",
+    "url": "slides.html#vacuum-fixture",
+    "text": "two circular coils. precisely stated regions. the first device-specific object is a calibration fixture with symbolic positive reference current i and permeability μ₀. its field model uses ideal filaments. closure, regularity, one-turn simplicity, source separation and the nominal midpoint field have proofs."
+  },
+  {
+    "title": "Margins for the same perturbed coils and currents.",
+    "section": "Progress slideshow",
+    "url": "slides.html#tolerance-margins",
+    "text": "margins for the same perturbed coils and currents. assume closed c¹ coils with position error ≤ 1 mm, independent tangent error ≤ 1 mm/radian, and independent current errors ≤ 1% of i. manufacturing and current errors compose into continuous field and clearance certificates, not just sampled checks."
+  },
+  {
+    "title": "Spatial derivatives are proved. Confinement is not.",
+    "section": "Progress slideshow",
+    "url": "slides.html#latest-run",
+    "text": "spatial derivatives are proved. confinement is not. the latest run added seven modules and 51 source theorems, including continuous field differentiation, pose/tolerance interfaces and a probe-escape sanity result. a nonvanishing-field certificate now comes with an explicit check against mistaking it for all-time trapping in the probe ball."
+  },
+  {
+    "title": "The remaining device work is explicit.",
+    "section": "Progress slideshow",
+    "url": "slides.html#path-to-a-device",
+    "text": "the remaining device work is explicit. the chosen first product is a small vacuum-field demonstrator. a four-circular-coil, cnt-inspired architecture is a reference direction, not a completed replica or a certified design. reusable mathematics supports partial p2 work. no practical build or energization specification has been released."
+  },
+  {
+    "title": "The next run must leave evidence, not just a promise.",
+    "section": "Progress slideshow",
+    "url": "slides.html#next-run",
+    "text": "the next run must leave evidence, not just a promise. the immediate proof target is source-free divergence/curl for closed c¹ filaments. the immediate device-data target is a versioned four-coil placement/current dataset. the linked run records checked declarations, assumptions and validation. this slideshow is a summary of that evidence, not a new design certificate."
+  },
+  {
     "title": "Stellarator concepts",
     "section": "Illustrated overview · interactive graphics and motivation",
     "url": "index.html#background",

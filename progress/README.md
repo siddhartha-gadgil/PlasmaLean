@@ -2,7 +2,15 @@
 
 [12 October 2026: verified foundations and remaining integration gaps](2026-10-12-progress.md).
 
+[12 October 2026, run 2: tolerance-aware vacuum fields and probe-escape sanity](2026-10-12-progress-2.md).
+
 `status.json` is the per-task status source used to generate the website. Keep
 declarations, scope, build results and assumptions in the dated report; update
 the manifest only after the corresponding Lean result compiles. Unlisted tasks
 remain planning-only. Run `node scripts/generate_handbook.mjs` after updates.
+
+`slideshow.json` is the human-readable progress narrative for `docs/slides.html`.
+Refresh its results, boundaries, evidence links and next steps after every run;
+its `updated` and `report` must match `status.json`. The generator checks this
+alignment, but scientific scope and counts still need human review against the
+dated evidence. Run `node scripts/check_site.mjs` before handing off the update.

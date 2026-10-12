@@ -1,0 +1,161 @@
+{
+  "updated": "2026-10-12",
+  "report": "2026-10-12-progress-2.md",
+  "status": "Small vacuum-field demonstrator · Partial P2 · Not a construction release.",
+  "slides": [
+    {
+      "id": "where-we-are",
+      "eyebrow": "Progress briefing · Small vacuum-field demonstrator",
+      "title": "From proof foundations to a checked coil fixture.",
+      "lead": "PlasmaLean is building a Lean library for stellarator design. The current result is a tolerance-aware two-coil calibration fixture: a useful step, not a practical stellarator.",
+      "metrics": [
+        { "value": "32", "label": "Lean modules" },
+        { "value": "175", "label": "Source theorems, including private helpers" },
+        { "value": "448", "label": "Project declarations in the last axiom audit" }
+      ],
+      "progress": "Foundations and exact building blocks are implemented; the continuous vacuum-candidate milestone (P2) is partial.",
+      "boundary": "No toroidal confinement, practical hardware qualification, or all-mode MHD stability certificate yet. Counts describe the linked run, not independent design goals.",
+      "evidence": [
+        { "label": "Latest run & audit", "href": "progress.html#validation" },
+        { "label": "Original motivation & graphics", "href": "index.html#background" }
+      ]
+    },
+    {
+      "id": "proof-architecture",
+      "eyebrow": "01 · How the library earns a claim",
+      "title": "Small assumptions. Reusable proofs. One candidate.",
+      "lead": "Physical model laws are explicit hypotheses. Derived mathematics and candidate certificates live above that small domain kernel.",
+      "cards": [
+        { "title": "Kernel + Sanity", "text": "Restricted equilibrium and thermal laws, consistent examples, and counterexamples to overbroad claims.", "status": "Implemented", "kind": "checked" },
+        { "title": "Theory", "text": "Geometry, continuous fields, equilibrium, energy bounds, kinetic estimates and thermal consequences.", "status": "Selected results", "kind": "partial" },
+        { "title": "Certificates + Bridge", "text": "Exact arithmetic, sound checkers and contracts that require the same candidate and witnesses.", "status": "Building blocks", "kind": "partial" },
+        { "title": "Design", "text": "Synthetic examples and the concrete vacuum-pair fixture exercise the reusable library.", "status": "Fixtures checked", "kind": "checked" }
+      ],
+      "progress": "The public library separates all six layers. The last audit found only Lean/Mathlib's standard logical axioms, with no added domain axioms.",
+      "boundary": "A theorem proves a consequence of a model; it does not establish that empirical assumptions apply to a real machine.",
+      "evidence": [
+        { "label": "Model contracts & architecture", "href": "model-contracts.html#architecture" },
+        { "label": "Audit evidence", "href": "progress.html#validation" }
+      ]
+    },
+    {
+      "id": "mathematical-foundations",
+      "eyebrow": "02 · Reusable mathematical progress",
+      "title": "The foundations have executable proof content.",
+      "lead": "Simple models make the definitions testable before tackling three-dimensional plasma physics.",
+      "cards": [
+        { "title": "Equilibrium", "text": "Force balance implies field/current tangency to pressure. Uniform and nonzero-current force-free slab examples provide witnesses.", "status": "Lean checked", "kind": "checked" },
+        { "title": "Energy & stability", "text": "Conditional energy conservation, coercivity and retained/tail form bounds. A neutral-mode example shows why energy need not control displacement.", "status": "Abstract results", "kind": "checked" },
+        { "title": "Geometry & fields", "text": "Continuous clearance, arbitrarily placed circular coils, Biot–Savart integrals and an exact on-axis loop field.", "status": "Lean checked", "kind": "checked" }
+      ],
+      "progress": "These are compiled elementary results and sanity checks, not just declarations of future tasks.",
+      "boundary": "Zero pressure does not imply zero current. Abstract energy bounds do not yet establish a continuum MHD stability result.",
+      "evidence": [
+        { "label": "Earlier results retained", "href": "progress.html#earlier-results-retained" },
+        { "label": "Stability scope", "href": "mhd-stability.html" }
+      ]
+    },
+    {
+      "id": "exact-certificates",
+      "eyebrow": "03 · Exact numerical certificates",
+      "title": "From a numerical proposal to a proved bound.",
+      "lead": "Rational interval soundness and contraction arguments give small end-to-end tests of the verification path.",
+      "cards": [
+        { "title": "Nonlinear validation", "text": "A scalar x² = 2 example on [1, 2] exercises the contraction framework with exact constants.", "status": "Synthetic example", "kind": "synthetic" },
+        { "title": "Thermal margin", "text": "A slab boundary-value problem has a whole-input-box maximum of 44002/45 K, with 998/45 K margin below an invented 1000 K limit.", "status": "Synthetic example", "kind": "synthetic" },
+        { "title": "Sound arithmetic", "text": "Exact coefficient decoding and interval/checker proofs separate candidate generation from the trusted proof path.", "status": "Lean checked", "kind": "checked" }
+      ],
+      "progress": "Exact arithmetic is connected to mathematical soundness theorems and explicit test fixtures.",
+      "boundary": "The scalar example is not a plasma PDE solution. The thermal inputs are invented, not sourced material qualification data.",
+      "evidence": [
+        { "label": "Retained examples & margins", "href": "progress.html#earlier-results-retained" },
+        { "label": "Numerical verification plan", "href": "verified-numerics.html" }
+      ]
+    },
+    {
+      "id": "vacuum-fixture",
+      "eyebrow": "04 · The concrete candidate so far",
+      "title": "Two circular coils. Precisely stated regions.",
+      "lead": "The first device-specific object is a calibration fixture with symbolic positive reference current I and permeability μ₀. Its field model uses ideal filaments.",
+      "diagram": "fixture",
+      "cards": [
+        { "title": "Nominal geometry", "text": "Each coil has radius 0.10 m, in the planes z = ±0.20 m, with the same angular orientation.", "status": "Exact inputs", "kind": "checked" },
+        { "title": "Two different regions", "text": "Field/error/derivative bounds cover the 5 cm observation ball. The positive axial-field certificate covers the smaller 1 mm probe ball.", "status": "Full-domain bounds", "kind": "checked" }
+      ],
+      "progress": "Closure, regularity, one-turn simplicity, source separation and the nominal midpoint field have proofs.",
+      "boundary": "The diagram is schematic, not a field-line simulation or a construction drawing. Neither ball is a certified confinement region.",
+      "evidence": [
+        { "label": "Fixture specification & units", "href": "vacuum-demonstrator.html#exact-fixture-and-checked-margins" }
+      ]
+    },
+    {
+      "id": "tolerance-margins",
+      "eyebrow": "05 · What survives manufacturing uncertainty",
+      "title": "Margins for the same perturbed coils and currents.",
+      "lead": "Assume closed C¹ coils with position error ≤ 1 mm, independent tangent error ≤ 1 mm/radian, and independent current errors ≤ 1% of I.",
+      "cards": [
+        { "title": "Field error", "text": "Actual minus nominal field has norm at most μ₀I/4 throughout the 5 cm observation ball (SI lengths in metres).", "status": "Lean checked", "kind": "checked" },
+        { "title": "Nonzero probe field", "text": "The actual axial component is at least μ₀I/4 throughout the 1 mm probe ball, for μ₀ > 0 and I > 0.", "status": "Lean checked", "kind": "checked" },
+        { "title": "Tube clearance", "text": "The two 5 mm-radius envelopes around actual coil centrelines remain at least 97/250 m = 388 mm apart.", "status": "Lean checked", "kind": "checked" }
+      ],
+      "progress": "Manufacturing and current errors compose into continuous field and clearance certificates, not just sampled checks.",
+      "boundary": "These tolerances are invented test inputs. Tube envelopes do not prove embedded winding packs or a finite-conductor electromagnetic model.",
+      "evidence": [
+        { "label": "Quantitative certificate", "href": "progress.html#quantitative-certificate" },
+        { "label": "Compiled entry points", "href": "vacuum-demonstrator.html#reusable-proof-interfaces" }
+      ]
+    },
+    {
+      "id": "latest-run",
+      "eyebrow": "06 · Latest run: a stronger result and a sharper limit",
+      "title": "Spatial derivatives are proved. Confinement is not.",
+      "lead": "The latest run added seven modules and 51 source theorems, including continuous field differentiation, pose/tolerance interfaces and a probe-escape sanity result.",
+      "cards": [
+        { "title": "Actual field derivatives", "text": "Dominated differentiation gives the true spatial Fréchet derivative and an operator-norm bound throughout the observation ball.", "status": "Lean checked", "kind": "checked" },
+        { "title": "A useful countercheck", "text": "For a classical field line γ′(s) = B(γ(s)) staying in the probe ball on [0, T], the same assumptions imply Tμ₀I ≤ 1/125. It cannot remain there forever.", "status": "Lean checked", "kind": "checked" }
+      ],
+      "progress": "A nonvanishing-field certificate now comes with an explicit check against mistaking it for all-time trapping in the probe ball.",
+      "boundary": "The parameter s has units m/T, not seconds or particle time. This result does not rule out confinement elsewhere or prove trajectory existence. Source-free Maxwell identities remain to be proved.",
+      "evidence": [
+        { "label": "New checked results", "href": "progress.html#new-checked-results" },
+        { "label": "Why this fixture is not confinement", "href": "vacuum-demonstrator.html#why-this-fixture-is-not-confinement" }
+      ]
+    },
+    {
+      "id": "path-to-a-device",
+      "eyebrow": "07 · From calibration to a stellarator",
+      "title": "The remaining device work is explicit.",
+      "lead": "The chosen first product is a small vacuum-field demonstrator. A four-circular-coil, CNT-inspired architecture is a reference direction, not a completed replica or a certified design.",
+      "cards": [
+        { "title": "VD1 · Freeze the candidate", "text": "Version the four coil placements, frames, radii, turns/current conventions and leads against a source dataset.", "status": "Reference only", "kind": "next" },
+        { "title": "VD2 · Continuous fields", "text": "Extend the fixture's geometry/derivative work to the candidate and prove source-free Maxwell identities.", "status": "Partial: fixture only", "kind": "partial" },
+        { "title": "VD3–4 · Conductors & confinement", "text": "Model embedded finite winding packs, then certify an invariant barrier or a declared finite-time orbit bundle.", "status": "Not certified", "kind": "next" },
+        { "title": "VD5 · Physical operation", "text": "Source conductor, supply, thermal, mechanical, protection and metrology envelopes for that same candidate.", "status": "Not qualified", "kind": "next" }
+      ],
+      "progress": "Reusable mathematics supports partial P2 work. No practical build or energization specification has been released.",
+      "boundary": "Finite-pressure equilibrium, all-mode MHD, transport and reactor engineering are separate later obligations, not implied by a vacuum demonstrator.",
+      "evidence": [
+        { "label": "Device work packages", "href": "vacuum-demonstrator.html#work-packages-and-progress" },
+        { "label": "Full evidence gates P0–P9", "href": "roadmap.html#milestones-and-evidence-gates" }
+      ]
+    },
+    {
+      "id": "next-run",
+      "eyebrow": "08 · Keep every step reviewable",
+      "title": "The next run must leave evidence, not just a promise.",
+      "lead": "The immediate proof target is source-free divergence/curl for closed C¹ filaments. The immediate device-data target is a versioned four-coil placement/current dataset.",
+      "cards": [
+        { "title": "Implement & challenge", "text": "Choose a scoped theorem or candidate milestone, retain explicit assumptions, and test limiting cases and counterexamples.", "status": "Next loop", "kind": "next" },
+        { "title": "Compile & audit", "text": "Build the Lean library and run the axiom audit. Record actual results and remaining physical/model gaps.", "status": "Required evidence", "kind": "next" },
+        { "title": "Report & refresh", "text": "Update the dated report, task status, this slideshow and the brief README summary after every run, including stalled runs.", "status": "Recurring handoff", "kind": "next" }
+      ],
+      "progress": "The linked run records checked declarations, assumptions and validation. This slideshow is a summary of that evidence, not a new design certificate.",
+      "boundary": "A practical claim needs composed certificates for one candidate plus evidence that the physical models and supplied data apply.",
+      "evidence": [
+        { "label": "Read the full progress report", "href": "progress.html" },
+        { "label": "Run & loop instructions", "href": "domain-library.html#agent-runs-and-loops" },
+        { "label": "Explore the handbook", "href": "handbook.html" }
+      ]
+    }
+  ]
+}
