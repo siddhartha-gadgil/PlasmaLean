@@ -6,11 +6,13 @@ When building such a library, add a `[[lean_lib]]` entry to `lakefile.toml`. You
 
 Add documentation strings for all definitions and theorems, and module documentation for each module. Use Lean's module system and ensure the correct functions and theorems are marked public or exposed.
 
-## Looping/Incremental building
+## Agent Runs and Loops
 
-When following these instructions for the first time, build the kernel as in the following section, then sanity checks. Loop through the library building steps accumulating theory as code until progress halts.
+When following these instructions for the first time (i.e., where there is no domain kernel), build the kernel as in the following section, then sanity checks. Loop through the library building steps accumulating theory as code until progress halts.
 
 For subsequent runs, examine the kernel and fix errors if any, noting carefully changes as comments. Add to the kernel only if more empirical facts or real-world concepts need to be modelled. It is encouraged, but not essential, to add sanity steps. The main goal of subsequent runs is to assess what has been done and what remains for the core goals as well as the prompt, and to augment the library with verified code.
+
+After each run, write a markdown report in the `progress/` directory with filename `{yyyy-mm-dd}-progress.md`, i.e., beginning with the date. In case of more than one report in a day, add appropriate suffix. Also update the progress in the website at `docs/` in the appropriate pages.
 
 ## Kernel
 
