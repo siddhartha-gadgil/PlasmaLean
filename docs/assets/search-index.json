@@ -775,9 +775,9 @@
   },
   {
     "title": "D1 · Biot–Savart algebra, smoothness, and field/derivative bounds",
-    "section": "Coils & design · Partially implemented — continuous filament integral, current linearity, source-distance and whole-region amplitude/variation bounds, plus a spatial inverse-cube derivative bound; differentiating the field integral and Maxwell proofs remain pending.",
+    "section": "Coils & design · Partially implemented — continuous filament integral, amplitude/variation bounds and actual Fréchet derivative with dominated differentiation and operator enclosure; source-free Maxwell identities and higher derivatives remain pending.",
     "url": "coils-and-design.html",
-    "text": "d1 biot–savart algebra, smoothness, and field/derivative bounds theorem backlog partially implemented — continuous filament integral, current linearity, source-distance and whole-region amplitude/variation bounds, plus a spatial inverse-cube derivative bound; differentiating the field integral and maxwell proofs remain pending."
+    "text": "d1 biot–savart algebra, smoothness, and field/derivative bounds theorem backlog partially implemented — continuous filament integral, amplitude/variation bounds and actual fréchet derivative with dominated differentiation and operator enclosure; source-free maxwell identities and higher derivatives remain pending."
   },
   {
     "title": "D2 · Circular-loop and orientation sanity cases",
@@ -787,9 +787,9 @@
   },
   {
     "title": "D3 · Continuous curve/surface/solid geometric certificate",
-    "section": "Coils & design · Partially implemented — exact closed, regular, non-self-intersecting circular centerlines, continuous pair/source clearance and displacement-margin transfer; no swept-solid certificate.",
+    "section": "Coils & design · Partially implemented — arbitrary 3-D placed circles preserve C¹ regularity, closure and simplicity; tube envelopes have continuous clearance/disjointness and manufacturing-margin transfer. Embedded winding packs and self-clearance remain pending.",
     "url": "coils-and-design.html",
-    "text": "d3 continuous curve/surface/solid geometric certificate theorem backlog partially implemented — exact closed, regular, non-self-intersecting circular centerlines, continuous pair/source clearance and displacement-margin transfer; no swept-solid certificate."
+    "text": "d3 continuous curve/surface/solid geometric certificate theorem backlog partially implemented — arbitrary 3-d placed circles preserve c¹ regularity, closure and simplicity; tube envelopes have continuous clearance/disjointness and manufacturing-margin transfer. embedded winding packs and self-clearance remain pending."
   },
   {
     "title": "D4 · Finite-width-to-filament error and conductor field",
@@ -799,9 +799,9 @@
   },
   {
     "title": "D5 · Coil perturbation bounds in C^k norms",
-    "section": "Coils & design · Planning only — no Lean code written",
+    "section": "Coils & design · Partially implemented — full-parameter position/tangent errors imply a C⁰ filament-field error; independent current errors compose with the same actual coils. Rigid-pose errors supply C¹ curve budgets; Cᵏ field-error bounds for k≥1 remain pending.",
     "url": "coils-and-design.html",
-    "text": "d5 coil perturbation bounds in c^k norms theorem backlog planning only — no lean code written"
+    "text": "d5 coil perturbation bounds in c^k norms theorem backlog partially implemented — full-parameter position/tangent errors imply a c⁰ filament-field error; independent current errors compose with the same actual coils. rigid-pose errors supply c¹ curve budgets; cᵏ field-error bounds for k≥1 remain pending."
   },
   {
     "title": "D6 · Certified inverse field reconstruction",
@@ -826,6 +826,84 @@
     "section": "Coils & design · Planning only — no Lean code written",
     "url": "coils-and-design.html",
     "text": "d9 removal paths and robust manufacturing margins theorem backlog planning only — no lean code written"
+  },
+  {
+    "title": "Vacuum demonstrator",
+    "section": "Checked tolerance-aware calibration fixture, the CNT reference direction, and the remaining boundary to a practical stellarator.",
+    "url": "vacuum-demonstrator.html",
+    "text": "vacuum demonstrator checked tolerance-aware calibration fixture, the cnt reference direction, and the remaining boundary to a practical stellarator."
+  },
+  {
+    "title": "What we are building",
+    "section": "Vacuum demonstrator",
+    "url": "vacuum-demonstrator.html#what-we-are-building",
+    "text": "what we are building vacuum demonstrator"
+  },
+  {
+    "title": "Exact fixture and checked margins",
+    "section": "Vacuum demonstrator",
+    "url": "vacuum-demonstrator.html#exact-fixture-and-checked-margins",
+    "text": "exact fixture and checked margins vacuum demonstrator"
+  },
+  {
+    "title": "Why this fixture is not confinement",
+    "section": "Vacuum demonstrator",
+    "url": "vacuum-demonstrator.html#why-this-fixture-is-not-confinement",
+    "text": "why this fixture is not confinement vacuum demonstrator"
+  },
+  {
+    "title": "Reusable proof interfaces",
+    "section": "Vacuum demonstrator",
+    "url": "vacuum-demonstrator.html#reusable-proof-interfaces",
+    "text": "reusable proof interfaces vacuum demonstrator"
+  },
+  {
+    "title": "Primary reference and its limits",
+    "section": "Vacuum demonstrator",
+    "url": "vacuum-demonstrator.html#primary-reference-and-its-limits",
+    "text": "primary reference and its limits vacuum demonstrator"
+  },
+  {
+    "title": "Work packages and progress",
+    "section": "Vacuum demonstrator",
+    "url": "vacuum-demonstrator.html#work-packages-and-progress",
+    "text": "work packages and progress vacuum demonstrator"
+  },
+  {
+    "title": "Construction release boundary",
+    "section": "Vacuum demonstrator",
+    "url": "vacuum-demonstrator.html#construction-release-boundary",
+    "text": "construction release boundary vacuum demonstrator"
+  },
+  {
+    "title": "VD1 · Freeze a nonaxisymmetric reference candidate",
+    "section": "Vacuum demonstrator · Partially implemented — primary CNT design/error-field sources reviewed and arbitrary 3-D circle poses formalized; a complete versioned four-coil placement/current dataset has not been frozen.",
+    "url": "vacuum-demonstrator.html",
+    "text": "vd1 freeze a nonaxisymmetric reference candidate work packages and progress partially implemented — primary cnt design/error-field sources reviewed and arbitrary 3-d circle poses formalized; a complete versioned four-coil placement/current dataset has not been frozen."
+  },
+  {
+    "title": "VD2 · Certify continuous geometry and fields",
+    "section": "Vacuum demonstrator · Partially implemented — exact two-loop fixture with actual field derivatives, full-region error budget and robust probe-direction/envelope margins. This is not yet a four-coil stellarator or a Maxwell certificate.",
+    "url": "vacuum-demonstrator.html",
+    "text": "vd2 certify continuous geometry and fields work packages and progress partially implemented — exact two-loop fixture with actual field derivatives, full-region error budget and robust probe-direction/envelope margins. this is not yet a four-coil stellarator or a maxwell certificate."
+  },
+  {
+    "title": "VD3 · Model finite conductors",
+    "section": "Vacuum demonstrator · Planning only — no Lean code written",
+    "url": "vacuum-demonstrator.html",
+    "text": "vd3 model finite conductors work packages and progress planning only — no lean code written"
+  },
+  {
+    "title": "VD4 · Establish the declared confinement property",
+    "section": "Vacuum demonstrator · Partially implemented — a checked field-line residence-parameter upper bound prevents misreading the probe certificate as confinement. No invariant torus, trajectory existence or confined particle bundle yet.",
+    "url": "vacuum-demonstrator.html",
+    "text": "vd4 establish the declared confinement property work packages and progress partially implemented — a checked field-line residence-parameter upper bound prevents misreading the probe certificate as confinement. no invariant torus, trajectory existence or confined particle bundle yet."
+  },
+  {
+    "title": "VD5 · Qualify physical operation",
+    "section": "Vacuum demonstrator · Planning only — no Lean code written",
+    "url": "vacuum-demonstrator.html",
+    "text": "vd5 qualify physical operation work packages and progress planning only — no lean code written"
   },
   {
     "title": "Materials & engineering",
@@ -1081,9 +1159,9 @@
   },
   {
     "title": "P2: continuous vacuum candidate · V",
-    "section": "Roadmap · Partially implemented — 10 cm-radius loops at z=±20 cm, continuous geometry, 15 cm source clearance over a 5 cm ball, amplitude/3-D variation bounds and exact on-axis field; derivative/Maxwell and finite-solid certificates remain pending.",
+    "section": "Roadmap · Partially implemented — exact two-loop fixture now includes actual field differentiation, manufacturing/current errors, positive axial field in a 1 mm probe ball and 388 mm clearance between 5 mm envelopes. Maxwell, finite-conductor and nonaxisymmetric confinement certificates remain pending.",
     "url": "roadmap.html",
-    "text": "p2: continuous vacuum candidate v milestones and evidence gates partially implemented — 10 cm-radius loops at z=±20 cm, continuous geometry, 15 cm source clearance over a 5 cm ball, amplitude/3-d variation bounds and exact on-axis field; derivative/maxwell and finite-solid certificates remain pending."
+    "text": "p2: continuous vacuum candidate v milestones and evidence gates partially implemented — exact two-loop fixture now includes actual field differentiation, manufacturing/current errors, positive axial field in a 1 mm probe ball and 388 mm clearance between 5 mm envelopes. maxwell, finite-conductor and nonaxisymmetric confinement certificates remain pending."
   },
   {
     "title": "P3: confined reduced orbits · F/V/R",
@@ -1159,9 +1237,9 @@
   },
   {
     "title": "6 · Theory.Fields.BiotSavart",
-    "section": "Roadmap · Partially implemented — current linearity, continuous source-distance bound, exact loop-axis formula, kernel derivative and full-region spatial variation; field differentiation/Maxwell proofs remain pending.",
+    "section": "Roadmap · Partially implemented — current linearity, exact loop-axis formula, actual field-integral differentiation, operator bounds and C¹ coil-to-C⁰ field perturbation; Maxwell proofs remain pending.",
     "url": "roadmap.html",
-    "text": "6 theory.fields.biotsavart the first coding sequence partially implemented — current linearity, continuous source-distance bound, exact loop-axis formula, kernel derivative and full-region spatial variation; field differentiation/maxwell proofs remain pending."
+    "text": "6 theory.fields.biotsavart the first coding sequence partially implemented — current linearity, exact loop-axis formula, actual field-integral differentiation, operator bounds and c¹ coil-to-c⁰ field perturbation; maxwell proofs remain pending."
   },
   {
     "title": "7 · Theory.Stability.BlockBounds",
@@ -1333,21 +1411,15 @@
   },
   {
     "title": "Verified progress",
-    "section": "Compiled foundations, synthetic certificates, and a small two-loop vacuum-field fixture. P0/P1 and parts of P2 are underway; no practical stellarator is certified.",
+    "section": "Continuous field derivatives, manufacturing/current error budgets, robust probe-field margins and tube clearances now compile. The vacuum fixture remains partial P2; a practical stellarator is not yet certified.",
     "url": "progress.html",
-    "text": "verified progress compiled foundations, synthetic certificates, and a small two-loop vacuum-field fixture. p0/p1 and parts of p2 are underway; no practical stellarator is certified."
+    "text": "verified progress continuous field derivatives, manufacturing/current error budgets, robust probe-field margins and tube clearances now compile. the vacuum fixture remains partial p2; a practical stellarator is not yet certified."
   },
   {
-    "title": "Result and limits",
+    "title": "Outcome",
     "section": "Verified progress",
-    "url": "progress.html#result-and-limits",
-    "text": "result and limits verified progress"
-  },
-  {
-    "title": "Reproducibility",
-    "section": "Verified progress",
-    "url": "progress.html#reproducibility",
-    "text": "reproducibility verified progress"
+    "url": "progress.html#outcome",
+    "text": "outcome verified progress"
   },
   {
     "title": "Implementation loops",
@@ -1356,63 +1428,39 @@
     "text": "implementation loops verified progress"
   },
   {
-    "title": "Compiled declaration inventory",
+    "title": "New checked results",
     "section": "Verified progress",
-    "url": "progress.html#compiled-declaration-inventory",
-    "text": "compiled declaration inventory verified progress"
+    "url": "progress.html#new-checked-results",
+    "text": "new checked results verified progress"
   },
   {
-    "title": "Quantitative fixtures",
+    "title": "Quantitative certificate",
     "section": "Verified progress",
-    "url": "progress.html#quantitative-fixtures",
-    "text": "quantitative fixtures verified progress"
+    "url": "progress.html#quantitative-certificate",
+    "text": "quantitative certificate verified progress"
   },
   {
-    "title": "Small vacuum-field demonstrator",
+    "title": "Assumption and source ledger",
     "section": "Verified progress",
-    "url": "progress.html#small-vacuum-field-demonstrator",
-    "text": "small vacuum-field demonstrator verified progress"
+    "url": "progress.html#assumption-and-source-ledger",
+    "text": "assumption and source ledger verified progress"
   },
   {
-    "title": "Thermal boundary-value problem",
+    "title": "Earlier results retained",
     "section": "Verified progress",
-    "url": "progress.html#thermal-boundary-value-problem",
-    "text": "thermal boundary-value problem verified progress"
+    "url": "progress.html#earlier-results-retained",
+    "text": "earlier results retained verified progress"
   },
   {
-    "title": "Nonlinear scalar root",
+    "title": "Validation",
     "section": "Verified progress",
-    "url": "progress.html#nonlinear-scalar-root",
-    "text": "nonlinear scalar root verified progress"
+    "url": "progress.html#validation",
+    "text": "validation verified progress"
   },
   {
-    "title": "Two-block form and rejection tests",
+    "title": "Next boundary",
     "section": "Verified progress",
-    "url": "progress.html#two-block-form-and-rejection-tests",
-    "text": "two-block form and rejection tests verified progress"
-  },
-  {
-    "title": "Assumption ledger",
-    "section": "Verified progress",
-    "url": "progress.html#assumption-ledger",
-    "text": "assumption ledger verified progress"
-  },
-  {
-    "title": "Source and dependency locators",
-    "section": "Verified progress",
-    "url": "progress.html#source-and-dependency-locators",
-    "text": "source and dependency locators verified progress"
-  },
-  {
-    "title": "Remaining integration boundary",
-    "section": "Verified progress",
-    "url": "progress.html#remaining-integration-boundary",
-    "text": "remaining integration boundary verified progress"
-  },
-  {
-    "title": "Validation results",
-    "section": "Verified progress",
-    "url": "progress.html#validation-results",
-    "text": "validation results verified progress"
+    "url": "progress.html#next-boundary",
+    "text": "next boundary verified progress"
   }
 ]

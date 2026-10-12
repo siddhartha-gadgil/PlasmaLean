@@ -1,5 +1,6 @@
 # PlasmaLean
-Lean and AI-assisted mathematics toward verified stellarator design.
+
+This is a library for Lean and AI-assisted mathematics toward verified stellarator design.
 
 The library now contains explicit restricted MHD and thermal model laws, analytic
 sanity cases, energy/form inequalities, exact certificate soundness, continuous
@@ -31,3 +32,7 @@ graphics and links to the [handbook](docs/handbook.html) and task progress. Sour
 plans live in [notes/domain-libraries.md](notes/domain-libraries.md) and
 [notes/formalization/](notes/formalization/08-roadmap.md). They retain their original
 planning context; the dated progress ledger identifies subsequent compiled work.
+
+## Contributions
+
+I, Siddhartha Gadgil, am the maintainer of this repository. I am on the faculty of the Indian Institute of Science, and also (currently) a chief scientist at [Emergence Research](https://east.emergence.ai/). Emergence has generously sponsored tokens for building the code in this site. I also have support from [Renaissance Philanthropy](https://east.emergence.ai/).

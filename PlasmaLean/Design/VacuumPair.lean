@@ -18,8 +18,9 @@ region is the closed ball of radius 0.05 m about the origin. Current and permeab
 remain explicit parameters. These invented exact coefficients are a mathematical
 test fixture, not experimental or material data. The loops are axisymmetric: no
 stellarator rotational transform, confinement, reactor feasibility, or hardware
-qualification follows. Derivative/Maxwell and finite-conductor certificates remain
-separate targets; this is progress toward, not completion of, roadmap gate P2.
+qualification follows. `VacuumTolerance` and `VacuumDerivative` add manufactured
+field/derivative and tube-envelope bounds. Maxwell and finite-conductor certificates
+remain separate targets; this is progress toward, not completion of, roadmap gate P2.
 -/
 public section
 noncomputable section

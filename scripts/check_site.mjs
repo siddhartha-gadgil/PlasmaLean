@@ -51,7 +51,8 @@ for (const [key, status] of Object.entries(statuses.tasks)) {
   assert.ok(search.some(entry => entry.url === `${page}.html` && entry.title.startsWith(`${id} · `) && entry.section.includes(status)), `Unrendered progress: ${key}`);
 }
 const taskEntries = search.filter(entry => / · (?:Planning only|Partially implemented|Lean verified)/.test(entry.section));
-assert.equal(taskEntries.length, 107, 'Tracked tasks have changed; audit coverage before updating this fixture');
+// 107 original entries plus five explicit vacuum-demonstrator work packages.
+assert.equal(taskEntries.length, 112, 'Tracked tasks have changed; audit coverage before updating this fixture');
 const landing = contents.get('index.html');
 const template = fs.readFileSync(path.join(root, 'scripts/templates/overview.html'), 'utf8');
 const canvasIds = html => [...html.matchAll(/<canvas\b[^>]*\bid="([^"]+)"/g)].map(match => match[1]);
@@ -61,6 +62,9 @@ for (const tab of ['background', 'vision', 'kernel', 'sanity', 'theory', 'refere
   assert.ok(ids.get('index.html').has(`sec-${tab}`) && ids.get('index.html').has(`tab-${tab}`), `Original tab is missing: ${tab}`);
 }
 assert.ok(landing.includes('href="progress.html"'), 'Progress must be reachable from the original landing page');
+assert.ok(landing.includes('href="vacuum-demonstrator.html"'), 'Device basis must be reachable from the original landing page');
+assert.ok(contents.get('vacuum-demonstrator.html').includes('97/250'), 'Tube clearance certificate is missing');
+assert.ok(contents.get('vacuum-demonstrator.html').includes('not seconds'), 'Field-line parameter must not be labelled as particle time');
 assert.ok(!landing.includes('Only plans have been made and no Lean code'), 'Landing status is obsolete');
 assert.ok(contents.get('progress.html').includes('998/45'), 'Exact thermal margin is missing');
 assert.ok(contents.get('overview.html').includes("location.search + location.hash"), 'Legacy overview bookmarks must survive');

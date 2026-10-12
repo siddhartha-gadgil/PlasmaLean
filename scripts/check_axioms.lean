@@ -33,3 +33,11 @@ run_cmd do
 #print axioms PlasmaLean.Design.VacuumPair.midpoint_field_positive
 #print axioms PlasmaLean.Fields.inverseCube_derivative_bound
 #print axioms PlasmaLean.Design.VacuumPair.field_difference
+#print axioms PlasmaLean.Fields.filamentField_perturbation
+#print axioms PlasmaLean.Fields.filamentField_derivative
+#print axioms PlasmaLean.Fields.filamentField_derivative_bound
+#print axioms PlasmaLean.Design.VacuumPair.robust_probe_field
+#print axioms PlasmaLean.Design.VacuumPair.manufactured_field_derivative
+#print axioms PlasmaLean.Design.VacuumPair.manufactured_tube_clearance
+#print axioms PlasmaLean.Geometry.placedCircle_position_error
+#print axioms PlasmaLean.Sanity.probe_fieldLine_duration
