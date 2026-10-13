@@ -1,6 +1,8 @@
 # PlasmaLean
 
-This is a library for Lean and AI-assisted mathematics toward verified stellarator design.
+This is a library for Lean and AI-assisted mathematics towards design of a *stellerator* - a kind of fusion reactor where plasma can potentially be stable for extended times. The Lean code is organized into a *kernel*, which has the basic models, *sanity checks* for the kernel, proving which increases confidence in the correctness of the kernel, and a library with verified functions.
+
+Besides the specific goals, this project is an experiment with using the power of modern AI systems with correctly designed Lean verification to address problems that are very useful, hard and mathematical in nature. Work produced and formalized by AI can be queried and understood, and ideas at various levels can be added to guide and spur development of theory and solutions.
 
 ## Progress
 
