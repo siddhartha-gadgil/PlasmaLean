@@ -49,7 +49,7 @@
         },
         {
           "title": "Theory",
-          "text": "Geometry, continuous fields, equilibrium, energy bounds, kinetic estimates and thermal consequences.",
+          "text": "Geometry, fields and Maxwell identities, equilibrium, Suydam/Newcomb stability, Noether confinement and thermal consequences.",
           "status": "Selected results",
           "kind": "partial"
         },
@@ -61,8 +61,8 @@
         },
         {
           "title": "Design",
-          "text": "Synthetic examples and the concrete vacuum-pair fixture exercise the reusable library.",
-          "status": "Fixtures checked",
+          "text": "The vacuum-pair fixture, a Suydam-stable screw pinch, and exact Solov'ev and helical equilibria with confinement theorems exercise the reusable library.",
+          "status": "Examples checked",
           "kind": "checked"
         }
       ],
