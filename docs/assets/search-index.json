@@ -1,15 +1,15 @@
 [
   {
     "title": "Progress slideshow",
-    "section": "Evidence updated 2026-10-12 · Continuous field derivatives, manufacturing/current error budgets, robust probe-field margins and tube clearances now compile. The vacuum fixture remains partial P2; a practical stellarator is not yet certified.",
+    "section": "Evidence updated 2026-10-14 · Exact finite-pressure equilibria (toroidal Solov'ev and a nonaxisymmetric helical one) now satisfy the kernel force-balance law, with all-time full-orbit confinement theorems, filament Maxwell identities, and Suydam/Newcomb stability criteria with exact certificates. All are idealized symmetric models; no coil-produced stellarator is certified and no all-mode MHD stability is proved.",
     "url": "slides.html",
     "text": "progress slideshow presentation latest run evidence vacuum fixture"
   },
   {
-    "title": "From proof foundations to a checked coil fixture.",
+    "title": "From a coil fixture to exact equilibria with proved confinement.",
     "section": "Progress slideshow",
     "url": "slides.html#where-we-are",
-    "text": "from proof foundations to a checked coil fixture. plasmalean is building a lean library for stellarator design. the current result is a tolerance-aware two-coil calibration fixture: a useful step, not a practical stellarator. foundations and exact building blocks are implemented; the continuous vacuum-candidate milestone (p2) is partial."
+    "text": "from a coil fixture to exact equilibria with proved confinement. plasmalean is building a lean library for stellarator design. this run proved exact finite-pressure equilibria — a toroidal solov'ev one and a nonaxisymmetric helical one — satisfying the kernel force-balance law, with all-time particle confinement theorems and suydam/newcomb stability criteria. p3 (confined orbits) and p4 (finite-pressure equilibrium) now have checked instances in idealized symmetric models; p5 has local and certificate-based building blocks. p2 for a coil design remains partial."
   },
   {
     "title": "Small assumptions. Reusable proofs. One candidate.",
@@ -42,22 +42,34 @@
     "text": "margins for the same perturbed coils and currents. assume closed c¹ coils with position error ≤ 1 mm, independent tangent error ≤ 1 mm/radian, and independent current errors ≤ 1% of i. manufacturing and current errors compose into continuous field and clearance certificates, not just sampled checks."
   },
   {
-    "title": "Spatial derivatives are proved. Confinement is not.",
+    "title": "Maxwell identities proved; interchange stability decided both ways.",
     "section": "Progress slideshow",
-    "url": "slides.html#latest-run",
-    "text": "spatial derivatives are proved. confinement is not. the latest run added seven modules and 51 source theorems, including continuous field differentiation, pose/tolerance interfaces and a probe-escape sanity result. a nonvanishing-field certificate now comes with an explicit check against mistaking it for all-time trapping in the probe ball."
+    "url": "slides.html#maxwell-and-stability",
+    "text": "maxwell identities proved; interchange stability decided both ways. the closed-filament biot–savart field is divergence- and curl-free off the coil. a sharp hardy inequality gives the suydam criterion with both sufficiency and an explicit unstable mode. a realistic screw pinch (a = 1 m, r₀ = 4 m, 5 t, ⟨β⟩ = 2/75) satisfies suydam everywhere with a 25% margin, and newcomb-reduced δw ≥ 0 is certified for every mode with 1 ≤ |m| ≤ 6 (wall at the edge)."
+  },
+  {
+    "title": "Two exact equilibria satisfy the kernel law J × B = ∇p.",
+    "section": "Progress slideshow",
+    "url": "slides.html#exact-equilibria",
+    "text": "two exact equilibria satisfy the kernel law j × b = ∇p. the current is computed as curl b/μ₀ from actual derivatives and checked against the unchanged kernel forcebalance class. p4 now has checked smooth instances at realistic field strength and β."
+  },
+  {
+    "title": "Symmetry plus Noether confines every slow enough orbit forever.",
+    "section": "Progress slideshow",
+    "url": "slides.html#symmetric-confinement",
+    "text": "symmetry plus noether confines every slow enough orbit forever. canonical momentum m⟨k,v⟩ + qψ is conserved for any killing symmetry k; with speed conservation and an intermediate-value argument, orbits stay in a flux region for all time. p3 has checked full-orbit instances; field lines are confined by exact first integrals."
   },
   {
     "title": "The remaining device work is explicit.",
     "section": "Progress slideshow",
     "url": "slides.html#path-to-a-device",
-    "text": "the remaining device work is explicit. the chosen first product is a small vacuum-field demonstrator. a four-circular-coil, cnt-inspired architecture is a reference direction, not a completed replica or a certified design. reusable mathematics supports partial p2 work. no practical build or energization specification has been released."
+    "text": "the remaining device work is explicit. the vacuum-fixture work packages remain, now joined by an equilibrium/stability track. a four-circular-coil, cnt-inspired architecture is a reference direction, not a certified design. reusable mathematics now spans fields, equilibria, local stability and symmetric confinement. no practical build or energization specification has been released."
   },
   {
     "title": "The next run must leave evidence, not just a promise.",
     "section": "Progress slideshow",
     "url": "slides.html#next-run",
-    "text": "the next run must leave evidence, not just a promise. the immediate proof target is source-free divergence/curl for closed c¹ filaments. the immediate device-data target is a versioned four-coil placement/current dataset. the linked run records checked declarations, assumptions and validation. this slideshow is a summary of that evidence, not a new design certificate."
+    "text": "the next run must leave evidence, not just a promise. next proof targets: global (newcomb/mercier) stability of the new equilibria, quasisymmetry defect bounds with guiding-centre averaging, and coil/free-boundary matching. the linked run records checked declarations, assumptions and validation. this slideshow is a summary of that evidence, not a new design certificate."
   },
   {
     "title": "Stellarator concepts",
@@ -271,9 +283,9 @@
   },
   {
     "title": "G2 · div(curl A)=0 and reciprocal-basis identities",
-    "section": "Geometry & fields · Planning only — no Lean code written",
+    "section": "Geometry & fields · Partially implemented — divergence/curl operators with sanity lemmas; Clebsch fields ∇ψ×∇χ are divergence-free for C² potentials; reciprocal-basis identities pending.",
     "url": "geometry-and-fields.html",
-    "text": "g2 div(curl a)=0 and reciprocal-basis identities theorem backlog planning only — no lean code written"
+    "text": "g2 div(curl a)=0 and reciprocal-basis identities theorem backlog partially implemented — divergence/curl operators with sanity lemmas; clebsch fields ∇ψ×∇χ are divergence-free for c² potentials; reciprocal-basis identities pending."
   },
   {
     "title": "G3 · Boozer Jacobian and average normalization",
@@ -313,9 +325,9 @@
   },
   {
     "title": "G9 · One certified invariant torus and barrier",
-    "section": "Geometry & fields · Planning only — no Lean code written",
+    "section": "Geometry & fields · Partially implemented — exact first-integral barriers confine field lines for all time in analytic Clebsch-torus, Solov'ev and helical fields; no KAM/a posteriori torus for a perturbed or coil-produced field yet.",
     "url": "geometry-and-fields.html",
-    "text": "g9 one certified invariant torus and barrier theorem backlog planning only — no lean code written"
+    "text": "g9 one certified invariant torus and barrier theorem backlog partially implemented — exact first-integral barriers confine field lines for all time in analytic clebsch-torus, solov'ev and helical fields; no kam/a posteriori torus for a perturbed or coil-produced field yet."
   },
   {
     "title": "G10 · Quantitative perturbation theory over useful parameter sets",
@@ -379,9 +391,9 @@
   },
   {
     "title": "E1 · Force balance implies tangency; force-free/vacuum distinction",
-    "section": "Models & equilibrium · Lean verified — tangency and a smooth zero-pressure, nonvacuum force-free slab example.",
+    "section": "Models & equilibrium · Lean verified — tangency; force-free slab; exact toroidal (Solov'ev) and helical finite-pressure equilibria satisfy the kernel ForceBalance law with actual Ampère current.",
     "url": "plasma-models-and-equilibrium.html",
-    "text": "e1 force balance implies tangency; force-free/vacuum distinction theorem backlog lean verified — tangency and a smooth zero-pressure, nonvacuum force-free slab example."
+    "text": "e1 force balance implies tangency; force-free/vacuum distinction theorem backlog lean verified — tangency; force-free slab; exact toroidal (solov'ev) and helical finite-pressure equilibria satisfy the kernel forcebalance law with actual ampère current."
   },
   {
     "title": "E2 · MHD conservation identities on smooth closed domains",
@@ -391,9 +403,9 @@
   },
   {
     "title": "E3 · Grad–Shafranov equivalence and explicit examples",
-    "section": "Models & equilibrium · Planning only — no Lean code written",
+    "section": "Models & equilibrium · Partially implemented — an exact Solov'ev solution is verified directly against J×B=∇p (Δ*ψ=3R² checked by hand only); general Grad–Shafranov equivalence pending. A helical (JFKO-type) exact equilibrium is also verified.",
     "url": "plasma-models-and-equilibrium.html",
-    "text": "e3 grad–shafranov equivalence and explicit examples theorem backlog planning only — no lean code written"
+    "text": "e3 grad–shafranov equivalence and explicit examples theorem backlog partially implemented — an exact solov'ev solution is verified directly against j×b=∇p (δ*ψ=3r² checked by hand only); general grad–shafranov equivalence pending. a helical (jfko-type) exact equilibrium is also verified."
   },
   {
     "title": "E4 · Distributional stress and magnetic interface jump conditions",
@@ -523,15 +535,15 @@
   },
   {
     "title": "S6 · Source-specific local stability criteria",
-    "section": "MHD stability · Planning only — no Lean code written",
+    "section": "MHD stability · Partially implemented — sharp Hardy inequality, Suydam sufficiency (coercive margin) and necessity (explicit unstable modes near resonance) for the localized form; screw-pinch Suydam criterion with a realistic certified profile. δW reduction is sourced, not formalized; Mercier pending.",
     "url": "mhd-stability.html",
-    "text": "s6 source-specific local stability criteria theorem backlog planning only — no lean code written"
+    "text": "s6 source-specific local stability criteria theorem backlog partially implemented — sharp hardy inequality, suydam sufficiency (coercive margin) and necessity (explicit unstable modes near resonance) for the localized form; screw-pinch suydam criterion with a realistic certified profile. δw reduction is sourced, not formalized; mercier pending."
   },
   {
     "title": "S7 · All-mode certified bound for a restricted useful configuration",
-    "section": "MHD stability · Planning only — no Lean code written",
+    "section": "MHD stability · Partially implemented — Newcomb/Picone certificates with an exact polynomial checker; the screw-pinch example is Newcomb-δW-stable for all 1 ≤ |m| ≤ 6 and all n (wall at edge), not yet uniformly in m; no 3-D all-mode certificate.",
     "url": "mhd-stability.html",
-    "text": "s7 all-mode certified bound for a restricted useful configuration theorem backlog planning only — no lean code written"
+    "text": "s7 all-mode certified bound for a restricted useful configuration theorem backlog partially implemented — newcomb/picone certificates with an exact polynomial checker; the screw-pinch example is newcomb-δw-stable for all 1 ≤ |m| ≤ 6 and all n (wall at edge), not yet uniformly in m; no 3-d all-mode certificate."
   },
   {
     "title": "S8 · Free-boundary certificate with coils/vacuum/wall",
@@ -607,21 +619,21 @@
   },
   {
     "title": "K1 · Full-orbit energy and uniform-field solution",
-    "section": "Particles & transport · Planning only — no Lean code written",
+    "section": "Particles & transport · Lean verified — Newton–Lorentz energy and speed conservation, exact uniform-field gyration, Larmor-radius formula and realistic exact bounds.",
     "url": "particles-and-transport.html",
-    "text": "k1 full-orbit energy and uniform-field solution theorem backlog planning only — no lean code written"
+    "text": "k1 full-orbit energy and uniform-field solution theorem backlog lean verified — newton–lorentz energy and speed conservation, exact uniform-field gyration, larmor-radius formula and realistic exact bounds."
   },
   {
     "title": "K2 · Reduced Hamiltonian and conserved quantities",
-    "section": "Particles & transport · Planning only — no Lean code written",
+    "section": "Particles & transport · Partially implemented — Noether conservation of canonical momentum for any Killing symmetry (rotation, translation, helix) for full orbits; reduced Hamiltonian theory pending.",
     "url": "particles-and-transport.html",
-    "text": "k2 reduced hamiltonian and conserved quantities theorem backlog planning only — no lean code written"
+    "text": "k2 reduced hamiltonian and conserved quantities theorem backlog partially implemented — noether conservation of canonical momentum for any killing symmetry (rotation, translation, helix) for full orbits; reduced hamiltonian theory pending."
   },
   {
     "title": "K3 · Approximate-invariant finite-time confinement",
-    "section": "Particles & transport · Partially implemented — finite-time observable drift and loss-threshold exclusion; no certified trajectory or physical loss set yet.",
+    "section": "Particles & transport · Partially implemented — finite-time drift; all-time full-orbit trapping by IVT; symmetry-defect finite-time confinement with first-exit bootstrap (ripple example). 3.5 MeV alphas and guiding-centre averaging remain open.",
     "url": "particles-and-transport.html",
-    "text": "k3 approximate-invariant finite-time confinement theorem backlog partially implemented — finite-time observable drift and loss-threshold exclusion; no certified trajectory or physical loss set yet."
+    "text": "k3 approximate-invariant finite-time confinement theorem backlog partially implemented — finite-time drift; all-time full-orbit trapping by ivt; symmetry-defect finite-time confinement with first-exit bootstrap (ripple example). 3.5 mev alphas and guiding-centre averaging remain open."
   },
   {
     "title": "K4 · Omnigeneity/action relation in a specified class",
@@ -739,9 +751,9 @@
   },
   {
     "title": "N3 · Matrix factorization and block positivity",
-    "section": "Verified numerics · Partially implemented — exact two-block margin checker with accepted/rejected fixtures; matrix factorization and analytic tail bounds remain pending.",
+    "section": "Verified numerics · Partially implemented — exact two-block checker plus a polynomial interval checker (kernel decide) proving Riccati/Jacobi certificates; matrix factorization pending.",
     "url": "verified-numerics.html",
-    "text": "n3 matrix factorization and block positivity theorem backlog partially implemented — exact two-block margin checker with accepted/rejected fixtures; matrix factorization and analytic tail bounds remain pending."
+    "text": "n3 matrix factorization and block positivity theorem backlog partially implemented — exact two-block checker plus a polynomial interval checker (kernel decide) proving riccati/jacobi certificates; matrix factorization pending."
   },
   {
     "title": "N4 · Generic contraction/radii-polynomial soundness",
@@ -835,9 +847,9 @@
   },
   {
     "title": "D1 · Biot–Savart algebra, smoothness, and field/derivative bounds",
-    "section": "Coils & design · Partially implemented — continuous filament integral, amplitude/variation bounds and actual Fréchet derivative with dominated differentiation and operator enclosure; source-free Maxwell identities and higher derivatives remain pending.",
+    "section": "Coils & design · Partially implemented — filament integral, bounds, actual Fréchet derivative, and source-free Maxwell identities (∇·B=0 for any filament, ∇×B=0 for closed filaments) away from the source; higher derivatives pending.",
     "url": "coils-and-design.html",
-    "text": "d1 biot–savart algebra, smoothness, and field/derivative bounds theorem backlog partially implemented — continuous filament integral, amplitude/variation bounds and actual fréchet derivative with dominated differentiation and operator enclosure; source-free maxwell identities and higher derivatives remain pending."
+    "text": "d1 biot–savart algebra, smoothness, and field/derivative bounds theorem backlog partially implemented — filament integral, bounds, actual fréchet derivative, and source-free maxwell identities (∇·b=0 for any filament, ∇×b=0 for closed filaments) away from the source; higher derivatives pending."
   },
   {
     "title": "D2 · Circular-loop and orientation sanity cases",
@@ -943,9 +955,9 @@
   },
   {
     "title": "VD2 · Certify continuous geometry and fields",
-    "section": "Vacuum demonstrator · Partially implemented — exact two-loop fixture with actual field derivatives, full-region error budget and robust probe-direction/envelope margins. This is not yet a four-coil stellarator or a Maxwell certificate.",
+    "section": "Vacuum demonstrator · Partially implemented — fixture fields with derivatives, error budgets and now proved source-free Maxwell identities for closed filaments; not yet a four-coil stellarator.",
     "url": "vacuum-demonstrator.html",
-    "text": "vd2 certify continuous geometry and fields work packages and progress partially implemented — exact two-loop fixture with actual field derivatives, full-region error budget and robust probe-direction/envelope margins. this is not yet a four-coil stellarator or a maxwell certificate."
+    "text": "vd2 certify continuous geometry and fields work packages and progress partially implemented — fixture fields with derivatives, error budgets and now proved source-free maxwell identities for closed filaments; not yet a four-coil stellarator."
   },
   {
     "title": "VD3 · Model finite conductors",
@@ -955,9 +967,9 @@
   },
   {
     "title": "VD4 · Establish the declared confinement property",
-    "section": "Vacuum demonstrator · Partially implemented — a checked field-line residence-parameter upper bound prevents misreading the probe certificate as confinement. No invariant torus, trajectory existence or confined particle bundle yet.",
+    "section": "Vacuum demonstrator · Partially implemented — residence bound for the probe; all-time field-line and particle confinement proved in analytic symmetric equilibria, but not for a coil-produced field.",
     "url": "vacuum-demonstrator.html",
-    "text": "vd4 establish the declared confinement property work packages and progress partially implemented — a checked field-line residence-parameter upper bound prevents misreading the probe certificate as confinement. no invariant torus, trajectory existence or confined particle bundle yet."
+    "text": "vd4 establish the declared confinement property work packages and progress partially implemented — residence bound for the probe; all-time field-line and particle confinement proved in analytic symmetric equilibria, but not for a coil-produced field."
   },
   {
     "title": "VD5 · Qualify physical operation",
@@ -1219,27 +1231,27 @@
   },
   {
     "title": "P2: continuous vacuum candidate · V",
-    "section": "Roadmap · Partially implemented — exact two-loop fixture now includes actual field differentiation, manufacturing/current errors, positive axial field in a 1 mm probe ball and 388 mm clearance between 5 mm envelopes. Maxwell, finite-conductor and nonaxisymmetric confinement certificates remain pending.",
+    "section": "Roadmap · Partially implemented — two-loop fixture with derivatives, error budgets, clearance and proved Maxwell identities; finite-conductor and nonaxisymmetric coil confinement certificates remain pending.",
     "url": "roadmap.html",
-    "text": "p2: continuous vacuum candidate v milestones and evidence gates partially implemented — exact two-loop fixture now includes actual field differentiation, manufacturing/current errors, positive axial field in a 1 mm probe ball and 388 mm clearance between 5 mm envelopes. maxwell, finite-conductor and nonaxisymmetric confinement certificates remain pending."
+    "text": "p2: continuous vacuum candidate v milestones and evidence gates partially implemented — two-loop fixture with derivatives, error budgets, clearance and proved maxwell identities; finite-conductor and nonaxisymmetric coil confinement certificates remain pending."
   },
   {
     "title": "P3: confined reduced orbits · F/V/R",
-    "section": "Roadmap · Planning only — no Lean code written",
+    "section": "Roadmap · Partially implemented — all-time full-orbit confinement in exact Solov'ev and helically symmetric equilibria (rigidity-limited; 3.5 MeV alphas not covered); finite-time bound under symmetry defects. Not for a coil-produced stellarator.",
     "url": "roadmap.html",
-    "text": "p3: confined reduced orbits f/v/r milestones and evidence gates planning only — no lean code written"
+    "text": "p3: confined reduced orbits f/v/r milestones and evidence gates partially implemented — all-time full-orbit confinement in exact solov'ev and helically symmetric equilibria (rigidity-limited; 3.5 mev alphas not covered); finite-time bound under symmetry defects. not for a coil-produced stellarator."
   },
   {
     "title": "P4: finite-pressure equilibrium · F/V/R",
-    "section": "Roadmap · Planning only — no Lean code written",
+    "section": "Roadmap · Partially implemented — exact smooth Solov'ev (toroidal, axisymmetric) and helical (straight, nonaxisymmetric) equilibria satisfy the kernel law at realistic 5 T / few-percent β; no coil or free-boundary matching.",
     "url": "roadmap.html",
-    "text": "p4: finite-pressure equilibrium f/v/r milestones and evidence gates planning only — no lean code written"
+    "text": "p4: finite-pressure equilibrium f/v/r milestones and evidence gates partially implemented — exact smooth solov'ev (toroidal, axisymmetric) and helical (straight, nonaxisymmetric) equilibria satisfy the kernel law at realistic 5 t / few-percent β; no coil or free-boundary matching."
   },
   {
     "title": "P5: all-mode MHD result · F/V/R",
-    "section": "Roadmap · Planning only — no Lean code written",
+    "section": "Roadmap · Partially implemented — Suydam both directions; screw-pinch Newcomb δW ≥ 0 for all modes with 1 ≤ |m| ≤ 6 (reduction supplied, wall at edge); no all-mode result for a 3-D equilibrium.",
     "url": "roadmap.html",
-    "text": "p5: all-mode mhd result f/v/r milestones and evidence gates planning only — no lean code written"
+    "text": "p5: all-mode mhd result f/v/r milestones and evidence gates partially implemented — suydam both directions; screw-pinch newcomb δw ≥ 0 for all modes with 1 ≤ |m| ≤ 6 (reduction supplied, wall at edge); no all-mode result for a 3-d equilibrium."
   },
   {
     "title": "P6: kinetic and exhaust closure · F/V/R",
@@ -1297,15 +1309,15 @@
   },
   {
     "title": "6 · Theory.Fields.BiotSavart",
-    "section": "Roadmap · Partially implemented — current linearity, exact loop-axis formula, actual field-integral differentiation, operator bounds and C¹ coil-to-C⁰ field perturbation; Maxwell proofs remain pending.",
+    "section": "Roadmap · Partially implemented — current linearity, loop formula, actual field-integral differentiation, perturbation bounds and source-free Maxwell identities.",
     "url": "roadmap.html",
-    "text": "6 theory.fields.biotsavart the first coding sequence partially implemented — current linearity, exact loop-axis formula, actual field-integral differentiation, operator bounds and c¹ coil-to-c⁰ field perturbation; maxwell proofs remain pending."
+    "text": "6 theory.fields.biotsavart the first coding sequence partially implemented — current linearity, loop formula, actual field-integral differentiation, perturbation bounds and source-free maxwell identities."
   },
   {
     "title": "7 · Theory.Stability.BlockBounds",
-    "section": "Roadmap · Lean verified — scalar two-block positivity/margin checker; no claimed MHD tail estimate.",
+    "section": "Roadmap · Lean verified — scalar block checker and polynomial interval checker with Riccati/Jacobi stability certificates; no MHD tail estimate.",
     "url": "roadmap.html",
-    "text": "7 theory.stability.blockbounds the first coding sequence lean verified — scalar two-block positivity/margin checker; no claimed mhd tail estimate."
+    "text": "7 theory.stability.blockbounds the first coding sequence lean verified — scalar block checker and polynomial interval checker with riccati/jacobi stability certificates; no mhd tail estimate."
   },
   {
     "title": "8 · Bridge.Candidate, Design.Specification",
@@ -1471,9 +1483,9 @@
   },
   {
     "title": "Verified progress",
-    "section": "Continuous field derivatives, manufacturing/current error budgets, robust probe-field margins and tube clearances now compile. The vacuum fixture remains partial P2; a practical stellarator is not yet certified.",
+    "section": "Exact finite-pressure equilibria (toroidal Solov'ev and a nonaxisymmetric helical one) now satisfy the kernel force-balance law, with all-time full-orbit confinement theorems, filament Maxwell identities, and Suydam/Newcomb stability criteria with exact certificates. All are idealized symmetric models; no coil-produced stellarator is certified and no all-mode MHD stability is proved.",
     "url": "progress.html",
-    "text": "verified progress continuous field derivatives, manufacturing/current error budgets, robust probe-field margins and tube clearances now compile. the vacuum fixture remains partial p2; a practical stellarator is not yet certified."
+    "text": "verified progress exact finite-pressure equilibria (toroidal solov'ev and a nonaxisymmetric helical one) now satisfy the kernel force-balance law, with all-time full-orbit confinement theorems, filament maxwell identities, and suydam/newcomb stability criteria with exact certificates. all are idealized symmetric models; no coil-produced stellarator is certified and no all-mode mhd stability is proved."
   },
   {
     "title": "Outcome",
@@ -1494,16 +1506,22 @@
     "text": "new checked results verified progress"
   },
   {
-    "title": "Quantitative certificate",
+    "title": "Quantitative certificates",
     "section": "Verified progress",
-    "url": "progress.html#quantitative-certificate",
-    "text": "quantitative certificate verified progress"
+    "url": "progress.html#quantitative-certificates",
+    "text": "quantitative certificates verified progress"
   },
   {
-    "title": "Assumption and source ledger",
+    "title": "Corrections and challenged claims",
     "section": "Verified progress",
-    "url": "progress.html#assumption-and-source-ledger",
-    "text": "assumption and source ledger verified progress"
+    "url": "progress.html#corrections-and-challenged-claims",
+    "text": "corrections and challenged claims verified progress"
+  },
+  {
+    "title": "Assumption ledger",
+    "section": "Verified progress",
+    "url": "progress.html#assumption-ledger",
+    "text": "assumption ledger verified progress"
   },
   {
     "title": "Earlier results retained",

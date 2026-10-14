@@ -1,23 +1,23 @@
 <!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="description" content="Continuous field derivatives, manufacturing/current error budgets, robust probe-field margins and tube clearances now compile. The vacuum fixture remains partial P2; a practical stellarator is not yet certified.">
+  <meta name="description" content="Exact finite-pressure equilibria (toroidal Solov'ev and a nonaxisymmetric helical one) now satisfy the kernel force-balance law, with all-time full-orbit confinement theorems, filament Maxwell identities, and Suydam/Newcomb stability criteria with exact certificates. All are idealized symmetric models; no coil-produced stellarator is certified and no all-mode MHD stability is proved.">
   <title>Progress slideshow · PlasmaLean</title>
   <link rel="stylesheet" href="assets/slides.css"><script defer src="assets/slides.js"></script>
 </head><body>
   <a class="skip-link" href="#presentation">Skip to slides</a>
-  <header class="deck-header"><a class="deck-brand" href="index.html"><span aria-hidden="true">λ</span> PlasmaLean</a><nav aria-label="Website"><a href="index.html">Home &amp; graphics</a><a href="handbook.html">Handbook</a><a href="progress.html">Full report</a></nav><p>Evidence updated <time datetime="2026-10-12">2026-10-12</time></p></header>
+  <header class="deck-header"><a class="deck-brand" href="index.html"><span aria-hidden="true">λ</span> PlasmaLean</a><nav aria-label="Website"><a href="index.html">Home &amp; graphics</a><a href="handbook.html">Handbook</a><a href="progress.html">Full report</a></nav><p>Evidence updated <time datetime="2026-10-14">2026-10-14</time></p></header>
   <main id="presentation" class="deck" tabindex="-1" aria-label="Progress slideshow"><section id="where-we-are" class="slide opening-slide" aria-labelledby="where-we-are-title" tabindex="-1" data-slide>
-      <div class="slide-topline"><p class="eyebrow">Progress briefing · Small vacuum-field demonstrator</p><span class="slide-number">01 / 09</span></div>
-      <h1 id="where-we-are-title">From proof foundations to a checked coil fixture.</h1>
-      <p class="slide-lead">PlasmaLean is building a Lean library for stellarator design. The current result is a tolerance-aware two-coil calibration fixture: a useful step, not a practical stellarator.</p>
-      <dl class="slide-metrics"><div><dt>Lean modules</dt><dd>32</dd></div><div><dt>Source theorems, including private helpers</dt><dd>175</dd></div><div><dt>Project declarations in the last axiom audit</dt><dd>448</dd></div></dl>
+      <div class="slide-topline"><p class="eyebrow">Progress briefing · Equilibria, stability criteria and confinement</p><span class="slide-number">01 / 11</span></div>
+      <h1 id="where-we-are-title">From a coil fixture to exact equilibria with proved confinement.</h1>
+      <p class="slide-lead">PlasmaLean is building a Lean library for stellarator design. This run proved exact finite-pressure equilibria — a toroidal Solov'ev one and a nonaxisymmetric helical one — satisfying the kernel force-balance law, with all-time particle confinement theorems and Suydam/Newcomb stability criteria.</p>
+      <dl class="slide-metrics"><div><dt>Lean modules</dt><dd>53</dd></div><div><dt>Source theorems, including private helpers</dt><dd>618</dd></div><div><dt>Project declarations in the last axiom audit</dt><dd>1730</dd></div></dl>
       
-      <div class="slide-progress"><h3>Progress so far</h3><p>Foundations and exact building blocks are implemented; the continuous vacuum-candidate milestone (P2) is partial.</p></div>
-      <p class="slide-boundary"><strong>Claim boundary.</strong> No toroidal confinement, practical hardware qualification, or all-mode MHD stability certificate yet. Counts describe the linked run, not independent design goals.</p>
-      <footer class="slide-evidence"><span>Evidence · 2026-10-12</span><a href="progress.html#validation">Latest run &amp; audit <span aria-hidden="true">↗</span></a><a href="index.html#background">Original motivation &amp; graphics <span aria-hidden="true">↗</span></a></footer>
+      <div class="slide-progress"><h3>Progress so far</h3><p>P3 (confined orbits) and P4 (finite-pressure equilibrium) now have checked instances in idealized symmetric models; P5 has local and certificate-based building blocks. P2 for a coil design remains partial.</p></div>
+      <p class="slide-boundary"><strong>Claim boundary.</strong> No configuration is coil-produced; the helical model has no toroidal curvature and the Solov'ev one is axisymmetric. No all-mode MHD stability, 3.5 MeV alpha confinement, or hardware qualification.</p>
+      <footer class="slide-evidence"><span>Evidence · 2026-10-14</span><a href="progress.html#validation">Latest run &amp; audit <span aria-hidden="true">↗</span></a><a href="index.html#background">Original motivation &amp; graphics <span aria-hidden="true">↗</span></a></footer>
     </section>
 <section id="proof-architecture" class="slide" aria-labelledby="proof-architecture-title" tabindex="-1" data-slide>
-      <div class="slide-topline"><p class="eyebrow">01 · How the library earns a claim</p><span class="slide-number">02 / 09</span></div>
+      <div class="slide-topline"><p class="eyebrow">01 · How the library earns a claim</p><span class="slide-number">02 / 11</span></div>
       <h2 id="proof-architecture-title">Small assumptions. Reusable proofs. One candidate.</h2>
       <p class="slide-lead">Physical model laws are explicit hypotheses. Derived mathematics and candidate certificates live above that small domain kernel.</p>
       
@@ -27,10 +27,10 @@
 <article class="slide-card"><span class="card-status checked">Fixtures checked</span><h3>Design</h3><p>Synthetic examples and the concrete vacuum-pair fixture exercise the reusable library.</p></article></div></div>
       <div class="slide-progress"><h3>Progress so far</h3><p>The public library separates all six layers. The last audit found only Lean/Mathlib's standard logical axioms, with no added domain axioms.</p></div>
       <p class="slide-boundary"><strong>Claim boundary.</strong> A theorem proves a consequence of a model; it does not establish that empirical assumptions apply to a real machine.</p>
-      <footer class="slide-evidence"><span>Evidence · 2026-10-12</span><a href="model-contracts.html#architecture">Model contracts &amp; architecture <span aria-hidden="true">↗</span></a><a href="progress.html#validation">Audit evidence <span aria-hidden="true">↗</span></a></footer>
+      <footer class="slide-evidence"><span>Evidence · 2026-10-14</span><a href="model-contracts.html#architecture">Model contracts &amp; architecture <span aria-hidden="true">↗</span></a><a href="progress.html#validation">Audit evidence <span aria-hidden="true">↗</span></a></footer>
     </section>
 <section id="mathematical-foundations" class="slide" aria-labelledby="mathematical-foundations-title" tabindex="-1" data-slide>
-      <div class="slide-topline"><p class="eyebrow">02 · Reusable mathematical progress</p><span class="slide-number">03 / 09</span></div>
+      <div class="slide-topline"><p class="eyebrow">02 · Reusable mathematical progress</p><span class="slide-number">03 / 11</span></div>
       <h2 id="mathematical-foundations-title">The foundations have executable proof content.</h2>
       <p class="slide-lead">Simple models make the definitions testable before tackling three-dimensional plasma physics.</p>
       
@@ -39,10 +39,10 @@
 <article class="slide-card"><span class="card-status checked">Lean checked</span><h3>Geometry &amp; fields</h3><p>Continuous clearance, arbitrarily placed circular coils, Biot–Savart integrals and an exact on-axis loop field.</p></article></div></div>
       <div class="slide-progress"><h3>Progress so far</h3><p>These are compiled elementary results and sanity checks, not just declarations of future tasks.</p></div>
       <p class="slide-boundary"><strong>Claim boundary.</strong> Zero pressure does not imply zero current. Abstract energy bounds do not yet establish a continuum MHD stability result.</p>
-      <footer class="slide-evidence"><span>Evidence · 2026-10-12</span><a href="progress.html#earlier-results-retained">Earlier results retained <span aria-hidden="true">↗</span></a><a href="mhd-stability.html">Stability scope <span aria-hidden="true">↗</span></a></footer>
+      <footer class="slide-evidence"><span>Evidence · 2026-10-14</span><a href="progress.html#earlier-results-retained">Earlier results retained <span aria-hidden="true">↗</span></a><a href="mhd-stability.html">Stability scope <span aria-hidden="true">↗</span></a></footer>
     </section>
 <section id="exact-certificates" class="slide" aria-labelledby="exact-certificates-title" tabindex="-1" data-slide>
-      <div class="slide-topline"><p class="eyebrow">03 · Exact numerical certificates</p><span class="slide-number">04 / 09</span></div>
+      <div class="slide-topline"><p class="eyebrow">03 · Exact numerical certificates</p><span class="slide-number">04 / 11</span></div>
       <h2 id="exact-certificates-title">From a numerical proposal to a proved bound.</h2>
       <p class="slide-lead">Rational interval soundness and contraction arguments give small end-to-end tests of the verification path.</p>
       
@@ -51,10 +51,10 @@
 <article class="slide-card"><span class="card-status checked">Lean checked</span><h3>Sound arithmetic</h3><p>Exact coefficient decoding and interval/checker proofs separate candidate generation from the trusted proof path.</p></article></div></div>
       <div class="slide-progress"><h3>Progress so far</h3><p>Exact arithmetic is connected to mathematical soundness theorems and explicit test fixtures.</p></div>
       <p class="slide-boundary"><strong>Claim boundary.</strong> The scalar example is not a plasma PDE solution. The thermal inputs are invented, not sourced material qualification data.</p>
-      <footer class="slide-evidence"><span>Evidence · 2026-10-12</span><a href="progress.html#earlier-results-retained">Retained examples &amp; margins <span aria-hidden="true">↗</span></a><a href="verified-numerics.html">Numerical verification plan <span aria-hidden="true">↗</span></a></footer>
+      <footer class="slide-evidence"><span>Evidence · 2026-10-14</span><a href="progress.html#earlier-results-retained">Retained examples &amp; margins <span aria-hidden="true">↗</span></a><a href="verified-numerics.html">Numerical verification plan <span aria-hidden="true">↗</span></a></footer>
     </section>
 <section id="vacuum-fixture" class="slide" aria-labelledby="vacuum-fixture-title" tabindex="-1" data-slide>
-      <div class="slide-topline"><p class="eyebrow">04 · The concrete candidate so far</p><span class="slide-number">05 / 09</span></div>
+      <div class="slide-topline"><p class="eyebrow">04 · The vacuum calibration fixture</p><span class="slide-number">05 / 11</span></div>
       <h2 id="vacuum-fixture-title">Two circular coils. Precisely stated regions.</h2>
       <p class="slide-lead">The first device-specific object is a calibration fixture with symbolic positive reference current I and permeability μ₀. Its field model uses ideal filaments.</p>
       
@@ -83,10 +83,10 @@
 <article class="slide-card"><span class="card-status checked">Full-domain bounds</span><h3>Two different regions</h3><p>Field/error/derivative bounds cover the 5 cm observation ball. The positive axial-field certificate covers the smaller 1 mm probe ball.</p></article></div></div>
       <div class="slide-progress"><h3>Progress so far</h3><p>Closure, regularity, one-turn simplicity, source separation and the nominal midpoint field have proofs.</p></div>
       <p class="slide-boundary"><strong>Claim boundary.</strong> The diagram is schematic, not a field-line simulation or a construction drawing. Neither ball is a certified confinement region.</p>
-      <footer class="slide-evidence"><span>Evidence · 2026-10-12</span><a href="vacuum-demonstrator.html#exact-fixture-and-checked-margins">Fixture specification &amp; units <span aria-hidden="true">↗</span></a></footer>
+      <footer class="slide-evidence"><span>Evidence · 2026-10-14</span><a href="vacuum-demonstrator.html#exact-fixture-and-checked-margins">Fixture specification &amp; units <span aria-hidden="true">↗</span></a></footer>
     </section>
 <section id="tolerance-margins" class="slide" aria-labelledby="tolerance-margins-title" tabindex="-1" data-slide>
-      <div class="slide-topline"><p class="eyebrow">05 · What survives manufacturing uncertainty</p><span class="slide-number">06 / 09</span></div>
+      <div class="slide-topline"><p class="eyebrow">05 · What survives manufacturing uncertainty</p><span class="slide-number">06 / 11</span></div>
       <h2 id="tolerance-margins-title">Margins for the same perturbed coils and currents.</h2>
       <p class="slide-lead">Assume closed C¹ coils with position error ≤ 1 mm, independent tangent error ≤ 1 mm/radian, and independent current errors ≤ 1% of I.</p>
       
@@ -95,49 +95,74 @@
 <article class="slide-card"><span class="card-status checked">Lean checked</span><h3>Tube clearance</h3><p>The two 5 mm-radius envelopes around actual coil centrelines remain at least 97/250 m = 388 mm apart.</p></article></div></div>
       <div class="slide-progress"><h3>Progress so far</h3><p>Manufacturing and current errors compose into continuous field and clearance certificates, not just sampled checks.</p></div>
       <p class="slide-boundary"><strong>Claim boundary.</strong> These tolerances are invented test inputs. Tube envelopes do not prove embedded winding packs or a finite-conductor electromagnetic model.</p>
-      <footer class="slide-evidence"><span>Evidence · 2026-10-12</span><a href="progress.html#quantitative-certificate">Quantitative certificate <span aria-hidden="true">↗</span></a><a href="vacuum-demonstrator.html#reusable-proof-interfaces">Compiled entry points <span aria-hidden="true">↗</span></a></footer>
+      <footer class="slide-evidence"><span>Evidence · 2026-10-14</span><a href="vacuum-demonstrator.html#exact-fixture-and-checked-margins">Quantitative certificate <span aria-hidden="true">↗</span></a><a href="vacuum-demonstrator.html#reusable-proof-interfaces">Compiled entry points <span aria-hidden="true">↗</span></a></footer>
     </section>
-<section id="latest-run" class="slide" aria-labelledby="latest-run-title" tabindex="-1" data-slide>
-      <div class="slide-topline"><p class="eyebrow">06 · Latest run: a stronger result and a sharper limit</p><span class="slide-number">07 / 09</span></div>
-      <h2 id="latest-run-title">Spatial derivatives are proved. Confinement is not.</h2>
-      <p class="slide-lead">The latest run added seven modules and 51 source theorems, including continuous field differentiation, pose/tolerance interfaces and a probe-escape sanity result.</p>
+<section id="maxwell-and-stability" class="slide" aria-labelledby="maxwell-and-stability-title" tabindex="-1" data-slide>
+      <div class="slide-topline"><p class="eyebrow">06 · Fields and local stability</p><span class="slide-number">07 / 11</span></div>
+      <h2 id="maxwell-and-stability-title">Maxwell identities proved; interchange stability decided both ways.</h2>
+      <p class="slide-lead">The closed-filament Biot–Savart field is divergence- and curl-free off the coil. A sharp Hardy inequality gives the Suydam criterion with both sufficiency and an explicit unstable mode.</p>
       
-      <div class="slide-content"><div class="slide-cards cards-2"><article class="slide-card"><span class="card-status checked">Lean checked</span><h3>Actual field derivatives</h3><p>Dominated differentiation gives the true spatial Fréchet derivative and an operator-norm bound throughout the observation ball.</p></article>
-<article class="slide-card"><span class="card-status checked">Lean checked</span><h3>A useful countercheck</h3><p>For a classical field line γ′(s) = B(γ(s)) staying in the probe ball on [0, T], the same assumptions imply Tμ₀I ≤ 1/125. It cannot remain there forever.</p></article></div></div>
-      <div class="slide-progress"><h3>Progress so far</h3><p>A nonvanishing-field certificate now comes with an explicit check against mistaking it for all-time trapping in the probe ball.</p></div>
-      <p class="slide-boundary"><strong>Claim boundary.</strong> The parameter s has units m/T, not seconds or particle time. This result does not rule out confinement elsewhere or prove trajectory existence. Source-free Maxwell identities remain to be proved.</p>
-      <footer class="slide-evidence"><span>Evidence · 2026-10-12</span><a href="progress.html#new-checked-results">New checked results <span aria-hidden="true">↗</span></a><a href="vacuum-demonstrator.html#why-this-fixture-is-not-confinement">Why this fixture is not confinement <span aria-hidden="true">↗</span></a></footer>
+      <div class="slide-content"><div class="slide-cards cards-3"><article class="slide-card"><span class="card-status checked">Lean checked</span><h3>∇·B = 0, ∇×B = 0</h3><p>For the actual Fréchet derivative of the continuous filament integral, away from the source; curl needs a closed curve, and the open-segment curl is computed exactly.</p></article>
+<article class="slide-card"><span class="card-status checked">Lean checked</span><h3>Suydam, both directions</h3><p>F ≥ 0, F + 4G ≥ 0 gives a coercive margin; F + 4G &lt; 0 gives an unstable localized mode in every neighbourhood of the resonance. Hardy's constant 4 is sharp.</p></article>
+<article class="slide-card"><span class="card-status checked">Lean checked</span><h3>Newcomb certificates</h3><p>Picone/Riccati/Jacobi certificates for variable coefficients, discharged by an exact rational polynomial checker running in the kernel.</p></article></div></div>
+      <div class="slide-progress"><h3>Progress so far</h3><p>A realistic screw pinch (a = 1 m, R₀ = 4 m, 5 T, ⟨β⟩ = 2/75) satisfies Suydam everywhere with a 25% margin, and Newcomb-reduced δW ≥ 0 is certified for every mode with 1 ≤ |m| ≤ 6 (wall at the edge).</p></div>
+      <p class="slide-boundary"><strong>Claim boundary.</strong> The δW reductions are cited source results, not formalized; modes with |m| ≥ 7, km &lt; 0 remain uncertified. Suydam alone is necessary, not sufficient.</p>
+      <footer class="slide-evidence"><span>Evidence · 2026-10-14</span><a href="progress.html#new-checked-results">New checked results <span aria-hidden="true">↗</span></a><a href="mhd-stability.html">Stability scope <span aria-hidden="true">↗</span></a></footer>
+    </section>
+<section id="exact-equilibria" class="slide" aria-labelledby="exact-equilibria-title" tabindex="-1" data-slide>
+      <div class="slide-topline"><p class="eyebrow">07 · Finite-pressure equilibria</p><span class="slide-number">08 / 11</span></div>
+      <h2 id="exact-equilibria-title">Two exact equilibria satisfy the kernel law J × B = ∇p.</h2>
+      <p class="slide-lead">The current is computed as curl B/μ₀ from actual derivatives and checked against the unchanged kernel ForceBalance class.</p>
+      
+      <div class="slide-content"><div class="slide-cards cards-3"><article class="slide-card"><span class="card-status checked">Lean checked</span><h3>Solov'ev torus</h3><p>Axisymmetric (tokamak-like) exact equilibrium; ITER-like instance R₀ = 6 m, B = 5 T, β_axis = 147/5000; div B = 0, flux and current tangent to surfaces.</p></article>
+<article class="slide-card"><span class="card-status checked">Lean checked</span><h3>Helical equilibrium</h3><p>Helically symmetric, nonaxisymmetric exact equilibrium found by symbolic search; SI instance with pitch length 2 m, B = 5 T, β_axis = 4%.</p></article>
+<article class="slide-card"><span class="card-status partial">Idealized</span><h3>Model limits</h3><p>Straight helix (no toroidal curvature); smooth pressure formula restricted to ψ ≤ ψ_b; neither field is matched to coils.</p></article></div></div>
+      <div class="slide-progress"><h3>Progress so far</h3><p>P4 now has checked smooth instances at realistic field strength and β.</p></div>
+      <p class="slide-boundary"><strong>Claim boundary.</strong> No free-boundary or coil matching, and no global stability analysis of these equilibria yet.</p>
+      <footer class="slide-evidence"><span>Evidence · 2026-10-14</span><a href="progress.html#quantitative-certificates">Quantitative certificates <span aria-hidden="true">↗</span></a><a href="progress.html#corrections-and-challenged-claims">Corrections <span aria-hidden="true">↗</span></a></footer>
+    </section>
+<section id="symmetric-confinement" class="slide" aria-labelledby="symmetric-confinement-title" tabindex="-1" data-slide>
+      <div class="slide-topline"><p class="eyebrow">08 · Confinement for all time</p><span class="slide-number">09 / 11</span></div>
+      <h2 id="symmetric-confinement-title">Symmetry plus Noether confines every slow enough orbit forever.</h2>
+      <p class="slide-lead">Canonical momentum m⟨K,v⟩ + qψ is conserved for any Killing symmetry K; with speed conservation and an intermediate-value argument, orbits stay in a flux region for all time.</p>
+      
+      <div class="slide-content"><div class="slide-cards cards-3"><article class="slide-card"><span class="card-status checked">Lean checked</span><h3>Solov'ev orbits</h3><p>Deuterons up to 400 keV starting in the inner region never leave the plasma torus.</p></article>
+<article class="slide-card"><span class="card-status checked">Lean checked</span><h3>Helical orbits</h3><p>Deuterons ≤ 30 keV and alphas ≤ 60 keV stay at r &lt; 0.71 m inside the 4% β plasma, for all time.</p></article>
+<article class="slide-card"><span class="card-status next">Obstruction recorded</span><h3>Broken symmetry</h3><p>A symmetry defect δ gives confinement only for times ∝ 1/(δ|v|) — ballistic, far from slowing-down times. 3.5 MeV alphas are not covered.</p></article></div></div>
+      <div class="slide-progress"><h3>Progress so far</h3><p>P3 has checked full-orbit instances; field lines are confined by exact first integrals.</p></div>
+      <p class="slide-boundary"><strong>Claim boundary.</strong> Orbits are supplied, not constructed. Quasisymmetric toroidal stellarators need guiding-centre averaging, not yet formalized.</p>
+      <footer class="slide-evidence"><span>Evidence · 2026-10-14</span><a href="progress.html#quantitative-certificates">Obstruction &amp; numbers <span aria-hidden="true">↗</span></a><a href="particles-and-transport.html">Particles &amp; transport plan <span aria-hidden="true">↗</span></a></footer>
     </section>
 <section id="path-to-a-device" class="slide" aria-labelledby="path-to-a-device-title" tabindex="-1" data-slide>
-      <div class="slide-topline"><p class="eyebrow">07 · From calibration to a stellarator</p><span class="slide-number">08 / 09</span></div>
+      <div class="slide-topline"><p class="eyebrow">09 · From idealized models to a stellarator</p><span class="slide-number">10 / 11</span></div>
       <h2 id="path-to-a-device-title">The remaining device work is explicit.</h2>
-      <p class="slide-lead">The chosen first product is a small vacuum-field demonstrator. A four-circular-coil, CNT-inspired architecture is a reference direction, not a completed replica or a certified design.</p>
+      <p class="slide-lead">The vacuum-fixture work packages remain, now joined by an equilibrium/stability track. A four-circular-coil, CNT-inspired architecture is a reference direction, not a certified design.</p>
       
       <div class="slide-content"><div class="slide-cards cards-4"><article class="slide-card"><span class="card-status next">Reference only</span><h3>VD1 · Freeze the candidate</h3><p>Version the four coil placements, frames, radii, turns/current conventions and leads against a source dataset.</p></article>
-<article class="slide-card"><span class="card-status partial">Partial: fixture only</span><h3>VD2 · Continuous fields</h3><p>Extend the fixture's geometry/derivative work to the candidate and prove source-free Maxwell identities.</p></article>
+<article class="slide-card"><span class="card-status partial">Partial: fixture + Maxwell</span><h3>VD2 · Continuous fields</h3><p>Maxwell identities are proved for closed filaments; extend fixture geometry/derivative work to the candidate coil set.</p></article>
 <article class="slide-card"><span class="card-status next">Not certified</span><h3>VD3–4 · Conductors &amp; confinement</h3><p>Model embedded finite winding packs, then certify an invariant barrier or a declared finite-time orbit bundle.</p></article>
 <article class="slide-card"><span class="card-status next">Not qualified</span><h3>VD5 · Physical operation</h3><p>Source conductor, supply, thermal, mechanical, protection and metrology envelopes for that same candidate.</p></article></div></div>
-      <div class="slide-progress"><h3>Progress so far</h3><p>Reusable mathematics supports partial P2 work. No practical build or energization specification has been released.</p></div>
+      <div class="slide-progress"><h3>Progress so far</h3><p>Reusable mathematics now spans fields, equilibria, local stability and symmetric confinement. No practical build or energization specification has been released.</p></div>
       <p class="slide-boundary"><strong>Claim boundary.</strong> Finite-pressure equilibrium, all-mode MHD, transport and reactor engineering are separate later obligations, not implied by a vacuum demonstrator.</p>
-      <footer class="slide-evidence"><span>Evidence · 2026-10-12</span><a href="vacuum-demonstrator.html#work-packages-and-progress">Device work packages <span aria-hidden="true">↗</span></a><a href="roadmap.html#milestones-and-evidence-gates">Full evidence gates P0–P9 <span aria-hidden="true">↗</span></a></footer>
+      <footer class="slide-evidence"><span>Evidence · 2026-10-14</span><a href="vacuum-demonstrator.html#work-packages-and-progress">Device work packages <span aria-hidden="true">↗</span></a><a href="roadmap.html#milestones-and-evidence-gates">Full evidence gates P0–P9 <span aria-hidden="true">↗</span></a></footer>
     </section>
 <section id="next-run" class="slide" aria-labelledby="next-run-title" tabindex="-1" data-slide>
-      <div class="slide-topline"><p class="eyebrow">08 · Keep every step reviewable</p><span class="slide-number">09 / 09</span></div>
+      <div class="slide-topline"><p class="eyebrow">10 · Keep every step reviewable</p><span class="slide-number">11 / 11</span></div>
       <h2 id="next-run-title">The next run must leave evidence, not just a promise.</h2>
-      <p class="slide-lead">The immediate proof target is source-free divergence/curl for closed C¹ filaments. The immediate device-data target is a versioned four-coil placement/current dataset.</p>
+      <p class="slide-lead">Next proof targets: global (Newcomb/Mercier) stability of the new equilibria, quasisymmetry defect bounds with guiding-centre averaging, and coil/free-boundary matching.</p>
       
       <div class="slide-content"><div class="slide-cards cards-3"><article class="slide-card"><span class="card-status next">Next loop</span><h3>Implement &amp; challenge</h3><p>Choose a scoped theorem or candidate milestone, retain explicit assumptions, and test limiting cases and counterexamples.</p></article>
 <article class="slide-card"><span class="card-status next">Required evidence</span><h3>Compile &amp; audit</h3><p>Build the Lean library and run the axiom audit. Record actual results and remaining physical/model gaps.</p></article>
 <article class="slide-card"><span class="card-status next">Recurring handoff</span><h3>Report &amp; refresh</h3><p>Update the dated report, task status, this slideshow and the brief README summary after every run, including stalled runs.</p></article></div></div>
       <div class="slide-progress"><h3>Progress so far</h3><p>The linked run records checked declarations, assumptions and validation. This slideshow is a summary of that evidence, not a new design certificate.</p></div>
       <p class="slide-boundary"><strong>Claim boundary.</strong> A practical claim needs composed certificates for one candidate plus evidence that the physical models and supplied data apply.</p>
-      <footer class="slide-evidence"><span>Evidence · 2026-10-12</span><a href="progress.html">Read the full progress report <span aria-hidden="true">↗</span></a><a href="domain-library.html#agent-runs-and-loops">Run &amp; loop instructions <span aria-hidden="true">↗</span></a><a href="handbook.html">Explore the handbook <span aria-hidden="true">↗</span></a></footer>
+      <footer class="slide-evidence"><span>Evidence · 2026-10-14</span><a href="progress.html">Read the full progress report <span aria-hidden="true">↗</span></a><a href="domain-library.html#agent-runs-and-loops">Run &amp; loop instructions <span aria-hidden="true">↗</span></a><a href="handbook.html">Explore the handbook <span aria-hidden="true">↗</span></a></footer>
     </section></main>
   <nav id="slide-controls" class="slide-controls" aria-label="Slideshow controls" hidden>
     <div class="step-controls"><button id="slide-prev" type="button" aria-label="Previous slide" aria-controls="presentation">← Previous</button><output id="slide-counter" aria-live="polite" aria-atomic="true"></output><button id="slide-next" type="button" aria-label="Next slide" aria-controls="presentation">Next →</button></div>
-    <div class="view-controls"><label for="slide-select">Jump to</label><select id="slide-select" aria-controls="presentation"><option value="0">1. From proof foundations to a checked coil fixture.</option><option value="1">2. Small assumptions. Reusable proofs. One candidate.</option><option value="2">3. The foundations have executable proof content.</option><option value="3">4. From a numerical proposal to a proved bound.</option><option value="4">5. Two circular coils. Precisely stated regions.</option><option value="5">6. Margins for the same perturbed coils and currents.</option><option value="6">7. Spatial derivatives are proved. Confinement is not.</option><option value="7">8. The remaining device work is explicit.</option><option value="8">9. The next run must leave evidence, not just a promise.</option></select><button id="slide-view" type="button" aria-pressed="false" aria-controls="presentation">Read all</button><button id="slide-print" type="button">Print / PDF</button></div>
+    <div class="view-controls"><label for="slide-select">Jump to</label><select id="slide-select" aria-controls="presentation"><option value="0">1. From a coil fixture to exact equilibria with proved confinement.</option><option value="1">2. Small assumptions. Reusable proofs. One candidate.</option><option value="2">3. The foundations have executable proof content.</option><option value="3">4. From a numerical proposal to a proved bound.</option><option value="4">5. Two circular coils. Precisely stated regions.</option><option value="5">6. Margins for the same perturbed coils and currents.</option><option value="6">7. Maxwell identities proved; interchange stability decided both ways.</option><option value="7">8. Two exact equilibria satisfy the kernel law J × B = ∇p.</option><option value="8">9. Symmetry plus Noether confines every slow enough orbit forever.</option><option value="9">10. The remaining device work is explicit.</option><option value="10">11. The next run must leave evidence, not just a promise.</option></select><button id="slide-view" type="button" aria-pressed="false" aria-controls="presentation">Read all</button><button id="slide-print" type="button">Print / PDF</button></div>
     <p class="keyboard-hint">← → / Space to move · Home / End to jump · No autoplay</p>
   </nav>
   <noscript><p class="no-script">All slides are shown below each other. Enable JavaScript for presentation controls, or use your browser's Print command to print the full deck.</p></noscript>
-  <footer class="deck-footer">Small vacuum-field demonstrator · Partial P2 · Not a construction release. <a href="roadmap.html#milestones-and-evidence-gates">What the milestones mean</a></footer>
+  <footer class="deck-footer">Exact symmetric equilibria with all-time orbit confinement · Local stability criteria · Not a coil-produced stellarator · Not a construction release. <a href="roadmap.html#milestones-and-evidence-gates">What the milestones mean</a></footer>
 </body></html>

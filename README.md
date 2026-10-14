@@ -6,15 +6,17 @@ Besides the specific goals, this project is an experiment with using the power o
 
 ## Progress
 
-The latest checked run (12 October 2026) has 32 Lean modules, 175 source theorems
-(including private helpers), and 448 audited project declarations. Reusable
-equilibrium, energy, geometry, field and exact-certificate results now support a
-two-coil vacuum calibration fixture with continuous field derivatives,
-manufacturing/current error bounds, a nonzero probe field and tube clearance.
-This is **partial P2**, not a practical stellarator or a confinement certificate.
-Finite conductors, a nonaxisymmetric candidate and sourced hardware data remain
-ahead. See the [progress slideshow](docs/slides.html) and
-[checked results and assumptions](progress/2026-10-12-progress-2.md).
+The latest checked run (14 October 2026) has 53 Lean modules, 618 source
+theorems (including private helpers), and 1730 audited project declarations. New
+results: source-free Maxwell identities for closed filament fields; a sharp Hardy
+inequality giving the Suydam interchange criterion in both directions; Newcomb/Riccati
+stability certificates discharged by an exact polynomial checker; and two exact
+finite-pressure equilibria (toroidal Solov'ev, and a nonaxisymmetric helically symmetric
+one at 5 T and 4% β) verified against the kernel force-balance law, with all-time
+full-orbit confinement theorems via Noether's canonical momentum. These are idealized
+symmetric models: no coil-produced stellarator, all-mode MHD stability or 3.5 MeV alpha
+confinement is certified. See the [progress slideshow](docs/slides.html) and
+[checked results and assumptions](progress/2026-10-14-progress.md).
 
 ## Code structure
 
@@ -26,7 +28,7 @@ PlasmaLean/
   Theory/                  Geometry, fields, equilibrium, stability, kinetic and engineering results
   Certificates/            Exact arithmetic and proved numerical checkers
   Bridge/                  Common-candidate and witness contracts
-  Design/                  Synthetic examples and vacuum-fixture certificates
+  Design/                  Vacuum fixture, exact equilibria and confinement/stability examples
 notes/                     Design basis and formalization plans
 progress/                  Dated evidence, task status and slideshow content
 docs/                      Static website, illustrated landing page and slides

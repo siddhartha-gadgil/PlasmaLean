@@ -4,6 +4,8 @@
 
 [12 October 2026, run 2: tolerance-aware vacuum fields and probe-escape sanity](2026-10-12-progress-2.md).
 
+[14 October 2026: exact equilibria, interchange criteria and symmetric confinement](2026-10-14-progress.md).
+
 `status.json` is the per-task status source used to generate the website. Keep
 declarations, scope, build results and assumptions in the dated report; update
 the manifest only after the corresponding Lean result compiles. Unlisted tasks
