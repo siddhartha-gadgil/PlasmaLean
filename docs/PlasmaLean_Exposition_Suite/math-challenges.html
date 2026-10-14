@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pure Math Bounties · Topology, Differential & Complex Geometry | PlasmaLean</title>
+  
+<link rel="stylesheet" href="style.css">
+<script>
+  window.MathJax = {
+    tex: {
+      inlineMath: [['$', '$'], ['\\(', '\\)']],
+      displayMath: [['$$', '$$'], ['\\[', '\\]']]
+    }
+  };
+</script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+</head>
+<body>
+  <nav class="site-nav" aria-label="PlasmaLean Exposition Navigation">
+    <div class="site-brand">
+      <span class="lambda-badge">∀</span>
+      <span>Plasma<span style="color:var(--accent-cyan)">Lean</span> · Exposition &amp; Math Portal</span>
+    </div>
+    <div class="nav-links">
+      <a href="index.html">Hub</a>
+      <a href="rosetta-stone.html">1. Rosetta Stone</a>
+      <a href="blueprint-dag.html">2. Dependency DAG</a>
+      <a href="kernel-audit.html">3. 10-Min Kernel Audit</a>
+      <a href="certificate-anatomy.html">4. Certificate Anatomy</a>
+      <a href="math-challenges.html" class="active">Math Bounties</a>
+      <a href="slides-onboarding.html">Exposition Slides</a>
+      <a href="https://siddhartha-gadgil.github.io/PlasmaLean/" class="upstream-link" target="_blank" rel="noopener">Main Site ↗</a>
+    </div>
+  </nav>
+
+  <main class="container">
+    <section class="hero">
+      <div class="pill-row">
+        <span class="pill pill-violet">Topology &amp; Foliations</span>
+        <span class="pill pill-cyan">Differential &amp; Symplectic Geometry</span>
+        <span class="pill pill-emerald">Complex Geometry &amp; Riemann Surfaces</span>
+      </div>
+      <h1>Self-Contained Lean 4 Challenges for Geometers &amp; Topologists</h1>
+      <p style="max-width: 920px;">
+        Want to contribute to <strong>PlasmaLean</strong> without learning plasma physics jargon or cloning a giant physics solver? Each of the 6 micro-bounties below is a <strong>self-contained, 35-line Lean 4 stub file</strong> using only standard <code>Mathlib</code> imports. Replacing <code>sorry</code> with a proof in any of these files directly unlocks a formal theorem in the PlasmaLean stellarator verification pipeline.
+      </p>
+      <div class="controls-bar" style="margin-top:1.25rem; margin-bottom:0;">
+        <button class="btn active" onclick="filterBounties('ALL', this)">All 6 Bounties</button>
+        <button class="btn" onclick="filterBounties('Topology', this)">Topology &amp; Dynamical Systems (2)</button>
+        <button class="btn" onclick="filterBounties('Differential', this)">Differential &amp; Symplectic Geometry (2)</button>
+        <button class="btn" onclick="filterBounties('Complex', this)">Complex Geometry &amp; Harmonic Analysis (2)</button>
+      </div>
+    </section>
+
+    <div id="bounties-list" style="display:flex; flex-direction:column; gap:1.5rem;"></div>
+  </main>
+
+  <footer class="footer">
+    PlasmaLean Exposition Suite · Pure Math Bounties in Topology, Differential Geometry &amp; Complex Geometry
+  </footer>
+
+  <script>
+    const bounties = [{"id": "Challenge1_PoincareHopfTorus", "file": "Challenge1_PoincareHopfTorus.lean", "category": "Topology & Dynamical Systems", "anchor": "topology", "title": "1. Commuting Tangential Fields & Toroidal Flux Surfaces", "math_statement": "Let $\\Sigma = \\psi^{-1}(c) \\subset \\mathbb{R}^3$ be a compact, connected, orientable regular level surface ($\\nabla \\psi \\neq 0$ on $\\Sigma$). Suppose $\\mathbf{B}$ and $\\mathbf{J}$ are smooth vector fields on $\\mathbb{R}^3$ satisfying the magnetohydrostatic force balance $\\mathbf{J} \\times \\mathbf{B} = \\nabla \\psi$. Prove that: (a) both $\\mathbf{B}$ and $\\mathbf{J}$ are everywhere tangent to $\\Sigma$ and nowhere vanishing on $\\Sigma$, (b) at every point $x \\in \\Sigma$, $(\\mathbf{B}(x), \\mathbf{J}(x))$ forms a basis of the tangent plane $T_x \\Sigma$, and (c) the Lie bracket $[\\mathbf{B}, \\mathbf{J}]$ is tangent to $\\Sigma$, inducing a parallelism (trivialization of $T\\Sigma \\cong \\Sigma \\times \\mathbb{R}^2$, forcing $\\chi(\\Sigma) = 0$ and $\\Sigma \\cong T^2$).", "stellarator_impact": "Proves from pure differential topology why magnetohydrostatic confinement with $\\nabla p \\neq 0$ is impossible in spherical geometry and requires nested toroidal flux surfaces $T^2$.", "lean_code": "/-\n  PlasmaLean Pure Math Bounty #1 (Topology & Foliations)\n  File: lean_stubs/Challenge1_PoincareHopfTorus.lean\n  Zero plasma physics background required!\n-/\nimport Mathlib.Analysis.InnerProductSpace.PiL2\nimport Mathlib.LinearAlgebra.CrossProduct\n\nopen scoped RealInnerProductSpace\n\nabbrev ℝ³ := EuclideanSpace ℝ (Fin 3)\n\n/-- Cross product in ℝ³ using standard basis coordinates -/\ndef cross3 (u v : ℝ³) : ℝ³ :=\n  ![u 1 * v 2 - u 2 * v 1, u 2 * v 0 - u 0 * v 2, u 0 * v 1 - u 1 * v 0]\n\n/-- Local algebraic core of the Arnold-Poincaré-Hopf toroidal surface theorem:\n    If J × B = grad_ψ and grad_ψ ≠ 0, then B and J are orthogonal to grad_ψ\n    (hence tangent to the level surface Σ) and linearly independent! -/\ntheorem mhs_tangent_frame_independent\n    (B J grad_ψ : ℝ³)\n    (h_mhs : cross3 J B = grad_ψ)\n    (h_reg : grad_ψ ≠ 0) :\n    ⟪B, grad_ψ⟫_ℝ = 0 ∧ ⟪J, grad_ψ⟫_ℝ = 0 ∧ B ≠ 0 ∧ J ≠ 0 ∧\n    ∀ a b : ℝ, a • B + b • J = 0 → a = 0 ∧ b = 0 := by\n  -- TARGET FOR TOPOLOGISTS & GEOMETERS:\n  -- Prove using properties of the alternating trilinear form ⟪u, cross3 v w⟫_ℝ.\n  sorry\n"}, {"id": "Challenge2_GaussLinking", "file": "Challenge2_GaussLinking.lean", "category": "Topology & Dynamical Systems", "anchor": "topology", "title": "2. Gauss Linking Integral & Biot–Savart Circulation (Ampère's Law)", "math_statement": "Let $\\gamma_1, \\gamma_2 : S^1 \\to \\mathbb{R}^3$ be two disjoint smooth closed curves ($\\|\\gamma_1(s) - \\gamma_2(t)\\| \\ge d_{\\min} > 0$). The Gauss linking integral is:\n$$\\mathrm{Lk}(\\gamma_1, \\gamma_2) = \\frac{1}{4\\pi} \\oint_{S^1} \\oint_{S^1} \\frac{(\\gamma_1'(s) \\times \\gamma_2'(t)) \\cdot (\\gamma_1(s) - \\gamma_2(t))}{\\|\\gamma_1(s) - \\gamma_2(t)\\|^3} \\, ds \\, dt.$$\nProve that: (a) the integrand is smooth on $S^1 \\times S^1$ whenever $d_{\\min} > 0$, (b) the line integral of the Biot–Savart field $\\mathbf{B}_{\\gamma_1}$ around $\\gamma_2$ equals $\\mu_0 I_1 \\mathrm{Lk}(\\gamma_1, \\gamma_2)$, and (c) $\\mathrm{Lk}(\\gamma_1, \\gamma_2)$ is invariant under smooth homotopies that maintain $d_{\\min} > 0$.", "stellarator_impact": "Certifies two crucial properties at once: (1) topological non-interlocking / interlocking invariants of 3D modular stellarator coils under manufacturing perturbations, and (2) exact net toroidal flux linked by external coil currents.", "lean_code": "/-\n  PlasmaLean Pure Math Bounty #2 (Algebraic & Differential Topology)\n  File: lean_stubs/Challenge2_GaussLinking.lean\n-/\nimport Mathlib.Analysis.Calculus.FDeriv.Basic\nimport Mathlib.Analysis.InnerProductSpace.PiL2\n\nopen scoped RealInnerProductSpace\n\nabbrev ℝ³ := EuclideanSpace ℝ (Fin 3)\n\ndef cross3 (u v : ℝ³) : ℝ³ :=\n  ![u 1 * v 2 - u 2 * v 1, u 2 * v 0 - u 0 * v 2, u 0 * v 1 - u 1 * v 0]\n\n/-- The Gauss linking kernel at separated points x ≠ y with tangents u, v -/\nnoncomputable def gaussLinkingIntegrand (x y u v : ℝ³) : ℝ :=\n  ⟪cross3 u v, x - y⟫_ℝ / (‖x - y‖ ^ 3)\n\n/-- Symmetry of the Gauss linking integrand under swapping the two curves -/\ntheorem gaussLinkingIntegrand_symm (x y u v : ℝ³) :\n    gaussLinkingIntegrand x y u v = gaussLinkingIntegrand y x v u := by\n  -- TARGET FOR TOPOLOGISTS:\n  -- Use antisymmetry of cross3 (cross3 v u = -cross3 u v) and (y - x = -(x - y)).\n  sorry\n"}, {"id": "Challenge3_BishopFrameNearAxis", "file": "Challenge3_BishopFrameNearAxis.lean", "category": "Differential & Symplectic Geometry", "anchor": "diff-geom", "title": "3. Parallel Bishop Frames & Near-Axis Quasisymmetry Tubular Reach", "math_statement": "Let $\\gamma : S^1 \\to \\mathbb{R}^3$ be a smooth unit-speed closed curve (the stellarator magnetic axis). Unlike the Frenet–Serret frame—which becomes undefined at inflection points where curvature $\\kappa(s) = 0$—a **parallel Bishop frame** $(T(s), N_1(s), N_2(s))$ satisfies:\n$$T'(s) = k_1(s) N_1(s) + k_2(s) N_2(s), \\quad N_1'(s) = -k_1(s) T(s), \\quad N_2'(s) = -k_2(s) T(s).$$\nProve that: (a) along any solution of the Bishop ODE system with orthonormal initial data at $s=0$, the frame $(T(s), N_1(s), N_2(s))$ remains orthonormal for all $s \\in \\mathbb{R}$, and (b) the tubular neighborhood map $\\Phi(s, r_1, r_2) = \\gamma(s) + r_1 N_1(s) + r_2 N_2(s)$ has Jacobian determinant $\\det(D\\Phi) = 1 - r_1 k_1(s) - r_2 k_2(s)$, which is strictly positive on the disk $r_1^2 + r_2^2 < 1 / \\kappa_{\\max}^2$.", "stellarator_impact": "Directly certifies that Landreman–Sengupta near-axis quasisymmetric stellarator expansions produce non-self-intersecting nested flux surfaces up to minor radius $a < 1/\\kappa_{\\max}$, even for quasi-isodynamic curves with points of zero curvature!", "lean_code": "/-\n  PlasmaLean Pure Math Bounty #3 (Differential Geometry of Curves)\n  File: lean_stubs/Challenge3_BishopFrameNearAxis.lean\n-/\nimport Mathlib.Analysis.Calculus.Deriv.Basic\nimport Mathlib.Analysis.InnerProductSpace.PiL2\n\nopen scoped RealInnerProductSpace\n\nabbrev ℝ³ := EuclideanSpace ℝ (Fin 3)\n\n/-- A Bishop parallel frame along a unit-speed curve with normal curvatures k1, k2 -/\nstructure IsBishopFrame (T N1 N2 : ℝ → ℝ³) (k1 k2 : ℝ → ℝ) : Prop where\n  deriv_T  : ∀ s, HasDerivAt T (k1 s • N1 s + k2 s • N2 s) s\n  deriv_N1 : ∀ s, HasDerivAt N1 (-k1 s • T s) s\n  deriv_N2 : ∀ s, HasDerivAt N2 (-k2 s • T s) s\n\n/-- Conservation of orthonormality along the Bishop frame ODE -/\ntheorem bishop_frame_preserves_inner_products\n    (T N1 N2 : ℝ → ℝ³) (k1 k2 : ℝ → ℝ)\n    (hB : IsBishopFrame T N1 N2 k1 k2) :\n    ∀ s, HasDerivAt (fun t => ⟪N1 t, N2 t⟫_ℝ) 0 s := by\n  -- TARGET FOR DIFFERENTIAL GEOMETERS:\n  -- Differentiate ⟪N1 t, N2 t⟫_ℝ and use orthogonality to T.\n  sorry\n"}, {"id": "Challenge4_QuasisymmetryNoether", "file": "Challenge4_QuasisymmetryNoether.lean", "category": "Differential & Symplectic Geometry", "anchor": "diff-geom", "title": "4. Littlejohn Guiding-Center Symplectic Structure & Quasisymmetry Noether Conservation", "math_statement": "On the 4-dimensional guiding-center phase space $P = U \\times \\mathbb{R}_{\\rho_\\parallel}$ with Boozer coordinates $(\\psi, \\theta, \\phi, \\rho_\\parallel)$, the guiding-center Hamiltonian is $H(\\psi, \\theta, \\phi, \\rho_\\parallel) = \\frac{e^2}{2m} \\rho_\\parallel^2 B^2(\\psi, \\theta, \\phi) + \\mu B(\\psi, \\theta, \\phi) + e\\Phi(\\psi)$, and the non-canonical symplectic 2-form is $\\Omega_{GC} = dA_{\\text{eff}}$. Prove that if $B(\\psi, \\theta, \\phi) = B(\\psi, M\\theta - N\\phi)$ is $(M,N)$-quasisymmetric, then the helical vector field $u = N \\partial_\\theta + M \\partial_\\phi$ satisfies $\\mathcal{L}_u H = 0$ and $\\mathcal{L}_u \\Omega_{GC} = 0$, generating the exact conserved canonical helical momentum:\n$$P_{\\text{hel}} = M \\psi_p - N \\psi_t + (M I(\\psi) + N G(\\psi)) \\rho_\\parallel.$$", "stellarator_impact": "This is the foundational theorem explaining *why* quasisymmetric stellarators confine fusion alpha particles ($\\text{He}^{2+}$): even without continuous rotational symmetry in $\\mathbb{R}^3$, quasisymmetry restores an exact Noether momentum invariant on guiding-center phase space, bounding radial drift excursions to a single banana width.", "lean_code": "/-\n  PlasmaLean Pure Math Bounty #4 (Symplectic & Hamiltonian Geometry)\n  File: lean_stubs/Challenge4_QuasisymmetryNoether.lean\n-/\nimport Mathlib.Analysis.Calculus.FDeriv.Basic\n\n/-- Abstract Guiding-Center state in Boozer coordinates (ψ, θ, φ, ρ_par) -/\nstructure BoozerGCParams where\n  G : ℝ → ℝ       -- Poloidal current function outside flux surface\n  I : ℝ → ℝ       -- Toroidal current function inside flux surface\n  ι : ℝ → ℝ       -- Rotational transform dψ_p / dψ_t\n  M : ℝ           -- Poloidal helicity integer\n  N : ℝ           -- Toroidal helicity integer\n\n/-- Helical canonical momentum P_hel(ψ, ρ_par) -/\ndef helicalMomentum (p : BoozerGCParams) (ψ_t ψ_p ρ_par : ℝ) : ℝ :=\n  p.M * ψ_p - p.N * ψ_t + (p.M * p.I ψ_t + p.N * p.G ψ_t) * ρ_par\n\n/-- Along any guiding-center trajectory where dθ/dt and dφ/dt respect the\n    quasisymmetric Hamiltonian ∂H/∂(Mθ - Nφ), P_hel is strictly conserved. -/\ntheorem helical_momentum_conserved_along_qs_flow\n    (p : BoozerGCParams) (ψ_t ψ_p ρ_par : ℝ → ℝ)\n    (h_flux : ∀ t, HasDerivAt ψ_p (p.ι (ψ_t t) * deriv ψ_t t) t)\n    (h_qs_drift : ∀ t, (p.M * p.ι (ψ_t t) - p.N) * deriv ψ_t t +\n      deriv (fun s => (p.M * p.I (ψ_t s) + p.N * p.G (ψ_t s)) * ρ_par s) t = 0) :\n    ∀ t, deriv (fun s => helicalMomentum p (ψ_t s) (ψ_p s) (ρ_par s)) t = 0 := by\n  -- TARGET FOR SYMPLECTIC GEOMETERS:\n  sorry\n"}, {"id": "Challenge5_HarmonicUnivalence", "file": "Challenge5_HarmonicUnivalence.lean", "category": "Complex Geometry & Harmonic Analysis", "anchor": "complex-geom", "title": "5. Complex-Analytic Univalence of Fourier Flux-Surface Foliations", "math_statement": "In each toroidal cross-section $\\phi = \\phi_0$, a stellarator flux-surface foliation is given by a planar map $f(z) = R(s,\\theta) + i Z(s,\\theta)$ on the unit disk $\\mathbb{D} = \\{z = r e^{i\\theta} \\in \\mathbb{C} : |z| < 1\\}$, written as a harmonic/power series:\n$$f(z) = c_1 z + \\sum_{m=2}^{\\infty} (a_m z^m + b_m \\bar{z}^m), \\quad |c_1| > 0.$$\nProve the **sufficient univalence & positive-Jacobian criterion**: if the higher harmonic coefficients satisfy the strict $\\ell^1$ contraction bound\n$$\\sum_{m=2}^{\\infty} m (|a_m| + |b_m|) \\le (1 - \\delta) |c_1| \\quad (0 < \\delta \\le 1),$$\nthen: (a) the real Jacobian determinant satisfies $J_f(z) = |\\partial_z f|^2 - |\\partial_{\\bar{z}} f|^2 \\ge \\delta^2 |c_1|^2 > 0$ for all $z \\in \\mathbb{D}$, and (b) $f : \\mathbb{D} \\to \\mathbb{C}$ is globally injective (nested flux surfaces never intersect or fold!).", "stellarator_impact": "Gives an algebraic, linear-time checkable certificate on the VMEC/DESC Fourier modes $(R_{m,n}, Z_{m,n})$ guaranteeing that the 3D flux coordinate transformation has a strictly positive Jacobian ($\\sqrt{g} > 0$) everywhere inside the plasma volume!", "lean_code": "/-\n  PlasmaLean Pure Math Bounty #5 (Complex Geometry & Univalent Harmonic Maps)\n  File: lean_stubs/Challenge5_HarmonicUnivalence.lean\n-/\nimport Mathlib.Analysis.Complex.Basic\nimport Mathlib.Topology.MetricSpace.Contracting\n\n/-- For any complex perturbation w_z, w_zbar satisfying ‖w_z‖ + ‖w_zbar‖ ≤ (1 - δ) * ‖c1‖,\n    the harmonic Jacobian determinant |c1 + w_z|^2 - |w_zbar|^2 is strictly bounded below\n    by δ * (2 - δ) * ‖c1‖^2 ≥ δ^2 * ‖c1‖^2 > 0. -/\ntheorem harmonic_jacobian_pos_of_contraction\n    (c1 wz wzbar : ℂ) (δ : ℝ)\n    (hc1 : 0 < ‖c1‖) (hδ : 0 < δ ∧ δ ≤ 1)\n    (h_bound : ‖wz‖ + ‖wzbar‖ ≤ (1 - δ) * ‖c1‖) :\n    ‖c1 + wz‖ ^ 2 - ‖wzbar‖ ^ 2 ≥ (δ * ‖c1‖) ^ 2 := by\n  -- TARGET FOR COMPLEX GEOMETERS & HARMONIC ANALYSTS:\n  -- Hint: By reverse triangle inequality, ‖c1 + wz‖ ≥ ‖c1‖ - ‖wz‖ ≥ δ * ‖c1‖ + ‖wzbar‖.\n  sorry\n"}, {"id": "Challenge6_ConformalTorusModulus", "file": "Challenge6_ConformalTorusModulus.lean", "category": "Complex Geometry & Harmonic Analysis", "anchor": "complex-geom", "title": "6. Conformal Modulus τ(ψ) & Hodge Star Period Matrix on Toroidal Flux Surfaces", "math_statement": "Every nested flux surface $\\Sigma_\\psi \\cong T^2$ inherits a Riemannian metric $g = E\\,d\\theta^2 + 2F\\,d\\theta\\,d\\phi + G\\,d\\phi^2$ with area element $\\sqrt{EG - F^2} > 0$. The Hodge star operator $\\star_g : \\Omega^1(\\Sigma_\\psi) \\to \\Omega^1(\\Sigma_\\psi)$ on 1-forms is given in coordinates by:\n$$\\star_g d\\theta = \\frac{-F\\,d\\theta + E\\,d\\phi}{\\sqrt{EG - F^2}}, \\quad \\star_g d\\phi = \\frac{-G\\,d\\theta + F\\,d\\phi}{\\sqrt{EG - F^2}}.$$\nProve that: (a) $\\star_g^2 = -\\mathrm{Id}$ on $\\Omega^1(\\Sigma_\\psi)$ (defining an almost-complex structure $J$ on each flux surface), and (b) when $(E, F, G)$ are constant on $\\Sigma_\\psi$ (isothermal/Hamada-like coordinates), the complex parameter $\\tau = \\frac{-F + i\\sqrt{EG - F^2}}{E} \\in \\mathbb{H}$ lies strictly in the Poincaré upper half-plane $\\mathrm{Im}(\\tau) > 0$ and uniquely determines the $2\\times 2$ magnetic susceptibility / period matrix.", "stellarator_impact": "Connects the classic theory of elliptic curves and Riemann surface period matrices directly to the susceptibility matrix relating toroidal/poloidal currents $(I(\\psi), G(\\psi))$ to magnetic fluxes $(\\psi_t, \\psi_p)$.", "lean_code": "/-\n  PlasmaLean Pure Math Bounty #6 (Riemann Surfaces & Hodge Theory on 2-Tori)\n  File: lean_stubs/Challenge6_ConformalTorusModulus.lean\n-/\nimport Mathlib.Data.Matrix.Basic\nimport Mathlib.Data.Real.Sqrt\n\n/-- Riemannian surface metric coefficients (E, F, G) with positive area element D = √(EG - F²) -/\nstructure SurfaceMetricCoeffs where\n  E : ℝ\n  F : ℝ\n  G : ℝ\n  E_pos : 0 < E\n  det_pos : 0 < E * G - F ^ 2\n\n/-- The 2×2 Hodge star matrix J on 1-forms (dθ, dφ) -/\nnoncomputable def hodgeStarMatrix (m : SurfaceMetricCoeffs) : Matrix (Fin 2) (Fin 2) ℝ :=\n  let D := Real.sqrt (m.E * m.G - m.F ^ 2)\n  !![-m.F / D, -m.G / D;\n      m.E / D,  m.F / D]\n\n/-- Theorem: The Hodge star on 1-forms of a Riemannian 2-surface satisfies ⋆² = -I₂,\n    endowing every stellarator flux surface with a canonical complex structure! -/\ntheorem hodgeStarMatrix_sq_eq_neg_one (m : SurfaceMetricCoeffs) :\n    hodgeStarMatrix m * hodgeStarMatrix m = -1 := by\n  -- TARGET FOR COMPLEX & DIFFERENTIAL GEOMETERS:\n  sorry\n"}];
+    let currentFilter = 'ALL';
+
+    function renderBounties() {
+      const container = document.getElementById('bounties-list');
+      container.innerHTML = '';
+
+      const filtered = bounties.filter(b => currentFilter === 'ALL' || b.category.includes(currentFilter));
+
+      filtered.forEach(b => {
+        const div = document.createElement('div');
+        div.className = 'card';
+        div.id = b.anchor;
+        div.innerHTML = `
+          <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:0.5rem;">
+            <span class="pill pill-violet">${b.category}</span>
+            <a href="lean_stubs/${b.file}" class="btn" download>⬇ Download ${b.file}</a>
+          </div>
+          <h2 style="margin-top:0.75rem; border:none; padding:0;">${b.title}</h2>
+          <h3>Pure Mathematical Statement</h3>
+          <p style="color:var(--text-primary);">${b.math_statement}</p>
+          <div style="background:rgba(16, 185, 129, 0.1); border-left: 4px solid var(--accent-emerald); padding:0.85rem 1.1rem; border-radius:6px; margin: 1rem 0;">
+            <strong style="color:var(--accent-emerald);">How This Unlocks Stellarator Verification:</strong>
+            <span style="color:var(--text-primary);">${b.stellarator_impact}</span>
+          </div>
+          <h3>Self-Contained Lean 4 Stub (<code>lean_stubs/${b.file}</code>)</h3>
+          <pre><code>${b.lean_code}</code></pre>
+        `;
+        container.appendChild(div);
+      });
+
+      if (window.MathJax && window.MathJax.typesetPromise) {
+        window.MathJax.typesetPromise();
+      }
+    }
+
+    function filterBounties(cat, btn) {
+      currentFilter = cat;
+      document.querySelectorAll('.controls-bar .btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      renderBounties();
+    }
+
+    renderBounties();
+  </script>
+</body>
+</html>

@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>1. Rosetta Stone · Physics ↔ Geometry ↔ Lean 4 | PlasmaLean</title>
+  
+<link rel="stylesheet" href="style.css">
+<script>
+  window.MathJax = {
+    tex: {
+      inlineMath: [['$', '$'], ['\\(', '\\)']],
+      displayMath: [['$$', '$$'], ['\\[', '\\]']]
+    }
+  };
+</script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+</head>
+<body>
+  
+<nav class="site-nav" aria-label="PlasmaLean Exposition Navigation">
+  <div class="site-brand">
+    <span class="lambda-badge">∀</span>
+    <span>Plasma<span style="color:var(--accent-cyan)">Lean</span> · Exposition &amp; Math Portal</span>
+  </div>
+  <div class="nav-links">
+    <a href="index.html" id="nav-home">Hub</a>
+    <a href="rosetta-stone.html" id="nav-rosetta">1. Rosetta Stone</a>
+    <a href="blueprint-dag.html" id="nav-dag">2. Dependency DAG</a>
+    <a href="kernel-audit.html" id="nav-kernel">3. 10-Min Kernel Audit</a>
+    <a href="certificate-anatomy.html" id="nav-cert">4. Certificate Anatomy</a>
+    <a href="math-challenges.html" id="nav-bounties">Math Bounties</a>
+    <a href="slides-onboarding.html" id="nav-slides">Exposition Slides</a>
+    <a href="https://siddhartha-gadgil.github.io/PlasmaLean/" class="upstream-link" target="_blank" rel="noopener">Main Site ↗</a>
+  </div>
+</nav>
+
+  <main class="container">
+    <section class="hero">
+      <div class="pill-row">
+        <span class="pill pill-cyan">Pillar 1 · Terminology Bridge</span>
+        <span class="pill pill-indigo">14 Core Mappings</span>
+        <span class="pill pill-emerald">Downloadable Markdown</span>
+      </div>
+      <h1>The PlasmaLean Rosetta Stone</h1>
+      <p style="max-width: 900px;">
+        Stellarator optimization is often presented in coordinate-heavy plasma physics notation, obscuring the fact that its core objects are classic structures in <strong>differential topology</strong>, <strong>symplectic &amp; contact geometry</strong>, and <strong>complex analysis on Riemann surfaces</strong>. Use this interactive dictionary to translate between physics intuition, intrinsic geometry, and exact Lean 4 specifications.
+      </p>
+      <div style="margin-top: 1rem;">
+        <a href="markdown/ROSETTA_STONE.md" class="btn" download>⬇ Download ROSETTA_STONE.md</a>
+        <a href="math-challenges.html" class="btn">Jump to Pure Math Bounties →</a>
+      </div>
+    </section>
+
+    <div class="controls-bar">
+      <input type="text" id="rosetta-search" class="search-input" placeholder="Search concepts (e.g. Boozer, Quasisymmetry, Beltrami, Riemann surface, KAM, Jacobian)...">
+      <button class="btn active" onclick="filterDomain('ALL', this)">All Domains (14)</button>
+      <button class="btn" onclick="filterDomain('Topology', this)">Topology &amp; Dynamics</button>
+      <button class="btn" onclick="filterDomain('Differential', this)">Differential &amp; Symplectic</button>
+      <button class="btn" onclick="filterDomain('Complex', this)">Complex &amp; Harmonic</button>
+      <button class="btn" onclick="filterDomain('Integral', this)">Coils &amp; Metric Bounds</button>
+    </div>
+
+    <div id="rosetta-container" style="display: flex; flex-direction: column; gap: 1.25rem;"></div>
+  </main>
+
+  <footer class="footer">
+    PlasmaLean Exposition Suite · Pillar 1: Physics ↔ Geometry ↔ Lean 4 Rosetta Stone
+  </footer>
+
+  <script>
+    document.getElementById('nav-rosetta').classList.add('active');
+    const entries = [{"id": "flux-surface", "physics_term": "Magnetic Flux Surface (ψ = const)", "physics_desc": "A toroidal surface inside the plasma onto which magnetic field lines B are everywhere tangent (B · ∇ψ = 0), confining nested layers of plasma pressure.", "domain": "Topology & Foliations", "math_formulation": "Compact connected regular level set Σ_c = ψ⁻¹(c) ≅ T² of a smooth first integral ψ : M → ℝ of a nowhere-vanishing divergence-free vector field B (Lie derivative ℒ_B ψ = 0). By Poincaré–Hopf, χ(Σ_c) = 0 forces Σ_c to be a 2-torus.", "lean_decl": "structure IsFluxSurface (B : VectorField ℝ³) (ψ : ℝ³ → ℝ) (c : ℝ) : Prop where\n  is_regular : ∀ x ∈ ψ ⁻¹' {c}, fderiv ℝ ψ x ≠ 0\n  compact_connected : IsCompact (ψ ⁻¹' {c}) ∧ IsConnected (ψ ⁻¹' {c})\n  tangent_field : ∀ x ∈ ψ ⁻¹' {c}, ⟪B x, grad ψ x⟫_ℝ = 0", "handbook": "geometry-and-fields.html"}, {"id": "div-free-field", "physics_term": "Solenoidal Magnetic Field (∇ · B = 0)", "physics_desc": "Absence of magnetic monopoles; magnetic flux through any closed surface vanishes.", "domain": "Differential Geometry", "math_formulation": "Closed 2-form ω_B = ι_B vol_g ∈ Ω²(M) satisfying dω_B = 0, or co-closed 1-form β = B^♭ satisfying d*β = 0. On contractible domains or via de Rham cohomology H²(M), ω_B = dα for a magnetic vector potential 1-form α ∈ Ω¹(M).", "lean_decl": "def IsSolenoidal (B : ℝ³ → ℝ³) : Prop :=\n  ∀ x : ℝ³, divergence B x = 0\n\nstructure MagneticTwoForm (M : Type*) [SmoothManifold M] where\n  ω : DifferentialForm M 2\n  is_closed : extDeriv ω = 0", "handbook": "geometry-and-fields.html"}, {"id": "vacuum-field", "physics_term": "Vacuum Magnetic Field (∇ · B = 0, ∇ × B = 0)", "physics_desc": "Magnetic field in the current-free region outside coils (J = 0), determined purely by external coil currents and toroidal/poloidal periods.", "domain": "Differential & Complex Geometry", "math_formulation": "Harmonic 1-form β ∈ ℋ¹(M, g) on a Riemannian 3-manifold with toroidal boundary (dβ = 0 and d*β = 0, hence Δ_H β = 0). By Hodge–Morrey–Friedrichs decomposition, the space of vacuum fields with tangent boundary conditions is isomorphic to H¹_dR(M; ℝ) ≅ ℝ^g.", "lean_decl": "structure IsVacuumField (U : Set ℝ³) (B : ℝ³ → ℝ³) : Prop where\n  open_domain : IsOpen U\n  div_zero : ∀ x ∈ U, divergence B x = 0\n  curl_zero : ∀ x ∈ U, curl B x = 0", "handbook": "vacuum-demonstrator.html"}, {"id": "rotational-transform", "physics_term": "Rotational Transform ι(ψ) and Safety Factor q = 1/ι", "physics_desc": "Average number of poloidal turns a magnetic field line makes per toroidal turn around a flux surface.", "domain": "Topology & Dynamical Systems", "math_formulation": "Poincaré rotation number ρ(f_ψ) ∈ ℝ / ℤ of the orientation-preserving circle diffeomorphism f_ψ : S¹ → S¹ induced by the first-return map of the flow of B on a transverse poloidal section Σ_φ₀ ∩ ψ⁻¹(c). Irrational Diophantine ι guarantees dense ergodic orbits (KAM tori); rational ι = n/m permits resonant island chains.", "lean_decl": "noncomputable def RotationalTransform\n    (flowMap : S1 → S1) (h_lift : ℝ → ℝ) : ℝ :=\n  limUnder atTop (fun n : ℕ => (h_lift^[n] 0) / (n : ℝ))", "handbook": "geometry-and-fields.html"}, {"id": "mhs-equilibrium", "physics_term": "Magnetohydrostatic (MHS) Equilibrium (J × B = ∇p)", "physics_desc": "Macroscopic force balance where Lorentz magnetic forces balance the plasma kinetic pressure gradient.", "domain": "Differential & Symplectic Geometry", "math_formulation": "Stationary Euler-like equation ι_B dβ = dp (where β = B^♭ and J = ⋆dβ). Equivalently, B and J lie in the kernel of dp, forcing both vector fields to commute along level sets of p in Hamada coordinates. When ∇p = 0, reduces to a Beltrami field ⋆dβ = λβ (contact geometry when λ ≠ 0).", "lean_decl": "structure IsMHSEquilibrium (B J : ℝ³ → ℝ³) (p : ℝ³ → ℝ) : Prop where\n  ampere_law : ∀ x, curl B x = μ₀ • J x\n  div_free : ∀ x, divergence B x = 0\n  force_balance : ∀ x, crossProduct (J x) (B x) = grad p x", "handbook": "plasma-models-and-equilibrium.html"}, {"id": "boozer-coords", "physics_term": "Boozer Coordinates (ψ, θ_B, φ_B)", "physics_desc": "Special magnetic flux coordinates in which magnetic field lines are straight AND the covariant representation of B involves only surface quantities.", "domain": "Differential Geometry", "math_formulation": "Canonical coordinate chart on a foliated Riemannian 3-manifold (M, g) adapted to the foliation ψ such that the pullback of both the closed 2-form ω_B = dψ ∧ (dθ_B - ι(ψ) dφ_B) (contravariant straightness) and the 1-form β = I(ψ) dθ_B + G(ψ) dφ_B + ν(ψ,θ_B,φ_B) dψ (covariant periods) have surface-constant coefficients.", "lean_decl": "structure BoozerChart (U : Set ℝ³) where\n  ψ : ℝ³ → ℝ\n  θ : ℝ³ → Real.Angle\n  φ : ℝ³ → Real.Angle\n  ι G I : ℝ → ℝ\n  covariant_rep : ∀ x ∈ U, B_oneForm x =\n    G (ψ x) • dφ x + I (ψ x) • dθ x + ν x • dψ x\n  contravariant_rep : ∀ x ∈ U, B_twoForm x =\n    wedge (dψ x) (dθ x - ι (ψ x) • dφ x)", "handbook": "geometry-and-fields.html"}, {"id": "quasisymmetry", "physics_term": "Quasisymmetry (QA, QH, QP)", "physics_desc": "Hidden 3D symmetry where the magnetic field strength |B(ψ, θ_B, φ_B)| = B(ψ, Mθ_B - Nφ_B) depends only on a single helical angle combination in Boozer coordinates, restoring guiding-center conservation laws.", "domain": "Differential & Symplectic Geometry", "math_formulation": "Existence of a nowhere-vanishing vector field u on M (a 'flux-surface symmetry' rather than an ambient Euclidean Killing field) such that: (1) ℒ_u ψ = 0 (tangent to flux surfaces), (2) ℒ_u |B| = 0 (preserves field magnitude), and (3) ℒ_u ω_B = 0 (preserves magnetic flux 2-form). Generates a conserved momentum P_u via Noether's theorem for guiding-center Hamiltonian dynamics.", "lean_decl": "structure IsQuasisymmetric (bc : BoozerChart U) (B_mag : ℝ³ → ℝ)\n    (M N : ℤ) (hMN : M ≠ 0 ∨ N ≠ 0) : Prop where\n  helical_invariance : ∃ f : ℝ → Real.Angle → ℝ,\n    ∀ x ∈ U, B_mag x = f (bc.ψ x) (M • bc.θ x - N • bc.φ x)", "handbook": "particles-and-transport.html"}, {"id": "near-axis", "physics_term": "Near-Axis Expansion (Garren–Boozer / Landreman–Sengupta)", "physics_desc": "Asymptotic power-series construction of 3D MHD equilibria and quasisymmetric fields in powers of distance r = √ψ from a closed 3D curve (the magnetic axis).", "domain": "Differential Geometry of Curves", "math_formulation": "Jet expansion in tubular neighborhood coordinates (s, x₁, x₂) around an embedded closed curve γ : S¹ → ℝ³ with curvature κ(s) > 0 and torsion τ(s) (or parallel Bishop frame). First-order quasisymmetry reduces to a nonlinear periodic ODE (Riccati equation) for the rotating cross-section ellipse eccentricity σ(s) driven by κ(s) and τ(s).", "lean_decl": "structure MagneticAxis where\n  γ : ℝ → ℝ³\n  periodic : Function.Periodic γ L\n  unit_speed : ∀ s, ‖deriv γ s‖ = 1\n  curvature_pos : ∀ s, ‖deriv (deriv γ) s‖ > 0", "handbook": "geometry-and-fields.html"}, {"id": "guiding-center", "physics_term": "Guiding-Center Drift Motion & Bounce Invariant J_∥", "physics_desc": "Averaged trajectory of a charged particle gyrating rapidly around magnetic field lines, subject to ∇B and curvature drifts.", "domain": "Symplectic & Poisson Geometry", "math_formulation": "Hamiltonian system (P, Ω_GC, H_GC) on a 4D phase space P = M × ℝ_v∥ equipped with Littlejohn's non-canonical symplectic 2-form Ω_GC = e dA + m d(v_∥ b^♭) and Hamiltonian H_GC = ½ m v_∥² + μ |B| + e Φ. The longitudinal adiabatic invariant J_∥ = ∮ v_∥ dl is the action integral along trapped-particle orbits.", "lean_decl": "structure GuidingCenterSystem (M : Type*) [SmoothManifold M] where\n  Ω_GC : DifferentialForm (M × ℝ) 2\n  symplectic : extDeriv Ω_GC = 0 ∧ IsNonDegenerate Ω_GC\n  H_GC : M × ℝ → ℝ", "handbook": "particles-and-transport.html"}, {"id": "bernstein-energy", "physics_term": "Ideal MHD Stability & Bernstein Energy Principle (δ²W > 0)", "physics_desc": "Variational criterion stating an equilibrium is linearly stable to ideal MHD modes iff every physical plasma displacement ξ increases potential energy δ²W(ξ, ξ) > 0.", "domain": "Spectral Geometry & Calculus of Variations", "math_formulation": "Positivity (coercivity) of the Hessian quadratic form δ²W(ξ, ξ) = -½ ∫_M ⟨ξ, F(ξ)⟩ vol_g of the magnetic + internal energy functional restricted to a single coadjoint orbit of the infinite-dimensional Lie group SDiff(M) of volume-preserving diffeomorphisms. F is a formally self-adjoint second-order partial differential operator.", "lean_decl": "def IsLinearlyMHDStable (δ2W : DisplacementField → ℝ) : Prop :=\n  ∀ ξ : DisplacementField, ξ ≠ 0 → δ2W ξ > 0", "handbook": "mhd-stability.html"}, {"id": "fourier-univalence", "physics_term": "Non-Overlapping Flux Surfaces & Positive Jacobian (√g > 0)", "physics_desc": "Requirement that nested flux surfaces parameterized by double Fourier series R(s,θ,φ), Z(s,θ,φ) do not self-intersect or fold over inside the plasma volume.", "domain": "Complex Geometry & Harmonic Mappings", "math_formulation": "Strict positivity of the Jacobian determinant det(DΦ) > 0 for the diffeomorphism Φ : D² × S¹ → M. Slice-by-slice in φ, certifying that a Fourier-series map from the unit disk D² ⊂ ℂ to the poloidal cross-section is a diffeomorphism reduces to univalence criteria for planar harmonic/quasiconformal maps (Radó–Kneser–Choquet theorem, Becker/Nehari bounds, and Hardy space H^∞ analytic continuation).", "lean_decl": "def ValidFluxCoordinateMap (Φ : PolarToroidalDomain → ℝ³) : Prop :=\n  Injective Φ ∧ ∀ x ∈ interiorDomain, (jacobianDet Φ x) > 0", "handbook": "geometry-and-fields.html"}, {"id": "biot-savart", "physics_term": "Biot–Savart Law & Field Derivatives for 3D Coils", "physics_desc": "Integral formula computing B(x) and its spatial/shape derivatives from 3D filamentary current loops γ_i.", "domain": "Integral Geometry & Operator Calculus", "math_formulation": "Singular integral operator linking 1-chains (closed curves γ_i) to harmonic 1-forms on ℝ³ \\ ∪ im(γ_i): B(x) = (μ₀ I / 4π) ∮ (γ'(s) × (x - γ(s))) / |x - γ(s)|³ ds. Its topological invariant with another loop C is the Gauss linking integral Lk(γ, C). Fréchet derivatives w.r.t. coil perturbations δγ control manufacturing tolerance certificates.", "lean_decl": "noncomputable def biotSavartKernel (x y tangent : ℝ³) : ℝ³ :=\n  (‖x - y‖ ^ 3)⁻¹ • crossProduct tangent (x - y)\n\ntheorem biotSavart_lipschitz_on_clearance\n    (h_dist : ∀ s, ‖x - γ s‖ ≥ d_min) (hd : d_min > 0) :\n    ‖fderiv ℝ (biotSavartField x) γ‖ ≤ C_bound / d_min ^ 3", "handbook": "coils-and-design.html"}, {"id": "coil-curvature-reach", "physics_term": "Coil Complexity: Maximum Curvature κ_max & Minimum Clearance d_min", "physics_desc": "Engineering constraints ensuring 3D HTS superconducting magnets can be wound without strain damage and mounted without colliding.", "domain": "Metric & Submanifold Geometry", "math_formulation": "Upper bound on geodesic/extrinsic curvature κ(s) ≤ κ_max and positive lower bound on the Federated 'reach' (tubular neighborhood injectivity radius) reach(∪ γ_i) ≥ r_tube > 0. By Federer's reach theorem, the normal bundle map of radius r < reach(γ) is an embedding.", "lean_decl": "structure ConstructibleCoilSet (coils : Fin n → SpaceCurve) : Prop where\n  curvature_bound : ∀ i s, curvature (coils i) s ≤ κ_max\n  coil_clearance : ∀ i j s t, i ≠ j →\n    ‖(coils i).γ s - (coils j).γ t‖ ≥ d_coil_min", "handbook": "coils-and-design.html"}, {"id": "complex-modulus-flux", "physics_term": "Flux-Surface Metric & Susceptibility Matrix", "physics_desc": "Geometric coefficients relating poloidal/toroidal magnetic fluxes to currents on each nested toroidal surface.", "domain": "Complex Geometry (Riemann Surfaces)", "math_formulation": "The induced Riemannian metric g|_{Σ_ψ} defines a conformal structure on T², turning each flux surface into a 1D complex torus (elliptic curve) ℂ / (ℤ + τ(ψ)ℤ) with modular parameter τ(ψ) ∈ ℍ (upper half-plane). The Hodge star ⋆_Σ on 1-forms depends only on the conformal class τ(ψ), determining the 2×2 period/inductance matrix.", "lean_decl": "structure ConformalTorusMetric (Σ : Type*) [TopologicalSpace Σ] where\n  τ : UpperHalfPlane\n  isothermal_chart : Σ → ℂ ⧸ Lattice2D 1 τ", "handbook": "geometry-and-fields.html"}];
+    let currentDomain = 'ALL';
+
+    function renderEntries() {
+      const query = document.getElementById('rosetta-search').value.toLowerCase();
+      const container = document.getElementById('rosetta-container');
+      container.innerHTML = '';
+
+      const filtered = entries.filter(item => {
+        const matchesDomain = currentDomain === 'ALL' || item.domain.toLowerCase().includes(currentDomain.toLowerCase());
+        const text = (item.physics_term + ' ' + item.physics_desc + ' ' + item.domain + ' ' + item.math_formulation + ' ' + item.lean_decl).toLowerCase();
+        return matchesDomain && text.includes(query);
+      });
+
+      if (filtered.length === 0) {
+        container.innerHTML = '<div class="card"><p>No matching Rosetta Stone entries found. Try clearing the search filter.</p></div>';
+        return;
+      }
+
+      filtered.forEach(item => {
+        const card = document.createElement('div');
+        card.className = 'card';
+        card.innerHTML = `
+          <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:0.5rem; margin-bottom:0.75rem;">
+            <span class="pill pill-cyan">${item.domain}</span>
+            <a href="https://siddhartha-gadgil.github.io/PlasmaLean/${item.handbook}" target="_blank" style="font-size:0.85rem;">Handbook: ${item.handbook} ↗</a>
+          </div>
+          <div class="grid-3" style="grid-template-columns: 1fr 1.25fr 1.25fr; gap: 1.25rem;">
+            <div>
+              <h3 style="margin-top:0; color:#f8fafc;">1. Stellarator Physics</h3>
+              <p style="font-weight:700; color:var(--accent-amber); margin-bottom:0.4rem;">${item.physics_term}</p>
+              <p style="font-size:0.92rem;">${item.physics_desc}</p>
+            </div>
+            <div style="border-left: 1px solid var(--border-color); padding-left: 1.15rem;">
+              <h3 style="margin-top:0; color:var(--accent-cyan);">2. Pure Geometry &amp; Topology</h3>
+              <p style="font-size:0.93rem; color:var(--text-primary);">${item.math_formulation}</p>
+            </div>
+            <div style="border-left: 1px solid var(--border-color); padding-left: 1.15rem;">
+              <h3 style="margin-top:0; color:var(--accent-emerald);">3. Lean 4 Kernel Specification</h3>
+              <pre style="margin:0.35rem 0 0; font-size:0.8rem;"><code>${item.lean_decl}</code></pre>
+            </div>
+          </div>
+        `;
+        container.appendChild(card);
+      });
+
+      if (window.MathJax && window.MathJax.typesetPromise) {
+        window.MathJax.typesetPromise();
+      }
+    }
+
+    function filterDomain(domain, btn) {
+      currentDomain = domain;
+      document.querySelectorAll('.controls-bar .btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      renderEntries();
+    }
+
+    document.getElementById('rosetta-search').addEventListener('input', renderEntries);
+    renderEntries();
+  </script>
+</body>
+</html>
