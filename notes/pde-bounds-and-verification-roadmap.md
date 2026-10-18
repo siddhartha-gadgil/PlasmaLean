@@ -2,7 +2,7 @@
 
 **Workstream:** `verified-numerics` / `plasma-models-and-equilibrium` / `mhd-stability`  
 **Status:** Forward Roadmap (Post-Vacuum Demonstrator)  
-**Target Modules:** `PlasmaLean.Numerics.RadiiPolynomial`, `PlasmaLean.Stability.SturmComparison`, `PlasmaLean.Transport.BarrierCertificates`
+**Target Modules:** `PlasmaLean.Numerics.RadiiPolynomial`, `PlasmaLean.Stability.SturmComparison`, `PlasmaLean.Transport.BarrierCertificates`, `PlasmaLean.Stability.CommutedEnergy`
 
 ---
 
@@ -10,10 +10,10 @@
 
 With the vacuum Biot–Savart derivatives, Lipschitz coil-tolerance bounds, and vacuum-fixture certificates already compiled, the next phase of **PlasmaLean** addresses systems governed by nonlinear partial differential equations (PDEs):
 1. **3D Magnetohydrostatic (MHS) Equilibrium:** $\mathbf{J} \times \mathbf{B} = \nabla p, \quad \nabla \times \mathbf{B} = \mu_0 \mathbf{J}, \quad \nabla \cdot \mathbf{B} = 0$.
-2. **Ideal MHD Linear Stability:** Positivity of the second variation of energy $\delta^2 W(\xi, \xi) > 0$ and the 1D ballooning PDE/ODE along field lines.
+2. **Ideal MHD Linear & Nonlinear Stability:** Positivity of the second variation of energy $\delta^2 W(\xi, \xi) > 0$, 1D ballooning ODEs along field lines, and pointwise $L^\infty$ plasma displacement bounds.
 3. **Nonlinear Radial Energy Transport:** Parabolic reaction-diffusion equations for temperature $T(\psi, t)$ and density $n(\psi, t)$ across nested flux surfaces.
 
-Rather than formalizing finite-element or spectral PDE solvers inside Lean 4, **PlasmaLean** treats external numerical codes (such as `DESC`, `VMEC`, `SIMSOPT`, or AI synthesis agents) as **untrusted oracles**. The oracle emits a concrete finite-dimensional candidate (e.g., Chebyshev–Fourier coefficients $\bar{u}$, a positive Sturm–Liouville test function $X(l)$, or a polynomial barrier profile $\underline{T}(\psi)$), and the **PlasmaLean Small Kernel** verifies an *a posteriori* inequality or comparison theorem that mathematically bounds the true continuum PDE solution.
+Rather than formalizing finite-element or spectral PDE solvers inside Lean 4, **PlasmaLean** treats external numerical codes (such as `DESC`, `VMEC`, `SIMSOPT`, or AI synthesis agents) as **untrusted oracles**. The oracle emits a concrete finite-dimensional candidate (e.g., Chebyshev–Fourier–Zernike coefficients $\bar{u}$, a positive Sturm–Liouville test function $w(l)$, a polynomial barrier profile $\underline{T}(\psi)$, or a Summation-By-Parts operator), and the **PlasmaLean Small Kernel** verifies an *a posteriori* inequality, comparison theorem, or commuted energy estimate that mathematically bounds the true continuum PDE solution.
 
 ---
 
@@ -31,8 +31,8 @@ Similarly, for the difference $\delta \mathbf{B} = \mathbf{B}_1 - \mathbf{B}_2$ 
 ```lean
 /-- Bochner identity and subharmonicity contract for smooth vector fields on Ω ⊂ ℝ³ -/
 structure IsSubharmonicScalar (Ω : Set ℝ³) (f : ℝ³ → ℝ) : Prop where
-  is_open  : IsOpen Ω
-  smooth   : ContDiffOn ℝ 2 f Ω
+  is_open    : IsOpen Ω
+  smooth     : ContDiffOn ℝ 2 f Ω
   lap_nonneg : ∀ x ∈ Ω, laplacian f x ≥ 0
 
 /-- Target Theorem 1.1: Volumetric L∞ bounds reduce to 2D boundary certificates -/
@@ -85,8 +85,8 @@ structure BallooningOperator (L : ℝ) where
 
 /-- Sturm-Barta Positivity Certificate: existence of a strictly positive supersolution w -/
 structure BallooningStabilityCertificate (op : BallooningOperator L) (w : ℝ → ℝ) : Prop where
-  smooth_w : ContDiffOn ℝ 2 w (Set.Icc (-L) L)
-  w_pos    : ∀ l ∈ Set.Icc (-L) L, 0 < w l
+  smooth_w  : ContDiffOn ℝ 2 w (Set.Icc (-L) L)
+  w_pos     : ∀ l ∈ Set.Icc (-L) L, 0 < w l
   super_sol : ∀ l ∈ Set.Icc (-L) L,
     - deriv (fun s => op.P s * deriv w s) l + op.Q l * w l > 0
 
@@ -152,26 +152,23 @@ structure TransportLowerBarrierCertificate
 
 ### 5.1 Mathematical Formulation
 
-To certify a full 3D finite-$\beta$ MHD equilibrium computed by a spectral code like `DESC` (which represents flux surfaces $\bar{u} = (R_{l,m,n}, Z_{l,m,n}, \lambda_{l,m,n})$ as Chebyshev–Fourier polynomials), we formulate the equilibrium force balance as a nonlinear zero-finding problem on a Banach algebra of analytic Fourier–Chebyshev sequences $X = \ell^1_\nu$:
+To certify a full 3D finite-$\beta$ MHD equilibrium computed by a spectral code like `DESC` (which represents flux surfaces $\bar{u} = (R_{l,m,n}, Z_{l,m,n}, \lambda_{l,m,n})$ as Zernike–Fourier polynomials), we formulate the equilibrium force balance as a nonlinear zero-finding problem on a Banach algebra of analytic sequences $X = \ell^1_\nu$:
 
 
 $$F(u) := \mathbf{J}(u) \times \mathbf{B}(u) - \nabla p = 0.$$
 
-Given an approximate numerical equilibrium $\bar{u} \in X$ and an approximate finite-dimensional Jacobian inverse $A \approx DF(\bar{u})^{-1}$, we define the Newton-like fixed-point operator $T(u) = u - A F(u)$. Suppose we compute three rigorous interval bounds:
+Given an approximate numerical equilibrium $\bar{u} \in X$ and an approximate finite-dimensional Jacobian inverse $A \approx DF(\bar{u})^{-1}$, we define the Newton-like fixed-point operator $T(u) = u - A F(u)$ and bound:
 
 1. **Residual Defect Bound $Y_0$:** $\Vert{}A F(\bar{u})\Vert{}_X \le Y_0$,
-2. **Approximate Inverse Defect $Z_0, Z_1$:** $\Vert{}I - A \, DF(\bar{u})\Vert{}_{\mathcal{B}(X)} \le Z_1 < 1$,
-3. **Quadratic Lipschitz Hessian Bound $Z_2$:** $\Vert{}A \big(DF(u) - DF(\bar{u})\big)\Vert{}_{\mathcal{B}(X)} \le Z_2 \Vert{}u - \bar{u}\Vert{}_X$ on the ball $\overline{B}_r(\bar{u})$.
+2. **Approximate Inverse Defect $Z_1$:** $\Vert{}I - A \, DF(\bar{u})\Vert{}_{\mathcal{B}(X)} \le Z_1 < 1$,
+3. **Quadratic Lipschitz Hessian Bound $Z_2$:** $\Vert{}A \big(DF(u) - DF(\bar{u})\big)\Vert{}_{\mathcal{B}(X)} \le Z_2 \Vert{}u - \bar{u}\Vert{}_X$ on $\overline{B}_r(\bar{u})$.
 
 Define the **Radii Polynomial**:
 
 
 $$p(r) := \frac{1}{2} Z_2 r^2 - (1 - Z_1) r + Y_0.$$
 
-**The Radii Polynomial Theorem (van den Berg–Lessard / Nakao–Plum):** If there exists a radius $r_0 > 0$ such that $p(r_0) < 0$, then $T : \overline{B}_{r_0}(\bar{u}) \to \overline{B}_{r_0}(\bar{u})$ is a strict contraction mapping on the complete metric space $\overline{B}_{r_0}(\bar{u}) \subset X$. By Banach's Fixed-Point Theorem (already in `Mathlib.Topology.MetricSpace.Contracting`), there exists a **unique true continuum MHD equilibrium $u^* \in \overline{B}_{r_0}(\bar{u})$** satisfying $F(u^*) = 0$ and:
-
-
-$$\Vert{}u^* - \bar{u}\Vert{}_X \le r_0.$$
+**The Radii Polynomial Theorem (van den Berg–Lessard / Nakao–Plum):** If there exists $r_0 > 0$ such that $p(r_0) < 0$, then $T : \overline{B}_{r_0}(\bar{u}) \to \overline{B}_{r_0}(\bar{u})$ is a strict contraction on $\overline{B}_{r_0}(\bar{u}) \subset X$. By Banach's Fixed-Point Theorem (`Mathlib.Topology.MetricSpace.Contracting`), there exists a **unique true continuum MHD equilibrium $u^* \in \overline{B}_{r_0}(\bar{u})$** satisfying $F(u^*) = 0$ and $\Vert{}u^* - \bar{u}\Vert{}_X \le r_0$.
 
 ### 5.2 Target Kernel Specification & Sanity Check
 
@@ -203,7 +200,7 @@ theorem exists_unique_solution_of_radii_polynomial
 
 ```
 
-* **Sanity Check:** Note the explicit hypothesis `A_injective : Function.Injective A` in `RadiiPolynomialCertificate`! Without `A_injective`, setting $A = 0$, $Y_0 = 0$, $Z_1 = 0$ would falsely "certify" a zero of $F$ around *any* point $\bar{u}$. Requiring `A_injective` guarantees $T(u^*) = u^* \iff A(F(u^*)) = 0 \iff F(u^*) = 0$.
+* **Sanity Check:** The explicit hypothesis `A_injective : Function.Injective A` prevents the vacuous bug $A = 0, Y_0 = 0, Z_1 = 0$, guaranteeing that a fixed point of $T(u) = u - A(F(u))$ is genuinely a root $F(u^*) = 0$.
 
 ---
 
@@ -211,29 +208,139 @@ theorem exists_unique_solution_of_radii_polynomial
 
 ### 6.1 Mathematical Formulation
 
-Magnetic field lines are trajectories of a $1\frac{1}{2}$-degree-of-freedom Hamiltonian flow generated by the poloidal flux $\psi_p(\psi_t, \theta, \phi)$, inducing an area-preserving Poincaré return map $f : A \to A$ on a poloidal annulus $A = [\psi_-, \psi_+] \times S^1$.
+Magnetic field lines are trajectories of a $1\frac{1}{2}$-degree-of-freedom Hamiltonian flow generated by the poloidal flux $\psi_p(\psi_t, \theta, \phi)$.
 
-* **Converse KAM Non-Existence Bounds (MacKay 1989):** Provides an algebraic certificate proving when invariant flux surfaces are destroyed by resonant island overlap.
 * **Resonant Island Half-Width Bound:** Near a rational surface $\iota(\psi_{m,n}) = n/m$ with magnetic shear $\iota'(\psi_{m,n}) \neq 0$ and resonant magnetic perturbation harmonic $b_{m,n}$, the pendulum comparison Hamiltonian bounds the radial island half-width by:
 
 $$\Delta \psi_{\text{island}} \le 2 \sqrt{\left\vert{}\frac{R_0 \, b_{m,n}}{m \, \iota'(\psi_{m,n})}\right\vert{}} + R_{\text{rem}}.$$
 
 
 
-Certifying $\sum_{(m,n) \in \mathcal{R}} \Delta \psi_{m,n} < d_{\text{sep}}$ (Chirikov non-overlap margin) guarantees that low-order island chains remain isolated and do not trigger stochastic field-line loss.
+Certifying $\sum_{(m,n) \in \mathcal{R}} \Delta \psi_{m,n} < d_{\text{sep}}$ (Chirikov non-overlap margin) guarantees that low-order island chains remain isolated.
 
 ---
 
-## 7. Summary of Milestone Deliverables & Dependencies
+## 7. Stage 6: Klainerman–Sobolev Commuted Vector-Field Estimates & Elsässer Null Structure
+
+### 7.1 Mathematical Formulation (Adapting Mathematical Relativity to Stellarators)
+
+In General Relativity, the Christodoulou–Klainerman proof of the stability of Minkowski space relies on two pillars: **(1) the Vector-Field Method** (commuting the PDE with approximate Killing/conformal symmetries $\mathcal{Z}$ to bound higher Sobolev norms) and **(2) the Null Condition** (which prevents quadratic self-interaction of wave packets traveling along the same characteristic light cone).
+
+Ideal MHD possesses the **exact same algebraic null structure** when written in **Elsässer variables** $\mathbf{z}_\pm = \mathbf{v} \pm \mathbf{b}/\sqrt{\mu_0 \rho}$ around an equilibrium field $\mathbf{B}_0 = \sqrt{\mu_0 \rho}\,\mathbf{v}_A$:
+
+
+$$\left( \frac{\partial}{\partial t} \mp (\mathbf{v}_A \cdot \nabla) \right) \mathbf{z}_\pm + (\mathbf{z}_\mp \cdot \nabla) \mathbf{z}_\pm = -\nabla P_{\text{tot}}, \qquad \nabla \cdot \mathbf{z}_\pm = 0.$$
+
+
+Notice that the quadratic nonlinearity $(\mathbf{z}_\mp \cdot \nabla)\mathbf{z}_\pm$ couples only counter-propagating Alfvén waves $\mathbf{z}_+$ and $\mathbf{z}_-$, never co-propagating waves $(\mathbf{z}_+ \cdot \nabla)\mathbf{z}_+$.
+
+While a compact toroidal stellarator $M \cong D^2 \times S^1$ lacks spatial dispersion to infinity, the Klainerman–Sobolev vector-field method adapts directly to **anisotropic foliated Sobolev bounds** and **long-time $L^\infty$ plasma wall-clearance certificates**:
+
+1. **The Quasisymmetry Commutation Vector Field:** In an $(M,N)$-quasisymmetric stellarator (with quasisymmetry defect $\epsilon_{\text{QS}} \ge 0$), the helical symmetry vector field $\mathbf{u} = N \partial_{\theta_B} + M \partial_{\phi_B}$ is tangent to flux surfaces and nearly commutes with the ideal MHD force operator $\mathbf{F}$:
+
+$$\big\Vert{} [\mathbf{F}, \mathcal{L}_{\mathbf{u}}] \xi \big\Vert{}_{L^2(M)} \le C \, \epsilon_{\text{QS}} \, \Vert{}\xi\Vert{}_{H^2(M)}.$$
+
+
+2. **Higher-Order Commuted Bernstein Energy Functional ($\mathcal{E}_m$):** Standard linear MHD stability ($\delta^2 W(\xi, \xi) \ge \gamma \Vert{}\xi\Vert{}_{H^1}^2$) only controls the $H^1(M)$ norm, which in 3D is insufficient to bound the pointwise displacement $\Vert{}\xi(x,t)\Vert{}_{L^\infty(M)}$ (since $H^1(\mathbb{R}^3) \not\hookrightarrow L^\infty(\mathbb{R}^3)$). By commuting the linearized MHD wave equation $\rho \partial_{tt} \xi = \mathbf{F}(\xi)$ with powers of the Lie derivative $\mathcal{L}_{\mathbf{u}}^k$ and magnetic field-line derivative $\nabla_\parallel^k = (\mathbf{b}_0 \cdot \nabla)^k$, we construct the **Klainerman–Sobolev Commuted Energy**:
+
+$$\mathcal{E}_2(\xi, \dot{\xi}) := \sum_{k=0}^2 \left( \frac{1}{2} \int_M \rho \Vert{}\mathcal{L}_{\mathbf{u}}^k \dot{\xi}\Vert{}^2 \, dV + \delta^2 W\big(\mathcal{L}_{\mathbf{u}}^k \xi, \, \mathcal{L}_{\mathbf{u}}^k \xi\big) \right).$$
+
+
+3. **Pointwise Wall-Clearance Guarantee via Grönwall & Sobolev Embedding:** Using elliptic regularity across flux surfaces plus 3D Sobolev embedding $H^2(M) \hookrightarrow L^\infty(M)$, bounding $\mathcal{E}_2(t) \le \mathcal{E}_2(0) e^{C \epsilon_{\text{QS}} t}$ yields a rigorous **pointwise $L^\infty$ displacement bound**:
+
+$$\Vert{}\xi(\cdot, t)\Vert{}_{L^\infty(M)} \le C_{\text{Sob}} \sqrt{\frac{\mathcal{E}_2(0)}{\gamma}} \, e^{\frac{1}{2} C \epsilon_{\text{QS}} t} < d_{\text{wall}},$$
+
+
+
+certifying that plasma perturbations cannot touch the vacuum vessel wall over long timescales $t \in [0, T_{\text{cert}}]$!
+
+### 7.2 Target Kernel Specification & Sanity Check
+
+```lean
+/-- Commutator defect bound between the MHD force operator F and Lie derivative ℒ_u
+    along a quasisymmetry (or approximate symmetry) vector field u. -/
+structure QuasisymmetricCommutatorBound
+    {H2 L2 : Type*} [NormedAddCommGroup H2] [InnerProductSpace ℝ L2]
+    (F : H2 → L2) (Lie_u : H2 → H2) (Lie_u_L2 : L2 → L2) (ε_QS : ℝ) : Prop where
+  nonneg_defect : 0 ≤ ε_QS
+  comm_bound : ∀ ξ : H2, ‖F (Lie_u ξ) - Lie_u_L2 (F ξ)‖ ≤ ε_QS * ‖ξ‖
+
+/-- Klainerman-Sobolev Commuted Energy Certificate:
+    Combines H¹ coercivity of δ²W, commutator defect ε_QS, and 3D Sobolev embedding
+    to certify pointwise L∞ plasma-to-wall clearance! -/
+structure CommutedWallClearanceCertificate
+    (E2_init γ C_Sob ε_QS T_max d_wall : ℝ) : Prop where
+  coercive_pos   : 0 < γ
+  sob_pos        : 0 < C_Sob
+  clearance_safe : C_Sob * Real.sqrt (E2_init / γ) * Real.exp (ε_QS * T_max / 2) < d_wall
+
+```
+
+* **Sanity Check:** Verify that in the limit of exact symmetry ($\epsilon_{\text{QS}} = 0$), the commuted energy $\mathcal{E}_2(t) = \mathcal{E}_2(0)$ is strictly conserved for all $t \ge 0$, and verify the Elsässer algebraic null identity $\langle (\mathbf{z}_\mp \cdot \nabla)\mathbf{z}_\pm, \mathbf{z}_\pm \rangle_{L^2(M)} = 0$ for divergence-free fields with tangent boundary conditions.
+
+---
+
+## 8. Stage 7: Numerical Relativity Methods — Zernike Coordinate Regularity, Constraint Damping & Summation-By-Parts (SBP)
+
+### 8.1 Mathematical Formulation
+
+Three numerical relativity architectures translate directly into machine-checked stellarator certificates in **PlasmaLean**:
+
+1. **Zernike Polynomials for Coordinate-Axis Regularity ($r \to 0$):**
+Just as spherical/axisymmetric numerical relativity codes (`SpEC`, `bamps`) must eliminate $1/r$ coordinate singularities at the origin, toroidal flux coordinates $(r, \theta, \phi)$ with $r = \sqrt{\psi}$ have a polar coordinate singularity at the magnetic axis $r = 0$. Expanding equilibrium quantities in **Zernike polynomials** $Z_l^m(r, \theta) = R_l^{\vert{}m\vert{}}(r) e^{i m \theta}$ (where $l - \vert{}m\vert{}$ is even and $l \ge \vert{}m\vert{}$) guarantees **exact $C^\infty$ analyticity across the magnetic axis by basis construction**, eliminating division-by-zero traps at $r = 0$ in the Lean kernel.
+2. **Exterior-Calculus Constraint Preservation & Dedner–Z4 Divergence Damping:**
+In numerical relativity, naive time evolution violates the Hamiltonian/momentum constraints unless constraint-damping (Generalized Harmonic / Z4) is included. In stellarator MHD, violating $\nabla \cdot \mathbf{B} = 0$ produces unphysical forces parallel to $\mathbf{B}$. In `PlasmaLean`, we enforce $\nabla \cdot \mathbf{B} = 0$ structurally either by representing $\mathbf{B}$ as the exterior derivative of a 1-form ($\omega_B = d\alpha$) or via the **Dedner–GLM hyperbolic divergence-cleaning system**:
+
+$$\partial_t \mathbf{B} + \dots + \nabla \psi_{\text{div}} = 0, \qquad \partial_t \psi_{\text{div}} + c_h^2 \nabla \cdot \mathbf{B} = -\frac{c_h^2}{c_p^2} \psi_{\text{div}},$$
+
+
+
+for which an exact energy identity proves that any divergence error $\nabla \cdot \mathbf{B}$ is advected away at speed $c_h$ and damped exponentially at rate $c_h^2 / c_p^2$.
+3. **Summation-By-Parts (SBP) Operators for Decidable Discrete Energy Stability:**
+Proving continuum integration-by-parts theorems on curved 3D manifolds requires heavy measure-theory machinery. In numerical relativity, **Summation-By-Parts (SBP)** finite-difference and spectral-element operators approximate $\partial_x$ by a matrix $D$ equipped with a symmetric positive-definite norm matrix $P = P^T > 0$ satisfying the exact algebraic identity:
+
+$$P D + D^T P = B_{\text{bdry}} := \mathrm{diag}(-1, 0, \dots, 0, 1).$$
+
+
+
+**Why this is ideal for Lean 4:** Because $P D + D^T P = B_{\text{bdry}}$ is a finite rational/interval matrix identity, Lean 4 can verify it **automatically by computation (`norm_num` / `decide`)**, immediately yielding a machine-checked discrete energy conservation or Lyapunov stability theorem for the discretized PDE!
+
+### 8.2 Target Kernel Specification & Sanity Check
+
+```lean
+/-- A Summation-By-Parts (SBP) discrete derivative operator on N grid points,
+    imported from Numerical Relativity to give decidable energy stability in Lean 4! -/
+structure SBPOperator (N : ℕ) where
+  D : Matrix (Fin N) (Fin N) ℝ
+  P : Matrix (Fin N) (Fin N) ℝ
+  B_bdry : Matrix (Fin N) (Fin N) ℝ
+  P_symm : P.transpose = P
+  P_pos_def : ∀ u : Fin N → ℝ, u ≠ 0 → dotProduct u (P.mulVec u) > 0
+  sbp_identity : P * D + D.transpose * P = B_bdry
+
+/-- Target Theorem 7.1: Any linear hyperbolic system du/dt = -c D u discretized with an
+    SBP operator satisfies an exact discrete integration-by-parts energy law! -/
+theorem sbp_discrete_energy_identity
+    {N : ℕ} (sbp : SBPOperator N) (u : Fin N → ℝ) :
+    dotProduct u ((sbp.P * sbp.D).mulVec u) =
+      (1 / 2) * dotProduct u (sbp.B_bdry.mulVec u) := by
+  -- Follows purely from linear algebra and sbp.sbp_identity (no measure theory needed!)
+  sorry
+
+```
+
+* **Sanity Check:** Instantiate `SBPOperator` for a small Chebyshev–Gauss–Lobatto spectral differentiation matrix ($N = 4$) and verify `sbp_identity` automatically via `norm_num`.
+
+---
+
+## 9. Summary of Milestone Deliverables & Dependencies
 
 | Milestone | PDE / Physical Regime | Mathematical Engine | Primary Lean 4 Target |
 | --- | --- | --- | --- |
 | **Milestone A** *(Short-Term)* | 3D Vacuum Field Bounds ($\Delta \Vert{}\mathbf{B}\Vert{}^2 \ge 0$) | Bochner Identity & Elliptic Maximum Principle | `vacuum_field_norm_sq_max_on_boundary` |
 | **Milestone B** *(Short-Term)* | Ideal MHD Ballooning & Mercier Stability | Sturm–Liouville Comparison & Picone's Identity | `ballooning_energy_pos_of_certificate` |
-| **Milestone C** *(Medium-Term)* | 1D Nonlinear Radial Transport Profiles | Nagumo Parabolic Comparison & Barrier Functions | `TransportLowerBarrierCertificate` |
-| **Milestone D** *(Medium-Term)* | 5D Trapped-Particle Microturbulence Bound | Symplectic Rearrangement & Available Energy $\widehat{\mathcal{A}}$ | `SatisfiesMaximumJ` & `AvailableEnergyFluxTube` |
-| **Milestone E** *(Long-Term)* | Full 3D Finite-$\beta$ MHS Equilibrium ($\mathbf{J}\times\mathbf{B}=\nabla p$) | Newton–Kantorovich Radii Polynomials on $\ell^1_\nu$ | `exists_unique_solution_of_radii_polynomial` |
-
-```
-
-```
+| **Milestone C** *(Short-Term)* | Discrete Hyperbolic / Transport Stability | Numerical Relativity Summation-By-Parts (SBP) Matrices | `sbp_discrete_energy_identity` |
+| **Milestone D** *(Medium-Term)* | 1D Nonlinear Radial Transport Profiles | Nagumo Parabolic Comparison & Barrier Functions | `TransportLowerBarrierCertificate` |
+| **Milestone E** *(Medium-Term)* | 5D Trapped-Particle Microturbulence Bound | Symplectic Rearrangement & Available Energy $\widehat{\mathcal{A}}$ | `SatisfiesMaximumJ` & `AvailableEnergyFluxTube` |
+| **Milestone F** *(Long-Term)* | Pointwise $L^\infty$ Plasma Wall-Clearance Stability | Klainerman–Sobolev Commuted Energy & Elsässer Null Structure | `CommutedWallClearanceCertificate` |
+| **Milestone G** *(Long-Term)* | Full 3D Finite-$\beta$ MHS Equilibrium ($\mathbf{J}\times\mathbf{B}=\nabla p$) | Zernike Basis + Newton–Kantorovich Radii Polynomials on $\ell^1_\nu$ | `exists_unique_solution_of_radii_polynomial` |
