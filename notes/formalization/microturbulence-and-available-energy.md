@@ -1,3 +1,4 @@
+
 # Formalization Note: Microturbulent Transport, the Maximum-$J$ Property, and Available Energy ($\mathcal{A}$)
 
 **Workstream:** `particles-and-transport` / `geometry-and-fields`  
@@ -107,3 +108,37 @@ def availableEnergyKernel (ω_star ω_alpha : ℝ) : ℝ :=
   max 0 (ω_star * (ω_star - ω_alpha))
 
 end PlasmaLean.Kernel
+
+```
+
+---
+
+## 4. Non-Vacuity Sanity Checks & Obstruction Theorems
+
+To prevent specification bugs (such as demanding exact global Minimum-$B$ in a vacuum field or allowing `Real.sqrt` of negative numbers to silently evaluate to `0` at misordered bounce endpoints), the kernel requires three compiled sanity checks:
+
+### Sanity Check 1: Minimum-$B$ Pointwise Positivity Implies Maximum-$J$
+
+If $\left(\frac{\partial B}{\partial \psi}\right)_{\alpha, l} > 0$ strictly inside the bounce interval $(l_{\min}, l_{\max})$ where $1 - \lambda B > 0$, then `BounceActionRadialDeriv < 0`.
+
+### Sanity Check 2: Zero Available Energy Under Favorable Precession Dominance
+
+```lean
+theorem availableEnergyKernel_eq_zero_of_opposing_precession
+    (ω_star ω_alpha : ℝ)
+    (h_stabilized : ω_star * (ω_star - ω_alpha) ≤ 0) :
+    availableEnergyKernel ω_star ω_alpha = 0 := by
+  simp [availableEnergyKernel, max_eq_left h_stabilized]
+
+```
+
+### Sanity Check 3: The Vacuum Subharmonicity Obstruction ($\Delta(|\mathbf{B}|^2) \ge 0$)
+
+In a vacuum magnetic field ($\nabla \cdot \mathbf{B} = 0, \nabla \times \mathbf{B} = 0$), the squared field magnitude $f(x) = \|\mathbf{B}(x)\|^2$ satisfies the Bochner-Weitzenböck identity on $\mathbb{R}^3$:
+
+
+$$\Delta (\|\mathbf{B}\|^2) = 2 \|\nabla \mathbf{B}\|_{\text{Frob}}^2 + 2 \langle \mathbf{B}, \Delta \mathbf{B} \rangle = 2 \|\nabla \mathbf{B}\|_{\text{Frob}}^2 \ge 0.$$
+
+
+By the Strong Maximum Principle for subharmonic functions, $\|\mathbf{B}\|$ **cannot** achieve a strict local minimum in any open vacuum region $U \subset \mathbb{R}^3$. Consequently, in a vacuum stellarator ($\beta = 0$), the Maximum-$J$ property can only be achieved *approximately* (or across a subset of trapped pitch angles), never via an exact 3D local minimum of $|\mathbf{B}|$.
+
