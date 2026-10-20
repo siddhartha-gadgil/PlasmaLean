@@ -316,3 +316,11 @@ Each cycle is a run. The targets are listed in priority order; anything left ove
   - A certified helical frontier bound (in progress).
   - The trapped-alpha remainder (phase shear).
   - A proof-term rewrite of the trapped cell checks.
+
+### Phase 8, 20 October 2026 — [report](https://github.com/siddhartha-gadgil/PlasmaLean/blob/main/progress/2026-10-20-progress-10.md)
+
+- **Done:**
+  - **First finite-β non-axisymmetric toroidal equilibrium:** Landreman family 1, with kernel force balance, a flux function, closed confined field lines, a non-planar axis and a 5 T instance. Zero shear, idealized.
+  - **Invariant-torus trapping (K0–K1):** all-time confinement of the rational stellarator field follows from any invariant radial-graph torus.
+- **In progress:** K2 (validated approximate torus); a certified helical coil set.
+- **Long pole:** K3, an explicit-constant KAM theorem.

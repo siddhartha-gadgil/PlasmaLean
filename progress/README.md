@@ -34,3 +34,5 @@ dated evidence. Run `node scripts/check_site.mjs` before handing off the update.
 [20 October 2026, Phase 7 part 1: certified field-line confinement in an exact stellarator field; the coarea step formalized](2026-10-20-progress-8.md).
 
 [20 October 2026, Phase 7 part 2: ballooning on every surface, coils for the stellarator field, trapped-alpha non-resonance](2026-10-20-progress-9.md).
+
+[20 October 2026, Phase 8: a finite-β non-axisymmetric equilibrium, and the invariant-torus route to all-time stellarator confinement](2026-10-20-progress-10.md).

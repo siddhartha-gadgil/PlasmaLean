@@ -1,32 +1,32 @@
 {
   "updated": "2026-10-20",
-  "report": "2026-10-20-progress-9.md",
+  "report": "2026-10-20-progress-10.md",
   "status": "Exact symmetric equilibria with all-time orbit confinement · Local stability criteria · Not a coil-produced stellarator · Not a construction release.",
   "slides": [
     {
       "id": "where-we-are",
-      "eyebrow": "Progress briefing · Phase 7: stability everywhere, coils, a stellarator field",
-      "title": "Ballooning-stable on every surface; a coil chain for a confined stellarator field.",
-      "lead": "PlasmaLean is building a Lean library for stellarator design. Phase 7 certifies ideal-ballooning stability on every flux surface of the reactor equilibrium, confines field lines of an exact stellarator field for 95 transits, proves the chain from coil field error to confinement (with the helical-winding error bound still to certify), and proves non-resonance for trapped alphas in exact quasisymmetry.",
+      "eyebrow": "Progress briefing · Phase 8: finite β beyond axisymmetry",
+      "title": "A finite-β non-axisymmetric equilibrium, and all-time confinement reduced to one torus.",
+      "lead": "PlasmaLean is building a Lean library for stellarator design. Phase 8 adds the library's first finite-pressure, non-axisymmetric toroidal equilibrium, and proves that all-time field-line confinement in the exact stellarator field follows from a single invariant torus — leaving one KAM step. Earlier phases joined confinement and burn temperature for one axisymmetric plasma with certified local stability.",
       "metrics": [
         {
-          "value": "169",
+          "value": "172",
           "label": "Lean modules"
         },
         {
-          "value": "5641",
+          "value": "5655",
           "label": "theorem/lemma declarations (incl. certificate cells)"
         },
         {
-          "value": "14899",
+          "value": "15033",
           "label": "Project declarations in the last axiom audit"
         }
       ],
-      "progress": "One consistent plasma (axisymmetric) with Mercier and ballooning certified on the whole plasma; a genuine stellarator field confined for 95 transits; coil chain proved up to one certified bound.",
-      "boundary": "Stability reductions supplied; the stellarator result is a vacuum field over a finite length and its coil realization still needs a certified helical error bound; trapped near-QA alphas have no confinement time yet.",
+      "progress": "Axisymmetric one-plasma results with certified local stability; finite-β non-axisymmetric equilibrium (idealized); stellarator vacuum field confined for 95 transits, all-time pending one torus.",
+      "boundary": "The finite-β non-axisymmetric equilibrium has zero shear and no stability claim; all-time stellarator confinement still needs a validated torus and a KAM theorem; the coil realization needs a certified helical error bound.",
       "evidence": [
         {
-          "label": "Phase 7 part 2 report",
+          "label": "Phase 8 report",
           "href": "progress.html"
         },
         {
@@ -757,8 +757,50 @@
       ]
     },
     {
+      "id": "finite-beta-torus",
+      "eyebrow": "18 · Phase 8: finite β beyond axisymmetry; one torus to go",
+      "title": "Finite pressure without axisymmetry — and all-time confinement from one torus.",
+      "lead": "Landreman's family-1 equilibrium satisfies the kernel force balance with finite pressure, is genuinely non-axisymmetric with a non-planar axis, and has all field lines closed and confined. For the exact stellarator vacuum field, any invariant torus traps every field line inside it forever.",
+      "cards": [
+        {
+          "title": "Finite-β, non-axisymmetric",
+          "text": "J × B = ∇p with the actual current; ψ a flux function; explicit closed field lines; 5 T instance with local axis β 6–8%. Zero shear (ι ≡ 2); unrefereed source; no stability claim.",
+          "status": "Lean verified (idealized)",
+          "kind": "checked"
+        },
+        {
+          "title": "One torus suffices",
+          "text": "A Grönwall barrier around {G = 0} and a radial-graph invariant torus trap field lines for all time; for the rational stellarator field this reduces all-time confinement to producing one torus.",
+          "status": "Lean verified (conditional)",
+          "kind": "partial"
+        },
+        {
+          "title": "Next",
+          "text": "A validated approximate torus (K2), an explicit-constant KAM theorem (K3, the long pole), a certified helical coil set, and Landreman family 2 with shear.",
+          "status": "In progress",
+          "kind": "next"
+        }
+      ],
+      "progress": "3 new modules and two theory notes; a discovery-note error about the family-1 axis was caught and corrected by the formalization.",
+      "boundary": "Idealized finite-β equilibrium; conditional all-time confinement; no coil-produced confined stellarator yet.",
+      "evidence": [
+        {
+          "label": "New checked results",
+          "href": "progress.html#new-checked-results"
+        },
+        {
+          "label": "Corrections",
+          "href": "progress.html#corrections-and-challenged-claims"
+        },
+        {
+          "label": "Implementation plan",
+          "href": "implementation-plan.html"
+        }
+      ]
+    },
+    {
       "id": "implementation-plan",
-      "eyebrow": "18 · Plan of record",
+      "eyebrow": "19 · Plan of record",
       "title": "Theory, techniques and a ladder of models — for confinement and for heat.",
       "lead": "Each cycle develops theory, turns theorems into sound certificate checkers, and applies them to the next rung of a model ladder. Every rung must prove properties of both kinds: confinement (G1) and temperature held above burn conditions (G2).",
       "cards": [
@@ -802,9 +844,9 @@
     },
     {
       "id": "next-run",
-      "eyebrow": "19 · Keep every step reviewable",
+      "eyebrow": "20 · Keep every step reviewable",
       "title": "The next run must leave evidence, not just a promise.",
-      "lead": "Next: certify the helical coil error bound (exact segment fields / Taylor models) for the first coil-produced stellarator field with certified confinement; trapped-alpha phase-shear control; longer stellarator confinement (KAM) and a finite-β stellarator equilibrium.",
+      "lead": "Next: a validated approximate invariant torus (K2) and the KAM step (K3) for all-time stellarator confinement; a certified helical coil set; Landreman family 2 with shear and its stability.",
       "cards": [
         {
           "title": "Implement & challenge",

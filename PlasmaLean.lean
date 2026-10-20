@@ -152,6 +152,9 @@ public import PlasmaLean.Design.RationalStellaratorCoilsGrad
 public import PlasmaLean.Design.RationalStellaratorCoils
 public import PlasmaLean.Design.RationalStellaratorCoilsTF
 public import PlasmaLean.Design.RationalStellaratorCoilsTransfer
+public import PlasmaLean.Theory.Fields.InvariantBarrier
+public import PlasmaLean.Theory.Fields.TorusTrapping
+public import PlasmaLean.Design.LandremanEquilibrium
 
 /-!
 # PlasmaLean public library

@@ -110,3 +110,5 @@ run_cmd do
 #print axioms PlasmaLean.Design.SolovevBallooning.reactor_ballooning_all
 #print axioms PlasmaLean.Design.RationalStellarator.Coils.coil_stellarator_confined
 #print axioms PlasmaLean.Design.NearAxisQATrappedResonance.exactQA_nonresonant
+#print axioms PlasmaLean.Design.LandremanEquilibrium.force_balance
+#print axioms PlasmaLean.Fields.torus_trapping_forever

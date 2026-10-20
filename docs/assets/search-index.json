@@ -1,15 +1,15 @@
 [
   {
     "title": "Progress slideshow",
-    "section": "Evidence updated 2026-10-20 · Phase 7 part 2: ideal-ballooning stability on every flux surface of the reactor Solov'ev equilibrium (with certified Mercier, both local ideal-MHD conditions hold, reductions supplied); a proved coil chain for the exact rational stellarator field (certified TF filament; field error ⇒ confined transits via the maximum principle; helical frontier bound still open); trapped-alpha non-resonance and periodicity in exact QA. Earlier: one consistent plasma (fully derived geometry, up to ignition), 95-transit stellarator field-line confinement, near-QA passing alphas 0.19 s.",
+    "section": "Evidence updated 2026-10-20 · Phase 8: the first finite-β, non-axisymmetric toroidal equilibrium in the library (Landreman family 1, unrefereed source; kernel force balance, flux function, closed confined field lines, 5 T instance; zero shear) and the invariant-torus route to all-time stellarator confinement (barrier and torus-trapping theorems; conditional all-time confinement for the rational stellarator field). Earlier: one consistent plasma (fully derived geometry, up to ignition) with Mercier and ballooning certified everywhere; 95-transit stellarator confinement; coil chain; near-QA passing alphas 0.19 s.",
     "url": "slides.html",
     "text": "progress slideshow presentation latest run evidence vacuum fixture"
   },
   {
-    "title": "Ballooning-stable on every surface; a coil chain for a confined stellarator field.",
+    "title": "A finite-β non-axisymmetric equilibrium, and all-time confinement reduced to one torus.",
     "section": "Progress slideshow",
     "url": "slides.html#where-we-are",
-    "text": "ballooning-stable on every surface; a coil chain for a confined stellarator field. plasmalean is building a lean library for stellarator design. phase 7 certifies ideal-ballooning stability on every flux surface of the reactor equilibrium, confines field lines of an exact stellarator field for 95 transits, proves the chain from coil field error to confinement (with the helical-winding error bound still to certify), and proves non-resonance for trapped alphas in exact quasisymmetry. one consistent plasma (axisymmetric) with mercier and ballooning certified on the whole plasma; a genuine stellarator field confined for 95 transits; coil chain proved up to one certified bound."
+    "text": "a finite-β non-axisymmetric equilibrium, and all-time confinement reduced to one torus. plasmalean is building a lean library for stellarator design. phase 8 adds the library's first finite-pressure, non-axisymmetric toroidal equilibrium, and proves that all-time field-line confinement in the exact stellarator field follows from a single invariant torus — leaving one kam step. earlier phases joined confinement and burn temperature for one axisymmetric plasma with certified local stability. axisymmetric one-plasma results with certified local stability; finite-β non-axisymmetric equilibrium (idealized); stellarator vacuum field confined for 95 transits, all-time pending one torus."
   },
   {
     "title": "Small assumptions. Reusable proofs. One candidate.",
@@ -114,6 +114,12 @@
     "text": "stable on every surface; from coil error to confined field lines. ideal ballooning is certified on every flux surface of the reactor equilibrium, axis to edge. for the exact stellarator field, a concrete closed filament reproduces the toroidal part to 2.5×10⁻⁶, and any coil set whose helical error on a bounding surface is below 6.5×10⁻⁴ (or 5.6×10⁻⁵) inherits 1 (or 10) certified transits. 33 new modules (many certificate cells). the ballooning certificate was rebuilt as a proof-term cover; the trapped-alpha cell checks still await that rewrite."
   },
   {
+    "title": "Finite pressure without axisymmetry — and all-time confinement from one torus.",
+    "section": "Progress slideshow",
+    "url": "slides.html#finite-beta-torus",
+    "text": "finite pressure without axisymmetry — and all-time confinement from one torus. landreman's family-1 equilibrium satisfies the kernel force balance with finite pressure, is genuinely non-axisymmetric with a non-planar axis, and has all field lines closed and confined. for the exact stellarator vacuum field, any invariant torus traps every field line inside it forever. 3 new modules and two theory notes; a discovery-note error about the family-1 axis was caught and corrected by the formalization."
+  },
+  {
     "title": "Theory, techniques and a ladder of models — for confinement and for heat.",
     "section": "Progress slideshow",
     "url": "slides.html#implementation-plan",
@@ -123,7 +129,7 @@
     "title": "The next run must leave evidence, not just a promise.",
     "section": "Progress slideshow",
     "url": "slides.html#next-run",
-    "text": "the next run must leave evidence, not just a promise. next: certify the helical coil error bound (exact segment fields / taylor models) for the first coil-produced stellarator field with certified confinement; trapped-alpha phase-shear control; longer stellarator confinement (kam) and a finite-β stellarator equilibrium. the linked run records checked declarations, assumptions and validation. this slideshow is a summary of that evidence, not a new design certificate."
+    "text": "the next run must leave evidence, not just a promise. next: a validated approximate invariant torus (k2) and the kam step (k3) for all-time stellarator confinement; a certified helical coil set; landreman family 2 with shear and its stability. the linked run records checked declarations, assumptions and validation. this slideshow is a summary of that evidence, not a new design certificate."
   },
   {
     "title": "Stellarator concepts",
@@ -379,9 +385,9 @@
   },
   {
     "title": "G9 · One certified invariant torus and barrier",
-    "section": "Geometry & fields · Partially implemented — exact first-integral barriers (all time) in symmetric fields; certified approximate-first-integral confinement (≥ 95 transits) in an exact non-axisymmetric rational vacuum stellarator field; no KAM yet.",
+    "section": "Geometry & fields · Partially implemented — exact first-integral barriers; certified ≥ 95-transit confinement in an exact rational vacuum stellarator field; all-time confinement reduced to the existence of one invariant torus (barrier and torus-trapping theorems); KAM pending.",
     "url": "geometry-and-fields.html",
-    "text": "g9 one certified invariant torus and barrier theorem backlog partially implemented — exact first-integral barriers (all time) in symmetric fields; certified approximate-first-integral confinement (≥ 95 transits) in an exact non-axisymmetric rational vacuum stellarator field; no kam yet."
+    "text": "g9 one certified invariant torus and barrier theorem backlog partially implemented — exact first-integral barriers; certified ≥ 95-transit confinement in an exact rational vacuum stellarator field; all-time confinement reduced to the existence of one invariant torus (barrier and torus-trapping theorems); kam pending."
   },
   {
     "title": "G10 · Quantitative perturbation theory over useful parameter sets",
@@ -445,9 +451,9 @@
   },
   {
     "title": "E1 · Force balance implies tangency; force-free/vacuum distinction",
-    "section": "Models & equilibrium · Lean verified — tangency; force-free slab; exact toroidal (Solov'ev) and helical finite-pressure equilibria satisfy the kernel ForceBalance law with actual Ampère current.",
+    "section": "Models & equilibrium · Lean verified — tangency; force-free slab; exact Solov'ev and helical equilibria; validated slab equilibrium; Landreman family-1 finite-β non-axisymmetric toroidal equilibrium (zero shear) satisfying the kernel ForceBalance law with actual Ampère current.",
     "url": "plasma-models-and-equilibrium.html",
-    "text": "e1 force balance implies tangency; force-free/vacuum distinction theorem backlog lean verified — tangency; force-free slab; exact toroidal (solov'ev) and helical finite-pressure equilibria satisfy the kernel forcebalance law with actual ampère current."
+    "text": "e1 force balance implies tangency; force-free/vacuum distinction theorem backlog lean verified — tangency; force-free slab; exact solov'ev and helical equilibria; validated slab equilibrium; landreman family-1 finite-β non-axisymmetric toroidal equilibrium (zero shear) satisfying the kernel forcebalance law with actual ampère current."
   },
   {
     "title": "E2 · MHD conservation identities on smooth closed domains",
@@ -1584,6 +1590,12 @@
     "text": "phase 7 part 2, 20 october 2026 — report implementation plan"
   },
   {
+    "title": "Phase 8, 20 October 2026 — report",
+    "section": "Implementation plan",
+    "url": "implementation-plan.html#phase-8-20-october-2026-report",
+    "text": "phase 8, 20 october 2026 — report implementation plan"
+  },
+  {
     "title": "M0 · Exact symmetric equilibria: slab, screw pinch, Solov'ev, helical",
     "section": "Implementation plan · Lean verified — exact slab, screw-pinch, Solov'ev and helical equilibria with kernel force balance, all-time field-line/orbit confinement, Suydam both ways and screw-pinch Newcomb for 1 ≤ |m| ≤ 6 (idealized symmetric models).",
     "url": "implementation-plan.html",
@@ -1735,9 +1747,9 @@
   },
   {
     "title": "Verified progress",
-    "section": "Phase 7 part 2: ideal-ballooning stability on every flux surface of the reactor Solov'ev equilibrium (with certified Mercier, both local ideal-MHD conditions hold, reductions supplied); a proved coil chain for the exact rational stellarator field (certified TF filament; field error ⇒ confined transits via the maximum principle; helical frontier bound still open); trapped-alpha non-resonance and periodicity in exact QA. Earlier: one consistent plasma (fully derived geometry, up to ignition), 95-transit stellarator field-line confinement, near-QA passing alphas 0.19 s.",
+    "section": "Phase 8: the first finite-β, non-axisymmetric toroidal equilibrium in the library (Landreman family 1, unrefereed source; kernel force balance, flux function, closed confined field lines, 5 T instance; zero shear) and the invariant-torus route to all-time stellarator confinement (barrier and torus-trapping theorems; conditional all-time confinement for the rational stellarator field). Earlier: one consistent plasma (fully derived geometry, up to ignition) with Mercier and ballooning certified everywhere; 95-transit stellarator confinement; coil chain; near-QA passing alphas 0.19 s.",
     "url": "progress.html",
-    "text": "verified progress phase 7 part 2: ideal-ballooning stability on every flux surface of the reactor solov'ev equilibrium (with certified mercier, both local ideal-mhd conditions hold, reductions supplied); a proved coil chain for the exact rational stellarator field (certified tf filament; field error ⇒ confined transits via the maximum principle; helical frontier bound still open); trapped-alpha non-resonance and periodicity in exact qa. earlier: one consistent plasma (fully derived geometry, up to ignition), 95-transit stellarator field-line confinement, near-qa passing alphas 0.19 s."
+    "text": "verified progress phase 8: the first finite-β, non-axisymmetric toroidal equilibrium in the library (landreman family 1, unrefereed source; kernel force balance, flux function, closed confined field lines, 5 t instance; zero shear) and the invariant-torus route to all-time stellarator confinement (barrier and torus-trapping theorems; conditional all-time confinement for the rational stellarator field). earlier: one consistent plasma (fully derived geometry, up to ignition) with mercier and ballooning certified everywhere; 95-transit stellarator confinement; coil chain; near-qa passing alphas 0.19 s."
   },
   {
     "title": "Outcome",

@@ -1,7 +1,7 @@
 {
   "updated": "2026-10-20",
-  "report": "2026-10-20-progress-9.md",
-  "summary": "Phase 7 part 2: ideal-ballooning stability on every flux surface of the reactor Solov'ev equilibrium (with certified Mercier, both local ideal-MHD conditions hold, reductions supplied); a proved coil chain for the exact rational stellarator field (certified TF filament; field error ⇒ confined transits via the maximum principle; helical frontier bound still open); trapped-alpha non-resonance and periodicity in exact QA. Earlier: one consistent plasma (fully derived geometry, up to ignition), 95-transit stellarator field-line confinement, near-QA passing alphas 0.19 s.",
+  "report": "2026-10-20-progress-10.md",
+  "summary": "Phase 8: the first finite-β, non-axisymmetric toroidal equilibrium in the library (Landreman family 1, unrefereed source; kernel force balance, flux function, closed confined field lines, 5 T instance; zero shear) and the invariant-torus route to all-time stellarator confinement (barrier and torus-trapping theorems; conditional all-time confinement for the rational stellarator field). Earlier: one consistent plasma (fully derived geometry, up to ignition) with Mercier and ballooning certified everywhere; 95-transit stellarator confinement; coil chain; near-QA passing alphas 0.19 s.",
   "tasks": {
     "model-contracts:I1": "Partially implemented — algebraic force balance and tangency; positive permeability and actual differential laws in the restricted slab model.",
     "model-contracts:I2": "Lean verified — uniform-field and nonzero-current force-free witnesses in the Cartesian slab model; not toroidal confinement.",
@@ -10,7 +10,7 @@
     "model-contracts:I5": "Partially implemented — conditional conservation and coercivity bounds for continuous symmetric forms on one normed space; no MHD PDE bridge.",
     "geometry-and-fields:G1": "Lean verified — field/current tangency and uniform-field witness; the analytic instance is Cartesian, not toroidal.",
     "geometry-and-fields:G4": "Partially implemented — Lipschitz-cover clearance at every parameter point; Fourier bounds, regularity, and embedding certificates remain pending.",
-    "plasma-models-and-equilibrium:E1": "Lean verified — tangency; force-free slab; exact toroidal (Solov'ev) and helical finite-pressure equilibria satisfy the kernel ForceBalance law with actual Ampère current.",
+    "plasma-models-and-equilibrium:E1": "Lean verified — tangency; force-free slab; exact Solov'ev and helical equilibria; validated slab equilibrium; Landreman family-1 finite-β non-axisymmetric toroidal equilibrium (zero shear) satisfying the kernel ForceBalance law with actual Ampère current.",
     "mhd-stability:S1": "Partially implemented — abstract energy conservation and norm bounds conditional on a differentiable solution; same-space variant only.",
     "mhd-stability:S3": "Partially implemented — scalar two-channel Young drive inequality; integral MHD identity and geometric coercivity remain pending.",
     "mhd-stability:S4": "Partially implemented — exact neutral-drift counterexample; the MHD quotient and admissible-space characterization remain pending.",
@@ -42,7 +42,7 @@
     "roadmap:8": "Partially implemented — common-witness contracts; decoded geometry identity, source data and complete candidate ledger remain pending.",
     "plasma-models-and-equilibrium:E3": "Partially implemented — an exact Solov'ev solution is verified directly against J×B=∇p (Δ*ψ=3R² checked by hand only); general Grad–Shafranov equivalence pending. A helical (JFKO-type) exact equilibrium is also verified.",
     "geometry-and-fields:G2": "Partially implemented — divergence/curl operators with sanity lemmas; Clebsch fields ∇ψ×∇χ are divergence-free for C² potentials; reciprocal-basis identities pending.",
-    "geometry-and-fields:G9": "Partially implemented — exact first-integral barriers (all time) in symmetric fields; certified approximate-first-integral confinement (≥ 95 transits) in an exact non-axisymmetric rational vacuum stellarator field; no KAM yet.",
+    "geometry-and-fields:G9": "Partially implemented — exact first-integral barriers; certified ≥ 95-transit confinement in an exact rational vacuum stellarator field; all-time confinement reduced to the existence of one invariant torus (barrier and torus-trapping theorems); KAM pending.",
     "mhd-stability:S6": "Partially implemented — Suydam both ways; cylindrical Mercier ⇔ Suydam; general Mercier index (supplied) certified positive on every surface of the reactor Solov'ev equilibrium by validated quadrature (magnetic well proved); helical equilibrium Mercier-unstable.",
     "mhd-stability:S7": "Partially implemented — screw-pinch Newcomb all modes m ≠ 0; ideal ballooning of the reactor Solov'ev equilibrium on every flux surface for every field line and θ_k (reduction supplied); certified Mercier; no 3-D all-mode certificate.",
     "particles-and-transport:K1": "Lean verified — Newton–Lorentz energy and speed conservation, exact uniform-field gyration, Larmor-radius formula and realistic exact bounds.",
