@@ -177,6 +177,8 @@ public import PlasmaLean.Design.KamTorusAFrame
 public import PlasmaLean.Design.KamTorusATwist
 public import PlasmaLean.Design.KamTorusATwistAvg
 public import PlasmaLean.Design.LandremanFamily2
+public import PlasmaLean.Theory.Stability.MercierShearless
+public import PlasmaLean.Design.LandremanMercier
 
 /-!
 # PlasmaLean public library

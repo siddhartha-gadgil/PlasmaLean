@@ -33,7 +33,7 @@ both confinement and keeping the plasma hot. Eight phases and part of a ninth ar
   are certified to stay confined for one toroidal transit (zero margin);
 - **finite β without axisymmetry:** an explicit finite-pressure, non-axisymmetric toroidal
   equilibria (Landreman families 1 and 2, the latter with proved shear; idealized) satisfy the
-  kernel force balance;
+  kernel force balance, but are Mercier-unstable (family 1 proved, family 2 numerically);
 - **stability:** Mercier stability and ideal-ballooning stability of that equilibrium are certified
   on every flux surface (with the standard reductions supplied);
 - **near-quasisymmetric alphas:** passing alphas are held for 0.19 s;
@@ -42,7 +42,7 @@ both confinement and keeping the plasma hot. Eight phases and part of a ninth ar
 - **screw pinch:** all-mode Newcomb stability is proved.
 
 The library has 213 modules and 19305 audited declarations, using standard axioms only. See the
-[progress slideshow](docs/slides.html) and the [latest report](progress/2026-10-21-progress-3.md).
+[progress slideshow](docs/slides.html) and the [latest report](progress/2026-10-21-progress-4.md).
 
 ## Code structure
 

@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="description" content="Phase 9 part 3: all quantitative KAM inputs certified for an approximate invariant torus of the exact stellarator field (weighted error ≤ 6e-22, symplectic frame bounds, twist ≥ 3/10); a sheared finite-β non-axisymmetric equilibrium (Landreman family 2). Earlier: coil-produced stellarator field confined for one transit; finite-β family 1; one consistent axisymmetric plasma with certified local stability up to ignition. All-time stellarator confinement awaits the KAM Newton step.">
+  <meta name="description" content="Phase 9 part 4: the library's finite-β non-axisymmetric equilibria are Mercier-unstable (family 1 proved on every surface; family 2 numerically, conditional theorem), so they are not MHD-stable stellarator candidates. Earlier: KAM inputs complete for an approximate invariant torus of the exact stellarator field; coil-produced confinement for one transit; one consistent axisymmetric plasma with certified local stability up to ignition.">
   <title>Progress slideshow · PlasmaLean</title>
   <link rel="stylesheet" href="assets/slides.css"><script defer src="assets/slides.js"></script>
 </head><body>
@@ -13,7 +13,7 @@
       <dl class="slide-metrics"><div><dt>Lean modules</dt><dd>213</dd></div><div><dt>Project declarations in the last axiom audit</dt><dd>19305</dd></div><div><dt>certified weighted torus error</dt><dd>6×10⁻²²</dd></div></dl>
       
       <div class="slide-progress"><h3>Progress so far</h3><p>One consistent axisymmetric plasma with certified local stability; finite-β non-axisymmetric equilibria (with shear); coil-produced stellarator confinement for one transit; KAM inputs complete.</p></div>
-      <p class="slide-boundary"><strong>Claim boundary.</strong> All-time confinement awaits the Newton step; one transit only for the coil field; finite-β families idealized with no stability claim.</p>
+      <p class="slide-boundary"><strong>Claim boundary.</strong> All-time confinement awaits the Newton step; one transit only for the coil field; the finite-β non-axisymmetric families are Mercier-unstable (family 1 proved), so no stable finite-β stellarator yet.</p>
       <footer class="slide-evidence"><span>Evidence · 2026-10-21</span><a href="progress.html">Phase 9 report <span aria-hidden="true">↗</span></a><a href="implementation-plan.html">Implementation plan <span aria-hidden="true">↗</span></a><a href="index.html#background">Original motivation &amp; graphics <span aria-hidden="true">↗</span></a></footer>
     </section>
 <section id="proof-architecture" class="slide" aria-labelledby="proof-architecture-title" tabindex="-1" data-slide>
@@ -290,7 +290,7 @@
       <p class="slide-lead">For torus A of the exact stellarator field: weighted invariance error ≤ 6×10⁻²² on a complex strip, a symplectic frame with explicit inverse bounds, twist ≥ 3/10, and Diophantine constant 0.0687. A sheared finite-β non-axisymmetric equilibrium joins the library.</p>
       
       <div class="slide-content"><div class="slide-cards cards-3"><article class="slide-card"><span class="card-status checked">Lean verified</span><h3>KAM inputs</h3><p>Weighted residual 5.83×10⁻²² / 3.47×10⁻²² at r = 0.1257; Ω(∂θK, N) = 1, det M ∈ [0.37, 2.86]; ⟨twist⟩ ≥ 3/10. The frame-torsion transport identity is a definition-level assumption to discharge.</p></article>
-<article class="slide-card"><span class="card-status checked">Lean verified (idealized)</span><h3>Sheared finite β</h3><p>Landreman family 2: force balance, flux function, planar elliptic axis, non-axisymmetric; ι ≤ 25/3 on an inner surface and ≥ 17/2 on an outer one (ε = 1/4, S = 4).</p></article>
+<article class="slide-card"><span class="card-status checked">Lean verified (idealized)</span><h3>Sheared finite β</h3><p>Landreman family 2: force balance, flux function, planar elliptic axis, non-axisymmetric; ι ≤ 25/3 on an inner surface and ≥ 17/2 on an outer one (ε = 1/4, S = 4). Part 4: Mercier-unstable (family 1 proved; family 2 numerically).</p></article>
 <article class="slide-card"><span class="card-status next">In progress</span><h3>Next: the Newton step</h3><p>Quasi-Newton step with counterterm, iteration to an exact torus, regularity, radial-graph and collar bounds, then all-time confinement via the torus-trapping theorem.</p></article></div></div>
       <div class="slide-progress"><h3>Progress so far</h3><p>10 new modules completing the KAM input certificates and adding family 2.</p></div>
       <p class="slide-boundary"><strong>Claim boundary.</strong> All-time confinement not yet proved; shear proved for a chosen parameter set, not the paper's example.</p>

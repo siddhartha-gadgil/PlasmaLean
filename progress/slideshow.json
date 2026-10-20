@@ -1,6 +1,6 @@
 {
   "updated": "2026-10-21",
-  "report": "2026-10-21-progress-3.md",
+  "report": "2026-10-21-progress-4.md",
   "status": "Exact symmetric equilibria with all-time orbit confinement · Local stability criteria · Not a coil-produced stellarator · Not a construction release.",
   "slides": [
     {
@@ -23,7 +23,7 @@
         }
       ],
       "progress": "One consistent axisymmetric plasma with certified local stability; finite-β non-axisymmetric equilibria (with shear); coil-produced stellarator confinement for one transit; KAM inputs complete.",
-      "boundary": "All-time confinement awaits the Newton step; one transit only for the coil field; finite-β families idealized with no stability claim.",
+      "boundary": "All-time confinement awaits the Newton step; one transit only for the coil field; the finite-β non-axisymmetric families are Mercier-unstable (family 1 proved), so no stable finite-β stellarator yet.",
       "evidence": [
         {
           "label": "Phase 9 report",
@@ -896,7 +896,7 @@
         },
         {
           "title": "Sheared finite β",
-          "text": "Landreman family 2: force balance, flux function, planar elliptic axis, non-axisymmetric; ι ≤ 25/3 on an inner surface and ≥ 17/2 on an outer one (ε = 1/4, S = 4).",
+          "text": "Landreman family 2: force balance, flux function, planar elliptic axis, non-axisymmetric; ι ≤ 25/3 on an inner surface and ≥ 17/2 on an outer one (ε = 1/4, S = 4). Part 4: Mercier-unstable (family 1 proved; family 2 numerically).",
           "status": "Lean verified (idealized)",
           "kind": "checked"
         },

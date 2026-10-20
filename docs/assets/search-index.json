@@ -1,7 +1,7 @@
 [
   {
     "title": "Progress slideshow",
-    "section": "Evidence updated 2026-10-21 · Phase 9 part 3: all quantitative KAM inputs certified for an approximate invariant torus of the exact stellarator field (weighted error ≤ 6e-22, symplectic frame bounds, twist ≥ 3/10); a sheared finite-β non-axisymmetric equilibrium (Landreman family 2). Earlier: coil-produced stellarator field confined for one transit; finite-β family 1; one consistent axisymmetric plasma with certified local stability up to ignition. All-time stellarator confinement awaits the KAM Newton step.",
+    "section": "Evidence updated 2026-10-21 · Phase 9 part 4: the library's finite-β non-axisymmetric equilibria are Mercier-unstable (family 1 proved on every surface; family 2 numerically, conditional theorem), so they are not MHD-stable stellarator candidates. Earlier: KAM inputs complete for an approximate invariant torus of the exact stellarator field; coil-produced confinement for one transit; one consistent axisymmetric plasma with certified local stability up to ignition.",
     "url": "slides.html",
     "text": "progress slideshow presentation latest run evidence vacuum fixture"
   },
@@ -613,9 +613,9 @@
   },
   {
     "title": "S6 · Source-specific local stability criteria",
-    "section": "MHD stability · Partially implemented — Suydam both ways; cylindrical Mercier ⇔ Suydam; general Mercier index (supplied) certified positive on every surface of the reactor Solov'ev equilibrium by validated quadrature (magnetic well proved); helical equilibrium Mercier-unstable.",
+    "section": "MHD stability · Partially implemented — Suydam both ways; general Mercier (supplied) certified positive on every surface of the reactor Solov'ev equilibrium; helical equilibrium and Landreman family 1 proved Mercier-unstable; family 2 unstable numerically.",
     "url": "mhd-stability.html",
-    "text": "s6 source-specific local stability criteria theorem backlog partially implemented — suydam both ways; cylindrical mercier ⇔ suydam; general mercier index (supplied) certified positive on every surface of the reactor solov'ev equilibrium by validated quadrature (magnetic well proved); helical equilibrium mercier-unstable."
+    "text": "s6 source-specific local stability criteria theorem backlog partially implemented — suydam both ways; general mercier (supplied) certified positive on every surface of the reactor solov'ev equilibrium; helical equilibrium and landreman family 1 proved mercier-unstable; family 2 unstable numerically."
   },
   {
     "title": "S7 · All-mode certified bound for a restricted useful configuration",
@@ -1632,6 +1632,12 @@
     "text": "phase 9 part 3, 21 october 2026 — report implementation plan"
   },
   {
+    "title": "Phase 9 part 4, 21 October 2026 — report",
+    "section": "Implementation plan",
+    "url": "implementation-plan.html#phase-9-part-4-21-october-2026-report",
+    "text": "phase 9 part 4, 21 october 2026 — report implementation plan"
+  },
+  {
     "title": "M0 · Exact symmetric equilibria: slab, screw pinch, Solov'ev, helical",
     "section": "Implementation plan · Lean verified — exact slab, screw-pinch, Solov'ev and helical equilibria with kernel force balance, all-time field-line/orbit confinement, Suydam both ways and screw-pinch Newcomb for 1 ≤ |m| ≤ 6 (idealized symmetric models).",
     "url": "implementation-plan.html",
@@ -1783,9 +1789,9 @@
   },
   {
     "title": "Verified progress",
-    "section": "Phase 9 part 3: all quantitative KAM inputs certified for an approximate invariant torus of the exact stellarator field (weighted error ≤ 6e-22, symplectic frame bounds, twist ≥ 3/10); a sheared finite-β non-axisymmetric equilibrium (Landreman family 2). Earlier: coil-produced stellarator field confined for one transit; finite-β family 1; one consistent axisymmetric plasma with certified local stability up to ignition. All-time stellarator confinement awaits the KAM Newton step.",
+    "section": "Phase 9 part 4: the library's finite-β non-axisymmetric equilibria are Mercier-unstable (family 1 proved on every surface; family 2 numerically, conditional theorem), so they are not MHD-stable stellarator candidates. Earlier: KAM inputs complete for an approximate invariant torus of the exact stellarator field; coil-produced confinement for one transit; one consistent axisymmetric plasma with certified local stability up to ignition.",
     "url": "progress.html",
-    "text": "verified progress phase 9 part 3: all quantitative kam inputs certified for an approximate invariant torus of the exact stellarator field (weighted error ≤ 6e-22, symplectic frame bounds, twist ≥ 3/10); a sheared finite-β non-axisymmetric equilibrium (landreman family 2). earlier: coil-produced stellarator field confined for one transit; finite-β family 1; one consistent axisymmetric plasma with certified local stability up to ignition. all-time stellarator confinement awaits the kam newton step."
+    "text": "verified progress phase 9 part 4: the library's finite-β non-axisymmetric equilibria are mercier-unstable (family 1 proved on every surface; family 2 numerically, conditional theorem), so they are not mhd-stable stellarator candidates. earlier: kam inputs complete for an approximate invariant torus of the exact stellarator field; coil-produced confinement for one transit; one consistent axisymmetric plasma with certified local stability up to ignition."
   },
   {
     "title": "Outcome",

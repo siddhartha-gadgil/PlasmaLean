@@ -1,7 +1,7 @@
 {
   "updated": "2026-10-21",
-  "report": "2026-10-21-progress-3.md",
-  "summary": "Phase 9 part 3: all quantitative KAM inputs certified for an approximate invariant torus of the exact stellarator field (weighted error ≤ 6e-22, symplectic frame bounds, twist ≥ 3/10); a sheared finite-β non-axisymmetric equilibrium (Landreman family 2). Earlier: coil-produced stellarator field confined for one transit; finite-β family 1; one consistent axisymmetric plasma with certified local stability up to ignition. All-time stellarator confinement awaits the KAM Newton step.",
+  "report": "2026-10-21-progress-4.md",
+  "summary": "Phase 9 part 4: the library's finite-β non-axisymmetric equilibria are Mercier-unstable (family 1 proved on every surface; family 2 numerically, conditional theorem), so they are not MHD-stable stellarator candidates. Earlier: KAM inputs complete for an approximate invariant torus of the exact stellarator field; coil-produced confinement for one transit; one consistent axisymmetric plasma with certified local stability up to ignition.",
   "tasks": {
     "model-contracts:I1": "Partially implemented — algebraic force balance and tangency; positive permeability and actual differential laws in the restricted slab model.",
     "model-contracts:I2": "Lean verified — uniform-field and nonzero-current force-free witnesses in the Cartesian slab model; not toroidal confinement.",
@@ -43,7 +43,7 @@
     "plasma-models-and-equilibrium:E3": "Partially implemented — an exact Solov'ev solution is verified directly against J×B=∇p (Δ*ψ=3R² checked by hand only); general Grad–Shafranov equivalence pending. A helical (JFKO-type) exact equilibrium is also verified.",
     "geometry-and-fields:G2": "Partially implemented — divergence/curl operators with sanity lemmas; Clebsch fields ∇ψ×∇χ are divergence-free for C² potentials; reciprocal-basis identities pending.",
     "geometry-and-fields:G9": "Partially implemented — 95-transit certified confinement in an exact rational stellarator field; all-time confinement reduced to one invariant torus; validated approximate torus (residual ≤ 1.2e-23, radial graph) and Diophantine/cohomological KAM lemmas; KAM Newton step pending.",
-    "mhd-stability:S6": "Partially implemented — Suydam both ways; cylindrical Mercier ⇔ Suydam; general Mercier index (supplied) certified positive on every surface of the reactor Solov'ev equilibrium by validated quadrature (magnetic well proved); helical equilibrium Mercier-unstable.",
+    "mhd-stability:S6": "Partially implemented — Suydam both ways; general Mercier (supplied) certified positive on every surface of the reactor Solov'ev equilibrium; helical equilibrium and Landreman family 1 proved Mercier-unstable; family 2 unstable numerically.",
     "mhd-stability:S7": "Partially implemented — screw-pinch Newcomb all modes m ≠ 0; ideal ballooning of the reactor Solov'ev equilibrium on every flux surface for every field line and θ_k (reduction supplied); certified Mercier; no 3-D all-mode certificate.",
     "particles-and-transport:K1": "Lean verified — Newton–Lorentz energy and speed conservation, exact uniform-field gyration, Larmor-radius formula and realistic exact bounds.",
     "particles-and-transport:K2": "Partially implemented — Noether conservation of canonical momentum for any Killing symmetry (rotation, translation, helix) for full orbits; reduced Hamiltonian theory pending.",
