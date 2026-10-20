@@ -1,32 +1,32 @@
 {
   "updated": "2026-10-20",
-  "report": "2026-10-20-progress-7.md",
+  "report": "2026-10-20-progress-8.md",
   "status": "Exact symmetric equilibria with all-time orbit confinement · Local stability criteria · Not a coil-produced stellarator · Not a construction release.",
   "slides": [
     {
       "id": "where-we-are",
-      "eyebrow": "Progress briefing · Phase 6: actual geometry, ignition, a first stellarator field",
-      "title": "One plasma on the true geometry — driven, high-Q and ignited — and a first exact stellarator field.",
-      "lead": "PlasmaLean is building a Lean library for stellarator design. Phase 6 proves the one-plasma theorem on the actual flux geometry of the equilibrium, including high-Q and zero-auxiliary-heating (ignited) versions, certifies ideal-ballooning stability on near-axis surfaces, and constructs the library's first exact non-axisymmetric vacuum stellarator field.",
+      "eyebrow": "Progress briefing · Phase 7: a confined stellarator field",
+      "title": "Field lines held for 95 transits in an exact stellarator field; the one-plasma geometry fully derived.",
+      "lead": "PlasmaLean is building a Lean library for stellarator design. Phase 7 certifies that field lines of an exact non-axisymmetric vacuum stellarator field stay near the magnetic axis for at least 95 toroidal transits, and formalizes the coarea step, so the one-plasma theorem's flux geometry is now derived entirely from its equilibrium.",
       "metrics": [
         {
-          "value": "129",
+          "value": "136",
           "label": "Lean modules"
         },
         {
-          "value": "2771",
+          "value": "2982",
           "label": "theorem/lemma declarations (grep count)"
         },
         {
-          "value": "9138",
+          "value": "9921",
           "label": "Project declarations in the last axiom audit"
         }
       ],
-      "progress": "G1+G2 joined for one axisymmetric equilibrium with proved geometry (coarea step stated), up to ignition; Mercier certified, ballooning on four surfaces; first exact stellarator vacuum field.",
-      "boundary": "Integrated results are for an axisymmetric (tokamak-like) equilibrium; the ignited version needs a large edge offset; ballooning and Mercier reductions supplied; the stellarator field has no certified confinement length or coils yet; trapped near-QA alphas open.",
+      "progress": "G1+G2 joined for one axisymmetric equilibrium with fully derived geometry; first certified confinement in a genuine stellarator field (finite length, vacuum).",
+      "boundary": "The stellarator result is field-line confinement for a finite length in a vacuum field without coils or plasma; integrated plasma results are axisymmetric; supplied stability reductions and transport model.",
       "evidence": [
         {
-          "label": "Phase 6 report",
+          "label": "Phase 7 report",
           "href": "progress.html"
         },
         {
@@ -632,7 +632,7 @@
       "cards": [
         {
           "title": "Actual geometry",
-          "text": "V′, ⟨|∇s|²⟩, ⟨Δs⟩ from the exact surfaces; Gauss identity and axis limits proved; enclosures with 0.26% margins. Only the coarea step is stated.",
+          "text": "V′, ⟨|∇s|²⟩, ⟨Δs⟩ from the exact surfaces; Gauss identity and axis limits proved; enclosures with 0.26% margins. The coarea step was stated here and is proved in Phase 7.",
           "status": "Lean verified",
           "kind": "checked"
         },
@@ -650,7 +650,7 @@
         },
         {
           "title": "Rational stellarator",
-          "text": "B = ∇φ + ε∇h: exact vacuum, 2 periods, stellarator-symmetric, non-axisymmetric; closed circular axis with elliptic monodromy. Certified confinement length in progress.",
+          "text": "B = ∇φ + ε∇h: exact vacuum, 2 periods, stellarator-symmetric, non-axisymmetric; closed circular axis with elliptic monodromy. Certified confinement (≥ 95 transits) added in Phase 7.",
           "status": "Lean verified (field + axis)",
           "kind": "checked"
         }
@@ -673,8 +673,50 @@
       ]
     },
     {
+      "id": "stellarator-confined",
+      "eyebrow": "16 · Phase 7: a confined stellarator field",
+      "title": "95 toroidal transits, certified, in a genuine stellarator field.",
+      "lead": "For the exact vacuum field B = ∇φ + ¼∇h — non-axisymmetric, two field periods, stellarator-symmetric — every field line starting within ≈ 0.023 R₀ of the magnetic axis stays within ≈ 0.1 R₀ of it for at least 95 full toroidal transits. And the coarea formula closes the last stated link in the one-plasma theorem.",
+      "cards": [
+        {
+          "title": "Stellarator confinement",
+          "text": "An order-10 approximate first integral with |DI·B| ≤ 4×10⁻⁶ on the whole tube, certified by an exact-integer Taylor-shift cover; I separates start tube from tube faces; the defect theorem converts this into ≥ 95 transits.",
+          "status": "Lean verified (finite length)",
+          "kind": "checked"
+        },
+        {
+          "title": "Coarea formalized",
+          "text": "Injective coordinates, null axis, Jacobian √2σ/R, Lebesgue volume = coordinate volume, and d/ds ∫ f = ∮ f dS/|∇s|: the flux-surface averages in the transport law are proved, not stated.",
+          "status": "Lean verified",
+          "kind": "checked"
+        },
+        {
+          "title": "Still open",
+          "text": "Coils for the stellarator field (error must stay below the defect budget); all-time confinement (KAM); trapped near-QA alphas; ballooning beyond four surfaces.",
+          "status": "In progress",
+          "kind": "next"
+        }
+      ],
+      "progress": "7 new modules; review found the certificate sound (exact margins, symmetry reduction and face coverage checked) and led to a local field-line version and fuller disclosures.",
+      "boundary": "Finite-length, vacuum-field result; no coils; the cover uses monolithic kernel checks (≈ 5 GB peak memory, accepted by review).",
+      "evidence": [
+        {
+          "label": "New checked results",
+          "href": "progress.html#new-checked-results"
+        },
+        {
+          "label": "Quantitative certificates",
+          "href": "progress.html#quantitative-certificates"
+        },
+        {
+          "label": "Corrections",
+          "href": "progress.html#corrections-and-challenged-claims"
+        }
+      ]
+    },
+    {
       "id": "implementation-plan",
-      "eyebrow": "16 · Plan of record",
+      "eyebrow": "17 · Plan of record",
       "title": "Theory, techniques and a ladder of models — for confinement and for heat.",
       "lead": "Each cycle develops theory, turns theorems into sound certificate checkers, and applies them to the next rung of a model ladder. Every rung must prove properties of both kinds: confinement (G1) and temperature held above burn conditions (G2).",
       "cards": [
@@ -718,9 +760,9 @@
     },
     {
       "id": "next-run",
-      "eyebrow": "17 · Keep every step reviewable",
+      "eyebrow": "18 · Keep every step reviewable",
       "title": "The next run must leave evidence, not just a promise.",
-      "lead": "Next (Phase 7): certified finite-length field-line confinement for the rational stellarator and a coil approximation with certified error; trapped-alpha non-resonance; ballooning on all Solov'ev surfaces; formalizing the coarea step.",
+      "lead": "Next: trapped near-QA alpha non-resonance and confinement time; ballooning on all Solov'ev surfaces; filament coils reproducing the rational stellarator field within the certified defect budget; longer stellarator confinement (higher order or KAM).",
       "cards": [
         {
           "title": "Implement & challenge",

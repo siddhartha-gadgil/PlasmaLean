@@ -105,3 +105,5 @@ run_cmd do
 #print axioms PlasmaLean.Design.SolovevBandIgnited.solovev_one_plasma_ignited_actual
 #print axioms PlasmaLean.Design.SolovevBallooning.reactor_ballooning_s1
 #print axioms PlasmaLean.Design.RationalStellarator.field_vacuum
+#print axioms PlasmaLean.Design.RationalStellarator.Confined.rationalStellarator_confined_local
+#print axioms PlasmaLean.Design.SolovevCoarea.solovev_one_plasma_actual_coarea

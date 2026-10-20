@@ -69,11 +69,12 @@ Proved: `lapPsiT_eq_laplacian` (`lapPsiT` is the sum of the Cartesian second der
 `dS = 2π R |∂_t(R,z)| dt` of the actual curve and the actual `|∇s|`); `hasDerivAt_volume`
 (`V'(s) = d/ds volS(σ(s))` for the coordinate volume `volS` of `SolovevMercierCertified`).
 
-**Not formalized (stated modelling link):** the coarea formula `d/ds ∫_{s' ≤ s} f dV =
-∮ f dS/|∇s|` (hence that `g`, `h` are the flux-surface averages entering the transport
-equation `(1/V') ∂_s(V' χ ⟨|∇s|²⟩ ∂_s T)`), and the measure-theoretic identification of
-`volS` with the Lebesgue volume (the 2-D change of variables with the proved Jacobian
-`SolovevMercierCertified.jacobian_eq`), exactly as in `SolovevMercierCertified`. The
+**Coarea link (formalized in `SolovevCoarea`, 2026-10-20):** the coarea formula
+`d/ds ∫_{s' ≤ s} f dV = ∮ f dS/|∇s|` and the identification of `volS` with the Lebesgue
+volume are proved in `PlasmaLean.Design.SolovevCoarea` (`volume_label_le`,
+`hasDerivAt_integral_label_surfInt`, `solovevFluxGeometry_coarea`), so `g`, `h` are the
+flux-surface averages entering the transport equation `(1/V') ∂_s(V' χ ⟨|∇s|²⟩ ∂_s T)`;
+`solovev_one_plasma_actual_coarea` bundles this with `solovev_one_plasma_actual`. The
 transport model itself (quasilinear `χ`, prescribed density and sources) is unchanged from
 `SolovevBand`.
 -/

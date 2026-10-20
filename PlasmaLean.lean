@@ -134,6 +134,13 @@ public import PlasmaLean.Design.NearAxisQATrappedBounce
 public import PlasmaLean.Design.RationalStellarator
 public import PlasmaLean.Design.RationalStellaratorAxis
 public import PlasmaLean.Theory.Fields.DefectConfinement
+public import PlasmaLean.Theory.Fields.DefectConfinementLocal
+public import PlasmaLean.Design.RationalStellaratorCover
+public import PlasmaLean.Design.RationalStellaratorConfinedData
+public import PlasmaLean.Design.RationalStellaratorConfinedMain
+public import PlasmaLean.Design.RationalStellaratorConfinedFaces
+public import PlasmaLean.Design.RationalStellaratorConfined
+public import PlasmaLean.Design.SolovevCoarea
 
 /-!
 # PlasmaLean public library

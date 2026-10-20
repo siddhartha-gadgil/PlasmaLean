@@ -67,8 +67,9 @@ As a by-product `reactor_Vpp_neg`: `V'' < 0` on every surface (a genuine magneti
   `δW` is not formalized); Mercier stability is a NECESSARY condition for ideal-MHD
   stability (local interchange only: no ballooning, global, resistive or kinetic claim).
 * The identification of `volS`, `fluxS`, `currS` with the physical enclosed volume, flux and
-  current uses the 2-D change of variables with the proved Jacobian (`jacobian_eq`); this
-  step is stated, not formalized as a measure-theoretic identity.
+  current uses the 2-D change of variables with the proved Jacobian (`jacobian_eq`). For the
+  volume this is now proved in `SolovevCoarea` (`volume_label_le`); for `fluxS`, `currS` the
+  same `integral_shell` applies but has not been instantiated.
 * The numerical part is fully rigorous: fixed-point interval arithmetic with outward
   rounding, kernel-checked (`decide +kernel` per `ε`-cell), uniform in `ε` on each cell.
 * Certified margin: `3(3 Pn S5n - Qn S3n) / (Qn IPhi) ≥ 1.03` on every cell (true ratio

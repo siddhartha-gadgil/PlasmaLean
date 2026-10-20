@@ -1,15 +1,15 @@
 [
   {
     "title": "Progress slideshow",
-    "section": "Evidence updated 2026-10-20 · Phase 6 of the implementation plan: the one-plasma theorem now runs on the actual reactor Solov'ev flux geometry (only the coarea/change-of-variables step is stated), with high-Q (Q≈40, 17.5 MW aux) and ignited (zero aux, larger edge offset) versions; ideal-ballooning stability on four near-axis surfaces (reduction supplied); the first exact non-axisymmetric vacuum stellarator field (2 periods, stellarator-symmetric, elliptic axis). Earlier: all-time alpha confinement, certified Mercier stability, near-QA alphas 0.19 s. Axisymmetric equilibrium for the integrated results; no coils, no all-mode 3-D stability.",
+    "section": "Evidence updated 2026-10-20 · Phase 7 part 1: field lines of an exact non-axisymmetric vacuum stellarator field (rational, 2 periods, stellarator-symmetric) are certified to stay near the magnetic axis for at least 95 toroidal transits; the coarea step of the one-plasma theorem is formalized, so its flux geometry is fully derived from the Solov'ev equilibrium. Earlier: one consistent plasma (driven, high-Q, ignited) with all-time alpha confinement, certified Mercier and partial ballooning stability; near-QA alphas 0.19 s. No coils yet; integrated plasma results are axisymmetric.",
     "url": "slides.html",
     "text": "progress slideshow presentation latest run evidence vacuum fixture"
   },
   {
-    "title": "One plasma on the true geometry — driven, high-Q and ignited — and a first exact stellarator field.",
+    "title": "Field lines held for 95 transits in an exact stellarator field; the one-plasma geometry fully derived.",
     "section": "Progress slideshow",
     "url": "slides.html#where-we-are",
-    "text": "one plasma on the true geometry — driven, high-q and ignited — and a first exact stellarator field. plasmalean is building a lean library for stellarator design. phase 6 proves the one-plasma theorem on the actual flux geometry of the equilibrium, including high-q and zero-auxiliary-heating (ignited) versions, certifies ideal-ballooning stability on near-axis surfaces, and constructs the library's first exact non-axisymmetric vacuum stellarator field. g1+g2 joined for one axisymmetric equilibrium with proved geometry (coarea step stated), up to ignition; mercier certified, ballooning on four surfaces; first exact stellarator vacuum field."
+    "text": "field lines held for 95 transits in an exact stellarator field; the one-plasma geometry fully derived. plasmalean is building a lean library for stellarator design. phase 7 certifies that field lines of an exact non-axisymmetric vacuum stellarator field stay near the magnetic axis for at least 95 toroidal transits, and formalizes the coarea step, so the one-plasma theorem's flux geometry is now derived entirely from its equilibrium. g1+g2 joined for one axisymmetric equilibrium with fully derived geometry; first certified confinement in a genuine stellarator field (finite length, vacuum)."
   },
   {
     "title": "Small assumptions. Reusable proofs. One candidate.",
@@ -102,6 +102,12 @@
     "text": "no supplied geometry, no auxiliary power — and a genuine stellarator field. the one-plasma theorem now uses flux-surface quantities computed from the equilibrium itself. with quarter-kev reactivity data it certifies a high-q (q ≈ 40) band and an ignited band with zero auxiliary heating. separately, an exact rational vacuum field with two field periods and stellarator symmetry gives the library its first non-axisymmetric stellarator geometry. 13 new modules; review found no bugs (fine windows and geometry bounds independently recomputed). trapped near-qa alphas: turning points proved, non-resonance open — a real resonance exists in the band."
   },
   {
+    "title": "95 toroidal transits, certified, in a genuine stellarator field.",
+    "section": "Progress slideshow",
+    "url": "slides.html#stellarator-confined",
+    "text": "95 toroidal transits, certified, in a genuine stellarator field. for the exact vacuum field b = ∇φ + ¼∇h — non-axisymmetric, two field periods, stellarator-symmetric — every field line starting within ≈ 0.023 r₀ of the magnetic axis stays within ≈ 0.1 r₀ of it for at least 95 full toroidal transits. and the coarea formula closes the last stated link in the one-plasma theorem. 7 new modules; review found the certificate sound (exact margins, symmetry reduction and face coverage checked) and led to a local field-line version and fuller disclosures."
+  },
+  {
     "title": "Theory, techniques and a ladder of models — for confinement and for heat.",
     "section": "Progress slideshow",
     "url": "slides.html#implementation-plan",
@@ -111,7 +117,7 @@
     "title": "The next run must leave evidence, not just a promise.",
     "section": "Progress slideshow",
     "url": "slides.html#next-run",
-    "text": "the next run must leave evidence, not just a promise. next (phase 7): certified finite-length field-line confinement for the rational stellarator and a coil approximation with certified error; trapped-alpha non-resonance; ballooning on all solov'ev surfaces; formalizing the coarea step. the linked run records checked declarations, assumptions and validation. this slideshow is a summary of that evidence, not a new design certificate."
+    "text": "the next run must leave evidence, not just a promise. next: trapped near-qa alpha non-resonance and confinement time; ballooning on all solov'ev surfaces; filament coils reproducing the rational stellarator field within the certified defect budget; longer stellarator confinement (higher order or kam). the linked run records checked declarations, assumptions and validation. this slideshow is a summary of that evidence, not a new design certificate."
   },
   {
     "title": "Stellarator concepts",
@@ -367,9 +373,9 @@
   },
   {
     "title": "G9 · One certified invariant torus and barrier",
-    "section": "Geometry & fields · Partially implemented — exact first-integral barriers confine field lines for all time in analytic Clebsch-torus, Solov'ev and helical fields; no KAM/a posteriori torus for a perturbed or coil-produced field yet.",
+    "section": "Geometry & fields · Partially implemented — exact first-integral barriers (all time) in symmetric fields; certified approximate-first-integral confinement (≥ 95 transits) in an exact non-axisymmetric rational vacuum stellarator field; no KAM yet.",
     "url": "geometry-and-fields.html",
-    "text": "g9 one certified invariant torus and barrier theorem backlog partially implemented — exact first-integral barriers confine field lines for all time in analytic clebsch-torus, solov'ev and helical fields; no kam/a posteriori torus for a perturbed or coil-produced field yet."
+    "text": "g9 one certified invariant torus and barrier theorem backlog partially implemented — exact first-integral barriers (all time) in symmetric fields; certified approximate-first-integral confinement (≥ 95 transits) in an exact non-axisymmetric rational vacuum stellarator field; no kam yet."
   },
   {
     "title": "G10 · Quantitative perturbation theory over useful parameter sets",
@@ -1560,6 +1566,12 @@
     "text": "phase 6, 20 october 2026 — report implementation plan"
   },
   {
+    "title": "Phase 7 part 1, 20 October 2026 — report",
+    "section": "Implementation plan",
+    "url": "implementation-plan.html#phase-7-part-1-20-october-2026-report",
+    "text": "phase 7 part 1, 20 october 2026 — report implementation plan"
+  },
+  {
     "title": "M0 · Exact symmetric equilibria: slab, screw pinch, Solov'ev, helical",
     "section": "Implementation plan · Lean verified — exact slab, screw-pinch, Solov'ev and helical equilibria with kernel force balance, all-time field-line/orbit confinement, Suydam both ways and screw-pinch Newcomb for 1 ≤ |m| ≤ 6 (idealized symmetric models).",
     "url": "implementation-plan.html",
@@ -1591,9 +1603,9 @@
   },
   {
     "title": "M5 · Coil-produced 3-D field (filament Biot–Savart, existing) plus a DESC-validated finite-β equilibrium",
-    "section": "Implementation plan · Partially implemented — first exact non-axisymmetric vacuum stellarator field (rational, 2 periods, stellarator-symmetric, elliptic axis); defect-confinement theorem; certified confinement length and coil approximation pending.",
+    "section": "Implementation plan · Partially implemented — exact non-axisymmetric vacuum stellarator field (rational, 2 periods, stellarator-symmetric, elliptic axis) with certified field-line confinement for ≥ 95 toroidal transits near the axis (approximate first integral, finite length); coil approximation pending.",
     "url": "implementation-plan.html",
-    "text": "m5 coil-produced 3-d field (filament biot–savart, existing) plus a desc-validated finite-β equilibrium 5. model ladder (each rung proves characteristics under both g1 and g2) partially implemented — first exact non-axisymmetric vacuum stellarator field (rational, 2 periods, stellarator-symmetric, elliptic axis); defect-confinement theorem; certified confinement length and coil approximation pending."
+    "text": "m5 coil-produced 3-d field (filament biot–savart, existing) plus a desc-validated finite-β equilibrium 5. model ladder (each rung proves characteristics under both g1 and g2) partially implemented — exact non-axisymmetric vacuum stellarator field (rational, 2 periods, stellarator-symmetric, elliptic axis) with certified field-line confinement for ≥ 95 toroidal transits near the axis (approximate first integral, finite length); coil approximation pending."
   },
   {
     "title": "M6 · Integrated candidate: coils + equilibrium + stability + transport + engineering margins",
@@ -1711,9 +1723,9 @@
   },
   {
     "title": "Verified progress",
-    "section": "Phase 6 of the implementation plan: the one-plasma theorem now runs on the actual reactor Solov'ev flux geometry (only the coarea/change-of-variables step is stated), with high-Q (Q≈40, 17.5 MW aux) and ignited (zero aux, larger edge offset) versions; ideal-ballooning stability on four near-axis surfaces (reduction supplied); the first exact non-axisymmetric vacuum stellarator field (2 periods, stellarator-symmetric, elliptic axis). Earlier: all-time alpha confinement, certified Mercier stability, near-QA alphas 0.19 s. Axisymmetric equilibrium for the integrated results; no coils, no all-mode 3-D stability.",
+    "section": "Phase 7 part 1: field lines of an exact non-axisymmetric vacuum stellarator field (rational, 2 periods, stellarator-symmetric) are certified to stay near the magnetic axis for at least 95 toroidal transits; the coarea step of the one-plasma theorem is formalized, so its flux geometry is fully derived from the Solov'ev equilibrium. Earlier: one consistent plasma (driven, high-Q, ignited) with all-time alpha confinement, certified Mercier and partial ballooning stability; near-QA alphas 0.19 s. No coils yet; integrated plasma results are axisymmetric.",
     "url": "progress.html",
-    "text": "verified progress phase 6 of the implementation plan: the one-plasma theorem now runs on the actual reactor solov'ev flux geometry (only the coarea/change-of-variables step is stated), with high-q (q≈40, 17.5 mw aux) and ignited (zero aux, larger edge offset) versions; ideal-ballooning stability on four near-axis surfaces (reduction supplied); the first exact non-axisymmetric vacuum stellarator field (2 periods, stellarator-symmetric, elliptic axis). earlier: all-time alpha confinement, certified mercier stability, near-qa alphas 0.19 s. axisymmetric equilibrium for the integrated results; no coils, no all-mode 3-d stability."
+    "text": "verified progress phase 7 part 1: field lines of an exact non-axisymmetric vacuum stellarator field (rational, 2 periods, stellarator-symmetric) are certified to stay near the magnetic axis for at least 95 toroidal transits; the coarea step of the one-plasma theorem is formalized, so its flux geometry is fully derived from the solov'ev equilibrium. earlier: one consistent plasma (driven, high-q, ignited) with all-time alpha confinement, certified mercier and partial ballooning stability; near-qa alphas 0.19 s. no coils yet; integrated plasma results are axisymmetric."
   },
   {
     "title": "Outcome",
@@ -1758,9 +1770,9 @@
     "text": "validation verified progress"
   },
   {
-    "title": "Next boundary (Phase 7)",
+    "title": "Next boundary (Phase 7 part 2 and beyond)",
     "section": "Verified progress",
-    "url": "progress.html#next-boundary-phase-7",
-    "text": "next boundary (phase 7) verified progress"
+    "url": "progress.html#next-boundary-phase-7-part-2-and-beyond",
+    "text": "next boundary (phase 7 part 2 and beyond) verified progress"
   }
 ]

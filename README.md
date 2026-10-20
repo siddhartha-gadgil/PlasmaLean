@@ -17,15 +17,16 @@ confinement is certified.
 
 On 20 October an [implementation plan](notes/implementation-plan.md) was fixed. It cycles
 between theory, certificate techniques and a ladder of successively realistic models, targeting
-both confinement and keeping the plasma hot. Six phases are complete:
+both confinement and keeping the plasma hot. Six phases and part of a seventh are complete:
 
 - **one consistent plasma:** for one exact Solov'ev field satisfying force balance, 3.5 MeV alphas
   born in the core are confined for all time, the core stays at or above 10 keV for all time, and
   the plasma pressure stays below the equilibrium pressure. This holds on the equilibrium's own
-  flux geometry (only the coarea step is stated) and up to ignition (zero auxiliary heating, with
+  flux geometry (fully derived, including the coarea step) and up to ignition (zero auxiliary heating, with
   a larger edge-pressure offset);
 - **first stellarator field:** an exact non-axisymmetric vacuum field with two field periods and
-  stellarator symmetry, whose magnetic axis is linearly elliptic;
+  stellarator symmetry, whose magnetic axis is linearly elliptic and whose field lines near the
+  axis are certified to stay confined for at least 95 toroidal transits;
 - **stability:** Mercier stability of that equilibrium is certified, and ideal ballooning on four
   near-axis surfaces;
 - **near-quasisymmetric alphas:** passing alphas are held for 0.19 s;
@@ -33,8 +34,8 @@ both confinement and keeping the plasma hot. Six phases are complete:
 - **validation:** a slab Grad–Shafranov equilibrium with an exponential profile is validated;
 - **screw pinch:** all-mode Newcomb stability is proved.
 
-The library has 129 modules and 9138 audited declarations, using standard axioms only. See the
-[progress slideshow](docs/slides.html) and the [latest report](progress/2026-10-20-progress-7.md).
+The library has 136 modules and 9921 audited declarations, using standard axioms only. See the
+[progress slideshow](docs/slides.html) and the [latest report](progress/2026-10-20-progress-8.md).
 
 ## Code structure
 

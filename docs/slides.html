@@ -1,23 +1,23 @@
 <!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="description" content="Phase 6 of the implementation plan: the one-plasma theorem now runs on the actual reactor Solov'ev flux geometry (only the coarea/change-of-variables step is stated), with high-Q (Q≈40, 17.5 MW aux) and ignited (zero aux, larger edge offset) versions; ideal-ballooning stability on four near-axis surfaces (reduction supplied); the first exact non-axisymmetric vacuum stellarator field (2 periods, stellarator-symmetric, elliptic axis). Earlier: all-time alpha confinement, certified Mercier stability, near-QA alphas 0.19 s. Axisymmetric equilibrium for the integrated results; no coils, no all-mode 3-D stability.">
+  <meta name="description" content="Phase 7 part 1: field lines of an exact non-axisymmetric vacuum stellarator field (rational, 2 periods, stellarator-symmetric) are certified to stay near the magnetic axis for at least 95 toroidal transits; the coarea step of the one-plasma theorem is formalized, so its flux geometry is fully derived from the Solov'ev equilibrium. Earlier: one consistent plasma (driven, high-Q, ignited) with all-time alpha confinement, certified Mercier and partial ballooning stability; near-QA alphas 0.19 s. No coils yet; integrated plasma results are axisymmetric.">
   <title>Progress slideshow · PlasmaLean</title>
   <link rel="stylesheet" href="assets/slides.css"><script defer src="assets/slides.js"></script>
 </head><body>
   <a class="skip-link" href="#presentation">Skip to slides</a>
   <header class="deck-header"><a class="deck-brand" href="index.html"><span aria-hidden="true">λ</span> PlasmaLean</a><nav aria-label="Website"><a href="index.html">Home &amp; graphics</a><a href="handbook.html">Handbook</a><a href="progress.html">Full report</a></nav><p>Evidence updated <time datetime="2026-10-20">2026-10-20</time></p></header>
   <main id="presentation" class="deck" tabindex="-1" aria-label="Progress slideshow"><section id="where-we-are" class="slide opening-slide" aria-labelledby="where-we-are-title" tabindex="-1" data-slide>
-      <div class="slide-topline"><p class="eyebrow">Progress briefing · Phase 6: actual geometry, ignition, a first stellarator field</p><span class="slide-number">01 / 18</span></div>
-      <h1 id="where-we-are-title">One plasma on the true geometry — driven, high-Q and ignited — and a first exact stellarator field.</h1>
-      <p class="slide-lead">PlasmaLean is building a Lean library for stellarator design. Phase 6 proves the one-plasma theorem on the actual flux geometry of the equilibrium, including high-Q and zero-auxiliary-heating (ignited) versions, certifies ideal-ballooning stability on near-axis surfaces, and constructs the library's first exact non-axisymmetric vacuum stellarator field.</p>
-      <dl class="slide-metrics"><div><dt>Lean modules</dt><dd>129</dd></div><div><dt>theorem/lemma declarations (grep count)</dt><dd>2771</dd></div><div><dt>Project declarations in the last axiom audit</dt><dd>9138</dd></div></dl>
+      <div class="slide-topline"><p class="eyebrow">Progress briefing · Phase 7: a confined stellarator field</p><span class="slide-number">01 / 19</span></div>
+      <h1 id="where-we-are-title">Field lines held for 95 transits in an exact stellarator field; the one-plasma geometry fully derived.</h1>
+      <p class="slide-lead">PlasmaLean is building a Lean library for stellarator design. Phase 7 certifies that field lines of an exact non-axisymmetric vacuum stellarator field stay near the magnetic axis for at least 95 toroidal transits, and formalizes the coarea step, so the one-plasma theorem's flux geometry is now derived entirely from its equilibrium.</p>
+      <dl class="slide-metrics"><div><dt>Lean modules</dt><dd>136</dd></div><div><dt>theorem/lemma declarations (grep count)</dt><dd>2982</dd></div><div><dt>Project declarations in the last axiom audit</dt><dd>9921</dd></div></dl>
       
-      <div class="slide-progress"><h3>Progress so far</h3><p>G1+G2 joined for one axisymmetric equilibrium with proved geometry (coarea step stated), up to ignition; Mercier certified, ballooning on four surfaces; first exact stellarator vacuum field.</p></div>
-      <p class="slide-boundary"><strong>Claim boundary.</strong> Integrated results are for an axisymmetric (tokamak-like) equilibrium; the ignited version needs a large edge offset; ballooning and Mercier reductions supplied; the stellarator field has no certified confinement length or coils yet; trapped near-QA alphas open.</p>
-      <footer class="slide-evidence"><span>Evidence · 2026-10-20</span><a href="progress.html">Phase 6 report <span aria-hidden="true">↗</span></a><a href="implementation-plan.html">Implementation plan <span aria-hidden="true">↗</span></a><a href="index.html#background">Original motivation &amp; graphics <span aria-hidden="true">↗</span></a></footer>
+      <div class="slide-progress"><h3>Progress so far</h3><p>G1+G2 joined for one axisymmetric equilibrium with fully derived geometry; first certified confinement in a genuine stellarator field (finite length, vacuum).</p></div>
+      <p class="slide-boundary"><strong>Claim boundary.</strong> The stellarator result is field-line confinement for a finite length in a vacuum field without coils or plasma; integrated plasma results are axisymmetric; supplied stability reductions and transport model.</p>
+      <footer class="slide-evidence"><span>Evidence · 2026-10-20</span><a href="progress.html">Phase 7 report <span aria-hidden="true">↗</span></a><a href="implementation-plan.html">Implementation plan <span aria-hidden="true">↗</span></a><a href="index.html#background">Original motivation &amp; graphics <span aria-hidden="true">↗</span></a></footer>
     </section>
 <section id="proof-architecture" class="slide" aria-labelledby="proof-architecture-title" tabindex="-1" data-slide>
-      <div class="slide-topline"><p class="eyebrow">01 · How the library earns a claim</p><span class="slide-number">02 / 18</span></div>
+      <div class="slide-topline"><p class="eyebrow">01 · How the library earns a claim</p><span class="slide-number">02 / 19</span></div>
       <h2 id="proof-architecture-title">Small assumptions. Reusable proofs. One candidate.</h2>
       <p class="slide-lead">Physical model laws are explicit hypotheses. Derived mathematics and candidate certificates live above that small domain kernel.</p>
       
@@ -30,7 +30,7 @@
       <footer class="slide-evidence"><span>Evidence · 2026-10-20</span><a href="model-contracts.html#architecture">Model contracts &amp; architecture <span aria-hidden="true">↗</span></a><a href="progress.html#validation">Audit evidence <span aria-hidden="true">↗</span></a></footer>
     </section>
 <section id="mathematical-foundations" class="slide" aria-labelledby="mathematical-foundations-title" tabindex="-1" data-slide>
-      <div class="slide-topline"><p class="eyebrow">02 · Reusable mathematical progress</p><span class="slide-number">03 / 18</span></div>
+      <div class="slide-topline"><p class="eyebrow">02 · Reusable mathematical progress</p><span class="slide-number">03 / 19</span></div>
       <h2 id="mathematical-foundations-title">The foundations have executable proof content.</h2>
       <p class="slide-lead">Simple models make the definitions testable before tackling three-dimensional plasma physics.</p>
       
@@ -42,7 +42,7 @@
       <footer class="slide-evidence"><span>Evidence · 2026-10-20</span><a href="progress.html#earlier-results-retained">Earlier results retained <span aria-hidden="true">↗</span></a><a href="mhd-stability.html">Stability scope <span aria-hidden="true">↗</span></a></footer>
     </section>
 <section id="exact-certificates" class="slide" aria-labelledby="exact-certificates-title" tabindex="-1" data-slide>
-      <div class="slide-topline"><p class="eyebrow">03 · Exact numerical certificates</p><span class="slide-number">04 / 18</span></div>
+      <div class="slide-topline"><p class="eyebrow">03 · Exact numerical certificates</p><span class="slide-number">04 / 19</span></div>
       <h2 id="exact-certificates-title">From a numerical proposal to a proved bound.</h2>
       <p class="slide-lead">Rational interval soundness and contraction arguments give small end-to-end tests of the verification path.</p>
       
@@ -54,7 +54,7 @@
       <footer class="slide-evidence"><span>Evidence · 2026-10-20</span><a href="progress.html#earlier-results-retained">Retained examples &amp; margins <span aria-hidden="true">↗</span></a><a href="verified-numerics.html">Numerical verification chapter <span aria-hidden="true">↗</span></a></footer>
     </section>
 <section id="vacuum-fixture" class="slide" aria-labelledby="vacuum-fixture-title" tabindex="-1" data-slide>
-      <div class="slide-topline"><p class="eyebrow">04 · The vacuum calibration fixture</p><span class="slide-number">05 / 18</span></div>
+      <div class="slide-topline"><p class="eyebrow">04 · The vacuum calibration fixture</p><span class="slide-number">05 / 19</span></div>
       <h2 id="vacuum-fixture-title">Two circular coils. Precisely stated regions.</h2>
       <p class="slide-lead">The first device-specific object is a calibration fixture with symbolic positive reference current I and permeability μ₀. Its field model uses ideal filaments.</p>
       
@@ -86,7 +86,7 @@
       <footer class="slide-evidence"><span>Evidence · 2026-10-20</span><a href="vacuum-demonstrator.html#exact-fixture-and-checked-margins">Fixture specification &amp; units <span aria-hidden="true">↗</span></a></footer>
     </section>
 <section id="tolerance-margins" class="slide" aria-labelledby="tolerance-margins-title" tabindex="-1" data-slide>
-      <div class="slide-topline"><p class="eyebrow">05 · What survives manufacturing uncertainty</p><span class="slide-number">06 / 18</span></div>
+      <div class="slide-topline"><p class="eyebrow">05 · What survives manufacturing uncertainty</p><span class="slide-number">06 / 19</span></div>
       <h2 id="tolerance-margins-title">Margins for the same perturbed coils and currents.</h2>
       <p class="slide-lead">Assume closed C¹ coils with position error ≤ 1 mm, independent tangent error ≤ 1 mm/radian, and independent current errors ≤ 1% of I.</p>
       
@@ -98,7 +98,7 @@
       <footer class="slide-evidence"><span>Evidence · 2026-10-20</span><a href="vacuum-demonstrator.html#exact-fixture-and-checked-margins">Quantitative certificate <span aria-hidden="true">↗</span></a><a href="vacuum-demonstrator.html#reusable-proof-interfaces">Compiled entry points <span aria-hidden="true">↗</span></a></footer>
     </section>
 <section id="maxwell-and-stability" class="slide" aria-labelledby="maxwell-and-stability-title" tabindex="-1" data-slide>
-      <div class="slide-topline"><p class="eyebrow">06 · Fields and local stability</p><span class="slide-number">07 / 18</span></div>
+      <div class="slide-topline"><p class="eyebrow">06 · Fields and local stability</p><span class="slide-number">07 / 19</span></div>
       <h2 id="maxwell-and-stability-title">Maxwell identities proved; interchange stability decided both ways.</h2>
       <p class="slide-lead">The closed-filament Biot–Savart field is divergence- and curl-free off the coil. A sharp Hardy inequality gives the Suydam criterion with both sufficiency and an explicit unstable mode.</p>
       
@@ -110,7 +110,7 @@
       <footer class="slide-evidence"><span>Evidence · 2026-10-20</span><a href="progress.html#new-checked-results">New checked results <span aria-hidden="true">↗</span></a><a href="mhd-stability.html">Stability scope <span aria-hidden="true">↗</span></a></footer>
     </section>
 <section id="exact-equilibria" class="slide" aria-labelledby="exact-equilibria-title" tabindex="-1" data-slide>
-      <div class="slide-topline"><p class="eyebrow">07 · Finite-pressure equilibria</p><span class="slide-number">08 / 18</span></div>
+      <div class="slide-topline"><p class="eyebrow">07 · Finite-pressure equilibria</p><span class="slide-number">08 / 19</span></div>
       <h2 id="exact-equilibria-title">Two exact equilibria satisfy the kernel law J × B = ∇p.</h2>
       <p class="slide-lead">The current is computed as curl B/μ₀ from actual derivatives and checked against the unchanged kernel ForceBalance class.</p>
       
@@ -122,7 +122,7 @@
       <footer class="slide-evidence"><span>Evidence · 2026-10-20</span><a href="progress.html#quantitative-certificates">Quantitative certificates <span aria-hidden="true">↗</span></a><a href="progress.html#corrections-and-challenged-claims">Corrections <span aria-hidden="true">↗</span></a></footer>
     </section>
 <section id="symmetric-confinement" class="slide" aria-labelledby="symmetric-confinement-title" tabindex="-1" data-slide>
-      <div class="slide-topline"><p class="eyebrow">08 · Confinement for all time</p><span class="slide-number">09 / 18</span></div>
+      <div class="slide-topline"><p class="eyebrow">08 · Confinement for all time</p><span class="slide-number">09 / 19</span></div>
       <h2 id="symmetric-confinement-title">Symmetry plus Noether confines every slow enough orbit forever.</h2>
       <p class="slide-lead">Canonical momentum m⟨K,v⟩ + qψ is conserved for any Killing symmetry K; with speed conservation and an intermediate-value argument, orbits stay in a flux region for all time.</p>
       
@@ -134,7 +134,7 @@
       <footer class="slide-evidence"><span>Evidence · 2026-10-20</span><a href="progress.html#quantitative-certificates">Obstruction &amp; numbers <span aria-hidden="true">↗</span></a><a href="particles-and-transport.html">Particles &amp; transport chapter <span aria-hidden="true">↗</span></a></footer>
     </section>
 <section id="path-to-a-device" class="slide" aria-labelledby="path-to-a-device-title" tabindex="-1" data-slide>
-      <div class="slide-topline"><p class="eyebrow">09 · From idealized models to a stellarator</p><span class="slide-number">10 / 18</span></div>
+      <div class="slide-topline"><p class="eyebrow">09 · From idealized models to a stellarator</p><span class="slide-number">10 / 19</span></div>
       <h2 id="path-to-a-device-title">The remaining device work is explicit.</h2>
       <p class="slide-lead">The vacuum-fixture work packages remain, now joined by an equilibrium/stability track. A four-circular-coil, CNT-inspired architecture is a reference direction, not a certified design.</p>
       
@@ -147,7 +147,7 @@
       <footer class="slide-evidence"><span>Evidence · 2026-10-20</span><a href="vacuum-demonstrator.html#work-packages-and-progress">Device work packages <span aria-hidden="true">↗</span></a><a href="roadmap.html#milestones-and-evidence-gates">Full evidence gates P0–P9 <span aria-hidden="true">↗</span></a></footer>
     </section>
 <section id="burn-temperature" class="slide" aria-labelledby="burn-temperature-title" tabindex="-1" data-slide>
-      <div class="slide-topline"><p class="eyebrow">10 · Phase 1: hot enough, long enough</p><span class="slide-number">11 / 18</span></div>
+      <div class="slide-topline"><p class="eyebrow">10 · Phase 1: hot enough, long enough</p><span class="slide-number">11 / 19</span></div>
       <h2 id="burn-temperature-title">A burning plasma that provably stays above 10 keV.</h2>
       <p class="slide-lead">A reactor-scale 0-D D-T plasma (n = 10²⁰ m⁻³, 830 m³, carbon impurities with Z_eff = 1.7) stays at or above 10 keV for all t ≥ 0 once heating beats losses at 10 keV. Radial transport obeys a proved comparison principle, so a barrier profile bounds the temperature everywhere for all time.</p>
       
@@ -160,7 +160,7 @@
       <footer class="slide-evidence"><span>Evidence · 2026-10-20</span><a href="progress.html#new-checked-results">New checked results <span aria-hidden="true">↗</span></a><a href="progress.html#quantitative-certificates">Quantitative certificates <span aria-hidden="true">↗</span></a><a href="progress.html#corrections-and-challenged-claims">Corrections <span aria-hidden="true">↗</span></a></footer>
     </section>
 <section id="core-barrier" class="slide" aria-labelledby="core-barrier-title" tabindex="-1" data-slide>
-      <div class="slide-topline"><p class="eyebrow">11 · Phase 2: a core that stays hot</p><span class="slide-number">12 / 18</span></div>
+      <div class="slide-topline"><p class="eyebrow">11 · Phase 2: a core that stays hot</p><span class="slide-number">12 / 19</span></div>
       <h2 id="core-barrier-title">Every solution starting above the barrier keeps a 10 keV core forever.</h2>
       <p class="slide-lead">For the flux-surface heat equation with alpha heating, bremsstrahlung and ≈70 MW of deposited heating, a certified barrier profile bounds the temperature from below for all time. A 0-D burn window now follows from the IPB98(y,2) confinement scaling instead of ad-hoc confinement-time assumptions.</p>
       
@@ -173,7 +173,7 @@
       <footer class="slide-evidence"><span>Evidence · 2026-10-20</span><a href="progress.html#new-checked-results">New checked results <span aria-hidden="true">↗</span></a><a href="progress.html#quantitative-certificates">Quantitative certificates <span aria-hidden="true">↗</span></a><a href="progress.html#corrections-and-challenged-claims">Corrections <span aria-hidden="true">↗</span></a></footer>
     </section>
 <section id="alpha-confinement" class="slide" aria-labelledby="alpha-confinement-title" tabindex="-1" data-slide>
-      <div class="slide-topline"><p class="eyebrow">12 · Phase 3: alphas, stellarator geometry, validation</p><span class="slide-number">13 / 18</span></div>
+      <div class="slide-topline"><p class="eyebrow">12 · Phase 3: alphas, stellarator geometry, validation</p><span class="slide-number">13 / 19</span></div>
       <h2 id="alpha-confinement-title">Every 3.5 MeV alpha born in the core stays in — forever.</h2>
       <p class="slide-lead">In an exact equilibrium satisfying J × B = ∇p at 5 T and β ≈ 4.6%, every fusion alpha with energy ≤ 3.5 MeV starting in the inner quarter of the flux, with any pitch, stays inside the plasma for all time under the full Lorentz force. The margin is 1.5%: the same argument fails at 3.7 MeV.</p>
       
@@ -186,7 +186,7 @@
       <footer class="slide-evidence"><span>Evidence · 2026-10-20</span><a href="progress.html#new-checked-results">New checked results <span aria-hidden="true">↗</span></a><a href="progress.html#quantitative-certificates">Quantitative certificates <span aria-hidden="true">↗</span></a><a href="progress.html#corrections-and-challenged-claims">Corrections <span aria-hidden="true">↗</span></a></footer>
     </section>
 <section id="near-qa-validation" class="slide" aria-labelledby="near-qa-validation-title" tabindex="-1" data-slide>
-      <div class="slide-topline"><p class="eyebrow">13 · Phase 4: near-quasisymmetry, validation, stability</p><span class="slide-number">14 / 18</span></div>
+      <div class="slide-topline"><p class="eyebrow">13 · Phase 4: near-quasisymmetry, validation, stability</p><span class="slide-number">14 / 19</span></div>
       <h2 id="near-qa-validation-title">From 0.8 ms to 0.11 s — and a plasma equilibrium validated to 10⁻¹¹.</h2>
       <p class="slide-lead">Iterating an oscillatory averaging lemma three times, with exact Lie-derivative amplitudes and certified enclosures, extends passing-alpha confinement in a reactor-scale near-axis quasisymmetric field from 0.8 ms to 0.11 s. A slab Grad–Shafranov equilibrium with an exponential pressure profile is validated by the radii polynomial and proved to satisfy the kernel force balance.</p>
       
@@ -199,7 +199,7 @@
       <footer class="slide-evidence"><span>Evidence · 2026-10-20</span><a href="progress.html#new-checked-results">New checked results <span aria-hidden="true">↗</span></a><a href="progress.html#quantitative-certificates">Quantitative certificates <span aria-hidden="true">↗</span></a><a href="progress.html#corrections-and-challenged-claims">Corrections <span aria-hidden="true">↗</span></a></footer>
     </section>
 <section id="one-plasma" class="slide" aria-labelledby="one-plasma-title" tabindex="-1" data-slide>
-      <div class="slide-topline"><p class="eyebrow">14 · Phase 5: one consistent plasma</p><span class="slide-number">15 / 18</span></div>
+      <div class="slide-topline"><p class="eyebrow">14 · Phase 5: one consistent plasma</p><span class="slide-number">15 / 19</span></div>
       <h2 id="one-plasma-title">Confinement and heat, proved for the same plasma.</h2>
       <p class="slide-lead">solovev_one_plasma: one exact field satisfying J × B = ∇p; every 3.5 MeV alpha born in the core stays inside forever; every solution of the transport law starting in a certified band keeps a ≥ 10 keV core forever; and the plasma pressure never exceeds the equilibrium pressure plus an edge offset.</p>
       
@@ -212,20 +212,32 @@
       <footer class="slide-evidence"><span>Evidence · 2026-10-20</span><a href="progress.html#new-checked-results">New checked results <span aria-hidden="true">↗</span></a><a href="progress.html#quantitative-certificates">Quantitative certificates <span aria-hidden="true">↗</span></a><a href="progress.html#corrections-and-challenged-claims">Corrections <span aria-hidden="true">↗</span></a></footer>
     </section>
 <section id="actual-geometry-stellarator" class="slide" aria-labelledby="actual-geometry-stellarator-title" tabindex="-1" data-slide>
-      <div class="slide-topline"><p class="eyebrow">15 · Phase 6: true geometry, ignition, stellarator field</p><span class="slide-number">16 / 18</span></div>
+      <div class="slide-topline"><p class="eyebrow">15 · Phase 6: true geometry, ignition, stellarator field</p><span class="slide-number">16 / 19</span></div>
       <h2 id="actual-geometry-stellarator-title">No supplied geometry, no auxiliary power — and a genuine stellarator field.</h2>
       <p class="slide-lead">The one-plasma theorem now uses flux-surface quantities computed from the equilibrium itself. With quarter-keV reactivity data it certifies a high-Q (Q ≈ 40) band and an ignited band with zero auxiliary heating. Separately, an exact rational vacuum field with two field periods and stellarator symmetry gives the library its first non-axisymmetric stellarator geometry.</p>
       
-      <div class="slide-content"><div class="slide-cards cards-4"><article class="slide-card"><span class="card-status checked">Lean verified</span><h3>Actual geometry</h3><p>V′, ⟨|∇s|²⟩, ⟨Δs⟩ from the exact surfaces; Gauss identity and axis limits proved; enclosures with 0.26% margins. Only the coarea step is stated.</p></article>
+      <div class="slide-content"><div class="slide-cards cards-4"><article class="slide-card"><span class="card-status checked">Lean verified</span><h3>Actual geometry</h3><p>V′, ⟨|∇s|²⟩, ⟨Δs⟩ from the exact surfaces; Gauss identity and axis limits proved; enclosures with 0.26% margins. The coarea step was stated here and is proved in Phase 7.</p></article>
 <article class="slide-card"><span class="card-status partial">Lean verified (Q oracle-only)</span><h3>High-Q and ignited</h3><p>17.5 MW aux (oracle Q ≈ 39–46) with a 40 kPa edge offset; zero aux with a 90 kPa offset (≈ 20% of axis pressure, an edge pedestal) and a ±0.8% χ₀ window.</p></article>
 <article class="slide-card"><span class="card-status partial">Lean verified (reduction supplied)</span><h3>Ballooning</h3><p>Every field line and ballooning angle stable on four near-axis Solov'ev surfaces, via a 2-D Riccati certificate on the exact coefficients.</p></article>
-<article class="slide-card"><span class="card-status checked">Lean verified (field + axis)</span><h3>Rational stellarator</h3><p>B = ∇φ + ε∇h: exact vacuum, 2 periods, stellarator-symmetric, non-axisymmetric; closed circular axis with elliptic monodromy. Certified confinement length in progress.</p></article></div></div>
+<article class="slide-card"><span class="card-status checked">Lean verified (field + axis)</span><h3>Rational stellarator</h3><p>B = ∇φ + ε∇h: exact vacuum, 2 periods, stellarator-symmetric, non-axisymmetric; closed circular axis with elliptic monodromy. Certified confinement (≥ 95 transits) added in Phase 7.</p></article></div></div>
       <div class="slide-progress"><h3>Progress so far</h3><p>13 new modules; review found no bugs (fine windows and geometry bounds independently recomputed). Trapped near-QA alphas: turning points proved, non-resonance open — a real resonance exists in the band.</p></div>
       <p class="slide-boundary"><strong>Claim boundary.</strong> Axisymmetric integrated results; ignition needs a large edge offset; supplied stability reductions; the stellarator field is not yet confined over a certified length or produced by coils.</p>
       <footer class="slide-evidence"><span>Evidence · 2026-10-20</span><a href="progress.html#new-checked-results">New checked results <span aria-hidden="true">↗</span></a><a href="progress.html#quantitative-certificates">Quantitative certificates <span aria-hidden="true">↗</span></a><a href="progress.html#corrections-and-challenged-claims">Corrections <span aria-hidden="true">↗</span></a></footer>
     </section>
+<section id="stellarator-confined" class="slide" aria-labelledby="stellarator-confined-title" tabindex="-1" data-slide>
+      <div class="slide-topline"><p class="eyebrow">16 · Phase 7: a confined stellarator field</p><span class="slide-number">17 / 19</span></div>
+      <h2 id="stellarator-confined-title">95 toroidal transits, certified, in a genuine stellarator field.</h2>
+      <p class="slide-lead">For the exact vacuum field B = ∇φ + ¼∇h — non-axisymmetric, two field periods, stellarator-symmetric — every field line starting within ≈ 0.023 R₀ of the magnetic axis stays within ≈ 0.1 R₀ of it for at least 95 full toroidal transits. And the coarea formula closes the last stated link in the one-plasma theorem.</p>
+      
+      <div class="slide-content"><div class="slide-cards cards-3"><article class="slide-card"><span class="card-status checked">Lean verified (finite length)</span><h3>Stellarator confinement</h3><p>An order-10 approximate first integral with |DI·B| ≤ 4×10⁻⁶ on the whole tube, certified by an exact-integer Taylor-shift cover; I separates start tube from tube faces; the defect theorem converts this into ≥ 95 transits.</p></article>
+<article class="slide-card"><span class="card-status checked">Lean verified</span><h3>Coarea formalized</h3><p>Injective coordinates, null axis, Jacobian √2σ/R, Lebesgue volume = coordinate volume, and d/ds ∫ f = ∮ f dS/|∇s|: the flux-surface averages in the transport law are proved, not stated.</p></article>
+<article class="slide-card"><span class="card-status next">In progress</span><h3>Still open</h3><p>Coils for the stellarator field (error must stay below the defect budget); all-time confinement (KAM); trapped near-QA alphas; ballooning beyond four surfaces.</p></article></div></div>
+      <div class="slide-progress"><h3>Progress so far</h3><p>7 new modules; review found the certificate sound (exact margins, symmetry reduction and face coverage checked) and led to a local field-line version and fuller disclosures.</p></div>
+      <p class="slide-boundary"><strong>Claim boundary.</strong> Finite-length, vacuum-field result; no coils; the cover uses monolithic kernel checks (≈ 5 GB peak memory, accepted by review).</p>
+      <footer class="slide-evidence"><span>Evidence · 2026-10-20</span><a href="progress.html#new-checked-results">New checked results <span aria-hidden="true">↗</span></a><a href="progress.html#quantitative-certificates">Quantitative certificates <span aria-hidden="true">↗</span></a><a href="progress.html#corrections-and-challenged-claims">Corrections <span aria-hidden="true">↗</span></a></footer>
+    </section>
 <section id="implementation-plan" class="slide" aria-labelledby="implementation-plan-title" tabindex="-1" data-slide>
-      <div class="slide-topline"><p class="eyebrow">16 · Plan of record</p><span class="slide-number">17 / 18</span></div>
+      <div class="slide-topline"><p class="eyebrow">17 · Plan of record</p><span class="slide-number">18 / 19</span></div>
       <h2 id="implementation-plan-title">Theory, techniques and a ladder of models — for confinement and for heat.</h2>
       <p class="slide-lead">Each cycle develops theory, turns theorems into sound certificate checkers, and applies them to the next rung of a model ladder. Every rung must prove properties of both kinds: confinement (G1) and temperature held above burn conditions (G2).</p>
       
@@ -238,9 +250,9 @@
       <footer class="slide-evidence"><span>Evidence · 2026-10-20</span><a href="implementation-plan.html">Implementation plan <span aria-hidden="true">↗</span></a><a href="progress.html">20 October report <span aria-hidden="true">↗</span></a></footer>
     </section>
 <section id="next-run" class="slide" aria-labelledby="next-run-title" tabindex="-1" data-slide>
-      <div class="slide-topline"><p class="eyebrow">17 · Keep every step reviewable</p><span class="slide-number">18 / 18</span></div>
+      <div class="slide-topline"><p class="eyebrow">18 · Keep every step reviewable</p><span class="slide-number">19 / 19</span></div>
       <h2 id="next-run-title">The next run must leave evidence, not just a promise.</h2>
-      <p class="slide-lead">Next (Phase 7): certified finite-length field-line confinement for the rational stellarator and a coil approximation with certified error; trapped-alpha non-resonance; ballooning on all Solov'ev surfaces; formalizing the coarea step.</p>
+      <p class="slide-lead">Next: trapped near-QA alpha non-resonance and confinement time; ballooning on all Solov'ev surfaces; filament coils reproducing the rational stellarator field within the certified defect budget; longer stellarator confinement (higher order or KAM).</p>
       
       <div class="slide-content"><div class="slide-cards cards-3"><article class="slide-card"><span class="card-status next">Next loop</span><h3>Implement &amp; challenge</h3><p>Choose a scoped theorem or candidate milestone, retain explicit assumptions, and test limiting cases and counterexamples.</p></article>
 <article class="slide-card"><span class="card-status next">Required evidence</span><h3>Compile &amp; audit</h3><p>Build the Lean library and run the axiom audit. Record actual results and remaining physical/model gaps.</p></article>
@@ -251,7 +263,7 @@
     </section></main>
   <nav id="slide-controls" class="slide-controls" aria-label="Slideshow controls" hidden>
     <div class="step-controls"><button id="slide-prev" type="button" aria-label="Previous slide" aria-controls="presentation">← Previous</button><output id="slide-counter" aria-live="polite" aria-atomic="true"></output><button id="slide-next" type="button" aria-label="Next slide" aria-controls="presentation">Next →</button></div>
-    <div class="view-controls"><label for="slide-select">Jump to</label><select id="slide-select" aria-controls="presentation"><option value="0">1. One plasma on the true geometry — driven, high-Q and ignited — and a first exact stellarator field.</option><option value="1">2. Small assumptions. Reusable proofs. One candidate.</option><option value="2">3. The foundations have executable proof content.</option><option value="3">4. From a numerical proposal to a proved bound.</option><option value="4">5. Two circular coils. Precisely stated regions.</option><option value="5">6. Margins for the same perturbed coils and currents.</option><option value="6">7. Maxwell identities proved; interchange stability decided both ways.</option><option value="7">8. Two exact equilibria satisfy the kernel law J × B = ∇p.</option><option value="8">9. Symmetry plus Noether confines every slow enough orbit forever.</option><option value="9">10. The remaining device work is explicit.</option><option value="10">11. A burning plasma that provably stays above 10 keV.</option><option value="11">12. Every solution starting above the barrier keeps a 10 keV core forever.</option><option value="12">13. Every 3.5 MeV alpha born in the core stays in — forever.</option><option value="13">14. From 0.8 ms to 0.11 s — and a plasma equilibrium validated to 10⁻¹¹.</option><option value="14">15. Confinement and heat, proved for the same plasma.</option><option value="15">16. No supplied geometry, no auxiliary power — and a genuine stellarator field.</option><option value="16">17. Theory, techniques and a ladder of models — for confinement and for heat.</option><option value="17">18. The next run must leave evidence, not just a promise.</option></select><button id="slide-view" type="button" aria-pressed="false" aria-controls="presentation">Read all</button><button id="slide-print" type="button">Print / PDF</button></div>
+    <div class="view-controls"><label for="slide-select">Jump to</label><select id="slide-select" aria-controls="presentation"><option value="0">1. Field lines held for 95 transits in an exact stellarator field; the one-plasma geometry fully derived.</option><option value="1">2. Small assumptions. Reusable proofs. One candidate.</option><option value="2">3. The foundations have executable proof content.</option><option value="3">4. From a numerical proposal to a proved bound.</option><option value="4">5. Two circular coils. Precisely stated regions.</option><option value="5">6. Margins for the same perturbed coils and currents.</option><option value="6">7. Maxwell identities proved; interchange stability decided both ways.</option><option value="7">8. Two exact equilibria satisfy the kernel law J × B = ∇p.</option><option value="8">9. Symmetry plus Noether confines every slow enough orbit forever.</option><option value="9">10. The remaining device work is explicit.</option><option value="10">11. A burning plasma that provably stays above 10 keV.</option><option value="11">12. Every solution starting above the barrier keeps a 10 keV core forever.</option><option value="12">13. Every 3.5 MeV alpha born in the core stays in — forever.</option><option value="13">14. From 0.8 ms to 0.11 s — and a plasma equilibrium validated to 10⁻¹¹.</option><option value="14">15. Confinement and heat, proved for the same plasma.</option><option value="15">16. No supplied geometry, no auxiliary power — and a genuine stellarator field.</option><option value="16">17. 95 toroidal transits, certified, in a genuine stellarator field.</option><option value="17">18. Theory, techniques and a ladder of models — for confinement and for heat.</option><option value="18">19. The next run must leave evidence, not just a promise.</option></select><button id="slide-view" type="button" aria-pressed="false" aria-controls="presentation">Read all</button><button id="slide-print" type="button">Print / PDF</button></div>
     <p class="keyboard-hint">← → / Space to move · Home / End to jump · No autoplay</p>
   </nav>
   <noscript><p class="no-script">All slides are shown below each other. Enable JavaScript for presentation controls, or use your browser's Print command to print the full deck.</p></noscript>
