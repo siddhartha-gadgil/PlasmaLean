@@ -1,7 +1,7 @@
 # PlasmaLean implementation plan: theory → proof techniques → successively realistic models
 
-Prepared 2026-10-20 against `8dcf3a2` (baseline: 14 Oct 2026 run, 53 modules, 618 theorems, standard axioms only).
-This is a plan. Nothing listed here as a target is implemented until a progress report says so.
+Prepared 2026-10-20 against `8dcf3a2` (baseline: 14 Oct 2026 run, 53 modules, standard axioms only). Updated after each phase; see §9.
+This is a plan. Nothing listed here as a target is implemented until a progress report says so. Status marks (✅ ◐ ○) reflect the latest report.
 
 Sources: [domain-libraries](domain-libraries.md) (run protocol), [roadmap](formalization/08-roadmap.md) (gates P0–P9, research problems R1–R8),
 [PDE bounds](https://github.com/siddhartha-gadgil/PlasmaLean/blob/main/notes/pde-bounds-and-verification-roadmap.md) (Stages 1–7, Milestones A–G),
@@ -88,15 +88,15 @@ Status legend: ✅ done · ◐ partial · ○ not started.
 
 | Track | Theory targets | Technique companion | Feeds |
 | --- | --- | --- | --- |
-| **T1 Elliptic/vacuum** (Milestone A) | Bochner: Δ\|B\|² = 2\|∇B\|² for vacuum fields ○. Weak maximum principle for C² subharmonic functions on bounded open sets in ℝ³ (elementary ε\|x\|² proof using Mathlib's `laplacian`) ○. Boundary-to-interior bound for \|B\|² and \|B₁−B₂\|² ○. Corrected min/max obstruction (§1.1) ○. | 2-D Lipschitz-cover / branch-and-bound on a parametrized boundary surface (extends `ParametricBounds`) | Coil error fields: the volume error follows from the surface error; M5/M6 |
+| **T1 Elliptic/vacuum** (Milestone A) | Bochner: Δ\|B\|² = 2\|∇B\|² for vacuum fields ✅. Weak maximum principle for C² subharmonic functions on bounded open sets in ℝ³ (elementary ε\|x\|² proof using Mathlib's `laplacian`) ✅. Boundary-to-interior bound for \|B\|² and \|B₁−B₂\|² ✅. Corrected min/max obstruction (§1.1) ✅ (no interior max; interior-min counterexample); toroidal curvature obstruction ∇⊥B = Bκ ○. | 2-D Lipschitz-cover / branch-and-bound on a parametrized boundary surface (extends `ParametricBounds`) | Coil error fields: the volume error follows from the surface error; M5/M6 |
 | **T2 Sturm–Liouville** (Milestone B) | Picone, Riccati, Jacobi ✅. Ballooning operator with weight W and Barta certificate ◐ (generalize `Newcomb`). Sturm necessity direction ○. Mercier criterion ○. Newcomb uniformly in m (large-m asymptotic family) ○. Infinite-line ballooning with asymptotic tails ○. | Polynomial interval checker ✅. Piecewise and Taylor-model checker with sqrt/exp enclosures ○ | MHD stability of M2–M5 |
-| **T3 Parabolic comparison** (Milestone D, core of G2) | Nagumo first-crossing lemma (the sanity check in PDE §4.2) ○. Weak comparison for the quasilinear radial transport operator, with an axis condition and edge Dirichlet data ○. Steady lower/upper barriers bounding T(ψ,t) for all t ○. Time-dependent barriers giving a burn window ○. Relative-entropy dissipation (after §1.5) ○. | Barrier checker: N[T_sub] > 0 on [0,1] via the interval checker. Rational barrier profiles produced by a solver oracle. | G2 directly: M1–M5 |
-| **T4 ODE invariants** | Invariant intervals for 0-D power balance dW/dt = P_α(T) + P_aux − P_br − W/τ_E, with thermal-stability and ignition window theorems ○. Grönwall consequences (`Mathlib.Analysis.ODE.Gronwall`) ○. Burn-yield lower bound (BKM §3.2, conditional) ○. | Root isolation for the cubic-like balance curve; exact Bosch–Hale enclosures | M1 and the T3 sources |
-| **T5 Discrete energy** (Milestone C) | SBP identity giving discrete energy ○. FEEC d∘d = 0, hence discrete div B = 0 ○. M-matrix discrete maximum principle for the transport scheme ○. Consistency estimate linking discrete and continuum barriers ○. | `decide` on rational matrices | T3 (verified discretization), M2 |
+| **T3 Parabolic comparison** (Milestone D, core of G2) | Nagumo first-crossing lemma (the sanity check in PDE §4.2) ✅. Weak comparison for the quasilinear radial transport operator, with an axis condition and edge Dirichlet data ✅ (semilinear; quasilinear D(T) ○). Steady lower/upper barriers bounding T(ψ,t) for all t ✅. Time-dependent barriers giving a burn window ◐ (core lemma allows time-dependent subsolutions). Relative-entropy dissipation: corrected identity derived (notes/theory) ◐. | Barrier checker: N[T_sub] > 0 on [0,1] via the interval checker. Rational barrier profiles produced by a solver oracle. | G2 directly: M1–M5 |
+| **T4 ODE invariants** | Invariant intervals for 0-D power balance dW/dt = P_α(T) + P_aux − P_br − W/τ_E, with thermal-stability and ignition window theorems ✅. Grönwall consequences (`Mathlib.Analysis.ODE.Gronwall`) ✅. Burn-yield lower bound (BKM §3.2, conditional) ✅. | Root isolation for the cubic-like balance curve; exact Bosch–Hale enclosures | M1 and the T3 sources |
+| **T5 Discrete energy** (Milestone C) | SBP identity giving discrete energy ✅ (4-point instance; general N ○). FEEC d∘d = 0, hence discrete div B = 0 ○. M-matrix discrete maximum principle for the transport scheme ○. Consistency estimate linking discrete and continuum barriers ○. | `decide` on rational matrices | T3 (verified discretization), M2 |
 | **T6 Functional-analytic validation** (Milestone G) | Contraction and radii inequalities ✅. ℓ¹_ν Banach algebra with convolution bounds ○. Radii polynomial for ODE BVPs (screw-pinch / 1-D Grad–Shafranov with general profiles), then 2-D Grad–Shafranov fixed boundary, then a 3-D near-axis/DESC equilibrium ○. | Exact computation of Y₀, Z₁, Z₂ with tail estimates (truncation in ν-weighted norms) | M3–M5 equilibria |
 | **T7 Field-line Hamiltonian** (Stage 5) | First-integral barriers ✅. Pendulum island-width bound with explicit remainder ○. Chirikov non-overlap ○. A posteriori KAM (de la Llave form) ○ (long term). Converse KAM / Greene residue as an obstruction certificate ○. | Fourier coefficient enclosures for b_{m,n} | M4/M5 confinement |
-| **T8 Guiding centre and kinetics** (microturbulence note) | Guiding-centre equations; finite-time full-orbit versus guiding-centre error (R6) ○. Bounce action J_∥ and the ∂_ψ identity (careful endpoint differentiation) ○. Min-B ⇒ max-J (sanity check 1) ○. Available-energy kernel sanity check ✅ (trivial; formalize it). Integral Â bound under precession dominance ○. Omnigeneity implies zero bounce-averaged radial drift ○. | Quadrature with remainder for bounce integrals (√ endpoint singularity) | Alpha confinement (3.5 MeV obstruction), and χ upper bounds for T3 |
-| **T9 Hyperbolic energy** (Stage 6, holomorphic §4) | Elsässer energy and cross-helicity identities ○ (warm-up). Null-structure identity ⟨(z∓·∇)z±, z±⟩ = 0 for divergence-free tangent fields ○. Abstract commuted-energy Grönwall theorem in Hilbert space, with the commutator bound as hypothesis ○. Sobolev step stated as an explicit interface (§1.5). | none | Long-time linear bounds, M5 |
+| **T8 Guiding centre and kinetics** (microturbulence note) | Guiding-centre equations; finite-time full-orbit versus guiding-centre error (R6) ○. Bounce action J_∥ and the ∂_ψ identity (careful endpoint differentiation) ○. Min-B ⇒ max-J (sanity check 1) ✅ (for the integral expression; = ∂J/∂ψ ○). Available-energy kernel lemmas ✅ (note's opposite-sign claim refuted). Integral Â bound under precession dominance ○. Omnigeneity implies zero bounce-averaged radial drift ○. | Quadrature with remainder for bounce integrals (√ endpoint singularity) | Alpha confinement (3.5 MeV obstruction), and χ upper bounds for T3 |
+| **T9 Hyperbolic energy** (Stage 6, holomorphic §4) | Elsässer energy and cross-helicity identities ✅ (conservation under skew transport). Null-structure identity ⟨(z∓·∇)z±, z±⟩ = 0 for divergence-free tangent fields ○. Abstract commuted-energy Grönwall theorem in Hilbert space, with the commutator bound as hypothesis ○. Sobolev step stated as an explicit interface (§1.5). | none | Long-time linear bounds, M5 |
 | **T10 Exploratory geometry** (holomorphic/KYM/BKM) | Discovery only until vetted: flat-bundle holonomy ↔ ι(ψ) (§1.2); Futaki-type obstruction for a *specific* near-axis QS ansatz (an honest test: does it reproduce the Garren–Boozer O(r³) obstruction?); conditional BKM continuation. Each needs a verdict note before any Lean code. | none | Possibly T6/T7 |
 
 ---
@@ -175,3 +175,30 @@ Each cycle is a run. The targets are listed in priority order; anything left ove
 - Lane E review findings resolved or recorded.
 - Progress report `progress/<date>-progress.md`, `status.json`, `slideshow.json`, `README.md` summary; `generate_handbook.mjs` and `check_site.mjs` pass.
 - Claims are labelled honestly: a compiled theorem, a synthetic fixture, supplied physical data or planned work, each called by its name.
+
+---
+
+## 9. Progress log
+
+### Phase 1 (Cycle 1), 20 October 2026 — [report](https://github.com/siddhartha-gadgil/PlasmaLean/blob/main/progress/2026-10-20-progress-2.md)
+
+- **Done:**
+  - Kernel files `Fusion`, `Transport` and `Vacuum`, with sanity modules.
+  - T1 Milestone A: Bochner identity, weak maximum principle, boundary-to-interior field-error bound, corrected min/max counterexample.
+  - T3: first-crossing lemma and comparison theorems (strict, margin and non-strict versions; lower, upper and two-sided).
+  - T4: ODE barriers and burn yield.
+  - **M1:** T ≥ 10 keV for all t ≥ 0 at reactor scale, with fuel dilution, P_aux ≥ 40 MW, τ_E ≥ 3.5 s at T ≤ 10 keV; margin +5.5 MW.
+  - T5 SBP identity (4-point). T8 available-energy lemmas and min-B ⇒ max-J (integral form). T9 Elsässer identities and conservation.
+  - §1 corrections applied to the notes; theory notes in `notes/theory/`.
+- **Acceptance (Cycle 1):** met. "T(t) ∈ [T_lo, T_hi] for all t ≥ 0" is proved (`m1_burn_window`), with the upper side under a supplied τ_E-degradation hypothesis. The T1 boundary-to-interior theorem is compiled.
+- **Findings that change the plan:**
+  - With constant τ_E the 0-D model runs away above 30 keV, so the upper barriers need a confinement-degradation law. Add to T4: derive the τ_E hypotheses from a supplied IPB98(y,2) scaling.
+  - The comparison principle needs only D ≥ 0, plus R one-sided Lipschitz for the non-strict version.
+  - The relative-entropy identity in the notes is false for non-constant T*.
+  - The holonomy idea (T10) is not useful as stated.
+- **Carried to Phase 2:**
+  - M2 barrier instance on an exact geometry, using a rational barrier checker.
+  - Ballooning/Barta and Mercier (T2).
+  - M-matrix maximum principle and general-N SBP (T5).
+  - C² of filament fields; the toroidal curvature obstruction.
+  - IPB98-derived τ_E hypotheses.

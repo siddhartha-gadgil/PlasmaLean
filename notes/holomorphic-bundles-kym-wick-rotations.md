@@ -24,6 +24,13 @@ When analyzing 3D magnetohydrostatic (MHS) equilibria ($\mathbf{J} \times \mathb
   1. By **Riemann–Roch / Siu Deformation Invariance**, the dimension $h^0(\mathcal{E}_\psi, L_\psi^{\otimes m}) = m \cdot \mathrm{deg}(L_\psi)$ is a topological integer invariant under smooth perturbations of the metric $g_\psi$ and modular parameter $\tau(\psi)$.
   2. By **Bergman Kernel / Szegő Projection Coercivity**, holomorphic ansätze on $\mathcal{E}_\psi$ automatically satisfy elliptic interior derivative bounds (Cauchy estimates) without high-frequency numerical ringing.
 
+> **Correction (2026-10-20):** $\mathbf{B}$ is tangent to $\Sigma_\psi$, so for tangent vectors $X, Y$ we get $\omega_B(X,Y) = \mathrm{vol}(\mathbf{B}, X, Y) = 0$: **the restriction $\omega_B|_{\Sigma_\psi}$ vanishes identically.** Any line bundle on $\Sigma_\psi$ whose curvature is $\omega_B|_{\Sigma_\psi}$ is therefore **flat, of degree 0**. That makes the claims above wrong as stated:
+> - "$h^0 = m\cdot\deg(L_\psi)$" is wrong. For a flat bundle, $h^0(L^{\otimes m})$ is $1$ if $L^{\otimes m}$ is holomorphically trivial and $0$ otherwise, so it is *not* deformation invariant. It jumps on a dense set of holonomies.
+> - A positive degree, and hence theta-function sections, cannot come from $\omega_B$.
+> - On the shell $\Sigma\times I$, $H^2(\Sigma\times I)\cong H^2(T^2)$ is detected by restriction to a slice, where $\omega_B$ vanishes. So $\omega_B$ is exact on the shell, and the bundle there is topologically trivial as well.
+>
+> What survives: the flat connection $A|_{\Sigma_\psi}$ (with $\nabla\times A = \mathbf{B}$) has periods equal to the toroidal flux (poloidal cycle) and the poloidal flux up to an additive gauge constant (toroidal cycle). The rotational transform is the ratio of the periods of the closed 1-form $\iota_{\mathbf{B}}\sigma$ ($\sigma$ the Leray area form, $d\psi\wedge\sigma = \mathrm{vol}$), i.e. $\iota = d\Phi_p/d\Phi_t$. It is *not* the holonomy itself. $\tau(\psi)$ is the conformal modulus. See `notes/theory/flux-surface-holonomy.md` for the verdict and the useful replacement statement (a Hodge period inequality).
+
 ### 2.2 Lean 4 Kernel Contract
 ```lean
 /-- A 1-parameter family of complex tori Σ_ψ × I equipped with a Hermitian line bundle
@@ -48,6 +55,8 @@ theorem holomorphicSectionDim_deformation_invariant
   simp [holomorphicSectionDim, h_top]
 
 ```
+
+> **Correction (2026-10-20):** `holomorphicSectionDim` is *defined* as `m * flux_degree`, so `holomorphicSectionDim_deformation_invariant` is true by definition and checks no mathematics: no sections, Riemann–Roch or τ-dependence appear anywhere. The hypothesis `h_deg_pos : 0 < flux_degree` is also physically wrong, because the bundle induced by $\omega_B$ on a flux surface has degree 0 (see the correction above). Do not formalize this structure. Re-target it on flux-surface periods and τ (compare `Challenge6_ConformalTorusModulus`), as described in `notes/theory/flux-surface-holonomy.md`.
 
 ---
 
@@ -99,6 +108,8 @@ theorem no_equilibrium_of_futaki_obstruction
   exact cert.obstruction_nonzero h.symm
 
 ```
+
+> **Correction (2026-10-20), vacuous contract and unchecked claims:** `no_equilibrium_of_futaki_obstruction` is correct, but its whole content sits in the hypothesis `pairing_const`: ⟪μ x, u_test⟫ must equal the *same* constant for **every** x in the ansatz family. No theorem here produces that hypothesis for any MHD family. The claim that $\mathcal{F}_{\text{MHD}}$ is independent of the representative (needed for it to be an "obstruction") is unproved. So is the claim that it "explains the Garren–Boozer $O(r^3)$ obstruction", and so are the identifications in §3.1 (Grad–Shafranov as the vortex equation via $\psi=\ln|s|_h^2$, and $\mathbf{J}\times\mathbf{B}-\nabla p$ as a moment map with a Kempf–Ness functional). All of these are heuristics. The contract stays out of the library until a theorem derives `pairing_const` for a specific near-axis ansatz. The honest test is whether it reproduces the Garren–Boozer count (implementation plan, track T10).
 
 ---
 

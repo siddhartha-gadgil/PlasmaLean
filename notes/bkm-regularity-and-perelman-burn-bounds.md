@@ -30,13 +30,15 @@ $$\frac{d}{dt} \Big( \Vert{}\mathbf{z}_+\Vert{}_{H^s}^2 + \Vert{}\mathbf{z}_-\Ve
 For compressible non-isentropic MHD (including density $\rho$ and temperature $T$), adding $\Vert{}\mathrm{div}\,\mathbf{v}\Vert{}_{L^1_t L^\infty_x} < \infty$ and strict vacuum avoidance $0 < \rho_{\min} \le \rho(x,t) \le \rho_{\max}$ prevents both shock formation and thermal blowup.
 
 ### 2.2 Dimensional Reduction via a Quasisymmetric Field + Symmetric Ansatz
-In 2D or exact helically symmetric MHD, vortex and current-sheet stretching are subcritical, and smooth solutions exist globally in time without blowup.
+In 2D or exact helically symmetric MHD, vortex stretching is absent. Global regularity is known **with dissipation** (positive viscosity and resistivity). For **ideal** 2-D (or helically symmetric) MHD, global regularity is an **open problem**: the current density can still grow without any known bound.
+
+> **Correction (2026-10-20):** The earlier text said smooth solutions of 2-D / helically symmetric MHD exist globally in time. That is known only for the visco-resistive system. For ideal MHD it is open. The Riccati law below is a heuristic, not a theorem. Only the conditional ODE-comparison statement is usable ("*if* $Y$ satisfies the differential inequality, then $Y$ stays bounded under the threshold condition"). Deriving the inequality itself from MHD is research problem R3.
 
 Suppose the external stellarator field $\mathbf{B}_{\text{ext}}$ is $(M,N)$-quasisymmetric along the helical vector field $\mathbf{u} = N\partial_{\theta_B} + M\partial_{\phi_B}$ up to a small symmetry-breaking defect $\epsilon_{\text{QS}} \ge 0$. If the initial plasma state $(\mathbf{v}_0, \mathbf{B}_0, p_0)$ lies in the **$\mathbf{u}$-invariant symmetric ansatz** ($\mathcal{L}_{\mathbf{u}} \mathbf{v}_0 = 0, \mathcal{L}_{\mathbf{u}} \mathbf{B}_0 = 0$):
 * The 2D symmetry-preserving self-interaction generates **zero 3D vortex stretching**.
-* Growth of the 3D BKM norm $Y(t) = \Vert{}\boldsymbol{\omega}(t)\Vert{}_{H^s} + \Vert{}\mathbf{J}(t)\Vert{}_{H^s}$ is driven purely by the quasisymmetry defect $\epsilon_{\text{QS}}$ and damped by effective viscosity/resistivity $\nu_{\text{eff}} > 0$:
+* *(Heuristic, unproved; see the correction above.)* Growth of the 3D BKM norm $Y(t) = \Vert{}\boldsymbol{\omega}(t)\Vert{}_{H^s} + \Vert{}\mathbf{J}(t)\Vert{}_{H^s}$ is driven purely by the quasisymmetry defect $\epsilon_{\text{QS}}$ and damped by effective viscosity/resistivity $\nu_{\text{eff}} > 0$:
   $$\frac{dY}{dt} \le -\nu_{\text{eff}} Y + C \, \epsilon_{\text{QS}} \, Y^2.$$
-* **Small-Defect Global / Long-Time Regularity:** Whenever the initial state satisfies $Y(0) < \frac{\nu_{\text{eff}}}{C \, \epsilon_{\text{QS}}}$, $Y(t)$ remains strictly bounded for **all time $t \ge 0$** (and even for $\nu_{\text{eff}} = 0$, blowup cannot occur before $T_{\text{burn}} < \frac{1}{C \, \epsilon_{\text{QS}} Y(0)}$), automatically discharging the Caflisch–Klapper–Steele BKM criterion!
+* **Small-Defect Global / Long-Time Regularity (conditional on the inequality above):** Whenever the initial state satisfies $Y(0) < \frac{\nu_{\text{eff}}}{C \, \epsilon_{\text{QS}}}$, $Y(t)$ remains strictly bounded for **all time $t \ge 0$** (and even for $\nu_{\text{eff}} = 0$, blowup cannot occur before $T_{\text{burn}} < \frac{1}{C \, \epsilon_{\text{QS}} Y(0)}$), automatically discharging the Caflisch–Klapper–Steele BKM criterion!
 
 ### 2.3 Lean 4 Kernel Contract
 ```lean
@@ -62,6 +64,8 @@ structure QuasisymmetricAnsatzNoBlowup
 
 ```
 
+> **Correction (2026-10-20), vacuous contract:** `QuasisymmetricAnsatzNoBlowup` only records four inequalities between reals and mentions no solution, so holding it proves nothing about blowup. The usable replacement is a theorem: for any differentiable `Y : ℝ → ℝ` with `Y 0 = Y0` and `deriv Y t ≤ -ν * Y t + C * ε * (Y t)^2` for t ≥ 0, if `C * ε * Y0 < ν` then `Y t ≤ Y0` for all t ≥ 0. That is pure ODE comparison and provable now. Its hypothesis (the differential inequality for an actual MHD solution) stays open. `BKMRegularityCertificate` similarly bundles its conclusion `gronwall_bound` as a field. It needs a producing theorem from the (cited) Caflisch–Klapper–Steele estimate.
+
 ---
 
 ## 3. Li–Yau–Perelman Entropy Functionals & Finite-Time Fusion Yield Lower Bounds
@@ -86,6 +90,10 @@ $$\frac{d}{dt}\mathcal{H}[T \vert{} T_*] = -\int_M n T_* \, \Big\langle \nabla \
 
 
 Notice that the diffusive term has a **strictly negative-definite sign** (just like Perelman's Fisher-information gradient term!), strongly damping spatial temperature inhomogeneities toward $T_*(x)$.
+
+> **Correction (2026-10-20):** The identity above is **false** when $T_*$ is non-constant, and "$\Delta Q_{\text{net}}$" should be $Q_{\text{net}}$. For fixed $n(x)$, $T_*(x)$ and a symmetric $\boldsymbol\chi(x)\ge 0$ independent of $T$, the correct identity (checked symbolically with sympy) is
+> $$\frac{d}{dt}\mathcal{H} = -\int_M nT_*\Big\langle\nabla\ln\tfrac{T}{T_*},\boldsymbol\chi\nabla\ln\tfrac{T}{T_*}\Big\rangle + \int_M \ln\tfrac{T}{T_*}\,\nabla\!\cdot(n\boldsymbol\chi\nabla T_*) + \int_M\Big(1-\tfrac{T_*}{T}\Big)Q(T) + \oint_{\partial M}\Big[\Big(1-\tfrac{T_*}{T}\Big)n\boldsymbol\chi\nabla T - \ln\tfrac{T}{T_*}\,n\boldsymbol\chi\nabla T_*\Big]\cdot\nu .$$
+> The cross term $\int \ln(T/T_*)\,\nabla\cdot(n\chi\nabla T_*)$ has no sign. Exact counterexample on $[0,1]$ with $n=\chi=1$, $Q=0$, $T_*=1+x^2$, $T=1+x$ (both boundary terms vanish because $T=T_*$ at $x=0,1$): the true $d\mathcal{H}/dt = \int(1-T_*/T)T''\,dx = 0$, while the formula above predicts $\approx -0.2447 < 0$. The negative-definite structure holds when $T_*$ is a steady state with $T=T_*$ on $\partial M$ (Dirichlet). Then $\frac{d}{dt}\mathcal H = -\text{Fisher} + \int[(1-\tfrac1s-\ln s)Q(T_*) + (1-\tfrac1s)(Q(T)-Q(T_*))]$ with $s=T/T_*$. This is $\le -\text{Fisher}$ whenever $Q(T_*)\ge 0$ and $Q$ is non-increasing in $T$. It **fails** in the thermally unstable regime where $\partial_T Q>0$ (alpha heating). See `notes/theory/relative-entropy-dissipation.md`.
 2. **Finite-Time Burn Energy Yield Certificate:**
 Whenever the initial core thermal energy $W_{\text{th}}(0) = \int_M \frac{3}{2} n T(x,0)\,dV$ and relative entropy $\mathcal{H}[T(0) \vert{} T_*]$ are certified within a basin where net energy loss rate is bounded by $\gamma_{\text{loss}}$ ($\frac{d}{dt} W_{\text{th}} \ge -\gamma_{\text{loss}} W_{\text{th}}$), $W_{\text{th}}(t) \ge W_{\text{th}}(0) e^{-\gamma_{\text{loss}} t}$ holds for all $t \in [0, T_{\text{burn}}]$.
 By Jensen's inequality on the convex fusion reactivity curve $P_{\text{fus}}(T)$ in the ignition window, this guarantees a **strictly positive lower bound on total fusion energy produced during $[0, T_{\text{burn}}]$**:
@@ -116,6 +124,8 @@ structure FiniteTimeBurnYieldCertificate
     (α_fus * W_0 ^ 2 / (2 * γ_loss)) * (1 - Real.exp (-2 * γ_loss * T_burn)) ≥ E_target
 
 ```
+
+> **Correction (2026-10-20), contract needs a producing theorem:** The two physical hypotheses `energy_decay_bound` and `reactivity_lower` are fields of the structure, not consequences of a transport model. The yield integral is not mentioned at all. The usable statement is a theorem: these hypotheses plus integrability imply `∫ t in 0..T_burn, P_fus_total t ≥ E_target`. Separate theorems should derive `energy_decay_bound` from a transport PDE or 0-D balance (T3/T4). The "Jensen on a convex reactivity curve" step is also unchecked: ⟨σv⟩(T) for D-T is convex only on part of the keV range, so any use needs a stated temperature window.
 
 ---
 

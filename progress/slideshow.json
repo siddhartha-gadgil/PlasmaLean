@@ -1,33 +1,33 @@
 {
   "updated": "2026-10-20",
-  "report": "2026-10-20-progress.md",
+  "report": "2026-10-20-progress-2.md",
   "status": "Exact symmetric equilibria with all-time orbit confinement · Local stability criteria · Not a coil-produced stellarator · Not a construction release.",
   "slides": [
     {
       "id": "where-we-are",
-      "eyebrow": "Progress briefing · Plan for confinement and burn temperature",
-      "title": "From a coil fixture to exact equilibria with proved confinement.",
-      "lead": "PlasmaLean is building a Lean library for stellarator design. Its checked results (14 October) are exact finite-pressure equilibria, a toroidal Solov'ev one and a nonaxisymmetric helical one, with all-time particle confinement theorems and Suydam/Newcomb stability criteria. The 20 October run added no theorem; it fixed an implementation plan that also targets keeping the plasma hot.",
+      "eyebrow": "Progress briefing · Phase 1: keeping the plasma hot",
+      "title": "Exact equilibria, proved confinement — and now proved burn temperature.",
+      "lead": "PlasmaLean is building a Lean library for stellarator design. Earlier runs proved exact equilibria with all-time confinement and Suydam/Newcomb criteria. Phase 1 of the implementation plan adds the first results on keeping the plasma hot: a reactor-scale 0-D D-T plasma stays at or above 10 keV for all time under stated hypotheses, a comparison principle for radial heat transport, and a vacuum maximum principle.",
       "metrics": [
         {
-          "value": "54",
+          "value": "67",
           "label": "Lean modules"
         },
         {
-          "value": "620",
-          "label": "Source theorems, including private helpers"
+          "value": "832",
+          "label": "theorem/lemma declarations (grep count)"
         },
         {
-          "value": "1781",
+          "value": "2383",
           "label": "Project declarations in the last axiom audit"
         }
       ],
-      "progress": "P3 (confined orbits) and P4 (finite-pressure equilibrium) now have checked instances in idealized symmetric models; P5 has local and certificate-based building blocks. P2 for a coil design remains partial.",
-      "boundary": "No configuration is coil-produced; the helical model has no toroidal curvature and the Solov'ev one is axisymmetric. No all-mode MHD stability, 3.5 MeV alpha confinement, or hardware qualification.",
+      "progress": "M1 (0-D burn) is checked; the comparison principle for M2 is proved; Milestone A (vacuum maximum principle) is complete. P3/P4 remain at idealized symmetric instances.",
+      "boundary": "M1 uses supplied reactivity data and state-dependent τ_E hypotheses; no barrier yet on a stellarator geometry; no coil-produced configuration; no all-mode MHD stability or 3.5 MeV alpha confinement.",
       "evidence": [
         {
-          "label": "Latest run & audit",
-          "href": "progress.html#validation"
+          "label": "Phase 1 report",
+          "href": "progress.html"
         },
         {
           "label": "Implementation plan",
@@ -385,8 +385,56 @@
       ]
     },
     {
+      "id": "burn-temperature",
+      "eyebrow": "10 · Phase 1: hot enough, long enough",
+      "title": "A burning plasma that provably stays above 10 keV.",
+      "lead": "A reactor-scale 0-D D-T plasma (n = 10²⁰ m⁻³, 830 m³, carbon impurities with Z_eff = 1.7) stays at or above 10 keV for all t ≥ 0 once heating beats losses at 10 keV. Radial transport obeys a proved comparison principle, so a barrier profile bounds the temperature everywhere for all time.",
+      "cards": [
+        {
+          "title": "Sustained burn (M1)",
+          "text": "T ≥ 10 keV for all t ≥ 0 with P_aux ≥ 40 MW and τ_E ≥ 3.5 s whenever T ≤ 10 keV: margin +5.5 MW. Ignited variant: τ_E ≥ 5.5 s, no auxiliary power. Yield ≥ 4.8×10⁸ W × t_b.",
+          "status": "Lean verified (0-D model)",
+          "kind": "checked"
+        },
+        {
+          "title": "Runaway is real",
+          "text": "With constant τ_E, net heating is +77 MW at 30 keV. The window [10, 30] keV is proved only under a supplied confinement-degradation hypothesis (τ_E ≤ 1.8 s for T ≥ 30 keV).",
+          "status": "Obstruction recorded",
+          "kind": "partial"
+        },
+        {
+          "title": "Transport comparison (T3)",
+          "text": "First-crossing lemma and comparison theorems for the flux-surface heat equation with a no-flux axis: strict, margin and non-strict lower/upper barriers, and two-sided windows. D ≥ 0 suffices; backward diffusion is a counterexample.",
+          "status": "Lean verified",
+          "kind": "checked"
+        },
+        {
+          "title": "Vacuum maximum principle (T1)",
+          "text": "Δ|B|² = 2|∇B|² for vacuum fields; the weak maximum principle bounds the field error in the volume by its value on the surface. |B| has no interior maximum, but B = (x, y, −2z) has an interior minimum, correcting the notes.",
+          "status": "Lean verified",
+          "kind": "checked"
+        }
+      ],
+      "progress": "13 new modules, including kernel laws for fusion power, radial transport and vacuum fields, each with sanity checks. An adversarial review caught a fuel-dilution error in the first M1 version; the kernel and the margins were corrected.",
+      "boundary": "Bosch–Hale reactivity enters as supplied windows (±1%). τ_E conditions are hypotheses at the crossing temperatures, not derived from a scaling law. Transport solutions are supplied, not proved to exist.",
+      "evidence": [
+        {
+          "label": "New checked results",
+          "href": "progress.html#new-checked-results"
+        },
+        {
+          "label": "Quantitative certificates",
+          "href": "progress.html#quantitative-certificates"
+        },
+        {
+          "label": "Corrections",
+          "href": "progress.html#corrections-and-challenged-claims"
+        }
+      ]
+    },
+    {
       "id": "implementation-plan",
-      "eyebrow": "10 · Plan of record (20 October)",
+      "eyebrow": "11 · Plan of record",
       "title": "Theory, techniques and a ladder of models — for confinement and for heat.",
       "lead": "Each cycle develops theory, turns theorems into sound certificate checkers, and applies them to the next rung of a model ladder. Every rung must prove properties of both kinds: confinement (G1) and temperature held above burn conditions (G2).",
       "cards": [
@@ -399,13 +447,13 @@
         {
           "title": "Model ladder",
           "text": "M0 exact symmetric equilibria (done) → M1 0-D burning plasma → M2 radial transport on the exact geometries → M3 validated toroidal equilibrium → M4 near-axis quasisymmetry → M5 coil-produced 3-D field → M6 integrated candidate.",
-          "status": "M0 checked; M1–M6 planned",
+          "status": "M0, M1 checked; M2 in progress",
           "kind": "next"
         },
         {
           "title": "Corrections first",
           "text": "Four corrections to recent notes. Vacuum |B| has no interior maximum (minima are possible). The flux-surface line bundle is flat. 2-D ideal-MHD regularity is open. Contracts no theorem produces are vacuous.",
-          "status": "Recorded; edits in Cycle 1",
+          "status": "Applied to the notes",
           "kind": "next"
         },
         {
@@ -415,7 +463,7 @@
           "kind": "next"
         }
       ],
-      "progress": "The plan, the corrections and the skill are documents. One reference Lean module (SubsetSum) joined the build. No new physics theorem.",
+      "progress": "Phase 1 completed the Cycle 1 targets: kernel laws, the M1 burn window, transport comparison and Milestone A. Status marks in the plan are updated after each phase.",
       "boundary": "Nothing in the plan counts as evidence until a dated report records compiled Lean results.",
       "evidence": [
         {
@@ -430,9 +478,9 @@
     },
     {
       "id": "next-run",
-      "eyebrow": "11 · Keep every step reviewable",
+      "eyebrow": "12 · Keep every step reviewable",
       "title": "The next run must leave evidence, not just a promise.",
-      "lead": "Next proof targets (Cycle 1): kernel laws for vacuum fields, radial heat transport and D-T power balance with sanity checks; the vacuum maximum principle; Elsässer and SBP identities; and a 0-D burning-plasma temperature window.",
+      "lead": "Next (Phase 2): barrier profiles on the exact Solov'ev/helical geometry with alpha heating, proving T_core ≥ 10 keV for all time (M2); a ballooning Barta certificate and Mercier; a discrete M-matrix maximum principle; C² filament fields; τ_E hypotheses derived from a scaling law.",
       "cards": [
         {
           "title": "Implement & challenge",

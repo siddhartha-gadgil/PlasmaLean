@@ -15,12 +15,14 @@ full-orbit confinement theorems via Noether's canonical momentum. These are idea
 symmetric models: no coil-produced stellarator, all-mode MHD stability or 3.5 MeV alpha
 confinement is certified.
 
-The 20 October run added no theorem. It fixed an [implementation plan](notes/implementation-plan.md)
-that cycles between theory, certificate techniques and a ladder of successively realistic
-models, targeting both confinement and keeping the plasma hot. It also recorded corrections
-to recent notes and added a Lean proof-engineering skill. The library has 54 modules and 1781
-audited declarations. See the [progress slideshow](docs/slides.html) and the
-[latest report](progress/2026-10-20-progress.md).
+On 20 October an [implementation plan](notes/implementation-plan.md) was fixed. It cycles
+between theory, certificate techniques and a ladder of successively realistic models, and targets
+both confinement and keeping the plasma hot. Its Phase 1 is complete: a reactor-scale 0-D D-T
+plasma (with fuel dilution) provably stays at or above 10 keV for all time under supplied Bosch–Hale
+data and stated confinement-time hypotheses. Phase 1 also proved a comparison principle for radial
+heat transport and the vacuum maximum principle (field errors are bounded by their boundary
+values). The library has 67 modules and 2383 audited declarations, using standard axioms only. See
+the [progress slideshow](docs/slides.html) and the [latest report](progress/2026-10-20-progress-2.md).
 
 ## Code structure
 

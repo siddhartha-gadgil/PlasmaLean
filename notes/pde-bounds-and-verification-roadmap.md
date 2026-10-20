@@ -20,7 +20,7 @@ Rather than formalizing finite-element or spectral PDE solvers inside Lean 4, **
 ## 2. Stage 1: Elliptic Maximum Principles & Boundary-to-Interior Reduction
 
 ### 2.1 Mathematical Formulation
-In any current-free region $\Omega \subset \mathbb{R}^3$ where $\nabla \cdot \mathbf{B} = 0$ and $\nabla \times \mathbf{B} = 0$, the components $B_i$ are harmonic ($\Delta B_i = 0$). By the Bochner–Weitzenböck identity on $\mathbb{R}^3$, the squared magnetic field strength $f(x) = \Vert{}\mathbf{B}(x)\Vert{}^2$ is strictly subharmonic:
+In any current-free region $\Omega \subset \mathbb{R}^3$ where $\nabla \cdot \mathbf{B} = 0$ and $\nabla \times \mathbf{B} = 0$, the components $B_i$ are harmonic ($\Delta B_i = 0$). By the Bochner–Weitzenböck identity on $\mathbb{R}^3$, the squared magnetic field strength $f(x) = \Vert{}\mathbf{B}(x)\Vert{}^2$ is subharmonic (not strictly: $\Delta f = 0$ wherever $\nabla\mathbf{B} = 0$, e.g. for a constant field):
 $$\Delta \big(\Vert{}\mathbf{B}\Vert{}^2\big) = 2 \sum_{i,j=1}^3 \left(\frac{\partial B_i}{\partial x_j}\right)^2 + 2 \langle \mathbf{B}, \Delta \mathbf{B} \rangle = 2 \Vert{}\nabla \mathbf{B}\Vert{}_{\text{Frob}}^2 \ge 0.$$
 
 By the **Elliptic Weak Maximum Principle**, for any bounded open domain $\Omega \subset \mathbb{R}^3$ with smooth boundary $\partial \Omega$:
@@ -46,7 +46,9 @@ theorem vacuum_field_norm_sq_max_on_boundary
 
 ```
 
-* **Sanity Check:** Verify that a constant non-zero field $\mathbf{B}(x) = \mathbf{B}_0$ satisfies `laplacian (fun x => ‖B x‖^2) x = 0` and attains its maximum on $\partial \Omega$, while ruling out strict interior local minima whenever $\nabla \mathbf{B} \neq 0$.
+* **Sanity Check:** Verify that a constant non-zero field $\mathbf{B}(x) = \mathbf{B}_0$ satisfies `laplacian (fun x => ‖B x‖^2) x = 0` and attains its maximum on $\partial \Omega$. Also prove that $\Vert{}\mathbf{B}\Vert{}^2$ has **no strict interior local maximum** in a vacuum region, and record the counterexample $\mathbf{B} = (x, y, -2z) = \nabla\big(\tfrac{1}{2}(x^2+y^2) - z^2\big)$: it is a vacuum field and $\Vert{}\mathbf{B}\Vert{}^2 = x^2 + y^2 + 4z^2$ has a strict interior minimum at $0$. (An Ioffe–Pritchard field gives a strict minimum with $\Vert{}\mathbf{B}\Vert{} \neq 0$; see `notes/theory/toroidal-min-b-obstruction.md`.)
+
+> **Correction (2026-10-20):** An earlier version of this sanity check said subharmonicity rules out strict interior local *minima*. That is backwards. Subharmonic functions have no strict interior local *maximum*, and they can have interior minima ($\Vert{}x\Vert{}^2$ is one; minimum-B mirror traps are vacuum fields). The real obstruction to minimum-B and maximum-J in toroidal fields is a different, local statement about axis curvature (Helander 2014, Eq. 24 and §3.7). It is stated in `notes/theory/toroidal-min-b-obstruction.md`.
 
 ---
 
@@ -254,6 +256,8 @@ $$\Vert{}\xi(\cdot, t)\Vert{}_{L^\infty(M)} \le C_{\text{Sob}} \sqrt{\frac{\math
 
 certifying that plasma perturbations cannot touch the vacuum vessel wall over long timescales $t \in [0, T_{\text{cert}}]$!
 
+> **Correction (2026-10-20), unchecked step:** $\mathcal{E}_2$ commutes only with $\mathcal{L}_{\mathbf{u}}$ (and $\nabla_\parallel$), and both are *tangential* to flux surfaces. So $\mathcal{E}_2$ controls tangential derivatives only, not the full $H^2(M)$ norm. The step $\mathcal{E}_2 \gtrsim \Vert{}\xi\Vert{}_{H^2}^2$ needs a separate elliptic-regularity estimate across surfaces, with its own constant and hypotheses (behaviour at the axis, at rational surfaces and at the boundary). Until that estimate is derived, treat it as an explicit interface hypothesis, not a consequence. The commutator bound in item 1 is also an unproved hypothesis.
+
 ### 7.2 Target Kernel Specification & Sanity Check
 
 ```lean
@@ -275,6 +279,8 @@ structure CommutedWallClearanceCertificate
   clearance_safe : C_Sob * Real.sqrt (E2_init / γ) * Real.exp (ε_QS * T_max / 2) < d_wall
 
 ```
+
+> **Correction (2026-10-20), vacuous contract:** `CommutedWallClearanceCertificate` is just an arithmetic inequality between six reals. Nothing links it to a PDE solution ξ, to δ²W, or to a Sobolev constant. Holding it implies nothing about wall clearance. It should not enter the library unless a theorem *produces* the clearance conclusion from it. That theorem would take a solution of ρξ̈ = Fξ, coercivity of δ²W, the commutator bound and the (still missing) transverse elliptic estimate as hypotheses, and conclude `‖ξ t‖_∞ < d_wall` on `[0, T_max]`.
 
 * **Sanity Check:** Verify that in the limit of exact symmetry ($\epsilon_{\text{QS}} = 0$), the commuted energy $\mathcal{E}_2(t) = \mathcal{E}_2(0)$ is strictly conserved for all $t \ge 0$, and verify the Elsässer algebraic null identity $\langle (\mathbf{z}_\mp \cdot \nabla)\mathbf{z}_\pm, \mathbf{z}_\pm \rangle_{L^2(M)} = 0$ for divergence-free fields with tangent boundary conditions.
 

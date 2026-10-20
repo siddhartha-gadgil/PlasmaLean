@@ -1,23 +1,23 @@
 <!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="description" content="Planning run: a cyclic implementation plan (theory tracks, certificate techniques, model ladder for confinement and burn temperature), corrections to recent notes, and a Lean proof-engineering skill. No new physics theorem; the 14 October results (exact symmetric equilibria, symmetric confinement, Suydam/Newcomb) stand. No coil-produced stellarator or all-mode stability is certified.">
+  <meta name="description" content="Phase 1 of the implementation plan: first burn-temperature results (0-D D-T plasma at reactor scale stays ≥ 10 keV for all t ≥ 0 under supplied Bosch–Hale data and state-dependent τ_E hypotheses, with fuel dilution), the parabolic comparison principle for radial heat transport, and the vacuum maximum principle with boundary-to-interior field-error bounds. Idealized models; no coil-produced stellarator, no barrier on a stellarator geometry yet, no all-mode stability.">
   <title>Progress slideshow · PlasmaLean</title>
   <link rel="stylesheet" href="assets/slides.css"><script defer src="assets/slides.js"></script>
 </head><body>
   <a class="skip-link" href="#presentation">Skip to slides</a>
   <header class="deck-header"><a class="deck-brand" href="index.html"><span aria-hidden="true">λ</span> PlasmaLean</a><nav aria-label="Website"><a href="index.html">Home &amp; graphics</a><a href="handbook.html">Handbook</a><a href="progress.html">Full report</a></nav><p>Evidence updated <time datetime="2026-10-20">2026-10-20</time></p></header>
   <main id="presentation" class="deck" tabindex="-1" aria-label="Progress slideshow"><section id="where-we-are" class="slide opening-slide" aria-labelledby="where-we-are-title" tabindex="-1" data-slide>
-      <div class="slide-topline"><p class="eyebrow">Progress briefing · Plan for confinement and burn temperature</p><span class="slide-number">01 / 12</span></div>
-      <h1 id="where-we-are-title">From a coil fixture to exact equilibria with proved confinement.</h1>
-      <p class="slide-lead">PlasmaLean is building a Lean library for stellarator design. Its checked results (14 October) are exact finite-pressure equilibria, a toroidal Solov'ev one and a nonaxisymmetric helical one, with all-time particle confinement theorems and Suydam/Newcomb stability criteria. The 20 October run added no theorem; it fixed an implementation plan that also targets keeping the plasma hot.</p>
-      <dl class="slide-metrics"><div><dt>Lean modules</dt><dd>54</dd></div><div><dt>Source theorems, including private helpers</dt><dd>620</dd></div><div><dt>Project declarations in the last axiom audit</dt><dd>1781</dd></div></dl>
+      <div class="slide-topline"><p class="eyebrow">Progress briefing · Phase 1: keeping the plasma hot</p><span class="slide-number">01 / 13</span></div>
+      <h1 id="where-we-are-title">Exact equilibria, proved confinement — and now proved burn temperature.</h1>
+      <p class="slide-lead">PlasmaLean is building a Lean library for stellarator design. Earlier runs proved exact equilibria with all-time confinement and Suydam/Newcomb criteria. Phase 1 of the implementation plan adds the first results on keeping the plasma hot: a reactor-scale 0-D D-T plasma stays at or above 10 keV for all time under stated hypotheses, a comparison principle for radial heat transport, and a vacuum maximum principle.</p>
+      <dl class="slide-metrics"><div><dt>Lean modules</dt><dd>67</dd></div><div><dt>theorem/lemma declarations (grep count)</dt><dd>832</dd></div><div><dt>Project declarations in the last axiom audit</dt><dd>2383</dd></div></dl>
       
-      <div class="slide-progress"><h3>Progress so far</h3><p>P3 (confined orbits) and P4 (finite-pressure equilibrium) now have checked instances in idealized symmetric models; P5 has local and certificate-based building blocks. P2 for a coil design remains partial.</p></div>
-      <p class="slide-boundary"><strong>Claim boundary.</strong> No configuration is coil-produced; the helical model has no toroidal curvature and the Solov'ev one is axisymmetric. No all-mode MHD stability, 3.5 MeV alpha confinement, or hardware qualification.</p>
-      <footer class="slide-evidence"><span>Evidence · 2026-10-20</span><a href="progress.html#validation">Latest run &amp; audit <span aria-hidden="true">↗</span></a><a href="implementation-plan.html">Implementation plan <span aria-hidden="true">↗</span></a><a href="index.html#background">Original motivation &amp; graphics <span aria-hidden="true">↗</span></a></footer>
+      <div class="slide-progress"><h3>Progress so far</h3><p>M1 (0-D burn) is checked; the comparison principle for M2 is proved; Milestone A (vacuum maximum principle) is complete. P3/P4 remain at idealized symmetric instances.</p></div>
+      <p class="slide-boundary"><strong>Claim boundary.</strong> M1 uses supplied reactivity data and state-dependent τ_E hypotheses; no barrier yet on a stellarator geometry; no coil-produced configuration; no all-mode MHD stability or 3.5 MeV alpha confinement.</p>
+      <footer class="slide-evidence"><span>Evidence · 2026-10-20</span><a href="progress.html">Phase 1 report <span aria-hidden="true">↗</span></a><a href="implementation-plan.html">Implementation plan <span aria-hidden="true">↗</span></a><a href="index.html#background">Original motivation &amp; graphics <span aria-hidden="true">↗</span></a></footer>
     </section>
 <section id="proof-architecture" class="slide" aria-labelledby="proof-architecture-title" tabindex="-1" data-slide>
-      <div class="slide-topline"><p class="eyebrow">01 · How the library earns a claim</p><span class="slide-number">02 / 12</span></div>
+      <div class="slide-topline"><p class="eyebrow">01 · How the library earns a claim</p><span class="slide-number">02 / 13</span></div>
       <h2 id="proof-architecture-title">Small assumptions. Reusable proofs. One candidate.</h2>
       <p class="slide-lead">Physical model laws are explicit hypotheses. Derived mathematics and candidate certificates live above that small domain kernel.</p>
       
@@ -30,7 +30,7 @@
       <footer class="slide-evidence"><span>Evidence · 2026-10-20</span><a href="model-contracts.html#architecture">Model contracts &amp; architecture <span aria-hidden="true">↗</span></a><a href="progress.html#validation">Audit evidence <span aria-hidden="true">↗</span></a></footer>
     </section>
 <section id="mathematical-foundations" class="slide" aria-labelledby="mathematical-foundations-title" tabindex="-1" data-slide>
-      <div class="slide-topline"><p class="eyebrow">02 · Reusable mathematical progress</p><span class="slide-number">03 / 12</span></div>
+      <div class="slide-topline"><p class="eyebrow">02 · Reusable mathematical progress</p><span class="slide-number">03 / 13</span></div>
       <h2 id="mathematical-foundations-title">The foundations have executable proof content.</h2>
       <p class="slide-lead">Simple models make the definitions testable before tackling three-dimensional plasma physics.</p>
       
@@ -42,7 +42,7 @@
       <footer class="slide-evidence"><span>Evidence · 2026-10-20</span><a href="progress.html#earlier-results-retained">Earlier results retained <span aria-hidden="true">↗</span></a><a href="mhd-stability.html">Stability scope <span aria-hidden="true">↗</span></a></footer>
     </section>
 <section id="exact-certificates" class="slide" aria-labelledby="exact-certificates-title" tabindex="-1" data-slide>
-      <div class="slide-topline"><p class="eyebrow">03 · Exact numerical certificates</p><span class="slide-number">04 / 12</span></div>
+      <div class="slide-topline"><p class="eyebrow">03 · Exact numerical certificates</p><span class="slide-number">04 / 13</span></div>
       <h2 id="exact-certificates-title">From a numerical proposal to a proved bound.</h2>
       <p class="slide-lead">Rational interval soundness and contraction arguments give small end-to-end tests of the verification path.</p>
       
@@ -54,7 +54,7 @@
       <footer class="slide-evidence"><span>Evidence · 2026-10-20</span><a href="progress.html#earlier-results-retained">Retained examples &amp; margins <span aria-hidden="true">↗</span></a><a href="verified-numerics.html">Numerical verification plan <span aria-hidden="true">↗</span></a></footer>
     </section>
 <section id="vacuum-fixture" class="slide" aria-labelledby="vacuum-fixture-title" tabindex="-1" data-slide>
-      <div class="slide-topline"><p class="eyebrow">04 · The vacuum calibration fixture</p><span class="slide-number">05 / 12</span></div>
+      <div class="slide-topline"><p class="eyebrow">04 · The vacuum calibration fixture</p><span class="slide-number">05 / 13</span></div>
       <h2 id="vacuum-fixture-title">Two circular coils. Precisely stated regions.</h2>
       <p class="slide-lead">The first device-specific object is a calibration fixture with symbolic positive reference current I and permeability μ₀. Its field model uses ideal filaments.</p>
       
@@ -86,7 +86,7 @@
       <footer class="slide-evidence"><span>Evidence · 2026-10-20</span><a href="vacuum-demonstrator.html#exact-fixture-and-checked-margins">Fixture specification &amp; units <span aria-hidden="true">↗</span></a></footer>
     </section>
 <section id="tolerance-margins" class="slide" aria-labelledby="tolerance-margins-title" tabindex="-1" data-slide>
-      <div class="slide-topline"><p class="eyebrow">05 · What survives manufacturing uncertainty</p><span class="slide-number">06 / 12</span></div>
+      <div class="slide-topline"><p class="eyebrow">05 · What survives manufacturing uncertainty</p><span class="slide-number">06 / 13</span></div>
       <h2 id="tolerance-margins-title">Margins for the same perturbed coils and currents.</h2>
       <p class="slide-lead">Assume closed C¹ coils with position error ≤ 1 mm, independent tangent error ≤ 1 mm/radian, and independent current errors ≤ 1% of I.</p>
       
@@ -98,7 +98,7 @@
       <footer class="slide-evidence"><span>Evidence · 2026-10-20</span><a href="vacuum-demonstrator.html#exact-fixture-and-checked-margins">Quantitative certificate <span aria-hidden="true">↗</span></a><a href="vacuum-demonstrator.html#reusable-proof-interfaces">Compiled entry points <span aria-hidden="true">↗</span></a></footer>
     </section>
 <section id="maxwell-and-stability" class="slide" aria-labelledby="maxwell-and-stability-title" tabindex="-1" data-slide>
-      <div class="slide-topline"><p class="eyebrow">06 · Fields and local stability</p><span class="slide-number">07 / 12</span></div>
+      <div class="slide-topline"><p class="eyebrow">06 · Fields and local stability</p><span class="slide-number">07 / 13</span></div>
       <h2 id="maxwell-and-stability-title">Maxwell identities proved; interchange stability decided both ways.</h2>
       <p class="slide-lead">The closed-filament Biot–Savart field is divergence- and curl-free off the coil. A sharp Hardy inequality gives the Suydam criterion with both sufficiency and an explicit unstable mode.</p>
       
@@ -110,7 +110,7 @@
       <footer class="slide-evidence"><span>Evidence · 2026-10-20</span><a href="progress.html#new-checked-results">New checked results <span aria-hidden="true">↗</span></a><a href="mhd-stability.html">Stability scope <span aria-hidden="true">↗</span></a></footer>
     </section>
 <section id="exact-equilibria" class="slide" aria-labelledby="exact-equilibria-title" tabindex="-1" data-slide>
-      <div class="slide-topline"><p class="eyebrow">07 · Finite-pressure equilibria</p><span class="slide-number">08 / 12</span></div>
+      <div class="slide-topline"><p class="eyebrow">07 · Finite-pressure equilibria</p><span class="slide-number">08 / 13</span></div>
       <h2 id="exact-equilibria-title">Two exact equilibria satisfy the kernel law J × B = ∇p.</h2>
       <p class="slide-lead">The current is computed as curl B/μ₀ from actual derivatives and checked against the unchanged kernel ForceBalance class.</p>
       
@@ -122,7 +122,7 @@
       <footer class="slide-evidence"><span>Evidence · 2026-10-20</span><a href="progress.html#quantitative-certificates">Quantitative certificates <span aria-hidden="true">↗</span></a><a href="progress.html#corrections-and-challenged-claims">Corrections <span aria-hidden="true">↗</span></a></footer>
     </section>
 <section id="symmetric-confinement" class="slide" aria-labelledby="symmetric-confinement-title" tabindex="-1" data-slide>
-      <div class="slide-topline"><p class="eyebrow">08 · Confinement for all time</p><span class="slide-number">09 / 12</span></div>
+      <div class="slide-topline"><p class="eyebrow">08 · Confinement for all time</p><span class="slide-number">09 / 13</span></div>
       <h2 id="symmetric-confinement-title">Symmetry plus Noether confines every slow enough orbit forever.</h2>
       <p class="slide-lead">Canonical momentum m⟨K,v⟩ + qψ is conserved for any Killing symmetry K; with speed conservation and an intermediate-value argument, orbits stay in a flux region for all time.</p>
       
@@ -134,7 +134,7 @@
       <footer class="slide-evidence"><span>Evidence · 2026-10-20</span><a href="progress.html#quantitative-certificates">Obstruction &amp; numbers <span aria-hidden="true">↗</span></a><a href="particles-and-transport.html">Particles &amp; transport plan <span aria-hidden="true">↗</span></a></footer>
     </section>
 <section id="path-to-a-device" class="slide" aria-labelledby="path-to-a-device-title" tabindex="-1" data-slide>
-      <div class="slide-topline"><p class="eyebrow">09 · From idealized models to a stellarator</p><span class="slide-number">10 / 12</span></div>
+      <div class="slide-topline"><p class="eyebrow">09 · From idealized models to a stellarator</p><span class="slide-number">10 / 13</span></div>
       <h2 id="path-to-a-device-title">The remaining device work is explicit.</h2>
       <p class="slide-lead">The vacuum-fixture work packages remain, now joined by an equilibrium/stability track. A four-circular-coil, CNT-inspired architecture is a reference direction, not a certified design.</p>
       
@@ -146,23 +146,36 @@
       <p class="slide-boundary"><strong>Claim boundary.</strong> Finite-pressure equilibrium, all-mode MHD, transport and reactor engineering are separate later obligations, not implied by a vacuum demonstrator.</p>
       <footer class="slide-evidence"><span>Evidence · 2026-10-20</span><a href="vacuum-demonstrator.html#work-packages-and-progress">Device work packages <span aria-hidden="true">↗</span></a><a href="roadmap.html#milestones-and-evidence-gates">Full evidence gates P0–P9 <span aria-hidden="true">↗</span></a></footer>
     </section>
+<section id="burn-temperature" class="slide" aria-labelledby="burn-temperature-title" tabindex="-1" data-slide>
+      <div class="slide-topline"><p class="eyebrow">10 · Phase 1: hot enough, long enough</p><span class="slide-number">11 / 13</span></div>
+      <h2 id="burn-temperature-title">A burning plasma that provably stays above 10 keV.</h2>
+      <p class="slide-lead">A reactor-scale 0-D D-T plasma (n = 10²⁰ m⁻³, 830 m³, carbon impurities with Z_eff = 1.7) stays at or above 10 keV for all t ≥ 0 once heating beats losses at 10 keV. Radial transport obeys a proved comparison principle, so a barrier profile bounds the temperature everywhere for all time.</p>
+      
+      <div class="slide-content"><div class="slide-cards cards-4"><article class="slide-card"><span class="card-status checked">Lean verified (0-D model)</span><h3>Sustained burn (M1)</h3><p>T ≥ 10 keV for all t ≥ 0 with P_aux ≥ 40 MW and τ_E ≥ 3.5 s whenever T ≤ 10 keV: margin +5.5 MW. Ignited variant: τ_E ≥ 5.5 s, no auxiliary power. Yield ≥ 4.8×10⁸ W × t_b.</p></article>
+<article class="slide-card"><span class="card-status partial">Obstruction recorded</span><h3>Runaway is real</h3><p>With constant τ_E, net heating is +77 MW at 30 keV. The window [10, 30] keV is proved only under a supplied confinement-degradation hypothesis (τ_E ≤ 1.8 s for T ≥ 30 keV).</p></article>
+<article class="slide-card"><span class="card-status checked">Lean verified</span><h3>Transport comparison (T3)</h3><p>First-crossing lemma and comparison theorems for the flux-surface heat equation with a no-flux axis: strict, margin and non-strict lower/upper barriers, and two-sided windows. D ≥ 0 suffices; backward diffusion is a counterexample.</p></article>
+<article class="slide-card"><span class="card-status checked">Lean verified</span><h3>Vacuum maximum principle (T1)</h3><p>Δ|B|² = 2|∇B|² for vacuum fields; the weak maximum principle bounds the field error in the volume by its value on the surface. |B| has no interior maximum, but B = (x, y, −2z) has an interior minimum, correcting the notes.</p></article></div></div>
+      <div class="slide-progress"><h3>Progress so far</h3><p>13 new modules, including kernel laws for fusion power, radial transport and vacuum fields, each with sanity checks. An adversarial review caught a fuel-dilution error in the first M1 version; the kernel and the margins were corrected.</p></div>
+      <p class="slide-boundary"><strong>Claim boundary.</strong> Bosch–Hale reactivity enters as supplied windows (±1%). τ_E conditions are hypotheses at the crossing temperatures, not derived from a scaling law. Transport solutions are supplied, not proved to exist.</p>
+      <footer class="slide-evidence"><span>Evidence · 2026-10-20</span><a href="progress.html#new-checked-results">New checked results <span aria-hidden="true">↗</span></a><a href="progress.html#quantitative-certificates">Quantitative certificates <span aria-hidden="true">↗</span></a><a href="progress.html#corrections-and-challenged-claims">Corrections <span aria-hidden="true">↗</span></a></footer>
+    </section>
 <section id="implementation-plan" class="slide" aria-labelledby="implementation-plan-title" tabindex="-1" data-slide>
-      <div class="slide-topline"><p class="eyebrow">10 · Plan of record (20 October)</p><span class="slide-number">11 / 12</span></div>
+      <div class="slide-topline"><p class="eyebrow">11 · Plan of record</p><span class="slide-number">12 / 13</span></div>
       <h2 id="implementation-plan-title">Theory, techniques and a ladder of models — for confinement and for heat.</h2>
       <p class="slide-lead">Each cycle develops theory, turns theorems into sound certificate checkers, and applies them to the next rung of a model ladder. Every rung must prove properties of both kinds: confinement (G1) and temperature held above burn conditions (G2).</p>
       
       <div class="slide-content"><div class="slide-cards cards-4"><article class="slide-card"><span class="card-status next">Planned</span><h3>Theory tracks</h3><p>Maximum principle for vacuum fields; Sturm/ballooning; parabolic comparison and transport barriers; 0-D power balance; discrete energy (SBP); radii-polynomial validation; island widths/KAM; guiding centre and maximum-J; commuted energy.</p></article>
-<article class="slide-card"><span class="card-status next">M0 checked; M1–M6 planned</span><h3>Model ladder</h3><p>M0 exact symmetric equilibria (done) → M1 0-D burning plasma → M2 radial transport on the exact geometries → M3 validated toroidal equilibrium → M4 near-axis quasisymmetry → M5 coil-produced 3-D field → M6 integrated candidate.</p></article>
-<article class="slide-card"><span class="card-status next">Recorded; edits in Cycle 1</span><h3>Corrections first</h3><p>Four corrections to recent notes. Vacuum |B| has no interior maximum (minima are possible). The flux-surface line bundle is flat. 2-D ideal-MHD regularity is open. Contracts no theorem produces are vacuous.</p></article>
+<article class="slide-card"><span class="card-status next">M0, M1 checked; M2 in progress</span><h3>Model ladder</h3><p>M0 exact symmetric equilibria (done) → M1 0-D burning plasma → M2 radial transport on the exact geometries → M3 validated toroidal equilibrium → M4 near-axis quasisymmetry → M5 coil-produced 3-D field → M6 integrated candidate.</p></article>
+<article class="slide-card"><span class="card-status next">Applied to the notes</span><h3>Corrections first</h3><p>Four corrections to recent notes. Vacuum |B| has no interior maximum (minima are possible). The flux-surface line bundle is flat. 2-D ideal-MHD regularity is open. Contracts no theorem produces are vacuous.</p></article>
 <article class="slide-card"><span class="card-status next">Skill added</span><h3>Proof engineering</h3><p>A new skill: grind and fun_induction for short proofs, bv_decide only when no native axiom results, and large certificates built as explicit proof terms (the SubsetSum pattern).</p></article></div></div>
-      <div class="slide-progress"><h3>Progress so far</h3><p>The plan, the corrections and the skill are documents. One reference Lean module (SubsetSum) joined the build. No new physics theorem.</p></div>
+      <div class="slide-progress"><h3>Progress so far</h3><p>Phase 1 completed the Cycle 1 targets: kernel laws, the M1 burn window, transport comparison and Milestone A. Status marks in the plan are updated after each phase.</p></div>
       <p class="slide-boundary"><strong>Claim boundary.</strong> Nothing in the plan counts as evidence until a dated report records compiled Lean results.</p>
       <footer class="slide-evidence"><span>Evidence · 2026-10-20</span><a href="implementation-plan.html">Implementation plan <span aria-hidden="true">↗</span></a><a href="progress.html">20 October report <span aria-hidden="true">↗</span></a></footer>
     </section>
 <section id="next-run" class="slide" aria-labelledby="next-run-title" tabindex="-1" data-slide>
-      <div class="slide-topline"><p class="eyebrow">11 · Keep every step reviewable</p><span class="slide-number">12 / 12</span></div>
+      <div class="slide-topline"><p class="eyebrow">12 · Keep every step reviewable</p><span class="slide-number">13 / 13</span></div>
       <h2 id="next-run-title">The next run must leave evidence, not just a promise.</h2>
-      <p class="slide-lead">Next proof targets (Cycle 1): kernel laws for vacuum fields, radial heat transport and D-T power balance with sanity checks; the vacuum maximum principle; Elsässer and SBP identities; and a 0-D burning-plasma temperature window.</p>
+      <p class="slide-lead">Next (Phase 2): barrier profiles on the exact Solov'ev/helical geometry with alpha heating, proving T_core ≥ 10 keV for all time (M2); a ballooning Barta certificate and Mercier; a discrete M-matrix maximum principle; C² filament fields; τ_E hypotheses derived from a scaling law.</p>
       
       <div class="slide-content"><div class="slide-cards cards-3"><article class="slide-card"><span class="card-status next">Next loop</span><h3>Implement &amp; challenge</h3><p>Choose a scoped theorem or candidate milestone, retain explicit assumptions, and test limiting cases and counterexamples.</p></article>
 <article class="slide-card"><span class="card-status next">Required evidence</span><h3>Compile &amp; audit</h3><p>Build the Lean library and run the axiom audit. Record actual results and remaining physical/model gaps.</p></article>
@@ -173,7 +186,7 @@
     </section></main>
   <nav id="slide-controls" class="slide-controls" aria-label="Slideshow controls" hidden>
     <div class="step-controls"><button id="slide-prev" type="button" aria-label="Previous slide" aria-controls="presentation">← Previous</button><output id="slide-counter" aria-live="polite" aria-atomic="true"></output><button id="slide-next" type="button" aria-label="Next slide" aria-controls="presentation">Next →</button></div>
-    <div class="view-controls"><label for="slide-select">Jump to</label><select id="slide-select" aria-controls="presentation"><option value="0">1. From a coil fixture to exact equilibria with proved confinement.</option><option value="1">2. Small assumptions. Reusable proofs. One candidate.</option><option value="2">3. The foundations have executable proof content.</option><option value="3">4. From a numerical proposal to a proved bound.</option><option value="4">5. Two circular coils. Precisely stated regions.</option><option value="5">6. Margins for the same perturbed coils and currents.</option><option value="6">7. Maxwell identities proved; interchange stability decided both ways.</option><option value="7">8. Two exact equilibria satisfy the kernel law J × B = ∇p.</option><option value="8">9. Symmetry plus Noether confines every slow enough orbit forever.</option><option value="9">10. The remaining device work is explicit.</option><option value="10">11. Theory, techniques and a ladder of models — for confinement and for heat.</option><option value="11">12. The next run must leave evidence, not just a promise.</option></select><button id="slide-view" type="button" aria-pressed="false" aria-controls="presentation">Read all</button><button id="slide-print" type="button">Print / PDF</button></div>
+    <div class="view-controls"><label for="slide-select">Jump to</label><select id="slide-select" aria-controls="presentation"><option value="0">1. Exact equilibria, proved confinement — and now proved burn temperature.</option><option value="1">2. Small assumptions. Reusable proofs. One candidate.</option><option value="2">3. The foundations have executable proof content.</option><option value="3">4. From a numerical proposal to a proved bound.</option><option value="4">5. Two circular coils. Precisely stated regions.</option><option value="5">6. Margins for the same perturbed coils and currents.</option><option value="6">7. Maxwell identities proved; interchange stability decided both ways.</option><option value="7">8. Two exact equilibria satisfy the kernel law J × B = ∇p.</option><option value="8">9. Symmetry plus Noether confines every slow enough orbit forever.</option><option value="9">10. The remaining device work is explicit.</option><option value="10">11. A burning plasma that provably stays above 10 keV.</option><option value="11">12. Theory, techniques and a ladder of models — for confinement and for heat.</option><option value="12">13. The next run must leave evidence, not just a promise.</option></select><button id="slide-view" type="button" aria-pressed="false" aria-controls="presentation">Read all</button><button id="slide-print" type="button">Print / PDF</button></div>
     <p class="keyboard-hint">← → / Space to move · Home / End to jump · No autoplay</p>
   </nav>
   <noscript><p class="no-script">All slides are shown below each other. Enable JavaScript for presentation controls, or use your browser's Print command to print the full deck.</p></noscript>

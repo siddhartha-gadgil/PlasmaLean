@@ -1,15 +1,15 @@
 [
   {
     "title": "Progress slideshow",
-    "section": "Evidence updated 2026-10-20 · Planning run: a cyclic implementation plan (theory tracks, certificate techniques, model ladder for confinement and burn temperature), corrections to recent notes, and a Lean proof-engineering skill. No new physics theorem; the 14 October results (exact symmetric equilibria, symmetric confinement, Suydam/Newcomb) stand. No coil-produced stellarator or all-mode stability is certified.",
+    "section": "Evidence updated 2026-10-20 · Phase 1 of the implementation plan: first burn-temperature results (0-D D-T plasma at reactor scale stays ≥ 10 keV for all t ≥ 0 under supplied Bosch–Hale data and state-dependent τ_E hypotheses, with fuel dilution), the parabolic comparison principle for radial heat transport, and the vacuum maximum principle with boundary-to-interior field-error bounds. Idealized models; no coil-produced stellarator, no barrier on a stellarator geometry yet, no all-mode stability.",
     "url": "slides.html",
     "text": "progress slideshow presentation latest run evidence vacuum fixture"
   },
   {
-    "title": "From a coil fixture to exact equilibria with proved confinement.",
+    "title": "Exact equilibria, proved confinement — and now proved burn temperature.",
     "section": "Progress slideshow",
     "url": "slides.html#where-we-are",
-    "text": "from a coil fixture to exact equilibria with proved confinement. plasmalean is building a lean library for stellarator design. its checked results (14 october) are exact finite-pressure equilibria, a toroidal solov'ev one and a nonaxisymmetric helical one, with all-time particle confinement theorems and suydam/newcomb stability criteria. the 20 october run added no theorem; it fixed an implementation plan that also targets keeping the plasma hot. p3 (confined orbits) and p4 (finite-pressure equilibrium) now have checked instances in idealized symmetric models; p5 has local and certificate-based building blocks. p2 for a coil design remains partial."
+    "text": "exact equilibria, proved confinement — and now proved burn temperature. plasmalean is building a lean library for stellarator design. earlier runs proved exact equilibria with all-time confinement and suydam/newcomb criteria. phase 1 of the implementation plan adds the first results on keeping the plasma hot: a reactor-scale 0-d d-t plasma stays at or above 10 kev for all time under stated hypotheses, a comparison principle for radial heat transport, and a vacuum maximum principle. m1 (0-d burn) is checked; the comparison principle for m2 is proved; milestone a (vacuum maximum principle) is complete. p3/p4 remain at idealized symmetric instances."
   },
   {
     "title": "Small assumptions. Reusable proofs. One candidate.",
@@ -66,16 +66,22 @@
     "text": "the remaining device work is explicit. the vacuum-fixture work packages remain, now joined by an equilibrium/stability track. a four-circular-coil, cnt-inspired architecture is a reference direction, not a certified design. reusable mathematics now spans fields, equilibria, local stability and symmetric confinement. no practical build or energization specification has been released."
   },
   {
+    "title": "A burning plasma that provably stays above 10 keV.",
+    "section": "Progress slideshow",
+    "url": "slides.html#burn-temperature",
+    "text": "a burning plasma that provably stays above 10 kev. a reactor-scale 0-d d-t plasma (n = 10²⁰ m⁻³, 830 m³, carbon impurities with z_eff = 1.7) stays at or above 10 kev for all t ≥ 0 once heating beats losses at 10 kev. radial transport obeys a proved comparison principle, so a barrier profile bounds the temperature everywhere for all time. 13 new modules, including kernel laws for fusion power, radial transport and vacuum fields, each with sanity checks. an adversarial review caught a fuel-dilution error in the first m1 version; the kernel and the margins were corrected."
+  },
+  {
     "title": "Theory, techniques and a ladder of models — for confinement and for heat.",
     "section": "Progress slideshow",
     "url": "slides.html#implementation-plan",
-    "text": "theory, techniques and a ladder of models — for confinement and for heat. each cycle develops theory, turns theorems into sound certificate checkers, and applies them to the next rung of a model ladder. every rung must prove properties of both kinds: confinement (g1) and temperature held above burn conditions (g2). the plan, the corrections and the skill are documents. one reference lean module (subsetsum) joined the build. no new physics theorem."
+    "text": "theory, techniques and a ladder of models — for confinement and for heat. each cycle develops theory, turns theorems into sound certificate checkers, and applies them to the next rung of a model ladder. every rung must prove properties of both kinds: confinement (g1) and temperature held above burn conditions (g2). phase 1 completed the cycle 1 targets: kernel laws, the m1 burn window, transport comparison and milestone a. status marks in the plan are updated after each phase."
   },
   {
     "title": "The next run must leave evidence, not just a promise.",
     "section": "Progress slideshow",
     "url": "slides.html#next-run",
-    "text": "the next run must leave evidence, not just a promise. next proof targets (cycle 1): kernel laws for vacuum fields, radial heat transport and d-t power balance with sanity checks; the vacuum maximum principle; elsässer and sbp identities; and a 0-d burning-plasma temperature window. the linked run records checked declarations, assumptions and validation. this slideshow is a summary of that evidence, not a new design certificate."
+    "text": "the next run must leave evidence, not just a promise. next (phase 2): barrier profiles on the exact solov'ev/helical geometry with alpha heating, proving t_core ≥ 10 kev for all time (m2); a ballooning barta certificate and mercier; a discrete m-matrix maximum principle; c² filament fields; τ_e hypotheses derived from a scaling law. the linked run records checked declarations, assumptions and validation. this slideshow is a summary of that evidence, not a new design certificate."
   },
   {
     "title": "Stellarator concepts",
@@ -1482,6 +1488,18 @@
     "text": "8. definition of done for each cycle implementation plan"
   },
   {
+    "title": "9. Progress log",
+    "section": "Implementation plan",
+    "url": "implementation-plan.html#9-progress-log",
+    "text": "9. progress log implementation plan"
+  },
+  {
+    "title": "Phase 1 (Cycle 1), 20 October 2026 — report",
+    "section": "Implementation plan",
+    "url": "implementation-plan.html#phase-1-cycle-1-20-october-2026-report",
+    "text": "phase 1 (cycle 1), 20 october 2026 — report implementation plan"
+  },
+  {
     "title": "M0 · Exact symmetric equilibria: slab, screw pinch, Solov'ev, helical",
     "section": "Implementation plan · Lean verified — exact slab, screw-pinch, Solov'ev and helical equilibria with kernel force balance, all-time field-line/orbit confinement, Suydam both ways and screw-pinch Newcomb for 1 ≤ |m| ≤ 6 (idealized symmetric models).",
     "url": "implementation-plan.html",
@@ -1489,15 +1507,15 @@
   },
   {
     "title": "M1 · 0-D burning D-T plasma at reactor scale (n ≈ 10²⁰ m⁻³, B = 5 T, V ≈ 1000 m³)",
-    "section": "Implementation plan · Planning only — no Lean code written",
+    "section": "Implementation plan · Lean verified — 0-D D-T burn at n = 1e20 m⁻³, V = 830 m³, carbon Z_eff = 1.7: T ≥ 10 keV for all t ≥ 0 (P_aux ≥ 40 MW, τ_E ≥ 3.5 s at T ≤ 10 keV; margin +5.5 MW); window [10,30] keV only with supplied τ_E degradation; reactivity is supplied data.",
     "url": "implementation-plan.html",
-    "text": "m1 0-d burning d-t plasma at reactor scale (n ≈ 10²⁰ m⁻³, b = 5 t, v ≈ 1000 m³) 5. model ladder (each rung proves characteristics under both g1 and g2) planning only — no lean code written"
+    "text": "m1 0-d burning d-t plasma at reactor scale (n ≈ 10²⁰ m⁻³, b = 5 t, v ≈ 1000 m³) 5. model ladder (each rung proves characteristics under both g1 and g2) lean verified — 0-d d-t burn at n = 1e20 m⁻³, v = 830 m³, carbon z_eff = 1.7: t ≥ 10 kev for all t ≥ 0 (p_aux ≥ 40 mw, τ_e ≥ 3.5 s at t ≤ 10 kev; margin +5.5 mw); window [10,30] kev only with supplied τ_e degradation; reactivity is supplied data."
   },
   {
     "title": "M2 · 1-D radial transport on the exact Solov'ev and helical geometries (V′(ψ) taken from the M0 fields), with χ ∈ [χ_min, χ_max] supplied",
-    "section": "Implementation plan · Planning only — no Lean code written",
+    "section": "Implementation plan · Partially implemented — comparison principle (strict, margin, non-strict; lower/upper/two-sided barriers) for the radial heat equation is proved for supplied classical solutions; no barrier instantiated on the Solov'ev/helical geometry yet.",
     "url": "implementation-plan.html",
-    "text": "m2 1-d radial transport on the exact solov'ev and helical geometries (v′(ψ) taken from the m0 fields), with χ ∈ [χ_min, χ_max] supplied 5. model ladder (each rung proves characteristics under both g1 and g2) planning only — no lean code written"
+    "text": "m2 1-d radial transport on the exact solov'ev and helical geometries (v′(ψ) taken from the m0 fields), with χ ∈ [χ_min, χ_max] supplied 5. model ladder (each rung proves characteristics under both g1 and g2) partially implemented — comparison principle (strict, margin, non-strict; lower/upper/two-sided barriers) for the radial heat equation is proved for supplied classical solutions; no barrier instantiated on the solov'ev/helical geometry yet."
   },
   {
     "title": "M3 · Validated (radii-polynomial) toroidal Grad–Shafranov equilibrium with realistic non-polynomial profiles; Newcomb for all m",
@@ -1633,27 +1651,15 @@
   },
   {
     "title": "Verified progress",
-    "section": "Planning run: a cyclic implementation plan (theory tracks, certificate techniques, model ladder for confinement and burn temperature), corrections to recent notes, and a Lean proof-engineering skill. No new physics theorem; the 14 October results (exact symmetric equilibria, symmetric confinement, Suydam/Newcomb) stand. No coil-produced stellarator or all-mode stability is certified.",
+    "section": "Phase 1 of the implementation plan: first burn-temperature results (0-D D-T plasma at reactor scale stays ≥ 10 keV for all t ≥ 0 under supplied Bosch–Hale data and state-dependent τ_E hypotheses, with fuel dilution), the parabolic comparison principle for radial heat transport, and the vacuum maximum principle with boundary-to-interior field-error bounds. Idealized models; no coil-produced stellarator, no barrier on a stellarator geometry yet, no all-mode stability.",
     "url": "progress.html",
-    "text": "verified progress planning run: a cyclic implementation plan (theory tracks, certificate techniques, model ladder for confinement and burn temperature), corrections to recent notes, and a lean proof-engineering skill. no new physics theorem; the 14 october results (exact symmetric equilibria, symmetric confinement, suydam/newcomb) stand. no coil-produced stellarator or all-mode stability is certified."
+    "text": "verified progress phase 1 of the implementation plan: first burn-temperature results (0-d d-t plasma at reactor scale stays ≥ 10 kev for all t ≥ 0 under supplied bosch–hale data and state-dependent τ_e hypotheses, with fuel dilution), the parabolic comparison principle for radial heat transport, and the vacuum maximum principle with boundary-to-interior field-error bounds. idealized models; no coil-produced stellarator, no barrier on a stellarator geometry yet, no all-mode stability."
   },
   {
     "title": "Outcome",
     "section": "Verified progress",
     "url": "progress.html#outcome",
     "text": "outcome verified progress"
-  },
-  {
-    "title": "Validation",
-    "section": "Verified progress",
-    "url": "progress.html#validation",
-    "text": "validation verified progress"
-  },
-  {
-    "title": "Earlier results retained",
-    "section": "Verified progress",
-    "url": "progress.html#earlier-results-retained",
-    "text": "earlier results retained verified progress"
   },
   {
     "title": "New checked results",
@@ -1674,21 +1680,27 @@
     "text": "corrections and challenged claims verified progress"
   },
   {
-    "title": "Assumption ledger",
+    "title": "Assumption ledger additions",
     "section": "Verified progress",
-    "url": "progress.html#assumption-ledger",
-    "text": "assumption ledger verified progress"
+    "url": "progress.html#assumption-ledger-additions",
+    "text": "assumption ledger additions verified progress"
   },
   {
-    "title": "Results from earlier runs",
+    "title": "Earlier results retained",
     "section": "Verified progress",
-    "url": "progress.html#results-from-earlier-runs",
-    "text": "results from earlier runs verified progress"
+    "url": "progress.html#earlier-results-retained",
+    "text": "earlier results retained verified progress"
   },
   {
-    "title": "Next boundary",
+    "title": "Validation",
     "section": "Verified progress",
-    "url": "progress.html#next-boundary",
-    "text": "next boundary verified progress"
+    "url": "progress.html#validation",
+    "text": "validation verified progress"
+  },
+  {
+    "title": "Next boundary (Phase 2 / Cycle 2)",
+    "section": "Verified progress",
+    "url": "progress.html#next-boundary-phase-2-cycle-2",
+    "text": "next boundary (phase 2 / cycle 2) verified progress"
   }
 ]

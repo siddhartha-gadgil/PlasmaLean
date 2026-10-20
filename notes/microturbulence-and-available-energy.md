@@ -14,7 +14,8 @@ In an optimized stellarator where neoclassical (collisional ripple) transport ha
 Directly verifying a 5D nonlinear gyrokinetic Vlasov–Maxwell PDE solver in Lean 4 is neither necessary nor optimal for stellarator design. Instead, modern stellarator theory controls microturbulence through **rigorous geometric and thermodynamic bounds** defined directly on the 3D magnetic equilibrium:
 1. **The Omnigeneity & Maximum-$J$ Contract:** Certifying that the second adiabatic invariant $\mathcal{J}_\parallel(\psi, \alpha, v, \lambda)$ satisfies $\partial_\alpha \mathcal{J}_\parallel = 0$ (zero bounce-averaged radial drift) and $\partial_\psi \mathcal{J}_\parallel < 0$ (favorable bounce-averaged curvature, reversing trapped-electron precession relative to drift waves).
 2. **The Helander–Mackenbach Available Energy ($\mathcal{A}$) Bound:** A closed-form upper bound on the thermal free energy that can be converted into turbulent fluctuations under phase-space rearrangements preserving adiabatic invariants $(\mu, \mathcal{J}_\parallel)$.
-3. **Analytic Obstruction Sanity Checks:** In a vacuum magnetic field ($\nabla \cdot \mathbf{B} = 0, \nabla \times \mathbf{B} = 0$), $\vert{}\mathbf{B}\vert{}^2$ is strictly subharmonic ($\Delta (\vert{}\mathbf{B}\vert{}^2) = 2 \Vert{}\nabla \mathbf{B}\Vert{}_{\text{Frob}}^2 \ge 0$), meaning $\vert{}\mathbf{B}\vert{}$ cannot attain a strict local minimum in the interior of a plasma volume. Formalizing this theorem acts as an essential **kernel sanity check** ensuring that our near-axis and finite-$\beta$ contracts do not demand mathematically impossible exact vacuum global minima.
+3. **Analytic Obstruction Sanity Checks:** In a vacuum magnetic field ($\nabla \cdot \mathbf{B} = 0, \nabla \times \mathbf{B} = 0$), $\vert{}\mathbf{B}\vert{}^2$ is subharmonic ($\Delta (\vert{}\mathbf{B}\vert{}^2) = 2 \Vert{}\nabla \mathbf{B}\Vert{}_{\text{Frob}}^2 \ge 0$), meaning $\vert{}\mathbf{B}\vert{}$ cannot attain a strict local **maximum** in the interior of a vacuum region. Local minima are possible. The obstruction relevant to maximum-J is different: in vacuum $\nabla_\perp B = B\boldsymbol{\kappa}$, so a local minimum of $|\mathbf{B}|$ at a point of a field line forces zero field-line curvature there (see Sanity Check 3 and `notes/theory/toroidal-min-b-obstruction.md`).
+   > **Correction (2026-10-20):** This item previously said subharmonicity forbids a strict interior local *minimum* of |B|. That is false. For example, $\mathbf{B}=(x,y,-2z)$ is a vacuum field with $|\mathbf{B}|^2 = x^2+y^2+4z^2$, and Ioffe–Pritchard traps give minima with $|\mathbf{B}|\neq 0$.
 
 ---
 
@@ -36,6 +37,8 @@ $$\Delta \psi = \frac{1}{q} \frac{\partial \mathcal{J}_\parallel}{\partial \alph
 Differentiating under the integral sign (since the integrand vanishes at the endpoints $l_\pm$ where $\lambda B = 1$) yields the fundamental **radial action derivative identity**:
 $$\frac{\partial \mathcal{J}_\parallel}{\partial \psi} = -\frac{m v \lambda}{2} \int_{l_-}^{l_+} \left(\frac{\partial B}{\partial \psi}\right)_{\alpha, l} \frac{dl}{\sqrt{1 - \lambda B(\psi, \alpha, l)}}.$$
 
+> **Correction (2026-10-20), unchecked step:** The boundary terms vanish because the $\mathcal{J}_\parallel$ integrand vanishes at $l_\pm$. But the differentiated integrand has an integrable $1/\sqrt{\cdot}$ singularity there, so the classical Leibniz rule does not apply directly. A valid justification needs simple turning points ($\partial_l B(l_\pm) \neq 0$), for example via the substitution that removes the square-root singularity or via dominated convergence. Without simple turning points (barely trapped particles, flat-bottomed wells) the identity can fail. These hypotheses must be explicit before formalization.
+
 * **Omnigeneity Criterion:** $\frac{\partial \mathcal{J}_\parallel}{\partial \alpha} = 0$ for all trapped pitch angles $\lambda$ (zero net radial banana drift).
 * **Maximum-$J$ Criterion:** $\frac{\partial \mathcal{J}_\parallel}{\partial \psi} < 0$ for all trapped pitch angles $\lambda$. By the radial derivative identity above, a sufficient pointwise condition is the **Minimum-$B$ condition** $\left(\frac{\partial B}{\partial \psi}\right)_{\alpha, l} > 0$ across the magnetic well.
 
@@ -50,7 +53,11 @@ where:
 * $\hat{\omega}_\alpha(\lambda) \propto -\frac{1}{q} \frac{\partial \mathcal{J}_\parallel}{\partial \psi}$ is the normalized bounce-averaged precession frequency, and
 * $\Theta(x) = \max(0, x)$ is the positive-part ramp function.
 
-**Key Verification Insight:** Whenever $\hat{\omega}_*(z)$ and $\hat{\omega}_\alpha(\lambda)$ have opposite signs—or when $\vert{}\hat{\omega}_\alpha(\lambda)\vert{} > \vert{}\hat{\omega}_*(z)\vert{}$ with matching signs—the integrand $\Theta(\dots)$ vanishes identically! This provides a rigorous, closed-form integral certificate bounding trapped-electron turbulence.
+> **Correction (2026-10-20), unchecked formula:** The formula for $\widehat{\mathcal{A}}$ above, including the weight $z^{5/2}e^{-z}$, the form of $\hat{G}(\lambda)$, the normalization of $\hat\omega_\alpha$, and whether $\Theta$ is the ramp or the Heaviside step, has **not** been checked against Mackenbach, Proll & Helander, PRL 128, 175001 (2022) (arXiv:2109.01042; erratum PRL 130, 239901 (2023)), and JPP 89, 905890513 (2023). Extract it exactly from the papers, with equation numbers, before any Lean statement depends on it. Only the trivial kernel lemma (Sanity Check 2) is independent of these details.
+
+**Key Verification Insight (corrected):** The integrand $\Theta(\hat{\omega}_*(\hat{\omega}_* - \hat{\omega}_\alpha))$ vanishes exactly when $\hat{\omega}_*(z)$ lies between $0$ and $\hat{\omega}_\alpha(\lambda)$, i.e. when the two frequencies have **matching** signs and $\vert{}\hat{\omega}_\alpha\vert{} \ge \vert{}\hat{\omega}_*\vert{}$ (precession dominance). This gives a closed-form integral certificate bounding trapped-particle available energy.
+
+**Correction (2026-10-20):** The earlier text also claimed the integrand vanishes when $\hat{\omega}_*$ and $\hat{\omega}_\alpha$ have *opposite* signs. That is false: then $\hat{\omega}_*(\hat{\omega}_* - \hat{\omega}_\alpha) \ge \hat{\omega}_*^2 > 0$ whenever $\hat{\omega}_* \ne 0$. This is proved in Lean as `availableEnergyKernel_pos_of_opposite_signs` (`PlasmaLean/Theory/Kinetic/AvailableEnergy.lean`); the zero set is characterized there exactly.
 
 ---
 
@@ -140,5 +147,13 @@ In a vacuum magnetic field ($\nabla \cdot \mathbf{B} = 0, \nabla \times \mathbf{
 $$\Delta (\|\mathbf{B}\|^2) = 2 \|\nabla \mathbf{B}\|_{\text{Frob}}^2 + 2 \langle \mathbf{B}, \Delta \mathbf{B} \rangle = 2 \|\nabla \mathbf{B}\|_{\text{Frob}}^2 \ge 0.$$
 
 
-By the Strong Maximum Principle for subharmonic functions, $\|\mathbf{B}\|$ **cannot** achieve a strict local minimum in any open vacuum region $U \subset \mathbb{R}^3$. Consequently, in a vacuum stellarator ($\beta = 0$), the Maximum-$J$ property can only be achieved *approximately* (or across a subset of trapped pitch angles), never via an exact 3D local minimum of $|\mathbf{B}|$.
+By the maximum principle for subharmonic functions, $\|\mathbf{B}\|$ **cannot** achieve a strict local *maximum* in any open vacuum region $U \subset \mathbb{R}^3$ (minima are allowed).
+
+The obstruction that matters for maximum-J is the curvature identity. In vacuum, $\nabla(B^2/2) = (\mathbf{B}\cdot\nabla)\mathbf{B}$, so $\nabla_\perp B = B\boldsymbol{\kappa}$. At finite β the same holds wherever $\nabla p = 0$, for instance on the magnetic axis (Helander 2014, Rep. Prog. Phys. 77 087001, Eq. 24). Two consequences:
+- A local minimum of $|\mathbf{B}|$ at a point with $\mathbf{B}\neq 0$ forces $\boldsymbol\kappa = 0$ at that point.
+- $|\mathbf{B}|$ cannot be non-decreasing outward from a *closed* magnetic axis in every normal plane, because that would force $\kappa \equiv 0$ on a closed curve.
+
+So the deeply trapped maximum-J condition $\partial_\psi B > 0$ at $B_{\min}$ requires a straight section of axis at the minimum (Helander 2014 §3.7), and exact quasisymmetric fields cannot be maximum-J (Rodríguez, Helander & Goodman, JPP 90, 905900212 (2024)). Details and status are in `notes/theory/toroidal-min-b-obstruction.md`.
+
+> **Correction (2026-10-20):** This check previously said subharmonicity forbids a strict interior local minimum of |B| and drew the maximum-J conclusion from that. The premise is false: $\mathbf{B}=(x,y,-2z)$ is a counterexample. The correct obstruction is the curvature identity stated above.
 

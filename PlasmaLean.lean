@@ -59,6 +59,19 @@ public import PlasmaLean.Design.HelicalReactorScale
 public import PlasmaLean.Design.ScrewPinchExample
 public import PlasmaLean.Design.ScrewPinchModes
 public import PlasmaLean.SubsetSum
+public import PlasmaLean.Kernel.Fusion
+public import PlasmaLean.Kernel.Transport
+public import PlasmaLean.Kernel.Vacuum
+public import PlasmaLean.Sanity.Fusion
+public import PlasmaLean.Sanity.Transport
+public import PlasmaLean.Sanity.Vacuum
+public import PlasmaLean.Theory.Transport.PowerBalance
+public import PlasmaLean.Theory.Transport.Comparison
+public import PlasmaLean.Theory.Fields.Subharmonic
+public import PlasmaLean.Theory.Stability.Elsasser
+public import PlasmaLean.Theory.Kinetic.AvailableEnergy
+public import PlasmaLean.Certificates.SBP
+public import PlasmaLean.Design.BurnWindow
 
 /-!
 # PlasmaLean public library

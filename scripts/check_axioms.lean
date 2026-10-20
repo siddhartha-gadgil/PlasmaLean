@@ -80,3 +80,9 @@ run_cmd do
 #print axioms PlasmaLean.Stability.ScrewPinchModes.suydam_limit_weight
 #print axioms PlasmaLean.Design.ScrewPinchModes.stable_low_m
 #print axioms PlasmaLean.Design.ScrewPinchModes.stable_uniform
+#print axioms PlasmaLean.Design.BurnWindow.m1_sustained_burn
+#print axioms PlasmaLean.Design.BurnWindow.m1_burn_window
+#print axioms PlasmaLean.Transport.le_of_isLowerBarrier
+#print axioms PlasmaLean.Transport.mem_Icc_of_barriers
+#print axioms PlasmaLean.Vacuum.weak_maximum_principle
+#print axioms PlasmaLean.Vacuum.VacuumField.error_le_of_frontier
