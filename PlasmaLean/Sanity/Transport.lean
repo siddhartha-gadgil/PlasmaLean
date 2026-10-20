@@ -18,8 +18,10 @@ public import Mathlib.Tactic.FieldSimp
 
 Checks for `PlasmaLean.Kernel.Transport`:
 
-* the expanded operator agrees with the divergence form `(1/V')(V' D f')' + R`
-  (`op_divergence_form`);
+* the expanded operator agrees with the divergence form `(1/V')(V' D(ψ,f) f')' + R`
+  (`op_divergence_form`), given the chain rule for `ψ ↦ D(ψ, f ψ)`, which holds e.g. for
+  separable `D(ψ,T) = a(ψ) b(T)` (`hasDerivAt_separable`); semilinear coefficients have the
+  old operator (`semilinear_divergence_form`);
 * with `V'` constant, `D` uniform and `R = 0` the kernel equation is the classical heat equation
   (`op_uniform`, `heat_equation_of_uniform`);
 * a constant profile at a zero of `R` is a steady classical solution (`constField_solution`);
@@ -40,7 +42,13 @@ Checks for `PlasmaLean.Kernel.Transport`:
   (`cylUnit_not_uniformlyParabolic`), give `DegenerateAxis` (`cylUnit_degenerateAxis`), and
   have the exact solution `a₀ + b(t + ψ)` with nonzero axis slope
   (`linField_radialHeatTransport`, `linField_axis_slope`), which the old Neumann-only kernel
-  excluded.
+  excluded;
+* quasilinear diffusivity (kernel change K2): the coefficients `D(ψ,T) = ψ (1 + T²)`
+  (`quasiCylCoefficients`) satisfy the laws, give `DegenerateAxis` with `∂TD(0,·) = 0`
+  (`quasiCyl_degenerateAxis`), are not semilinear (`quasiCyl_not_semilinear`), and their
+  operator on a linear profile exhibits the chain-rule term `∂TD · T'²`
+  (`quasiCyl_op_linear`); the divergence form holds for every smooth profile
+  (`quasiCyl_divergence_form`).
 -/
 
 public section
@@ -51,11 +59,13 @@ namespace PlasmaLean.Transport.Sanity
 
 open Set Real
 
-/-- The expanded kernel operator is the divergence form: `(V' D f')' = V' (N[f] − R)`. -/
+/-- The expanded kernel operator is the divergence form: `(V' D(ψ,f) f')' = V' (N[f] − R)`,
+given the chain rule `d/dψ D(ψ, f ψ) = ∂ψD + ∂TD · f'` at `ψ` (kernel change K2). -/
 theorem op_divergence_form (c : RadialCoefficients) {f f' f'' : ℝ → ℝ} {ψ : ℝ}
-    (hV : HasDerivAt c.Vp (c.dVp ψ) ψ) (hD : HasDerivAt c.D (c.dD ψ) ψ)
+    (hV : HasDerivAt c.Vp (c.dVp ψ) ψ)
+    (hD : HasDerivAt (fun x => c.D x (f x)) (c.dD ψ (f ψ) + c.dDT ψ (f ψ) * f' ψ) ψ)
     (hf : HasDerivAt f' (f'' ψ) ψ) (hpos : c.Vp ψ ≠ 0) :
-    HasDerivAt (fun x => c.Vp x * c.D x * f' x)
+    HasDerivAt (fun x => c.Vp x * c.D x (f x) * f' x)
       (c.Vp ψ * (c.op ψ (f ψ) (f' ψ) (f'' ψ) - c.R ψ (f ψ))) ψ := by
   convert (hV.mul hD).mul hf using 1
   unfold RadialCoefficients.op
@@ -63,21 +73,44 @@ theorem op_divergence_form (c : RadialCoefficients) {f f' f'' : ℝ → ℝ} {ψ
   field_simp
   ring
 
-/-- With `V'' = 0`, `D' = 0` and `R = 0` at `ψ`, the operator is `D ∂ψψ`. -/
+/-- **Chain rule for separable diffusivities** `D(ψ,T) = a(ψ) b(T)`: the composite
+`ψ ↦ a(ψ) b(f ψ)` has derivative `a' b + a b' f'`, i.e. `∂ψD + ∂TD · f'`. -/
+theorem hasDerivAt_separable {a b f : ℝ → ℝ} {a' b' f' ψ : ℝ} (ha : HasDerivAt a a' ψ)
+    (hb : HasDerivAt b b' (f ψ)) (hf : HasDerivAt f f' ψ) :
+    HasDerivAt (fun x => a x * b (f x)) (a' * b (f ψ) + a ψ * b' * f') ψ := by
+  have h2 : HasDerivAt (fun x => a x * b (f x)) (a' * b (f ψ) + a ψ * (b' * f')) ψ :=
+    ha.mul (hb.comp ψ hf)
+  convert h2 using 1; ring
+
+/-- For semilinear coefficients the divergence form is the pre-K2 one,
+`(V' D f')' = V' (N[f] − R)`. -/
+theorem semilinear_divergence_form {Vp dVp D dD : ℝ → ℝ} {R : ℝ → ℝ → ℝ} {Tdom : Set ℝ}
+    {axis : AxisKind} {f f' f'' : ℝ → ℝ} {ψ : ℝ} (hV : HasDerivAt Vp (dVp ψ) ψ)
+    (hD : HasDerivAt D (dD ψ) ψ) (hf : HasDerivAt f' (f'' ψ) ψ) (hpos : Vp ψ ≠ 0) :
+    HasDerivAt (fun x => Vp x * D x * f' x)
+      (Vp ψ * ((RadialCoefficients.semilinear Vp dVp D dD R Tdom axis).op ψ (f ψ) (f' ψ)
+        (f'' ψ) - R ψ (f ψ))) ψ :=
+  op_divergence_form (RadialCoefficients.semilinear Vp dVp D dD R Tdom axis) (f := f) hV
+    (by simpa [RadialCoefficients.semilinear] using hD) hf hpos
+
+/-- With `V'' = 0`, `∂ψD = 0` and `R = 0` at `ψ`, the operator is
+`D uψψ + ∂TD uψ²` (only the curvature and, for quasilinear `D`, the chain-rule term). -/
 theorem op_uniform (c : RadialCoefficients) {ψ u uψ uψψ : ℝ} (hdV : c.dVp ψ = 0)
-    (hdD : c.dD ψ = 0) (hR : c.R ψ u = 0) : c.op ψ u uψ uψψ = c.D ψ * uψψ := by
-  simp [RadialCoefficients.op, hdV, hdD, hR]
+    (hdD : c.dD ψ u = 0) (hR : c.R ψ u = 0) :
+    c.op ψ u uψ uψψ = c.D ψ u * uψψ + c.dDT ψ u * uψ ^ 2 := by
+  simp only [RadialCoefficients.op, hdV, hdD, hR]; ring
 
 /-- Uniform diffusivity `κ`, constant volume derivative and no sources: a kernel solution
 satisfies the classical heat equation `∂ₜT = κ ∂ψψT`. -/
 theorem heat_equation_of_uniform {c : RadialCoefficients} {Tedge : ℝ → ℝ} {τ κ : ℝ}
     {u : RadialField} [hu : ClassicalRadialSolution c Tedge τ u]
-    (hdV : ∀ ψ, c.dVp ψ = 0) (hD : ∀ ψ, c.D ψ = κ) (hdD : ∀ ψ, c.dD ψ = 0)
-    (hR : ∀ ψ v, c.R ψ v = 0) :
+    (hdV : ∀ ψ, c.dVp ψ = 0) (hD : ∀ ψ T, c.D ψ T = κ) (hdD : ∀ ψ T, c.dD ψ T = 0)
+    (hdDT : ∀ ψ T, c.dDT ψ T = 0) (hR : ∀ ψ v, c.R ψ v = 0) :
     ∀ ψ ∈ Icc (0 : ℝ) 1, ∀ t ∈ Icc 0 τ, u.Tt ψ t = κ * u.Tψψ ψ t := by
   intro ψ hψ t ht
   rw [ClassicalRadialSolution.pde (c := c) (τ := τ) (u := u) Tedge ψ hψ t ht,
-    op_uniform c (hdV ψ) (hdD ψ) (hR ψ _), hD]
+    op_uniform c (hdV ψ) (hdD ψ _) (hR ψ _), hD, hdDT]
+  ring
 
 /-- The constant field with value `T₀` and vanishing derivatives. -/
 @[expose] def constField (T₀ : ℝ) : RadialField :=
@@ -102,7 +135,7 @@ theorem constField_solution (c : RadialCoefficients) {T₀ τ : ℝ} (hτ : 0 �
 `D ≥ 0` and `R ≤ 0` force the temperature not to increase. -/
 theorem rate_nonpos_of_max {c : RadialCoefficients} {Tedge : ℝ → ℝ} {τ : ℝ} {u : RadialField}
     [hu : ClassicalRadialSolution c Tedge τ u] {ψ t : ℝ} (hψ : ψ ∈ Icc (0 : ℝ) 1)
-    (ht : t ∈ Icc 0 τ) (hD : 0 ≤ c.D ψ) (hR : c.R ψ (u.T ψ t) ≤ 0)
+    (ht : t ∈ Icc 0 τ) (hD : 0 ≤ c.D ψ (u.T ψ t)) (hR : c.R ψ (u.T ψ t) ≤ 0)
     (hslope : u.Tψ ψ t = 0) (hcurv : u.Tψψ ψ t ≤ 0) : u.Tt ψ t ≤ 0 := by
   rw [ClassicalRadialSolution.pde (c := c) (τ := τ) (u := u) Tedge ψ hψ t ht]
   unfold RadialCoefficients.op
@@ -113,36 +146,38 @@ theorem rate_nonpos_of_max {c : RadialCoefficients} {Tedge : ℝ → ℝ} {τ : 
 curvature and `R ≤ 0` give `∂ₜT(0,t) ≤ 0`. -/
 theorem axis_rate_nonpos {c : RadialCoefficients} {Tedge : ℝ → ℝ} {τ : ℝ} {u : RadialField}
     [hu : ClassicalRadialSolution c Tedge τ u] (hk : c.axis = .regular) {t : ℝ}
-    (ht : t ∈ Icc 0 τ) (hD : 0 ≤ c.D 0)
+    (ht : t ∈ Icc 0 τ) (hD : 0 ≤ c.D 0 (u.T 0 t))
     (hR : c.R 0 (u.T 0 t) ≤ 0) (hcurv : u.Tψψ 0 t ≤ 0) : u.Tt 0 t ≤ 0 :=
   rate_nonpos_of_max (Tedge := Tedge) ⟨le_rfl, zero_le_one⟩ ht hD hR
     (ClassicalRadialSolution.axis (c := c) (Tedge := Tedge) (τ := τ) (u := u) hk t ht) hcurv
 
-/-- At a degenerate axis (`D(0) = 0`) the curvature does not enter: `∂ₜT(0,t) = D'(0) ∂ψT + R`,
-so a nonpositive slope, `D'(0) ≥ 0` and `R ≤ 0` give `∂ₜT(0,t) ≤ 0`. -/
+/-- At a degenerate axis (`D(0,·) = 0`, hence `∂TD(0,·) = 0`) the curvature does not enter:
+`∂ₜT(0,t) = ∂ψD(0,T) ∂ψT + R`, so a nonpositive slope, `∂ψD(0,T) ≥ 0` and `R ≤ 0` give
+`∂ₜT(0,t) ≤ 0`. -/
 theorem degenerate_axis_rate {c : RadialCoefficients} {Tedge : ℝ → ℝ} {τ : ℝ}
     {u : RadialField} [hu : ClassicalRadialSolution c Tedge τ u] {t : ℝ} (ht : t ∈ Icc 0 τ)
-    (hD0 : c.D 0 = 0) (hdD : 0 ≤ c.dD 0) (hslope : u.Tψ 0 t ≤ 0)
+    (hax : DegenerateAxis c) (hslope : u.Tψ 0 t ≤ 0)
     (hR : c.R 0 (u.T 0 t) ≤ 0) : u.Tt 0 t ≤ 0 := by
   rw [ClassicalRadialSolution.pde (c := c) (τ := τ) (u := u) Tedge 0 ⟨le_rfl, zero_le_one⟩ t ht]
   unfold RadialCoefficients.op
-  rw [hD0]
+  rw [hax.D_zero, hax.DT_zero]
   simp only [zero_mul, zero_div, add_zero, zero_add]
-  nlinarith [mul_nonpos_of_nonneg_of_nonpos hdD hslope]
+  nlinarith [mul_nonpos_of_nonneg_of_nonpos (hax.drift_nonneg (u.T 0 t)) hslope]
 
 /-- Unit coefficients: `V' = 1`, `D = 1`, no sources, source posed on all of `ℝ`, regular
 axis. -/
 @[expose] def unitCoefficients : RadialCoefficients :=
-  ⟨fun _ => 1, fun _ => 0, fun _ => 1, fun _ => 0, fun _ _ => 0, univ, .regular⟩
+  .semilinear (fun _ => 1) (fun _ => 0) (fun _ => 1) (fun _ => 0) (fun _ _ => 0) univ .regular
 
 /-- The unit coefficients satisfy the transport laws. -/
 instance : TransportLaws unitCoefficients where
   Vp_pos := fun _ _ => one_pos
   Vp_deriv := fun _ _ => hasDerivWithinAt_const _ _ _
-  D_deriv := fun _ _ => hasDerivWithinAt_const _ _ _
-  D_nonneg := fun _ _ => zero_le_one
+  D_deriv := fun _ _ _ => hasDerivWithinAt_const _ _ _
+  DT_deriv := fun _ _ T => hasDerivAt_const T _
+  D_nonneg := fun _ _ _ => zero_le_one
   D_axis := fun h => absurd h (by decide)
-  D_axis_regular := fun _ => one_pos
+  D_axis_regular := fun _ _ => one_pos
   Tdom_open := isOpen_univ
   R_cont := continuousOn_const
 
@@ -150,7 +185,7 @@ instance : TransportLaws unitCoefficients where
 law, now an optional predicate). -/
 theorem unitCoefficients_uniformlyParabolic : unitCoefficients.UniformlyParabolic 1 := by
   unfold RadialCoefficients.UniformlyParabolic
-  exact ⟨one_pos, fun _ _ => le_rfl⟩
+  exact ⟨one_pos, fun _ _ _ => le_rfl⟩
 
 /-- The separable mode `a + b e^{μt} cos(kψ)` with its exact partial derivatives. This is a
 name-preserving alias of `PlasmaLean.Transport.modeField`, which now lives in
@@ -170,7 +205,8 @@ instance cosMode_radialHeatTransport {τ : ℝ} [Fact (0 ≤ τ)] :
   tau_nonneg := Fact.out
   regular := modeField_regular _ _ _ _ _
   pde := fun ψ _ t _ => by
-    simp only [modeField, Transport.modeField, unitCoefficients, RadialCoefficients.op]
+    simp only [modeField, Transport.modeField, unitCoefficients,
+      RadialCoefficients.semilinear_op]
     ring
   axis := fun _ t _ => by simp [modeField, Transport.modeField]
   edge := fun t _ => by simp [modeField, Transport.modeField, cos_pi_div_two]
@@ -180,15 +216,16 @@ instance cosMode_radialHeatTransport {τ : ℝ} [Fact (0 ≤ τ)] :
 /-- Unit cylinder coefficients in `ψ = r²/a²` (with `4χ/a² = 1`): `V' = 1`, `D = ψ`, `D' = 1`,
 no sources, degenerate axis. Then `N[T] = ψ T'' + T'`, the cylindrical Laplacian. -/
 @[expose] def cylUnitCoefficients : RadialCoefficients :=
-  ⟨fun _ => 1, fun _ => 0, fun ψ => ψ, fun _ => 1, fun _ _ => 0, univ, .degenerate⟩
+  .semilinear (fun _ => 1) (fun _ => 0) (fun ψ => ψ) (fun _ => 1) (fun _ _ => 0) univ .degenerate
 
 /-- The unit cylinder coefficients satisfy the relaxed kernel laws (`D ≥ 0`, `D(0) = 0`). -/
 instance : TransportLaws cylUnitCoefficients where
   Vp_pos := fun _ _ => one_pos
   Vp_deriv := fun _ _ => hasDerivWithinAt_const _ _ _
-  D_deriv := fun ψ _ => (hasDerivAt_id ψ).hasDerivWithinAt
-  D_nonneg := fun _ hψ => hψ.1
-  D_axis := fun _ => rfl
+  D_deriv := fun ψ _ _ => (hasDerivAt_id ψ).hasDerivWithinAt
+  DT_deriv := fun _ _ T => hasDerivAt_const T _
+  D_nonneg := fun _ hψ _ => hψ.1
+  D_axis := fun _ _ => rfl
   D_axis_regular := fun h => absurd h (by decide)
   Tdom_open := isOpen_univ
   R_cont := continuousOn_const
@@ -197,7 +234,7 @@ instance : TransportLaws cylUnitCoefficients where
 uniformly parabolic for any floor. This is why the kernel law `D ≥ Dmin > 0` was dropped. -/
 theorem cylUnit_not_uniformlyParabolic (Dmin : ℝ) :
     ¬ cylUnitCoefficients.UniformlyParabolic Dmin := fun h =>
-  (lt_irrefl _) (h.D_axis_pos.trans_eq rfl)
+  (lt_irrefl _) ((h.D_axis_pos 0).trans_eq rfl)
 
 /-- The kernel laws yield the degenerate-axis condition `D(0) = 0`, `D'(0) ≥ 0`. -/
 theorem cylUnit_degenerateAxis : DegenerateAxis cylUnitCoefficients :=
@@ -226,12 +263,68 @@ instance linField_radialHeatTransport {τ : ℝ} [Fact (0 ≤ τ)] (a₀ b : ℝ
         have := (((hasDerivAt_id t).add_const ψ).const_mul b).const_add a₀
         simpa [linField] using this.hasDerivWithinAt }
   pde := fun ψ _ t _ => by
-    simp only [linField, cylUnitCoefficients, RadialCoefficients.op]
+    simp only [linField, cylUnitCoefficients, RadialCoefficients.semilinear_op]
     ring
   axis := fun h => absurd h (by decide)
   edge := fun t _ => rfl
 
 /-- The non-vacuity solution violates the old Neumann axis condition when `b ≠ 0`. -/
 theorem linField_axis_slope (a₀ b t : ℝ) : (linField a₀ b).Tψ 0 t = b := rfl
+
+/-! ### Quasilinear diffusivity (kernel change K2) -/
+
+/-- Quasilinear unit cylinder coefficients: `V' = 1`, `D(ψ,T) = ψ (1 + T²)`,
+`∂ψD = 1 + T²`, `∂TD = 2ψT`, no sources, degenerate axis. -/
+@[expose] def quasiCylCoefficients : RadialCoefficients :=
+  ⟨fun _ => 1, fun _ => 0, fun ψ T => ψ * (1 + T ^ 2), fun _ T => 1 + T ^ 2,
+    fun ψ T => ψ * (2 * T), fun _ _ => 0, univ, .degenerate⟩
+
+/-- The quasilinear coefficients satisfy the K2 kernel laws. -/
+instance : TransportLaws quasiCylCoefficients where
+  Vp_pos := fun _ _ => one_pos
+  Vp_deriv := fun _ _ => hasDerivWithinAt_const _ _ _
+  D_deriv := fun ψ _ T => by
+    have := (hasDerivAt_id ψ).mul_const (1 + T ^ 2)
+    simpa [quasiCylCoefficients] using this.hasDerivWithinAt
+  DT_deriv := fun ψ _ T => by
+    have := ((hasDerivAt_pow 2 T).const_add 1).const_mul ψ
+    simpa [quasiCylCoefficients] using this
+  D_nonneg := fun _ hψ T => mul_nonneg hψ.1 (by positivity)
+  D_axis := fun _ T => by simp [quasiCylCoefficients]
+  D_axis_regular := fun h => absurd h (by decide)
+  Tdom_open := isOpen_univ
+  R_cont := continuousOn_const
+
+/-- The kernel laws give the degenerate-axis condition, including `∂TD(0,·) = 0`. -/
+theorem quasiCyl_degenerateAxis : DegenerateAxis quasiCylCoefficients :=
+  TransportLaws.degenerateAxis _ rfl
+
+/-- The quasilinear coefficients are genuinely not semilinear (`D(1/2, 0) ≠ D(1/2, 1)`). -/
+theorem quasiCyl_not_semilinear : ¬ quasiCylCoefficients.IsSemilinear := fun h => by
+  have := (h (1 / 2) ⟨by norm_num, by norm_num⟩ 0 1).1
+  norm_num [quasiCylCoefficients] at this
+
+/-- **The chain-rule term.** On a linear profile `T = a + bψ` (curvature `0`) the operator is
+`(1 + T²) b + 2ψ T b²`: the second term is `∂TD · T'²`, absent in the semilinear kernel. -/
+theorem quasiCyl_op_linear (ψ a b : ℝ) :
+    quasiCylCoefficients.op ψ (a + b * ψ) b 0 =
+      (1 + (a + b * ψ) ^ 2) * b + 2 * ψ * (a + b * ψ) * b ^ 2 := by
+  simp only [quasiCylCoefficients, RadialCoefficients.op]; ring
+
+/-- **Divergence form for the quasilinear coefficients**: for every twice differentiable
+profile, `(ψ (1 + f²) f')' = N[f]` (the chain rule of `hasDerivAt_separable`). -/
+theorem quasiCyl_divergence_form {f f' f'' : ℝ → ℝ} {ψ : ℝ} (hf0 : HasDerivAt f (f' ψ) ψ)
+    (hf : HasDerivAt f' (f'' ψ) ψ) :
+    HasDerivAt (fun x => 1 * quasiCylCoefficients.D x (f x) * f' x)
+      (1 * (quasiCylCoefficients.op ψ (f ψ) (f' ψ) (f'' ψ) - 0)) ψ := by
+  have hD := hasDerivAt_separable (a := fun x => x) (b := fun T => 1 + T ^ 2) (b' := 2 * f ψ)
+    (hasDerivAt_id ψ) (by simpa using (hasDerivAt_pow 2 (f ψ)).const_add 1) hf0
+  have := op_divergence_form quasiCylCoefficients (f := f) (hasDerivAt_const ψ 1)
+    (by
+      have e : quasiCylCoefficients.dD ψ (f ψ) + quasiCylCoefficients.dDT ψ (f ψ) * f' ψ =
+          1 * (1 + f ψ ^ 2) + ψ * (2 * f ψ) * f' ψ := by
+        change (1 + f ψ ^ 2) + ψ * (2 * f ψ) * f' ψ = _; ring
+      rw [e]; exact hD) hf one_ne_zero
+  simpa [quasiCylCoefficients] using this
 
 end PlasmaLean.Transport.Sanity

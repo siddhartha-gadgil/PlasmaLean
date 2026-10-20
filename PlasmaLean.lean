@@ -113,6 +113,14 @@ public import PlasmaLean.Design.HelicalMercier
 public import PlasmaLean.Design.SolovevMercier
 public import PlasmaLean.Theory.Kinetic.AveragedTrapping
 public import PlasmaLean.Design.NearAxisQAAveraged
+public import PlasmaLean.Design.QuasilinearBarrier
+public import PlasmaLean.Design.SolovevOnePlasma
+public import PlasmaLean.Design.SolovevBand
+public import PlasmaLean.Certificates.ValidatedQuadrature
+public import PlasmaLean.Design.SolovevMercierQuadrature
+public import PlasmaLean.Design.SolovevMercierCertified
+public import PlasmaLean.Theory.Kinetic.TrappedOrbits
+public import PlasmaLean.Design.NearAxisQATrapped
 
 /-!
 # PlasmaLean public library

@@ -1,32 +1,32 @@
 {
   "updated": "2026-10-20",
-  "report": "2026-10-20-progress-5.md",
+  "report": "2026-10-20-progress-6.md",
   "status": "Exact symmetric equilibria with all-time orbit confinement · Local stability criteria · Not a coil-produced stellarator · Not a construction release.",
   "slides": [
     {
       "id": "where-we-are",
-      "eyebrow": "Progress briefing · Phase 4: near-quasisymmetry and validation",
-      "title": "Alphas held 0.11 s in a near-quasisymmetric field; a validated plasma equilibrium.",
-      "lead": "PlasmaLean is building a Lean library for stellarator design. Phase 4 proves that passing 3.5 MeV alphas stay confined for 0.11 s in a reactor-scale near-quasisymmetric field — 137× the previous bound and within ≈ 4× of the slowing-down time — and validates the first plasma equilibrium with a non-polynomial profile. It also finds that the helical test equilibrium is MHD (Mercier) unstable.",
+      "eyebrow": "Progress briefing · Phase 5: one consistent plasma",
+      "title": "One plasma: force balance, confined alphas, and a hot core — in a single field.",
+      "lead": "PlasmaLean is building a Lean library for stellarator design. Phase 5 proves, for one exact equilibrium field, that 3.5 MeV alphas born in the core stay confined for all time, that the core temperature stays at or above 10 keV for all time, and that the plasma pressure stays below what the equilibrium supports. Mercier stability of that equilibrium is certified, and near-quasisymmetric alphas are now held for 0.19 s.",
       "metrics": [
         {
-          "value": "108",
+          "value": "116",
           "label": "Lean modules"
         },
         {
-          "value": "1905",
+          "value": "2259",
           "label": "theorem/lemma declarations (grep count)"
         },
         {
-          "value": "5942",
+          "value": "7309",
           "label": "Project declarations in the last axiom audit"
         }
       ],
-      "progress": "P3: alphas confined for all time (axisymmetric) and for 0.11 s (near-QA, guiding-centre model). M3: first validated plasma equilibrium (slab). M1/M2 checked in idealized geometries.",
-      "boundary": "Near-QA alphas rely on a supplied guiding-centre model and a near-axis field accurate to expansion order; the validated equilibrium is 1-D; the helical barrier geometry is Mercier-unstable; no coil-produced stellarator or 3-D all-mode stability.",
+      "progress": "G1 and G2 are joined in one theorem (solovev_one_plasma) for an axisymmetric equilibrium; Mercier stability certified there; near-QA passing alphas 0.19 s.",
+      "boundary": "The one-plasma theorem uses a supplied transport-geometry class (proof for the actual field in progress), a driven parameter set (Q ≈ 5.5) and a rational χ stand-in; the equilibrium is axisymmetric (tokamak-like), not a stellarator; no coils, no all-mode 3-D stability.",
       "evidence": [
         {
-          "label": "Phase 4 report",
+          "label": "Phase 5 report",
           "href": "progress.html"
         },
         {
@@ -154,7 +154,7 @@
           "href": "progress.html#earlier-results-retained"
         },
         {
-          "label": "Numerical verification plan",
+          "label": "Numerical verification chapter",
           "href": "verified-numerics.html"
         }
       ]
@@ -251,8 +251,8 @@
           "kind": "checked"
         }
       ],
-      "progress": "A realistic screw pinch (a = 1 m, R₀ = 4 m, 5 T, ⟨β⟩ = 2/75) satisfies Suydam everywhere with a 25% margin, and Newcomb-reduced δW ≥ 0 is certified for every mode with 1 ≤ |m| ≤ 6 (wall at the edge).",
-      "boundary": "The δW reductions are cited source results, not formalized; modes with |m| ≥ 7, km < 0 remain uncertified. Suydam alone is necessary, not sufficient.",
+      "progress": "A realistic screw pinch (a = 1 m, R₀ = 4 m, 5 T, ⟨β⟩ = 2/75) satisfies Suydam everywhere with a 25% margin, and Newcomb-reduced δW ≥ 0 is certified for every mode with 1 ≤ |m| ≤ 6 (wall at the edge); Phase 2 extended this to every integer (m, n) with m ≠ 0 (ScrewPinchModesHighM).",
+      "boundary": "The δW reductions are cited source results, not formalized; the all-mode result is for this cylindrical screw pinch only. Suydam alone is necessary, not sufficient.",
       "evidence": [
         {
           "label": "New checked results",
@@ -290,7 +290,7 @@
         }
       ],
       "progress": "P4 now has checked smooth instances at realistic field strength and β.",
-      "boundary": "No free-boundary or coil matching, and no global stability analysis of these equilibria yet.",
+      "boundary": "No free-boundary or coil matching. Phase 4 added local (Mercier) findings — the helical equilibrium is Mercier-unstable, the Solov'ev q ≥ 2.02 — but there is no all-mode stability analysis of these equilibria yet.",
       "evidence": [
         {
           "label": "Quantitative certificates",
@@ -322,20 +322,20 @@
         },
         {
           "title": "Broken symmetry",
-          "text": "A symmetry defect δ gives confinement only for times ∝ 1/(δ|v|) — ballistic, far from slowing-down times. 3.5 MeV alphas are not covered.",
+          "text": "A symmetry defect δ gives confinement only for times ∝ 1/(δ|v|) — ballistic, far from slowing-down times. This bound does not cover 3.5 MeV alphas (see Phases 3–4).",
           "status": "Obstruction recorded",
           "kind": "next"
         }
       ],
       "progress": "P3 has checked full-orbit instances; field lines are confined by exact first integrals.",
-      "boundary": "Orbits are supplied, not constructed. Quasisymmetric toroidal stellarators need guiding-centre averaging, not yet formalized.",
+      "boundary": "Orbits are supplied, not constructed. Guiding-centre averaging for near-quasisymmetric fields was formalized later (AveragedTrapping: passing alphas for 0.11 s in a supplied guiding-centre model); all-time confinement without exact symmetry is not proved.",
       "evidence": [
         {
           "label": "Obstruction & numbers",
           "href": "progress.html#quantitative-certificates"
         },
         {
-          "label": "Particles & transport plan",
+          "label": "Particles & transport chapter",
           "href": "particles-and-transport.html"
         }
       ]
@@ -372,7 +372,7 @@
         }
       ],
       "progress": "Reusable mathematics now spans fields, equilibria, local stability and symmetric confinement. No practical build or energization specification has been released.",
-      "boundary": "Finite-pressure equilibrium, all-mode MHD, transport and reactor engineering are separate later obligations, not implied by a vacuum demonstrator.",
+      "boundary": "Finite-pressure equilibrium, all-mode MHD, transport and reactor engineering are separate obligations, not implied by a vacuum demonstrator; so far they are checked only in idealized symmetric models (slides 7–13).",
       "evidence": [
         {
           "label": "Device work packages",
@@ -464,7 +464,7 @@
         }
       ],
       "progress": "14 new modules. Reviews found no soundness bugs and led to guards for shearless Mercier surfaces, a non-vacuity witness for the obstruction, and clarified χ normalization and corner compatibility.",
-      "boundary": "The barrier is in a straight cylinder, not a stellarator geometry; χ and density are prescribed; solutions are supplied. The kernel's D ≥ D_min > 0 had to be bypassed at the axis — to be relaxed next.",
+      "boundary": "The barrier is in a straight cylinder, not a stellarator geometry; χ and density are prescribed; solutions are supplied. The kernel's D ≥ D_min > 0 had to be bypassed at the axis; Phase 3 relaxed the kernel to D ≥ 0 with a degenerate axis, making the cylinder a direct kernel instance.",
       "evidence": [
         {
           "label": "New checked results",
@@ -512,7 +512,7 @@
         }
       ],
       "progress": "15 new modules and a recorded kernel change. Three review passes: pressure consistency of the barrier, a finite-time Boozer orbit structure, a kernel law excluding vacuous regular axes, and non-vacuity witnesses.",
-      "boundary": "The alpha theorem is for an axisymmetric equilibrium; near-quasisymmetric fields reach only 0.8 ms so far. Flux-surface averages, scaling laws, reactivity and solutions are supplied. No coil-produced configuration.",
+      "boundary": "The alpha theorem is for an axisymmetric equilibrium; near-quasisymmetric fields reached only 0.8 ms in this phase (0.11 s in Phase 4). Flux-surface averages, scaling laws, reactivity and solutions are supplied. No coil-produced configuration.",
       "evidence": [
         {
           "label": "New checked results",
@@ -577,34 +577,82 @@
       ]
     },
     {
+      "id": "one-plasma",
+      "eyebrow": "14 · Phase 5: one consistent plasma",
+      "title": "Confinement and heat, proved for the same plasma.",
+      "lead": "solovev_one_plasma: one exact field satisfying J × B = ∇p; every 3.5 MeV alpha born in the core stays inside forever; every solution of the transport law starting in a certified band keeps a ≥ 10 keV core forever; and the plasma pressure never exceeds the equilibrium pressure plus an edge offset.",
+      "cards": [
+        {
+          "title": "One plasma",
+          "text": "Same field, same pressure, same domain s ≤ 1 for force balance, alpha confinement and the transport band. Driven (≈ 120 MW aux, Q ≈ 5.5); transport geometry via a supplied class.",
+          "status": "Lean verified (geometry supplied)",
+          "kind": "partial"
+        },
+        {
+          "title": "Temperature-dependent χ (K2)",
+          "text": "The kernel now allows D(ψ,T); comparison theorems extend and upper barriers are proved directly. A cylinder band keeps 10 keV ≤ T ≤ 23.5 keV in the core.",
+          "status": "Lean verified",
+          "kind": "checked"
+        },
+        {
+          "title": "Mercier stability certified",
+          "text": "The exact axisymmetric Mercier index of the reactor Solov'ev equilibrium is positive on every flux surface (validated quadrature, 3–6% margins); a genuine magnetic well is proved.",
+          "status": "Lean verified (index formula supplied)",
+          "kind": "checked"
+        },
+        {
+          "title": "Near-QA alphas: 0.19 s",
+          "text": "Proof-term certificates cut the build from 349 s to 59 s and extended passing-alpha confinement from 0.11 s to 0.19 s — about half the slowing-down time. Trapped alphas: single-well and bounce-sum lemmas.",
+          "status": "Lean verified (GC model)",
+          "kind": "checked"
+        }
+      ],
+      "progress": "8 new modules and kernel change K2. A sub-agent report that claimed non-existent geometry lemmas was caught at integration; every cited declaration is now grep-checked.",
+      "boundary": "Supplied geometry class (being proved), driven parameters, χ stand-in, axisymmetric equilibrium, supplied solutions; near-QA results rest on the guiding-centre model.",
+      "evidence": [
+        {
+          "label": "New checked results",
+          "href": "progress.html#new-checked-results"
+        },
+        {
+          "label": "Quantitative certificates",
+          "href": "progress.html#quantitative-certificates"
+        },
+        {
+          "label": "Corrections",
+          "href": "progress.html#corrections-and-challenged-claims"
+        }
+      ]
+    },
+    {
       "id": "implementation-plan",
-      "eyebrow": "14 · Plan of record",
+      "eyebrow": "15 · Plan of record",
       "title": "Theory, techniques and a ladder of models — for confinement and for heat.",
       "lead": "Each cycle develops theory, turns theorems into sound certificate checkers, and applies them to the next rung of a model ladder. Every rung must prove properties of both kinds: confinement (G1) and temperature held above burn conditions (G2).",
       "cards": [
         {
           "title": "Theory tracks",
-          "text": "Maximum principle for vacuum fields; Sturm/ballooning; parabolic comparison and transport barriers; 0-D power balance; discrete energy (SBP); radii-polynomial validation; island widths/KAM; guiding centre and maximum-J; commuted energy.",
-          "status": "Planned",
-          "kind": "next"
+          "text": "Done in Lean: vacuum maximum principle (T1); Sturm/ballooning/Mercier (T2); parabolic comparison and barriers (T3, semilinear); 0-D power balance (T4); SBP discrete energy (T5); radii-polynomial validation, 1-D (T6); guiding centre and averaging (T8). Open: quasilinear D(T), 2-D validation, island widths/KAM (T7), bounce action J_∥, commuted energy (T9).",
+          "status": "Most tracks partly done",
+          "kind": "partial"
         },
         {
           "title": "Model ladder",
           "text": "M0 exact symmetric equilibria (done) → M1 0-D burning plasma → M2 radial transport on the exact geometries → M3 validated toroidal equilibrium → M4 near-axis quasisymmetry → M5 coil-produced 3-D field → M6 integrated candidate.",
           "status": "M0–M2 checked (idealized); M3 (slab) and M4 (0.11 s) in progress",
-          "kind": "next"
+          "kind": "partial"
         },
         {
           "title": "Corrections first",
           "text": "Four corrections to recent notes. Vacuum |B| has no interior maximum (minima are possible). The flux-surface line bundle is flat. 2-D ideal-MHD regularity is open. Contracts no theorem produces are vacuous.",
           "status": "Applied to the notes",
-          "kind": "next"
+          "kind": "checked"
         },
         {
           "title": "Proof engineering",
           "text": "A new skill: grind and fun_induction for short proofs, bv_decide only when no native axiom results, and large certificates built as explicit proof terms (the SubsetSum pattern).",
-          "status": "Skill added",
-          "kind": "next"
+          "status": "Skill added; 6 min rewrite pending",
+          "kind": "partial"
         }
       ],
       "progress": "Phases 1–4 met their acceptance criteria in idealized models. The plan's status marks and progress log are updated after each phase.",
@@ -622,9 +670,9 @@
     },
     {
       "id": "next-run",
-      "eyebrow": "15 · Keep every step reviewable",
+      "eyebrow": "16 · Keep every step reviewable",
       "title": "The next run must leave evidence, not just a promise.",
-      "lead": "Next (Phase 5): one consistent plasma — a Solov'ev equilibrium with alpha confinement and a two-sided transport barrier whose pressure stays below the equilibrium's (needs a T-dependent diffusivity); certified Solov'ev Mercier index; faster certificates; near-QA alphas toward slowing-down time; 2-D validated equilibria.",
+      "lead": "Next (Phase 6): prove the Solov'ev transport-geometry class for the actual field; an ignited one-plasma parameter set; ballooning on Solov'ev surfaces; the trapped-alpha bounce kick form; toward validated 3-D / near-axis stellarator equilibria.",
       "cards": [
         {
           "title": "Implement & challenge",

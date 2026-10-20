@@ -19,9 +19,32 @@ public import Mathlib.Topology.Order.DenselyOrdered
 # Parabolic comparison for radial heat transport
 
 Source: the classical first-touching (Nagumo) argument for parabolic comparison, as specified
-in `notes/pde-bounds-and-verification-roadmap.md` §4 (Stage 3), applied to the semilinear
-radial operator of `PlasmaLean.Kernel.Transport`. All solutions are *supplied* classical
-solutions; no existence theorem is claimed.
+in `notes/pde-bounds-and-verification-roadmap.md` §4 (Stage 3), applied to the (since kernel
+change K2, quasilinear) radial operator of `PlasmaLean.Kernel.Transport`. All solutions are
+*supplied* classical solutions; no existence theorem is claimed.
+
+## Quasilinear diffusivity (kernel change K2)
+
+For `N[T] = (1/V')∂ψ(V' D(ψ,T) ∂ψT) + R` the expanded operator is
+`D(ψ,u) uψψ + (∂ψD(ψ,u) + ∂TD(ψ,u) uψ + D(ψ,u) V''/V') uψ + R(ψ,u)`. At a first touching point
+of `u` and `S` (interior zero minimum of `u − S`) the values and slopes coincide, so
+`D(ψ,u)`, `∂ψD(ψ,u)` and the quasilinear term `∂TD(ψ,u)·uψ` are *the same* for both, and
+`N[u] − N[S] = D(ψ,u)(uψψ − Sψψ) ≥ 0` (`first_crossing`, `op_le_op_of_touch_interior`). At a
+regular axis the Neumann condition makes both slopes `0`; at a degenerate axis `D(0,·) ≡ 0`
+forces `∂TD(0,·) = 0` and only the drift `∂ψD(0,u)(uψ − Sψ) ≥ 0` remains
+(`op_le_op_of_touch_axis`). Hence the strict comparison theorems hold verbatim with `D ≥ 0`
+at every temperature.
+
+What does change is the margin argument (non-strict data): it shifts the barrier by a
+constant `δ`, which changes the value argument of `D`, `∂ψD`, `∂TD` as well as of `R`. The
+margin theorems therefore assume `OpShiftControl` (continuity of the operator along the
+profile in the value argument), which holds automatically for semilinear coefficients
+(`IsSemilinear.opShiftControl`) and for quasilinear ones whenever `(ψ,T) ↦ N` along the
+profile is jointly continuous (`opShiftControl_of_continuousOn`). The lower and **upper**
+margin theorems `le_of_lowerMargin_shift`, `le_of_upperMargin_shift` are proved *directly*
+from the kernel-level residual comparison `lt_of_residual_lt_kernel` (both axis kinds), not
+through the mirror `T ↦ −T` (which nevertheless survives K2: `∂TD` flips sign,
+`RadialCoefficients.neg`).
 
 ## Main results
 
@@ -38,8 +61,10 @@ solutions; no existence theorem is claimed.
   `le_of_isStrictLowerBarrier_margin` (strict subsolution with a uniform margin; edge and initial
   data only non-strict; uses only continuity of `R`), and `le_of_isLowerBarrier` (non-strict
   subsolution; needs a one-sided Lipschitz bound on `R`, via an `ε e^{λt}` perturbation).
-* Mirror upper-barrier theorems (by the symmetry `T ↦ −T`, `R(ψ,v) ↦ −R(ψ,−v)`) and the
-  two-sided corollaries `mem_Icc_of_barriers*`.
+* Mirror upper-barrier theorems (by the symmetry `T ↦ −T`, `R(ψ,v) ↦ −R(ψ,−v)`,
+  `D(ψ,v) ↦ D(ψ,−v)`) and the two-sided corollaries `mem_Icc_of_barriers*`. The theorems that
+  shift by constants or use the one-sided Lipschitz bound on `R` take an `IsSemilinear`
+  hypothesis; their quasilinear counterparts are the `*_shift` theorems.
 * Sanity: constant barriers, the degenerate case `D ≡ 0`, a formal counterexample showing that
   the sign `D ≥ 0` cannot be dropped, and a non-vacuous explicit barrier with an explicit
   decaying solution. The explicit separable solutions use `modeField` (defined here; the
@@ -137,9 +162,11 @@ theorem nonneg_of_leftPos {g : ℝ → ℝ} {s τ : ℝ} (hs : 0 < s) (hsτ : s 
 /-- **First-crossing lemma** (PDE note §4.2). At a point where the solution value, slope and
 curvature `(uT, uψ, uψψ)` touch a strict subsolution `(sT, sψ, sψψ)` from above (equal value
 and slope, larger curvature), nonnegative diffusivity forces the solution's time derivative to
-exceed the subsolution's. Only `D ≥ 0` is used. -/
+exceed the subsolution's. Only `D ≥ 0` at the touching value is used: since value and slope
+coincide, `D(ψ,u)`, `∂ψD(ψ,u)` and the quasilinear term `∂TD(ψ,u) uψ` are the same for both
+(kernel change K2). -/
 theorem first_crossing (c : RadialCoefficients) {ψ uT uψ uψψ ut sT sψ sψψ st : ℝ}
-    (hD : 0 ≤ c.D ψ) (hval : sT = uT) (hslope : sψ = uψ) (hcurv : sψψ ≤ uψψ)
+    (hD : 0 ≤ c.D ψ uT) (hval : sT = uT) (hslope : sψ = uψ) (hcurv : sψψ ≤ uψψ)
     (hpde : ut = c.op ψ uT uψ uψψ) (hstrict : st < c.op ψ sT sψ sψψ) : st < ut := by
   subst hval hslope hpde
   unfold RadialCoefficients.op at *
@@ -149,7 +176,7 @@ theorem first_crossing (c : RadialCoefficients) {ψ uT uψ uψψ ut sT sψ sψψ
 a zero minimum over `[0,1]` at `ψ = 0` and both slopes vanish there (Neumann condition), then
 `e_ψψ(0) ≥ 0`, so `∂ₜT(0) > ∂ₜS(0)` for a strict subsolution. -/
 theorem first_crossing_axis (c : RadialCoefficients) {uT uψ uψψ sT sψ sψψ : ℝ → ℝ} {ut st : ℝ}
-    (hD : 0 ≤ c.D 0)
+    (hD : 0 ≤ c.D 0 (uT 0))
     (hu : ∀ x ∈ Icc (0 : ℝ) 1, HasDerivWithinAt uT (uψ x) (Icc 0 1) x)
     (hu' : HasDerivWithinAt uψ (uψψ 0) (Icc 0 1) 0)
     (hs : ∀ x ∈ Icc (0 : ℝ) 1, HasDerivWithinAt sT (sψ x) (Icc 0 1) x)
@@ -168,7 +195,7 @@ theorem first_crossing_axis (c : RadialCoefficients) {uT uψ uψψ sT sψ sψψ 
 over `[0,1]` at `ψ₀` gives `e_ψ(ψ₀) = 0` and `e_ψψ(ψ₀) ≥ 0`, hence `∂ₜT > ∂ₜS` for a strict
 subsolution. -/
 theorem first_crossing_interior (c : RadialCoefficients) {uT uψ uψψ sT sψ sψψ : ℝ → ℝ}
-    {ψ₀ ut st : ℝ} (h0 : 0 < ψ₀) (h1 : ψ₀ < 1) (hD : 0 ≤ c.D ψ₀)
+    {ψ₀ ut st : ℝ} (h0 : 0 < ψ₀) (h1 : ψ₀ < 1) (hD : 0 ≤ c.D ψ₀ (uT ψ₀))
     (hu : ∀ x ∈ Icc (0 : ℝ) 1, HasDerivWithinAt uT (uψ x) (Icc 0 1) x)
     (hu' : HasDerivWithinAt uψ (uψψ ψ₀) (Icc 0 1) ψ₀)
     (hs : ∀ x ∈ Icc (0 : ℝ) 1, HasDerivWithinAt sT (sψ x) (Icc 0 1) x)
@@ -194,14 +221,17 @@ theorem first_crossing_interior (c : RadialCoefficients) {uT uψ uψψ sT sψ s�
 
 /-! ### Degenerate axis -/
 
-/-- **Degenerate (Fichera) axis condition**: the diffusivity vanishes at the axis and the
-drift coefficient `D'(0)` there is nonnegative, so that no axis boundary condition is needed.
-Holds for `D(ψ) = χ ⟨|∇ψ|²⟩` in the normalized toroidal flux coordinate. -/
+/-- **Degenerate (Fichera) axis condition**: the diffusivity vanishes at the axis (at every
+temperature), the drift coefficient `∂ψD(0,T)` there is nonnegative, and the quasilinear
+coefficient `∂TD(0,T)` vanishes, so that no axis boundary condition is needed. Holds for
+`D(ψ,T) = χ(T) ⟨|∇ψ|²⟩` in the normalized toroidal flux coordinate. -/
 structure DegenerateAxis (c : RadialCoefficients) : Prop where
-  /-- `D(0) = 0`. -/
-  D_zero : c.D 0 = 0
-  /-- `D'(0) ≥ 0`. -/
-  drift_nonneg : 0 ≤ c.dD 0
+  /-- `D(0,T) = 0`. -/
+  D_zero : ∀ T : ℝ, c.D 0 T = 0
+  /-- `∂ψD(0,T) ≥ 0`. -/
+  drift_nonneg : ∀ T : ℝ, 0 ≤ c.dD 0 T
+  /-- `∂TD(0,T) = 0` (K2; automatic when `D(0,·) ≡ 0` is differentiable). -/
+  DT_zero : ∀ T : ℝ, c.dDT 0 T = 0
 
 /-- First-derivative test at a left endpoint: if `f` attains its minimum over `[a,b]` at `a`
 and has derivative `f'` there within `[a,b]`, then `f' ≥ 0`. -/
@@ -216,16 +246,23 @@ theorem deriv_nonneg_of_leftEndMin {f : ℝ → ℝ} {f' a b : ℝ} (hab : a < b
   rw [slope_def_field]
   exact div_nonneg (by linarith [hmin x (Ioc_subset_Icc_self hx)]) (by linarith [hx.1])
 
-/-- Under the kernel laws a `degenerate` axis satisfies `DegenerateAxis`: `D(0) = 0` is a law,
-and `D'(0) ≥ 0` follows because `D ≥ 0` attains its minimum `0` at the left end `ψ = 0`. -/
+/-- Under the kernel laws a `degenerate` axis satisfies `DegenerateAxis`: `D(0,·) = 0` is a
+law, `∂ψD(0,T) ≥ 0` follows because `D(·,T) ≥ 0` attains its minimum `0` at the left end
+`ψ = 0`, and `∂TD(0,T) = 0` is the derivative of the zero function `D(0,·)`. -/
 theorem TransportLaws.degenerateAxis (c : RadialCoefficients) [h : TransportLaws c]
-    (hk : c.axis = .degenerate) : DegenerateAxis c :=
-  ⟨h.D_axis hk, deriv_nonneg_of_leftEndMin zero_lt_one (h.D_deriv 0 ⟨le_rfl, zero_le_one⟩)
-    (fun x hx => by rw [h.D_axis hk]; exact h.D_nonneg x hx)⟩
+    (hk : c.axis = .degenerate) : DegenerateAxis c := by
+  refine ⟨h.D_axis hk, fun T => deriv_nonneg_of_leftEndMin zero_lt_one
+    (h.D_deriv 0 ⟨le_rfl, zero_le_one⟩ T)
+    (fun x hx => by rw [h.D_axis hk]; exact h.D_nonneg x hx T), fun T => ?_⟩
+  have h0 : c.D 0 = fun _ => 0 := funext (h.D_axis hk)
+  have hd := h.DT_deriv 0 ⟨le_rfl, zero_le_one⟩ T
+  rw [h0] at hd
+  exact hd.unique (hasDerivAt_const T 0)
 
 /-- **Touching at a degenerate axis.** If `u − S` has a zero minimum over `[0,1]` at `ψ = 0`,
-then `N[S](0) ≤ N[u](0)`: the curvature term is switched off by `D(0) = 0`, and the drift
-term has the right sign because the one-sided slope of `u − S` is `≥ 0`. -/
+then `N[S](0) ≤ N[u](0)`: the curvature term is switched off by `D(0,·) = 0`, the
+quasilinear term by `∂TD(0,·) = 0`, and the drift term has the right sign because the
+one-sided slope of `u − S` is `≥ 0`. -/
 theorem op_le_op_of_touch_axis (c : RadialCoefficients) (hax : DegenerateAxis c)
     {uT sT : ℝ → ℝ} {uψ sψ uψψ sψψ : ℝ}
     (hu : HasDerivWithinAt uT uψ (Icc 0 1) 0) (hs : HasDerivWithinAt sT sψ (Icc 0 1) 0)
@@ -235,9 +272,9 @@ theorem op_le_op_of_touch_axis (c : RadialCoefficients) (hax : DegenerateAxis c)
     deriv_nonneg_of_leftEndMin (f := fun x => uT x - sT x) zero_lt_one (hu.sub hs)
       (fun x hx => by simp only [hzero, sub_self]; exact hmin x hx)
   unfold RadialCoefficients.op
-  rw [hax.D_zero, hzero]
+  rw [hzero, hax.D_zero, hax.DT_zero]
   simp only [zero_mul, zero_div, add_zero, zero_add]
-  nlinarith [mul_nonneg hax.drift_nonneg hslope]
+  nlinarith [mul_nonneg (hax.drift_nonneg (sT 0)) hslope]
 
 /-! ### Strict comparison with a time-dependent strict subsolution -/
 
@@ -257,7 +294,7 @@ solution that starts strictly above a strict subsolution and stays strictly abov
 edge stays strictly above it on all of `[0,1] × [0,τ]`. Only `D ≥ 0` on `[0,1]` is assumed
 (degenerate diffusion is allowed), plus `DegenerateAxis` if the axis is `degenerate`. -/
 theorem lt_of_strictSubsolution {c : RadialCoefficients} {Tedge : ℝ → ℝ} {τ : ℝ}
-    {u S : RadialField} (hD : ∀ ψ ∈ Icc (0 : ℝ) 1, 0 ≤ c.D ψ)
+    {u S : RadialField} (hD : ∀ ψ ∈ Icc (0 : ℝ) 1, ∀ T : ℝ, 0 ≤ c.D ψ T)
     (hax : c.axis = .degenerate → DegenerateAxis c)
     (hu : ClassicalRadialSolution c Tedge τ u) (hS : StrictSubsolution c τ S)
     (h0 : ∀ ψ ∈ Icc (0 : ℝ) 1, S.T ψ 0 < u.T ψ 0)
@@ -310,7 +347,7 @@ theorem lt_of_strictSubsolution {c : RadialCoefficients} {Tedge : ℝ → ℝ} {
   have hcross : S.Tt ψs ts < u.Tt ψs ts := by
     rcases hψs.1.lt_or_eq with h | h
     · exact first_crossing_interior c (uψψ := fun x => u.Tψψ x ts)
-        (sψψ := fun x => S.Tψψ x ts) h hψs1 (hD ψs hψs) (hu.regular.deriv_ψ ts hts)
+        (sψψ := fun x => S.Tψψ x ts) h hψs1 (hD ψs hψs _) (hu.regular.deriv_ψ ts hts)
         (hu.regular.deriv_ψψ ts hts ψs hψs) (hS.regular.deriv_ψ ts hts)
         (hS.regular.deriv_ψψ ts hts ψs hψs) hmin hzero (hu.pde ψs hψs ts hts)
         (hS.strict ψs hψs ts hts)
@@ -318,7 +355,7 @@ theorem lt_of_strictSubsolution {c : RadialCoefficients} {Tedge : ℝ → ℝ} {
       cases hk : c.axis with
       | regular =>
         exact first_crossing_axis c (uψψ := fun x => u.Tψψ x ts)
-          (sψψ := fun x => S.Tψψ x ts) (hD 0 hψs) (hu.regular.deriv_ψ ts hts)
+          (sψψ := fun x => S.Tψψ x ts) (hD 0 hψs _) (hu.regular.deriv_ψ ts hts)
           (hu.regular.deriv_ψψ ts hts 0 hψs) (hS.regular.deriv_ψ ts hts)
           (hS.regular.deriv_ψψ ts hts 0 hψs) hmin hzero (hu.axis hk ts hts) (hS.axis hk ts hts)
           (hu.pde 0 hψs ts hts) (hS.strict 0 hψs ts hts)
@@ -429,11 +466,6 @@ theorem lt_of_isStrictLowerBarrier {c : RadialCoefficients} {Tedge : ℝ → ℝ
     ∀ ψ ∈ Icc (0 : ℝ) 1, ∀ t ∈ Icc 0 τ, f ψ < u.T ψ t :=
   RadialHeatTransport.lt_of_strictSubsolution (hf.strictSubsolution τ) h0 h1
 
-/-- Changing only the value argument of the operator changes it by the change of `R`. -/
-theorem RadialCoefficients.op_sub_op (c : RadialCoefficients) (ψ a a' b d : ℝ) :
-    c.op ψ a b d - c.op ψ a' b d = c.R ψ a - c.R ψ a' := by
-  unfold RadialCoefficients.op; ring
-
 /-- A positive lower bound for a continuous positive function on `[0,1]` (compactness). Use it
 to obtain the margin required by `le_of_isStrictLowerBarrier_margin` when `ψ ↦ N[f](ψ)` is
 known to be continuous. -/
@@ -441,6 +473,41 @@ theorem exists_margin_of_continuousOn {g : ℝ → ℝ} (hg : ContinuousOn g (Ic
     (hpos : ∀ ψ ∈ Icc (0 : ℝ) 1, 0 < g ψ) : ∃ κ > 0, ∀ ψ ∈ Icc (0 : ℝ) 1, κ ≤ g ψ := by
   obtain ⟨x, hx, hmin⟩ := isCompact_Icc.exists_isMinOn (nonempty_Icc.2 zero_le_one) hg
   exact ⟨g x, hpos x hx, fun ψ hψ => hmin hψ⟩
+
+/-- Compactness step for the margin theorems, for an arbitrary function `Φ(ψ,T)`: a profile
+`f` continuous on `[0,1]` with values in an open set `U`, and `Φ` continuous on `[0,1] × U`,
+give `δ₀ > 0` such that every shift `f ψ + s` with `|s| < δ₀` stays in `U` and changes
+`Φ(ψ, f ψ)` by less than `κ`. -/
+theorem exists_shift_control_fun {f : ℝ → ℝ} (hfc : ContinuousOn f (Icc 0 1)) {U : Set ℝ}
+    (hU : IsOpen U) {Φ : ℝ → ℝ → ℝ}
+    (hΦ : ContinuousOn (fun p : ℝ × ℝ => Φ p.1 p.2) (Icc 0 1 ×ˢ U))
+    (hfU : ∀ ψ ∈ Icc (0 : ℝ) 1, f ψ ∈ U) {κ : ℝ} (hκ : 0 < κ) :
+    ∃ δ₀ > 0, ∀ s : ℝ, |s| < δ₀ → ∀ ψ ∈ Icc (0 : ℝ) 1,
+      f ψ + s ∈ U ∧ |Φ ψ (f ψ + s) - Φ ψ (f ψ)| < κ := by
+  have hK : IsCompact (f '' Icc 0 1) := isCompact_Icc.image_of_continuousOn hfc
+  obtain ⟨γ, hγ, hγU⟩ := hK.exists_cthickening_subset_open hU (by
+    rintro _ ⟨ψ, hψ, rfl⟩; exact hfU ψ hψ)
+  have hC : IsCompact (Metric.cthickening γ (f '' Icc 0 1)) := hK.cthickening
+  have hRuc : UniformContinuousOn (fun p : ℝ × ℝ => Φ p.1 p.2)
+      (Icc (0 : ℝ) 1 ×ˢ Metric.cthickening γ (f '' Icc 0 1)) :=
+    (isCompact_Icc.prod hC).uniformContinuousOn_of_continuous
+      (hΦ.mono (prod_mono subset_rfl hγU))
+  rw [Metric.uniformContinuousOn_iff] at hRuc
+  obtain ⟨δ0, hδ0, hδ⟩ := hRuc κ hκ
+  have hmem : ∀ ψ ∈ Icc (0 : ℝ) 1, ∀ s : ℝ, |s| ≤ γ →
+      f ψ + s ∈ Metric.cthickening γ (f '' Icc 0 1) := fun ψ hψ s hs =>
+    Metric.mem_cthickening_of_dist_le _ (f ψ) _ _ ⟨ψ, hψ, rfl⟩
+      (by rw [Real.dist_eq, show f ψ + s - f ψ = s by ring]; exact hs)
+  refine ⟨min δ0 γ, lt_min hδ0 hγ, fun s hs ψ hψ => ⟨hγU (hmem ψ hψ s (lt_min_iff.1 hs).2.le),
+    ?_⟩⟩
+  have hs1 := lt_min_iff.1 hs
+  have hd := hδ (ψ, f ψ + s) ⟨hψ, hmem ψ hψ s hs1.2.le⟩ (ψ, f ψ)
+    ⟨hψ, by simpa using hmem ψ hψ 0 (by simp [hγ.le])⟩
+    (by
+      rw [Prod.dist_eq, dist_self, Real.dist_eq, show f ψ + s - f ψ = s by ring,
+        max_eq_right (abs_nonneg s)]
+      exact hs1.1)
+  rwa [Real.dist_eq] at hd
 
 /-- Compactness step for the margin theorems: a regular profile `f` with values in an open set
 `U`, and `R` continuous on `[0,1] × U`, give `δ₀ > 0` such that shifting the value argument by
@@ -451,44 +518,210 @@ theorem exists_shift_control_open {c : RadialCoefficients} {f f' f'' : ℝ → �
     (hfU : ∀ ψ ∈ Icc (0 : ℝ) 1, f ψ ∈ U) {κ : ℝ} (hκ : 0 < κ) :
     ∃ δ₀ > 0, ∀ s : ℝ, |s| < δ₀ → ∀ ψ ∈ Icc (0 : ℝ) 1,
       |c.R ψ (f ψ + s) - c.R ψ (f ψ)| < κ := by
-  have hK : IsCompact (f '' Icc 0 1) := isCompact_Icc.image_of_continuousOn hf.continuousOn
-  obtain ⟨γ, hγ, hγU⟩ := hK.exists_cthickening_subset_open hU (by
-    rintro _ ⟨ψ, hψ, rfl⟩; exact hfU ψ hψ)
-  have hC : IsCompact (Metric.cthickening γ (f '' Icc 0 1)) := hK.cthickening
-  have hRuc : UniformContinuousOn (fun p : ℝ × ℝ => c.R p.1 p.2)
-      (Icc (0 : ℝ) 1 ×ˢ Metric.cthickening γ (f '' Icc 0 1)) :=
-    (isCompact_Icc.prod hC).uniformContinuousOn_of_continuous
-      (hRc.mono (prod_mono subset_rfl hγU))
-  rw [Metric.uniformContinuousOn_iff] at hRuc
-  obtain ⟨δ0, hδ0, hδ⟩ := hRuc κ hκ
-  have hmem : ∀ ψ ∈ Icc (0 : ℝ) 1, ∀ s : ℝ, |s| ≤ γ →
-      f ψ + s ∈ Metric.cthickening γ (f '' Icc 0 1) := fun ψ hψ s hs =>
-    Metric.mem_cthickening_of_dist_le _ (f ψ) _ _ ⟨ψ, hψ, rfl⟩
-      (by rw [Real.dist_eq, show f ψ + s - f ψ = s by ring]; exact hs)
-  refine ⟨min δ0 γ, lt_min hδ0 hγ, fun s hs ψ hψ => ?_⟩
-  have hs1 := lt_min_iff.1 hs
-  have hd := hδ (ψ, f ψ + s) ⟨hψ, hmem ψ hψ s hs1.2.le⟩ (ψ, f ψ)
-    ⟨hψ, by simpa using hmem ψ hψ 0 (by simp [hγ.le])⟩
-    (by
-      rw [Prod.dist_eq, dist_self, Real.dist_eq, show f ψ + s - f ψ = s by ring,
-        max_eq_right (abs_nonneg s)]
-      exact hs1.1)
-  rwa [Real.dist_eq] at hd
+  obtain ⟨δ₀, hδ₀, h⟩ := exists_shift_control_fun hf.continuousOn hU hRc hfU hκ
+  exact ⟨δ₀, hδ₀, fun s hs ψ hψ => (h s hs ψ hψ).2⟩
 
-/-- **Lower-barrier theorem with non-strict data.** If `N[f] ≥ κ > 0` on `[0,1]` (a strict
-subsolution with uniform margin), `f` takes values in the source domain `Tdom`, `f'(0) = 0`
-for a regular axis, `f(1) ≤ T_edge(t)` and `f ≤ T(·,0)`, then `f ≤ T` on `[0,1] × [0,τ]`.
-Only the kernel's continuity of `R` is used: by uniform continuity on a compact set, `f − δ`
-is a strict barrier with strict data for all small `δ > 0`. -/
-theorem le_of_isStrictLowerBarrier_margin {c : RadialCoefficients} {Tedge : ℝ → ℝ} {τ : ℝ}
+/-! ### Continuity of the operator in the value argument (needed by the margin theorems) -/
+
+/-- **Shift control along a profile**: small shifts `f + s` of the value argument change the
+operator `N` along the profile (slope `f'`, curvature `f''` fixed) uniformly little. This is
+what the margin theorems need besides the touching argument. For semilinear coefficients it
+follows from continuity of `R` (`IsSemilinear.opShiftControl`); for quasilinear coefficients
+(kernel change K2) it follows from joint continuity of `(ψ,T) ↦ N` along the profile
+(`opShiftControl_of_continuousOn`), e.g. for polynomial profiles and continuous `D`, `∂D`. -/
+def OpShiftControl (c : RadialCoefficients) (f f' f'' : ℝ → ℝ) : Prop :=
+  ∀ κ > 0, ∃ δ₀ > 0, ∀ s : ℝ, |s| < δ₀ → ∀ ψ ∈ Icc (0 : ℝ) 1,
+    |c.op ψ (f ψ + s) (f' ψ) (f'' ψ) - c.op ψ (f ψ) (f' ψ) (f'' ψ)| < κ
+
+/-- Shift control from a decomposition `N(ψ,T) = A(ψ) + Φ(ψ,T)` along the profile on
+`[0,1] × U`, with `Φ` jointly continuous, `U` open and `f ∈ U`. (`A` is arbitrary: it absorbs
+terms that need not be continuous in `ψ`.) -/
+theorem opShiftControl_of_decomp {c : RadialCoefficients} {f f' f'' : ℝ → ℝ}
+    (hfc : ContinuousOn f (Icc 0 1)) {U : Set ℝ} (hU : IsOpen U)
+    (hfU : ∀ ψ ∈ Icc (0 : ℝ) 1, f ψ ∈ U) (A : ℝ → ℝ) {Φ : ℝ → ℝ → ℝ}
+    (hΦ : ContinuousOn (fun p : ℝ × ℝ => Φ p.1 p.2) (Icc 0 1 ×ˢ U))
+    (hdec : ∀ ψ ∈ Icc (0 : ℝ) 1, ∀ T ∈ U, c.op ψ T (f' ψ) (f'' ψ) = A ψ + Φ ψ T) :
+    OpShiftControl c f f' f'' := fun κ hκ => by
+  obtain ⟨δ₀, hδ₀, h⟩ := exists_shift_control_fun hfc hU hΦ hfU hκ
+  refine ⟨δ₀, hδ₀, fun s hs ψ hψ => ?_⟩
+  obtain ⟨hmem, hlt⟩ := h s hs ψ hψ
+  rw [hdec ψ hψ _ hmem, hdec ψ hψ _ (hfU ψ hψ)]
+  simpa using hlt
+
+/-- **Quasilinear shift control**: if `(ψ,T) ↦ N(ψ, T, f'(ψ), f''(ψ))` is jointly continuous on
+`[0,1] × U` (`U` open, containing the values of `f`), the operator has shift control along
+`f`. -/
+theorem opShiftControl_of_continuousOn {c : RadialCoefficients} {f f' f'' : ℝ → ℝ}
+    (hfc : ContinuousOn f (Icc 0 1)) {U : Set ℝ} (hU : IsOpen U)
+    (hfU : ∀ ψ ∈ Icc (0 : ℝ) 1, f ψ ∈ U)
+    (hN : ContinuousOn (fun p : ℝ × ℝ => c.op p.1 p.2 (f' p.1) (f'' p.1)) (Icc 0 1 ×ˢ U)) :
+    OpShiftControl c f f' f'' :=
+  opShiftControl_of_decomp (Φ := fun ψ T => c.op ψ T (f' ψ) (f'' ψ)) hfc hU hfU (fun _ => 0) hN
+    (fun _ _ _ _ => by simp)
+
+/-- **Semilinear shift control**: for semilinear coefficients with `R` continuous on
+`[0,1] × U` and `f ∈ U`, the operator has shift control along every regular profile. -/
+theorem RadialCoefficients.IsSemilinear.opShiftControl {c : RadialCoefficients}
+    (hsl : c.IsSemilinear) {f f' f'' : ℝ → ℝ} (hf : ProfileRegular f f' f'') {U : Set ℝ}
+    (hU : IsOpen U) (hRc : ContinuousOn (fun p : ℝ × ℝ => c.R p.1 p.2) (Icc 0 1 ×ˢ U))
+    (hfU : ∀ ψ ∈ Icc (0 : ℝ) 1, f ψ ∈ U) : OpShiftControl c f f' f'' :=
+  opShiftControl_of_decomp hf.continuousOn hU hfU
+    (fun ψ => c.op ψ (f ψ) (f' ψ) (f'' ψ) - c.R ψ (f ψ)) hRc (fun ψ hψ T _ => by
+      have := hsl.op_sub_op hψ T (f ψ) (f' ψ) (f'' ψ)
+      linarith)
+
+/-! ### Comparison by residuals at the kernel level (both axis kinds, direct upper barriers) -/
+
+/-- **Touching at an interior point.** If `u − S` has a zero minimum over `[0,1]` at
+`ψ₀ ∈ (0,1)` and `D(ψ₀, u(ψ₀)) ≥ 0`, then `N[S](ψ₀) ≤ N[u](ψ₀)`. Quasilinear coefficients are
+allowed: value and slope coincide at the touching point, so only the curvature term differs. -/
+theorem op_le_op_of_touch_interior (c : RadialCoefficients) {uT uψ uψψ sT sψ sψψ : ℝ → ℝ}
+    {ψ₀ : ℝ} (h0 : 0 < ψ₀) (h1 : ψ₀ < 1) (hD : 0 ≤ c.D ψ₀ (uT ψ₀))
+    (hu : ∀ x ∈ Icc (0 : ℝ) 1, HasDerivWithinAt uT (uψ x) (Icc 0 1) x)
+    (hu' : HasDerivWithinAt uψ (uψψ ψ₀) (Icc 0 1) ψ₀)
+    (hs : ∀ x ∈ Icc (0 : ℝ) 1, HasDerivWithinAt sT (sψ x) (Icc 0 1) x)
+    (hs' : HasDerivWithinAt sψ (sψψ ψ₀) (Icc 0 1) ψ₀)
+    (hmin : ∀ x ∈ Icc (0 : ℝ) 1, 0 ≤ uT x - sT x) (hzero : uT ψ₀ = sT ψ₀) :
+    c.op ψ₀ (sT ψ₀) (sψ ψ₀) (sψψ ψ₀) ≤ c.op ψ₀ (uT ψ₀) (uψ ψ₀) (uψψ ψ₀) := by
+  have hmem : ψ₀ ∈ Icc (0 : ℝ) 1 := ⟨h0.le, h1.le⟩
+  have hloc : IsLocalMin (fun x => uT x - sT x) ψ₀ :=
+    Filter.mem_of_superset (Icc_mem_nhds h0 h1) (fun x hx => by
+      change uT ψ₀ - sT ψ₀ ≤ uT x - sT x
+      rw [hzero, sub_self]; exact hmin x hx)
+  have hslope : uψ ψ₀ - sψ ψ₀ = 0 :=
+    hloc.hasDerivAt_eq_zero (((hu ψ₀ hmem).sub (hs ψ₀ hmem)).hasDerivAt (Icc_mem_nhds h0 h1))
+  have hcurv : 0 ≤ uψψ ψ₀ - sψψ ψ₀ :=
+    secondDeriv_nonneg_of_rightMin (f := fun x => uT x - sT x) (f' := fun x => uψ x - sψ x)
+      h1 (fun x hx => ((hu x ⟨h0.le.trans hx.1, hx.2⟩).sub
+        (hs x ⟨h0.le.trans hx.1, hx.2⟩)).mono (Icc_subset_Icc h0.le le_rfl))
+      ((hu'.sub hs').mono (Icc_subset_Icc h0.le le_rfl))
+      (fun x hx => by
+        simp only [hzero, sub_self]; exact hmin x ⟨h0.le.trans hx.1, hx.2⟩) hslope
+  have hs2 : sψ ψ₀ = uψ ψ₀ := by linarith
+  rw [hzero] at hD
+  unfold RadialCoefficients.op
+  rw [hzero, hs2]
+  nlinarith [mul_le_mul_of_nonneg_left hcurv hD]
+
+/-- **Touching at a regular axis.** If `u − S` has a zero minimum over `[0,1]` at `ψ = 0` and
+both slopes vanish there (Neumann condition), then `N[S](0) ≤ N[u](0)`. -/
+theorem op_le_op_of_touch_axis_regular (c : RadialCoefficients) {uT uψ uψψ sT sψ sψψ : ℝ → ℝ}
+    (hD : 0 ≤ c.D 0 (uT 0))
+    (hu : ∀ x ∈ Icc (0 : ℝ) 1, HasDerivWithinAt uT (uψ x) (Icc 0 1) x)
+    (hu' : HasDerivWithinAt uψ (uψψ 0) (Icc 0 1) 0)
+    (hs : ∀ x ∈ Icc (0 : ℝ) 1, HasDerivWithinAt sT (sψ x) (Icc 0 1) x)
+    (hs' : HasDerivWithinAt sψ (sψψ 0) (Icc 0 1) 0)
+    (hmin : ∀ x ∈ Icc (0 : ℝ) 1, 0 ≤ uT x - sT x) (hzero : uT 0 = sT 0)
+    (huaxis : uψ 0 = 0) (hsaxis : sψ 0 = 0) :
+    c.op 0 (sT 0) (sψ 0) (sψψ 0) ≤ c.op 0 (uT 0) (uψ 0) (uψψ 0) := by
+  have hcurv : 0 ≤ uψψ 0 - sψψ 0 :=
+    secondDeriv_nonneg_of_rightMin (f := fun x => uT x - sT x) (f' := fun x => uψ x - sψ x)
+      zero_lt_one (fun x hx => (hu x hx).sub (hs x hx)) (hu'.sub hs')
+      (fun x hx => by simp only [hzero, sub_self]; exact hmin x hx) (by simp [huaxis, hsaxis])
+  rw [hzero] at hD
+  unfold RadialCoefficients.op
+  rw [hzero, huaxis, hsaxis]
+  nlinarith [mul_le_mul_of_nonneg_left hcurv hD]
+
+/-- **Comparison by residuals, kernel level** (first-touching-time argument, both axis kinds,
+quasilinear coefficients). Let `S`, `u` be regular fields on `[0,1] × [0,τ]` with
+`∂ₜS − N[S] < ∂ₜu − N[u]` pointwise, both satisfying the Neumann condition if the axis is
+`regular`. If `S < u` initially and at the edge, then `S < u` on the whole rectangle. Lower
+barriers take `S` a subsolution and `u` a solution; **upper barriers** take `S` the solution
+and `u` a supersolution, with no mirror symmetry needed. -/
+theorem lt_of_residual_lt_kernel {c : RadialCoefficients} {τ : ℝ} {u S : RadialField}
+    (hD : ∀ ψ ∈ Icc (0 : ℝ) 1, ∀ T : ℝ, 0 ≤ c.D ψ T)
+    (hax : c.axis = .degenerate → DegenerateAxis c)
+    (hu : u.Regular τ) (hS : S.Regular τ)
+    (huax : c.axis = .regular → ∀ t ∈ Icc 0 τ, u.Tψ 0 t = 0)
+    (hSax : c.axis = .regular → ∀ t ∈ Icc 0 τ, S.Tψ 0 t = 0)
+    (hres : ∀ ψ ∈ Icc (0 : ℝ) 1, ∀ t ∈ Icc 0 τ,
+      S.Tt ψ t - c.op ψ (S.T ψ t) (S.Tψ ψ t) (S.Tψψ ψ t) <
+        u.Tt ψ t - c.op ψ (u.T ψ t) (u.Tψ ψ t) (u.Tψψ ψ t))
+    (h0 : ∀ ψ ∈ Icc (0 : ℝ) 1, S.T ψ 0 < u.T ψ 0)
+    (h1 : ∀ t ∈ Icc 0 τ, S.T 1 t < u.T 1 t) :
+    ∀ ψ ∈ Icc (0 : ℝ) 1, ∀ t ∈ Icc 0 τ, S.T ψ t < u.T ψ t := by
+  set e : ℝ × ℝ → ℝ := fun p => u.T p.1 p.2 - S.T p.1 p.2 with he
+  have hecont : ContinuousOn e (Icc 0 1 ×ˢ Icc 0 τ) := hu.cont.sub hS.cont
+  set bad := (Icc (0 : ℝ) 1 ×ˢ Icc 0 τ) ∩ e ⁻¹' Iic 0 with hbad
+  have hbadc : IsCompact bad :=
+    (isCompact_Icc.prod isCompact_Icc).of_isClosed_subset
+      (hecont.preimage_isClosed_of_isClosed (isClosed_Icc.prod isClosed_Icc) isClosed_Iic)
+      inter_subset_left
+  by_contra hcon
+  push Not at hcon
+  obtain ⟨ψ0, hψ0, t0, ht0, hle⟩ := hcon
+  have hB : IsCompact (Prod.snd '' bad) := hbadc.image continuous_snd
+  have hBne : (Prod.snd '' bad).Nonempty :=
+    ⟨t0, (ψ0, t0), ⟨⟨hψ0, ht0⟩, by simp only [he, mem_preimage, mem_Iic]; linarith⟩, rfl⟩
+  obtain ⟨⟨ψs, ts⟩, ⟨⟨hψs, hts⟩, hes⟩, hsnd⟩ := hB.sInf_mem hBne
+  simp only at hsnd
+  simp only [he, mem_preimage, mem_Iic] at hes
+  have hgood : ∀ t ∈ Icc 0 τ, t < ts → ∀ ψ ∈ Icc (0 : ℝ) 1, S.T ψ t < u.T ψ t := by
+    intro t ht hlt ψ hψ
+    by_contra h
+    push Not at h
+    have : ts ≤ t := hsnd ▸ csInf_le hB.bddBelow
+      ⟨(ψ, t), ⟨⟨hψ, ht⟩, by simp only [he, mem_preimage, mem_Iic]; linarith⟩, rfl⟩
+    linarith
+  have hts0 : 0 < ts := by
+    rcases hts.1.lt_or_eq with h | h
+    · exact h
+    · subst h; linarith [h0 ψs hψs]
+  have hnonneg : ∀ ψ ∈ Icc (0 : ℝ) 1, S.T ψ ts ≤ u.T ψ ts := by
+    intro ψ hψ
+    have hcw : ContinuousWithinAt (fun t => u.T ψ t - S.T ψ t) (Icc 0 τ) ts :=
+      ((hu.deriv_t ψ hψ ts hts).sub (hS.deriv_t ψ hψ ts hts)).continuousWithinAt
+    have := nonneg_of_leftPos hts0 hts.2 hcw (fun t ht =>
+      sub_pos.2 (hgood t ⟨ht.1, ht.2.le.trans hts.2⟩ ht.2 ψ hψ))
+    linarith
+  have hzero : u.T ψs ts = S.T ψs ts := le_antisymm (by linarith) (hnonneg ψs hψs)
+  have hψs1 : ψs < 1 := by
+    rcases hψs.2.lt_or_eq with h | h
+    · exact h
+    · subst h; linarith [h1 ts hts]
+  have hmin : ∀ x ∈ Icc (0 : ℝ) 1, 0 ≤ u.T x ts - S.T x ts := fun x hx =>
+    sub_nonneg.2 (hnonneg x hx)
+  have hop : c.op ψs (S.T ψs ts) (S.Tψ ψs ts) (S.Tψψ ψs ts) ≤
+      c.op ψs (u.T ψs ts) (u.Tψ ψs ts) (u.Tψψ ψs ts) := by
+    rcases hψs.1.lt_or_eq with h | h
+    · exact op_le_op_of_touch_interior c (uψψ := fun x => u.Tψψ x ts)
+        (sψψ := fun x => S.Tψψ x ts) h hψs1 (hD ψs hψs _) (hu.deriv_ψ ts hts)
+        (hu.deriv_ψψ ts hts ψs hψs) (hS.deriv_ψ ts hts) (hS.deriv_ψψ ts hts ψs hψs) hmin hzero
+    · subst h
+      cases hk : c.axis with
+      | regular =>
+        exact op_le_op_of_touch_axis_regular c (uψψ := fun x => u.Tψψ x ts)
+          (sψψ := fun x => S.Tψψ x ts) (hD 0 hψs _) (hu.deriv_ψ ts hts)
+          (hu.deriv_ψψ ts hts 0 hψs) (hS.deriv_ψ ts hts) (hS.deriv_ψψ ts hts 0 hψs) hmin hzero
+          (huax hk ts hts) (hSax hk ts hts)
+      | degenerate =>
+        exact op_le_op_of_touch_axis c (hax hk) (hu.deriv_ψ ts hts 0 hψs)
+          (hS.deriv_ψ ts hts 0 hψs) hmin hzero
+  have hcross : S.Tt ψs ts < u.Tt ψs ts := by linarith [hres ψs hψs ts hts]
+  have htd : u.Tt ψs ts - S.Tt ψs ts ≤ 0 :=
+    deriv_nonpos_of_leftMin hts0 hts.2
+      ((hu.deriv_t ψs hψs ts hts).sub (hS.deriv_t ψs hψs ts hts))
+      (fun t ht => by
+        change u.T ψs ts - S.T ψs ts ≤ u.T ψs t - S.T ψs t
+        rw [hzero, sub_self]
+        exact (sub_pos.2 (hgood t ⟨ht.1, ht.2.le.trans hts.2⟩ ht.2 ψs hψs)).le)
+  linarith
+
+/-! ### Stationary barriers with a margin (quasilinear coefficients) -/
+
+/-- **Lower barrier with margin, quasilinear kernel.** If `N[f] ≥ κ > 0` on `[0,1]`, the
+operator has shift control along `f` (`OpShiftControl`), `f'(0) = 0` for a regular axis,
+`f(1) ≤ T_edge(t)` and `f ≤ T(·,0)`, then `f ≤ T` on `[0,1] × [0,τ]`: `f − δ` is a strict
+barrier with strict data for all small `δ > 0`. -/
+theorem le_of_lowerMargin_shift {c : RadialCoefficients} {Tedge : ℝ → ℝ} {τ : ℝ}
     {u : RadialField} [hu : RadialHeatTransport c Tedge τ u] {f f' f'' : ℝ → ℝ}
     (hf : ProfileRegular f f' f'') (haxis : c.axis = .regular → f' 0 = 0)
-    (hdom : ∀ ψ ∈ Icc (0 : ℝ) 1, f ψ ∈ c.Tdom) {κ : ℝ} (hκ : 0 < κ)
+    (hctrl : OpShiftControl c f f' f'') {κ : ℝ} (hκ : 0 < κ)
     (hmargin : ∀ ψ ∈ Icc (0 : ℝ) 1, κ ≤ c.op ψ (f ψ) (f' ψ) (f'' ψ))
     (h0 : ∀ ψ ∈ Icc (0 : ℝ) 1, f ψ ≤ u.T ψ 0) (h1 : ∀ t ∈ Icc 0 τ, f 1 ≤ Tedge t) :
     ∀ ψ ∈ Icc (0 : ℝ) 1, ∀ t ∈ Icc 0 τ, f ψ ≤ u.T ψ t := by
-  obtain ⟨δ₀, hδ₀, hctrl⟩ := exists_shift_control_open hf TransportLaws.Tdom_open
-    TransportLaws.R_cont hdom hκ
+  obtain ⟨δ₀, hδ₀, hctl⟩ := hctrl κ hκ
   have key : ∀ δ, 0 < δ → δ < δ₀ →
       ∀ ψ ∈ Icc (0 : ℝ) 1, ∀ t ∈ Icc 0 τ, f ψ - δ < u.T ψ t := by
     intro δ hδpos hδlt
@@ -498,8 +731,7 @@ theorem le_of_isStrictLowerBarrier_margin {c : RadialCoefficients} {Tedge : ℝ 
         axis := haxis
         strict := by
           intro ψ hψ
-          have hc := abs_lt.1 (hctrl (-δ) (by rw [abs_neg, abs_of_pos hδpos]; exact hδlt) ψ hψ)
-          have h2 := c.op_sub_op ψ (f ψ + -δ) (f ψ) (f' ψ) (f'' ψ)
+          have hc := abs_lt.1 (hctl (-δ) (by rw [abs_neg, abs_of_pos hδpos]; exact hδlt) ψ hψ)
           have h3 := hmargin ψ hψ
           change 0 < c.op ψ (f ψ - δ) (f' ψ) (f'' ψ)
           rw [show f ψ - δ = f ψ + -δ by ring]
@@ -511,18 +743,92 @@ theorem le_of_isStrictLowerBarrier_margin {c : RadialCoefficients} {Tedge : ℝ 
   have := key (min ε δ₀ / 2) (by positivity) (by linarith [min_le_right ε δ₀]) ψ hψ t ht
   linarith [min_le_left ε δ₀]
 
-/-- **Lower barrier with margin, for all time.** If the supplied field is a kernel solution on
-every horizon `[0,τ]`, the conclusion of `le_of_isStrictLowerBarrier_margin` holds for all
-`t ≥ 0`. -/
+/-- **Upper barrier with margin, quasilinear kernel (direct proof).** If `N[g] ≤ −κ < 0` on
+`[0,1]`, the operator has shift control along `g`, `g'(0) = 0` for a regular axis,
+`T_edge(t) ≤ g(1)` and `T(·,0) ≤ g`, then `T ≤ g` on `[0,1] × [0,τ]`. Proved directly from
+`lt_of_residual_lt_kernel` with the solution below the strict supersolution `g + δ`. -/
+theorem le_of_upperMargin_shift {c : RadialCoefficients} {Tedge : ℝ → ℝ} {τ : ℝ}
+    {u : RadialField} [hu : RadialHeatTransport c Tedge τ u] {g g' g'' : ℝ → ℝ}
+    (hg : ProfileRegular g g' g'') (haxis : c.axis = .regular → g' 0 = 0)
+    (hctrl : OpShiftControl c g g' g'') {κ : ℝ} (hκ : 0 < κ)
+    (hmargin : ∀ ψ ∈ Icc (0 : ℝ) 1, c.op ψ (g ψ) (g' ψ) (g'' ψ) ≤ -κ)
+    (h0 : ∀ ψ ∈ Icc (0 : ℝ) 1, u.T ψ 0 ≤ g ψ) (h1 : ∀ t ∈ Icc 0 τ, Tedge t ≤ g 1) :
+    ∀ ψ ∈ Icc (0 : ℝ) 1, ∀ t ∈ Icc 0 τ, u.T ψ t ≤ g ψ := by
+  obtain ⟨δ₀, hδ₀, hctl⟩ := hctrl κ hκ
+  have key : ∀ δ, 0 < δ → δ < δ₀ →
+      ∀ ψ ∈ Icc (0 : ℝ) 1, ∀ t ∈ Icc 0 τ, u.T ψ t < g ψ + δ := by
+    intro δ hδ hδlt
+    have hreg : (RadialField.stationary (fun x => g x + δ) g' g'').Regular τ :=
+      (ProfileRegular.stationary_regular
+        ⟨fun ψ hψ => (hg.deriv ψ hψ).add_const δ, hg.deriv2⟩ τ)
+    refine lt_of_residual_lt_kernel (u := RadialField.stationary (fun x => g x + δ) g' g'')
+      TransportLaws.D_nonneg (TransportLaws.degenerateAxis c) hreg hu.regular
+      (fun hk _ _ => haxis hk) hu.axis (fun ψ hψ t ht => ?_)
+      (fun ψ hψ => by change u.T ψ 0 < g ψ + δ; linarith [h0 ψ hψ])
+      (fun t ht => by change u.T 1 t < g 1 + δ; rw [hu.edge t ht]; linarith [h1 t ht])
+    have hc := abs_lt.1 (hctl δ (by rw [abs_of_pos hδ]; exact hδlt) ψ hψ)
+    have h3 := hmargin ψ hψ
+    rw [hu.pde ψ hψ t ht]
+    change _ < 0 - c.op ψ (g ψ + δ) (g' ψ) (g'' ψ)
+    linarith
+  intro ψ hψ t ht
+  refine le_of_forall_pos_lt_add (fun ε hε => ?_)
+  have := key (min ε δ₀ / 2) (by positivity) (by linarith [min_le_right ε δ₀]) ψ hψ t ht
+  linarith [min_le_left ε δ₀]
+
+/-- **Lower barrier with margin, quasilinear kernel, for all time.** -/
+theorem le_of_lowerMargin_shift_forall_time {c : RadialCoefficients} {Tedge : ℝ → ℝ}
+    {u : RadialField} (hu : ∀ τ, 0 ≤ τ → RadialHeatTransport c Tedge τ u)
+    {f f' f'' : ℝ → ℝ} (hf : ProfileRegular f f' f'') (haxis : c.axis = .regular → f' 0 = 0)
+    (hctrl : OpShiftControl c f f' f'') {κ : ℝ} (hκ : 0 < κ)
+    (hmargin : ∀ ψ ∈ Icc (0 : ℝ) 1, κ ≤ c.op ψ (f ψ) (f' ψ) (f'' ψ))
+    (h0 : ∀ ψ ∈ Icc (0 : ℝ) 1, f ψ ≤ u.T ψ 0) (h1 : ∀ t, 0 ≤ t → f 1 ≤ Tedge t) :
+    ∀ ψ ∈ Icc (0 : ℝ) 1, ∀ t, 0 ≤ t → f ψ ≤ u.T ψ t := fun ψ hψ t ht => by
+  have := hu t ht
+  exact le_of_lowerMargin_shift (τ := t) hf haxis hctrl hκ hmargin h0
+    (fun s hs => h1 s hs.1) ψ hψ t ⟨ht, le_rfl⟩
+
+/-- **Upper barrier with margin, quasilinear kernel, for all time.** -/
+theorem le_of_upperMargin_shift_forall_time {c : RadialCoefficients} {Tedge : ℝ → ℝ}
+    {u : RadialField} (hu : ∀ τ, 0 ≤ τ → RadialHeatTransport c Tedge τ u)
+    {g g' g'' : ℝ → ℝ} (hg : ProfileRegular g g' g'') (haxis : c.axis = .regular → g' 0 = 0)
+    (hctrl : OpShiftControl c g g' g'') {κ : ℝ} (hκ : 0 < κ)
+    (hmargin : ∀ ψ ∈ Icc (0 : ℝ) 1, c.op ψ (g ψ) (g' ψ) (g'' ψ) ≤ -κ)
+    (h0 : ∀ ψ ∈ Icc (0 : ℝ) 1, u.T ψ 0 ≤ g ψ) (h1 : ∀ t, 0 ≤ t → Tedge t ≤ g 1) :
+    ∀ ψ ∈ Icc (0 : ℝ) 1, ∀ t, 0 ≤ t → u.T ψ t ≤ g ψ := fun ψ hψ t ht => by
+  have := hu t ht
+  exact le_of_upperMargin_shift (τ := t) hg haxis hctrl hκ hmargin h0
+    (fun s hs => h1 s hs.1) ψ hψ t ⟨ht, le_rfl⟩
+
+/-- **Lower-barrier theorem with non-strict data** (semilinear coefficients). If `N[f] ≥ κ > 0`
+on `[0,1]` (a strict subsolution with uniform margin), `f` takes values in the source domain
+`Tdom`, `f'(0) = 0` for a regular axis, `f(1) ≤ T_edge(t)` and `f ≤ T(·,0)`, then `f ≤ T` on
+`[0,1] × [0,τ]`. Only the kernel's continuity of `R` is used (via
+`IsSemilinear.opShiftControl`); for quasilinear coefficients use `le_of_lowerMargin_shift`. -/
+theorem le_of_isStrictLowerBarrier_margin {c : RadialCoefficients} {Tedge : ℝ → ℝ} {τ : ℝ}
+    {u : RadialField} [hu : RadialHeatTransport c Tedge τ u] {f f' f'' : ℝ → ℝ}
+    (hsl : c.IsSemilinear)
+    (hf : ProfileRegular f f' f'') (haxis : c.axis = .regular → f' 0 = 0)
+    (hdom : ∀ ψ ∈ Icc (0 : ℝ) 1, f ψ ∈ c.Tdom) {κ : ℝ} (hκ : 0 < κ)
+    (hmargin : ∀ ψ ∈ Icc (0 : ℝ) 1, κ ≤ c.op ψ (f ψ) (f' ψ) (f'' ψ))
+    (h0 : ∀ ψ ∈ Icc (0 : ℝ) 1, f ψ ≤ u.T ψ 0) (h1 : ∀ t ∈ Icc 0 τ, f 1 ≤ Tedge t) :
+    ∀ ψ ∈ Icc (0 : ℝ) 1, ∀ t ∈ Icc 0 τ, f ψ ≤ u.T ψ t :=
+  le_of_lowerMargin_shift hf haxis
+    (hsl.opShiftControl hf TransportLaws.Tdom_open TransportLaws.R_cont hdom) hκ hmargin h0 h1
+
+/-- **Lower barrier with margin, for all time** (semilinear coefficients). If the supplied
+field is a kernel solution on every horizon `[0,τ]`, the conclusion of
+`le_of_isStrictLowerBarrier_margin` holds for all `t ≥ 0`. -/
 theorem le_of_isStrictLowerBarrier_margin_forall_time {c : RadialCoefficients}
     {Tedge : ℝ → ℝ} {u : RadialField} (hu : ∀ τ, 0 ≤ τ → RadialHeatTransport c Tedge τ u)
+    (hsl : c.IsSemilinear)
     {f f' f'' : ℝ → ℝ} (hf : ProfileRegular f f' f'') (haxis : c.axis = .regular → f' 0 = 0)
     (hdom : ∀ ψ ∈ Icc (0 : ℝ) 1, f ψ ∈ c.Tdom) {κ : ℝ} (hκ : 0 < κ)
     (hmargin : ∀ ψ ∈ Icc (0 : ℝ) 1, κ ≤ c.op ψ (f ψ) (f' ψ) (f'' ψ))
     (h0 : ∀ ψ ∈ Icc (0 : ℝ) 1, f ψ ≤ u.T ψ 0) (h1 : ∀ t, 0 ≤ t → f 1 ≤ Tedge t) :
     ∀ ψ ∈ Icc (0 : ℝ) 1, ∀ t, 0 ≤ t → f ψ ≤ u.T ψ t := fun ψ hψ t ht => by
   have := hu t ht
-  exact le_of_isStrictLowerBarrier_margin (τ := t) hf haxis hdom hκ hmargin h0
+  exact le_of_isStrictLowerBarrier_margin (τ := t) hsl hf haxis hdom hκ hmargin h0
     (fun s hs => h1 s hs.1) ψ hψ t ⟨ht, le_rfl⟩
 
 /-- One-sided Lipschitz bound for the net source on `[0,1]`:
@@ -550,12 +856,12 @@ theorem ProfileRegular.expShift_regular {f f' f'' : ℝ → ℝ} (h : ProfileReg
     change -(ε * (μ * Real.exp (μ * t))) = _
     ring
 
-/-- **Non-strict lower-barrier theorem** (`ε e^{μt}` argument). If `R` is one-sided Lipschitz,
-`N[f] ≥ 0`, `f'(0) = 0`, `f(1) ≤ T_edge(t)` and `f ≤ T(·,0)`, then `f ≤ T` on
-`[0,1] × [0,τ]`. -/
+/-- **Non-strict lower-barrier theorem** (`ε e^{μt}` argument, semilinear coefficients). If
+`R` is one-sided Lipschitz, `N[f] ≥ 0`, `f'(0) = 0`, `f(1) ≤ T_edge(t)` and `f ≤ T(·,0)`, then
+`f ≤ T` on `[0,1] × [0,τ]`. -/
 theorem le_of_isLowerBarrier {c : RadialCoefficients} {Tedge : ℝ → ℝ} {τ : ℝ}
     {u : RadialField} [hu : RadialHeatTransport c Tedge τ u] {f f' f'' : ℝ → ℝ} {K : ℝ}
-    (hK : OneSidedLipschitz c K) (hf : IsLowerBarrier c f f' f'')
+    (hsl : c.IsSemilinear) (hK : OneSidedLipschitz c K) (hf : IsLowerBarrier c f f' f'')
     (h0 : ∀ ψ ∈ Icc (0 : ℝ) 1, f ψ ≤ u.T ψ 0) (h1 : ∀ t ∈ Icc 0 τ, f 1 ≤ Tedge t) :
     ∀ ψ ∈ Icc (0 : ℝ) 1, ∀ t ∈ Icc 0 τ, f ψ ≤ u.T ψ t := by
   intro ψ hψ t ht
@@ -574,7 +880,7 @@ theorem le_of_isLowerBarrier {c : RadialCoefficients} {Tedge : ℝ → ℝ} {τ 
           have hεE : 0 < ε * Real.exp (μ * s) := mul_pos hε hE
           have hL := hK x hx (f x - ε * Real.exp (μ * s)) (f x) (by linarith)
           rw [show f x - (f x - ε * Real.exp (μ * s)) = ε * Real.exp (μ * s) by ring] at hL
-          have hop := c.op_sub_op x (f x - ε * Real.exp (μ * s)) (f x) (f' x) (f'' x)
+          have hop := hsl.op_sub_op hx (f x - ε * Real.exp (μ * s)) (f x) (f' x) (f'' x)
           have hn := hf.nonneg x hx
           have hlt : K * (ε * Real.exp (μ * s)) < μ * (ε * Real.exp (μ * s)) :=
             mul_lt_mul_of_pos_right hKμ hεE
@@ -593,13 +899,25 @@ theorem le_of_isLowerBarrier {c : RadialCoefficients} {Tedge : ℝ → ℝ} {τ 
   rw [div_mul_cancel₀ _ (Real.exp_pos _).ne'] at this
   linarith
 
-/-! ### Upper barriers by the symmetry `T ↦ −T` -/
+/-! ### Upper barriers by the symmetry `T ↦ −T`
 
-/-- Mirrored coefficients: the net source `R(ψ,v)` becomes `−R(ψ,−v)` and the source domain
-`Tdom` becomes `−Tdom`; all other data are unchanged. `T` solves the problem for `c` iff `−T`
-solves it for `c.neg`. -/
+The mirror trick survives kernel change K2: under `T ↦ −T` the diffusivity becomes
+`D(ψ,−v)`, `∂ψD(ψ,−v)`, and the quasilinear coefficient flips sign, `−∂TD(ψ,−v)`, so the
+operator stays odd (`RadialCoefficients.op_neg`). The margin upper-barrier theorems are
+nevertheless proved directly (`le_of_upperMargin_shift`), without the mirror. -/
+
+/-- Mirrored coefficients: `D(ψ,v)` becomes `D(ψ,−v)` (with `∂ψD(ψ,−v)` and `−∂TD(ψ,−v)`), the
+net source `R(ψ,v)` becomes `−R(ψ,−v)` and the source domain `Tdom` becomes `−Tdom`; all other
+data are unchanged. `T` solves the problem for `c` iff `−T` solves it for `c.neg`. -/
 @[expose] def RadialCoefficients.neg (c : RadialCoefficients) : RadialCoefficients :=
-  { c with R := fun ψ v => -c.R ψ (-v), Tdom := Neg.neg ⁻¹' c.Tdom }
+  ⟨c.Vp, c.dVp, fun ψ v => c.D ψ (-v), fun ψ v => c.dD ψ (-v), fun ψ v => -c.dDT ψ (-v),
+    fun ψ v => -c.R ψ (-v), Neg.neg ⁻¹' c.Tdom, c.axis⟩
+
+/-- The mirror of semilinear coefficients is semilinear. -/
+theorem RadialCoefficients.IsSemilinear.neg {c : RadialCoefficients} (h : c.IsSemilinear) :
+    c.neg.IsSemilinear := fun ψ hψ T T' => by
+  obtain ⟨h1, h2, h3⟩ := h ψ hψ (-T) (-T')
+  exact ⟨h1, h2, by simp [RadialCoefficients.neg, h3]⟩
 
 /-- The negated field `−T`, with negated derivatives. -/
 @[expose] def RadialField.neg (u : RadialField) : RadialField :=
@@ -623,10 +941,15 @@ instance TransportLaws.neg (c : RadialCoefficients) [h : TransportLaws c] :
     TransportLaws c.neg where
   Vp_pos := h.Vp_pos
   Vp_deriv := h.Vp_deriv
-  D_deriv := h.D_deriv
-  D_nonneg := h.D_nonneg
-  D_axis := h.D_axis
-  D_axis_regular := h.D_axis_regular
+  D_deriv := fun ψ hψ T => h.D_deriv ψ hψ (-T)
+  DT_deriv := fun ψ hψ T => by
+    have := (h.DT_deriv ψ hψ (-T)).comp T (hasDerivAt_neg T)
+    have h2 : HasDerivAt (fun v => c.D ψ (-v)) (c.dDT ψ (-T) * -1) T := this
+    change HasDerivAt (fun v => c.D ψ (-v)) (-c.dDT ψ (-T)) T
+    convert h2 using 1; ring
+  D_nonneg := fun ψ hψ T => h.D_nonneg ψ hψ (-T)
+  D_axis := fun hk T => h.D_axis hk (-T)
+  D_axis_regular := fun hk T => h.D_axis_regular hk (-T)
   Tdom_open := h.Tdom_open.preimage continuous_neg
   R_cont := (h.R_cont.comp (continuous_fst.prodMk continuous_snd.neg).continuousOn
     (fun _ hp => ⟨hp.1, hp.2⟩)).neg
@@ -696,38 +1019,32 @@ theorem gt_of_isStrictUpperBarrier {c : RadialCoefficients} {Tedge : ℝ → ℝ
   change -f ψ < -u.T ψ t at h
   linarith
 
-/-- **Upper-barrier theorem with uniform margin** (mirror of
-`le_of_isStrictLowerBarrier_margin`): `N[f] ≤ −κ < 0`, `f` in `Tdom`, `f'(0) = 0` (regular
-axis), `T_edge ≤ f(1)` and `T(·,0) ≤ f` give `T ≤ f`. -/
+/-- **Upper-barrier theorem with uniform margin** (semilinear coefficients; direct proof via
+`le_of_upperMargin_shift`): `N[f] ≤ −κ < 0`, `f` in `Tdom`, `f'(0) = 0` (regular axis),
+`T_edge ≤ f(1)` and `T(·,0) ≤ f` give `T ≤ f`. -/
 theorem le_of_isStrictUpperBarrier_margin {c : RadialCoefficients} {Tedge : ℝ → ℝ} {τ : ℝ}
     {u : RadialField} [hu : RadialHeatTransport c Tedge τ u] {f f' f'' : ℝ → ℝ}
+    (hsl : c.IsSemilinear)
     (hf : ProfileRegular f f' f'') (haxis : c.axis = .regular → f' 0 = 0)
     (hdom : ∀ ψ ∈ Icc (0 : ℝ) 1, f ψ ∈ c.Tdom) {κ : ℝ} (hκ : 0 < κ)
     (hmargin : ∀ ψ ∈ Icc (0 : ℝ) 1, c.op ψ (f ψ) (f' ψ) (f'' ψ) ≤ -κ)
     (h0 : ∀ ψ ∈ Icc (0 : ℝ) 1, u.T ψ 0 ≤ f ψ) (h1 : ∀ t ∈ Icc 0 τ, Tedge t ≤ f 1) :
-    ∀ ψ ∈ Icc (0 : ℝ) 1, ∀ t ∈ Icc 0 τ, u.T ψ t ≤ f ψ := by
-  have := RadialHeatTransport.neg (c := c) (Tedge := Tedge) (τ := τ) (u := u)
-  intro ψ hψ t ht
-  have h := le_of_isStrictLowerBarrier_margin (Tedge := fun t => -Tedge t) (u := u.neg)
-    hf.neg (fun hk => by simp [haxis hk])
-    (fun x hx => (by simpa [RadialCoefficients.neg] using hdom x hx : -f x ∈ c.neg.Tdom)) hκ
-    (fun x hx => by
-      rw [c.op_neg]; linarith [hmargin x hx])
-    (fun x hx => by change -f x ≤ -u.T x 0; linarith [h0 x hx])
-    (fun s hs => by linarith [h1 s hs]) ψ hψ t ht
-  change -f ψ ≤ -u.T ψ t at h
-  linarith
+    ∀ ψ ∈ Icc (0 : ℝ) 1, ∀ t ∈ Icc 0 τ, u.T ψ t ≤ f ψ :=
+  le_of_upperMargin_shift hf haxis
+    (hsl.opShiftControl hf TransportLaws.Tdom_open TransportLaws.R_cont hdom) hκ hmargin h0 h1
 
-/-- **Non-strict upper-barrier theorem** (mirror of `le_of_isLowerBarrier`): with a one-sided
-Lipschitz source, `N[f] ≤ 0`, `f'(0) = 0`, `T_edge ≤ f(1)` and `T(·,0) ≤ f` give `T ≤ f`. -/
+/-- **Non-strict upper-barrier theorem** (mirror of `le_of_isLowerBarrier`, semilinear
+coefficients): with a one-sided Lipschitz source, `N[f] ≤ 0`, `f'(0) = 0`, `T_edge ≤ f(1)` and
+`T(·,0) ≤ f` give `T ≤ f`. -/
 theorem le_of_isUpperBarrier {c : RadialCoefficients} {Tedge : ℝ → ℝ} {τ : ℝ}
     {u : RadialField} [hu : RadialHeatTransport c Tedge τ u] {f f' f'' : ℝ → ℝ} {K : ℝ}
-    (hK : OneSidedLipschitz c K) (hf : IsUpperBarrier c f f' f'')
+    (hsl : c.IsSemilinear) (hK : OneSidedLipschitz c K) (hf : IsUpperBarrier c f f' f'')
     (h0 : ∀ ψ ∈ Icc (0 : ℝ) 1, u.T ψ 0 ≤ f ψ) (h1 : ∀ t ∈ Icc 0 τ, Tedge t ≤ f 1) :
     ∀ ψ ∈ Icc (0 : ℝ) 1, ∀ t ∈ Icc 0 τ, u.T ψ t ≤ f ψ := by
   have := RadialHeatTransport.neg (c := c) (Tedge := Tedge) (τ := τ) (u := u)
   intro ψ hψ t ht
-  have h := le_of_isLowerBarrier (Tedge := fun t => -Tedge t) (u := u.neg) hK.neg hf.neg
+  have h := le_of_isLowerBarrier (Tedge := fun t => -Tedge t) (u := u.neg) hsl.neg hK.neg
+    hf.neg
     (fun x hx => by change -f x ≤ -u.T x 0; linarith [h0 x hx])
     (fun s hs => by linarith [h1 s hs]) ψ hψ t ht
   change -f ψ ≤ -u.T ψ t at h
@@ -750,23 +1067,27 @@ theorem mem_Ioo_of_strictBarriers {c : RadialCoefficients} {Tedge : ℝ → ℝ}
 `[f, g]` for lower barrier `f` and upper barrier `g`. -/
 theorem mem_Icc_of_barriers {c : RadialCoefficients} {Tedge : ℝ → ℝ} {τ : ℝ}
     {u : RadialField} [hu : RadialHeatTransport c Tedge τ u] {f f' f'' g g' g'' : ℝ → ℝ}
-    {K : ℝ} (hK : OneSidedLipschitz c K)
+    {K : ℝ} (hsl : c.IsSemilinear) (hK : OneSidedLipschitz c K)
     (hf : IsLowerBarrier c f f' f'') (hg : IsUpperBarrier c g g' g'')
     (h0 : ∀ ψ ∈ Icc (0 : ℝ) 1, f ψ ≤ u.T ψ 0 ∧ u.T ψ 0 ≤ g ψ)
     (h1 : ∀ t ∈ Icc 0 τ, f 1 ≤ Tedge t ∧ Tedge t ≤ g 1) :
     ∀ ψ ∈ Icc (0 : ℝ) 1, ∀ t ∈ Icc 0 τ, u.T ψ t ∈ Icc (f ψ) (g ψ) := fun ψ hψ t ht =>
-  ⟨le_of_isLowerBarrier hK hf (fun x hx => (h0 x hx).1) (fun s hs => (h1 s hs).1) ψ hψ t ht,
-    le_of_isUpperBarrier hK hg (fun x hx => (h0 x hx).2) (fun s hs => (h1 s hs).2) ψ hψ t ht⟩
+  ⟨le_of_isLowerBarrier hsl hK hf (fun x hx => (h0 x hx).1) (fun s hs => (h1 s hs).1) ψ hψ t
+      ht,
+    le_of_isUpperBarrier hsl hK hg (fun x hx => (h0 x hx).2) (fun s hs => (h1 s hs).2) ψ hψ t
+      ht⟩
 
 /-- **For all time.** If the supplied field is a solution on every horizon `[0,τ]`, a lower
 barrier (non-strict, one-sided Lipschitz source) bounds it for all `t ≥ 0`. -/
 theorem le_of_isLowerBarrier_forall_time {c : RadialCoefficients} {Tedge : ℝ → ℝ}
     {u : RadialField} (hu : ∀ τ, 0 ≤ τ → RadialHeatTransport c Tedge τ u)
-    {f f' f'' : ℝ → ℝ} {K : ℝ} (hK : OneSidedLipschitz c K) (hf : IsLowerBarrier c f f' f'')
+    {f f' f'' : ℝ → ℝ} {K : ℝ} (hsl : c.IsSemilinear) (hK : OneSidedLipschitz c K)
+    (hf : IsLowerBarrier c f f' f'')
     (h0 : ∀ ψ ∈ Icc (0 : ℝ) 1, f ψ ≤ u.T ψ 0) (h1 : ∀ t, 0 ≤ t → f 1 ≤ Tedge t) :
     ∀ ψ ∈ Icc (0 : ℝ) 1, ∀ t, 0 ≤ t → f ψ ≤ u.T ψ t := fun ψ hψ t ht => by
   have := hu t ht
-  exact le_of_isLowerBarrier (τ := t) hK hf h0 (fun s hs => h1 s hs.1) ψ hψ t ⟨ht, le_rfl⟩
+  exact le_of_isLowerBarrier (τ := t) hsl hK hf h0 (fun s hs => h1 s hs.1) ψ hψ t
+    ⟨ht, le_rfl⟩
 
 /-! ### Sanity corollaries -/
 
@@ -832,10 +1153,10 @@ theorem lt_of_heating_exceeds_losses {c : RadialCoefficients} {Tedge : ℝ → �
 balancing losses at level `m`, initial and edge temperatures `≥ m` stay `≥ m`. -/
 theorem le_of_heating_balances_losses {c : RadialCoefficients} {Tedge : ℝ → ℝ} {τ : ℝ}
     {u : RadialField} [hu : RadialHeatTransport c Tedge τ u] {m K : ℝ}
-    (hK : OneSidedLipschitz c K)
+    (hsl : c.IsSemilinear) (hK : OneSidedLipschitz c K)
     (hR : ∀ ψ ∈ Icc (0 : ℝ) 1, 0 ≤ c.R ψ m) (h0 : ∀ ψ ∈ Icc (0 : ℝ) 1, m ≤ u.T ψ 0)
     (h1 : ∀ t ∈ Icc 0 τ, m ≤ Tedge t) : ∀ ψ ∈ Icc (0 : ℝ) 1, ∀ t ∈ Icc 0 τ, m ≤ u.T ψ t :=
-  le_of_isLowerBarrier (f := fun _ => m) (f' := fun _ => 0) (f'' := fun _ => 0) hK
+  le_of_isLowerBarrier (f := fun _ => m) (f' := fun _ => 0) (f'' := fun _ => 0) hsl hK
     { deriv := fun _ _ => hasDerivWithinAt_const _ _ _
       deriv2 := fun _ _ => hasDerivWithinAt_const _ _ _
       axis := fun _ => rfl
@@ -846,17 +1167,18 @@ pure reaction model `D ≡ 0` (each surface evolving as an ODE) with a regular a
 diffusivity floor `Dmin > 0`, removed from the kernel on 2026-10-20, matters for
 existence/regularity theory, not for this comparison.) -/
 theorem lt_of_strictSubsolution_pureReaction {c : RadialCoefficients} {Tedge : ℝ → ℝ} {τ : ℝ}
-    {u S : RadialField} (hD0 : ∀ ψ ∈ Icc (0 : ℝ) 1, c.D ψ = 0) (hk : c.axis = .regular)
+    {u S : RadialField} (hD0 : ∀ ψ ∈ Icc (0 : ℝ) 1, ∀ T : ℝ, c.D ψ T = 0)
+    (hk : c.axis = .regular)
     (hu : ClassicalRadialSolution c Tedge τ u) (hS : StrictSubsolution c τ S)
     (h0 : ∀ ψ ∈ Icc (0 : ℝ) 1, S.T ψ 0 < u.T ψ 0) (h1 : ∀ t ∈ Icc 0 τ, S.T 1 t < Tedge t) :
     ∀ ψ ∈ Icc (0 : ℝ) 1, ∀ t ∈ Icc 0 τ, S.T ψ t < u.T ψ t :=
-  lt_of_strictSubsolution (fun ψ hψ => (hD0 ψ hψ).ge) (fun h => absurd (hk.symm.trans h)
+  lt_of_strictSubsolution (fun ψ hψ T => (hD0 ψ hψ T).ge) (fun h => absurd (hk.symm.trans h)
     (by decide)) hu hS h0 h1
 
 /-- Backward-diffusion coefficients (`D = −1`, `V' = 1`, no sources, regular axis): ellipticity
 fails. -/
 @[expose] def backwardCoefficients : RadialCoefficients :=
-  ⟨fun _ => 1, fun _ => 0, fun _ => -1, fun _ => 0, fun _ _ => 0, univ, .regular⟩
+  .semilinear (fun _ => 1) (fun _ => 0) (fun _ => -1) (fun _ => 0) (fun _ _ => 0) univ .regular
 
 /-- **The sign `D ≥ 0` cannot be dropped.** For backward diffusion `∂ₜT = −∂ψψT` the solution
 `T = 2 − e^{π²t/4} cos(πψ/2)` starts above the strict subsolution `S = −ψ²` (`N[S] = 2 > 0`,
@@ -880,7 +1202,7 @@ theorem backward_diffusion_counterexample :
     { tau_nonneg := zero_le_one
       regular := modeField_regular _ _ _ _ _
       pde := fun ψ _ t _ => by
-        simp only [modeField, backwardCoefficients, RadialCoefficients.op]
+        simp only [modeField, backwardCoefficients, RadialCoefficients.semilinear_op]
         ring
       axis := fun _ t _ => by simp [modeField]
       edge := fun t _ => by simp [modeField, Real.cos_pi_div_two] }
@@ -889,7 +1211,7 @@ theorem backward_diffusion_counterexample :
     simp
   · intro ψ _ t _
     change (0 : ℝ) < backwardCoefficients.op ψ (-ψ ^ 2) (-(2 * ψ)) (-2)
-    simp only [backwardCoefficients, RadialCoefficients.op]
+    simp only [backwardCoefficients, RadialCoefficients.semilinear_op]
     norm_num
   · intro ψ _
     change -ψ ^ 2 < 2 + -1 * Real.exp (Real.pi ^ 2 / 4 * 0) * Real.cos (Real.pi / 2 * ψ)
@@ -910,16 +1232,17 @@ theorem backward_diffusion_counterexample :
 /-- Relaxation coefficients: `V' = 1`, `D = 1`, `R(ψ,v) = 1 − v` (unit heating, linear loss),
 source posed for all temperatures, regular axis. -/
 @[expose] def relaxCoefficients : RadialCoefficients :=
-  ⟨fun _ => 1, fun _ => 0, fun _ => 1, fun _ => 0, fun _ v => 1 - v, univ, .regular⟩
+  .semilinear (fun _ => 1) (fun _ => 0) (fun _ => 1) (fun _ => 0) (fun _ v => 1 - v) univ .regular
 
 /-- The relaxation coefficients satisfy the transport laws. -/
 instance : TransportLaws relaxCoefficients where
   Vp_pos := fun _ _ => one_pos
   Vp_deriv := fun _ _ => hasDerivWithinAt_const _ _ _
-  D_deriv := fun _ _ => hasDerivWithinAt_const _ _ _
-  D_nonneg := fun _ _ => zero_le_one
+  D_deriv := fun _ _ _ => hasDerivWithinAt_const _ _ _
+  DT_deriv := fun _ _ T => hasDerivAt_const T _
+  D_nonneg := fun _ _ _ => zero_le_one
   D_axis := fun h => absurd h (by decide)
-  D_axis_regular := fun _ => one_pos
+  D_axis_regular := fun _ _ => one_pos
   Tdom_open := isOpen_univ
   R_cont := (continuous_const.sub continuous_snd).continuousOn
 
@@ -938,7 +1261,7 @@ theorem relaxMode_radialHeatTransport {τ : ℝ} (hτ : 0 ≤ τ) :
   tau_nonneg := hτ
   regular := modeField_regular _ _ _ _ _
   pde := fun ψ _ t _ => by
-    simp only [modeField, relaxCoefficients, RadialCoefficients.op]
+    simp only [modeField, relaxCoefficients, RadialCoefficients.semilinear_op]
     ring
   axis := fun _ t _ => by simp [modeField]
   edge := fun t _ => by simp [modeField, Real.cos_pi_div_two]
@@ -955,7 +1278,7 @@ theorem relax_isStrictLowerBarrier :
       convert (((hasDerivAt_id' ψ).div_const 4).neg).hasDerivWithinAt using 1
     axis := fun _ => by norm_num
     strict := fun ψ _ => by
-      simp only [relaxCoefficients, RadialCoefficients.op]
+      simp only [relaxCoefficients, RadialCoefficients.semilinear_op]
       nlinarith [sq_nonneg ψ] }
 
 /-- **Non-vacuity of the barrier theorem.** All hypotheses of `lt_of_isStrictLowerBarrier` hold

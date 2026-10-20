@@ -1,6 +1,6 @@
 ---
 name: plasmalean-lean-proofs
-description: Write and repair Lean 4 proofs in PlasmaLean efficiently. Use whenever writing or editing Lean code, choosing tactics, proving concrete numerical/finite facts, or building certificate checkers — covers grind/fun_induction automation, when to use bv_decide, and how to build large proofs as explicit proof terms (the SubsetSum pattern) instead of decide.
+description: Write and repair Lean 4 proofs in PlasmaLean efficiently. Use whenever writing or editing Lean code, choosing tactics, proving concrete numerical/finite facts, or building certificate checkers — covers grind/fun_induction automation, decide_cbv for medium concrete checks, and how to build large proofs as explicit proof terms (the SubsetSum pattern) instead of decide.
 ---
 
 # Lean proofs in PlasmaLean
@@ -30,14 +30,21 @@ theorem subsetSum_correct (l : List Int) (indices : List Nat) :
 | Size of the check | Use | Do not use |
 | --- | --- | --- |
 | A few closed numeric facts (`(37:ℚ)/5 < 8`, an explicit polynomial value) | `norm_num`, `simp`, `rfl` | `decide` |
-| Moderate finite **Bool / BitVec / fixed-width integer** problems (bit-level checks, small finite case analyses encoded in `BitVec n`) | `bv_decide` | plain `decide` |
-| Large certificates (many pieces, long lists, high-degree polynomial interval checks, many modes) | an explicit proof term built step by step: **the SubsetSum pattern (§3)** | one monolithic `decide +kernel` on a Boolean checker |
+| Medium concrete checks: a Boolean checker on ℚ/ℕ/lists with up to a few hundred evaluation steps (a `QPoly.checkOn` fixture on 32 pieces, a 100–400 element list, a finite case split) | **`decide_cbv`** | plain `decide` |
+| Large certificates (many pieces, long lists, high-degree polynomial interval checks, many modes) | an explicit proof term built step by step: **the SubsetSum pattern (§3)** | one monolithic `decide_cbv` / `decide +kernel` on a Boolean checker |
 
-**Plain `decide` is inefficient.** It evaluates the `Decidable` instance in the elaborator, and on ℚ arithmetic it typically just fails ("did not reduce to `isTrue`"). Do not use it for anything nontrivial. `decide +kernel` works for small checks, but every call re-evaluates the whole checker in the kernel and nothing is reused. The existing `QPoly.checkOn` fixtures (`Certificates/PolyInterval.lean`, `Design/ScrewPinchModes.lean`) use it. Keep them while they stay fast, and migrate them to §3 when a certificate grows.
+**Plain `decide` is inefficient.** It evaluates the `Decidable` instance in the elaborator, and on ℚ arithmetic it typically just fails ("did not reduce to `isTrue`"). Do not use it for anything nontrivial.
 
-**`bv_decide` rules:**
-- It only applies to goals about `Bool`, `BitVec n` and fixed-width integers (`Int8`…`Int64`, `UInt*`). It does **not** compute with `ℚ`, `ℝ` or `List ℚ`.
-- Goals closed by its preprocessing need only the standard axioms. When the SAT solver is actually used, the proof depends on an auxiliary native axiom such as `foo._native.bv_decide.ax_1_5`, which `check_axioms.lean` rejects. **Always run `#print axioms` on the theorem.** If a `_native` axiom appears, either reformulate (smaller instance, more preprocessing) or switch to §3. Never leave it in the library.
+**`decide_cbv`** (core Lean, `Lean.Meta.Tactic.Cbv`, no import needed) applies `of_decide_eq_true` and then reduces `decide p` by proof-producing call-by-value simplification: it rewrites with equation/unfold lemmas and matcher reductions, and the result is an `Eq` proof chain checked by the kernel. Its relatives are `cbv` / `cbv at h` (non-terminal) and `conv => cbv`. Properties measured on this toolchain:
+- **Axioms:** only `propext`, `Classical.choice`, `Quot.sound` (often just `propext`). No `Lean.ofReduceBool`, no code-generator trust, so it passes `check_axioms.lean`.
+- **It works where `decide +kernel` gets stuck.** Because it unfolds through equation lemmas, it evaluates functions defined by **well-founded recursion** (`termination_by`) and **`partial_fixpoint`**. A merge sort on 10 elements took 50 ms, while `decide +kernel` failed with "did not reduce".
+- **Error messages are clear:** "the proposition evaluates to `false`", or "got stuck at: …" with the stuck subterm.
+- **Cost:** on structurally recursive ℚ checkers it is slower than `decide +kernel` and builds a large proof term. Measured times: `tightQuartic_check` 5 s vs 0.4 s; `dipQuadratic_reject` 2 s vs 0.06 s; `allGeB (1/3)` on 400 rationals 5.6 s vs 0.35 s. The 64-piece Ballooning residual check took 58 s vs 2.5 s and needed `maxHeartbeats 0`. That is past "medium": use §3.
+- **Limits:** long lists and deep recursion hit `maxRecDepth` (raise it, e.g. `set_option maxRecDepth 100000 in`), and large checks hit `cbv.maxSteps` (default 100 000). If you need both raised, the check belongs in §3. Use `@[cbv_opaque]` to stop it unfolding a definition and `@[cbv_eval]` to give it a rewrite rule instead. It does not enter binders.
+
+**`decide +kernel`** (also standard axioms only) is faster for structurally recursive checkers but gets stuck on well-founded recursion, and every call re-evaluates the whole checker with nothing reused. The existing `QPoly.checkOn` fixtures (`Certificates/PolyInterval.lean`, `Design/ScrewPinchModes.lean`, `Theory/Stability/Ballooning.lean`) use it. Keep them while they stay fast, and migrate them to §3 when a certificate grows. For new medium checks, start with `decide_cbv`. Fall back to `decide +kernel` only if `decide_cbv` is too slow and the checker is structurally recursive.
+
+**`bv_decide` (niche):** use it only for genuine SAT problems over `Bool` / `BitVec n` / fixed-width integers. It does not compute with `ℚ`, `ℝ` or lists. When the SAT solver is actually used, the proof depends on a native axiom such as `foo._native.bv_decide.ax_1_5`, which `check_axioms.lean` rejects. Always run `#print axioms`, and never leave such a proof in the library.
 
 ## 3. Large proofs: build the proof term (SubsetSum pattern)
 

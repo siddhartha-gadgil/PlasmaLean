@@ -398,7 +398,8 @@ theorem helical_core_barrier (G : FluxGeometry) [hG : IsHelicalGeometry G] (sv :
   have hL := helCoeffs_transportLaws G sv hχ0
   have hlow : ∀ s ∈ Icc (0 : ℝ) 1, ∀ t, 0 ≤ t → hTsub s ≤ u.T s t :=
     le_of_isStrictLowerBarrier_margin_forall_time (fun τ hτ => { hL, hu τ hτ with })
-      hTsub_regular (fun h => absurd h (by simp [helCoeffs, FluxGeometry.coeffs]))
+      (G.coeffs_isSemilinear _ _ _ _) hTsub_regular
+      (fun h => absurd h (by simp [helCoeffs, FluxGeometry.coeffs, RadialCoefficients.semilinear]))
       (fun s hs => show 0 < hTsub s by linarith [(hTsub_bounds hs).1]) (by norm_num)
       (helical_margin G sv hχ0 hχ) h0 (fun t ht => by rw [hTsub_values.2]; exact hedge t ht)
   refine ⟨hlow, fun s h0' h1' t ht => ?_⟩

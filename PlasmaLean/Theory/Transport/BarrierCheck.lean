@@ -105,35 +105,6 @@ theorem AxisFreeSolution.classical {c : RadialCoefficients} {Tedge : ℝ → ℝ
   axis := fun hr => absurd (hr.symm.trans hk) (by decide)
   edge := h.edge
 
-/-- **Touching at an interior point.** If `u − S` has a zero minimum over `[0,1]` at
-`ψ₀ ∈ (0,1)` and `D(ψ₀) ≥ 0`, then `N[S](ψ₀) ≤ N[u](ψ₀)`. -/
-theorem op_le_op_of_touch_interior (c : RadialCoefficients) {uT uψ uψψ sT sψ sψψ : ℝ → ℝ}
-    {ψ₀ : ℝ} (h0 : 0 < ψ₀) (h1 : ψ₀ < 1) (hD : 0 ≤ c.D ψ₀)
-    (hu : ∀ x ∈ Icc (0 : ℝ) 1, HasDerivWithinAt uT (uψ x) (Icc 0 1) x)
-    (hu' : HasDerivWithinAt uψ (uψψ ψ₀) (Icc 0 1) ψ₀)
-    (hs : ∀ x ∈ Icc (0 : ℝ) 1, HasDerivWithinAt sT (sψ x) (Icc 0 1) x)
-    (hs' : HasDerivWithinAt sψ (sψψ ψ₀) (Icc 0 1) ψ₀)
-    (hmin : ∀ x ∈ Icc (0 : ℝ) 1, 0 ≤ uT x - sT x) (hzero : uT ψ₀ = sT ψ₀) :
-    c.op ψ₀ (sT ψ₀) (sψ ψ₀) (sψψ ψ₀) ≤ c.op ψ₀ (uT ψ₀) (uψ ψ₀) (uψψ ψ₀) := by
-  have hmem : ψ₀ ∈ Icc (0 : ℝ) 1 := ⟨h0.le, h1.le⟩
-  have hloc : IsLocalMin (fun x => uT x - sT x) ψ₀ :=
-    Filter.mem_of_superset (Icc_mem_nhds h0 h1) (fun x hx => by
-      change uT ψ₀ - sT ψ₀ ≤ uT x - sT x
-      rw [hzero, sub_self]; exact hmin x hx)
-  have hslope : uψ ψ₀ - sψ ψ₀ = 0 :=
-    hloc.hasDerivAt_eq_zero (((hu ψ₀ hmem).sub (hs ψ₀ hmem)).hasDerivAt (Icc_mem_nhds h0 h1))
-  have hcurv : 0 ≤ uψψ ψ₀ - sψψ ψ₀ :=
-    secondDeriv_nonneg_of_rightMin (f := fun x => uT x - sT x) (f' := fun x => uψ x - sψ x)
-      h1 (fun x hx => ((hu x ⟨h0.le.trans hx.1, hx.2⟩).sub
-        (hs x ⟨h0.le.trans hx.1, hx.2⟩)).mono (Icc_subset_Icc h0.le le_rfl))
-      ((hu'.sub hs').mono (Icc_subset_Icc h0.le le_rfl))
-      (fun x hx => by
-        simp only [hzero, sub_self]; exact hmin x ⟨h0.le.trans hx.1, hx.2⟩) hslope
-  have hs2 : sψ ψ₀ = uψ ψ₀ := by linarith
-  unfold RadialCoefficients.op
-  rw [hzero, hs2]
-  nlinarith [mul_le_mul_of_nonneg_left hcurv hD]
-
 /-- **Comparison by residuals, degenerate axis** (first-touching-time argument). Let `S`, `u`
 be regular fields on `[0,1] × [0,τ]` whose residuals satisfy `∂ₜS − N[S] < ∂ₜu − N[u]`
 pointwise. If `S < u` initially and at the edge, then `S < u` on the whole rectangle. Only
@@ -141,7 +112,7 @@ pointwise. If `S < u` initially and at the edge, then `S < u` on the whole recta
 field. (Lower barriers: `S` a strict subsolution, `u` a solution; upper barriers: `S` a
 solution, `u` a strict supersolution.) -/
 theorem lt_of_residual_lt {c : RadialCoefficients} {τ : ℝ} {u S : RadialField}
-    (hD : ∀ ψ ∈ Icc (0 : ℝ) 1, 0 ≤ c.D ψ) (hax : DegenerateAxis c)
+    (hD : ∀ ψ ∈ Icc (0 : ℝ) 1, ∀ T : ℝ, 0 ≤ c.D ψ T) (hax : DegenerateAxis c)
     (hu : u.Regular τ) (hS : S.Regular τ)
     (hres : ∀ ψ ∈ Icc (0 : ℝ) 1, ∀ t ∈ Icc 0 τ,
       S.Tt ψ t - c.op ψ (S.T ψ t) (S.Tψ ψ t) (S.Tψψ ψ t) <
@@ -194,7 +165,7 @@ theorem lt_of_residual_lt {c : RadialCoefficients} {τ : ℝ} {u S : RadialField
       c.op ψs (u.T ψs ts) (u.Tψ ψs ts) (u.Tψψ ψs ts) := by
     rcases hψs.1.lt_or_eq with h | h
     · exact op_le_op_of_touch_interior c (uψψ := fun x => u.Tψψ x ts)
-        (sψψ := fun x => S.Tψψ x ts) h hψs1 (hD ψs hψs) (hu.deriv_ψ ts hts)
+        (sψψ := fun x => S.Tψψ x ts) h hψs1 (hD ψs hψs _) (hu.deriv_ψ ts hts)
         (hu.deriv_ψψ ts hts ψs hψs) (hS.deriv_ψ ts hts) (hS.deriv_ψψ ts hts ψs hψs) hmin hzero
     · subst h
       exact op_le_op_of_touch_axis c hax (hu.deriv_ψ ts hts 0 hψs) (hS.deriv_ψ ts hts 0 hψs)
@@ -223,12 +194,14 @@ theorem exists_shift_control {c : RadialCoefficients} {f f' f'' : ℝ → ℝ}
       |c.R ψ (f ψ + s) - c.R ψ (f ψ)| < κ :=
   exists_shift_control_open hf isOpen_Ioi hRc hlo hκ
 
-/-- **Lower barrier with margin, degenerate axis.** Let `f` be a regular profile (no axis
+/-- **Lower barrier with margin, degenerate axis** (semilinear coefficients, `IsSemilinear`;
+for quasilinear coefficients use `le_of_lowerMargin_shift`). Let `f` be a regular profile (no axis
 condition needed) with `N[f] ≥ κ > 0` on `[0,1]`, `f > lo`, and `R` continuous on
 `[0,1] × (lo, ∞)`. Then every axis-free classical solution with `f ≤ T(·,0)` and
 `f(1) ≤ T_edge(t)` satisfies `f ≤ T` on `[0,1] × [0,τ]`. -/
 theorem le_of_lowerMargin_axisFree {c : RadialCoefficients} {Tedge : ℝ → ℝ} {τ : ℝ}
-    {u : RadialField} (hD : ∀ ψ ∈ Icc (0 : ℝ) 1, 0 ≤ c.D ψ) (hax : DegenerateAxis c)
+    {u : RadialField} (hD : ∀ ψ ∈ Icc (0 : ℝ) 1, ∀ T : ℝ, 0 ≤ c.D ψ T) (hax : DegenerateAxis c)
+    (hsl : c.IsSemilinear)
     (hu : AxisFreeSolution c Tedge τ u) {f f' f'' : ℝ → ℝ} (hf : ProfileRegular f f' f'')
     {lo : ℝ} (hRc : ContinuousOn (fun p : ℝ × ℝ => c.R p.1 p.2) (Icc 0 1 ×ˢ Ioi lo))
     (hlo : ∀ ψ ∈ Icc (0 : ℝ) 1, lo < f ψ) {κ : ℝ} (hκ : 0 < κ)
@@ -247,7 +220,7 @@ theorem le_of_lowerMargin_axisFree {c : RadialCoefficients} {Tedge : ℝ → ℝ
         change f ψ - δ < u.T ψ 0; linarith [h0 ψ hψ])
       (fun t ht => by change f 1 - δ < u.T 1 t; rw [hu.edge t ht]; linarith [h1 t ht])
     have hc := abs_lt.1 (hctrl (-δ) (by rw [abs_neg, abs_of_pos hδ]; exact hδlt) ψ hψ)
-    have h2 := c.op_sub_op ψ (f ψ + -δ) (f ψ) (f' ψ) (f'' ψ)
+    have h2 := hsl.op_sub_op hψ (f ψ + -δ) (f ψ) (f' ψ) (f'' ψ)
     have h3 := hmargin ψ hψ
     rw [hu.pde ψ hψ t ht]
     change 0 - c.op ψ (f ψ - δ) (f' ψ) (f'' ψ) < _
@@ -258,12 +231,14 @@ theorem le_of_lowerMargin_axisFree {c : RadialCoefficients} {Tedge : ℝ → ℝ
   have := key (min ε δ₀ / 2) (by positivity) (by linarith [min_le_right ε δ₀]) ψ hψ t ht
   linarith [min_le_left ε δ₀]
 
-/-- **Upper barrier with margin, degenerate axis.** Let `g` be a regular profile with
+/-- **Upper barrier with margin, degenerate axis** (semilinear coefficients, `IsSemilinear`;
+for quasilinear coefficients use `le_of_upperMargin_shift`). Let `g` be a regular profile with
 `N[g] ≤ −κ < 0` on `[0,1]`, `g > lo`, and `R` continuous on `[0,1] × (lo, ∞)`. Then every
 axis-free classical solution with `T(·,0) ≤ g` and `T_edge(t) ≤ g(1)` satisfies `T ≤ g` on
 `[0,1] × [0,τ]`. -/
 theorem le_of_upperMargin_axisFree {c : RadialCoefficients} {Tedge : ℝ → ℝ} {τ : ℝ}
-    {u : RadialField} (hD : ∀ ψ ∈ Icc (0 : ℝ) 1, 0 ≤ c.D ψ) (hax : DegenerateAxis c)
+    {u : RadialField} (hD : ∀ ψ ∈ Icc (0 : ℝ) 1, ∀ T : ℝ, 0 ≤ c.D ψ T) (hax : DegenerateAxis c)
+    (hsl : c.IsSemilinear)
     (hu : AxisFreeSolution c Tedge τ u) {g g' g'' : ℝ → ℝ} (hg : ProfileRegular g g' g'')
     {lo : ℝ} (hRc : ContinuousOn (fun p : ℝ × ℝ => c.R p.1 p.2) (Icc 0 1 ×ˢ Ioi lo))
     (hlo : ∀ ψ ∈ Icc (0 : ℝ) 1, lo < g ψ) {κ : ℝ} (hκ : 0 < κ)
@@ -282,7 +257,7 @@ theorem le_of_upperMargin_axisFree {c : RadialCoefficients} {Tedge : ℝ → ℝ
         change u.T ψ 0 < g ψ + δ; linarith [h0 ψ hψ])
       (fun t ht => by change u.T 1 t < g 1 + δ; rw [hu.edge t ht]; linarith [h1 t ht])
     have hc := abs_lt.1 (hctrl δ (by rw [abs_of_pos hδ]; exact hδlt) ψ hψ)
-    have h2 := c.op_sub_op ψ (g ψ + δ) (g ψ) (g' ψ) (g'' ψ)
+    have h2 := hsl.op_sub_op hψ (g ψ + δ) (g ψ) (g' ψ) (g'' ψ)
     have h3 := hmargin ψ hψ
     rw [hu.pde ψ hψ t ht]
     change _ < 0 - c.op ψ (g ψ + δ) (g' ψ) (g'' ψ)
@@ -292,32 +267,33 @@ theorem le_of_upperMargin_axisFree {c : RadialCoefficients} {Tedge : ℝ → ℝ
   have := key (min ε δ₀ / 2) (by positivity) (by linarith [min_le_right ε δ₀]) ψ hψ t ht
   linarith [min_le_left ε δ₀]
 
-/-- **Lower barrier for all time, degenerate axis.** If the supplied field is an axis-free
+/-- **Lower barrier for all time, degenerate axis** (semilinear coefficients). If the
+supplied field is an axis-free
 classical solution on every horizon `[0,τ]`, the conclusion of `le_of_lowerMargin_axisFree`
 holds for all `t ≥ 0`. -/
 theorem le_of_lowerMargin_axisFree_forall_time {c : RadialCoefficients} {Tedge : ℝ → ℝ}
-    {u : RadialField} (hD : ∀ ψ ∈ Icc (0 : ℝ) 1, 0 ≤ c.D ψ) (hax : DegenerateAxis c)
-    (hu : ∀ τ, 0 ≤ τ → AxisFreeSolution c Tedge τ u) {f f' f'' : ℝ → ℝ}
+    {u : RadialField} (hD : ∀ ψ ∈ Icc (0 : ℝ) 1, ∀ T : ℝ, 0 ≤ c.D ψ T) (hax : DegenerateAxis c)
+    (hsl : c.IsSemilinear) (hu : ∀ τ, 0 ≤ τ → AxisFreeSolution c Tedge τ u) {f f' f'' : ℝ → ℝ}
     (hf : ProfileRegular f f' f'') {lo : ℝ}
     (hRc : ContinuousOn (fun p : ℝ × ℝ => c.R p.1 p.2) (Icc 0 1 ×ˢ Ioi lo))
     (hlo : ∀ ψ ∈ Icc (0 : ℝ) 1, lo < f ψ) {κ : ℝ} (hκ : 0 < κ)
     (hmargin : ∀ ψ ∈ Icc (0 : ℝ) 1, κ ≤ c.op ψ (f ψ) (f' ψ) (f'' ψ))
     (h0 : ∀ ψ ∈ Icc (0 : ℝ) 1, f ψ ≤ u.T ψ 0) (h1 : ∀ t, 0 ≤ t → f 1 ≤ Tedge t) :
     ∀ ψ ∈ Icc (0 : ℝ) 1, ∀ t, 0 ≤ t → f ψ ≤ u.T ψ t := fun ψ hψ t ht =>
-  le_of_lowerMargin_axisFree hD hax (hu t ht) hf hRc hlo hκ hmargin h0
+  le_of_lowerMargin_axisFree hD hax hsl (hu t ht) hf hRc hlo hκ hmargin h0
     (fun s hs => h1 s hs.1) ψ hψ t ⟨ht, le_rfl⟩
 
-/-- **Upper barrier for all time, degenerate axis.** -/
+/-- **Upper barrier for all time, degenerate axis** (semilinear coefficients). -/
 theorem le_of_upperMargin_axisFree_forall_time {c : RadialCoefficients} {Tedge : ℝ → ℝ}
-    {u : RadialField} (hD : ∀ ψ ∈ Icc (0 : ℝ) 1, 0 ≤ c.D ψ) (hax : DegenerateAxis c)
-    (hu : ∀ τ, 0 ≤ τ → AxisFreeSolution c Tedge τ u) {g g' g'' : ℝ → ℝ}
+    {u : RadialField} (hD : ∀ ψ ∈ Icc (0 : ℝ) 1, ∀ T : ℝ, 0 ≤ c.D ψ T) (hax : DegenerateAxis c)
+    (hsl : c.IsSemilinear) (hu : ∀ τ, 0 ≤ τ → AxisFreeSolution c Tedge τ u) {g g' g'' : ℝ → ℝ}
     (hg : ProfileRegular g g' g'') {lo : ℝ}
     (hRc : ContinuousOn (fun p : ℝ × ℝ => c.R p.1 p.2) (Icc 0 1 ×ˢ Ioi lo))
     (hlo : ∀ ψ ∈ Icc (0 : ℝ) 1, lo < g ψ) {κ : ℝ} (hκ : 0 < κ)
     (hmargin : ∀ ψ ∈ Icc (0 : ℝ) 1, c.op ψ (g ψ) (g' ψ) (g'' ψ) ≤ -κ)
     (h0 : ∀ ψ ∈ Icc (0 : ℝ) 1, u.T ψ 0 ≤ g ψ) (h1 : ∀ t, 0 ≤ t → Tedge t ≤ g 1) :
     ∀ ψ ∈ Icc (0 : ℝ) 1, ∀ t, 0 ≤ t → u.T ψ t ≤ g ψ := fun ψ hψ t ht =>
-  le_of_upperMargin_axisFree hD hax (hu t ht) hg hRc hlo hκ hmargin h0
+  le_of_upperMargin_axisFree hD hax hsl (hu t ht) hg hRc hlo hκ hmargin h0
     (fun s hs => h1 s hs.1) ψ hψ t ⟨ht, le_rfl⟩
 
 /-- **Corner compatibility.** For an axis-free classical solution on `[0,τ]`, `τ > 0`, whose
@@ -409,12 +385,143 @@ theorem antitoneOn_eval_of_check {p : List ℚ} {a b : ℚ} {pts : List ℚ}
     simp only [QPoly.eval_scale, Rat.cast_zero, Rat.cast_neg, Rat.cast_one] at this
     linarith
 
+/-! ### Two-label piece checker (lower and upper barriers, level-transformed profiles) -/
+
+/-- Right end of a list of two-label pieces `(dᵢ, kᵢ, Kᵢ)` starting at `c`. -/
+@[expose] def pieceEnd2 : ℚ → List (ℚ × ℚ × ℚ) → ℚ
+  | c, [] => c
+  | _, (d, _, _) :: rest => pieceEnd2 d rest
+
+/-- **Two-label piecewise checker.** Pieces `(dᵢ, kᵢ, Kᵢ)` cover `[a, d_last]` consecutively.
+On the piece `[c, d]` it checks `c ≤ d`, the level bounds `lev k ≤ F(d)` and
+`F(c) ≤ lev K` (exact rational evaluation), and the Horner bound
+`κ − bonus k K ≤ lowerBound (d − c) (Q(c + ·))`. For an antitone `F` the labels bracket `F` on
+the piece: `lev k ≤ F ≤ lev K`. Used with `F` the Kirchhoff transform of a barrier
+(`lev = Φ`), so that `k ≤ T ≤ K` on the piece; the lower label feeds a reactivity floor, the
+upper label a reactivity ceiling or a bremsstrahlung bound. -/
+@[expose] def pieceCheck2 (Q F : List ℚ) (lev : ℚ → ℚ) (κ : ℚ) (bonus : ℚ → ℚ → ℚ) :
+    ℚ → List (ℚ × ℚ × ℚ) → Bool
+  | _, [] => true
+  | c, (d, k, K) :: rest => decide (c ≤ d) && decide (lev k ≤ QPoly.evalQ F d) &&
+      decide (QPoly.evalQ F c ≤ lev K) &&
+      decide (κ - bonus k K ≤ QPoly.lowerBound (d - c) (QPoly.shift c Q)) &&
+      pieceCheck2 Q F lev κ bonus d rest
+
+/-- An accepted list of two-label pieces ends to the right of its start. -/
+theorem le_pieceEnd2 {Q F : List ℚ} {lev : ℚ → ℚ} {κ : ℚ} {bonus : ℚ → ℚ → ℚ} :
+    ∀ (c : ℚ) (ps : List (ℚ × ℚ × ℚ)), pieceCheck2 Q F lev κ bonus c ps = true →
+      c ≤ pieceEnd2 c ps
+  | c, [] => fun _ => le_rfl
+  | c, (d, k, K) :: rest => fun h => by
+    simp only [pieceCheck2, Bool.and_eq_true, decide_eq_true_eq] at h
+    exact h.1.1.1.1.trans (le_pieceEnd2 d rest h.2)
+
+/-- **Soundness of the two-label checker.** If the check passes and `F` is antitone on the
+covered interval, every real `x ∈ [a, d_last]` lies in a piece with labels `k`, `K` such that
+`lev k ≤ F(x) ≤ lev K` and `κ − bonus k K ≤ Q(x)`. -/
+theorem pieceCheck2_sound {Q F : List ℚ} {lev : ℚ → ℚ} {κ : ℚ} {bonus : ℚ → ℚ → ℚ} :
+    ∀ (a : ℚ) (ps : List (ℚ × ℚ × ℚ)), pieceCheck2 Q F lev κ bonus a ps = true → ps ≠ [] →
+      AntitoneOn (QPoly.eval F) (Icc (a : ℝ) (pieceEnd2 a ps)) →
+      ∀ x ∈ Icc (a : ℝ) (pieceEnd2 a ps), ∃ k K : ℚ, (∃ d, (d, k, K) ∈ ps) ∧
+        ((lev k : ℚ) : ℝ) ≤ QPoly.eval F x ∧ QPoly.eval F x ≤ ((lev K : ℚ) : ℝ) ∧
+        ((κ - bonus k K : ℚ) : ℝ) ≤ QPoly.eval Q x
+  | _, [], _, hne, _ => absurd rfl hne
+  | a, (d, k, K) :: rest, h, _, hT => by
+    intro x hx
+    simp only [pieceCheck2, Bool.and_eq_true, decide_eq_true_eq] at h
+    obtain ⟨⟨⟨⟨had, hkd⟩, hKc⟩, hlb⟩, hrest⟩ := h
+    have hdend : (d : ℝ) ≤ pieceEnd2 d rest := by exact_mod_cast le_pieceEnd2 d rest hrest
+    have hend : pieceEnd2 a ((d, k, K) :: rest) = pieceEnd2 d rest := rfl
+    rw [hend] at hx hT
+    rcases le_or_gt x d with hxd | hxd
+    · refine ⟨k, K, ⟨d, List.mem_cons_self⟩, ?_, ?_, ?_⟩
+      · have hTd : ((lev k : ℚ) : ℝ) ≤ QPoly.eval F d := by
+          rw [QPoly.eval_cast]; exact_mod_cast hkd
+        exact hTd.trans (hT hx ⟨by exact_mod_cast had, hdend⟩ hxd)
+      · have hTc : QPoly.eval F a ≤ ((lev K : ℚ) : ℝ) := by
+          rw [QPoly.eval_cast]; exact_mod_cast hKc
+        exact (hT ⟨le_rfl, (by exact_mod_cast had : (a : ℝ) ≤ d).trans hdend⟩ hx hx.1).trans hTc
+      · have hb := QPoly.lowerBound_le (h := d - a) (QPoly.shift a Q) (t := x - a)
+          (by linarith [hx.1]) (by push_cast; linarith)
+        rw [QPoly.eval_shift, show ((a : ℚ) : ℝ) + (x - a) = x by ring] at hb
+        exact (by exact_mod_cast hlb :
+          ((κ - bonus k K : ℚ) : ℝ) ≤ (QPoly.lowerBound (d - a) (QPoly.shift a Q) : ℝ)).trans hb
+    · have hne' : rest ≠ [] := by
+        rintro rfl
+        simp only [pieceEnd2] at hx
+        linarith [hx.2]
+      obtain ⟨k', K', ⟨d', hmem⟩, h1, h2, h3⟩ := pieceCheck2_sound d rest hrest hne'
+        (hT.mono (Icc_subset_Icc (by exact_mod_cast had) le_rfl)) x ⟨hxd.le, hx.2⟩
+      exact ⟨k', K', ⟨d', List.mem_cons_of_mem _ hmem⟩, h1, h2, h3⟩
+
+/-! ### Label-dependent piece checker -/
+
+/-- **Label-dependent two-label checker.** As `pieceCheck2`, but the polynomial checked on a
+piece may depend on its labels: on `[c, d]` with labels `(k, K)` it checks `c ≤ d`,
+`lev k ≤ F(d)`, `F(c) ≤ lev K` and `κ ≤ lowerBound (d − c) ((Qf k K)(c + ·))`. Used when a
+label-dependent source bound is multiplied by a non-constant profile (e.g. a density). -/
+@[expose] def pieceCheckL (Qf : ℚ → ℚ → List ℚ) (F : List ℚ) (lev : ℚ → ℚ) (κ : ℚ) :
+    ℚ → List (ℚ × ℚ × ℚ) → Bool
+  | _, [] => true
+  | c, (d, k, K) :: rest => decide (c ≤ d) && decide (lev k ≤ QPoly.evalQ F d) &&
+      decide (QPoly.evalQ F c ≤ lev K) &&
+      decide (κ ≤ QPoly.lowerBound (d - c) (QPoly.shift c (Qf k K))) &&
+      pieceCheckL Qf F lev κ d rest
+
+/-- An accepted list of label-dependent pieces ends to the right of its start. -/
+theorem le_pieceEndL {Qf : ℚ → ℚ → List ℚ} {F : List ℚ} {lev : ℚ → ℚ} {κ : ℚ} :
+    ∀ (c : ℚ) (ps : List (ℚ × ℚ × ℚ)), pieceCheckL Qf F lev κ c ps = true →
+      c ≤ pieceEnd2 c ps
+  | c, [] => fun _ => le_rfl
+  | c, (d, k, K) :: rest => fun h => by
+    simp only [pieceCheckL, Bool.and_eq_true, decide_eq_true_eq] at h
+    exact h.1.1.1.1.trans (le_pieceEndL d rest h.2)
+
+/-- **Soundness of the label-dependent checker.** If the check passes and `F` is antitone on
+the covered interval, every real `x ∈ [a, d_last]` lies in a piece with labels `k`, `K` such
+that `lev k ≤ F(x) ≤ lev K` and `κ ≤ (Qf k K)(x)`. -/
+theorem pieceCheckL_sound {Qf : ℚ → ℚ → List ℚ} {F : List ℚ} {lev : ℚ → ℚ} {κ : ℚ} :
+    ∀ (a : ℚ) (ps : List (ℚ × ℚ × ℚ)), pieceCheckL Qf F lev κ a ps = true → ps ≠ [] →
+      AntitoneOn (QPoly.eval F) (Icc (a : ℝ) (pieceEnd2 a ps)) →
+      ∀ x ∈ Icc (a : ℝ) (pieceEnd2 a ps), ∃ k K : ℚ, (∃ d, (d, k, K) ∈ ps) ∧
+        ((lev k : ℚ) : ℝ) ≤ QPoly.eval F x ∧ QPoly.eval F x ≤ ((lev K : ℚ) : ℝ) ∧
+        ((κ : ℚ) : ℝ) ≤ QPoly.eval (Qf k K) x
+  | _, [], _, hne, _ => absurd rfl hne
+  | a, (d, k, K) :: rest, h, _, hT => by
+    intro x hx
+    simp only [pieceCheckL, Bool.and_eq_true, decide_eq_true_eq] at h
+    obtain ⟨⟨⟨⟨had, hkd⟩, hKc⟩, hlb⟩, hrest⟩ := h
+    have hdend : (d : ℝ) ≤ pieceEnd2 d rest := by exact_mod_cast le_pieceEndL d rest hrest
+    have hend : pieceEnd2 a ((d, k, K) :: rest) = pieceEnd2 d rest := rfl
+    rw [hend] at hx hT
+    rcases le_or_gt x d with hxd | hxd
+    · refine ⟨k, K, ⟨d, List.mem_cons_self⟩, ?_, ?_, ?_⟩
+      · have hTd : ((lev k : ℚ) : ℝ) ≤ QPoly.eval F d := by
+          rw [QPoly.eval_cast]; exact_mod_cast hkd
+        exact hTd.trans (hT hx ⟨by exact_mod_cast had, hdend⟩ hxd)
+      · have hTc : QPoly.eval F a ≤ ((lev K : ℚ) : ℝ) := by
+          rw [QPoly.eval_cast]; exact_mod_cast hKc
+        exact (hT ⟨le_rfl, (by exact_mod_cast had : (a : ℝ) ≤ d).trans hdend⟩ hx hx.1).trans hTc
+      · have hb := QPoly.lowerBound_le (h := d - a) (QPoly.shift a (Qf k K)) (t := x - a)
+          (by linarith [hx.1]) (by push_cast; linarith)
+        rw [QPoly.eval_shift, show ((a : ℚ) : ℝ) + (x - a) = x by ring] at hb
+        exact (by exact_mod_cast hlb :
+          ((κ : ℚ) : ℝ) ≤ (QPoly.lowerBound (d - a) (QPoly.shift a (Qf k K)) : ℝ)).trans hb
+    · have hne' : rest ≠ [] := by
+        rintro rfl
+        simp only [pieceEnd2] at hx
+        linarith [hx.2]
+      obtain ⟨k', K', ⟨d', hmem⟩, h1, h2, h3⟩ := pieceCheckL_sound d rest hrest hne'
+        (hT.mono (Icc_subset_Icc (by exact_mod_cast had) le_rfl)) x ⟨hxd.le, hx.2⟩
+      exact ⟨k', K', ⟨d', List.mem_cons_of_mem _ hmem⟩, h1, h2, h3⟩
+
 /-! ### Sanity checks -/
 
-/-- Sanity (degenerate case): with `D ≡ 0` and `D' ≡ 0` the degenerate-axis condition holds. -/
-theorem degenerateAxis_of_zero (c : RadialCoefficients) (hD : ∀ ψ, c.D ψ = 0)
-    (hdD : ∀ ψ, c.dD ψ = 0) : DegenerateAxis c :=
-  ⟨hD 0, (hdD 0).symm.le⟩
+/-- Sanity (degenerate case): with `D ≡ 0`, `∂ψD ≡ 0` and `∂TD ≡ 0` the degenerate-axis
+condition holds. -/
+theorem degenerateAxis_of_zero (c : RadialCoefficients) (hD : ∀ ψ T, c.D ψ T = 0)
+    (hdD : ∀ ψ T, c.dD ψ T = 0) (hdDT : ∀ ψ T, c.dDT ψ T = 0) : DegenerateAxis c :=
+  ⟨hD 0, fun T => (hdD 0 T).symm.le, hdDT 0⟩
 
 /-- Sanity (accepted fixture): `Q = 1 − x` on `[0,1]` split at `1/2`, profile `T = 2 − x`,
 labels `1`, bonus `0`, margin `0`. -/
@@ -430,6 +537,28 @@ theorem pieceCheck_reject :
 /-- Sanity (the bonus is used): `Q = −1` with bonus `2` on label `1` passes margin `1`. -/
 theorem pieceCheck_bonus :
     pieceCheck [-1] [2, -1] 1 (fun k => if k = 1 then 2 else 0) 0 [(1, 1)] = true := by
+  decide +kernel
+
+/-- Sanity (two-label checker, accepted fixture): `F = 2 − x` lies in `[1, 2]` on `[0,1]`, the
+labels `(1, 2)` bracket it, and `Q = 1 − x` with bonus `0` has margin `0`. -/
+theorem pieceCheck2_accept :
+    pieceCheck2 [1, -1] [2, -1] id 0 (fun _ _ => 0) 0 [(1 / 2, 1, 2), (1, 1, 2)] = true := by
+  decide +kernel
+
+/-- Sanity (label-dependent checker, accepted fixture): `Q_k = k − x` with labels `k = 1`. -/
+theorem pieceCheckL_accept :
+    pieceCheckL (fun k _ => [k, -1]) [2, -1] id 0 0 [(1 / 2, 1, 2), (1, 1, 2)] = true := by
+  decide +kernel
+
+/-- Sanity (label-dependent checker, rejected fixture): with `k = 1/2`, `Q_k = k − x` is
+negative near `x = 1`. -/
+theorem pieceCheckL_reject :
+    pieceCheckL (fun k _ => [k, -1]) [2, -1] id 0 0 [(1 / 2, 1 / 2, 2), (1, 1 / 2, 2)] = false := by
+  decide +kernel
+
+/-- Sanity (two-label checker, rejected fixture): the upper label `3/2` is below `F(0) = 2`. -/
+theorem pieceCheck2_reject_label :
+    pieceCheck2 [1, -1] [2, -1] id 0 (fun _ _ => 0) 0 [(1 / 2, 1, 3 / 2), (1, 1, 2)] = false := by
   decide +kernel
 
 end PlasmaLean.Transport

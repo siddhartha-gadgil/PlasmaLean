@@ -8,6 +8,7 @@ module
 public import PlasmaLean.Theory.Kinetic.BoozerGuidingCentre
 public import PlasmaLean.Theory.Kinetic.OscillatoryAveraging
 public import Mathlib.Data.List.GetD
+public meta import Lean
 
 /-!
 # Trapping times from oscillatory averaging (M4/T8)
@@ -29,7 +30,9 @@ along the orbit while it stays in the region.
   vector fields with the chain rule `hasDerivAt_eval`, exponent normalization `normWith`, and
   sound ball enclosures (`QBall` exact, `FBall` fixed point `c/2⁶⁴` with outward rounding;
   `FBall.mem_evalT_toFix`), so that amplitude bounds become kernel-checked certificates;
-  fixtures `lie_square_fixture`, `addP_cancel_fixture`, `hasDerivAt_sq_via_lie`.
+  two-stage enclosures (`stage1` to a ball-coefficient polynomial `BPoly`, then `evalB` on
+  each cell; `BPoly.holds_stage1`, `FBall.mem_evalB`) and the literal parsers `fpoly%`,
+  `bpoly%`; fixtures `lie_square_fixture`, `addP_cancel_fixture`, `hasDerivAt_sq_via_lie`.
 
 All statements are about the vacuum Boozer guiding-centre **model** (supplied orbits; its
 derivation from the Lorentz force is not formalized). The oscillatory hypotheses
@@ -564,6 +567,12 @@ structure FBall where
   /-- scaled radius -/
   r : ℕ
 
+/-- Decidable equality of fixed-point balls (explicit, so that the kernel can unfold it when
+equations between literal ball polynomials are checked by `decide +kernel` in other modules). -/
+instance : DecidableEq FBall := fun a b =>
+  if h : a.c = b.c ∧ a.r = b.r then isTrue (by cases a; cases b; simp_all)
+  else isFalse (by rintro rfl; exact h ⟨rfl, rfl⟩)
+
 /-- Membership in a fixed-point ball. -/
 @[expose] def FBall.Mem (b : FBall) (x : ℝ) : Prop := |x - b.c / Dk| ≤ b.r / Dk
 
@@ -767,6 +776,186 @@ theorem FBall.mem_ofQ {b : QBall} {x : ℝ} (h : b.Mem x) : (ofQ b).Mem x := by
     _ ≤ b.r + 1 / Dk := add_le_add h hc'
     _ ≤ _ := by push_cast; rw [add_div]; linarith
 
+/-! ### Two-stage enclosures (ball-coefficient polynomials)
+
+On a cover only a few variables change from cell to cell. `stage1` encloses, once and for all,
+the part of every monomial in the remaining variables (by global balls) and merges monomials
+with the same exponents in the cell variables, giving a polynomial `∑ bᵢ xᵉⁱ` with **ball
+coefficients** (`BPoly`); `evalB` then encloses it on a cell. `BPoly.Holds` is the semantics. -/
+
+/-- A polynomial with fixed-point ball coefficients. -/
+abbrev BPoly := List (FBall × List ℕ)
+
+/-- `v` is a value of the ball polynomial at `x`: `v = ∑ yᵢ xᵉⁱ` for some `yᵢ ∈ bᵢ`. -/
+@[expose] def BPoly.Holds : BPoly → ℝ → (ℕ → ℝ) → Prop
+  | [], v, _ => v = 0
+  | (b, e) :: bp, v, x => ∃ y, b.Mem y ∧ BPoly.Holds bp (v - y * evalMono e x) x
+
+/-- Fixed-point enclosure of a ball polynomial on a box. -/
+@[expose] def evalB (bp : BPoly) (bs : List FBall) : FBall :=
+  bp.foldr (fun t acc => addF (mulF t.1 (monoT t.2 bs (bs.map powTable))) acc) ⟨0, 0⟩
+
+/-- **Soundness of `evalB`**: a value of the ball polynomial at a point of the box lies in
+the enclosure. -/
+theorem FBall.mem_evalB (bp : BPoly) {bs : List FBall} {x : ℕ → ℝ}
+    (hx : ∀ i, (bs.getD i ⟨0, 0⟩).Mem (x i)) {v : ℝ} (h : bp.Holds v x) :
+    (evalB bp bs).Mem v := by
+  induction bp generalizing v with
+  | nil =>
+    simp only [BPoly.Holds] at h
+    subst h; simp [FBall.Mem, evalB]
+  | cons t bp ih =>
+    obtain ⟨b, e⟩ := t
+    obtain ⟨y, hy, hrest⟩ := h
+    have := FBall.mem_add (FBall.mem_mul hy (FBall.mem_monoT e hx)) (ih hrest)
+    simp only [evalB, List.foldr_cons] at this ⊢
+    convert this using 1
+    ring
+
+/-- Exponent equality as a structural Boolean test (cheap in the kernel). -/
+@[expose] def eqE : List ℕ → List ℕ → Bool
+  | [], [] => true
+  | a :: e, b :: f => Nat.beq a b && eqE e f
+  | _, _ => false
+
+/-- `eqE` is sound for equality. -/
+theorem eq_of_eqE {e f : List ℕ} (h : eqE e f = true) : e = f := by
+  induction e generalizing f with
+  | nil => cases f <;> simp_all [eqE]
+  | cons a e ih =>
+    cases f with
+    | nil => simp [eqE] at h
+    | cons b f =>
+      simp only [eqE, Bool.and_eq_true] at h
+      rw [Nat.eq_of_beq_eq_true h.1, ih h.2]
+
+/-- Add the term `b xᵉ` to a ball polynomial (merging with an equal exponent). -/
+@[expose] def insertB (b : FBall) (e : List ℕ) : BPoly → BPoly
+  | [] => [(b, e)]
+  | (b', e') :: bp => if eqE e' e then (addF b' b, e') :: bp else (b', e') :: insertB b e bp
+
+/-- Rewriting the value in `BPoly.Holds`. -/
+theorem BPoly.holds_congr {bp : BPoly} {v w : ℝ} {x : ℕ → ℝ} (h : bp.Holds v x) (hvw : v = w) :
+    bp.Holds w x := hvw ▸ h
+
+/-- Inserting the term `b xᵉ` adds `y xᵉ` (with `y ∈ b`) to the value. -/
+theorem BPoly.holds_insertB (b : FBall) (e : List ℕ) {bp : BPoly} {v y : ℝ} {x : ℕ → ℝ}
+    (h : bp.Holds v x) (hy : b.Mem y) : (insertB b e bp).Holds (v + y * evalMono e x) x := by
+  induction bp generalizing v with
+  | nil =>
+    simp only [BPoly.Holds] at h
+    exact ⟨y, hy, by simp only [BPoly.Holds]; rw [h]; ring⟩
+  | cons t bp ih =>
+    obtain ⟨b', e'⟩ := t
+    obtain ⟨y', hy', hrest⟩ := h
+    simp only [insertB]
+    split_ifs with he
+    · rw [eq_of_eqE he] at hrest ⊢
+      exact ⟨y' + y, FBall.mem_add hy' hy, BPoly.holds_congr hrest (by ring)⟩
+    · exact ⟨y', hy', BPoly.holds_congr (ih hrest) (by ring)⟩
+
+/-- The exponents of the cell variables (`mask = true`); later positions are kept. -/
+@[expose] def keepE : List Bool → List ℕ → List ℕ
+  | _, [] => []
+  | [], e => e
+  | b :: m, k :: e => (if b then k else 0) :: keepE m e
+
+/-- The exponents of the remaining variables (`mask = false`). -/
+@[expose] def dropE : List Bool → List ℕ → List ℕ
+  | _, [] => []
+  | [], _ => []
+  | b :: m, k :: e => (if b then 0 else k) :: dropE m e
+
+/-- A monomial splits into its non-cell and cell parts. -/
+theorem evalMono_keep_drop (m : List Bool) (e : List ℕ) (x : ℕ → ℝ) :
+    evalMono e x = evalMono (dropE m e) x * evalMono (keepE m e) x := by
+  induction e generalizing m x with
+  | nil => cases m <;> simp [keepE, dropE, evalMono]
+  | cons k e ih =>
+    cases m with
+    | nil => simp [keepE, dropE, evalMono]
+    | cons b m =>
+      simp only [keepE, dropE, evalMono]
+      rw [ih m]
+      cases b <;> simp <;> ring
+
+/-- Stage one: enclose the non-cell part of every monomial of `p/s` (given in fixed point)
+by the balls `bs` and merge monomials with equal cell exponents. -/
+@[expose] def stage1 (m : List Bool) (p : FPoly) (bs : List FBall) : BPoly :=
+  p.foldr (fun t acc =>
+    insertB (mulF ⟨t.1, 1⟩ (monoT (dropE m t.2) bs (bs.map powTable))) (keepE m t.2) acc) []
+
+/-- **Soundness of `stage1`**: if every variable lies in its ball of `bs`, then `p(x)/s` is a
+value of the ball polynomial `stage1 m (toFix s p) bs`. -/
+theorem BPoly.holds_stage1 (m : List Bool) (s : ℚ) (hs : s ≠ 0) (p : Poly) {bs : List FBall}
+    {x : ℕ → ℝ} (hx : ∀ i, (bs.getD i ⟨0, 0⟩).Mem (x i)) :
+    (stage1 m (toFix s p) bs).Holds (eval p x / s) x := by
+  induction p with
+  | nil => simp [stage1, toFix, BPoly.Holds]
+  | cons t p ih =>
+    simp only [toFix, List.map_cons, stage1, List.foldr_cons] at ih ⊢
+    have hc := FBall.mem_coeff (t.1 / s)
+    have hy := FBall.mem_mul hc (FBall.mem_monoT (dropE m t.2) hx)
+    refine BPoly.holds_congr (BPoly.holds_insertB _ (keepE m t.2) ih hy) ?_
+    rw [eval_cons, evalMono_keep_drop m t.2 x]
+    have hs' : (s : ℝ) ≠ 0 := by exact_mod_cast hs
+    push_cast
+    field_simp
+    ring
+
+/-! ### Literal ball polynomials
+
+`bpoly% "c r e₀ … eₙ; …"` and `fpoly% "c e₀ … eₙ; …"` elaborate (by a `meta` parser, outside
+the trusted kernel) to literal `BPoly`/`FPoly` values, one entry per `;`-separated item. Large
+literals are produced this way because elaborating long list literals of numerals directly is
+slow; they are always related to computed values by a kernel-checked equation. -/
+
+/-- Parse a `;`-separated list of rows of whitespace-separated integers. -/
+meta def parseRows (s : String) : Except String (List (List Int)) :=
+  ((s.replace "\n" " ").splitOn ";").filterMap (fun item =>
+      match (item.splitOn " ").filter (· ≠ "") with
+      | [] => none
+      | toks => some toks) |>.mapM fun toks => toks.mapM fun t => match t.toInt? with
+    | some k => pure k
+    | none => throw s!"bad integer {t}"
+
+/-- Natural-number exponents of a parsed row. -/
+meta def rowExps (es : List Int) : Except String (List Nat) :=
+  es.mapM fun e => if 0 ≤ e then pure e.toNat else throw s!"negative exponent {e}"
+
+open Lean Elab Term Meta in
+/-- Literal ball polynomial: `bpoly% "c r e₀ … eₙ; …"` is `[(⟨c, r⟩, [e₀, …, eₙ]), …]`. -/
+elab "bpoly% " s:str : term => do
+  let rows ← match parseRows s.getString with
+    | .ok rows => pure rows
+    | .error err => throwError "bpoly%: {err}"
+  let fb := Lean.mkConst ``FBall
+  let le := mkApp (Lean.mkConst ``List [0]) (Lean.mkConst ``Nat)
+  let ty := mkApp2 (Lean.mkConst ``Prod [0, 0]) fb le
+  let elems ← rows.mapM fun row => do
+    match row with
+    | c :: r :: es =>
+      let some es := (rowExps es).toOption | throwError "bpoly%: bad exponents {es}"
+      unless 0 ≤ r do throwError "bpoly%: negative radius {r}"
+      return mkApp4 (Lean.mkConst ``Prod.mk [0, 0]) fb le
+        (mkApp2 (Lean.mkConst ``FBall.mk) (toExpr c) (toExpr r.toNat)) (toExpr es)
+    | _ => throwError "bpoly%: bad row {row}"
+  mkListLit ty elems
+
+open Lean Elab Term Meta in
+/-- Literal fixed-point polynomial: `fpoly% "c e₀ … eₙ; …"` is `[(c, [e₀, …, eₙ]), …]`. -/
+elab "fpoly% " s:str : term => do
+  let rows ← match parseRows s.getString with
+    | .ok rows => pure rows
+    | .error err => throwError "fpoly%: {err}"
+  let elems ← rows.mapM fun row => do
+    match row with
+    | c :: es =>
+      let some es := (rowExps es).toOption | throwError "fpoly%: bad exponents {es}"
+      return toExpr (c, es)
+    | _ => throwError "fpoly%: bad row {row}"
+  mkListLit (toTypeExpr (Int × List Nat)) elems
+
 /-! ### Fixtures -/
 
 /-- Accepted fixture: `L(x₀²) = 2 x₀` along `ẋ₀ = 1`. -/
@@ -777,6 +966,22 @@ theorem addP_cancel_fixture : addP [(1, [1])] [(-1, [1])] = [] := by decide +ker
 
 /-- Rejected fixture: distinct monomials do not merge. -/
 theorem addP_distinct_fixture : addP [(1, [1])] [(1, [2])] ≠ [(2, [1])] := by decide +kernel
+
+/-- Accepted fixture: `stage1` merges `x₀ x₁` and `x₀ x₁²` into one cell monomial `x₀` with
+ball coefficient `x₁ + x₁²` (mask: `x₀` is the cell variable). -/
+theorem stage1_merge_fixture :
+    (stage1 [true, false] [(1, [1, 1]), (1, [1, 2])] [oneF, oneF]).length = 1 := by decide +kernel
+
+/-- Rejected fixture: distinct cell exponents are not merged. -/
+theorem stage1_distinct_fixture :
+    (stage1 [true, false] [(1, [1, 1]), (1, [2, 1])] [oneF, oneF]).length ≠ 1 := by decide +kernel
+
+/-- The `bpoly%` parser produces the expected literal. -/
+theorem bpoly_fixture : (bpoly% "3 1 0 2; -5 0 1" : BPoly) = [(⟨3, 1⟩, [0, 2]), (⟨-5, 0⟩, [1])] :=
+  rfl
+
+/-- The `fpoly%` parser produces the expected literal. -/
+theorem fpoly_fixture : (fpoly% "3 0 2; -5 1" : FPoly) = [(3, [0, 2]), (-5, [1])] := rfl
 
 /-- Special case of the chain rule: `d/dt t² = 2t`, obtained from `hasDerivAt_eval`. -/
 theorem hasDerivAt_sq_via_lie (t : ℝ) : HasDerivAt (fun r : ℝ => r ^ 2) (2 * t) t := by

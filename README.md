@@ -17,21 +17,20 @@ confinement is certified.
 
 On 20 October an [implementation plan](notes/implementation-plan.md) was fixed. It cycles
 between theory, certificate techniques and a ladder of successively realistic models, targeting
-both confinement and keeping the plasma hot. Four phases are complete:
+both confinement and keeping the plasma hot. Five phases are complete:
 
-- every 3.5 MeV fusion alpha born in the inner core of an exact, realistically scaled
-  axisymmetric equilibrium is confined for all time;
-- in a reactor-scale near-quasisymmetric field, passing alphas are confined for 0.11 s
-  (guiding-centre model, rigorous averaging; slowing down takes ≈ 0.4 s);
-- core-temperature barriers (T ≥ 10 keV for all time) hold in idealized geometries, and 0-D burn
-  windows follow from the IPB98 and ISS04 scaling laws;
-- a slab Grad–Shafranov equilibrium with an exponential pressure profile is validated by the
-  radii polynomial;
-- screw-pinch all-mode Newcomb stability and ballooning certificates are proved, and the helical
-  test equilibrium is shown to be Mercier-unstable.
+- **one consistent plasma:** for one exact Solov'ev field satisfying force balance, 3.5 MeV alphas
+  born in the core are confined for all time, the core stays at or above 10 keV for all time, and
+  the plasma pressure stays below the equilibrium pressure (transport geometry supplied; driven,
+  Q ≈ 5.5);
+- **stability:** Mercier stability of that equilibrium is certified;
+- **near-quasisymmetric alphas:** passing alphas are held for 0.19 s;
+- **burn windows** follow from the IPB98 and ISS04 scaling laws;
+- **validation:** a slab Grad–Shafranov equilibrium with an exponential profile is validated;
+- **screw pinch:** all-mode Newcomb stability is proved.
 
-The library has 108 modules and 5942 audited declarations, using standard axioms only. See the
-[progress slideshow](docs/slides.html) and the [latest report](progress/2026-10-20-progress-5.md).
+The library has 116 modules and 7309 audited declarations, using standard axioms only. See the
+[progress slideshow](docs/slides.html) and the [latest report](progress/2026-10-20-progress-6.md).
 
 ## Code structure
 

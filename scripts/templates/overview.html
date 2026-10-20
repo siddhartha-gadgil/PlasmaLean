@@ -378,7 +378,7 @@
                     <div class="bg-stone-800 p-4 rounded-xl border border-stone-700 space-y-2">
                         <div class="text-purple-300 font-bold text-sm">3. The PlasmaLean Solution</div>
                         <p class="text-stone-300 leading-relaxed">
-                            When complete, <strong>PlasmaLean</strong> will provide a formal mathematical foundation in Lean 4 without project-specific axioms. It is intended to enable AI agents to discover candidate geometries and prove precisely stated plasma-stability results with machine-checked certainty.
+                            <strong>PlasmaLean</strong> is a Lean 4 library with no project-specific axioms (the latest audit found only Lean/Mathlib's standard axioms). It already contains machine-checked equilibrium, local-stability, confinement and burn-temperature theorems for idealized models; the goal remains to let AI agents discover candidate geometries and prove precisely stated plasma-stability results for them.
                         </p>
                     </div>
 
@@ -422,7 +422,7 @@
                         The primary goal of the <strong>PlasmaLean</strong> platform is to <strong>develop new mathematical theory</strong> required to design high-performance, constructible stellarators and prove plasma stability ($\delta W > 0$) within them.
                     </p>
                     <p class="text-stone-600 leading-relaxed text-sm sm:text-base">
-                        Hosted at <a href="https://github.com/siddhartha-gadgil/PlasmaLean" target="_blank" rel="noopener noreferrer" class="text-purple-700 font-semibold underline hover:text-purple-900">github.com/siddhartha-gadgil/PlasmaLean</a>, this project aims to build a mathematical kernel in Lean 4 without project-specific axioms. When complete, it will provide machine-checked guarantees for the mathematical claims that have been formalized, enabling AI agents and automated provers to explore high-dimensional magnetic geometries, propose stable equilibria, and synthesize proofs for Lean to check.
+                        Hosted at <a href="https://github.com/siddhartha-gadgil/PlasmaLean" target="_blank" rel="noopener noreferrer" class="text-purple-700 font-semibold underline hover:text-purple-900">github.com/siddhartha-gadgil/PlasmaLean</a>, this project builds a mathematical kernel in Lean 4 without project-specific axioms. It provides machine-checked guarantees for the mathematical claims formalized so far (see the progress report), and aims at enabling AI agents and automated provers to explore high-dimensional magnetic geometries, propose stable equilibria, and synthesize proofs for Lean to check.
                     </p>
                 </div>
             </div>
@@ -435,7 +435,7 @@
                         <span class="text-xs text-stone-300 font-mono">github.com/siddhartha-gadgil/PlasmaLean</span>
                     </div>
                     <h3 class="text-lg font-bold text-white">Explore & Contribute to the PlasmaLean Codebase</h3>
-                    <p class="text-xs text-stone-300">Will grow to include Lean 4 modules for `PlasmaLean.Kernel`, `PlasmaLean.Sanity`, `PlasmaLean.Theory`, and `PlasmaLean.Bridge`.</p>
+                    <p class="text-xs text-stone-300">Contains Lean 4 modules in `PlasmaLean.Kernel`, `PlasmaLean.Sanity`, `PlasmaLean.Theory`, `PlasmaLean.Certificates`, `PlasmaLean.Bridge` and `PlasmaLean.Design`.</p>
                 </div>
                 <a href="https://github.com/siddhartha-gadgil/PlasmaLean" target="_blank" rel="noopener noreferrer" class="px-4 py-2.5 rounded-xl bg-purple-600 hover:bg-purple-500 text-white font-semibold text-xs transition-colors shrink-0 shadow-sm flex items-center space-x-2">
                     <span>View Repository on GitHub</span>
@@ -454,7 +454,7 @@
                         </div>
                         <h3 class="text-lg font-bold text-slate-900 mb-2">Theoretical Engine</h3>
                         <p class="text-xs text-stone-600 leading-relaxed mb-4">
-                            Will develop continuous mathematical formulations for non-axisymmetric MHD equilibrium, KAM magnetic surface persistence, and functional analytic energy stability ($\delta W > 0$).
+                            Has exact (symmetric) MHD equilibria, Suydam/Newcomb/Mercier stability criteria and Noether confinement in Lean; non-axisymmetric existence, KAM surface persistence and 3-D energy stability ($\delta W > 0$) remain planned.
                         </p>
                     </div>
                     <button onclick="switchTab('theory')" class="w-full py-2 px-3 rounded-xl bg-purple-50 text-purple-800 hover:bg-purple-100 font-semibold text-xs transition-colors border border-purple-200 text-center">
@@ -486,7 +486,7 @@
                         </div>
                         <h3 class="text-lg font-bold text-slate-900 mb-2">Machine-Checked Correctness</h3>
                         <p class="text-xs text-stone-600 leading-relaxed mb-4">
-                            When complete, will avoid ad hoc project axioms and will check each formalized mathematical transformation, from differential geometry to interval-certified coil geometry.
+                            Avoids ad hoc project axioms and checks each formalized mathematical transformation, from field derivatives and equilibria to interval-certified coil geometry and tolerance margins.
                         </p>
                     </div>
                     <button onclick="switchTab('kernel')" class="w-full py-2 px-3 rounded-xl bg-amber-50 text-amber-800 hover:bg-amber-100 font-semibold text-xs transition-colors border border-amber-200 text-center">
@@ -518,7 +518,7 @@
                         <div>
                             <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-indigo-200 text-indigo-900">LAYER 2</span>
                             <h4 class="font-bold text-sm text-indigo-900 mt-1">Boundary Checks</h4>
-                            <p class="text-[11px] text-indigo-800 leading-relaxed">Planned proofs include the 2D Grad-Shafranov limit, vacuum Laplace fields, and source-specific Garren-Boozer $O(\rho^3)$ compatibility results.</p>
+                            <p class="text-[11px] text-indigo-800 leading-relaxed">Checked so far: force-free and harmonic-gradient witnesses, counterexamples to overbroad claims, and a slab Grad-Shafranov reduction. The general 2D Grad-Shafranov limit and the Garren-Boozer $O(\rho^3)$ result remain planned.</p>
                         </div>
                         <span class="text-[10px] font-mono text-indigo-700 font-semibold">PlasmaLean.Sanity</span>
                     </div>
@@ -545,7 +545,7 @@
                         <div>
                             <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-200 text-emerald-900">LAYER 5</span>
                             <h4 class="font-bold text-sm text-emerald-900 mt-1">Co-Design Studio</h4>
-                            <p class="text-[11px] text-emerald-800 leading-relaxed">Will connect theoretical stability to hardware constraints such as coil bend radii, clearances, and interval-checked radii polynomials.</p>
+                            <p class="text-[11px] text-emerald-800 leading-relaxed">Common-witness design contracts, coil-tube clearance and radii-polynomial certificates are checked; connecting stability to sourced hardware constraints (bend radii, conductors) remains planned.</p>
                         </div>
                         <span class="text-[10px] font-mono text-emerald-700 font-semibold">PlasmaLean.Bridge</span>
                     </div>
@@ -588,7 +588,7 @@
                         The Kernel: Axiom-Free Foundations of MHD Physics
                     </h2>
                     <p class="text-stone-600 leading-relaxed text-sm sm:text-base">
-                        The planned Kernel will provide a minimal foundation for plasma domain modeling in Lean 4 (`PlasmaLean.Kernel`). It will introduce <strong>no ad hoc project axioms</strong>; mathematical entities will be represented by definitions, smooth structures, and explicit law-bearing structures grounded in Mathlib.
+                        The Kernel (`PlasmaLean.Kernel`) is a minimal foundation for plasma domain modeling in Lean 4, with restricted law bundles for force balance, slab and vacuum fields, fusion power and radial transport. It introduces <strong>no ad hoc project axioms</strong>; mathematical entities are represented by definitions, smooth structures, and explicit law-bearing structures grounded in Mathlib. The full 3-D manifold and differential-form setting shown below is still the target, not yet the implementation.
                     </p>
                 </div>
             </div>
@@ -624,7 +624,7 @@
                     </div>
 
                     <div class="p-4 bg-amber-50/60 rounded-xl border border-amber-200 text-xs text-amber-950 space-y-2">
-                        <span class="font-bold block text-amber-900">Direct Deductions Planned for the Kernel:</span>
+                        <span class="font-bold block text-amber-900">Direct Deductions Proved in the Kernel (`field_tangency`, `current_tangency`):</span>
                         <p class="text-sm font-semibold">$$\mathbf{B} \cdot \nabla p = 0 \quad \text{and} \quad \mathbf{J} \cdot \nabla p = 0$$</p>
                         <p class="leading-relaxed text-amber-800">
                             Magnetic field lines and current densities are everywhere tangent to scalar pressure isosurfaces $p(\mathbf{x}) = c$. By Poincaré-Hopf theorem, a connected, compact, boundaryless, orientable regular surface with a nonvanishing tangent field has genus one. A global nested foliation requires additional hypotheses.
@@ -665,7 +665,7 @@ theorem field_tangent_to_pressure (eq : MHDEquilibrium Ω) :
                     </div>
 
                     <p class="text-sm text-stone-600 leading-relaxed">
-                        On nested magnetic flux surfaces $\psi$, Boozer coordinates $(s, \theta, \phi)$ straighten magnetic field line trajectories. The Kernel is intended to formalize both contravariant and covariant representations:
+                        On nested magnetic flux surfaces $\psi$, Boozer coordinates $(s, \theta, \phi)$ straighten magnetic field line trajectories. The Kernel is intended to formalize both contravariant and covariant representations (planned; so far Boozer variables appear only in the supplied guiding-centre model `BoozerGuidingCentre`):
                     </p>
 
                     <!-- Math Display Box -->
@@ -729,10 +729,10 @@ theorem field_tangent_to_pressure (eq : MHDEquilibrium Ω) :
 
                     <div class="md:col-span-2 text-sm text-stone-600 space-y-2 leading-relaxed">
                         <p>
-                            <strong>Planned formalization:</strong> Rather than relying on discrete straight-line approximations, the Kernel will represent the continuous Bochner/Lebesgue integral over suitable one-dimensional smooth embedded manifolds in $\mathbb{R}^3$.
+                            <strong>Formalized:</strong> Rather than relying on discrete straight-line approximations, `PlasmaLean.Theory.Fields.BiotSavart` defines the continuous filament integral over a parametrized curve in $\mathbb{R}^3$, with source-distance and derivative bounds; `Maxwell` proves $\nabla \cdot \mathbf{B} = 0$ and (for closed filaments) $\nabla \times \mathbf{B} = 0$ off the coil.
                         </p>
                         <p>
-                            <strong>Boundary Field Matching:</strong> This exact continuous definition is later used by the mathematical theory library to evaluate Neumann boundary matching $\mathbf{B}_{ext} \cdot \mathbf{n} = 0$ on plasma surfaces.
+                            <strong>Boundary Field Matching:</strong> This exact continuous definition is intended to be used later to evaluate Neumann boundary matching $\mathbf{B}_{ext} \cdot \mathbf{n} = 0$ on plasma surfaces (not yet formalized).
                         </p>
                     </div>
                 </div>
@@ -757,7 +757,7 @@ theorem field_tangent_to_pressure (eq : MHDEquilibrium Ω) :
                         Boundary Checks: Degeneracies & Overdetermination Proofs
                     </h2>
                     <p class="text-stone-600 leading-relaxed text-sm sm:text-base">
-                        To test that the Kernel definitions have the intended content and behave correctly in limiting cases, the planned `PlasmaLean.Sanity` suite will formalize selected physical limit theorems, topological obstructions, and symmetry reductions in Lean 4.
+                        To test that the Kernel definitions have the intended content and behave correctly in limiting cases, the `PlasmaLean.Sanity` suite formalizes consistent witnesses and counterexamples (equilibrium, vacuum, transport, fusion, curvature obstruction); the limit theorems and symmetry reductions below are only partly done.
                     </p>
                 </div>
             </div>
@@ -774,14 +774,14 @@ theorem field_tangent_to_pressure (eq : MHDEquilibrium Ω) :
                         </div>
                         <h3 class="text-lg font-bold text-slate-900 mb-2">Grad-Shafranov Collapse</h3>
                         <p class="text-xs text-stone-600 leading-relaxed mb-4">
-                            Will prove that under suitable exact axisymmetry assumptions ($\partial \mathbf{B} / \partial \phi = 0$), the 3D MHD Kernel equations reduce to the 2D elliptic Grad-Shafranov PDE:
+                            Target (partial): under suitable exact axisymmetry assumptions ($\partial \mathbf{B} / \partial \phi = 0$), the 3D MHD Kernel equations reduce to the 2D elliptic Grad-Shafranov PDE. So far the exact Solov'ev solution is checked directly against $\mathbf{J} \times \mathbf{B} = \nabla p$, and a slab Grad-Shafranov solution gives kernel force balance (`staticSlab_of_GS`); the general reduction is not yet proved:
                         </p>
                         <div class="bg-stone-50 p-3 rounded-lg border border-stone-200 text-xs text-indigo-900 font-bold">
                             $$\Delta^* \psi = -\mu_0 R^2 \frac{dp}{d\psi} - F(\psi)\frac{dF}{d\psi}$$
                         </div>
                     </div>
                     <div class="text-xs text-stone-500 bg-indigo-50/50 p-3 rounded-lg border border-indigo-100">
-                        <strong>Planned role:</strong> Check that 3D contravariant metric tensors recover classical 2D tokamak theory under rotational Killing-vector assumptions.
+                        <strong>Planned role:</strong> Check that 3D contravariant metric tensors recover classical 2D tokamak theory under rotational Killing-vector assumptions (the rotational Killing field is already used in the Noether confinement theorems).
                     </div>
                 </div>
 
@@ -794,7 +794,7 @@ theorem field_tangent_to_pressure (eq : MHDEquilibrium Ω) :
                         </div>
                         <h3 class="text-lg font-bold text-slate-900 mb-2">Vacuum Laplace Fields</h3>
                         <p class="text-xs text-stone-600 leading-relaxed mb-4">
-                            Will prove that zero-pressure, current-free plasma regions, with the required domain assumptions, reduce to a scalar magnetic potential $\mathbf{B} = \nabla \phi$ satisfying Laplace's equation:
+                            Partial: the kernel `VacuumField` law ($\nabla \cdot \mathbf{B} = 0$, $\nabla \times \mathbf{B} = 0$) is in place, the gradient of a harmonic polynomial is proved a vacuum field, and $\Delta|\mathbf{B}|^2 = 2|\nabla\mathbf{B}|^2$ gives a maximum principle. The general reduction to a scalar potential $\mathbf{B} = \nabla \phi$ satisfying Laplace's equation is not yet proved:
                         </p>
                         <div class="bg-stone-50 p-3 rounded-lg border border-stone-200 text-xs text-indigo-900 font-bold">
                             $$\nabla^2 \phi = 0 \quad \text{(Harmonic Potential)}$$
@@ -814,7 +814,7 @@ theorem field_tangent_to_pressure (eq : MHDEquilibrium Ω) :
                         </div>
                         <h3 class="text-lg font-bold text-slate-900 mb-2">Garren-Boozer Constraint</h3>
                         <p class="text-xs text-stone-600 leading-relaxed mb-4">
-                            Will formalize a source-specific near-axis compatibility result concerning quasisymmetry at third order in minor radius $O(\rho^3)$.
+                            Planned: formalize a source-specific near-axis compatibility result concerning quasisymmetry at third order in minor radius $O(\rho^3)$. (A first-order near-axis QA field is already used, as supplied data, in the near-QA alpha theorems.)
                         </p>
                         <div class="bg-stone-50 p-3 rounded-lg border border-stone-200 text-xs text-indigo-900 font-bold">
                             $$12 \text{ Constraints} > 10 \text{ Harmonics}$$
@@ -887,7 +887,7 @@ theorem field_tangent_to_pressure (eq : MHDEquilibrium Ω) :
                         Mathematical Theory Engine: Asymmetric Solvability & Stability
                     </h2>
                     <p class="text-stone-600 leading-relaxed text-sm sm:text-base">
-                        This section outlines planned theoretical tools in mathematical physics (`PlasmaLean.Theory`). Drawing on functional analysis and Sobolev space theory ($H^k(\Omega)$), the completed library will formulate precisely scoped theorems about when 3D MHD models admit <strong>stable non-axisymmetric plasma equilibria</strong> ($\delta W > 0$).
+                        This section outlines theoretical tools in mathematical physics (`PlasmaLean.Theory`). Implemented so far: abstract energy bounds, Suydam (both directions), Newcomb, Mercier and ballooning criteria, Noether and guiding-centre confinement, and transport comparison. The theorems below are still planned: drawing on functional analysis and Sobolev space theory ($H^k(\Omega)$), the library is meant to formulate precisely scoped theorems about when 3D MHD models admit <strong>stable non-axisymmetric plasma equilibria</strong> ($\delta W > 0$).
                     </p>
                 </div>
             </div>
@@ -903,7 +903,7 @@ theorem field_tangent_to_pressure (eq : MHDEquilibrium Ω) :
                     </div>
 
                     <p class="text-xs text-stone-600 leading-relaxed">
-                        Will formalize conditions under which continuous spatial symmetry is <em>not</em> required by a specified confinement or stability result. A target theorem concerns smooth equilibria under non-axisymmetric boundary perturbations in appropriate Sobolev spaces:
+                        Planned (not yet formalized; the closest checked result is an exact helically symmetric equilibrium, which is Mercier-unstable): formalize conditions under which continuous spatial symmetry is <em>not</em> required by a specified confinement or stability result. A target theorem concerns smooth equilibria under non-axisymmetric boundary perturbations in appropriate Sobolev spaces:
                     </p>
 
                     <div class="bg-stone-50 p-4 rounded-xl border border-stone-200 text-xs text-purple-950 space-y-2">
@@ -1077,7 +1077,7 @@ theorem asymmetric_stable_equilibrium_exists
             <div class="bg-stone-900 text-white p-6 sm:p-8 rounded-2xl shadow-md space-y-4">
                 <h3 class="text-xl font-bold text-white">Integrating Literature Sources into PlasmaLean Theory</h3>
                 <p class="text-xs text-stone-300 leading-relaxed max-w-4xl">
-                    The PlasmaLean library is intended to go beyond individual papers by abstracting reusable mathematical structures from plasma-physics literature into Lean 4 definitions and law-bearing structures. When developed, this foundation should help researchers and AI agents derive new theorems for magnetic-field configurations beyond existing publications.
+                    The PlasmaLean library goes beyond individual papers by abstracting reusable mathematical structures from plasma-physics literature into Lean 4 definitions and law-bearing structures (for example the Hardy/Suydam, Noether and comparison theorems). As it grows, this foundation should help researchers and AI agents derive new theorems for magnetic-field configurations beyond existing publications.
                 </p>
             </div>
 
@@ -1155,19 +1155,19 @@ mathlib = { git = "https://github.com/leanprover-community/mathlib4.git", rev = 
                     <div class="space-y-2 text-xs font-mono">
                         <div class="p-2.5 bg-amber-50 rounded-lg border border-amber-200">
                             <span class="font-bold text-amber-900">PlasmaLean/Kernel/</span>
-                            <span class="block text-[11px] text-amber-800 font-sans mt-0.5">Axiom-Free Core: `MHD.lean`, `Boozer.lean`, `BiotSavart.lean`. ZERO `axiom` declarations permitted!</span>
+                            <span class="block text-[11px] text-amber-800 font-sans mt-0.5">Axiom-Free Core: `Equilibrium.lean`, `Slab.lean`, `Vacuum.lean`, `Fusion.lean`, `Transport.lean` (Biot-Savart lives in `Theory/Fields/`). ZERO `axiom` declarations permitted!</span>
                         </div>
                         <div class="p-2.5 bg-indigo-50 rounded-lg border border-indigo-200">
                             <span class="font-bold text-indigo-900">PlasmaLean/Sanity/</span>
-                            <span class="block text-[11px] text-indigo-800 font-sans mt-0.5">Planned boundary limits: `GradShafranov.lean`, `VacuumLaplace.lean`, `GarrenBoozer.lean`. Will test Kernel consistency.</span>
+                            <span class="block text-[11px] text-indigo-800 font-sans mt-0.5">Kernel consistency checks: `Equilibrium.lean`, `Vacuum.lean`, `Transport.lean`, `Fusion.lean` and more. Planned limits: general Grad-Shafranov and Garren-Boozer.</span>
                         </div>
                         <div class="p-2.5 bg-purple-50 rounded-lg border border-purple-200">
                             <span class="font-bold text-purple-900">PlasmaLean/Theory/</span>
-                            <span class="block text-[11px] text-purple-800 font-sans mt-0.5">Planned theoretical API: `AsymmetricExistence.lean`, `KAM.lean`, `EnergySpectrum.lean`. Will express precisely scoped stability results.</span>
+                            <span class="block text-[11px] text-purple-800 font-sans mt-0.5">Theoretical API: `Stability/` (Suydam, Newcomb, Mercier, ballooning), `Kinetic/`, `Transport/`, `Fields/`. Planned: asymmetric existence, KAM, 3-D energy spectrum.</span>
                         </div>
                         <div class="p-2.5 bg-emerald-50 rounded-lg border border-emerald-200">
                             <span class="font-bold text-emerald-900">PlasmaLean/Bridge/</span>
-                            <span class="block text-[11px] text-emerald-800 font-sans mt-0.5">Constructible Realization: `RadiiPolynomials.lean`, `CoilBounds.lean`. Interval-checked hardware parameters.</span>
+                            <span class="block text-[11px] text-emerald-800 font-sans mt-0.5">Design contracts: `Contracts.lean`; radii polynomials and interval checkers live in `Certificates/`, coil clearance in `Theory/Geometry/`. Interval-checked hardware parameters.</span>
                         </div>
                     </div>
                 </div>
@@ -1330,7 +1330,7 @@ mathlib = { git = "https://github.com/leanprover-community/mathlib4.git", rev = 
                     <div class="bg-emerald-50/60 p-4 rounded-xl border border-emerald-200 space-y-2 text-xs">
                         <div class="font-bold text-emerald-950">Banach Space Fixed-Point Radii Certificate:</div>
                         <p class="text-stone-700 leading-relaxed">
-                            The planned certificate will let Lean verify that, when the radii-polynomial hypotheses hold, an exact mathematical solution exists within distance $r_{min}$ of the numerical result $\bar{x}$.
+                            The radii-polynomial certificate (`Certificates.RadiiPolynomial`) lets Lean verify that, when its hypotheses hold, an exact mathematical solution exists within distance $r_{min}$ of the numerical result $\bar{x}$; it has validated a 1-D BVP and a slab equilibrium, not yet a DESC/VMEC/SIMSOPT stellarator solution.
                         </p>
                         <div class="font-mono text-[11px] text-emerald-950 bg-white/80 p-2 rounded border border-emerald-200">
                             Illustrative target bound: $\|x_{exact} - x_{numerical}\| \le r_{min} = 3.42 \times 10^{-8}$

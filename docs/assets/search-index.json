@@ -1,15 +1,15 @@
 [
   {
     "title": "Progress slideshow",
-    "section": "Evidence updated 2026-10-20 · Phase 4 of the implementation plan: passing 3.5 MeV alphas confined for 0.11 s in a reactor-scale near-axis quasisymmetric field (Boozer guiding-centre model, rigorous 3-fold averaging; 137× the previous bound); the first validated plasma equilibrium with an exponential profile (slab Grad–Shafranov, classical C², kernel force balance); the helical equilibrium shown Mercier-unstable and the Solov'ev safety factor proved ≥ 2.02; volume coil-error certificates from boundary samples. Earlier: 3.5 MeV alphas confined for all time in an exact Solov'ev equilibrium; core-temperature barriers; burn windows. No coil-produced stellarator or 3-D all-mode stability.",
+    "section": "Evidence updated 2026-10-20 · Phase 5 of the implementation plan: `solovev_one_plasma` — one exact Solov'ev field (5 T, axisymmetric) with kernel force balance, all-time confinement of 3.5 MeV alphas born in the core, a two-sided transport band keeping T ≥ 10 keV in the core for all time, and plasma pressure below the equilibrium pressure plus an edge offset (transport geometry via a supplied class; driven, Q ≈ 5.5); kernel change K2 (temperature-dependent diffusivity); certified Mercier stability of that equilibrium; near-quasisymmetric passing alphas confined 0.19 s. Not a stellarator design; no coils, no all-mode 3-D stability.",
     "url": "slides.html",
     "text": "progress slideshow presentation latest run evidence vacuum fixture"
   },
   {
-    "title": "Alphas held 0.11 s in a near-quasisymmetric field; a validated plasma equilibrium.",
+    "title": "One plasma: force balance, confined alphas, and a hot core — in a single field.",
     "section": "Progress slideshow",
     "url": "slides.html#where-we-are",
-    "text": "alphas held 0.11 s in a near-quasisymmetric field; a validated plasma equilibrium. plasmalean is building a lean library for stellarator design. phase 4 proves that passing 3.5 mev alphas stay confined for 0.11 s in a reactor-scale near-quasisymmetric field — 137× the previous bound and within ≈ 4× of the slowing-down time — and validates the first plasma equilibrium with a non-polynomial profile. it also finds that the helical test equilibrium is mhd (mercier) unstable. p3: alphas confined for all time (axisymmetric) and for 0.11 s (near-qa, guiding-centre model). m3: first validated plasma equilibrium (slab). m1/m2 checked in idealized geometries."
+    "text": "one plasma: force balance, confined alphas, and a hot core — in a single field. plasmalean is building a lean library for stellarator design. phase 5 proves, for one exact equilibrium field, that 3.5 mev alphas born in the core stay confined for all time, that the core temperature stays at or above 10 kev for all time, and that the plasma pressure stays below what the equilibrium supports. mercier stability of that equilibrium is certified, and near-quasisymmetric alphas are now held for 0.19 s. g1 and g2 are joined in one theorem (solovev_one_plasma) for an axisymmetric equilibrium; mercier stability certified there; near-qa passing alphas 0.19 s."
   },
   {
     "title": "Small assumptions. Reusable proofs. One candidate.",
@@ -45,7 +45,7 @@
     "title": "Maxwell identities proved; interchange stability decided both ways.",
     "section": "Progress slideshow",
     "url": "slides.html#maxwell-and-stability",
-    "text": "maxwell identities proved; interchange stability decided both ways. the closed-filament biot–savart field is divergence- and curl-free off the coil. a sharp hardy inequality gives the suydam criterion with both sufficiency and an explicit unstable mode. a realistic screw pinch (a = 1 m, r₀ = 4 m, 5 t, ⟨β⟩ = 2/75) satisfies suydam everywhere with a 25% margin, and newcomb-reduced δw ≥ 0 is certified for every mode with 1 ≤ |m| ≤ 6 (wall at the edge)."
+    "text": "maxwell identities proved; interchange stability decided both ways. the closed-filament biot–savart field is divergence- and curl-free off the coil. a sharp hardy inequality gives the suydam criterion with both sufficiency and an explicit unstable mode. a realistic screw pinch (a = 1 m, r₀ = 4 m, 5 t, ⟨β⟩ = 2/75) satisfies suydam everywhere with a 25% margin, and newcomb-reduced δw ≥ 0 is certified for every mode with 1 ≤ |m| ≤ 6 (wall at the edge); phase 2 extended this to every integer (m, n) with m ≠ 0 (screwpinchmodeshighm)."
   },
   {
     "title": "Two exact equilibria satisfy the kernel law J × B = ∇p.",
@@ -90,6 +90,12 @@
     "text": "from 0.8 ms to 0.11 s — and a plasma equilibrium validated to 10⁻¹¹. iterating an oscillatory averaging lemma three times, with exact lie-derivative amplitudes and certified enclosures, extends passing-alpha confinement in a reactor-scale near-axis quasisymmetric field from 0.8 ms to 0.11 s. a slab grad–shafranov equilibrium with an exponential pressure profile is validated by the radii polynomial and proved to satisfy the kernel force balance. 12 new modules. reviews found an oracle factor-of-2 error (corrected; conclusion unchanged) and no soundness defects in the averaged-trapping theorem; its ≈ 6 min build is scheduled for a proof-term rewrite."
   },
   {
+    "title": "Confinement and heat, proved for the same plasma.",
+    "section": "Progress slideshow",
+    "url": "slides.html#one-plasma",
+    "text": "confinement and heat, proved for the same plasma. solovev_one_plasma: one exact field satisfying j × b = ∇p; every 3.5 mev alpha born in the core stays inside forever; every solution of the transport law starting in a certified band keeps a ≥ 10 kev core forever; and the plasma pressure never exceeds the equilibrium pressure plus an edge offset. 8 new modules and kernel change k2. a sub-agent report that claimed non-existent geometry lemmas was caught at integration; every cited declaration is now grep-checked."
+  },
+  {
     "title": "Theory, techniques and a ladder of models — for confinement and for heat.",
     "section": "Progress slideshow",
     "url": "slides.html#implementation-plan",
@@ -99,7 +105,7 @@
     "title": "The next run must leave evidence, not just a promise.",
     "section": "Progress slideshow",
     "url": "slides.html#next-run",
-    "text": "the next run must leave evidence, not just a promise. next (phase 5): one consistent plasma — a solov'ev equilibrium with alpha confinement and a two-sided transport barrier whose pressure stays below the equilibrium's (needs a t-dependent diffusivity); certified solov'ev mercier index; faster certificates; near-qa alphas toward slowing-down time; 2-d validated equilibria. the linked run records checked declarations, assumptions and validation. this slideshow is a summary of that evidence, not a new design certificate."
+    "text": "the next run must leave evidence, not just a promise. next (phase 6): prove the solov'ev transport-geometry class for the actual field; an ignited one-plasma parameter set; ballooning on solov'ev surfaces; the trapped-alpha bounce kick form; toward validated 3-d / near-axis stellarator equilibria. the linked run records checked declarations, assumptions and validation. this slideshow is a summary of that evidence, not a new design certificate."
   },
   {
     "title": "Stellarator concepts",
@@ -565,9 +571,9 @@
   },
   {
     "title": "S6 · Source-specific local stability criteria",
-    "section": "MHD stability · Partially implemented — Hardy/Suydam both ways; cylindrical Mercier ⇔ Suydam; general Mercier index (supplied) reduces to Suydam; helical equilibrium Mercier-unstable (a = 0 proved, a = 1/4 numerical); Solov'ev q ≥ 2.02 proved, exact Mercier positive numerically only.",
+    "section": "MHD stability · Partially implemented — Suydam both ways; cylindrical Mercier ⇔ Suydam; general Mercier index (supplied) certified positive on every surface of the reactor Solov'ev equilibrium by validated quadrature (magnetic well proved); helical equilibrium Mercier-unstable.",
     "url": "mhd-stability.html",
-    "text": "s6 source-specific local stability criteria theorem backlog partially implemented — hardy/suydam both ways; cylindrical mercier ⇔ suydam; general mercier index (supplied) reduces to suydam; helical equilibrium mercier-unstable (a = 0 proved, a = 1/4 numerical); solov'ev q ≥ 2.02 proved, exact mercier positive numerically only."
+    "text": "s6 source-specific local stability criteria theorem backlog partially implemented — suydam both ways; cylindrical mercier ⇔ suydam; general mercier index (supplied) certified positive on every surface of the reactor solov'ev equilibrium by validated quadrature (magnetic well proved); helical equilibrium mercier-unstable."
   },
   {
     "title": "S7 · All-mode certified bound for a restricted useful configuration",
@@ -1536,6 +1542,12 @@
     "text": "phase 4 (cycle 4), 20 october 2026 — report implementation plan"
   },
   {
+    "title": "Phase 5 (Cycle 5), 20 October 2026 — report",
+    "section": "Implementation plan",
+    "url": "implementation-plan.html#phase-5-cycle-5-20-october-2026-report",
+    "text": "phase 5 (cycle 5), 20 october 2026 — report implementation plan"
+  },
+  {
     "title": "M0 · Exact symmetric equilibria: slab, screw pinch, Solov'ev, helical",
     "section": "Implementation plan · Lean verified — exact slab, screw-pinch, Solov'ev and helical equilibria with kernel force balance, all-time field-line/orbit confinement, Suydam both ways and screw-pinch Newcomb for 1 ≤ |m| ≤ 6 (idealized symmetric models).",
     "url": "implementation-plan.html",
@@ -1549,9 +1561,9 @@
   },
   {
     "title": "M2 · 1-D radial transport on the exact Solov'ev and helical geometries (V′(ψ) taken from the M0 fields), with χ ∈ [χ_min, χ_max] supplied",
-    "section": "Implementation plan · Lean verified (idealized geometries) — all-time core barrier T ≥ 10 keV: cylinder (ψ ≤ 0.3) and exact helical equilibrium (s ≤ 0.3, r ≤ 1.09 m, axis pressure ≤ equilibrium), as direct instances of the relaxed transport kernel; flux-surface average identities for the helical geometry are supplied; χ prescribed and optimistic.",
+    "section": "Implementation plan · Lean verified (idealized geometries) — core barriers in cylinder and helical geometry; two-sided quasilinear band (K2) in the cylinder; on the Solov'ev geometry a band consistent with the equilibrium pressure (solovev_one_plasma; geometry class supplied, driven Q ≈ 5.5).",
     "url": "implementation-plan.html",
-    "text": "m2 1-d radial transport on the exact solov'ev and helical geometries (v′(ψ) taken from the m0 fields), with χ ∈ [χ_min, χ_max] supplied 5. model ladder (each rung proves characteristics under both g1 and g2) lean verified (idealized geometries) — all-time core barrier t ≥ 10 kev: cylinder (ψ ≤ 0.3) and exact helical equilibrium (s ≤ 0.3, r ≤ 1.09 m, axis pressure ≤ equilibrium), as direct instances of the relaxed transport kernel; flux-surface average identities for the helical geometry are supplied; χ prescribed and optimistic."
+    "text": "m2 1-d radial transport on the exact solov'ev and helical geometries (v′(ψ) taken from the m0 fields), with χ ∈ [χ_min, χ_max] supplied 5. model ladder (each rung proves characteristics under both g1 and g2) lean verified (idealized geometries) — core barriers in cylinder and helical geometry; two-sided quasilinear band (k2) in the cylinder; on the solov'ev geometry a band consistent with the equilibrium pressure (solovev_one_plasma; geometry class supplied, driven q ≈ 5.5)."
   },
   {
     "title": "M3 · Validated (radii-polynomial) toroidal Grad–Shafranov equilibrium with realistic non-polynomial profiles; Newcomb for all m",
@@ -1561,9 +1573,9 @@
   },
   {
     "title": "M4 · Near-axis quasisymmetric stellarator (Garren–Boozer to 2nd order, explicit ε_QS)",
-    "section": "Implementation plan · Partially implemented — Boozer GC model and rigorous 3-fold averaging: passing 3.5 MeV alphas (|v∥/v| ≥ 0.9) in reactor-scale near-axis QA stay inside for 0.11 s (≈4× short of slowing-down); trapped particles pending; near-axis model accurate only to expansion order.",
+    "section": "Implementation plan · Partially implemented — passing 3.5 MeV alphas in reactor-scale near-axis QA stay inside for 0.19 s (≈ half the slowing-down time; Boozer GC model); trapped alphas: single well and non-resonant bounce-sum lemmas, kick form assumed.",
     "url": "implementation-plan.html",
-    "text": "m4 near-axis quasisymmetric stellarator (garren–boozer to 2nd order, explicit ε_qs) 5. model ladder (each rung proves characteristics under both g1 and g2) partially implemented — boozer gc model and rigorous 3-fold averaging: passing 3.5 mev alphas (|v∥/v| ≥ 0.9) in reactor-scale near-axis qa stay inside for 0.11 s (≈4× short of slowing-down); trapped particles pending; near-axis model accurate only to expansion order."
+    "text": "m4 near-axis quasisymmetric stellarator (garren–boozer to 2nd order, explicit ε_qs) 5. model ladder (each rung proves characteristics under both g1 and g2) partially implemented — passing 3.5 mev alphas in reactor-scale near-axis qa stay inside for 0.19 s (≈ half the slowing-down time; boozer gc model); trapped alphas: single well and non-resonant bounce-sum lemmas, kick form assumed."
   },
   {
     "title": "M5 · Coil-produced 3-D field (filament Biot–Savart, existing) plus a DESC-validated finite-β equilibrium",
@@ -1687,9 +1699,9 @@
   },
   {
     "title": "Verified progress",
-    "section": "Phase 4 of the implementation plan: passing 3.5 MeV alphas confined for 0.11 s in a reactor-scale near-axis quasisymmetric field (Boozer guiding-centre model, rigorous 3-fold averaging; 137× the previous bound); the first validated plasma equilibrium with an exponential profile (slab Grad–Shafranov, classical C², kernel force balance); the helical equilibrium shown Mercier-unstable and the Solov'ev safety factor proved ≥ 2.02; volume coil-error certificates from boundary samples. Earlier: 3.5 MeV alphas confined for all time in an exact Solov'ev equilibrium; core-temperature barriers; burn windows. No coil-produced stellarator or 3-D all-mode stability.",
+    "section": "Phase 5 of the implementation plan: `solovev_one_plasma` — one exact Solov'ev field (5 T, axisymmetric) with kernel force balance, all-time confinement of 3.5 MeV alphas born in the core, a two-sided transport band keeping T ≥ 10 keV in the core for all time, and plasma pressure below the equilibrium pressure plus an edge offset (transport geometry via a supplied class; driven, Q ≈ 5.5); kernel change K2 (temperature-dependent diffusivity); certified Mercier stability of that equilibrium; near-quasisymmetric passing alphas confined 0.19 s. Not a stellarator design; no coils, no all-mode 3-D stability.",
     "url": "progress.html",
-    "text": "verified progress phase 4 of the implementation plan: passing 3.5 mev alphas confined for 0.11 s in a reactor-scale near-axis quasisymmetric field (boozer guiding-centre model, rigorous 3-fold averaging; 137× the previous bound); the first validated plasma equilibrium with an exponential profile (slab grad–shafranov, classical c², kernel force balance); the helical equilibrium shown mercier-unstable and the solov'ev safety factor proved ≥ 2.02; volume coil-error certificates from boundary samples. earlier: 3.5 mev alphas confined for all time in an exact solov'ev equilibrium; core-temperature barriers; burn windows. no coil-produced stellarator or 3-d all-mode stability."
+    "text": "verified progress phase 5 of the implementation plan: `solovev_one_plasma` — one exact solov'ev field (5 t, axisymmetric) with kernel force balance, all-time confinement of 3.5 mev alphas born in the core, a two-sided transport band keeping t ≥ 10 kev in the core for all time, and plasma pressure below the equilibrium pressure plus an edge offset (transport geometry via a supplied class; driven, q ≈ 5.5); kernel change k2 (temperature-dependent diffusivity); certified mercier stability of that equilibrium; near-quasisymmetric passing alphas confined 0.19 s. not a stellarator design; no coils, no all-mode 3-d stability."
   },
   {
     "title": "Outcome",
@@ -1734,9 +1746,9 @@
     "text": "validation verified progress"
   },
   {
-    "title": "Next boundary (Phase 5)",
+    "title": "Next boundary (Phase 6)",
     "section": "Verified progress",
-    "url": "progress.html#next-boundary-phase-5",
-    "text": "next boundary (phase 5) verified progress"
+    "url": "progress.html#next-boundary-phase-6",
+    "text": "next boundary (phase 6) verified progress"
   }
 ]

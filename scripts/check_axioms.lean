@@ -98,3 +98,6 @@ run_cmd do
 #print axioms PlasmaLean.Design.NearAxisQAAveraged.alpha_trapped_reactorQA_averaged
 #print axioms PlasmaLean.Design.ValidatedSlab.validated_slab_equilibrium
 #print axioms PlasmaLean.Design.SolovevMercier.reactor_q_ge
+#print axioms PlasmaLean.Design.SolovevBand.solovev_one_plasma
+#print axioms PlasmaLean.Design.QuasilinearBarrier.quasilinear_band
+#print axioms PlasmaLean.Design.SolovevMercierCertified.reactor_mercier_stable

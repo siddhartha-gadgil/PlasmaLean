@@ -26,3 +26,5 @@ dated evidence. Run `node scripts/check_site.mjs` before handing off the update.
 [20 October 2026, Phase 3: 3.5 MeV alphas confined for all time, stellarator-geometry core barrier, validated BVP](2026-10-20-progress-4.md).
 
 [20 October 2026, Phase 4: near-quasisymmetric alphas for 0.11 s, a validated plasma equilibrium, Mercier findings](2026-10-20-progress-5.md).
+
+[20 October 2026, Phase 5: one consistent plasma, certified Mercier stability, near-QA alphas for 0.19 s](2026-10-20-progress-6.md).

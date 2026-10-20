@@ -166,8 +166,13 @@ variable (G : FluxGeometry)
 derivative `χ'`, a net source `R` posed on `Tdom`: `D = χ g`, `D' = χ' g + χ g'`, with a
 `degenerate` axis (`D(0) = 0` since `g(0) = 0`). -/
 @[expose] def coeffs (χ χ' : ℝ → ℝ) (R : ℝ → ℝ → ℝ) (Tdom : Set ℝ) : RadialCoefficients :=
-  ⟨G.Vp, G.dVp, fun s => χ s * G.g s, fun s => χ' s * G.g s + χ s * G.dg s, R, Tdom,
-    .degenerate⟩
+  .semilinear G.Vp G.dVp (fun s => χ s * G.g s) (fun s => χ' s * G.g s + χ s * G.dg s) R Tdom
+    .degenerate
+
+/-- The flux-geometry coefficients with a temperature-independent `χ(ψ)` are semilinear. -/
+theorem coeffs_isSemilinear (χ χ' : ℝ → ℝ) (R : ℝ → ℝ → ℝ) (Tdom : Set ℝ) :
+    (G.coeffs χ χ' R Tdom).IsSemilinear :=
+  RadialCoefficients.semilinear_isSemilinear _ _ _ _ _ _ _
 
 /-- **The operator in flux-geometry form**: `N[T] = χ g T'' + (χ' g + χ h) T' + R` on `[0,1]`
 (the drift `D' + D V''/V'` equals `χ' g + χ h` by the Gauss identity). -/
@@ -179,7 +184,7 @@ theorem coeffs_op [hG : G.Laws] (χ χ' : ℝ → ℝ) (R : ℝ → ℝ → ℝ)
   have hg := hG.gauss s hs
   have : G.dg s + G.g s * G.dVp s / G.Vp s = G.h s := by
     field_simp; linarith
-  simp only [RadialCoefficients.op, coeffs]
+  simp only [coeffs, RadialCoefficients.semilinear_op]
   rw [← this]; ring
 
 /-- **The flux-geometry coefficients satisfy the kernel laws** (degenerate axis) when `χ ≥ 0`
@@ -193,12 +198,97 @@ theorem coeffs_transportLaws [hG : G.Laws] {χ χ' : ℝ → ℝ} {R : ℝ → �
     TransportLaws (G.coeffs χ χ' R Tdom) where
   Vp_pos := hG.Vp_pos
   Vp_deriv := hG.Vp_deriv
-  D_deriv := fun s hs => (hχ' s hs).mul (hG.g_deriv s hs)
-  D_nonneg := fun s hs => mul_nonneg (hχ s hs) (hg s hs)
-  D_axis := fun _ => by simp [coeffs, hG.g_zero]
-  D_axis_regular := fun h => absurd h (by simp [coeffs])
+  D_deriv := fun s hs _ => (hχ' s hs).mul (hG.g_deriv s hs)
+  DT_deriv := fun _ _ T => hasDerivAt_const T _
+  D_nonneg := fun s hs _ => mul_nonneg (hχ s hs) (hg s hs)
+  D_axis := fun _ _ => by simp [coeffs, RadialCoefficients.semilinear, hG.g_zero]
+  D_axis_regular := fun h => absurd h (by simp [coeffs, RadialCoefficients.semilinear])
   Tdom_open := hT
   R_cont := hR
+
+/-- **Quasilinear flux-geometry coefficients** (kernel change K2): a diffusivity `χ(ψ,T)` with
+partial derivatives `χψ = ∂ψχ`, `χT = ∂Tχ` gives `D = χ g`, `∂ψD = χψ g + χ g'`,
+`∂TD = χT g`, with a `degenerate` axis. -/
+@[expose] def qcoeffs (χ χψ χT : ℝ → ℝ → ℝ) (R : ℝ → ℝ → ℝ) (Tdom : Set ℝ) :
+    RadialCoefficients :=
+  ⟨G.Vp, G.dVp, fun s T => χ s T * G.g s, fun s T => χψ s T * G.g s + χ s T * G.dg s,
+    fun s T => χT s T * G.g s, R, Tdom, .degenerate⟩
+
+/-- **The quasilinear operator in flux-geometry form**:
+`N[T] = χ g T'' + (χψ g + χ h + χT g T') T' + R` on `[0,1]` (Gauss identity). -/
+theorem qcoeffs_op [hG : G.Laws] (χ χψ χT : ℝ → ℝ → ℝ) (R : ℝ → ℝ → ℝ) (Tdom : Set ℝ)
+    {s : ℝ} (hs : s ∈ Icc (0 : ℝ) 1) (u uψ uψψ : ℝ) :
+    (G.qcoeffs χ χψ χT R Tdom).op s u uψ uψψ =
+      χ s u * G.g s * uψψ + (χψ s u * G.g s + χ s u * G.h s + χT s u * G.g s * uψ) * uψ +
+        R s u := by
+  have hV := (hG.Vp_pos s hs).ne'
+  have hg := hG.gauss s hs
+  have : G.dg s + G.g s * G.dVp s / G.Vp s = G.h s := by
+    field_simp; linarith
+  simp only [RadialCoefficients.op, qcoeffs]
+  rw [← this]; ring
+
+/-- With `χ` independent of `T` (and `χT = 0`) the quasilinear coefficients have the same
+operator as `coeffs`. -/
+theorem qcoeffs_op_const (χ χ' : ℝ → ℝ) (R : ℝ → ℝ → ℝ) (Tdom : Set ℝ) (s u uψ uψψ : ℝ) :
+    (G.qcoeffs (fun s _ => χ s) (fun s _ => χ' s) (fun _ _ => 0) R Tdom).op s u uψ uψψ =
+      (G.coeffs χ χ' R Tdom).op s u uψ uψψ := by
+  simp only [RadialCoefficients.op, qcoeffs, coeffs, RadialCoefficients.semilinear]; ring
+
+/-- **The quasilinear flux-geometry coefficients satisfy the kernel laws** when `χ ≥ 0`,
+`g ≥ 0` on `[0,1]`, `χψ` and `χT` are the partial derivatives of `χ`, `Tdom` is open and `R`
+is continuous on `[0,1] × Tdom`. -/
+theorem qcoeffs_transportLaws [hG : G.Laws] {χ χψ χT : ℝ → ℝ → ℝ} {R : ℝ → ℝ → ℝ}
+    {Tdom : Set ℝ} (hχ : ∀ s ∈ Icc (0 : ℝ) 1, ∀ T : ℝ, 0 ≤ χ s T)
+    (hχψ : ∀ s ∈ Icc (0 : ℝ) 1, ∀ T : ℝ,
+      HasDerivWithinAt (fun x => χ x T) (χψ s T) (Icc 0 1) s)
+    (hχT : ∀ s ∈ Icc (0 : ℝ) 1, ∀ T : ℝ, HasDerivAt (χ s) (χT s T) T)
+    (hg : ∀ s ∈ Icc (0 : ℝ) 1, 0 ≤ G.g s) (hT : IsOpen Tdom)
+    (hR : ContinuousOn (fun p : ℝ × ℝ => R p.1 p.2) (Icc 0 1 ×ˢ Tdom)) :
+    TransportLaws (G.qcoeffs χ χψ χT R Tdom) where
+  Vp_pos := hG.Vp_pos
+  Vp_deriv := hG.Vp_deriv
+  D_deriv := fun s hs T => (hχψ s hs T).mul (hG.g_deriv s hs)
+  DT_deriv := fun s hs T => (hχT s hs T).mul_const (G.g s)
+  D_nonneg := fun s hs T => mul_nonneg (hχ s hs T) (hg s hs)
+  D_axis := fun _ _ => by simp [qcoeffs, hG.g_zero]
+  D_axis_regular := fun h => absurd h (by simp [qcoeffs])
+  Tdom_open := hT
+  R_cont := hR
+
+/-- **Density-weighted flux geometry** (`notes/theory/transport-mhd-coupling.md` §2): for a
+prescribed, time-independent density profile `n > 0` with derivative `dn`, the energy
+equation divided by the local heat capacity is the kernel equation for the geometry
+`⟨n V', n' V' + n V'', g, g', h + (n'/n) g⟩` (capacity `n V'`). The source `R` must then also be
+divided by `n` (heating per unit heat capacity). Convective energy fluxes and terms in
+`T ∇n` (particle transport) are ignored: the conductive flux is `n χ ∇T`. -/
+@[expose] def weight (n dn : ℝ → ℝ) : FluxGeometry :=
+  ⟨fun s => n s * G.Vp s, fun s => dn s * G.Vp s + n s * G.dVp s, G.g, G.dg,
+    fun s => G.h s + dn s / n s * G.g s⟩
+
+/-- **The weighted geometry satisfies the flux-geometry laws** whenever `n > 0` on `[0,1]`
+and `dn` is its derivative: the Gauss identity `(n V' g)' = n V' (h + n' g / n)` follows from
+that of `G` by the product rule. -/
+theorem weight_laws [hG : G.Laws] {n dn : ℝ → ℝ} (hn : ∀ s ∈ Icc (0 : ℝ) 1, 0 < n s)
+    (hdn : ∀ s ∈ Icc (0 : ℝ) 1, HasDerivWithinAt n (dn s) (Icc 0 1) s) :
+    (G.weight n dn).Laws where
+  Vp_pos := fun s hs => mul_pos (hn s hs) (hG.Vp_pos s hs)
+  Vp_deriv := fun s hs => by
+    have h : HasDerivWithinAt (fun x => n x * G.Vp x) (dn s * G.Vp s + n s * G.dVp s)
+        (Icc 0 1) s := (hdn s hs).mul (hG.Vp_deriv s hs)
+    exact h
+  g_deriv := hG.g_deriv
+  g_zero := hG.g_zero
+  gauss := fun s hs => by
+    have h1 := hG.gauss s hs
+    have h2 := (hn s hs).ne'
+    simp only [weight]
+    field_simp
+    linear_combination n s * h1
+
+/-- Sanity (degenerate case): the constant unit density leaves the geometry unchanged. -/
+theorem weight_one : G.weight (fun _ => 1) (fun _ => 0) = G := by
+  cases G; simp [weight]
 
 /-- **Upper enclosure of `g = ⟨|∇ψ|²⟩` from the Gauss identity.** If `h ≤ H` on `[0,1]` and
 `V''/V' ≥ −λ` on `(0,1)`, then `g(s) ≤ H s (1 + κ s)` whenever `λ (1 + κ) ≤ 2κ`. -/

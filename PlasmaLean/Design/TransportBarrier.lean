@@ -246,16 +246,18 @@ theorem totalAuxPower_bounds : (69.5e6 : ℝ) ≤ totalAuxPower ∧ totalAuxPowe
 @[expose] def cylCoeffs (sv : ℝ → ℝ) (χ : ℝ) : RadialCoefficients where
   Vp := fun _ => volumeDeriv
   dVp := fun _ => 0
-  D := fun ψ => 4 * χ * ψ / minorRadius ^ 2
-  dD := fun _ => 4 * χ / minorRadius ^ 2
+  D := fun ψ _ => 4 * χ * ψ / minorRadius ^ 2
+  dD := fun _ _ => 4 * χ / minorRadius ^ 2
+  dDT := fun _ _ => 0
   R := netSource sv
   Tdom := Ioi 0
   axis := .degenerate
 
-/-- The supplied coefficient derivatives are genuine: `V'' = 0` and `D' = 4χ/a²`. -/
-theorem cylCoeffs_derivs (sv : ℝ → ℝ) (χ ψ : ℝ) :
+/-- The supplied coefficient derivatives are genuine: `V'' = 0` and `D' = 4χ/a²` (at every
+temperature; the cylinder coefficients are semilinear). -/
+theorem cylCoeffs_derivs (sv : ℝ → ℝ) (χ ψ T : ℝ) :
     HasDerivAt (cylCoeffs sv χ).Vp ((cylCoeffs sv χ).dVp ψ) ψ ∧
-      HasDerivAt (cylCoeffs sv χ).D ((cylCoeffs sv χ).dD ψ) ψ := by
+      HasDerivAt (fun x => (cylCoeffs sv χ).D x T) ((cylCoeffs sv χ).dD ψ T) ψ := by
   refine ⟨hasDerivAt_const _ _, ?_⟩
   have := ((hasDerivAt_id ψ).const_mul (4 * χ)).div_const (minorRadius ^ 2)
   convert this using 1
@@ -267,17 +269,23 @@ Laplacian `χ r⁻¹ ∂r(r ∂r T)` in the variable `ψ = r²/a²`. -/
 theorem cylCoeffs_op (sv : ℝ → ℝ) (χ ψ u uψ uψψ : ℝ) :
     (cylCoeffs sv χ).op ψ u uψ uψψ =
       4 * χ / minorRadius ^ 2 * (ψ * uψψ + uψ) + netSource sv ψ u := by
-  simp only [RadialCoefficients.op, cylCoeffs, mul_zero, zero_div, add_zero]; ring
+  simp only [RadialCoefficients.op, cylCoeffs, mul_zero, zero_div, add_zero, zero_mul]; ring
+
+/-- The cylinder coefficients with constant `χ` are semilinear (temperature-independent
+`D`). -/
+theorem cylCoeffs_isSemilinear (sv : ℝ → ℝ) (χ : ℝ) : (cylCoeffs sv χ).IsSemilinear :=
+  fun _ _ _ _ => ⟨rfl, rfl, rfl⟩
 
 /-- `D ≥ 0` on `[0,1]` for `χ ≥ 0`. -/
 theorem cylCoeffs_D_nonneg (sv : ℝ → ℝ) {χ : ℝ} (hχ : 0 ≤ χ) :
-    ∀ ψ ∈ Icc (0 : ℝ) 1, 0 ≤ (cylCoeffs sv χ).D ψ := fun ψ hψ => by
+    ∀ ψ ∈ Icc (0 : ℝ) 1, ∀ T : ℝ, 0 ≤ (cylCoeffs sv χ).D ψ T := fun ψ hψ _ => by
   simp only [cylCoeffs, minorRadius]; have := hψ.1; positivity
 
 /-- The axis is degenerate: `D(0) = 0` and `D'(0) = 4χ/a² ≥ 0`. -/
 theorem cylCoeffs_degenerateAxis (sv : ℝ → ℝ) {χ : ℝ} (hχ : 0 ≤ χ) :
     DegenerateAxis (cylCoeffs sv χ) :=
-  ⟨by simp [cylCoeffs], by simp only [cylCoeffs, minorRadius]; positivity⟩
+  ⟨fun _ => by simp [cylCoeffs], fun _ => by simp only [cylCoeffs, minorRadius]; positivity,
+    fun _ => rfl⟩
 
 /-- The net source is jointly continuous on `[0,1] × (0,∞)` (continuity of the supplied
 reactivity on `T > 0`, of `√T` and of the polynomial deposition). -/
@@ -305,10 +313,11 @@ source continuous on `[0,1] × (0,∞)`. -/
 theorem cylCoeffs_transportLaws (sv : ℝ → ℝ) [BoschHaleDT sv] {χ : ℝ} (hχ : 0 ≤ χ) :
     TransportLaws (cylCoeffs sv χ) where
   Vp_pos := fun _ _ => volumeDeriv_pos
-  Vp_deriv := fun ψ _ => (cylCoeffs_derivs sv χ ψ).1.hasDerivWithinAt
-  D_deriv := fun ψ _ => (cylCoeffs_derivs sv χ ψ).2.hasDerivWithinAt
+  Vp_deriv := fun ψ _ => (cylCoeffs_derivs sv χ ψ 0).1.hasDerivWithinAt
+  D_deriv := fun ψ _ T => (cylCoeffs_derivs sv χ ψ T).2.hasDerivWithinAt
+  DT_deriv := fun _ _ T => hasDerivAt_const T _
   D_nonneg := cylCoeffs_D_nonneg sv hχ
-  D_axis := fun _ => by simp [cylCoeffs]
+  D_axis := fun _ _ => by simp [cylCoeffs]
   D_axis_regular := fun h => absurd h (by simp [cylCoeffs])
   Tdom_open := isOpen_Ioi
   R_cont := netSource_continuousOn sv
@@ -531,7 +540,8 @@ theorem m2_core_barrier (sv : ℝ → ℝ) [BoschHaleDT sv] {χ : ℝ} (hχ0 : 0
       ∀ ψ, 0 ≤ ψ → ψ ≤ 3 / 10 → ∀ t, 0 ≤ t → 10 ≤ u.T ψ t := by
   have hlow : ∀ ψ ∈ Icc (0 : ℝ) 1, ∀ t, 0 ≤ t → Tsub ψ ≤ u.T ψ t :=
     le_of_lowerMargin_axisFree_forall_time (cylCoeffs_D_nonneg sv hχ0)
-      (cylCoeffs_degenerateAxis sv hχ0) hu tsub_regular (netSource_continuousOn sv)
+      (cylCoeffs_degenerateAxis sv hχ0) (cylCoeffs_isSemilinear sv χ) hu tsub_regular
+      (netSource_continuousOn sv)
       (fun ψ hψ => by linarith [(tsub_bounds hψ).1]) (by norm_num) (tsub_margin sv hχ) h0
       (fun t ht => by rw [tsub_values.2.2.1]; exact hedge t ht)
   refine ⟨hlow, fun ψ h0' h1' t ht => ?_⟩
@@ -550,7 +560,7 @@ theorem m2_core_barrier_kernel (sv : ℝ → ℝ) [BoschHaleDT sv] {χ : ℝ} (h
   have hL := cylCoeffs_transportLaws sv hχ0
   have hlow : ∀ ψ ∈ Icc (0 : ℝ) 1, ∀ t, 0 ≤ t → Tsub ψ ≤ u.T ψ t :=
     le_of_isStrictLowerBarrier_margin_forall_time
-      (fun τ hτ => { hL, hu τ hτ with }) tsub_regular
+      (fun τ hτ => { hL, hu τ hτ with }) (cylCoeffs_isSemilinear sv χ) tsub_regular
       (fun h => absurd h (by simp [cylCoeffs]))
       (fun ψ hψ => show 0 < Tsub ψ by linarith [(tsub_bounds hψ).1]) (by norm_num)
       (tsub_margin sv hχ) h0 (fun t ht => by rw [tsub_values.2.2.1]; exact hedge t ht)
@@ -628,7 +638,8 @@ theorem m2_upper_barrier (sv : ℝ → ℝ) [BoschHaleDT sv] {χ : ℝ} (hχ : c
     ∀ ψ ∈ Icc (0 : ℝ) 1, ∀ t, 0 ≤ t → u.T ψ t ≤ gUp ψ := by
   have hχ0 : 0 ≤ χ := le_trans (by norm_num [chiMin]) hχ
   exact le_of_upperMargin_axisFree_forall_time (cylCoeffs_D_nonneg sv hχ0)
-    (cylCoeffs_degenerateAxis sv hχ0) hu gUp_regular (netSource_continuousOn sv)
+    (cylCoeffs_degenerateAxis sv hχ0) (cylCoeffs_isSemilinear sv χ) hu gUp_regular
+    (netSource_continuousOn sv)
     (fun ψ hψ => by unfold gUp; linarith [hψ.2]) (κ := 1 / 2) (by norm_num)
     (fun ψ hψ => by simpa using gUp_margin sv hχ ψ hψ) h0
     (fun t ht => by simpa [gUp] using hedge t ht)
