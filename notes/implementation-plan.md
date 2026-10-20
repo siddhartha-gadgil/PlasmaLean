@@ -88,11 +88,11 @@ Status legend: ✅ done · ◐ partial · ○ not started.
 
 | Track | Theory targets | Technique companion | Feeds |
 | --- | --- | --- | --- |
-| **T1 Elliptic/vacuum** (Milestone A) | Bochner: Δ\|B\|² = 2\|∇B\|² for vacuum fields ✅. Weak maximum principle for C² subharmonic functions on bounded open sets in ℝ³ (elementary ε\|x\|² proof using Mathlib's `laplacian`) ✅. Boundary-to-interior bound for \|B\|² and \|B₁−B₂\|² ✅. Corrected min/max obstruction (§1.1) ✅ (no interior max; interior-min counterexample); toroidal curvature obstruction ∇⊥B = Bκ ○. | 2-D Lipschitz-cover / branch-and-bound on a parametrized boundary surface (extends `ParametricBounds`) | Coil error fields: the volume error follows from the surface error; M5/M6 |
-| **T2 Sturm–Liouville** (Milestone B) | Picone, Riccati, Jacobi ✅. Ballooning operator with weight W and Barta certificate ◐ (generalize `Newcomb`). Sturm necessity direction ○. Mercier criterion ○. Newcomb uniformly in m (large-m asymptotic family) ○. Infinite-line ballooning with asymptotic tails ○. | Polynomial interval checker ✅. Piecewise and Taylor-model checker with sqrt/exp enclosures ○ | MHD stability of M2–M5 |
+| **T1 Elliptic/vacuum** (Milestone A) | Bochner: Δ\|B\|² = 2\|∇B\|² for vacuum fields ✅. Weak maximum principle for C² subharmonic functions on bounded open sets in ℝ³ (elementary ε\|x\|² proof using Mathlib's `laplacian`) ✅. Boundary-to-interior bound for \|B\|² and \|B₁−B₂\|² ✅. Corrected min/max obstruction (§1.1) ✅ (no interior max; interior-min counterexample); toroidal curvature obstruction ∇⊥B = Bκ ✅ (vacuum; finite-β ○). | 2-D Lipschitz-cover / branch-and-bound on a parametrized boundary surface (extends `ParametricBounds`) | Coil error fields: the volume error follows from the surface error; M5/M6 |
+| **T2 Sturm–Liouville** (Milestone B) | Picone, Riccati, Jacobi ✅. Ballooning operator with weight W and Barta certificate ✅. Sturm necessity: contrapositive ✅, constant-coefficient iff ✅, variable coefficients ○. Mercier criterion: cylindrical ⇔ Suydam ✅, general 3-D ○. Newcomb uniformly in m ✅ (screw-pinch example: all integer (m,n), m ≠ 0). Infinite-line ballooning with asymptotic tails ○. | Polynomial interval checker ✅. Piecewise and Taylor-model checker with sqrt/exp enclosures ○ | MHD stability of M2–M5 |
 | **T3 Parabolic comparison** (Milestone D, core of G2) | Nagumo first-crossing lemma (the sanity check in PDE §4.2) ✅. Weak comparison for the quasilinear radial transport operator, with an axis condition and edge Dirichlet data ✅ (semilinear; quasilinear D(T) ○). Steady lower/upper barriers bounding T(ψ,t) for all t ✅. Time-dependent barriers giving a burn window ◐ (core lemma allows time-dependent subsolutions). Relative-entropy dissipation: corrected identity derived (notes/theory) ◐. | Barrier checker: N[T_sub] > 0 on [0,1] via the interval checker. Rational barrier profiles produced by a solver oracle. | G2 directly: M1–M5 |
 | **T4 ODE invariants** | Invariant intervals for 0-D power balance dW/dt = P_α(T) + P_aux − P_br − W/τ_E, with thermal-stability and ignition window theorems ✅. Grönwall consequences (`Mathlib.Analysis.ODE.Gronwall`) ✅. Burn-yield lower bound (BKM §3.2, conditional) ✅. | Root isolation for the cubic-like balance curve; exact Bosch–Hale enclosures | M1 and the T3 sources |
-| **T5 Discrete energy** (Milestone C) | SBP identity giving discrete energy ✅ (4-point instance; general N ○). FEEC d∘d = 0, hence discrete div B = 0 ○. M-matrix discrete maximum principle for the transport scheme ○. Consistency estimate linking discrete and continuum barriers ○. | `decide` on rational matrices | T3 (verified discretization), M2 |
+| **T5 Discrete energy** (Milestone C) | SBP identity giving discrete energy ✅ (all N). FEEC d∘d = 0, hence discrete div B = 0 ○. M-matrix discrete maximum principle for the transport scheme ✅ (linear scheme). Consistency estimate linking discrete and continuum barriers ○. | `decide` on rational matrices | T3 (verified discretization), M2 |
 | **T6 Functional-analytic validation** (Milestone G) | Contraction and radii inequalities ✅. ℓ¹_ν Banach algebra with convolution bounds ○. Radii polynomial for ODE BVPs (screw-pinch / 1-D Grad–Shafranov with general profiles), then 2-D Grad–Shafranov fixed boundary, then a 3-D near-axis/DESC equilibrium ○. | Exact computation of Y₀, Z₁, Z₂ with tail estimates (truncation in ν-weighted norms) | M3–M5 equilibria |
 | **T7 Field-line Hamiltonian** (Stage 5) | First-integral barriers ✅. Pendulum island-width bound with explicit remainder ○. Chirikov non-overlap ○. A posteriori KAM (de la Llave form) ○ (long term). Converse KAM / Greene residue as an obstruction certificate ○. | Fourier coefficient enclosures for b_{m,n} | M4/M5 confinement |
 | **T8 Guiding centre and kinetics** (microturbulence note) | Guiding-centre equations; finite-time full-orbit versus guiding-centre error (R6) ○. Bounce action J_∥ and the ∂_ψ identity (careful endpoint differentiation) ○. Min-B ⇒ max-J (sanity check 1) ✅ (for the integral expression; = ∂J/∂ψ ○). Available-energy kernel lemmas ✅ (note's opposite-sign claim refuted). Integral Â bound under precession dominance ○. Omnigeneity implies zero bounce-averaged radial drift ○. | Quadrature with remainder for bounce integrals (√ endpoint singularity) | Alpha confinement (3.5 MeV obstruction), and χ upper bounds for T3 |
@@ -202,3 +202,23 @@ Each cycle is a run. The targets are listed in priority order; anything left ove
   - M-matrix maximum principle and general-N SBP (T5).
   - C² of filament fields; the toroidal curvature obstruction.
   - IPB98-derived τ_E hypotheses.
+
+### Phase 2 (Cycle 2), 20 October 2026 — [report](https://github.com/siddhartha-gadgil/PlasmaLean/blob/main/progress/2026-10-20-progress-3.md)
+
+- **Done:**
+  - **M2:** all-time core-temperature barrier (T ≥ 10 keV on ψ ≤ 0.3) in an idealized cylinder, using a degenerate-axis comparison theorem and a 16-piece exact margin certificate.
+  - **M1 upgraded:** τ_E hypotheses derived from IPB98(y,2); the nominal-H obstruction and an unstable ignition point are proved; the Bosch–Hale class is shown non-vacuous by a proof-term window certificate.
+  - **T2:** Barta ballooning certificate; constant-coefficient iff; cylindrical Mercier ⇔ Suydam; screw-pinch Newcomb stability for **all** modes with m ≠ 0.
+  - **T1/T8:** filament fields C^∞; curvature obstruction (no closed vacuum field line with transverse min-B), with a witness.
+  - **T5:** M-matrix backward-Euler comparison; SBP for all N.
+- **Acceptance (Cycle 2):** met in an idealized cylinder. The plan asked for the "M2 geometry" (Solov'ev/helical); that version is carried to Phase 3.
+- **Findings that change the plan:**
+  - The kernel's D ≥ D_min > 0 is incompatible with ψ ∝ r² coordinates. Phase 3 relaxes the kernel.
+  - At nominal H the 0-D flat-profile model cannot hold 10 keV, so profile peaking matters. That argues for M2-type (1-D) burn results over 0-D ones.
+  - ISS04 at the suggested stellarator scale needs H ≈ 1.9 (numerical observation). Stellarator burn needs either a larger device or a better confinement assumption, and this should be explicit in M4.
+- **Carried to Phase 3:**
+  - Kernel relaxation.
+  - M2 on helical geometry with pedestal χ(ψ), and a sharper upper barrier.
+  - M3: ℓ¹_ν radii polynomial.
+  - M4: guiding centre and near-axis QS.
+  - Infinite-line ballooning.

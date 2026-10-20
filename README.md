@@ -16,13 +16,18 @@ symmetric models: no coil-produced stellarator, all-mode MHD stability or 3.5 Me
 confinement is certified.
 
 On 20 October an [implementation plan](notes/implementation-plan.md) was fixed. It cycles
-between theory, certificate techniques and a ladder of successively realistic models, and targets
-both confinement and keeping the plasma hot. Its Phase 1 is complete: a reactor-scale 0-D D-T
-plasma (with fuel dilution) provably stays at or above 10 keV for all time under supplied Bosch–Hale
-data and stated confinement-time hypotheses. Phase 1 also proved a comparison principle for radial
-heat transport and the vacuum maximum principle (field errors are bounded by their boundary
-values). The library has 67 modules and 2383 audited declarations, using standard axioms only. See
-the [progress slideshow](docs/slides.html) and the [latest report](progress/2026-10-20-progress-2.md).
+between theory, certificate techniques and a ladder of successively realistic models, targeting
+both confinement and keeping the plasma hot. Two phases are complete:
+
+- a 0-D D-T plasma stays in [10, 30] keV for all time under the IPB98(y,2) confinement scaling;
+- in an idealized cylinder with alpha heating, every solution of the radial heat equation that
+  starts above a certified barrier keeps a 10 keV core for all time;
+- a screw pinch is Newcomb-stable for every mode with m ≠ 0;
+- the library proves a vacuum curvature obstruction to minimum-B on closed field lines, a
+  maximum principle for coil field errors, and discrete maximum principles.
+
+The library has 81 modules and 3491 audited declarations, using standard axioms only. See the
+[progress slideshow](docs/slides.html) and the [latest report](progress/2026-10-20-progress-3.md).
 
 ## Code structure
 

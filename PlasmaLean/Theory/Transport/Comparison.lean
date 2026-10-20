@@ -6,7 +6,8 @@ Authors: PlasmaLean contributors
 module
 
 public import PlasmaLean.Kernel.Transport
-public import PlasmaLean.Sanity.Transport
+public import Mathlib.Analysis.SpecialFunctions.Trigonometric.Deriv
+public import Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic
 public import Mathlib.Analysis.Calculus.Deriv.Slope
 public import Mathlib.Analysis.SpecialFunctions.ExpDeriv
 public import Mathlib.Analysis.Calculus.Deriv.MeanValue
@@ -38,8 +39,9 @@ solutions; no existence theorem is claimed.
   two-sided corollaries `mem_Icc_of_barriers*`.
 * Sanity: constant barriers, the degenerate case `D ≡ 0`, a formal counterexample showing that
   the sign `D ≥ 0` cannot be dropped, and a non-vacuous explicit barrier with an explicit
-  decaying solution. The explicit separable solutions reuse `Sanity.modeField` from
-  `PlasmaLean.Sanity.Transport`.
+  decaying solution. The explicit separable solutions use `modeField` (defined here; the
+  sanity module `PlasmaLean.Sanity.Transport` re-exports it as `Sanity.modeField`, and this
+  theory module does not import any sanity module).
 
 ## Remarks on hypotheses
 
@@ -662,6 +664,46 @@ theorem le_of_isLowerBarrier_forall_time {c : RadialCoefficients} {Tedge : ℝ �
 
 /-! ### Sanity corollaries -/
 
+section ModeField
+
+open Real
+
+/-- The separable mode `a + b e^{μt} cos(kψ)` with its exact partial derivatives (used for
+explicit solutions in the sanity corollaries below). -/
+@[expose] def modeField (a b μ k : ℝ) : RadialField where
+  T ψ t := a + b * exp (μ * t) * cos (k * ψ)
+  Tψ ψ t := -(b * exp (μ * t) * k * sin (k * ψ))
+  Tψψ ψ t := -(b * exp (μ * t) * k ^ 2 * cos (k * ψ))
+  Tt ψ t := b * μ * exp (μ * t) * cos (k * ψ)
+
+/-- The separable mode is regular on every rectangle. -/
+theorem modeField_regular (a b μ k τ : ℝ) : (modeField a b μ k).Regular τ where
+  cont := by
+    apply Continuous.continuousOn
+    simp only [modeField]
+    fun_prop
+  deriv_ψ := fun t _ ψ _ => by
+    have := (((hasDerivAt_id' ψ).const_mul k).cos.const_mul (b * exp (μ * t))).const_add a
+    convert this.hasDerivWithinAt using 1
+    · rfl
+    change -(b * exp (μ * t) * k * sin (k * ψ)) = _
+    ring
+  deriv_ψψ := fun t _ ψ _ => by
+    have := (((hasDerivAt_id' ψ).const_mul k).sin.const_mul (b * exp (μ * t) * k)).neg
+    convert this.hasDerivWithinAt using 1
+    · rfl
+    · change -(b * exp (μ * t) * k ^ 2 * cos (k * ψ)) = _
+      ring
+  deriv_t := fun ψ _ t _ => by
+    have := ((((hasDerivAt_id' t).const_mul μ).exp.const_mul b).mul_const
+      (cos (k * ψ))).const_add a
+    convert this.hasDerivWithinAt using 1
+    · rfl
+    change b * μ * exp (μ * t) * cos (k * ψ) = _
+    ring
+
+end ModeField
+
 /-- A constant level `m` at which heating strictly exceeds losses everywhere is a strict lower
 barrier. -/
 theorem constant_isStrictLowerBarrier (c : RadialCoefficients) {m : ℝ}
@@ -722,17 +764,17 @@ theorem backward_diffusion_counterexample :
      fun ψ _ => by
       convert (((hasDerivAt_id' ψ).const_mul 2).neg).hasDerivWithinAt using 1
       · ring⟩
-  refine ⟨backwardCoefficients, fun _ => 2, Sanity.modeField 2 (-1) (Real.pi ^ 2 / 4)
+  refine ⟨backwardCoefficients, fun _ => 2, modeField 2 (-1) (Real.pi ^ 2 / 4)
     (Real.pi / 2), RadialField.stationary _ _ _, ?_, ⟨hS.stationary_regular 1, ?_, ?_⟩,
     ?_, ?_, ?_⟩
   · exact
     { tau_nonneg := zero_le_one
-      regular := Sanity.modeField_regular _ _ _ _ _
+      regular := modeField_regular _ _ _ _ _
       pde := fun ψ _ t _ => by
-        simp only [Sanity.modeField, backwardCoefficients, RadialCoefficients.op]
+        simp only [modeField, backwardCoefficients, RadialCoefficients.op]
         ring
-      axis := fun t _ => by simp [Sanity.modeField]
-      edge := fun t _ => by simp [Sanity.modeField, Real.cos_pi_div_two] }
+      axis := fun t _ => by simp [modeField]
+      edge := fun t _ => by simp [modeField, Real.cos_pi_div_two] }
   · intro t _
     change -(2 * (0 : ℝ)) = 0
     simp
@@ -780,14 +822,14 @@ theorem relaxCoefficients_oneSidedLipschitz : OneSidedLipschitz relaxCoefficient
 with edge temperature `1` on every horizon. -/
 theorem relaxMode_radialHeatTransport {τ : ℝ} (hτ : 0 ≤ τ) :
     RadialHeatTransport relaxCoefficients (fun _ => 1) τ
-      (Sanity.modeField 1 1 (-(1 + Real.pi ^ 2 / 4)) (Real.pi / 2)) where
+      (modeField 1 1 (-(1 + Real.pi ^ 2 / 4)) (Real.pi / 2)) where
   tau_nonneg := hτ
-  regular := Sanity.modeField_regular _ _ _ _ _
+  regular := modeField_regular _ _ _ _ _
   pde := fun ψ _ t _ => by
-    simp only [Sanity.modeField, relaxCoefficients, RadialCoefficients.op]
+    simp only [modeField, relaxCoefficients, RadialCoefficients.op]
     ring
-  axis := fun t _ => by simp [Sanity.modeField]
-  edge := fun t _ => by simp [Sanity.modeField, Real.cos_pi_div_two]
+  axis := fun t _ => by simp [modeField]
+  edge := fun t _ => by simp [modeField, Real.cos_pi_div_two]
 
 /-- The explicit non-constant profile `f = 1/4 − ψ²/8` is a strict lower barrier for the
 relaxation problem: `N[f] = 1/2 + ψ²/8 > 0` and `f'(0) = 0`. -/
@@ -809,7 +851,7 @@ for the explicit decaying solution and the explicit barrier, so the temperature 
 `1/4 − ψ²/8` on every horizon. -/
 theorem relax_nonvacuous {τ : ℝ} (hτ : 0 ≤ τ) :
     ∀ ψ ∈ Icc (0 : ℝ) 1, ∀ t ∈ Icc 0 τ, 1 / 4 - ψ ^ 2 / 8 <
-      (Sanity.modeField 1 1 (-(1 + Real.pi ^ 2 / 4)) (Real.pi / 2)).T ψ t := by
+      (modeField 1 1 (-(1 + Real.pi ^ 2 / 4)) (Real.pi / 2)).T ψ t := by
   have := relaxMode_radialHeatTransport hτ
   refine lt_of_isStrictLowerBarrier (Tedge := fun _ => 1) relax_isStrictLowerBarrier
     (fun ψ hψ => ?_) (fun t _ => by norm_num)

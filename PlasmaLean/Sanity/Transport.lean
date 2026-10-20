@@ -6,6 +6,7 @@ Authors: PlasmaLean contributors
 module
 
 public import PlasmaLean.Kernel.Transport
+public import PlasmaLean.Theory.Transport.Comparison
 public import Mathlib.Analysis.SpecialFunctions.Trigonometric.Deriv
 public import Mathlib.Analysis.SpecialFunctions.ExpDeriv
 public import Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic
@@ -26,6 +27,9 @@ Checks for `PlasmaLean.Kernel.Transport`:
   interior spatial maximum, or the axis), `R ≤ 0` forces `∂ₜT ≤ 0` (`rate_nonpos_of_max`,
   `axis_rate_nonpos`). This is a weaker, honest substitute for "the maximum does not
   increase", whose proof needs the comparison theory;
+* the separable modes `modeField` (aliases of `PlasmaLean.Transport.modeField`, defined in the
+  theory layer `PlasmaLean.Theory.Transport.Comparison`, which this module imports; the theory
+  layer does not import any sanity module);
 * non-vacuity: the decaying cosine mode `e^{−π²t/4} cos(πψ/2)` is a `RadialHeatTransport`
   instance with zero edge data (`cosMode_radialHeatTransport`).
 -/
@@ -117,38 +121,16 @@ instance : TransportLaws unitCoefficients where
   D_lower := fun _ _ => le_rfl
   R_cont := continuousOn_const
 
-/-- The separable mode `a + b e^{μt} cos(kψ)` with its exact partial derivatives. -/
-@[expose] def modeField (a b μ k : ℝ) : RadialField where
-  T ψ t := a + b * exp (μ * t) * cos (k * ψ)
-  Tψ ψ t := -(b * exp (μ * t) * k * sin (k * ψ))
-  Tψψ ψ t := -(b * exp (μ * t) * k ^ 2 * cos (k * ψ))
-  Tt ψ t := b * μ * exp (μ * t) * cos (k * ψ)
+/-- The separable mode `a + b e^{μt} cos(kψ)` with its exact partial derivatives. This is a
+name-preserving alias of `PlasmaLean.Transport.modeField`, which now lives in
+`PlasmaLean.Theory.Transport.Comparison` so that the theory layer does not import this sanity
+module. -/
+abbrev modeField (a b μ k : ℝ) : RadialField := Transport.modeField a b μ k
 
-/-- The separable mode is regular on every rectangle. -/
-theorem modeField_regular (a b μ k τ : ℝ) : (modeField a b μ k).Regular τ where
-  cont := by
-    apply Continuous.continuousOn
-    simp only [modeField]
-    fun_prop
-  deriv_ψ := fun t _ ψ _ => by
-    have := (((hasDerivAt_id' ψ).const_mul k).cos.const_mul (b * exp (μ * t))).const_add a
-    convert this.hasDerivWithinAt using 1
-    · rfl
-    change -(b * exp (μ * t) * k * sin (k * ψ)) = _
-    ring
-  deriv_ψψ := fun t _ ψ _ => by
-    have := (((hasDerivAt_id' ψ).const_mul k).sin.const_mul (b * exp (μ * t) * k)).neg
-    convert this.hasDerivWithinAt using 1
-    · rfl
-    · change -(b * exp (μ * t) * k ^ 2 * cos (k * ψ)) = _
-      ring
-  deriv_t := fun ψ _ t _ => by
-    have := ((((hasDerivAt_id' t).const_mul μ).exp.const_mul b).mul_const
-      (cos (k * ψ))).const_add a
-    convert this.hasDerivWithinAt using 1
-    · rfl
-    change b * μ * exp (μ * t) * cos (k * ψ) = _
-    ring
+/-- The separable mode is regular on every rectangle (alias of
+`PlasmaLean.Transport.modeField_regular`). -/
+theorem modeField_regular (a b μ k τ : ℝ) : (modeField a b μ k).Regular τ :=
+  Transport.modeField_regular a b μ k τ
 
 /-- **Non-vacuity.** The decaying cosine mode `e^{−π²t/4} cos(πψ/2)` solves the unit-coefficient
 problem with axis no-flux and zero edge data. -/
@@ -157,9 +139,9 @@ instance cosMode_radialHeatTransport {τ : ℝ} [Fact (0 ≤ τ)] :
   tau_nonneg := Fact.out
   regular := modeField_regular _ _ _ _ _
   pde := fun ψ _ t _ => by
-    simp only [modeField, unitCoefficients, RadialCoefficients.op]
+    simp only [modeField, Transport.modeField, unitCoefficients, RadialCoefficients.op]
     ring
-  axis := fun t _ => by simp [modeField]
-  edge := fun t _ => by simp [modeField, cos_pi_div_two]
+  axis := fun t _ => by simp [modeField, Transport.modeField]
+  edge := fun t _ => by simp [modeField, Transport.modeField, cos_pi_div_two]
 
 end PlasmaLean.Transport.Sanity

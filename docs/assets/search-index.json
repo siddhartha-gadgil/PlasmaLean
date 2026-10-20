@@ -1,15 +1,15 @@
 [
   {
     "title": "Progress slideshow",
-    "section": "Evidence updated 2026-10-20 · Phase 1 of the implementation plan: first burn-temperature results (0-D D-T plasma at reactor scale stays ≥ 10 keV for all t ≥ 0 under supplied Bosch–Hale data and state-dependent τ_E hypotheses, with fuel dilution), the parabolic comparison principle for radial heat transport, and the vacuum maximum principle with boundary-to-interior field-error bounds. Idealized models; no coil-produced stellarator, no barrier on a stellarator geometry yet, no all-mode stability.",
+    "section": "Evidence updated 2026-10-20 · Phase 2 of the implementation plan: an all-time core-temperature barrier (T ≥ 10 keV on the inner core) for the radial heat equation in an idealized cylinder with alpha heating; the 0-D burn window derived from the IPB98(y,2) scaling law; Newcomb stability of the screw-pinch example for all modes m ≠ 0; ballooning/Mercier certificates; the vacuum curvature obstruction to minimum-B on closed field lines; discrete maximum principle. Idealized geometry, prescribed χ, supplied solutions; no coil-produced stellarator or 3-D all-mode stability.",
     "url": "slides.html",
     "text": "progress slideshow presentation latest run evidence vacuum fixture"
   },
   {
-    "title": "Exact equilibria, proved confinement — and now proved burn temperature.",
+    "title": "A proved core-temperature barrier, all-mode screw-pinch stability, and a min-B obstruction.",
     "section": "Progress slideshow",
     "url": "slides.html#where-we-are",
-    "text": "exact equilibria, proved confinement — and now proved burn temperature. plasmalean is building a lean library for stellarator design. earlier runs proved exact equilibria with all-time confinement and suydam/newcomb criteria. phase 1 of the implementation plan adds the first results on keeping the plasma hot: a reactor-scale 0-d d-t plasma stays at or above 10 kev for all time under stated hypotheses, a comparison principle for radial heat transport, and a vacuum maximum principle. m1 (0-d burn) is checked; the comparison principle for m2 is proved; milestone a (vacuum maximum principle) is complete. p3/p4 remain at idealized symmetric instances."
+    "text": "a proved core-temperature barrier, all-mode screw-pinch stability, and a min-b obstruction. plasmalean is building a lean library for stellarator design. phase 2 of the implementation plan proves that, in an idealized cylinder with alpha heating, the core temperature stays at or above 10 kev for all time once it starts above a certified barrier. it also derives the 0-d burn window from the ipb98 scaling law and proves newcomb stability of a screw pinch for every mode with m ≠ 0. m1 (0-d burn) is checked under a scaling law; m2 has an all-time core barrier in cylinder geometry; the screw-pinch example is all-mode newcomb-stable (reduction supplied). p3/p4 remain at idealized symmetric instances."
   },
   {
     "title": "Small assumptions. Reusable proofs. One candidate.",
@@ -72,16 +72,22 @@
     "text": "a burning plasma that provably stays above 10 kev. a reactor-scale 0-d d-t plasma (n = 10²⁰ m⁻³, 830 m³, carbon impurities with z_eff = 1.7) stays at or above 10 kev for all t ≥ 0 once heating beats losses at 10 kev. radial transport obeys a proved comparison principle, so a barrier profile bounds the temperature everywhere for all time. 13 new modules, including kernel laws for fusion power, radial transport and vacuum fields, each with sanity checks. an adversarial review caught a fuel-dilution error in the first m1 version; the kernel and the margins were corrected."
   },
   {
+    "title": "Every solution starting above the barrier keeps a 10 keV core forever.",
+    "section": "Progress slideshow",
+    "url": "slides.html#core-barrier",
+    "text": "every solution starting above the barrier keeps a 10 kev core forever. for the flux-surface heat equation with alpha heating, bremsstrahlung and ≈70 mw of deposited heating, a certified barrier profile bounds the temperature from below for all time. a 0-d burn window now follows from the ipb98(y,2) confinement scaling instead of ad-hoc confinement-time assumptions. 14 new modules. reviews found no soundness bugs and led to guards for shearless mercier surfaces, a non-vacuity witness for the obstruction, and clarified χ normalization and corner compatibility."
+  },
+  {
     "title": "Theory, techniques and a ladder of models — for confinement and for heat.",
     "section": "Progress slideshow",
     "url": "slides.html#implementation-plan",
-    "text": "theory, techniques and a ladder of models — for confinement and for heat. each cycle develops theory, turns theorems into sound certificate checkers, and applies them to the next rung of a model ladder. every rung must prove properties of both kinds: confinement (g1) and temperature held above burn conditions (g2). phase 1 completed the cycle 1 targets: kernel laws, the m1 burn window, transport comparison and milestone a. status marks in the plan are updated after each phase."
+    "text": "theory, techniques and a ladder of models — for confinement and for heat. each cycle develops theory, turns theorems into sound certificate checkers, and applies them to the next rung of a model ladder. every rung must prove properties of both kinds: confinement (g1) and temperature held above burn conditions (g2). phases 1 and 2 met their acceptance criteria (phase 2 in an idealized cylinder). status marks and a progress log in the plan are updated after each phase."
   },
   {
     "title": "The next run must leave evidence, not just a promise.",
     "section": "Progress slideshow",
     "url": "slides.html#next-run",
-    "text": "the next run must leave evidence, not just a promise. next (phase 2): barrier profiles on the exact solov'ev/helical geometry with alpha heating, proving t_core ≥ 10 kev for all time (m2); a ballooning barta certificate and mercier; a discrete m-matrix maximum principle; c² filament fields; τ_e hypotheses derived from a scaling law. the linked run records checked declarations, assumptions and validation. this slideshow is a summary of that evidence, not a new design certificate."
+    "text": "the next run must leave evidence, not just a promise. next (phase 3): relax the transport kernel at the axis; move the core barrier to the helical equilibrium with a pedestal; a first validated equilibrium via the radii polynomial on ℓ¹_ν; guiding-centre error bounds and a near-axis quasisymmetric field for 3.5 mev alphas. the linked run records checked declarations, assumptions and validation. this slideshow is a summary of that evidence, not a new design certificate."
   },
   {
     "title": "Stellarator concepts",
@@ -553,9 +559,9 @@
   },
   {
     "title": "S7 · All-mode certified bound for a restricted useful configuration",
-    "section": "MHD stability · Partially implemented — Newcomb/Picone certificates with an exact polynomial checker; the screw-pinch example is Newcomb-δW-stable for all 1 ≤ |m| ≤ 6 and all n (wall at edge), not yet uniformly in m; no 3-D all-mode certificate.",
+    "section": "MHD stability · Partially implemented — Newcomb/Picone certificates; the screw-pinch example is Newcomb-δW-stable for every integer (m,n) with m ≠ 0 (scaling in m² plus an analytic Picone function; reduction supplied, wall at edge); Barta ballooning certificate; no 3-D all-mode certificate.",
     "url": "mhd-stability.html",
-    "text": "s7 all-mode certified bound for a restricted useful configuration theorem backlog partially implemented — newcomb/picone certificates with an exact polynomial checker; the screw-pinch example is newcomb-δw-stable for all 1 ≤ |m| ≤ 6 and all n (wall at edge), not yet uniformly in m; no 3-d all-mode certificate."
+    "text": "s7 all-mode certified bound for a restricted useful configuration theorem backlog partially implemented — newcomb/picone certificates; the screw-pinch example is newcomb-δw-stable for every integer (m,n) with m ≠ 0 (scaling in m² plus an analytic picone function; reduction supplied, wall at edge); barta ballooning certificate; no 3-d all-mode certificate."
   },
   {
     "title": "S8 · Free-boundary certificate with coils/vacuum/wall",
@@ -1500,6 +1506,12 @@
     "text": "phase 1 (cycle 1), 20 october 2026 — report implementation plan"
   },
   {
+    "title": "Phase 2 (Cycle 2), 20 October 2026 — report",
+    "section": "Implementation plan",
+    "url": "implementation-plan.html#phase-2-cycle-2-20-october-2026-report",
+    "text": "phase 2 (cycle 2), 20 october 2026 — report implementation plan"
+  },
+  {
     "title": "M0 · Exact symmetric equilibria: slab, screw pinch, Solov'ev, helical",
     "section": "Implementation plan · Lean verified — exact slab, screw-pinch, Solov'ev and helical equilibria with kernel force balance, all-time field-line/orbit confinement, Suydam both ways and screw-pinch Newcomb for 1 ≤ |m| ≤ 6 (idealized symmetric models).",
     "url": "implementation-plan.html",
@@ -1507,15 +1519,15 @@
   },
   {
     "title": "M1 · 0-D burning D-T plasma at reactor scale (n ≈ 10²⁰ m⁻³, B = 5 T, V ≈ 1000 m³)",
-    "section": "Implementation plan · Lean verified — 0-D D-T burn at n = 1e20 m⁻³, V = 830 m³, carbon Z_eff = 1.7: T ≥ 10 keV for all t ≥ 0 (P_aux ≥ 40 MW, τ_E ≥ 3.5 s at T ≤ 10 keV; margin +5.5 MW); window [10,30] keV only with supplied τ_E degradation; reactivity is supplied data.",
+    "section": "Implementation plan · Lean verified — 0-D D-T burn with fuel dilution: T ∈ [10,30] keV for all t ≥ 0 under IPB98(y,2) (ITER-like, P_aux ∈ [50,70] MW, H ∈ [1.25,2]); nominal H ≤ 1 proved insufficient in this flat-profile model; ignition point in (12,13) keV, unstable; Bosch–Hale class non-vacuous.",
     "url": "implementation-plan.html",
-    "text": "m1 0-d burning d-t plasma at reactor scale (n ≈ 10²⁰ m⁻³, b = 5 t, v ≈ 1000 m³) 5. model ladder (each rung proves characteristics under both g1 and g2) lean verified — 0-d d-t burn at n = 1e20 m⁻³, v = 830 m³, carbon z_eff = 1.7: t ≥ 10 kev for all t ≥ 0 (p_aux ≥ 40 mw, τ_e ≥ 3.5 s at t ≤ 10 kev; margin +5.5 mw); window [10,30] kev only with supplied τ_e degradation; reactivity is supplied data."
+    "text": "m1 0-d burning d-t plasma at reactor scale (n ≈ 10²⁰ m⁻³, b = 5 t, v ≈ 1000 m³) 5. model ladder (each rung proves characteristics under both g1 and g2) lean verified — 0-d d-t burn with fuel dilution: t ∈ [10,30] kev for all t ≥ 0 under ipb98(y,2) (iter-like, p_aux ∈ [50,70] mw, h ∈ [1.25,2]); nominal h ≤ 1 proved insufficient in this flat-profile model; ignition point in (12,13) kev, unstable; bosch–hale class non-vacuous."
   },
   {
     "title": "M2 · 1-D radial transport on the exact Solov'ev and helical geometries (V′(ψ) taken from the M0 fields), with χ ∈ [χ_min, χ_max] supplied",
-    "section": "Implementation plan · Partially implemented — comparison principle (strict, margin, non-strict; lower/upper/two-sided barriers) for the radial heat equation is proved for supplied classical solutions; no barrier instantiated on the Solov'ev/helical geometry yet.",
+    "section": "Implementation plan · Partially implemented — all-time barrier T ≥ T_sub ≥ 10 keV on ψ ≤ 0.3 for the radial heat equation in an idealized cylinder (a = 2.5 m, R₀ = 6.5 m, χ ≤ 0.5 m²/s with 3/2 factor, ≈70 MW aux, alpha heating via Bosch–Hale); Solov'ev/helical geometry and pedestal χ pending.",
     "url": "implementation-plan.html",
-    "text": "m2 1-d radial transport on the exact solov'ev and helical geometries (v′(ψ) taken from the m0 fields), with χ ∈ [χ_min, χ_max] supplied 5. model ladder (each rung proves characteristics under both g1 and g2) partially implemented — comparison principle (strict, margin, non-strict; lower/upper/two-sided barriers) for the radial heat equation is proved for supplied classical solutions; no barrier instantiated on the solov'ev/helical geometry yet."
+    "text": "m2 1-d radial transport on the exact solov'ev and helical geometries (v′(ψ) taken from the m0 fields), with χ ∈ [χ_min, χ_max] supplied 5. model ladder (each rung proves characteristics under both g1 and g2) partially implemented — all-time barrier t ≥ t_sub ≥ 10 kev on ψ ≤ 0.3 for the radial heat equation in an idealized cylinder (a = 2.5 m, r₀ = 6.5 m, χ ≤ 0.5 m²/s with 3/2 factor, ≈70 mw aux, alpha heating via bosch–hale); solov'ev/helical geometry and pedestal χ pending."
   },
   {
     "title": "M3 · Validated (radii-polynomial) toroidal Grad–Shafranov equilibrium with realistic non-polynomial profiles; Newcomb for all m",
@@ -1651,9 +1663,9 @@
   },
   {
     "title": "Verified progress",
-    "section": "Phase 1 of the implementation plan: first burn-temperature results (0-D D-T plasma at reactor scale stays ≥ 10 keV for all t ≥ 0 under supplied Bosch–Hale data and state-dependent τ_E hypotheses, with fuel dilution), the parabolic comparison principle for radial heat transport, and the vacuum maximum principle with boundary-to-interior field-error bounds. Idealized models; no coil-produced stellarator, no barrier on a stellarator geometry yet, no all-mode stability.",
+    "section": "Phase 2 of the implementation plan: an all-time core-temperature barrier (T ≥ 10 keV on the inner core) for the radial heat equation in an idealized cylinder with alpha heating; the 0-D burn window derived from the IPB98(y,2) scaling law; Newcomb stability of the screw-pinch example for all modes m ≠ 0; ballooning/Mercier certificates; the vacuum curvature obstruction to minimum-B on closed field lines; discrete maximum principle. Idealized geometry, prescribed χ, supplied solutions; no coil-produced stellarator or 3-D all-mode stability.",
     "url": "progress.html",
-    "text": "verified progress phase 1 of the implementation plan: first burn-temperature results (0-d d-t plasma at reactor scale stays ≥ 10 kev for all t ≥ 0 under supplied bosch–hale data and state-dependent τ_e hypotheses, with fuel dilution), the parabolic comparison principle for radial heat transport, and the vacuum maximum principle with boundary-to-interior field-error bounds. idealized models; no coil-produced stellarator, no barrier on a stellarator geometry yet, no all-mode stability."
+    "text": "verified progress phase 2 of the implementation plan: an all-time core-temperature barrier (t ≥ 10 kev on the inner core) for the radial heat equation in an idealized cylinder with alpha heating; the 0-d burn window derived from the ipb98(y,2) scaling law; newcomb stability of the screw-pinch example for all modes m ≠ 0; ballooning/mercier certificates; the vacuum curvature obstruction to minimum-b on closed field lines; discrete maximum principle. idealized geometry, prescribed χ, supplied solutions; no coil-produced stellarator or 3-d all-mode stability."
   },
   {
     "title": "Outcome",
@@ -1680,16 +1692,16 @@
     "text": "corrections and challenged claims verified progress"
   },
   {
-    "title": "Assumption ledger additions",
-    "section": "Verified progress",
-    "url": "progress.html#assumption-ledger-additions",
-    "text": "assumption ledger additions verified progress"
-  },
-  {
     "title": "Earlier results retained",
     "section": "Verified progress",
     "url": "progress.html#earlier-results-retained",
     "text": "earlier results retained verified progress"
+  },
+  {
+    "title": "Results from earlier runs",
+    "section": "Verified progress",
+    "url": "progress.html#results-from-earlier-runs",
+    "text": "results from earlier runs verified progress"
   },
   {
     "title": "Validation",
@@ -1698,9 +1710,9 @@
     "text": "validation verified progress"
   },
   {
-    "title": "Next boundary (Phase 2 / Cycle 2)",
+    "title": "Next boundary (Phase 3)",
     "section": "Verified progress",
-    "url": "progress.html#next-boundary-phase-2-cycle-2",
-    "text": "next boundary (phase 2 / cycle 2) verified progress"
+    "url": "progress.html#next-boundary-phase-3",
+    "text": "next boundary (phase 3) verified progress"
   }
 ]

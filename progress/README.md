@@ -10,6 +10,8 @@
 
 [20 October 2026, Phase 1: burn temperature, transport comparison, vacuum maximum principle](2026-10-20-progress-2.md).
 
+[20 October 2026, Phase 2: core-temperature barrier, all-mode screw-pinch stability, min-B obstruction](2026-10-20-progress-3.md).
+
 `status.json` is the per-task status source used to generate the website. Keep
 declarations, scope, build results and assumptions in the dated report; update
 the manifest only after the corresponding Lean result compiles. Unlisted tasks

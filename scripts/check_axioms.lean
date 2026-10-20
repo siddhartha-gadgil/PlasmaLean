@@ -86,3 +86,7 @@ run_cmd do
 #print axioms PlasmaLean.Transport.mem_Icc_of_barriers
 #print axioms PlasmaLean.Vacuum.weak_maximum_principle
 #print axioms PlasmaLean.Vacuum.VacuumField.error_le_of_frontier
+#print axioms PlasmaLean.Design.TransportBarrier.m2_core_barrier
+#print axioms PlasmaLean.Design.BurnWindowScaling.m1_scaling_window_loss
+#print axioms PlasmaLean.Design.ScrewPinchModesHighM.stable_all_modes
+#print axioms PlasmaLean.Vacuum.VacuumField.not_closed_fieldLine_transverse_minB

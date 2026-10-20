@@ -72,6 +72,20 @@ public import PlasmaLean.Theory.Stability.Elsasser
 public import PlasmaLean.Theory.Kinetic.AvailableEnergy
 public import PlasmaLean.Certificates.SBP
 public import PlasmaLean.Design.BurnWindow
+public import PlasmaLean.Theory.Fields.FilamentSmooth
+public import PlasmaLean.Sanity.FilamentVacuum
+public import PlasmaLean.Theory.Fields.CurvatureObstruction
+public import PlasmaLean.Sanity.CurvatureObstruction
+public import PlasmaLean.Certificates.DiscreteMaxPrinciple
+public import PlasmaLean.Certificates.SBPGeneral
+public import PlasmaLean.Theory.Stability.Ballooning
+public import PlasmaLean.Theory.Stability.Mercier
+public import PlasmaLean.Design.ScrewPinchModesHighM
+public import PlasmaLean.Sanity.BoschHaleInstance
+public import PlasmaLean.Theory.Transport.ConfinementScaling
+public import PlasmaLean.Design.BurnWindowScaling
+public import PlasmaLean.Theory.Transport.BarrierCheck
+public import PlasmaLean.Design.TransportBarrier
 
 /-!
 # PlasmaLean public library

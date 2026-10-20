@@ -1,32 +1,32 @@
 {
   "updated": "2026-10-20",
-  "report": "2026-10-20-progress-2.md",
+  "report": "2026-10-20-progress-3.md",
   "status": "Exact symmetric equilibria with all-time orbit confinement · Local stability criteria · Not a coil-produced stellarator · Not a construction release.",
   "slides": [
     {
       "id": "where-we-are",
-      "eyebrow": "Progress briefing · Phase 1: keeping the plasma hot",
-      "title": "Exact equilibria, proved confinement — and now proved burn temperature.",
-      "lead": "PlasmaLean is building a Lean library for stellarator design. Earlier runs proved exact equilibria with all-time confinement and Suydam/Newcomb criteria. Phase 1 of the implementation plan adds the first results on keeping the plasma hot: a reactor-scale 0-D D-T plasma stays at or above 10 keV for all time under stated hypotheses, a comparison principle for radial heat transport, and a vacuum maximum principle.",
+      "eyebrow": "Progress briefing · Phase 2: a core that stays hot",
+      "title": "A proved core-temperature barrier, all-mode screw-pinch stability, and a min-B obstruction.",
+      "lead": "PlasmaLean is building a Lean library for stellarator design. Phase 2 of the implementation plan proves that, in an idealized cylinder with alpha heating, the core temperature stays at or above 10 keV for all time once it starts above a certified barrier. It also derives the 0-D burn window from the IPB98 scaling law and proves Newcomb stability of a screw pinch for every mode with m ≠ 0.",
       "metrics": [
         {
-          "value": "67",
+          "value": "81",
           "label": "Lean modules"
         },
         {
-          "value": "832",
+          "value": "1160",
           "label": "theorem/lemma declarations (grep count)"
         },
         {
-          "value": "2383",
+          "value": "3491",
           "label": "Project declarations in the last axiom audit"
         }
       ],
-      "progress": "M1 (0-D burn) is checked; the comparison principle for M2 is proved; Milestone A (vacuum maximum principle) is complete. P3/P4 remain at idealized symmetric instances.",
-      "boundary": "M1 uses supplied reactivity data and state-dependent τ_E hypotheses; no barrier yet on a stellarator geometry; no coil-produced configuration; no all-mode MHD stability or 3.5 MeV alpha confinement.",
+      "progress": "M1 (0-D burn) is checked under a scaling law; M2 has an all-time core barrier in cylinder geometry; the screw-pinch example is all-mode Newcomb-stable (reduction supplied). P3/P4 remain at idealized symmetric instances.",
+      "boundary": "Cylinder geometry with prescribed χ and supplied solutions; scaling law and reactivity are supplied data; no coil-produced stellarator, no 3-D all-mode stability, no 3.5 MeV alpha confinement.",
       "evidence": [
         {
-          "label": "Phase 1 report",
+          "label": "Phase 2 report",
           "href": "progress.html"
         },
         {
@@ -433,8 +433,56 @@
       ]
     },
     {
+      "id": "core-barrier",
+      "eyebrow": "11 · Phase 2: a core that stays hot",
+      "title": "Every solution starting above the barrier keeps a 10 keV core forever.",
+      "lead": "For the flux-surface heat equation with alpha heating, bremsstrahlung and ≈70 MW of deposited heating, a certified barrier profile bounds the temperature from below for all time. A 0-D burn window now follows from the IPB98(y,2) confinement scaling instead of ad-hoc confinement-time assumptions.",
+      "cards": [
+        {
+          "title": "Core barrier (M2)",
+          "text": "For every supplied reactivity in the Bosch–Hale class and χ ≤ 0.5 m²/s: T ≥ T_sub ≥ 10 keV on the inner 30% of the flux, for all t ≥ 0. The barrier is a degree-10 polynomial with a 16-piece exact margin certificate.",
+          "status": "Lean verified (cylinder)",
+          "kind": "checked"
+        },
+        {
+          "title": "Scaling-law burn (M1)",
+          "text": "With IPB98(y,2) for an ITER-like tokamak, P_aux ∈ [50, 70] MW and H ∈ [1.25, 2], T stays in [10, 30] keV. At nominal H the flat-profile model cannot hold 10 keV (proved). The ignition point is in (12, 13) keV and is unstable.",
+          "status": "Lean verified (0-D)",
+          "kind": "checked"
+        },
+        {
+          "title": "All-mode screw pinch",
+          "text": "Newcomb stability for every integer (m, n) with m ≠ 0: stability is monotone in m², and an analytic Picone function closes the open band. Barta ballooning certificates; cylindrical Mercier ⇔ Suydam.",
+          "status": "Lean verified (reduction supplied)",
+          "kind": "checked"
+        },
+        {
+          "title": "Min-B obstruction",
+          "text": "In vacuum ∇⊥|B| = |B|κ, so no closed field line carries a transverse minimum of |B|. A straight-wire field is the witness. Coil fields are proved C^∞ off the coil.",
+          "status": "Lean verified",
+          "kind": "checked"
+        }
+      ],
+      "progress": "14 new modules. Reviews found no soundness bugs and led to guards for shearless Mercier surfaces, a non-vacuity witness for the obstruction, and clarified χ normalization and corner compatibility.",
+      "boundary": "The barrier is in a straight cylinder, not a stellarator geometry; χ and density are prescribed; solutions are supplied. The kernel's D ≥ D_min > 0 had to be bypassed at the axis — to be relaxed next.",
+      "evidence": [
+        {
+          "label": "New checked results",
+          "href": "progress.html#new-checked-results"
+        },
+        {
+          "label": "Quantitative certificates",
+          "href": "progress.html#quantitative-certificates"
+        },
+        {
+          "label": "Corrections",
+          "href": "progress.html#corrections-and-challenged-claims"
+        }
+      ]
+    },
+    {
       "id": "implementation-plan",
-      "eyebrow": "11 · Plan of record",
+      "eyebrow": "12 · Plan of record",
       "title": "Theory, techniques and a ladder of models — for confinement and for heat.",
       "lead": "Each cycle develops theory, turns theorems into sound certificate checkers, and applies them to the next rung of a model ladder. Every rung must prove properties of both kinds: confinement (G1) and temperature held above burn conditions (G2).",
       "cards": [
@@ -447,7 +495,7 @@
         {
           "title": "Model ladder",
           "text": "M0 exact symmetric equilibria (done) → M1 0-D burning plasma → M2 radial transport on the exact geometries → M3 validated toroidal equilibrium → M4 near-axis quasisymmetry → M5 coil-produced 3-D field → M6 integrated candidate.",
-          "status": "M0, M1 checked; M2 in progress",
+          "status": "M0, M1 checked; M2 checked in a cylinder",
           "kind": "next"
         },
         {
@@ -463,7 +511,7 @@
           "kind": "next"
         }
       ],
-      "progress": "Phase 1 completed the Cycle 1 targets: kernel laws, the M1 burn window, transport comparison and Milestone A. Status marks in the plan are updated after each phase.",
+      "progress": "Phases 1 and 2 met their acceptance criteria (Phase 2 in an idealized cylinder). Status marks and a progress log in the plan are updated after each phase.",
       "boundary": "Nothing in the plan counts as evidence until a dated report records compiled Lean results.",
       "evidence": [
         {
@@ -478,9 +526,9 @@
     },
     {
       "id": "next-run",
-      "eyebrow": "12 · Keep every step reviewable",
+      "eyebrow": "13 · Keep every step reviewable",
       "title": "The next run must leave evidence, not just a promise.",
-      "lead": "Next (Phase 2): barrier profiles on the exact Solov'ev/helical geometry with alpha heating, proving T_core ≥ 10 keV for all time (M2); a ballooning Barta certificate and Mercier; a discrete M-matrix maximum principle; C² filament fields; τ_E hypotheses derived from a scaling law.",
+      "lead": "Next (Phase 3): relax the transport kernel at the axis; move the core barrier to the helical equilibrium with a pedestal; a first validated equilibrium via the radii polynomial on ℓ¹_ν; guiding-centre error bounds and a near-axis quasisymmetric field for 3.5 MeV alphas.",
       "cards": [
         {
           "title": "Implement & challenge",
