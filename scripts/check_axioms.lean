@@ -118,3 +118,4 @@ run_cmd do
 #print axioms PlasmaLean.Design.KamTorusA.Frame.torusA_twist
 #print axioms PlasmaLean.Design.LandremanFamily2.family2_shear
 #print axioms PlasmaLean.Design.LandremanMercier.family1_mercier_unstable
+#print axioms PlasmaLean.Design.RationalStellarator.rationalStellarator_confined_forever

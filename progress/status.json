@@ -1,7 +1,7 @@
 {
   "updated": "2026-10-21",
-  "report": "2026-10-21-progress-4.md",
-  "summary": "Phase 9 part 4: the library's finite-β non-axisymmetric equilibria are Mercier-unstable (family 1 proved on every surface; family 2 numerically, conditional theorem), so they are not MHD-stable stellarator candidates. Earlier: KAM inputs complete for an approximate invariant torus of the exact stellarator field; coil-produced confinement for one transit; one consistent axisymmetric plasma with certified local stability up to ignition.",
+  "report": "2026-10-21-progress-5.md",
+  "summary": "Phase 10: all-time magnetic field-line confinement in an exact non-axisymmetric vacuum stellarator field, proved via a verified explicit-constant KAM theorem (exact invariant torus within 1e-10 of a certified approximate torus; every field line starting inside stays inside forever). Earlier: one consistent axisymmetric plasma with certified local stability up to ignition; coil-produced stellarator confinement for one transit; finite-β non-axisymmetric equilibria (Mercier-unstable).",
   "tasks": {
     "model-contracts:I1": "Partially implemented — algebraic force balance and tangency; positive permeability and actual differential laws in the restricted slab model.",
     "model-contracts:I2": "Lean verified — uniform-field and nonzero-current force-free witnesses in the Cartesian slab model; not toroidal confinement.",
@@ -42,7 +42,7 @@
     "roadmap:8": "Partially implemented — common-witness contracts; decoded geometry identity, source data and complete candidate ledger remain pending.",
     "plasma-models-and-equilibrium:E3": "Partially implemented — an exact Solov'ev solution is verified directly against J×B=∇p (Δ*ψ=3R² checked by hand only); general Grad–Shafranov equivalence pending. A helical (JFKO-type) exact equilibrium is also verified.",
     "geometry-and-fields:G2": "Partially implemented — divergence/curl operators with sanity lemmas; Clebsch fields ∇ψ×∇χ are divergence-free for C² potentials; reciprocal-basis identities pending.",
-    "geometry-and-fields:G9": "Partially implemented — 95-transit certified confinement in an exact rational stellarator field; all-time confinement reduced to one invariant torus; validated approximate torus (residual ≤ 1.2e-23, radial graph) and Diophantine/cohomological KAM lemmas; KAM Newton step pending.",
+    "geometry-and-fields:G9": "Lean verified (vacuum model) — all-time field-line confinement in the exact rational stellarator field via a verified KAM theorem (exact invariant torus, 0.077 ≤ ρ ≤ 0.19); field-line existence assumed; earlier 95-transit and symmetric barriers.",
     "mhd-stability:S6": "Partially implemented — Suydam both ways; general Mercier (supplied) certified positive on every surface of the reactor Solov'ev equilibrium; helical equilibrium and Landreman family 1 proved Mercier-unstable; family 2 unstable numerically.",
     "mhd-stability:S7": "Partially implemented — screw-pinch Newcomb all modes m ≠ 0; ideal ballooning of the reactor Solov'ev equilibrium on every flux surface for every field line and θ_k (reduction supplied); certified Mercier; no 3-D all-mode certificate.",
     "particles-and-transport:K1": "Lean verified — Newton–Lorentz energy and speed conservation, exact uniform-field gyration, Larmor-radius formula and realistic exact bounds.",
@@ -55,6 +55,6 @@
     "implementation-plan:M2": "Lean verified (idealized) — one consistent plasma on the actual Solov'ev flux geometry (coarea step stated): driven, high-Q (Q≈40) and ignited versions with two-sided bands and pressure ≤ equilibrium + offset; earlier cylinder/helical barriers.",
     "implementation-plan:M3": "Partially implemented — ℓ¹ Banach algebra with exp, radii polynomial, Fourier regularity; a validated slab Grad–Shafranov equilibrium with exponential pressure profile (classical C², kernel ForceBalance, positive pressure); toroidal (2-D) validation pending.",
     "implementation-plan:M4": "Partially implemented — passing 3.5 MeV alphas in reactor-scale near-axis QA stay inside for 0.19 s (≈ half the slowing-down time; Boozer GC model); trapped alphas: single well and non-resonant bounce-sum lemmas, kick form assumed.",
-    "implementation-plan:M5": "Partially implemented — exact rational vacuum stellarator field with ≥ 95-transit certified confinement; a concrete coil-produced field (closed polygonal filaments + TF filament) with certified confinement for one toroidal transit (zero margin); validated approximate invariant torus and KAM lemmas toward all-time confinement."
+    "implementation-plan:M5": "Partially implemented — exact non-axisymmetric vacuum stellarator field with all-time field-line confinement (verified KAM); coil-produced field certified for one transit; coil-produced all-time confinement pending."
   }
 }

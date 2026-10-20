@@ -44,3 +44,5 @@ dated evidence. Run `node scripts/check_site.mjs` before handing off the update.
 [21 October 2026, Phase 9 part 3: KAM inputs complete for the stellarator torus; a sheared finite-β non-axisymmetric equilibrium](2026-10-21-progress-3.md).
 
 [21 October 2026, Phase 9 part 4: the finite-β non-axisymmetric families are Mercier-unstable](2026-10-21-progress-4.md).
+
+[21 October 2026, Phase 10: all-time field-line confinement in an exact stellarator field, by a verified KAM theorem](2026-10-21-progress-5.md).

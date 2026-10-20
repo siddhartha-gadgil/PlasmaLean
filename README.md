@@ -17,7 +17,7 @@ confinement is certified.
 
 On 20 October an [implementation plan](notes/implementation-plan.md) was fixed. It cycles
 between theory, certificate techniques and a ladder of successively realistic models, targeting
-both confinement and keeping the plasma hot. Eight phases and part of a ninth are complete:
+both confinement and keeping the plasma hot. Ten phases are complete:
 
 - **one consistent plasma:** for one exact Solov'ev field satisfying force balance, 3.5 MeV alphas
   born in the core are confined for all time, the core stays at or above 10 keV for all time, and
@@ -26,9 +26,9 @@ both confinement and keeping the plasma hot. Eight phases and part of a ninth ar
   a larger edge-pressure offset);
 - **first stellarator field:** an exact non-axisymmetric vacuum field with two field periods and
   stellarator symmetry, whose magnetic axis is linearly elliptic and whose field lines near the
-  axis are certified to stay confined for at least 95 toroidal transits; all-time confinement is
-  proved to follow from a single invariant torus; an approximate torus is certified to 10⁻²³ and
-  every quantitative input of a verified KAM theorem is certified (the Newton step remains);
+  axis are **confined for all time**: a verified explicit-constant KAM theorem produces an exact
+  invariant torus around the axis, and every field line starting inside it stays inside forever
+  (field-line existence assumed; vacuum model field);
 - **coils:** a concrete set of closed polygonal coils produces a field whose lines near the axis
   are certified to stay confined for one toroidal transit (zero margin);
 - **finite β without axisymmetry:** an explicit finite-pressure, non-axisymmetric toroidal
@@ -41,8 +41,8 @@ both confinement and keeping the plasma hot. Eight phases and part of a ninth ar
 - **validation:** a slab Grad–Shafranov equilibrium with an exponential profile is validated;
 - **screw pinch:** all-mode Newcomb stability is proved.
 
-The library has 213 modules and 19305 audited declarations, using standard axioms only. See the
-[progress slideshow](docs/slides.html) and the [latest report](progress/2026-10-21-progress-4.md).
+The library has 232 modules and 21297 audited declarations, using standard axioms only. See the
+[progress slideshow](docs/slides.html) and the [latest report](progress/2026-10-21-progress-5.md).
 
 ## Code structure
 
