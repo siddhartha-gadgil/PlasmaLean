@@ -101,3 +101,7 @@ run_cmd do
 #print axioms PlasmaLean.Design.SolovevBand.solovev_one_plasma
 #print axioms PlasmaLean.Design.QuasilinearBarrier.quasilinear_band
 #print axioms PlasmaLean.Design.SolovevMercierCertified.reactor_mercier_stable
+#print axioms PlasmaLean.Design.SolovevFluxGeometry.solovev_one_plasma_actual
+#print axioms PlasmaLean.Design.SolovevBandIgnited.solovev_one_plasma_ignited_actual
+#print axioms PlasmaLean.Design.SolovevBallooning.reactor_ballooning_s1
+#print axioms PlasmaLean.Design.RationalStellarator.field_vacuum

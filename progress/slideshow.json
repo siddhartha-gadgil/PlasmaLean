@@ -1,32 +1,32 @@
 {
   "updated": "2026-10-20",
-  "report": "2026-10-20-progress-6.md",
+  "report": "2026-10-20-progress-7.md",
   "status": "Exact symmetric equilibria with all-time orbit confinement · Local stability criteria · Not a coil-produced stellarator · Not a construction release.",
   "slides": [
     {
       "id": "where-we-are",
-      "eyebrow": "Progress briefing · Phase 5: one consistent plasma",
-      "title": "One plasma: force balance, confined alphas, and a hot core — in a single field.",
-      "lead": "PlasmaLean is building a Lean library for stellarator design. Phase 5 proves, for one exact equilibrium field, that 3.5 MeV alphas born in the core stay confined for all time, that the core temperature stays at or above 10 keV for all time, and that the plasma pressure stays below what the equilibrium supports. Mercier stability of that equilibrium is certified, and near-quasisymmetric alphas are now held for 0.19 s.",
+      "eyebrow": "Progress briefing · Phase 6: actual geometry, ignition, a first stellarator field",
+      "title": "One plasma on the true geometry — driven, high-Q and ignited — and a first exact stellarator field.",
+      "lead": "PlasmaLean is building a Lean library for stellarator design. Phase 6 proves the one-plasma theorem on the actual flux geometry of the equilibrium, including high-Q and zero-auxiliary-heating (ignited) versions, certifies ideal-ballooning stability on near-axis surfaces, and constructs the library's first exact non-axisymmetric vacuum stellarator field.",
       "metrics": [
         {
-          "value": "116",
+          "value": "129",
           "label": "Lean modules"
         },
         {
-          "value": "2259",
+          "value": "2771",
           "label": "theorem/lemma declarations (grep count)"
         },
         {
-          "value": "7309",
+          "value": "9138",
           "label": "Project declarations in the last axiom audit"
         }
       ],
-      "progress": "G1 and G2 are joined in one theorem (solovev_one_plasma) for an axisymmetric equilibrium; Mercier stability certified there; near-QA passing alphas 0.19 s.",
-      "boundary": "The one-plasma theorem uses a supplied transport-geometry class (proof for the actual field in progress), a driven parameter set (Q ≈ 5.5) and a rational χ stand-in; the equilibrium is axisymmetric (tokamak-like), not a stellarator; no coils, no all-mode 3-D stability.",
+      "progress": "G1+G2 joined for one axisymmetric equilibrium with proved geometry (coarea step stated), up to ignition; Mercier certified, ballooning on four surfaces; first exact stellarator vacuum field.",
+      "boundary": "Integrated results are for an axisymmetric (tokamak-like) equilibrium; the ignited version needs a large edge offset; ballooning and Mercier reductions supplied; the stellarator field has no certified confinement length or coils yet; trapped near-QA alphas open.",
       "evidence": [
         {
-          "label": "Phase 5 report",
+          "label": "Phase 6 report",
           "href": "progress.html"
         },
         {
@@ -584,7 +584,7 @@
       "cards": [
         {
           "title": "One plasma",
-          "text": "Same field, same pressure, same domain s ≤ 1 for force balance, alpha confinement and the transport band. Driven (≈ 120 MW aux, Q ≈ 5.5); transport geometry via a supplied class.",
+          "text": "Same field, same pressure, same domain s ≤ 1 for force balance, alpha confinement and the transport band. Driven (≈ 120 MW aux, Q ≈ 5.5); transport geometry via a supplied class (proved for the actual field in Phase 6).",
           "status": "Lean verified (geometry supplied)",
           "kind": "partial"
         },
@@ -625,8 +625,56 @@
       ]
     },
     {
+      "id": "actual-geometry-stellarator",
+      "eyebrow": "15 · Phase 6: true geometry, ignition, stellarator field",
+      "title": "No supplied geometry, no auxiliary power — and a genuine stellarator field.",
+      "lead": "The one-plasma theorem now uses flux-surface quantities computed from the equilibrium itself. With quarter-keV reactivity data it certifies a high-Q (Q ≈ 40) band and an ignited band with zero auxiliary heating. Separately, an exact rational vacuum field with two field periods and stellarator symmetry gives the library its first non-axisymmetric stellarator geometry.",
+      "cards": [
+        {
+          "title": "Actual geometry",
+          "text": "V′, ⟨|∇s|²⟩, ⟨Δs⟩ from the exact surfaces; Gauss identity and axis limits proved; enclosures with 0.26% margins. Only the coarea step is stated.",
+          "status": "Lean verified",
+          "kind": "checked"
+        },
+        {
+          "title": "High-Q and ignited",
+          "text": "17.5 MW aux (oracle Q ≈ 39–46) with a 40 kPa edge offset; zero aux with a 90 kPa offset (≈ 20% of axis pressure, an edge pedestal) and a ±0.8% χ₀ window.",
+          "status": "Lean verified (Q oracle-only)",
+          "kind": "partial"
+        },
+        {
+          "title": "Ballooning",
+          "text": "Every field line and ballooning angle stable on four near-axis Solov'ev surfaces, via a 2-D Riccati certificate on the exact coefficients.",
+          "status": "Lean verified (reduction supplied)",
+          "kind": "partial"
+        },
+        {
+          "title": "Rational stellarator",
+          "text": "B = ∇φ + ε∇h: exact vacuum, 2 periods, stellarator-symmetric, non-axisymmetric; closed circular axis with elliptic monodromy. Certified confinement length in progress.",
+          "status": "Lean verified (field + axis)",
+          "kind": "checked"
+        }
+      ],
+      "progress": "13 new modules; review found no bugs (fine windows and geometry bounds independently recomputed). Trapped near-QA alphas: turning points proved, non-resonance open — a real resonance exists in the band.",
+      "boundary": "Axisymmetric integrated results; ignition needs a large edge offset; supplied stability reductions; the stellarator field is not yet confined over a certified length or produced by coils.",
+      "evidence": [
+        {
+          "label": "New checked results",
+          "href": "progress.html#new-checked-results"
+        },
+        {
+          "label": "Quantitative certificates",
+          "href": "progress.html#quantitative-certificates"
+        },
+        {
+          "label": "Corrections",
+          "href": "progress.html#corrections-and-challenged-claims"
+        }
+      ]
+    },
+    {
       "id": "implementation-plan",
-      "eyebrow": "15 · Plan of record",
+      "eyebrow": "16 · Plan of record",
       "title": "Theory, techniques and a ladder of models — for confinement and for heat.",
       "lead": "Each cycle develops theory, turns theorems into sound certificate checkers, and applies them to the next rung of a model ladder. Every rung must prove properties of both kinds: confinement (G1) and temperature held above burn conditions (G2).",
       "cards": [
@@ -670,9 +718,9 @@
     },
     {
       "id": "next-run",
-      "eyebrow": "16 · Keep every step reviewable",
+      "eyebrow": "17 · Keep every step reviewable",
       "title": "The next run must leave evidence, not just a promise.",
-      "lead": "Next (Phase 6): prove the Solov'ev transport-geometry class for the actual field; an ignited one-plasma parameter set; ballooning on Solov'ev surfaces; the trapped-alpha bounce kick form; toward validated 3-D / near-axis stellarator equilibria.",
+      "lead": "Next (Phase 7): certified finite-length field-line confinement for the rational stellarator and a coil approximation with certified error; trapped-alpha non-resonance; ballooning on all Solov'ev surfaces; formalizing the coarea step.",
       "cards": [
         {
           "title": "Implement & challenge",

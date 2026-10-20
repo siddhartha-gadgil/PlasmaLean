@@ -281,3 +281,19 @@ Each cycle is a run. The targets are listed in priority order; anything left ove
   - Ballooning on Solov'ev surfaces.
   - The trapped-alpha kick form.
   - 3-D / near-axis validated equilibria.
+
+### Phase 6, 20 October 2026 — [report](https://github.com/siddhartha-gadgil/PlasmaLean/blob/main/progress/2026-10-20-progress-7.md)
+
+- **Done:**
+  - `solovev_one_plasma_actual`: the transport geometry is proved for the actual Solov'ev field, so only the coarea step is stated.
+  - High-Q (Q ≈ 40, 17.5 MW) and ignited (Δ = 90 kPa) one-plasma versions, using fine reactivity windows.
+  - Ideal ballooning on four near-axis Solov'ev surfaces (reduction supplied).
+  - **First exact stellarator field:** rational vacuum, 2 periods, stellarator-symmetric, elliptic axis.
+  - Defect-confinement theorem.
+  - Trapped-alpha turning points and kick form for periodic references.
+- **Not achieved:** a trapped-alpha confinement time (non-resonance open; a real resonance exists in the band).
+- **Carried to Phase 7:**
+  - Rational-stellarator certified confinement and its coil approximation.
+  - Trapped-alpha non-resonance.
+  - Ballooning on all surfaces.
+  - The coarea formalization.

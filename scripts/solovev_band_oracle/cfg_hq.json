@@ -1,0 +1,23 @@
+{
+ "data": "main_lean.txt",
+ "templates": [
+  "head_hq.lean",
+  "partA.lean",
+  "partB.lean",
+  "tail_hq.lean"
+ ],
+ "params": {
+  "ns": "PlasmaLean.Design.SolovevBandHighQ",
+  "P": "highQ_",
+  "chilo": "39 / 50",
+  "chihi": "21 / 25",
+  "aux": "[2, -12, 30, -40, 30, -12, 2]",
+  "Delta": "40000",
+  "Tmax": "19",
+  "TITLE": "high Q",
+  "AUXNAMEDOC": "Auxiliary heating rate `q_aux(s) = 2 (1 − s)⁶` keV/s (≈ 17.5 MW, oracle).",
+  "AUXSHORT": "auxiliary heating `2 (1 − s)⁶` keV/s (≈ 17.5 MW, oracle)",
+  "THM": "solovev_one_plasma_highQ",
+  "QDOC": "Oracle steady states over the window: `P_α ≈ 137–161 MW`,\n`Q = 5 P_α/P_aux ≈ 39–46` (not formalized); driven at high `Q`, not ignited."
+ }
+}

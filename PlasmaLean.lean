@@ -121,6 +121,19 @@ public import PlasmaLean.Design.SolovevMercierQuadrature
 public import PlasmaLean.Design.SolovevMercierCertified
 public import PlasmaLean.Theory.Kinetic.TrappedOrbits
 public import PlasmaLean.Design.NearAxisQATrapped
+public import PlasmaLean.Design.SolovevFluxQuadrature
+public import PlasmaLean.Design.SolovevFluxGeometry
+public import PlasmaLean.Theory.Transport.BoschHaleFine
+public import PlasmaLean.Sanity.BoschHaleFineInstance
+public import PlasmaLean.Design.SolovevBandHighQ
+public import PlasmaLean.Design.SolovevBandIgnited
+public import PlasmaLean.Theory.Stability.BallooningReduction
+public import PlasmaLean.Design.SolovevBallooning
+public import PlasmaLean.Theory.Kinetic.BounceOrbits
+public import PlasmaLean.Design.NearAxisQATrappedBounce
+public import PlasmaLean.Design.RationalStellarator
+public import PlasmaLean.Design.RationalStellaratorAxis
+public import PlasmaLean.Theory.Fields.DefectConfinement
 
 /-!
 # PlasmaLean public library

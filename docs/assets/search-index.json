@@ -1,15 +1,15 @@
 [
   {
     "title": "Progress slideshow",
-    "section": "Evidence updated 2026-10-20 · Phase 5 of the implementation plan: `solovev_one_plasma` — one exact Solov'ev field (5 T, axisymmetric) with kernel force balance, all-time confinement of 3.5 MeV alphas born in the core, a two-sided transport band keeping T ≥ 10 keV in the core for all time, and plasma pressure below the equilibrium pressure plus an edge offset (transport geometry via a supplied class; driven, Q ≈ 5.5); kernel change K2 (temperature-dependent diffusivity); certified Mercier stability of that equilibrium; near-quasisymmetric passing alphas confined 0.19 s. Not a stellarator design; no coils, no all-mode 3-D stability.",
+    "section": "Evidence updated 2026-10-20 · Phase 6 of the implementation plan: the one-plasma theorem now runs on the actual reactor Solov'ev flux geometry (only the coarea/change-of-variables step is stated), with high-Q (Q≈40, 17.5 MW aux) and ignited (zero aux, larger edge offset) versions; ideal-ballooning stability on four near-axis surfaces (reduction supplied); the first exact non-axisymmetric vacuum stellarator field (2 periods, stellarator-symmetric, elliptic axis). Earlier: all-time alpha confinement, certified Mercier stability, near-QA alphas 0.19 s. Axisymmetric equilibrium for the integrated results; no coils, no all-mode 3-D stability.",
     "url": "slides.html",
     "text": "progress slideshow presentation latest run evidence vacuum fixture"
   },
   {
-    "title": "One plasma: force balance, confined alphas, and a hot core — in a single field.",
+    "title": "One plasma on the true geometry — driven, high-Q and ignited — and a first exact stellarator field.",
     "section": "Progress slideshow",
     "url": "slides.html#where-we-are",
-    "text": "one plasma: force balance, confined alphas, and a hot core — in a single field. plasmalean is building a lean library for stellarator design. phase 5 proves, for one exact equilibrium field, that 3.5 mev alphas born in the core stay confined for all time, that the core temperature stays at or above 10 kev for all time, and that the plasma pressure stays below what the equilibrium supports. mercier stability of that equilibrium is certified, and near-quasisymmetric alphas are now held for 0.19 s. g1 and g2 are joined in one theorem (solovev_one_plasma) for an axisymmetric equilibrium; mercier stability certified there; near-qa passing alphas 0.19 s."
+    "text": "one plasma on the true geometry — driven, high-q and ignited — and a first exact stellarator field. plasmalean is building a lean library for stellarator design. phase 6 proves the one-plasma theorem on the actual flux geometry of the equilibrium, including high-q and zero-auxiliary-heating (ignited) versions, certifies ideal-ballooning stability on near-axis surfaces, and constructs the library's first exact non-axisymmetric vacuum stellarator field. g1+g2 joined for one axisymmetric equilibrium with proved geometry (coarea step stated), up to ignition; mercier certified, ballooning on four surfaces; first exact stellarator vacuum field."
   },
   {
     "title": "Small assumptions. Reusable proofs. One candidate.",
@@ -96,6 +96,12 @@
     "text": "confinement and heat, proved for the same plasma. solovev_one_plasma: one exact field satisfying j × b = ∇p; every 3.5 mev alpha born in the core stays inside forever; every solution of the transport law starting in a certified band keeps a ≥ 10 kev core forever; and the plasma pressure never exceeds the equilibrium pressure plus an edge offset. 8 new modules and kernel change k2. a sub-agent report that claimed non-existent geometry lemmas was caught at integration; every cited declaration is now grep-checked."
   },
   {
+    "title": "No supplied geometry, no auxiliary power — and a genuine stellarator field.",
+    "section": "Progress slideshow",
+    "url": "slides.html#actual-geometry-stellarator",
+    "text": "no supplied geometry, no auxiliary power — and a genuine stellarator field. the one-plasma theorem now uses flux-surface quantities computed from the equilibrium itself. with quarter-kev reactivity data it certifies a high-q (q ≈ 40) band and an ignited band with zero auxiliary heating. separately, an exact rational vacuum field with two field periods and stellarator symmetry gives the library its first non-axisymmetric stellarator geometry. 13 new modules; review found no bugs (fine windows and geometry bounds independently recomputed). trapped near-qa alphas: turning points proved, non-resonance open — a real resonance exists in the band."
+  },
+  {
     "title": "Theory, techniques and a ladder of models — for confinement and for heat.",
     "section": "Progress slideshow",
     "url": "slides.html#implementation-plan",
@@ -105,7 +111,7 @@
     "title": "The next run must leave evidence, not just a promise.",
     "section": "Progress slideshow",
     "url": "slides.html#next-run",
-    "text": "the next run must leave evidence, not just a promise. next (phase 6): prove the solov'ev transport-geometry class for the actual field; an ignited one-plasma parameter set; ballooning on solov'ev surfaces; the trapped-alpha bounce kick form; toward validated 3-d / near-axis stellarator equilibria. the linked run records checked declarations, assumptions and validation. this slideshow is a summary of that evidence, not a new design certificate."
+    "text": "the next run must leave evidence, not just a promise. next (phase 7): certified finite-length field-line confinement for the rational stellarator and a coil approximation with certified error; trapped-alpha non-resonance; ballooning on all solov'ev surfaces; formalizing the coarea step. the linked run records checked declarations, assumptions and validation. this slideshow is a summary of that evidence, not a new design certificate."
   },
   {
     "title": "Stellarator concepts",
@@ -577,9 +583,9 @@
   },
   {
     "title": "S7 · All-mode certified bound for a restricted useful configuration",
-    "section": "MHD stability · Partially implemented — Newcomb/Picone certificates; the screw-pinch example is Newcomb-δW-stable for every integer (m,n) with m ≠ 0 (scaling in m² plus an analytic Picone function; reduction supplied, wall at edge); Barta ballooning certificate; no 3-D all-mode certificate.",
+    "section": "MHD stability · Partially implemented — screw-pinch Newcomb stability for all modes m ≠ 0; Barta/line ballooning certificates; ideal ballooning of the reactor Solov'ev equilibrium on four near-axis surfaces for every field line and θ_k (reduction supplied); no 3-D all-mode certificate.",
     "url": "mhd-stability.html",
-    "text": "s7 all-mode certified bound for a restricted useful configuration theorem backlog partially implemented — newcomb/picone certificates; the screw-pinch example is newcomb-δw-stable for every integer (m,n) with m ≠ 0 (scaling in m² plus an analytic picone function; reduction supplied, wall at edge); barta ballooning certificate; no 3-d all-mode certificate."
+    "text": "s7 all-mode certified bound for a restricted useful configuration theorem backlog partially implemented — screw-pinch newcomb stability for all modes m ≠ 0; barta/line ballooning certificates; ideal ballooning of the reactor solov'ev equilibrium on four near-axis surfaces for every field line and θ_k (reduction supplied); no 3-d all-mode certificate."
   },
   {
     "title": "S8 · Free-boundary certificate with coils/vacuum/wall",
@@ -1548,6 +1554,12 @@
     "text": "phase 5 (cycle 5), 20 october 2026 — report implementation plan"
   },
   {
+    "title": "Phase 6, 20 October 2026 — report",
+    "section": "Implementation plan",
+    "url": "implementation-plan.html#phase-6-20-october-2026-report",
+    "text": "phase 6, 20 october 2026 — report implementation plan"
+  },
+  {
     "title": "M0 · Exact symmetric equilibria: slab, screw pinch, Solov'ev, helical",
     "section": "Implementation plan · Lean verified — exact slab, screw-pinch, Solov'ev and helical equilibria with kernel force balance, all-time field-line/orbit confinement, Suydam both ways and screw-pinch Newcomb for 1 ≤ |m| ≤ 6 (idealized symmetric models).",
     "url": "implementation-plan.html",
@@ -1561,9 +1573,9 @@
   },
   {
     "title": "M2 · 1-D radial transport on the exact Solov'ev and helical geometries (V′(ψ) taken from the M0 fields), with χ ∈ [χ_min, χ_max] supplied",
-    "section": "Implementation plan · Lean verified (idealized geometries) — core barriers in cylinder and helical geometry; two-sided quasilinear band (K2) in the cylinder; on the Solov'ev geometry a band consistent with the equilibrium pressure (solovev_one_plasma; geometry class supplied, driven Q ≈ 5.5).",
+    "section": "Implementation plan · Lean verified (idealized) — one consistent plasma on the actual Solov'ev flux geometry (coarea step stated): driven, high-Q (Q≈40) and ignited versions with two-sided bands and pressure ≤ equilibrium + offset; earlier cylinder/helical barriers.",
     "url": "implementation-plan.html",
-    "text": "m2 1-d radial transport on the exact solov'ev and helical geometries (v′(ψ) taken from the m0 fields), with χ ∈ [χ_min, χ_max] supplied 5. model ladder (each rung proves characteristics under both g1 and g2) lean verified (idealized geometries) — core barriers in cylinder and helical geometry; two-sided quasilinear band (k2) in the cylinder; on the solov'ev geometry a band consistent with the equilibrium pressure (solovev_one_plasma; geometry class supplied, driven q ≈ 5.5)."
+    "text": "m2 1-d radial transport on the exact solov'ev and helical geometries (v′(ψ) taken from the m0 fields), with χ ∈ [χ_min, χ_max] supplied 5. model ladder (each rung proves characteristics under both g1 and g2) lean verified (idealized) — one consistent plasma on the actual solov'ev flux geometry (coarea step stated): driven, high-q (q≈40) and ignited versions with two-sided bands and pressure ≤ equilibrium + offset; earlier cylinder/helical barriers."
   },
   {
     "title": "M3 · Validated (radii-polynomial) toroidal Grad–Shafranov equilibrium with realistic non-polynomial profiles; Newcomb for all m",
@@ -1579,9 +1591,9 @@
   },
   {
     "title": "M5 · Coil-produced 3-D field (filament Biot–Savart, existing) plus a DESC-validated finite-β equilibrium",
-    "section": "Implementation plan · Planning only — no Lean code written",
+    "section": "Implementation plan · Partially implemented — first exact non-axisymmetric vacuum stellarator field (rational, 2 periods, stellarator-symmetric, elliptic axis); defect-confinement theorem; certified confinement length and coil approximation pending.",
     "url": "implementation-plan.html",
-    "text": "m5 coil-produced 3-d field (filament biot–savart, existing) plus a desc-validated finite-β equilibrium 5. model ladder (each rung proves characteristics under both g1 and g2) planning only — no lean code written"
+    "text": "m5 coil-produced 3-d field (filament biot–savart, existing) plus a desc-validated finite-β equilibrium 5. model ladder (each rung proves characteristics under both g1 and g2) partially implemented — first exact non-axisymmetric vacuum stellarator field (rational, 2 periods, stellarator-symmetric, elliptic axis); defect-confinement theorem; certified confinement length and coil approximation pending."
   },
   {
     "title": "M6 · Integrated candidate: coils + equilibrium + stability + transport + engineering margins",
@@ -1699,9 +1711,9 @@
   },
   {
     "title": "Verified progress",
-    "section": "Phase 5 of the implementation plan: `solovev_one_plasma` — one exact Solov'ev field (5 T, axisymmetric) with kernel force balance, all-time confinement of 3.5 MeV alphas born in the core, a two-sided transport band keeping T ≥ 10 keV in the core for all time, and plasma pressure below the equilibrium pressure plus an edge offset (transport geometry via a supplied class; driven, Q ≈ 5.5); kernel change K2 (temperature-dependent diffusivity); certified Mercier stability of that equilibrium; near-quasisymmetric passing alphas confined 0.19 s. Not a stellarator design; no coils, no all-mode 3-D stability.",
+    "section": "Phase 6 of the implementation plan: the one-plasma theorem now runs on the actual reactor Solov'ev flux geometry (only the coarea/change-of-variables step is stated), with high-Q (Q≈40, 17.5 MW aux) and ignited (zero aux, larger edge offset) versions; ideal-ballooning stability on four near-axis surfaces (reduction supplied); the first exact non-axisymmetric vacuum stellarator field (2 periods, stellarator-symmetric, elliptic axis). Earlier: all-time alpha confinement, certified Mercier stability, near-QA alphas 0.19 s. Axisymmetric equilibrium for the integrated results; no coils, no all-mode 3-D stability.",
     "url": "progress.html",
-    "text": "verified progress phase 5 of the implementation plan: `solovev_one_plasma` — one exact solov'ev field (5 t, axisymmetric) with kernel force balance, all-time confinement of 3.5 mev alphas born in the core, a two-sided transport band keeping t ≥ 10 kev in the core for all time, and plasma pressure below the equilibrium pressure plus an edge offset (transport geometry via a supplied class; driven, q ≈ 5.5); kernel change k2 (temperature-dependent diffusivity); certified mercier stability of that equilibrium; near-quasisymmetric passing alphas confined 0.19 s. not a stellarator design; no coils, no all-mode 3-d stability."
+    "text": "verified progress phase 6 of the implementation plan: the one-plasma theorem now runs on the actual reactor solov'ev flux geometry (only the coarea/change-of-variables step is stated), with high-q (q≈40, 17.5 mw aux) and ignited (zero aux, larger edge offset) versions; ideal-ballooning stability on four near-axis surfaces (reduction supplied); the first exact non-axisymmetric vacuum stellarator field (2 periods, stellarator-symmetric, elliptic axis). earlier: all-time alpha confinement, certified mercier stability, near-qa alphas 0.19 s. axisymmetric equilibrium for the integrated results; no coils, no all-mode 3-d stability."
   },
   {
     "title": "Outcome",
@@ -1746,9 +1758,9 @@
     "text": "validation verified progress"
   },
   {
-    "title": "Next boundary (Phase 6)",
+    "title": "Next boundary (Phase 7)",
     "section": "Verified progress",
-    "url": "progress.html#next-boundary-phase-6",
-    "text": "next boundary (phase 6) verified progress"
+    "url": "progress.html#next-boundary-phase-7",
+    "text": "next boundary (phase 7) verified progress"
   }
 ]
