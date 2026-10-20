@@ -27,15 +27,15 @@ both confinement and keeping the plasma hot. Six phases and part of a seventh ar
 - **first stellarator field:** an exact non-axisymmetric vacuum field with two field periods and
   stellarator symmetry, whose magnetic axis is linearly elliptic and whose field lines near the
   axis are certified to stay confined for at least 95 toroidal transits;
-- **stability:** Mercier stability of that equilibrium is certified, and ideal ballooning on four
-  near-axis surfaces;
+- **stability:** Mercier stability and ideal-ballooning stability of that equilibrium are certified
+  on every flux surface (with the standard reductions supplied);
 - **near-quasisymmetric alphas:** passing alphas are held for 0.19 s;
 - **burn windows** follow from the IPB98 and ISS04 scaling laws;
 - **validation:** a slab Grad–Shafranov equilibrium with an exponential profile is validated;
 - **screw pinch:** all-mode Newcomb stability is proved.
 
-The library has 136 modules and 9921 audited declarations, using standard axioms only. See the
-[progress slideshow](docs/slides.html) and the [latest report](progress/2026-10-20-progress-8.md).
+The library has 169 modules and 14899 audited declarations, using standard axioms only. See the
+[progress slideshow](docs/slides.html) and the [latest report](progress/2026-10-20-progress-9.md).
 
 ## Code structure
 

@@ -1,32 +1,32 @@
 {
   "updated": "2026-10-20",
-  "report": "2026-10-20-progress-8.md",
+  "report": "2026-10-20-progress-9.md",
   "status": "Exact symmetric equilibria with all-time orbit confinement · Local stability criteria · Not a coil-produced stellarator · Not a construction release.",
   "slides": [
     {
       "id": "where-we-are",
-      "eyebrow": "Progress briefing · Phase 7: a confined stellarator field",
-      "title": "Field lines held for 95 transits in an exact stellarator field; the one-plasma geometry fully derived.",
-      "lead": "PlasmaLean is building a Lean library for stellarator design. Phase 7 certifies that field lines of an exact non-axisymmetric vacuum stellarator field stay near the magnetic axis for at least 95 toroidal transits, and formalizes the coarea step, so the one-plasma theorem's flux geometry is now derived entirely from its equilibrium.",
+      "eyebrow": "Progress briefing · Phase 7: stability everywhere, coils, a stellarator field",
+      "title": "Ballooning-stable on every surface; a coil chain for a confined stellarator field.",
+      "lead": "PlasmaLean is building a Lean library for stellarator design. Phase 7 certifies ideal-ballooning stability on every flux surface of the reactor equilibrium, confines field lines of an exact stellarator field for 95 transits, proves the chain from coil field error to confinement (with the helical-winding error bound still to certify), and proves non-resonance for trapped alphas in exact quasisymmetry.",
       "metrics": [
         {
-          "value": "136",
+          "value": "169",
           "label": "Lean modules"
         },
         {
-          "value": "2982",
-          "label": "theorem/lemma declarations (grep count)"
+          "value": "5641",
+          "label": "theorem/lemma declarations (incl. certificate cells)"
         },
         {
-          "value": "9921",
+          "value": "14899",
           "label": "Project declarations in the last axiom audit"
         }
       ],
-      "progress": "G1+G2 joined for one axisymmetric equilibrium with fully derived geometry; first certified confinement in a genuine stellarator field (finite length, vacuum).",
-      "boundary": "The stellarator result is field-line confinement for a finite length in a vacuum field without coils or plasma; integrated plasma results are axisymmetric; supplied stability reductions and transport model.",
+      "progress": "One consistent plasma (axisymmetric) with Mercier and ballooning certified on the whole plasma; a genuine stellarator field confined for 95 transits; coil chain proved up to one certified bound.",
+      "boundary": "Stability reductions supplied; the stellarator result is a vacuum field over a finite length and its coil realization still needs a certified helical error bound; trapped near-QA alphas have no confinement time yet.",
       "evidence": [
         {
-          "label": "Phase 7 report",
+          "label": "Phase 7 part 2 report",
           "href": "progress.html"
         },
         {
@@ -715,8 +715,50 @@
       ]
     },
     {
+      "id": "stability-coils",
+      "eyebrow": "17 · Phase 7 part 2: stability everywhere, coils",
+      "title": "Stable on every surface; from coil error to confined field lines.",
+      "lead": "Ideal ballooning is certified on every flux surface of the reactor equilibrium, axis to edge. For the exact stellarator field, a concrete closed filament reproduces the toroidal part to 2.5×10⁻⁶, and any coil set whose helical error on a bounding surface is below 6.5×10⁻⁴ (or 5.6×10⁻⁵) inherits 1 (or 10) certified transits.",
+      "cards": [
+        {
+          "title": "Ballooning everywhere",
+          "text": "One s-polynomial certificate over 825 boxes (proof-term cover, ≈ 1 min build) gives stability on all surfaces 0 < s ≤ 25 for every field line and ballooning angle; the axis is handled analytically.",
+          "status": "Lean verified (reduction supplied)",
+          "kind": "checked"
+        },
+        {
+          "title": "Coil chain",
+          "text": "Certified TF filament; maximum principle carries a frontier error into the confinement tube; certified gradient bound converts error into transits. The helical-winding frontier bound (sampled 2.4×10⁻⁴ for 120 filaments) is not yet certified.",
+          "status": "Lean verified up to one hypothesis",
+          "kind": "partial"
+        },
+        {
+          "title": "Trapped alphas",
+          "text": "Exact QA: bounce precession enclosed in [0.7, 2.6] rad — non-resonant — and the reference bounce proved periodic. No confinement time yet: the near-QA remainder is open.",
+          "status": "Partial",
+          "kind": "partial"
+        }
+      ],
+      "progress": "33 new modules (many certificate cells). The ballooning certificate was rebuilt as a proof-term cover; the trapped-alpha cell checks still await that rewrite.",
+      "boundary": "Supplied stability reductions; vacuum finite-length stellarator result; one coil hypothesis open; trapped near-QA alphas open.",
+      "evidence": [
+        {
+          "label": "New checked results",
+          "href": "progress.html#new-checked-results"
+        },
+        {
+          "label": "Quantitative certificates",
+          "href": "progress.html#quantitative-certificates"
+        },
+        {
+          "label": "Corrections",
+          "href": "progress.html#corrections-and-challenged-claims"
+        }
+      ]
+    },
+    {
       "id": "implementation-plan",
-      "eyebrow": "17 · Plan of record",
+      "eyebrow": "18 · Plan of record",
       "title": "Theory, techniques and a ladder of models — for confinement and for heat.",
       "lead": "Each cycle develops theory, turns theorems into sound certificate checkers, and applies them to the next rung of a model ladder. Every rung must prove properties of both kinds: confinement (G1) and temperature held above burn conditions (G2).",
       "cards": [
@@ -760,9 +802,9 @@
     },
     {
       "id": "next-run",
-      "eyebrow": "18 · Keep every step reviewable",
+      "eyebrow": "19 · Keep every step reviewable",
       "title": "The next run must leave evidence, not just a promise.",
-      "lead": "Next: trapped near-QA alpha non-resonance and confinement time; ballooning on all Solov'ev surfaces; filament coils reproducing the rational stellarator field within the certified defect budget; longer stellarator confinement (higher order or KAM).",
+      "lead": "Next: certify the helical coil error bound (exact segment fields / Taylor models) for the first coil-produced stellarator field with certified confinement; trapped-alpha phase-shear control; longer stellarator confinement (KAM) and a finite-β stellarator equilibrium.",
       "cards": [
         {
           "title": "Implement & challenge",

@@ -305,3 +305,14 @@ Each cycle is a run. The targets are listed in priority order; anything left ove
   - **Coarea formalized:** the one-plasma geometry is fully derived; only the transport model, data and solutions are supplied.
 - **In progress (part 2):** trapped-alpha non-resonance; ballooning on all surfaces.
 - **Next:** a coil approximation within the defect budget; longer confinement (higher order or KAM).
+
+### Phase 7 part 2, 20 October 2026 — [report](https://github.com/siddhartha-gadgil/PlasmaLean/blob/main/progress/2026-10-20-progress-9.md)
+
+- **Done:**
+  - Ideal ballooning on **every** surface of the reactor Solov'ev equilibrium (axis to edge, reduction supplied), with a 3× faster proof-term certificate.
+  - Coil chain for the rational stellarator: a certified TF filament, plus error ⇒ transits through the maximum principle.
+  - Trapped-alpha non-resonance and reference periodicity in exact QA.
+- **Open:**
+  - A certified helical frontier bound (in progress).
+  - The trapped-alpha remainder (phase shear).
+  - A proof-term rewrite of the trapped cell checks.

@@ -1,7 +1,7 @@
 {
   "updated": "2026-10-20",
-  "report": "2026-10-20-progress-8.md",
-  "summary": "Phase 7 part 1: field lines of an exact non-axisymmetric vacuum stellarator field (rational, 2 periods, stellarator-symmetric) are certified to stay near the magnetic axis for at least 95 toroidal transits; the coarea step of the one-plasma theorem is formalized, so its flux geometry is fully derived from the Solov'ev equilibrium. Earlier: one consistent plasma (driven, high-Q, ignited) with all-time alpha confinement, certified Mercier and partial ballooning stability; near-QA alphas 0.19 s. No coils yet; integrated plasma results are axisymmetric.",
+  "report": "2026-10-20-progress-9.md",
+  "summary": "Phase 7 part 2: ideal-ballooning stability on every flux surface of the reactor Solov'ev equilibrium (with certified Mercier, both local ideal-MHD conditions hold, reductions supplied); a proved coil chain for the exact rational stellarator field (certified TF filament; field error ⇒ confined transits via the maximum principle; helical frontier bound still open); trapped-alpha non-resonance and periodicity in exact QA. Earlier: one consistent plasma (fully derived geometry, up to ignition), 95-transit stellarator field-line confinement, near-QA passing alphas 0.19 s.",
   "tasks": {
     "model-contracts:I1": "Partially implemented — algebraic force balance and tangency; positive permeability and actual differential laws in the restricted slab model.",
     "model-contracts:I2": "Lean verified — uniform-field and nonzero-current force-free witnesses in the Cartesian slab model; not toroidal confinement.",
@@ -44,7 +44,7 @@
     "geometry-and-fields:G2": "Partially implemented — divergence/curl operators with sanity lemmas; Clebsch fields ∇ψ×∇χ are divergence-free for C² potentials; reciprocal-basis identities pending.",
     "geometry-and-fields:G9": "Partially implemented — exact first-integral barriers (all time) in symmetric fields; certified approximate-first-integral confinement (≥ 95 transits) in an exact non-axisymmetric rational vacuum stellarator field; no KAM yet.",
     "mhd-stability:S6": "Partially implemented — Suydam both ways; cylindrical Mercier ⇔ Suydam; general Mercier index (supplied) certified positive on every surface of the reactor Solov'ev equilibrium by validated quadrature (magnetic well proved); helical equilibrium Mercier-unstable.",
-    "mhd-stability:S7": "Partially implemented — screw-pinch Newcomb stability for all modes m ≠ 0; Barta/line ballooning certificates; ideal ballooning of the reactor Solov'ev equilibrium on four near-axis surfaces for every field line and θ_k (reduction supplied); no 3-D all-mode certificate.",
+    "mhd-stability:S7": "Partially implemented — screw-pinch Newcomb all modes m ≠ 0; ideal ballooning of the reactor Solov'ev equilibrium on every flux surface for every field line and θ_k (reduction supplied); certified Mercier; no 3-D all-mode certificate.",
     "particles-and-transport:K1": "Lean verified — Newton–Lorentz energy and speed conservation, exact uniform-field gyration, Larmor-radius formula and realistic exact bounds.",
     "particles-and-transport:K2": "Partially implemented — Noether conservation of canonical momentum for any Killing symmetry (rotation, translation, helix) for full orbits; reduced Hamiltonian theory pending.",
     "roadmap:P3: confined reduced orbits": "Partially implemented — all-time full-orbit confinement of 3.5 MeV alphas in an exact, realistically scaled Solov'ev equilibrium; helical symmetric confinement; near-axis QA guiding-centre trapping for 0.8 ms. Not for a coil-produced stellarator.",
@@ -55,6 +55,6 @@
     "implementation-plan:M2": "Lean verified (idealized) — one consistent plasma on the actual Solov'ev flux geometry (coarea step stated): driven, high-Q (Q≈40) and ignited versions with two-sided bands and pressure ≤ equilibrium + offset; earlier cylinder/helical barriers.",
     "implementation-plan:M3": "Partially implemented — ℓ¹ Banach algebra with exp, radii polynomial, Fourier regularity; a validated slab Grad–Shafranov equilibrium with exponential pressure profile (classical C², kernel ForceBalance, positive pressure); toroidal (2-D) validation pending.",
     "implementation-plan:M4": "Partially implemented — passing 3.5 MeV alphas in reactor-scale near-axis QA stay inside for 0.19 s (≈ half the slowing-down time; Boozer GC model); trapped alphas: single well and non-resonant bounce-sum lemmas, kick form assumed.",
-    "implementation-plan:M5": "Partially implemented — exact non-axisymmetric vacuum stellarator field (rational, 2 periods, stellarator-symmetric, elliptic axis) with certified field-line confinement for ≥ 95 toroidal transits near the axis (approximate first integral, finite length); coil approximation pending."
+    "implementation-plan:M5": "Partially implemented — exact rational vacuum stellarator field with certified ≥ 95-transit field-line confinement; coil chain proved (certified TF filament, maximum-principle transfer, error ⇒ transits) with the helical-winding frontier bound still a hypothesis."
   }
 }

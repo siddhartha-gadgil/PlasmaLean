@@ -32,3 +32,5 @@ dated evidence. Run `node scripts/check_site.mjs` before handing off the update.
 [20 October 2026, Phase 6: one plasma on the actual geometry, high-Q and ignited, ballooning, a first exact stellarator field](2026-10-20-progress-7.md).
 
 [20 October 2026, Phase 7 part 1: certified field-line confinement in an exact stellarator field; the coarea step formalized](2026-10-20-progress-8.md).
+
+[20 October 2026, Phase 7 part 2: ballooning on every surface, coils for the stellarator field, trapped-alpha non-resonance](2026-10-20-progress-9.md).

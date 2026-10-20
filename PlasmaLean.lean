@@ -141,6 +141,17 @@ public import PlasmaLean.Design.RationalStellaratorConfinedMain
 public import PlasmaLean.Design.RationalStellaratorConfinedFaces
 public import PlasmaLean.Design.RationalStellaratorConfined
 public import PlasmaLean.Design.SolovevCoarea
+public import PlasmaLean.Theory.Kinetic.BounceIntegrals
+public import PlasmaLean.Design.NearAxisQATrappedCells
+public import PlasmaLean.Design.NearAxisQATrappedCellsRows1
+public import PlasmaLean.Design.NearAxisQATrappedCellsRows2
+public import PlasmaLean.Design.NearAxisQATrappedCellsRows3
+public import PlasmaLean.Design.NearAxisQATrappedResonance
+public import PlasmaLean.Design.NearAxisQATrappedPeriodic
+public import PlasmaLean.Design.RationalStellaratorCoilsGrad
+public import PlasmaLean.Design.RationalStellaratorCoils
+public import PlasmaLean.Design.RationalStellaratorCoilsTF
+public import PlasmaLean.Design.RationalStellaratorCoilsTransfer
 
 /-!
 # PlasmaLean public library

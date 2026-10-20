@@ -107,3 +107,6 @@ run_cmd do
 #print axioms PlasmaLean.Design.RationalStellarator.field_vacuum
 #print axioms PlasmaLean.Design.RationalStellarator.Confined.rationalStellarator_confined_local
 #print axioms PlasmaLean.Design.SolovevCoarea.solovev_one_plasma_actual_coarea
+#print axioms PlasmaLean.Design.SolovevBallooning.reactor_ballooning_all
+#print axioms PlasmaLean.Design.RationalStellarator.Coils.coil_stellarator_confined
+#print axioms PlasmaLean.Design.NearAxisQATrappedResonance.exactQA_nonresonant
