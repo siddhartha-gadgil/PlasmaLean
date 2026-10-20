@@ -22,3 +22,5 @@ Refresh its results, boundaries, evidence links and next steps after every run;
 its `updated` and `report` must match `status.json`. The generator checks this
 alignment, but scientific scope and counts still need human review against the
 dated evidence. Run `node scripts/check_site.mjs` before handing off the update.
+
+[20 October 2026, Phase 3: 3.5 MeV alphas confined for all time, stellarator-geometry core barrier, validated BVP](2026-10-20-progress-4.md).

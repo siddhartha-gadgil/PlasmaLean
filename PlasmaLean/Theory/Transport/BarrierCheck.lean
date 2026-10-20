@@ -15,21 +15,27 @@ public import PlasmaLean.Certificates.PolyInterval
 
 In the normalized toroidal flux coordinate `ψ` the flux-surface-averaged diffusivity is
 `D(ψ) = χ ⟨|∇ψ|²⟩`, and `⟨|∇ψ|²⟩ ∝ ψ` near the magnetic axis (for a cylinder `ψ = r²/a²`
-gives `|∇ψ|² = 4ψ/a²` exactly). So `D(0) = 0`: the kernel floor `D ≥ Dmin > 0` of
-`TransportLaws` never holds in this coordinate, and the axis Neumann condition `∂ψT(0,t) = 0`
-of `ClassicalRadialSolution` is *not* the natural regularity condition either (a smooth
-profile `T₀ − c r²` has `∂ψT(0) = −c a² ≠ 0`). At a degenerate axis no boundary condition is
-needed at all (Fichera): if `D(0) = 0` and the drift coefficient `D'(0) ≥ 0`, the equation at
-`ψ = 0` reduces to `∂ₜT = D'(0) ∂ψT + R`, whose characteristics `dψ/dt = −D'(0) ≤ 0` run
-*toward* the axis: `ψ = 0` is an outflow boundary, so its values are determined from the
-interior and no boundary condition may be prescribed there.
+gives `|∇ψ|² = 4ψ/a²` exactly). So `D(0) = 0`, and the axis Neumann condition
+`∂ψT(0,t) = 0` is *not* the natural regularity condition (a smooth profile `T₀ − c r²` has
+`∂ψT(0) = −c a² ≠ 0`). (This module was written when the kernel still demanded
+`D ≥ Dmin > 0` and the Neumann condition; since the kernel change of 2026-10-20 the kernel
+has the `degenerate` axis kind, `DegenerateAxis` and `op_le_op_of_touch_axis` live in
+`Comparison`, and `AxisFreeSolution.classical` identifies axis-free solutions with kernel
+solutions for a degenerate axis. The axis-free statements below remain useful because they
+take the coefficient hypotheses explicitly instead of through `TransportLaws`.)
+
+At a degenerate axis no boundary condition is needed at all (Fichera): if `D(0) = 0` and the
+drift coefficient `D'(0) ≥ 0`, the equation at `ψ = 0` reduces to `∂ₜT = D'(0) ∂ψT + R`,
+whose characteristics `dψ/dt = −D'(0) ≤ 0` run *toward* the axis: `ψ = 0` is an outflow
+boundary, so its values are determined from the interior and no boundary condition may be
+prescribed there.
 
 This module proves the comparison principle in exactly that setting:
 
-* `DegenerateAxis c`: `D(0) = 0` and `D'(0) ≥ 0`.
+* `DegenerateAxis c` (in `Comparison`): `D(0) = 0` and `D'(0) ≥ 0`.
 * `AxisFreeSolution c Tedge τ u`: a classical solution as in `ClassicalRadialSolution`, but
   **without** the axis condition (`ClassicalRadialSolution.axisFree` shows that every kernel
-  solution is one).
+  solution is one; `AxisFreeSolution.classical` gives the converse for a degenerate axis).
 * `lt_of_residual_lt`: the first-touching argument for two regular fields `S`, `u` with
   `∂ₜS − N[S] < ∂ₜu − N[u]`, `S < u` initially and at the edge. Only `D ≥ 0` on `[0,1]` and
   `DegenerateAxis` are used; neither field needs an axis condition. The new ingredient is
@@ -63,17 +69,12 @@ open Set Filter Topology
 
 /-! ### Degenerate axis -/
 
-/-- **Degenerate (Fichera) axis condition**: the diffusivity vanishes at the axis and the
-drift coefficient `D'(0)` there is nonnegative, so that no axis boundary condition is needed.
-Holds for `D(ψ) = χ ⟨|∇ψ|²⟩` in the normalized toroidal flux coordinate. -/
-structure DegenerateAxis (c : RadialCoefficients) : Prop where
-  /-- `D(0) = 0`. -/
-  D_zero : c.D 0 = 0
-  /-- `D'(0) ≥ 0`. -/
-  drift_nonneg : 0 ≤ c.dD 0
-
 /-- A supplied classical solution of `∂ₜT = N[T]` on `[0,1] × [0,τ]` with edge Dirichlet data
-and **no** axis condition (appropriate when the axis is degenerate). -/
+and **no** axis condition (appropriate when the axis is degenerate). Since the 2026-10-20
+kernel change this largely duplicates `ClassicalRadialSolution` with `axis = .degenerate`
+(`AxisFreeSolution.classical`, `ClassicalRadialSolution.axisFree`); it is kept for the
+axis-free theorems that take coefficient hypotheses explicitly. New code should prefer the
+kernel class. -/
 structure AxisFreeSolution (c : RadialCoefficients) (Tedge : ℝ → ℝ) (τ : ℝ)
     (u : RadialField) : Prop where
   /-- The time horizon is nonnegative. -/
@@ -92,34 +93,17 @@ theorem ClassicalRadialSolution.axisFree {c : RadialCoefficients} {Tedge : ℝ �
     AxisFreeSolution c Tedge τ u :=
   ⟨h.tau_nonneg, h.regular, h.pde, h.edge⟩
 
-/-- First-derivative test at a left endpoint: if `f` attains its minimum over `[a,b]` at `a`
-and has derivative `f'` there within `[a,b]`, then `f' ≥ 0`. -/
-theorem deriv_nonneg_of_leftEndMin {f : ℝ → ℝ} {f' a b : ℝ} (hab : a < b)
-    (hf : HasDerivWithinAt f f' (Icc a b) a) (hmin : ∀ x ∈ Icc a b, f a ≤ f x) : 0 ≤ f' := by
-  have h1 : HasDerivWithinAt f f' (Ioc a b) a := hf.mono Ioc_subset_Icc_self
-  rw [hasDerivWithinAt_iff_tendsto_slope, sdiff_singleton_eq_self (by simp)] at h1
-  have : (𝓝[Ioc a b] a).NeBot := mem_closure_iff_nhdsWithin_neBot.1
-    (by rw [closure_Ioc hab.ne]; exact ⟨le_rfl, hab.le⟩)
-  refine ge_of_tendsto h1 ?_
-  filter_upwards [self_mem_nhdsWithin] with x hx
-  rw [slope_def_field]
-  exact div_nonneg (by linarith [hmin x (Ioc_subset_Icc_self hx)]) (by linarith [hx.1])
-
-/-- **Touching at a degenerate axis.** If `u − S` has a zero minimum over `[0,1]` at `ψ = 0`,
-then `N[S](0) ≤ N[u](0)`: the curvature term is switched off by `D(0) = 0`, and the drift
-term has the right sign because the one-sided slope of `u − S` is `≥ 0`. -/
-theorem op_le_op_of_touch_axis (c : RadialCoefficients) (hax : DegenerateAxis c)
-    {uT sT : ℝ → ℝ} {uψ sψ uψψ sψψ : ℝ}
-    (hu : HasDerivWithinAt uT uψ (Icc 0 1) 0) (hs : HasDerivWithinAt sT sψ (Icc 0 1) 0)
-    (hmin : ∀ x ∈ Icc (0 : ℝ) 1, 0 ≤ uT x - sT x) (hzero : uT 0 = sT 0) :
-    c.op 0 (sT 0) sψ sψψ ≤ c.op 0 (uT 0) uψ uψψ := by
-  have hslope : 0 ≤ uψ - sψ :=
-    deriv_nonneg_of_leftEndMin (f := fun x => uT x - sT x) zero_lt_one (hu.sub hs)
-      (fun x hx => by simp only [hzero, sub_self]; exact hmin x hx)
-  unfold RadialCoefficients.op
-  rw [hax.D_zero, hzero]
-  simp only [zero_mul, zero_div, add_zero, zero_add]
-  nlinarith [mul_nonneg hax.drift_nonneg hslope]
+/-- **Bridge to the kernel.** For a `degenerate` axis the kernel imposes no axis condition, so
+axis-free solutions are exactly kernel classical solutions (converse of
+`ClassicalRadialSolution.axisFree`). -/
+theorem AxisFreeSolution.classical {c : RadialCoefficients} {Tedge : ℝ → ℝ} {τ : ℝ}
+    {u : RadialField} (hk : c.axis = .degenerate) (h : AxisFreeSolution c Tedge τ u) :
+    ClassicalRadialSolution c Tedge τ u where
+  tau_nonneg := h.tau_nonneg
+  regular := h.regular
+  pde := h.pde
+  axis := fun hr => absurd (hr.symm.trans hk) (by decide)
+  edge := h.edge
 
 /-- **Touching at an interior point.** If `u − S` has a zero minimum over `[0,1]` at
 `ψ₀ ∈ (0,1)` and `D(ψ₀) ≥ 0`, then `N[S](ψ₀) ≤ N[u](ψ₀)`. -/
@@ -229,36 +213,15 @@ theorem lt_of_residual_lt {c : RadialCoefficients} {τ : ℝ} {u S : RadialField
 
 /-- Shared compactness step for the margin theorems: a regular profile `f` above `lo` on
 `[0,1]`, and `R` continuous on `[0,1] × (lo,∞)`, give `δ₀ > 0` such that shifting the value
-argument by any `|s| < δ₀` (staying in the band) changes `R(ψ, f ψ)` by less than `κ`. -/
+argument by any `|s| < δ₀` changes `R(ψ, f ψ)` by less than `κ` (the case `U = (lo,∞)` of
+`exists_shift_control_open`). -/
 theorem exists_shift_control {c : RadialCoefficients} {f f' f'' : ℝ → ℝ}
     (hf : ProfileRegular f f' f'') {lo : ℝ}
     (hRc : ContinuousOn (fun p : ℝ × ℝ => c.R p.1 p.2) (Icc 0 1 ×ˢ Ioi lo))
     (hlo : ∀ ψ ∈ Icc (0 : ℝ) 1, lo < f ψ) {κ : ℝ} (hκ : 0 < κ) :
     ∃ δ₀ > 0, ∀ s : ℝ, |s| < δ₀ → ∀ ψ ∈ Icc (0 : ℝ) 1,
-      |c.R ψ (f ψ + s) - c.R ψ (f ψ)| < κ := by
-  obtain ⟨γ, hγ, hγle⟩ := exists_margin_of_continuousOn (g := fun x => f x - lo)
-    (hf.continuousOn.sub continuousOn_const) (fun ψ hψ => sub_pos.2 (hlo ψ hψ))
-  obtain ⟨M, hM⟩ := isCompact_Icc.exists_bound_of_continuousOn hf.continuousOn
-  have hRuc : UniformContinuousOn (fun p : ℝ × ℝ => c.R p.1 p.2)
-      (Icc (0 : ℝ) 1 ×ˢ Icc (lo + γ / 2) (M + 1)) :=
-    (isCompact_Icc.prod isCompact_Icc).uniformContinuousOn_of_continuous
-      (hRc.mono (prod_mono subset_rfl (fun x hx => by
-        simp only [mem_Ioi]; linarith [hx.1])))
-  rw [Metric.uniformContinuousOn_iff] at hRuc
-  obtain ⟨δ0, hδ0, hδ⟩ := hRuc κ hκ
-  refine ⟨min δ0 (min (γ / 2) 1), by positivity, fun s hs ψ hψ => ?_⟩
-  have hs1 := lt_min_iff.1 hs
-  have hs2 := lt_min_iff.1 hs1.2
-  have habs := abs_lt.1 hs2.1
-  have habs' := abs_lt.1 hs2.2
-  have hfM := abs_le.1 (by simpa [Real.norm_eq_abs] using hM ψ hψ)
-  have hfγ : γ ≤ f ψ - lo := hγle ψ hψ
-  have hd := hδ (ψ, f ψ + s) ⟨hψ, by constructor <;> linarith⟩ (ψ, f ψ)
-    ⟨hψ, by constructor <;> linarith⟩
-    (by
-      rw [Prod.dist_eq, dist_self, Real.dist_eq, show f ψ + s - f ψ = s by ring]
-      rw [max_eq_right (abs_nonneg s)]; exact hs1.1)
-  rwa [Real.dist_eq] at hd
+      |c.R ψ (f ψ + s) - c.R ψ (f ψ)| < κ :=
+  exists_shift_control_open hf isOpen_Ioi hRc hlo hκ
 
 /-- **Lower barrier with margin, degenerate axis.** Let `f` be a regular profile (no axis
 condition needed) with `N[f] ≥ κ > 0` on `[0,1]`, `f > lo`, and `R` continuous on

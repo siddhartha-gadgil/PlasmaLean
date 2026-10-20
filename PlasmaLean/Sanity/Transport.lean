@@ -31,7 +31,16 @@ Checks for `PlasmaLean.Kernel.Transport`:
   theory layer `PlasmaLean.Theory.Transport.Comparison`, which this module imports; the theory
   layer does not import any sanity module);
 * non-vacuity: the decaying cosine mode `e^{−π²t/4} cos(πψ/2)` is a `RadialHeatTransport`
-  instance with zero edge data (`cosMode_radialHeatTransport`).
+  instance with zero edge data (`cosMode_radialHeatTransport`);
+* the optional floor: the unit coefficients are uniformly parabolic
+  (`unitCoefficients_uniformlyParabolic`);
+* degenerate axis kind (kernel change 2026-10-20): at a degenerate axis the curvature drops out
+  and `∂ₜT(0,t) = D'(0)∂ψT + R` (`degenerate_axis_rate`); the unit cylinder coefficients
+  `D = ψ` satisfy the relaxed laws (`cylUnitCoefficients`), admit no floor `Dmin > 0`
+  (`cylUnit_not_uniformlyParabolic`), give `DegenerateAxis` (`cylUnit_degenerateAxis`), and
+  have the exact solution `a₀ + b(t + ψ)` with nonzero axis slope
+  (`linField_radialHeatTransport`, `linField_axis_slope`), which the old Neumann-only kernel
+  excluded.
 -/
 
 public section
@@ -86,7 +95,7 @@ theorem constField_solution (c : RadialCoefficients) {T₀ τ : ℝ} (hτ : 0 �
       deriv_ψψ := fun _ _ _ _ => hasDerivWithinAt_const _ _ _
       deriv_t := fun _ _ _ _ => hasDerivWithinAt_const _ _ _ }
   pde := fun ψ hψ _ _ => by simp [constField, RadialCoefficients.op, hR ψ hψ]
-  axis := fun _ _ => rfl
+  axis := fun _ _ _ => rfl
   edge := fun _ _ => rfl
 
 /-- Pointwise maximum principle: where the slope vanishes and the curvature is nonpositive,
@@ -100,26 +109,48 @@ theorem rate_nonpos_of_max {c : RadialCoefficients} {Tedge : ℝ → ℝ} {τ : 
   rw [hslope, mul_zero, add_zero]
   nlinarith [mul_nonpos_of_nonneg_of_nonpos hD hcurv]
 
-/-- At the magnetic axis the slope vanishes by the no-flux condition, so nonpositive curvature
-and `R ≤ 0` give `∂ₜT(0,t) ≤ 0`. -/
+/-- At a regular magnetic axis the slope vanishes by the no-flux condition, so nonpositive
+curvature and `R ≤ 0` give `∂ₜT(0,t) ≤ 0`. -/
 theorem axis_rate_nonpos {c : RadialCoefficients} {Tedge : ℝ → ℝ} {τ : ℝ} {u : RadialField}
-    [hu : ClassicalRadialSolution c Tedge τ u] {t : ℝ} (ht : t ∈ Icc 0 τ) (hD : 0 ≤ c.D 0)
+    [hu : ClassicalRadialSolution c Tedge τ u] (hk : c.axis = .regular) {t : ℝ}
+    (ht : t ∈ Icc 0 τ) (hD : 0 ≤ c.D 0)
     (hR : c.R 0 (u.T 0 t) ≤ 0) (hcurv : u.Tψψ 0 t ≤ 0) : u.Tt 0 t ≤ 0 :=
   rate_nonpos_of_max (Tedge := Tedge) ⟨le_rfl, zero_le_one⟩ ht hD hR
-    (ClassicalRadialSolution.axis (c := c) (Tedge := Tedge) (τ := τ) (u := u) t ht) hcurv
+    (ClassicalRadialSolution.axis (c := c) (Tedge := Tedge) (τ := τ) (u := u) hk t ht) hcurv
 
-/-- Unit coefficients: `V' = 1`, `D = 1`, no sources, floor `Dmin = 1`. -/
+/-- At a degenerate axis (`D(0) = 0`) the curvature does not enter: `∂ₜT(0,t) = D'(0) ∂ψT + R`,
+so a nonpositive slope, `D'(0) ≥ 0` and `R ≤ 0` give `∂ₜT(0,t) ≤ 0`. -/
+theorem degenerate_axis_rate {c : RadialCoefficients} {Tedge : ℝ → ℝ} {τ : ℝ}
+    {u : RadialField} [hu : ClassicalRadialSolution c Tedge τ u] {t : ℝ} (ht : t ∈ Icc 0 τ)
+    (hD0 : c.D 0 = 0) (hdD : 0 ≤ c.dD 0) (hslope : u.Tψ 0 t ≤ 0)
+    (hR : c.R 0 (u.T 0 t) ≤ 0) : u.Tt 0 t ≤ 0 := by
+  rw [ClassicalRadialSolution.pde (c := c) (τ := τ) (u := u) Tedge 0 ⟨le_rfl, zero_le_one⟩ t ht]
+  unfold RadialCoefficients.op
+  rw [hD0]
+  simp only [zero_mul, zero_div, add_zero, zero_add]
+  nlinarith [mul_nonpos_of_nonneg_of_nonpos hdD hslope]
+
+/-- Unit coefficients: `V' = 1`, `D = 1`, no sources, source posed on all of `ℝ`, regular
+axis. -/
 @[expose] def unitCoefficients : RadialCoefficients :=
-  ⟨fun _ => 1, fun _ => 0, fun _ => 1, fun _ => 0, fun _ _ => 0, 1⟩
+  ⟨fun _ => 1, fun _ => 0, fun _ => 1, fun _ => 0, fun _ _ => 0, univ, .regular⟩
 
 /-- The unit coefficients satisfy the transport laws. -/
 instance : TransportLaws unitCoefficients where
   Vp_pos := fun _ _ => one_pos
   Vp_deriv := fun _ _ => hasDerivWithinAt_const _ _ _
   D_deriv := fun _ _ => hasDerivWithinAt_const _ _ _
-  Dmin_pos := one_pos
-  D_lower := fun _ _ => le_rfl
+  D_nonneg := fun _ _ => zero_le_one
+  D_axis := fun h => absurd h (by decide)
+  D_axis_regular := fun _ => one_pos
+  Tdom_open := isOpen_univ
   R_cont := continuousOn_const
+
+/-- The unit coefficients are uniformly parabolic with floor `1` (the pre-2026-10-20 kernel
+law, now an optional predicate). -/
+theorem unitCoefficients_uniformlyParabolic : unitCoefficients.UniformlyParabolic 1 := by
+  unfold RadialCoefficients.UniformlyParabolic
+  exact ⟨one_pos, fun _ _ => le_rfl⟩
 
 /-- The separable mode `a + b e^{μt} cos(kψ)` with its exact partial derivatives. This is a
 name-preserving alias of `PlasmaLean.Transport.modeField`, which now lives in
@@ -141,7 +172,66 @@ instance cosMode_radialHeatTransport {τ : ℝ} [Fact (0 ≤ τ)] :
   pde := fun ψ _ t _ => by
     simp only [modeField, Transport.modeField, unitCoefficients, RadialCoefficients.op]
     ring
-  axis := fun t _ => by simp [modeField, Transport.modeField]
+  axis := fun _ t _ => by simp [modeField, Transport.modeField]
   edge := fun t _ => by simp [modeField, Transport.modeField, cos_pi_div_two]
+
+/-! ### The degenerate axis kind (kernel change 2026-10-20) -/
+
+/-- Unit cylinder coefficients in `ψ = r²/a²` (with `4χ/a² = 1`): `V' = 1`, `D = ψ`, `D' = 1`,
+no sources, degenerate axis. Then `N[T] = ψ T'' + T'`, the cylindrical Laplacian. -/
+@[expose] def cylUnitCoefficients : RadialCoefficients :=
+  ⟨fun _ => 1, fun _ => 0, fun ψ => ψ, fun _ => 1, fun _ _ => 0, univ, .degenerate⟩
+
+/-- The unit cylinder coefficients satisfy the relaxed kernel laws (`D ≥ 0`, `D(0) = 0`). -/
+instance : TransportLaws cylUnitCoefficients where
+  Vp_pos := fun _ _ => one_pos
+  Vp_deriv := fun _ _ => hasDerivWithinAt_const _ _ _
+  D_deriv := fun ψ _ => (hasDerivAt_id ψ).hasDerivWithinAt
+  D_nonneg := fun _ hψ => hψ.1
+  D_axis := fun _ => rfl
+  D_axis_regular := fun h => absurd h (by decide)
+  Tdom_open := isOpen_univ
+  R_cont := continuousOn_const
+
+/-- **The old floor is impossible at a degenerate axis**: the unit cylinder coefficients are not
+uniformly parabolic for any floor. This is why the kernel law `D ≥ Dmin > 0` was dropped. -/
+theorem cylUnit_not_uniformlyParabolic (Dmin : ℝ) :
+    ¬ cylUnitCoefficients.UniformlyParabolic Dmin := fun h =>
+  (lt_irrefl _) (h.D_axis_pos.trans_eq rfl)
+
+/-- The kernel laws yield the degenerate-axis condition `D(0) = 0`, `D'(0) ≥ 0`. -/
+theorem cylUnit_degenerateAxis : DegenerateAxis cylUnitCoefficients :=
+  TransportLaws.degenerateAxis _ rfl
+
+/-- The field `T = a₀ + b (t + ψ)`, an exact solution of `∂ₜT = ψ T'' + T'`. -/
+@[expose] def linField (a₀ b : ℝ) : RadialField :=
+  ⟨fun ψ t => a₀ + b * (t + ψ), fun _ _ => b, fun _ _ => 0, fun _ _ => b⟩
+
+/-- **Non-vacuity of the degenerate kind.** `T = a₀ + b (t + ψ)` is a kernel solution for the
+unit cylinder coefficients, with edge data `a₀ + b (t + 1)`, although its axis slope `b` need
+not vanish: the old kernel (Neumann condition always imposed) excluded it for `b ≠ 0`. -/
+instance linField_radialHeatTransport {τ : ℝ} [Fact (0 ≤ τ)] (a₀ b : ℝ) :
+    RadialHeatTransport cylUnitCoefficients (fun t => a₀ + b * (t + 1)) τ (linField a₀ b) where
+  tau_nonneg := Fact.out
+  regular :=
+    { cont := by
+        apply Continuous.continuousOn
+        simp only [linField]
+        fun_prop
+      deriv_ψ := fun t _ ψ _ => by
+        have := (((hasDerivAt_id ψ).const_add t).const_mul b).const_add a₀
+        simpa [linField] using this.hasDerivWithinAt
+      deriv_ψψ := fun _ _ _ _ => hasDerivWithinAt_const _ _ _
+      deriv_t := fun ψ _ t _ => by
+        have := (((hasDerivAt_id t).add_const ψ).const_mul b).const_add a₀
+        simpa [linField] using this.hasDerivWithinAt }
+  pde := fun ψ _ t _ => by
+    simp only [linField, cylUnitCoefficients, RadialCoefficients.op]
+    ring
+  axis := fun h => absurd h (by decide)
+  edge := fun t _ => rfl
+
+/-- The non-vacuity solution violates the old Neumann axis condition when `b ≠ 0`. -/
+theorem linField_axis_slope (a₀ b t : ℝ) : (linField a₀ b).Tψ 0 t = b := rfl
 
 end PlasmaLean.Transport.Sanity

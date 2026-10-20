@@ -1,15 +1,15 @@
 [
   {
     "title": "Progress slideshow",
-    "section": "Evidence updated 2026-10-20 · Phase 2 of the implementation plan: an all-time core-temperature barrier (T ≥ 10 keV on the inner core) for the radial heat equation in an idealized cylinder with alpha heating; the 0-D burn window derived from the IPB98(y,2) scaling law; Newcomb stability of the screw-pinch example for all modes m ≠ 0; ballooning/Mercier certificates; the vacuum curvature obstruction to minimum-B on closed field lines; discrete maximum principle. Idealized geometry, prescribed χ, supplied solutions; no coil-produced stellarator or 3-D all-mode stability.",
+    "section": "Evidence updated 2026-10-20 · Phase 3 of the implementation plan: every 3.5 MeV fusion alpha born in the inner quarter of an exact, realistically scaled Solov'ev equilibrium (5 T, β_axis ≈ 4.6%) is confined for all time (full orbits, any pitch); a core-temperature barrier (T ≥ 10 keV) on the exact helically symmetric equilibrium; a Stellaris-scale ISS04 burn window with the measured-confinement obstruction; a validated nonlinear BVP via the radii polynomial on ℓ¹; guiding-centre and averaging theory; infinite-line ballooning. Idealized symmetric geometries; no coil-produced stellarator or 3-D all-mode stability.",
     "url": "slides.html",
     "text": "progress slideshow presentation latest run evidence vacuum fixture"
   },
   {
-    "title": "A proved core-temperature barrier, all-mode screw-pinch stability, and a min-B obstruction.",
+    "title": "3.5 MeV alphas confined for all time; a hot core on stellarator-like geometry.",
     "section": "Progress slideshow",
     "url": "slides.html#where-we-are",
-    "text": "a proved core-temperature barrier, all-mode screw-pinch stability, and a min-b obstruction. plasmalean is building a lean library for stellarator design. phase 2 of the implementation plan proves that, in an idealized cylinder with alpha heating, the core temperature stays at or above 10 kev for all time once it starts above a certified barrier. it also derives the 0-d burn window from the ipb98 scaling law and proves newcomb stability of a screw pinch for every mode with m ≠ 0. m1 (0-d burn) is checked under a scaling law; m2 has an all-time core barrier in cylinder geometry; the screw-pinch example is all-mode newcomb-stable (reduction supplied). p3/p4 remain at idealized symmetric instances."
+    "text": "3.5 mev alphas confined for all time; a hot core on stellarator-like geometry. plasmalean is building a lean library for stellarator design. phase 3 proves that every 3.5 mev fusion alpha born in the inner core of an exact, realistically scaled equilibrium stays confined for all time, and that the core temperature stays above 10 kev on an exact helically symmetric (straight-stellarator) equilibrium. it also adds validated-numerics machinery and guiding-centre theory. m1 and m2 are checked in idealized geometries; p3 now includes 3.5 mev alpha confinement in an exact axisymmetric equilibrium; m3 (validated equilibria) and m4 (near-quasisymmetry) have their first theorems."
   },
   {
     "title": "Small assumptions. Reusable proofs. One candidate.",
@@ -78,16 +78,22 @@
     "text": "every solution starting above the barrier keeps a 10 kev core forever. for the flux-surface heat equation with alpha heating, bremsstrahlung and ≈70 mw of deposited heating, a certified barrier profile bounds the temperature from below for all time. a 0-d burn window now follows from the ipb98(y,2) confinement scaling instead of ad-hoc confinement-time assumptions. 14 new modules. reviews found no soundness bugs and led to guards for shearless mercier surfaces, a non-vacuity witness for the obstruction, and clarified χ normalization and corner compatibility."
   },
   {
+    "title": "Every 3.5 MeV alpha born in the core stays in — forever.",
+    "section": "Progress slideshow",
+    "url": "slides.html#alpha-confinement",
+    "text": "every 3.5 mev alpha born in the core stays in — forever. in an exact equilibrium satisfying j × b = ∇p at 5 t and β ≈ 4.6%, every fusion alpha with energy ≤ 3.5 mev starting in the inner quarter of the flux, with any pitch, stays inside the plasma for all time under the full lorentz force. the margin is 1.5%: the same argument fails at 3.7 mev. 15 new modules and a recorded kernel change. three review passes: pressure consistency of the barrier, a finite-time boozer orbit structure, a kernel law excluding vacuous regular axes, and non-vacuity witnesses."
+  },
+  {
     "title": "Theory, techniques and a ladder of models — for confinement and for heat.",
     "section": "Progress slideshow",
     "url": "slides.html#implementation-plan",
-    "text": "theory, techniques and a ladder of models — for confinement and for heat. each cycle develops theory, turns theorems into sound certificate checkers, and applies them to the next rung of a model ladder. every rung must prove properties of both kinds: confinement (g1) and temperature held above burn conditions (g2). phases 1 and 2 met their acceptance criteria (phase 2 in an idealized cylinder). status marks and a progress log in the plan are updated after each phase."
+    "text": "theory, techniques and a ladder of models — for confinement and for heat. each cycle develops theory, turns theorems into sound certificate checkers, and applies them to the next rung of a model ladder. every rung must prove properties of both kinds: confinement (g1) and temperature held above burn conditions (g2). phases 1–3 met their acceptance criteria in idealized models. the plan's status marks and progress log are updated after each phase."
   },
   {
     "title": "The next run must leave evidence, not just a promise.",
     "section": "Progress slideshow",
     "url": "slides.html#next-run",
-    "text": "the next run must leave evidence, not just a promise. next (phase 3): relax the transport kernel at the axis; move the core barrier to the helical equilibrium with a pedestal; a first validated equilibrium via the radii polynomial on ℓ¹_ν; guiding-centre error bounds and a near-axis quasisymmetric field for 3.5 mev alphas. the linked run records checked declarations, assumptions and validation. this slideshow is a summary of that evidence, not a new design certificate."
+    "text": "the next run must leave evidence, not just a promise. next (phase 4): rigorous iterated averaging for near-quasisymmetric alpha confinement; a validated 1-d grad–shafranov equilibrium; transport profiles consistent with mhd equilibria; mercier/ballooning for the solov'ev and helical equilibria; coil error fields via the maximum principle. the linked run records checked declarations, assumptions and validation. this slideshow is a summary of that evidence, not a new design certificate."
   },
   {
     "title": "Stellarator concepts",
@@ -649,9 +655,9 @@
   },
   {
     "title": "K3 · Approximate-invariant finite-time confinement",
-    "section": "Particles & transport · Partially implemented — finite-time drift; all-time full-orbit trapping by IVT; symmetry-defect finite-time confinement with first-exit bootstrap (ripple example). 3.5 MeV alphas and guiding-centre averaging remain open.",
+    "section": "Particles & transport · Partially implemented — all-time full-orbit trapping by IVT; 3.5 MeV alphas confined for all time in a realistically scaled exact Solov'ev equilibrium (any pitch, inner quarter of flux); symmetry-defect finite-time confinement; guiding-centre reduction and averaging lemmas; near-QA alphas only 0.8 ms.",
     "url": "particles-and-transport.html",
-    "text": "k3 approximate-invariant finite-time confinement theorem backlog partially implemented — finite-time drift; all-time full-orbit trapping by ivt; symmetry-defect finite-time confinement with first-exit bootstrap (ripple example). 3.5 mev alphas and guiding-centre averaging remain open."
+    "text": "k3 approximate-invariant finite-time confinement theorem backlog partially implemented — all-time full-orbit trapping by ivt; 3.5 mev alphas confined for all time in a realistically scaled exact solov'ev equilibrium (any pitch, inner quarter of flux); symmetry-defect finite-time confinement; guiding-centre reduction and averaging lemmas; near-qa alphas only 0.8 ms."
   },
   {
     "title": "K4 · Omnigeneity/action relation in a specified class",
@@ -1255,9 +1261,9 @@
   },
   {
     "title": "P3: confined reduced orbits · F/V/R",
-    "section": "Roadmap · Partially implemented — all-time full-orbit confinement in exact Solov'ev and helically symmetric equilibria (rigidity-limited; 3.5 MeV alphas not covered); finite-time bound under symmetry defects. Not for a coil-produced stellarator.",
+    "section": "Roadmap · Partially implemented — all-time full-orbit confinement of 3.5 MeV alphas in an exact, realistically scaled Solov'ev equilibrium; helical symmetric confinement; near-axis QA guiding-centre trapping for 0.8 ms. Not for a coil-produced stellarator.",
     "url": "roadmap.html",
-    "text": "p3: confined reduced orbits f/v/r milestones and evidence gates partially implemented — all-time full-orbit confinement in exact solov'ev and helically symmetric equilibria (rigidity-limited; 3.5 mev alphas not covered); finite-time bound under symmetry defects. not for a coil-produced stellarator."
+    "text": "p3: confined reduced orbits f/v/r milestones and evidence gates partially implemented — all-time full-orbit confinement of 3.5 mev alphas in an exact, realistically scaled solov'ev equilibrium; helical symmetric confinement; near-axis qa guiding-centre trapping for 0.8 ms. not for a coil-produced stellarator."
   },
   {
     "title": "P4: finite-pressure equilibrium · F/V/R",
@@ -1512,6 +1518,12 @@
     "text": "phase 2 (cycle 2), 20 october 2026 — report implementation plan"
   },
   {
+    "title": "Phase 3 (Cycle 3), 20 October 2026 — report",
+    "section": "Implementation plan",
+    "url": "implementation-plan.html#phase-3-cycle-3-20-october-2026-report",
+    "text": "phase 3 (cycle 3), 20 october 2026 — report implementation plan"
+  },
+  {
     "title": "M0 · Exact symmetric equilibria: slab, screw pinch, Solov'ev, helical",
     "section": "Implementation plan · Lean verified — exact slab, screw-pinch, Solov'ev and helical equilibria with kernel force balance, all-time field-line/orbit confinement, Suydam both ways and screw-pinch Newcomb for 1 ≤ |m| ≤ 6 (idealized symmetric models).",
     "url": "implementation-plan.html",
@@ -1525,21 +1537,21 @@
   },
   {
     "title": "M2 · 1-D radial transport on the exact Solov'ev and helical geometries (V′(ψ) taken from the M0 fields), with χ ∈ [χ_min, χ_max] supplied",
-    "section": "Implementation plan · Partially implemented — all-time barrier T ≥ T_sub ≥ 10 keV on ψ ≤ 0.3 for the radial heat equation in an idealized cylinder (a = 2.5 m, R₀ = 6.5 m, χ ≤ 0.5 m²/s with 3/2 factor, ≈70 MW aux, alpha heating via Bosch–Hale); Solov'ev/helical geometry and pedestal χ pending.",
+    "section": "Implementation plan · Lean verified (idealized geometries) — all-time core barrier T ≥ 10 keV: cylinder (ψ ≤ 0.3) and exact helical equilibrium (s ≤ 0.3, r ≤ 1.09 m, axis pressure ≤ equilibrium), as direct instances of the relaxed transport kernel; flux-surface average identities for the helical geometry are supplied; χ prescribed and optimistic.",
     "url": "implementation-plan.html",
-    "text": "m2 1-d radial transport on the exact solov'ev and helical geometries (v′(ψ) taken from the m0 fields), with χ ∈ [χ_min, χ_max] supplied 5. model ladder (each rung proves characteristics under both g1 and g2) partially implemented — all-time barrier t ≥ t_sub ≥ 10 kev on ψ ≤ 0.3 for the radial heat equation in an idealized cylinder (a = 2.5 m, r₀ = 6.5 m, χ ≤ 0.5 m²/s with 3/2 factor, ≈70 mw aux, alpha heating via bosch–hale); solov'ev/helical geometry and pedestal χ pending."
+    "text": "m2 1-d radial transport on the exact solov'ev and helical geometries (v′(ψ) taken from the m0 fields), with χ ∈ [χ_min, χ_max] supplied 5. model ladder (each rung proves characteristics under both g1 and g2) lean verified (idealized geometries) — all-time core barrier t ≥ 10 kev: cylinder (ψ ≤ 0.3) and exact helical equilibrium (s ≤ 0.3, r ≤ 1.09 m, axis pressure ≤ equilibrium), as direct instances of the relaxed transport kernel; flux-surface average identities for the helical geometry are supplied; χ prescribed and optimistic."
   },
   {
     "title": "M3 · Validated (radii-polynomial) toroidal Grad–Shafranov equilibrium with realistic non-polynomial profiles; Newcomb for all m",
-    "section": "Implementation plan · Planning only — no Lean code written",
+    "section": "Implementation plan · Partially implemented — ℓ¹_ν Banach algebra and radii-polynomial theorem; a validated nonlinear periodic BVP (technique demonstration); no plasma equilibrium validated yet.",
     "url": "implementation-plan.html",
-    "text": "m3 validated (radii-polynomial) toroidal grad–shafranov equilibrium with realistic non-polynomial profiles; newcomb for all m 5. model ladder (each rung proves characteristics under both g1 and g2) planning only — no lean code written"
+    "text": "m3 validated (radii-polynomial) toroidal grad–shafranov equilibrium with realistic non-polynomial profiles; newcomb for all m 5. model ladder (each rung proves characteristics under both g1 and g2) partially implemented — ℓ¹_ν banach algebra and radii-polynomial theorem; a validated nonlinear periodic bvp (technique demonstration); no plasma equilibrium validated yet."
   },
   {
     "title": "M4 · Near-axis quasisymmetric stellarator (Garren–Boozer to 2nd order, explicit ε_QS)",
-    "section": "Implementation plan · Planning only — no Lean code written",
+    "section": "Implementation plan · Partially implemented — guiding-centre reduction bound, Boozer GC model with trapping ∝ 1/ε_QS, gyro-Noether identity and iterated averaging lemma; near-axis QA: passing 3.5 MeV alphas trapped 0.8 ms (≈500× short of slowing-down).",
     "url": "implementation-plan.html",
-    "text": "m4 near-axis quasisymmetric stellarator (garren–boozer to 2nd order, explicit ε_qs) 5. model ladder (each rung proves characteristics under both g1 and g2) planning only — no lean code written"
+    "text": "m4 near-axis quasisymmetric stellarator (garren–boozer to 2nd order, explicit ε_qs) 5. model ladder (each rung proves characteristics under both g1 and g2) partially implemented — guiding-centre reduction bound, boozer gc model with trapping ∝ 1/ε_qs, gyro-noether identity and iterated averaging lemma; near-axis qa: passing 3.5 mev alphas trapped 0.8 ms (≈500× short of slowing-down)."
   },
   {
     "title": "M5 · Coil-produced 3-D field (filament Biot–Savart, existing) plus a DESC-validated finite-β equilibrium",
@@ -1663,9 +1675,9 @@
   },
   {
     "title": "Verified progress",
-    "section": "Phase 2 of the implementation plan: an all-time core-temperature barrier (T ≥ 10 keV on the inner core) for the radial heat equation in an idealized cylinder with alpha heating; the 0-D burn window derived from the IPB98(y,2) scaling law; Newcomb stability of the screw-pinch example for all modes m ≠ 0; ballooning/Mercier certificates; the vacuum curvature obstruction to minimum-B on closed field lines; discrete maximum principle. Idealized geometry, prescribed χ, supplied solutions; no coil-produced stellarator or 3-D all-mode stability.",
+    "section": "Phase 3 of the implementation plan: every 3.5 MeV fusion alpha born in the inner quarter of an exact, realistically scaled Solov'ev equilibrium (5 T, β_axis ≈ 4.6%) is confined for all time (full orbits, any pitch); a core-temperature barrier (T ≥ 10 keV) on the exact helically symmetric equilibrium; a Stellaris-scale ISS04 burn window with the measured-confinement obstruction; a validated nonlinear BVP via the radii polynomial on ℓ¹; guiding-centre and averaging theory; infinite-line ballooning. Idealized symmetric geometries; no coil-produced stellarator or 3-D all-mode stability.",
     "url": "progress.html",
-    "text": "verified progress phase 2 of the implementation plan: an all-time core-temperature barrier (t ≥ 10 kev on the inner core) for the radial heat equation in an idealized cylinder with alpha heating; the 0-d burn window derived from the ipb98(y,2) scaling law; newcomb stability of the screw-pinch example for all modes m ≠ 0; ballooning/mercier certificates; the vacuum curvature obstruction to minimum-b on closed field lines; discrete maximum principle. idealized geometry, prescribed χ, supplied solutions; no coil-produced stellarator or 3-d all-mode stability."
+    "text": "verified progress phase 3 of the implementation plan: every 3.5 mev fusion alpha born in the inner quarter of an exact, realistically scaled solov'ev equilibrium (5 t, β_axis ≈ 4.6%) is confined for all time (full orbits, any pitch); a core-temperature barrier (t ≥ 10 kev) on the exact helically symmetric equilibrium; a stellaris-scale iss04 burn window with the measured-confinement obstruction; a validated nonlinear bvp via the radii polynomial on ℓ¹; guiding-centre and averaging theory; infinite-line ballooning. idealized symmetric geometries; no coil-produced stellarator or 3-d all-mode stability."
   },
   {
     "title": "Outcome",
@@ -1710,9 +1722,9 @@
     "text": "validation verified progress"
   },
   {
-    "title": "Next boundary (Phase 3)",
+    "title": "Next boundary (Phase 4)",
     "section": "Verified progress",
-    "url": "progress.html#next-boundary-phase-3",
-    "text": "next boundary (phase 3) verified progress"
+    "url": "progress.html#next-boundary-phase-4",
+    "text": "next boundary (phase 4) verified progress"
   }
 ]

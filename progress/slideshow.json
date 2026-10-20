@@ -1,32 +1,32 @@
 {
   "updated": "2026-10-20",
-  "report": "2026-10-20-progress-3.md",
+  "report": "2026-10-20-progress-4.md",
   "status": "Exact symmetric equilibria with all-time orbit confinement · Local stability criteria · Not a coil-produced stellarator · Not a construction release.",
   "slides": [
     {
       "id": "where-we-are",
-      "eyebrow": "Progress briefing · Phase 2: a core that stays hot",
-      "title": "A proved core-temperature barrier, all-mode screw-pinch stability, and a min-B obstruction.",
-      "lead": "PlasmaLean is building a Lean library for stellarator design. Phase 2 of the implementation plan proves that, in an idealized cylinder with alpha heating, the core temperature stays at or above 10 keV for all time once it starts above a certified barrier. It also derives the 0-D burn window from the IPB98 scaling law and proves Newcomb stability of a screw pinch for every mode with m ≠ 0.",
+      "eyebrow": "Progress briefing · Phase 3: fusion alphas confined",
+      "title": "3.5 MeV alphas confined for all time; a hot core on stellarator-like geometry.",
+      "lead": "PlasmaLean is building a Lean library for stellarator design. Phase 3 proves that every 3.5 MeV fusion alpha born in the inner core of an exact, realistically scaled equilibrium stays confined for all time, and that the core temperature stays above 10 keV on an exact helically symmetric (straight-stellarator) equilibrium. It also adds validated-numerics machinery and guiding-centre theory.",
       "metrics": [
         {
-          "value": "81",
+          "value": "96",
           "label": "Lean modules"
         },
         {
-          "value": "1160",
+          "value": "1551",
           "label": "theorem/lemma declarations (grep count)"
         },
         {
-          "value": "3491",
+          "value": "4687",
           "label": "Project declarations in the last axiom audit"
         }
       ],
-      "progress": "M1 (0-D burn) is checked under a scaling law; M2 has an all-time core barrier in cylinder geometry; the screw-pinch example is all-mode Newcomb-stable (reduction supplied). P3/P4 remain at idealized symmetric instances.",
-      "boundary": "Cylinder geometry with prescribed χ and supplied solutions; scaling law and reactivity are supplied data; no coil-produced stellarator, no 3-D all-mode stability, no 3.5 MeV alpha confinement.",
+      "progress": "M1 and M2 are checked in idealized geometries; P3 now includes 3.5 MeV alpha confinement in an exact axisymmetric equilibrium; M3 (validated equilibria) and M4 (near-quasisymmetry) have their first theorems.",
+      "boundary": "Symmetric idealized geometries; the alpha result is axisymmetric (tokamak-like); near-quasisymmetric alphas only 0.8 ms; supplied solutions and model laws; no coil-produced stellarator or 3-D all-mode stability.",
       "evidence": [
         {
-          "label": "Phase 2 report",
+          "label": "Phase 3 report",
           "href": "progress.html"
         },
         {
@@ -481,8 +481,56 @@
       ]
     },
     {
+      "id": "alpha-confinement",
+      "eyebrow": "12 · Phase 3: alphas, stellarator geometry, validation",
+      "title": "Every 3.5 MeV alpha born in the core stays in — forever.",
+      "lead": "In an exact equilibrium satisfying J × B = ∇p at 5 T and β ≈ 4.6%, every fusion alpha with energy ≤ 3.5 MeV starting in the inner quarter of the flux, with any pitch, stays inside the plasma for all time under the full Lorentz force. The margin is 1.5%: the same argument fails at 3.7 MeV.",
+      "cards": [
+        {
+          "title": "Alpha confinement",
+          "text": "Noether's canonical momentum plus a rigidity bound (m s/2e ≤ 0.2694 < 0.2734 T·m). An explicit orbit shows the hypotheses can be met. The equilibrium is axisymmetric (tokamak-like).",
+          "status": "Lean verified (full orbits)",
+          "kind": "checked"
+        },
+        {
+          "title": "Hot core, helical geometry",
+          "text": "On the exact helically symmetric equilibrium: T ≥ 10 keV on s ≤ 0.3 for all time, 63–68 MW of heating, axis pressure below the equilibrium's. The transport kernel now allows a degenerate axis (D ≥ 0).",
+          "status": "Lean verified (averages supplied)",
+          "kind": "checked"
+        },
+        {
+          "title": "Stellarator burn needs confinement",
+          "text": "At Stellaris scale under ISS04, T stays in [10, 22] keV if f_ren ∈ [1.55, 1.75]; at measured f_ren ≤ 1.3 the flat-profile model cannot reach 10 keV (proved).",
+          "status": "Lean verified (0-D) + obstruction",
+          "kind": "partial"
+        },
+        {
+          "title": "Validation & near-symmetry",
+          "text": "Radii polynomial on ℓ¹: a nonlinear BVP solved within 10⁻⁴. Near-axis QA: passing alphas trapped 0.8 ms, with an iterated averaging lemma and gyro-Noether identity proved as the route to slowing-down times.",
+          "status": "Lean verified; gap quantified",
+          "kind": "partial"
+        }
+      ],
+      "progress": "15 new modules and a recorded kernel change. Three review passes: pressure consistency of the barrier, a finite-time Boozer orbit structure, a kernel law excluding vacuous regular axes, and non-vacuity witnesses.",
+      "boundary": "The alpha theorem is for an axisymmetric equilibrium; near-quasisymmetric fields reach only 0.8 ms so far. Flux-surface averages, scaling laws, reactivity and solutions are supplied. No coil-produced configuration.",
+      "evidence": [
+        {
+          "label": "New checked results",
+          "href": "progress.html#new-checked-results"
+        },
+        {
+          "label": "Quantitative certificates",
+          "href": "progress.html#quantitative-certificates"
+        },
+        {
+          "label": "Corrections",
+          "href": "progress.html#corrections-and-challenged-claims"
+        }
+      ]
+    },
+    {
       "id": "implementation-plan",
-      "eyebrow": "12 · Plan of record",
+      "eyebrow": "13 · Plan of record",
       "title": "Theory, techniques and a ladder of models — for confinement and for heat.",
       "lead": "Each cycle develops theory, turns theorems into sound certificate checkers, and applies them to the next rung of a model ladder. Every rung must prove properties of both kinds: confinement (G1) and temperature held above burn conditions (G2).",
       "cards": [
@@ -495,7 +543,7 @@
         {
           "title": "Model ladder",
           "text": "M0 exact symmetric equilibria (done) → M1 0-D burning plasma → M2 radial transport on the exact geometries → M3 validated toroidal equilibrium → M4 near-axis quasisymmetry → M5 coil-produced 3-D field → M6 integrated candidate.",
-          "status": "M0, M1 checked; M2 checked in a cylinder",
+          "status": "M0–M2 checked (idealized); M3, M4 started",
           "kind": "next"
         },
         {
@@ -511,7 +559,7 @@
           "kind": "next"
         }
       ],
-      "progress": "Phases 1 and 2 met their acceptance criteria (Phase 2 in an idealized cylinder). Status marks and a progress log in the plan are updated after each phase.",
+      "progress": "Phases 1–3 met their acceptance criteria in idealized models. The plan's status marks and progress log are updated after each phase.",
       "boundary": "Nothing in the plan counts as evidence until a dated report records compiled Lean results.",
       "evidence": [
         {
@@ -526,9 +574,9 @@
     },
     {
       "id": "next-run",
-      "eyebrow": "13 · Keep every step reviewable",
+      "eyebrow": "14 · Keep every step reviewable",
       "title": "The next run must leave evidence, not just a promise.",
-      "lead": "Next (Phase 3): relax the transport kernel at the axis; move the core barrier to the helical equilibrium with a pedestal; a first validated equilibrium via the radii polynomial on ℓ¹_ν; guiding-centre error bounds and a near-axis quasisymmetric field for 3.5 MeV alphas.",
+      "lead": "Next (Phase 4): rigorous iterated averaging for near-quasisymmetric alpha confinement; a validated 1-D Grad–Shafranov equilibrium; transport profiles consistent with MHD equilibria; Mercier/ballooning for the Solov'ev and helical equilibria; coil error fields via the maximum principle.",
       "cards": [
         {
           "title": "Implement & challenge",

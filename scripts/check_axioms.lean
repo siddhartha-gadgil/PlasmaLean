@@ -90,3 +90,8 @@ run_cmd do
 #print axioms PlasmaLean.Design.BurnWindowScaling.m1_scaling_window_loss
 #print axioms PlasmaLean.Design.ScrewPinchModesHighM.stable_all_modes
 #print axioms PlasmaLean.Vacuum.VacuumField.not_closed_fieldLine_transverse_minB
+#print axioms PlasmaLean.Design.SolovevAlpha.reactor_alpha_confined
+#print axioms PlasmaLean.Design.HelicalTransportBarrier.helical_core_barrier
+#print axioms PlasmaLean.Design.BurnWindowStellarator.stellaris_window_loss
+#print axioms PlasmaLean.Design.ValidatedBVP.validated_bvp
+#print axioms PlasmaLean.Design.NearAxisQA.alpha_trapped_reactorQA

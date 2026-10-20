@@ -17,17 +17,22 @@ confinement is certified.
 
 On 20 October an [implementation plan](notes/implementation-plan.md) was fixed. It cycles
 between theory, certificate techniques and a ladder of successively realistic models, targeting
-both confinement and keeping the plasma hot. Two phases are complete:
+both confinement and keeping the plasma hot. Three phases are complete:
 
-- a 0-D D-T plasma stays in [10, 30] keV for all time under the IPB98(y,2) confinement scaling;
-- in an idealized cylinder with alpha heating, every solution of the radial heat equation that
-  starts above a certified barrier keeps a 10 keV core for all time;
-- a screw pinch is Newcomb-stable for every mode with m ≠ 0;
-- the library proves a vacuum curvature obstruction to minimum-B on closed field lines, a
-  maximum principle for coil field errors, and discrete maximum principles.
+- every 3.5 MeV fusion alpha born in the inner core of an exact, realistically scaled
+  equilibrium (5 T, β ≈ 4.6%, axisymmetric) is confined for all time;
+- the core temperature provably stays at or above 10 keV on an exact helically symmetric
+  equilibrium and in a cylinder;
+- 0-D burn windows are derived from the IPB98 and ISS04 scaling laws, including the obstruction
+  that measured stellarator confinement is insufficient in the flat-profile model;
+- a screw pinch is Newcomb-stable for every mode with m ≠ 0, and ballooning certificates are
+  proved on the infinite line;
+- the radii polynomial validates a nonlinear BVP;
+- guiding-centre and averaging theory gives 0.8 ms alpha trapping in a near-axis quasisymmetric
+  model (far short of slowing down, which is the next target).
 
-The library has 81 modules and 3491 audited declarations, using standard axioms only. See the
-[progress slideshow](docs/slides.html) and the [latest report](progress/2026-10-20-progress-3.md).
+The library has 96 modules and 4687 audited declarations, using standard axioms only. See the
+[progress slideshow](docs/slides.html) and the [latest report](progress/2026-10-20-progress-4.md).
 
 ## Code structure
 

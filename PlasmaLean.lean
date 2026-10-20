@@ -86,6 +86,21 @@ public import PlasmaLean.Theory.Transport.ConfinementScaling
 public import PlasmaLean.Design.BurnWindowScaling
 public import PlasmaLean.Theory.Transport.BarrierCheck
 public import PlasmaLean.Design.TransportBarrier
+public import PlasmaLean.Theory.Kinetic.GuidingCentre
+public import PlasmaLean.Theory.Kinetic.BoozerGuidingCentre
+public import PlasmaLean.Design.NearAxisQA
+public import PlasmaLean.Design.SolovevAlpha
+public import PlasmaLean.Theory.Kinetic.GyroNoether
+public import PlasmaLean.Theory.Kinetic.OscillatoryAveraging
+public import PlasmaLean.Design.BurnWindowStellarator
+public import PlasmaLean.Theory.Stability.BallooningInfinite
+public import PlasmaLean.Theory.Stability.SturmNecessity
+public import PlasmaLean.Certificates.WeightedEll1
+public import PlasmaLean.Certificates.RadiiPolynomial
+public import PlasmaLean.Design.ValidatedBVP
+public import PlasmaLean.Theory.Transport.FluxGeometry
+public import PlasmaLean.Design.HelicalFluxGeometry
+public import PlasmaLean.Design.HelicalTransportBarrier
 
 /-!
 # PlasmaLean public library

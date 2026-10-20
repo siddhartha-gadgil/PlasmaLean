@@ -48,11 +48,14 @@ becomes the kernel equation `∂ₜT = (1/V') ∂ψ (V' D ∂ψT) + R(ψ,T)` wit
   `ψ = 1/9` (`r ≈ 0.83 m`) plus a uniform floor. Total auxiliary power
   `(3/2) n (1+r_i) keV · V' · ∫₀¹ q_aux ∈ [69.5, 69.7] MW` (`totalAuxPower_bounds`).
 
-`D(0) = 0`: the axis is degenerate, so the kernel class `TransportLaws` (`D ≥ Dmin > 0`)
-**cannot** hold in this coordinate, and the kernel axis condition `∂ψT(0,t) = 0` is not the
-natural regularity condition. We therefore use the degenerate-axis comparison theory of
-`PlasmaLean.Theory.Transport.BarrierCheck` (`DegenerateAxis`, `AxisFreeSolution`); kernel
-solutions are covered as a special case (`m2_core_barrier_kernel`).
+`D(0) = 0`: the axis is degenerate. Since the kernel change of 2026-10-20 (`D ≥ 0`, axis
+kind `degenerate`, source domain `T > 0`) the cylinder coefficients are a genuine kernel
+instance (`cylCoeffs_transportLaws`), and the kernel solutions are exactly the axis-free
+solutions (`AxisFreeSolution.classical`). `m2_core_barrier_kernel` is proved directly from
+the kernel-level barrier theorem `le_of_isStrictLowerBarrier_margin_forall_time`;
+`m2_core_barrier` is the same statement for axis-free solutions, via the degenerate-axis
+comparison of `PlasmaLean.Theory.Transport.BarrierCheck`. (Before the change, the kernel
+demanded `D ≥ Dmin > 0` and a Neumann axis condition, and the cylinder was not an instance.)
 
 ## Results
 
@@ -62,6 +65,9 @@ solutions are covered as a special case (`m2_core_barrier_kernel`).
   `T(ψ,t) ≥ T_sub(ψ)` for all `ψ ∈ [0,1]`, `t ≥ 0`; and `T_sub ≥ 10 keV` on `ψ ≤ 3/10`
   (`r ≤ 1.37 m`). `T_sub` is an explicit degree-10 rational polynomial with
   `T_sub(0) = 5176/315 ≈ 16.4 keV`, `T_sub(1) = 1 keV`, `T_sub'(0) = 0`.
+  `m2_core_barrier_kernel` is the same statement for kernel solutions
+  (`ClassicalRadialSolution`, degenerate axis), proved from the kernel-level theorem with the
+  instance `cylCoeffs_transportLaws`.
 * Margin: `N[T_sub] ≥ κ = 1/20 keV/s` on `[0,1]` for every `χ ∈ [0, 1/2]`
   (`tsub_margin`), from a 16-piece exact rational certificate (`tsub_pieceCheck`) using the
   Bosch–Hale lower windows at `T_sub ≥ 15, 14, …, 2` keV, the bound `√T ≤ (T+4)/4` on
@@ -235,15 +241,16 @@ theorem totalAuxPower_bounds : (69.5e6 : ℝ) ≤ totalAuxPower ∧ totalAuxPowe
 /-! ### Transport coefficients -/
 
 /-- Flux-surface-averaged coefficients on the cylinder for reactivity `sv` and diffusivity
-`χ`: `V' = 2π²R₀a²`, `V'' = 0`, `D = 4χψ/a²`, `D' = 4χ/a²`, `R = netSource sv`. The floor
-`Dmin = 0` records that `D` vanishes at the axis (so `TransportLaws` does not apply). -/
+`χ`: `V' = 2π²R₀a²`, `V'' = 0`, `D = 4χψ/a²`, `D' = 4χ/a²`, `R = netSource sv` posed for
+`T > 0`, and a `degenerate` axis (`D(0) = 0`, no axis condition). -/
 @[expose] def cylCoeffs (sv : ℝ → ℝ) (χ : ℝ) : RadialCoefficients where
   Vp := fun _ => volumeDeriv
   dVp := fun _ => 0
   D := fun ψ => 4 * χ * ψ / minorRadius ^ 2
   dD := fun _ => 4 * χ / minorRadius ^ 2
   R := netSource sv
-  Dmin := 0
+  Tdom := Ioi 0
+  axis := .degenerate
 
 /-- The supplied coefficient derivatives are genuine: `V'' = 0` and `D' = 4χ/a²`. -/
 theorem cylCoeffs_derivs (sv : ℝ → ℝ) (χ ψ : ℝ) :
@@ -291,6 +298,20 @@ theorem netSource_continuousOn (sv : ℝ → ℝ) [BoschHaleDT sv] :
 
 /-- The source does not depend on `χ`. -/
 theorem cylCoeffs_R (sv : ℝ → ℝ) (χ : ℝ) : (cylCoeffs sv χ).R = (cylCoeffs sv 0).R := rfl
+
+/-- **The cylinder is a kernel instance** (kernel change 2026-10-20): for `χ ≥ 0` the
+coefficients satisfy `TransportLaws` with `D ≥ 0`, `D(0) = 0` at the degenerate axis, and the
+source continuous on `[0,1] × (0,∞)`. -/
+theorem cylCoeffs_transportLaws (sv : ℝ → ℝ) [BoschHaleDT sv] {χ : ℝ} (hχ : 0 ≤ χ) :
+    TransportLaws (cylCoeffs sv χ) where
+  Vp_pos := fun _ _ => volumeDeriv_pos
+  Vp_deriv := fun ψ _ => (cylCoeffs_derivs sv χ ψ).1.hasDerivWithinAt
+  D_deriv := fun ψ _ => (cylCoeffs_derivs sv χ ψ).2.hasDerivWithinAt
+  D_nonneg := cylCoeffs_D_nonneg sv hχ
+  D_axis := fun _ => by simp [cylCoeffs]
+  D_axis_regular := fun h => absurd h (by simp [cylCoeffs])
+  Tdom_open := isOpen_Ioi
+  R_cont := netSource_continuousOn sv
 
 /-! ### Reactivity floors from the Bosch–Hale windows -/
 
@@ -516,15 +537,36 @@ theorem m2_core_barrier (sv : ℝ → ℝ) [BoschHaleDT sv] {χ : ℝ} (hχ0 : 0
   refine ⟨hlow, fun ψ h0' h1' t ht => ?_⟩
   exact (tsub_core h0' h1').trans (hlow ψ ⟨h0', h1'.trans (by norm_num)⟩ t ht)
 
-/-- The same barrier for solutions of the **kernel** law `ClassicalRadialSolution` (which
-additionally imposes `∂ψT(0,t) = 0`). -/
+/-- **M2 as a kernel theorem.** The same barrier for solutions of the kernel law
+`ClassicalRadialSolution` (since the 2026-10-20 kernel change the cylinder has a `degenerate`
+axis, so no axis condition is imposed). Proved directly from the kernel-level theorem
+`le_of_isStrictLowerBarrier_margin_forall_time` and the instance `cylCoeffs_transportLaws`. -/
 theorem m2_core_barrier_kernel (sv : ℝ → ℝ) [BoschHaleDT sv] {χ : ℝ} (hχ0 : 0 ≤ χ)
     (hχ : χ ≤ chiMax) {Tedge : ℝ → ℝ} {u : RadialField}
     (hu : ∀ τ, 0 ≤ τ → ClassicalRadialSolution (cylCoeffs sv χ) Tedge τ u)
     (h0 : ∀ ψ ∈ Icc (0 : ℝ) 1, Tsub ψ ≤ u.T ψ 0) (hedge : ∀ t, 0 ≤ t → 1 ≤ Tedge t) :
     (∀ ψ ∈ Icc (0 : ℝ) 1, ∀ t, 0 ≤ t → Tsub ψ ≤ u.T ψ t) ∧
+      ∀ ψ, 0 ≤ ψ → ψ ≤ 3 / 10 → ∀ t, 0 ≤ t → 10 ≤ u.T ψ t := by
+  have hL := cylCoeffs_transportLaws sv hχ0
+  have hlow : ∀ ψ ∈ Icc (0 : ℝ) 1, ∀ t, 0 ≤ t → Tsub ψ ≤ u.T ψ t :=
+    le_of_isStrictLowerBarrier_margin_forall_time
+      (fun τ hτ => { hL, hu τ hτ with }) tsub_regular
+      (fun h => absurd h (by simp [cylCoeffs]))
+      (fun ψ hψ => show 0 < Tsub ψ by linarith [(tsub_bounds hψ).1]) (by norm_num)
+      (tsub_margin sv hχ) h0 (fun t ht => by rw [tsub_values.2.2.1]; exact hedge t ht)
+  refine ⟨hlow, fun ψ h0' h1' t ht => ?_⟩
+  exact (tsub_core h0' h1').trans (hlow ψ ⟨h0', h1'.trans (by norm_num)⟩ t ht)
+
+/-- The kernel and axis-free formulations of M2 agree: for the cylinder, axis-free solutions
+are kernel solutions (`AxisFreeSolution.classical`), so `m2_core_barrier` also follows from the
+kernel theorem. -/
+theorem m2_core_barrier_of_kernel (sv : ℝ → ℝ) [BoschHaleDT sv] {χ : ℝ} (hχ0 : 0 ≤ χ)
+    (hχ : χ ≤ chiMax) {Tedge : ℝ → ℝ} {u : RadialField}
+    (hu : ∀ τ, 0 ≤ τ → AxisFreeSolution (cylCoeffs sv χ) Tedge τ u)
+    (h0 : ∀ ψ ∈ Icc (0 : ℝ) 1, Tsub ψ ≤ u.T ψ 0) (hedge : ∀ t, 0 ≤ t → 1 ≤ Tedge t) :
+    (∀ ψ ∈ Icc (0 : ℝ) 1, ∀ t, 0 ≤ t → Tsub ψ ≤ u.T ψ t) ∧
       ∀ ψ, 0 ≤ ψ → ψ ≤ 3 / 10 → ∀ t, 0 ≤ t → 10 ≤ u.T ψ t :=
-  m2_core_barrier sv hχ0 hχ (fun τ hτ => (hu τ hτ).axisFree) h0 hedge
+  m2_core_barrier_kernel sv hχ0 hχ (fun τ hτ => (hu τ hτ).classical rfl) h0 hedge
 
 /-! ### A crude but honest upper barrier and the exhaust power -/
 
