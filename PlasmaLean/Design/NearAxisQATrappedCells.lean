@@ -7,6 +7,7 @@ module
 
 public import PlasmaLean.Certificates.ValidatedQuadrature
 public import Mathlib.Analysis.SpecialFunctions.Trigonometric.Bounds
+public meta import Lean
 
 /-!
 # Cell certificates for the precession of trapped alphas in exact QA
@@ -39,9 +40,16 @@ fixed-point interval arithmetic (`ValidatedQuadrature.FIv`, kernel-evaluated) en
 **Soundness.** `box_sound`: if `boxOk P T = true` then every `(ψ₀, B_t)` in the box carries real
 leg bounds (`LegBounds`) with these sums. The physics link (orbit point ↦ reduced variables) is
 `OrbitRel`, with `BsR_eq` and `cR_eq` proving that the explicit formulas are the orbit's `B` and
-`cos θ`. The window coverage (`9 × 16` boxes `PB j × TB l` covering `ψ₀ ∈ [4.75, 5.875]`,
-`B_t ∈ [5.4, 5.5]`) is `precession_cert_of_boxes`; the kernel checks of the 144 boxes are in
-`NearAxisQATrappedCellsRows1`–`3`.
+`cos θ`. Two window coverages of `ψ₀ ∈ [4.75, 5.875]`, `B_t ∈ [5.4, 5.5]` are provided:
+
+* `precession_cert_of_boxes`: the uniform `9 × 16` grid `PB j × TB l` (conditional on all 144
+  box checks; kept as a reference statement);
+* `BoxCover.sound` / `precession_cert_of_cover`: an **adaptive** binary subdivision of the window
+  on a dyadic index grid (`PBI`, `TBI`, `boxOkI`). The subdivision plan is found by an untrusted
+  search and turned into a proof term by the `meta` tactic `box_cover`; only `24` leaf boxes are
+  needed (the grid is only tight near the corner `ψ₀ = 4.75`, `B_t = 5.4`). The kernel checks of
+  the leaves are in `NearAxisQATrappedCellsRows1`–`3`, the assembled cover in
+  `NearAxisQATrappedResonance`.
 
 Certificate data: none besides the box grid; all bounds are recomputed by the kernel. An
 untrusted Python mirror of the checker was used only to choose `δ`, the grid and the targets.
@@ -783,6 +791,124 @@ theorem precession_cert_of_boxes (hboxes : ∀ j < 9, ∀ l < 16, boxOk (PB j) (
     · push_cast; linarith [hBl.1]
     · push_cast; linarith [hBl.2]
 
+/-! ## Adaptive box cover
+
+The window is subdivided on the dyadic index grid `a, b ∈ [0, 128]` (flux
+`ψ₀ = (4864 + 9a)/1024`) and `c, d ∈ [0, 128]` (tip field `B_t = (6912 + c)/1280`). A
+`BoxCover a b c d` is a binary subdivision of the index box `[a, b] × [c, d]` (split points are
+arbitrary) whose leaves pass `boxOkI`. -/
+
+/-- Flux box `ψ₀ ∈ [(4864 + 9a)/1024, (4864 + 9b)/1024]` on the dyadic index grid
+(`a = 0`, `b = 128` give the window `[4.75, 5.875]`). -/
+@[expose] def PBI (a b : ℕ) : FIv := hull (4864 + 9 * a) 1024 (4864 + 9 * b) 1024
+
+/-- Tip-field box `B_t ∈ [(6912 + c)/1280, (6912 + d)/1280]` on the dyadic index grid
+(`c = 0`, `d = 128` give the window `[5.4, 5.5]`). -/
+@[expose] def TBI (c d : ℕ) : FIv := hull (6912 + c) 1280 (6912 + d) 1280
+
+/-- The box check on the index box `[a, b] × [c, d]`. -/
+@[expose] def boxOkI (a b c d : ℕ) : Bool := boxOk (PBI a b) (TBI c d)
+
+/-- **The precession bounds at `(ψ₀, B_t)`**: leg bounds for both legs with
+`2 (1/40) Σ M_f + (6/5)(M_b^in + M_b^out) ≤ ι₀ · 13/5` and `ι₀ · 7/10 ≤ (6/5)(m_b^in + m_b^out)`
+(the conclusion of `box_sound`). -/
+@[expose] def PrecessionBounds (ψ₀ Bt : ℝ) : Prop :=
+  ∃ (Mfi Mfo : ℕ → ℝ) (Mbi mbi Mbo mbo : ℝ),
+    LegBounds true ψ₀ Bt Mfi Mbi mbi ∧ LegBounds false ψ₀ Bt Mfo Mbo mbo ∧
+    2 * (1 / 40) * (∑ i ∈ Finset.range 100, Mfi i + ∑ i ∈ Finset.range 100, Mfo i) +
+      6 / 5 * (Mbi + Mbo) ≤ 211 / 500 * (13 / 5) ∧
+    211 / 500 * (7 / 10) ≤ 6 / 5 * (mbi + mbo)
+
+/-- Soundness of one index box: `boxOkI a b c d = true` gives the precession bounds on the box. -/
+theorem boxOkI_sound {a b c d : ℕ} (h : boxOkI a b c d = true) {ψ₀ Bt : ℝ}
+    (hψ : ψ₀ ∈ Icc ((4864 + 9 * (a : ℝ)) / 1024) ((4864 + 9 * (b : ℝ)) / 1024))
+    (hB : Bt ∈ Icc ((6912 + (c : ℝ)) / 1280) ((6912 + (d : ℝ)) / 1280)) :
+    PrecessionBounds ψ₀ Bt :=
+  box_sound h (mem_hull (by norm_num) (by norm_num) (by push_cast; exact hψ.1)
+      (by push_cast; exact hψ.2))
+    (mem_hull (by norm_num) (by norm_num) (by push_cast; exact hB.1) (by push_cast; exact hB.2))
+
+/-- **Adaptive cover certificate**: every leaf of a binary subdivision of the index box
+`[a, b] × [c, d]` passes `boxOkI`. Proof terms are built by the `box_cover` tactic. -/
+inductive BoxCover : ℕ → ℕ → ℕ → ℕ → Prop where
+  /-- A leaf box that passes the check. -/
+  | leaf (a b c d : ℕ) : boxOkI a b c d = true → BoxCover a b c d
+  /-- Split the flux range at `m`. -/
+  | splitP (a m b c d : ℕ) : BoxCover a m c d → BoxCover m b c d → BoxCover a b c d
+  /-- Split the tip-field range at `m`. -/
+  | splitT (a b c m d : ℕ) : BoxCover a b c m → BoxCover a b m d → BoxCover a b c d
+
+/-- **Soundness of the adaptive cover**: every `(ψ₀, B_t)` in the covered box carries the
+precession bounds. -/
+theorem BoxCover.sound {a b c d : ℕ} (h : BoxCover a b c d) {ψ₀ Bt : ℝ}
+    (hψ : ψ₀ ∈ Icc ((4864 + 9 * (a : ℝ)) / 1024) ((4864 + 9 * (b : ℝ)) / 1024))
+    (hB : Bt ∈ Icc ((6912 + (c : ℝ)) / 1280) ((6912 + (d : ℝ)) / 1280)) :
+    PrecessionBounds ψ₀ Bt := by
+  induction h with
+  | leaf a b c d hok => exact boxOkI_sound hok hψ hB
+  | splitP a m b c d _ _ ih1 ih2 =>
+    rcases le_total ψ₀ ((4864 + 9 * (m : ℝ)) / 1024) with h | h
+    · exact ih1 ⟨hψ.1, h⟩ hB
+    · exact ih2 ⟨h, hψ.2⟩ hB
+  | splitT a b c m d _ _ ih1 ih2 =>
+    rcases le_total Bt ((6912 + (m : ℝ)) / 1280) with h | h
+    · exact ih1 hψ ⟨hB.1, h⟩
+    · exact ih2 hψ ⟨h, hB.2⟩
+
+/-- **Precession certificate from an adaptive cover of the window.** -/
+theorem precession_cert_of_cover (hcov : BoxCover 0 128 0 128) {ψ₀ Bt : ℝ}
+    (hψ : ψ₀ ∈ Icc (19 / 4 : ℝ) (47 / 8)) (hB : Bt ∈ Icc (27 / 5 : ℝ) (11 / 2)) :
+    PrecessionBounds ψ₀ Bt :=
+  hcov.sound (by norm_num at hψ ⊢; exact hψ) (by norm_num at hB ⊢; exact hB)
+
+open Lean Meta Elab Tactic in
+/-- Proof builder for `BoxCover` from a plan (`meta`, outside the trusted kernel): `X` / `Y` split
+the flux / tip-field index range at its midpoint, `L` is a leaf. A leaf `[a, b] × [c, d]` uses the
+theorem `boxLeaf_a_b_c_d` of this namespace if it exists, and otherwise becomes a goal
+`boxOkI a b c d = true`. Returns the proof term, the unused plan suffix and the leaf goals. -/
+meta partial def mkBoxCover (plan : List Char) (a b c d : ℕ) :
+    MetaM (Expr × List Char × List MVarId) := do
+  match plan with
+  | 'L' :: rest =>
+    let nm := Name.mkStr `PlasmaLean.Design.NearAxisQATrappedCells s!"boxLeaf_{a}_{b}_{c}_{d}"
+    let (pf, gs) ← if (← getEnv).contains nm then pure (Lean.mkConst nm, [])
+      else
+        let ty ← mkEq (mkAppN (Lean.mkConst ``boxOkI) #[toExpr a, toExpr b, toExpr c, toExpr d])
+          (Lean.mkConst ``Bool.true)
+        let mv ← mkFreshExprMVar ty
+        pure (mv, [mv.mvarId!])
+    return (mkAppN (Lean.mkConst ``BoxCover.leaf) #[toExpr a, toExpr b, toExpr c, toExpr d, pf],
+      rest, gs)
+  | 'X' :: rest =>
+    let m := (a + b) / 2
+    let (p1, r1, g1) ← mkBoxCover rest a m c d
+    let (p2, r2, g2) ← mkBoxCover r1 m b c d
+    return (mkAppN (Lean.mkConst ``BoxCover.splitP)
+      #[toExpr a, toExpr m, toExpr b, toExpr c, toExpr d, p1, p2], r2, g1 ++ g2)
+  | 'Y' :: rest =>
+    let m := (c + d) / 2
+    let (p1, r1, g1) ← mkBoxCover rest a b c m
+    let (p2, r2, g2) ← mkBoxCover r1 a b m d
+    return (mkAppN (Lean.mkConst ``BoxCover.splitT)
+      #[toExpr a, toExpr b, toExpr c, toExpr m, toExpr d, p1, p2], r2, g1 ++ g2)
+  | _ => throwError "box_cover: malformed plan"
+
+open Lean Meta Elab Tactic in
+/-- `box_cover "plan"` proves a goal `BoxCover a b c d` (literal indices) from a subdivision plan
+(see `mkBoxCover`), leaving one goal `boxOkI … = true` per leaf without a `boxLeaf_…` theorem. -/
+elab "box_cover" s:str : tactic => do
+  let g ← getMainGoal
+  let ty ← instantiateMVars (← g.getType)
+  let_expr BoxCover a b c d := ty | throwError "box_cover: expected a BoxCover goal"
+  let ev (e : Expr) : MetaM ℕ := do
+    let some n := (← whnfR e).nat? <|> e.nat? | throwError "box_cover: non-literal index {e}"
+    return n
+  let plan := s.getString.toList.filter (!·.isWhitespace)
+  let (pf, rest, gs) ← mkBoxCover plan (← ev a) (← ev b) (← ev c) (← ev d)
+  unless rest.isEmpty do throwError "box_cover: unused plan suffix"
+  g.assign (← mkExpectedTypeHint pf ty)
+  replaceMainGoal gs
+
 /-! ## Sanity checks -/
 
 /-- Sanity (degenerate case): at a turning point (`x = 0`) the orbit field is the tip field. -/
@@ -793,6 +919,10 @@ theorem BsR_zero (Bt : ℝ) : BsR 0 Bt = Bt := by
 for every poloidal angle. -/
 theorem Bred_axis (c : ℝ) : Bred 0 c = 57 / 10 := by
   unfold Bred; simp
+
+/-- Sanity (special case): the full index boxes are exactly the window enclosures. -/
+theorem PBI_TBI_window : PBI 0 128 = hull 19 4 47 8 ∧ TBI 0 128 = hull 27 5 11 2 :=
+  ⟨rfl, rfl⟩
 
 set_option maxRecDepth 100000 in
 /-- Sanity (accepted fixture): a flank cell near the tip of the first box is alive and valid. -/

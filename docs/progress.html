@@ -31,7 +31,7 @@
 <h2 id="corrections-and-challenged-claims">Corrections and challenged claims</h2>
 <ul>
 <li>Every cited declaration was grep-checked against the code.</li>
-<li><strong>Build hygiene:</strong> the ballooning certificate was rewritten as an explicit proof-term cover (≈ 3× faster, all surfaces). The trapped-alpha cell checks (144 separate <code>decide +kernel</code> calls, ≈ 6 min) still need the same treatment.</li>
+<li><strong>Build hygiene:</strong> the ballooning certificate was rewritten as an explicit proof-term cover (≈ 3× faster, all surfaces). The trapped-alpha cell checks (originally 144 separate <code>decide +kernel</code> calls) were afterwards rewritten as a 24-box proof-term cover (<code>BoxCover</code>), cutting that build from ≈ 127 s to ≈ 46 s with unchanged statements.</li>
 <li>The declaration count rose sharply (2982 → 5641 <code>theorem</code>/<code>lemma</code>) mainly because certificate cells are separate lemmas. This reflects certificate size, not 2.6k new mathematical theorems.</li>
 </ul>
 <h2 id="earlier-results-retained">Earlier results retained</h2>

@@ -8,208 +8,50 @@ module
 public import PlasmaLean.Design.NearAxisQATrappedCells
 
 /-!
-# Kernel checks of the precession cell certificate, flux rows 6–8
+# Kernel checks of the precession cell certificate, leaves 17–24
 
-Part 3 of 3 of the kernel-evaluated certificate of `Design/NearAxisQATrappedCells`: the boxes
-`(PB j, TB l)` for `j ∈ {6, 7, 8}` (flux `ψ₀ ∈ [(38 + j)/8, (39 + j)/8]`) and
-`l < 16` (tip field `B_t ∈ [(864 + l)/160, (865 + l)/160]`), each with 100 `x`-cells per leg.
-Every box is checked by `decide +kernel` on the Boolean checker `boxOk` (standard axioms only;
-one declaration per box keeps the kernel cache small). The rows are split over three files so
-that they build in parallel.
+Part 3 of 3 of the kernel-evaluated certificate of `Design/NearAxisQATrappedCells`: leaves
+17–24 (in plan order) of the adaptive cover `BoxCover 0 128 0 128` of the start window
+(assembled by `box_cover` in `Design/NearAxisQATrappedResonance`). Leaf `boxLeaf_a_b_c_d` is the
+index box `[a, b] × [c, d]`, i.e. `ψ₀ ∈ [(4864 + 9a)/1024, (4864 + 9b)/1024]` and
+`B_t ∈ [(6912 + c)/1280, (6912 + d)/1280]`, each with 100 `x`-cells per leg. Every leaf is checked
+by `decide +kernel` on the Boolean checker `boxOkI` (standard axioms only; one declaration per
+leaf keeps the kernel cache small). The leaves are split over three files so that they build in
+parallel.
 -/
 public section
 namespace PlasmaLean.Design.NearAxisQATrappedCells
 
 set_option maxRecDepth 100000 in
-/-- Box `(6, 0)` passes. -/
-theorem box_6_0 : boxOk (PB 6) (TB 0) = true := by decide +kernel
+/-- Leaf box `[32, 64] × [96, 128]` (ψ₀ ∈ [161/32, 85/16], B_t ∈ [219/40, 11/2]) passes. -/
+theorem boxLeaf_32_64_96_128 : boxOkI 32 64 96 128 = true := by decide +kernel
 
 set_option maxRecDepth 100000 in
-/-- Box `(6, 1)` passes. -/
-theorem box_6_1 : boxOk (PB 6) (TB 1) = true := by decide +kernel
+/-- Leaf box `[64, 96] × [0, 32]` (ψ₀ ∈ [85/16, 179/32], B_t ∈ [27/5, 217/40]) passes. -/
+theorem boxLeaf_64_96_0_32 : boxOkI 64 96 0 32 = true := by decide +kernel
 
 set_option maxRecDepth 100000 in
-/-- Box `(6, 2)` passes. -/
-theorem box_6_2 : boxOk (PB 6) (TB 2) = true := by decide +kernel
+/-- Leaf box `[64, 96] × [32, 64]` (ψ₀ ∈ [85/16, 179/32], B_t ∈ [217/40, 109/20]) passes. -/
+theorem boxLeaf_64_96_32_64 : boxOkI 64 96 32 64 = true := by decide +kernel
 
 set_option maxRecDepth 100000 in
-/-- Box `(6, 3)` passes. -/
-theorem box_6_3 : boxOk (PB 6) (TB 3) = true := by decide +kernel
+/-- Leaf box `[96, 128] × [0, 32]` (ψ₀ ∈ [179/32, 47/8], B_t ∈ [27/5, 217/40]) passes. -/
+theorem boxLeaf_96_128_0_32 : boxOkI 96 128 0 32 = true := by decide +kernel
 
 set_option maxRecDepth 100000 in
-/-- Box `(6, 4)` passes. -/
-theorem box_6_4 : boxOk (PB 6) (TB 4) = true := by decide +kernel
+/-- Leaf box `[96, 128] × [32, 64]` (ψ₀ ∈ [179/32, 47/8], B_t ∈ [217/40, 109/20]) passes. -/
+theorem boxLeaf_96_128_32_64 : boxOkI 96 128 32 64 = true := by decide +kernel
 
 set_option maxRecDepth 100000 in
-/-- Box `(6, 5)` passes. -/
-theorem box_6_5 : boxOk (PB 6) (TB 5) = true := by decide +kernel
+/-- Leaf box `[64, 128] × [64, 96]` (ψ₀ ∈ [85/16, 47/8], B_t ∈ [109/20, 219/40]) passes. -/
+theorem boxLeaf_64_128_64_96 : boxOkI 64 128 64 96 = true := by decide +kernel
 
 set_option maxRecDepth 100000 in
-/-- Box `(6, 6)` passes. -/
-theorem box_6_6 : boxOk (PB 6) (TB 6) = true := by decide +kernel
+/-- Leaf box `[64, 96] × [96, 128]` (ψ₀ ∈ [85/16, 179/32], B_t ∈ [219/40, 11/2]) passes. -/
+theorem boxLeaf_64_96_96_128 : boxOkI 64 96 96 128 = true := by decide +kernel
 
 set_option maxRecDepth 100000 in
-/-- Box `(6, 7)` passes. -/
-theorem box_6_7 : boxOk (PB 6) (TB 7) = true := by decide +kernel
-
-set_option maxRecDepth 100000 in
-/-- Box `(6, 8)` passes. -/
-theorem box_6_8 : boxOk (PB 6) (TB 8) = true := by decide +kernel
-
-set_option maxRecDepth 100000 in
-/-- Box `(6, 9)` passes. -/
-theorem box_6_9 : boxOk (PB 6) (TB 9) = true := by decide +kernel
-
-set_option maxRecDepth 100000 in
-/-- Box `(6, 10)` passes. -/
-theorem box_6_10 : boxOk (PB 6) (TB 10) = true := by decide +kernel
-
-set_option maxRecDepth 100000 in
-/-- Box `(6, 11)` passes. -/
-theorem box_6_11 : boxOk (PB 6) (TB 11) = true := by decide +kernel
-
-set_option maxRecDepth 100000 in
-/-- Box `(6, 12)` passes. -/
-theorem box_6_12 : boxOk (PB 6) (TB 12) = true := by decide +kernel
-
-set_option maxRecDepth 100000 in
-/-- Box `(6, 13)` passes. -/
-theorem box_6_13 : boxOk (PB 6) (TB 13) = true := by decide +kernel
-
-set_option maxRecDepth 100000 in
-/-- Box `(6, 14)` passes. -/
-theorem box_6_14 : boxOk (PB 6) (TB 14) = true := by decide +kernel
-
-set_option maxRecDepth 100000 in
-/-- Box `(6, 15)` passes. -/
-theorem box_6_15 : boxOk (PB 6) (TB 15) = true := by decide +kernel
-
-set_option maxRecDepth 100000 in
-/-- Box `(7, 0)` passes. -/
-theorem box_7_0 : boxOk (PB 7) (TB 0) = true := by decide +kernel
-
-set_option maxRecDepth 100000 in
-/-- Box `(7, 1)` passes. -/
-theorem box_7_1 : boxOk (PB 7) (TB 1) = true := by decide +kernel
-
-set_option maxRecDepth 100000 in
-/-- Box `(7, 2)` passes. -/
-theorem box_7_2 : boxOk (PB 7) (TB 2) = true := by decide +kernel
-
-set_option maxRecDepth 100000 in
-/-- Box `(7, 3)` passes. -/
-theorem box_7_3 : boxOk (PB 7) (TB 3) = true := by decide +kernel
-
-set_option maxRecDepth 100000 in
-/-- Box `(7, 4)` passes. -/
-theorem box_7_4 : boxOk (PB 7) (TB 4) = true := by decide +kernel
-
-set_option maxRecDepth 100000 in
-/-- Box `(7, 5)` passes. -/
-theorem box_7_5 : boxOk (PB 7) (TB 5) = true := by decide +kernel
-
-set_option maxRecDepth 100000 in
-/-- Box `(7, 6)` passes. -/
-theorem box_7_6 : boxOk (PB 7) (TB 6) = true := by decide +kernel
-
-set_option maxRecDepth 100000 in
-/-- Box `(7, 7)` passes. -/
-theorem box_7_7 : boxOk (PB 7) (TB 7) = true := by decide +kernel
-
-set_option maxRecDepth 100000 in
-/-- Box `(7, 8)` passes. -/
-theorem box_7_8 : boxOk (PB 7) (TB 8) = true := by decide +kernel
-
-set_option maxRecDepth 100000 in
-/-- Box `(7, 9)` passes. -/
-theorem box_7_9 : boxOk (PB 7) (TB 9) = true := by decide +kernel
-
-set_option maxRecDepth 100000 in
-/-- Box `(7, 10)` passes. -/
-theorem box_7_10 : boxOk (PB 7) (TB 10) = true := by decide +kernel
-
-set_option maxRecDepth 100000 in
-/-- Box `(7, 11)` passes. -/
-theorem box_7_11 : boxOk (PB 7) (TB 11) = true := by decide +kernel
-
-set_option maxRecDepth 100000 in
-/-- Box `(7, 12)` passes. -/
-theorem box_7_12 : boxOk (PB 7) (TB 12) = true := by decide +kernel
-
-set_option maxRecDepth 100000 in
-/-- Box `(7, 13)` passes. -/
-theorem box_7_13 : boxOk (PB 7) (TB 13) = true := by decide +kernel
-
-set_option maxRecDepth 100000 in
-/-- Box `(7, 14)` passes. -/
-theorem box_7_14 : boxOk (PB 7) (TB 14) = true := by decide +kernel
-
-set_option maxRecDepth 100000 in
-/-- Box `(7, 15)` passes. -/
-theorem box_7_15 : boxOk (PB 7) (TB 15) = true := by decide +kernel
-
-set_option maxRecDepth 100000 in
-/-- Box `(8, 0)` passes. -/
-theorem box_8_0 : boxOk (PB 8) (TB 0) = true := by decide +kernel
-
-set_option maxRecDepth 100000 in
-/-- Box `(8, 1)` passes. -/
-theorem box_8_1 : boxOk (PB 8) (TB 1) = true := by decide +kernel
-
-set_option maxRecDepth 100000 in
-/-- Box `(8, 2)` passes. -/
-theorem box_8_2 : boxOk (PB 8) (TB 2) = true := by decide +kernel
-
-set_option maxRecDepth 100000 in
-/-- Box `(8, 3)` passes. -/
-theorem box_8_3 : boxOk (PB 8) (TB 3) = true := by decide +kernel
-
-set_option maxRecDepth 100000 in
-/-- Box `(8, 4)` passes. -/
-theorem box_8_4 : boxOk (PB 8) (TB 4) = true := by decide +kernel
-
-set_option maxRecDepth 100000 in
-/-- Box `(8, 5)` passes. -/
-theorem box_8_5 : boxOk (PB 8) (TB 5) = true := by decide +kernel
-
-set_option maxRecDepth 100000 in
-/-- Box `(8, 6)` passes. -/
-theorem box_8_6 : boxOk (PB 8) (TB 6) = true := by decide +kernel
-
-set_option maxRecDepth 100000 in
-/-- Box `(8, 7)` passes. -/
-theorem box_8_7 : boxOk (PB 8) (TB 7) = true := by decide +kernel
-
-set_option maxRecDepth 100000 in
-/-- Box `(8, 8)` passes. -/
-theorem box_8_8 : boxOk (PB 8) (TB 8) = true := by decide +kernel
-
-set_option maxRecDepth 100000 in
-/-- Box `(8, 9)` passes. -/
-theorem box_8_9 : boxOk (PB 8) (TB 9) = true := by decide +kernel
-
-set_option maxRecDepth 100000 in
-/-- Box `(8, 10)` passes. -/
-theorem box_8_10 : boxOk (PB 8) (TB 10) = true := by decide +kernel
-
-set_option maxRecDepth 100000 in
-/-- Box `(8, 11)` passes. -/
-theorem box_8_11 : boxOk (PB 8) (TB 11) = true := by decide +kernel
-
-set_option maxRecDepth 100000 in
-/-- Box `(8, 12)` passes. -/
-theorem box_8_12 : boxOk (PB 8) (TB 12) = true := by decide +kernel
-
-set_option maxRecDepth 100000 in
-/-- Box `(8, 13)` passes. -/
-theorem box_8_13 : boxOk (PB 8) (TB 13) = true := by decide +kernel
-
-set_option maxRecDepth 100000 in
-/-- Box `(8, 14)` passes. -/
-theorem box_8_14 : boxOk (PB 8) (TB 14) = true := by decide +kernel
-
-set_option maxRecDepth 100000 in
-/-- Box `(8, 15)` passes. -/
-theorem box_8_15 : boxOk (PB 8) (TB 15) = true := by decide +kernel
+/-- Leaf box `[96, 128] × [96, 128]` (ψ₀ ∈ [179/32, 47/8], B_t ∈ [219/40, 11/2]) passes. -/
+theorem boxLeaf_96_128_96_128 : boxOkI 96 128 96 128 = true := by decide +kernel
 
 end PlasmaLean.Design.NearAxisQATrappedCells

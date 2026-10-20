@@ -43,8 +43,9 @@ bounds of `NearAxisQATrappedCells` (`flank_bound`) integrate by `integral_le_cel
 on a bottom crossing `θ` is monotone and `Ω = (Ω/|θ̇|) |θ̇|` (`bottom_bound`, via the identity
 `bottom_alg`) integrates by `integral_le_mul_drop`. The closing of the bounce (`bounce_closes`)
 uses first zeros of `ρ` (`first_zero_after`), momentum conservation and the single-well
-structure of `B` (`Bred_strictAnti`). The 144 parameter boxes are checked by the kernel
-(`all_boxes`).
+structure of `B` (`Bred_strictAnti`). The parameter window is covered by an adaptive binary
+subdivision into 24 boxes (`window_cover`, built by the `box_cover` tactic; leaf kernel checks
+in `NearAxisQATrappedCellsRows1`–`3`).
 
 Not proved here: the near-QA remainder (Grönwall comparison and phase shear) — see
 `NearAxisQATrappedPeriodic` for the reference periodicity and the conditional composition.
@@ -1070,18 +1071,19 @@ end Setup
 
 /-! ## Certified precession per bounce -/
 
-/-- **Certified precession per bounce, given the box certificate.** For an orbit in the setting
-`Setup` with `T ≥ 2 · 8 × 10⁻⁴ s`, the bounce closes at a time `P ≤ 1.6 ms` (after a lower turning
-point at `P₁`), the reduced state returns, and `φ(P) − φ(0) ∈ [0.7, 2.6]`. -/
-theorem exactQA_bounce_precession_of_boxes
-    (hboxes : ∀ j < 9, ∀ l < 16, boxOk (PB j) (TB l) = true)
+/-- **Certified precession per bounce, given the precession bounds on the window.** For an orbit
+in the setting `Setup` with `T ≥ 2 · 8 × 10⁻⁴ s`, the bounce closes at a time `P ≤ 1.6 ms` (after
+a lower turning point at `P₁`), the reduced state returns, and `φ(P) − φ(0) ∈ [0.7, 2.6]`. -/
+theorem exactQA_bounce_precession_of_cert
+    (hcert : ∀ ψ₀ Bt : ℝ, ψ₀ ∈ Icc (19 / 4 : ℝ) (47 / 8) → Bt ∈ Icc (27 / 5 : ℝ) (11 / 2) →
+      PrecessionBounds ψ₀ Bt)
     {μ T : ℝ} {ψ θ φ ρ : ℝ → ℝ} (S : Setup μ T ψ θ φ ρ) (hT : 2 * Lhalf ≤ T) :
     ∃ P₁ P : ℝ, 0 < P₁ ∧ P₁ < P ∧ P ≤ 2 * Lhalf ∧ ρ P₁ = 0 ∧ ρ P = 0 ∧
       (∀ t ∈ Ioo 0 P₁, ρ t < 0) ∧ (∀ t ∈ Ioo P₁ P, 0 < ρ t) ∧
       ψ P = ψ 0 ∧ θ P = θ 0 ∧ φ P - φ 0 ∈ Icc (7 / 10 : ℝ) (13 / 5) := by
   have hψ0 : ψ 0 ∈ Icc (19 / 4 : ℝ) (47 / 8) := ⟨by linarith [S.psi0.1], by linarith [S.psi0.2]⟩
   obtain ⟨Mfi, Mfo, Mbi, mbi, Mbo, mbo, ci, co, hup, hlow⟩ :=
-    precession_cert_of_boxes hboxes hψ0 S.Bt_mem
+    hcert _ _ hψ0 S.Bt_mem
   obtain ⟨z₁, z₂, hz₁, hz₁₂, hz₂, hρz₁, hρz₂, hneg, hpos, hθ0, hθz₁, hθz₂, hψz₂, hθz₂'⟩ :=
     S.bounce_closes ci hT
   have hz₂T : z₂ ≤ T := hz₂.trans hT
@@ -1106,6 +1108,16 @@ theorem exactQA_bounce_precession_of_boxes
   · nlinarith [Pin.1, Pout.1]
   · nlinarith [Pin.2, Pout.2]
 
+/-- **Certified precession per bounce, given the uniform `9 × 16` box certificate** (reference
+form; see `exactQA_bounce_precession_of_cert`). -/
+theorem exactQA_bounce_precession_of_boxes
+    (hboxes : ∀ j < 9, ∀ l < 16, boxOk (PB j) (TB l) = true)
+    {μ T : ℝ} {ψ θ φ ρ : ℝ → ℝ} (S : Setup μ T ψ θ φ ρ) (hT : 2 * Lhalf ≤ T) :
+    ∃ P₁ P : ℝ, 0 < P₁ ∧ P₁ < P ∧ P ≤ 2 * Lhalf ∧ ρ P₁ = 0 ∧ ρ P = 0 ∧
+      (∀ t ∈ Ioo 0 P₁, ρ t < 0) ∧ (∀ t ∈ Ioo P₁ P, 0 < ρ t) ∧
+      ψ P = ψ 0 ∧ θ P = θ 0 ∧ φ P - φ 0 ∈ Icc (7 / 10 : ℝ) (13 / 5) :=
+  exactQA_bounce_precession_of_cert (fun _ _ h1 h2 => precession_cert_of_boxes hboxes h1 h2) S hT
+
 /-- **Uniform non-resonance, given the box certificate**: `|sin Δφ_b| ≥ 1/2`. -/
 theorem abs_sin_ge_half_of_mem {x : ℝ} (hx : x ∈ Icc (7 / 10 : ℝ) (13 / 5)) :
     1 / 2 ≤ |sin x| := by
@@ -1115,28 +1127,18 @@ theorem abs_sin_ge_half_of_mem {x : ℝ} (hx : x ∈ Icc (7 / 10 : ℝ) (13 / 5)
 
 /-! ## The unconditional statements -/
 
-/-- All `9 × 16` boxes of the precession certificate pass (kernel checks in
-`NearAxisQATrappedCellsRows1`–`3`). -/
-theorem all_boxes : ∀ j < 9, ∀ l < 16, boxOk (PB j) (TB l) = true := by
-  intro j hj l hl
-  interval_cases j <;> interval_cases l
-  exacts [
-    box_0_0, box_0_1, box_0_2, box_0_3, box_0_4, box_0_5, box_0_6, box_0_7, box_0_8, box_0_9,
-    box_0_10, box_0_11, box_0_12, box_0_13, box_0_14, box_0_15, box_1_0, box_1_1, box_1_2,
-    box_1_3, box_1_4, box_1_5, box_1_6, box_1_7, box_1_8, box_1_9, box_1_10, box_1_11,
-    box_1_12, box_1_13, box_1_14, box_1_15, box_2_0, box_2_1, box_2_2, box_2_3, box_2_4,
-    box_2_5, box_2_6, box_2_7, box_2_8, box_2_9, box_2_10, box_2_11, box_2_12, box_2_13,
-    box_2_14, box_2_15, box_3_0, box_3_1, box_3_2, box_3_3, box_3_4, box_3_5, box_3_6,
-    box_3_7, box_3_8, box_3_9, box_3_10, box_3_11, box_3_12, box_3_13, box_3_14, box_3_15,
-    box_4_0, box_4_1, box_4_2, box_4_3, box_4_4, box_4_5, box_4_6, box_4_7, box_4_8, box_4_9,
-    box_4_10, box_4_11, box_4_12, box_4_13, box_4_14, box_4_15, box_5_0, box_5_1, box_5_2,
-    box_5_3, box_5_4, box_5_5, box_5_6, box_5_7, box_5_8, box_5_9, box_5_10, box_5_11,
-    box_5_12, box_5_13, box_5_14, box_5_15, box_6_0, box_6_1, box_6_2, box_6_3, box_6_4,
-    box_6_5, box_6_6, box_6_7, box_6_8, box_6_9, box_6_10, box_6_11, box_6_12, box_6_13,
-    box_6_14, box_6_15, box_7_0, box_7_1, box_7_2, box_7_3, box_7_4, box_7_5, box_7_6,
-    box_7_7, box_7_8, box_7_9, box_7_10, box_7_11, box_7_12, box_7_13, box_7_14, box_7_15,
-    box_8_0, box_8_1, box_8_2, box_8_3, box_8_4, box_8_5, box_8_6, box_8_7, box_8_8, box_8_9,
-    box_8_10, box_8_11, box_8_12, box_8_13, box_8_14, box_8_15]
+/-- **The adaptive cover of the start window**: `[4.75, 5.875] × [5.4, 5.5]` (index box
+`[0, 128] × [0, 128]`) is covered by 24 boxes that pass the kernel check (plan found by an untrusted
+search; leaf checks `boxLeaf_…` in `NearAxisQATrappedCellsRows1`–`3`). -/
+theorem window_cover : BoxCover 0 128 0 128 := by
+  box_cover "XXYYXYXLLLYLLYXLLLXYLLYLLYYYLLLYLLYXYLLYLLYLXLL"
+
+/-- **The precession certificate on the start window**: every `ψ₀ ∈ [4.75, 5.875]`,
+`B_t ∈ [5.4, 5.5]` carries leg bounds for both legs with
+`2 (1/40) Σ M_f + (6/5)(M_b^in + M_b^out) ≤ ι₀ · 13/5` and `ι₀ · 7/10 ≤ (6/5)(m_b^in + m_b^out)`. -/
+theorem precession_cert {ψ₀ Bt : ℝ} (hψ : ψ₀ ∈ Icc (19 / 4 : ℝ) (47 / 8))
+    (hB : Bt ∈ Icc (27 / 5 : ℝ) (11 / 2)) : PrecessionBounds ψ₀ Bt :=
+  precession_cert_of_cover window_cover hψ hB
 
 /-- **Certified precession per bounce (trapped 3.5 MeV alphas, exact QA, start window).** For an
 orbit in the setting `Setup` (tip field `E/μ ∈ [5.4, 5.5] T`, start at an upper turning point with
@@ -1149,7 +1151,7 @@ theorem exactQA_bounce_precession {μ T : ℝ} {ψ θ φ ρ : ℝ → ℝ} (S : 
     ∃ P₁ P : ℝ, 0 < P₁ ∧ P₁ < P ∧ P ≤ 2 * Lhalf ∧ ρ P₁ = 0 ∧ ρ P = 0 ∧
       (∀ t ∈ Ioo 0 P₁, ρ t < 0) ∧ (∀ t ∈ Ioo P₁ P, 0 < ρ t) ∧
       ψ P = ψ 0 ∧ θ P = θ 0 ∧ φ P - φ 0 ∈ Icc (7 / 10 : ℝ) (13 / 5) :=
-  exactQA_bounce_precession_of_boxes all_boxes S hT
+  exactQA_bounce_precession_of_cert (fun _ _ => precession_cert) S hT
 
 /-- **Uniform non-resonance on the exact-QA start window**: the bounce of every such orbit has
 `|sin Δφ_b| ≥ 1/2`, where `Δφ_b = φ(P) − φ(0)` is the toroidal precession per bounce. -/
