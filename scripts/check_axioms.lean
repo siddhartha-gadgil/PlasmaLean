@@ -95,3 +95,6 @@ run_cmd do
 #print axioms PlasmaLean.Design.BurnWindowStellarator.stellaris_window_loss
 #print axioms PlasmaLean.Design.ValidatedBVP.validated_bvp
 #print axioms PlasmaLean.Design.NearAxisQA.alpha_trapped_reactorQA
+#print axioms PlasmaLean.Design.NearAxisQAAveraged.alpha_trapped_reactorQA_averaged
+#print axioms PlasmaLean.Design.ValidatedSlab.validated_slab_equilibrium
+#print axioms PlasmaLean.Design.SolovevMercier.reactor_q_ge

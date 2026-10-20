@@ -1,15 +1,15 @@
 [
   {
     "title": "Progress slideshow",
-    "section": "Evidence updated 2026-10-20 · Phase 3 of the implementation plan: every 3.5 MeV fusion alpha born in the inner quarter of an exact, realistically scaled Solov'ev equilibrium (5 T, β_axis ≈ 4.6%) is confined for all time (full orbits, any pitch); a core-temperature barrier (T ≥ 10 keV) on the exact helically symmetric equilibrium; a Stellaris-scale ISS04 burn window with the measured-confinement obstruction; a validated nonlinear BVP via the radii polynomial on ℓ¹; guiding-centre and averaging theory; infinite-line ballooning. Idealized symmetric geometries; no coil-produced stellarator or 3-D all-mode stability.",
+    "section": "Evidence updated 2026-10-20 · Phase 4 of the implementation plan: passing 3.5 MeV alphas confined for 0.11 s in a reactor-scale near-axis quasisymmetric field (Boozer guiding-centre model, rigorous 3-fold averaging; 137× the previous bound); the first validated plasma equilibrium with an exponential profile (slab Grad–Shafranov, classical C², kernel force balance); the helical equilibrium shown Mercier-unstable and the Solov'ev safety factor proved ≥ 2.02; volume coil-error certificates from boundary samples. Earlier: 3.5 MeV alphas confined for all time in an exact Solov'ev equilibrium; core-temperature barriers; burn windows. No coil-produced stellarator or 3-D all-mode stability.",
     "url": "slides.html",
     "text": "progress slideshow presentation latest run evidence vacuum fixture"
   },
   {
-    "title": "3.5 MeV alphas confined for all time; a hot core on stellarator-like geometry.",
+    "title": "Alphas held 0.11 s in a near-quasisymmetric field; a validated plasma equilibrium.",
     "section": "Progress slideshow",
     "url": "slides.html#where-we-are",
-    "text": "3.5 mev alphas confined for all time; a hot core on stellarator-like geometry. plasmalean is building a lean library for stellarator design. phase 3 proves that every 3.5 mev fusion alpha born in the inner core of an exact, realistically scaled equilibrium stays confined for all time, and that the core temperature stays above 10 kev on an exact helically symmetric (straight-stellarator) equilibrium. it also adds validated-numerics machinery and guiding-centre theory. m1 and m2 are checked in idealized geometries; p3 now includes 3.5 mev alpha confinement in an exact axisymmetric equilibrium; m3 (validated equilibria) and m4 (near-quasisymmetry) have their first theorems."
+    "text": "alphas held 0.11 s in a near-quasisymmetric field; a validated plasma equilibrium. plasmalean is building a lean library for stellarator design. phase 4 proves that passing 3.5 mev alphas stay confined for 0.11 s in a reactor-scale near-quasisymmetric field — 137× the previous bound and within ≈ 4× of the slowing-down time — and validates the first plasma equilibrium with a non-polynomial profile. it also finds that the helical test equilibrium is mhd (mercier) unstable. p3: alphas confined for all time (axisymmetric) and for 0.11 s (near-qa, guiding-centre model). m3: first validated plasma equilibrium (slab). m1/m2 checked in idealized geometries."
   },
   {
     "title": "Small assumptions. Reusable proofs. One candidate.",
@@ -84,16 +84,22 @@
     "text": "every 3.5 mev alpha born in the core stays in — forever. in an exact equilibrium satisfying j × b = ∇p at 5 t and β ≈ 4.6%, every fusion alpha with energy ≤ 3.5 mev starting in the inner quarter of the flux, with any pitch, stays inside the plasma for all time under the full lorentz force. the margin is 1.5%: the same argument fails at 3.7 mev. 15 new modules and a recorded kernel change. three review passes: pressure consistency of the barrier, a finite-time boozer orbit structure, a kernel law excluding vacuous regular axes, and non-vacuity witnesses."
   },
   {
+    "title": "From 0.8 ms to 0.11 s — and a plasma equilibrium validated to 10⁻¹¹.",
+    "section": "Progress slideshow",
+    "url": "slides.html#near-qa-validation",
+    "text": "from 0.8 ms to 0.11 s — and a plasma equilibrium validated to 10⁻¹¹. iterating an oscillatory averaging lemma three times, with exact lie-derivative amplitudes and certified enclosures, extends passing-alpha confinement in a reactor-scale near-axis quasisymmetric field from 0.8 ms to 0.11 s. a slab grad–shafranov equilibrium with an exponential pressure profile is validated by the radii polynomial and proved to satisfy the kernel force balance. 12 new modules. reviews found an oracle factor-of-2 error (corrected; conclusion unchanged) and no soundness defects in the averaged-trapping theorem; its ≈ 6 min build is scheduled for a proof-term rewrite."
+  },
+  {
     "title": "Theory, techniques and a ladder of models — for confinement and for heat.",
     "section": "Progress slideshow",
     "url": "slides.html#implementation-plan",
-    "text": "theory, techniques and a ladder of models — for confinement and for heat. each cycle develops theory, turns theorems into sound certificate checkers, and applies them to the next rung of a model ladder. every rung must prove properties of both kinds: confinement (g1) and temperature held above burn conditions (g2). phases 1–3 met their acceptance criteria in idealized models. the plan's status marks and progress log are updated after each phase."
+    "text": "theory, techniques and a ladder of models — for confinement and for heat. each cycle develops theory, turns theorems into sound certificate checkers, and applies them to the next rung of a model ladder. every rung must prove properties of both kinds: confinement (g1) and temperature held above burn conditions (g2). phases 1–4 met their acceptance criteria in idealized models. the plan's status marks and progress log are updated after each phase."
   },
   {
     "title": "The next run must leave evidence, not just a promise.",
     "section": "Progress slideshow",
     "url": "slides.html#next-run",
-    "text": "the next run must leave evidence, not just a promise. next (phase 4): rigorous iterated averaging for near-quasisymmetric alpha confinement; a validated 1-d grad–shafranov equilibrium; transport profiles consistent with mhd equilibria; mercier/ballooning for the solov'ev and helical equilibria; coil error fields via the maximum principle. the linked run records checked declarations, assumptions and validation. this slideshow is a summary of that evidence, not a new design certificate."
+    "text": "the next run must leave evidence, not just a promise. next (phase 5): one consistent plasma — a solov'ev equilibrium with alpha confinement and a two-sided transport barrier whose pressure stays below the equilibrium's (needs a t-dependent diffusivity); certified solov'ev mercier index; faster certificates; near-qa alphas toward slowing-down time; 2-d validated equilibria. the linked run records checked declarations, assumptions and validation. this slideshow is a summary of that evidence, not a new design certificate."
   },
   {
     "title": "Stellarator concepts",
@@ -559,9 +565,9 @@
   },
   {
     "title": "S6 · Source-specific local stability criteria",
-    "section": "MHD stability · Partially implemented — sharp Hardy inequality, Suydam sufficiency (coercive margin) and necessity (explicit unstable modes near resonance) for the localized form; screw-pinch Suydam criterion with a realistic certified profile. δW reduction is sourced, not formalized; Mercier pending.",
+    "section": "MHD stability · Partially implemented — Hardy/Suydam both ways; cylindrical Mercier ⇔ Suydam; general Mercier index (supplied) reduces to Suydam; helical equilibrium Mercier-unstable (a = 0 proved, a = 1/4 numerical); Solov'ev q ≥ 2.02 proved, exact Mercier positive numerically only.",
     "url": "mhd-stability.html",
-    "text": "s6 source-specific local stability criteria theorem backlog partially implemented — sharp hardy inequality, suydam sufficiency (coercive margin) and necessity (explicit unstable modes near resonance) for the localized form; screw-pinch suydam criterion with a realistic certified profile. δw reduction is sourced, not formalized; mercier pending."
+    "text": "s6 source-specific local stability criteria theorem backlog partially implemented — hardy/suydam both ways; cylindrical mercier ⇔ suydam; general mercier index (supplied) reduces to suydam; helical equilibrium mercier-unstable (a = 0 proved, a = 1/4 numerical); solov'ev q ≥ 2.02 proved, exact mercier positive numerically only."
   },
   {
     "title": "S7 · All-mode certified bound for a restricted useful configuration",
@@ -655,9 +661,9 @@
   },
   {
     "title": "K3 · Approximate-invariant finite-time confinement",
-    "section": "Particles & transport · Partially implemented — all-time full-orbit trapping by IVT; 3.5 MeV alphas confined for all time in a realistically scaled exact Solov'ev equilibrium (any pitch, inner quarter of flux); symmetry-defect finite-time confinement; guiding-centre reduction and averaging lemmas; near-QA alphas only 0.8 ms.",
+    "section": "Particles & transport · Partially implemented — 3.5 MeV alphas confined for all time in a realistically scaled exact Solov'ev equilibrium; near-QA passing alphas 0.11 s (rigorous averaging, Boozer GC model); guiding-centre reduction and averaging lemmas.",
     "url": "particles-and-transport.html",
-    "text": "k3 approximate-invariant finite-time confinement theorem backlog partially implemented — all-time full-orbit trapping by ivt; 3.5 mev alphas confined for all time in a realistically scaled exact solov'ev equilibrium (any pitch, inner quarter of flux); symmetry-defect finite-time confinement; guiding-centre reduction and averaging lemmas; near-qa alphas only 0.8 ms."
+    "text": "k3 approximate-invariant finite-time confinement theorem backlog partially implemented — 3.5 mev alphas confined for all time in a realistically scaled exact solov'ev equilibrium; near-qa passing alphas 0.11 s (rigorous averaging, boozer gc model); guiding-centre reduction and averaging lemmas."
   },
   {
     "title": "K4 · Omnigeneity/action relation in a specified class",
@@ -1524,6 +1530,12 @@
     "text": "phase 3 (cycle 3), 20 october 2026 — report implementation plan"
   },
   {
+    "title": "Phase 4 (Cycle 4), 20 October 2026 — report",
+    "section": "Implementation plan",
+    "url": "implementation-plan.html#phase-4-cycle-4-20-october-2026-report",
+    "text": "phase 4 (cycle 4), 20 october 2026 — report implementation plan"
+  },
+  {
     "title": "M0 · Exact symmetric equilibria: slab, screw pinch, Solov'ev, helical",
     "section": "Implementation plan · Lean verified — exact slab, screw-pinch, Solov'ev and helical equilibria with kernel force balance, all-time field-line/orbit confinement, Suydam both ways and screw-pinch Newcomb for 1 ≤ |m| ≤ 6 (idealized symmetric models).",
     "url": "implementation-plan.html",
@@ -1543,15 +1555,15 @@
   },
   {
     "title": "M3 · Validated (radii-polynomial) toroidal Grad–Shafranov equilibrium with realistic non-polynomial profiles; Newcomb for all m",
-    "section": "Implementation plan · Partially implemented — ℓ¹_ν Banach algebra and radii-polynomial theorem; a validated nonlinear periodic BVP (technique demonstration); no plasma equilibrium validated yet.",
+    "section": "Implementation plan · Partially implemented — ℓ¹ Banach algebra with exp, radii polynomial, Fourier regularity; a validated slab Grad–Shafranov equilibrium with exponential pressure profile (classical C², kernel ForceBalance, positive pressure); toroidal (2-D) validation pending.",
     "url": "implementation-plan.html",
-    "text": "m3 validated (radii-polynomial) toroidal grad–shafranov equilibrium with realistic non-polynomial profiles; newcomb for all m 5. model ladder (each rung proves characteristics under both g1 and g2) partially implemented — ℓ¹_ν banach algebra and radii-polynomial theorem; a validated nonlinear periodic bvp (technique demonstration); no plasma equilibrium validated yet."
+    "text": "m3 validated (radii-polynomial) toroidal grad–shafranov equilibrium with realistic non-polynomial profiles; newcomb for all m 5. model ladder (each rung proves characteristics under both g1 and g2) partially implemented — ℓ¹ banach algebra with exp, radii polynomial, fourier regularity; a validated slab grad–shafranov equilibrium with exponential pressure profile (classical c², kernel forcebalance, positive pressure); toroidal (2-d) validation pending."
   },
   {
     "title": "M4 · Near-axis quasisymmetric stellarator (Garren–Boozer to 2nd order, explicit ε_QS)",
-    "section": "Implementation plan · Partially implemented — guiding-centre reduction bound, Boozer GC model with trapping ∝ 1/ε_QS, gyro-Noether identity and iterated averaging lemma; near-axis QA: passing 3.5 MeV alphas trapped 0.8 ms (≈500× short of slowing-down).",
+    "section": "Implementation plan · Partially implemented — Boozer GC model and rigorous 3-fold averaging: passing 3.5 MeV alphas (|v∥/v| ≥ 0.9) in reactor-scale near-axis QA stay inside for 0.11 s (≈4× short of slowing-down); trapped particles pending; near-axis model accurate only to expansion order.",
     "url": "implementation-plan.html",
-    "text": "m4 near-axis quasisymmetric stellarator (garren–boozer to 2nd order, explicit ε_qs) 5. model ladder (each rung proves characteristics under both g1 and g2) partially implemented — guiding-centre reduction bound, boozer gc model with trapping ∝ 1/ε_qs, gyro-noether identity and iterated averaging lemma; near-axis qa: passing 3.5 mev alphas trapped 0.8 ms (≈500× short of slowing-down)."
+    "text": "m4 near-axis quasisymmetric stellarator (garren–boozer to 2nd order, explicit ε_qs) 5. model ladder (each rung proves characteristics under both g1 and g2) partially implemented — boozer gc model and rigorous 3-fold averaging: passing 3.5 mev alphas (|v∥/v| ≥ 0.9) in reactor-scale near-axis qa stay inside for 0.11 s (≈4× short of slowing-down); trapped particles pending; near-axis model accurate only to expansion order."
   },
   {
     "title": "M5 · Coil-produced 3-D field (filament Biot–Savart, existing) plus a DESC-validated finite-β equilibrium",
@@ -1675,9 +1687,9 @@
   },
   {
     "title": "Verified progress",
-    "section": "Phase 3 of the implementation plan: every 3.5 MeV fusion alpha born in the inner quarter of an exact, realistically scaled Solov'ev equilibrium (5 T, β_axis ≈ 4.6%) is confined for all time (full orbits, any pitch); a core-temperature barrier (T ≥ 10 keV) on the exact helically symmetric equilibrium; a Stellaris-scale ISS04 burn window with the measured-confinement obstruction; a validated nonlinear BVP via the radii polynomial on ℓ¹; guiding-centre and averaging theory; infinite-line ballooning. Idealized symmetric geometries; no coil-produced stellarator or 3-D all-mode stability.",
+    "section": "Phase 4 of the implementation plan: passing 3.5 MeV alphas confined for 0.11 s in a reactor-scale near-axis quasisymmetric field (Boozer guiding-centre model, rigorous 3-fold averaging; 137× the previous bound); the first validated plasma equilibrium with an exponential profile (slab Grad–Shafranov, classical C², kernel force balance); the helical equilibrium shown Mercier-unstable and the Solov'ev safety factor proved ≥ 2.02; volume coil-error certificates from boundary samples. Earlier: 3.5 MeV alphas confined for all time in an exact Solov'ev equilibrium; core-temperature barriers; burn windows. No coil-produced stellarator or 3-D all-mode stability.",
     "url": "progress.html",
-    "text": "verified progress phase 3 of the implementation plan: every 3.5 mev fusion alpha born in the inner quarter of an exact, realistically scaled solov'ev equilibrium (5 t, β_axis ≈ 4.6%) is confined for all time (full orbits, any pitch); a core-temperature barrier (t ≥ 10 kev) on the exact helically symmetric equilibrium; a stellaris-scale iss04 burn window with the measured-confinement obstruction; a validated nonlinear bvp via the radii polynomial on ℓ¹; guiding-centre and averaging theory; infinite-line ballooning. idealized symmetric geometries; no coil-produced stellarator or 3-d all-mode stability."
+    "text": "verified progress phase 4 of the implementation plan: passing 3.5 mev alphas confined for 0.11 s in a reactor-scale near-axis quasisymmetric field (boozer guiding-centre model, rigorous 3-fold averaging; 137× the previous bound); the first validated plasma equilibrium with an exponential profile (slab grad–shafranov, classical c², kernel force balance); the helical equilibrium shown mercier-unstable and the solov'ev safety factor proved ≥ 2.02; volume coil-error certificates from boundary samples. earlier: 3.5 mev alphas confined for all time in an exact solov'ev equilibrium; core-temperature barriers; burn windows. no coil-produced stellarator or 3-d all-mode stability."
   },
   {
     "title": "Outcome",
@@ -1722,9 +1734,9 @@
     "text": "validation verified progress"
   },
   {
-    "title": "Next boundary (Phase 4)",
+    "title": "Next boundary (Phase 5)",
     "section": "Verified progress",
-    "url": "progress.html#next-boundary-phase-4",
-    "text": "next boundary (phase 4) verified progress"
+    "url": "progress.html#next-boundary-phase-5",
+    "text": "next boundary (phase 5) verified progress"
   }
 ]

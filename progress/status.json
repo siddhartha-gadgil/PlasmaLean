@@ -1,7 +1,7 @@
 {
   "updated": "2026-10-20",
-  "report": "2026-10-20-progress-4.md",
-  "summary": "Phase 3 of the implementation plan: every 3.5 MeV fusion alpha born in the inner quarter of an exact, realistically scaled Solov'ev equilibrium (5 T, β_axis ≈ 4.6%) is confined for all time (full orbits, any pitch); a core-temperature barrier (T ≥ 10 keV) on the exact helically symmetric equilibrium; a Stellaris-scale ISS04 burn window with the measured-confinement obstruction; a validated nonlinear BVP via the radii polynomial on ℓ¹; guiding-centre and averaging theory; infinite-line ballooning. Idealized symmetric geometries; no coil-produced stellarator or 3-D all-mode stability.",
+  "report": "2026-10-20-progress-5.md",
+  "summary": "Phase 4 of the implementation plan: passing 3.5 MeV alphas confined for 0.11 s in a reactor-scale near-axis quasisymmetric field (Boozer guiding-centre model, rigorous 3-fold averaging; 137× the previous bound); the first validated plasma equilibrium with an exponential profile (slab Grad–Shafranov, classical C², kernel force balance); the helical equilibrium shown Mercier-unstable and the Solov'ev safety factor proved ≥ 2.02; volume coil-error certificates from boundary samples. Earlier: 3.5 MeV alphas confined for all time in an exact Solov'ev equilibrium; core-temperature barriers; burn windows. No coil-produced stellarator or 3-D all-mode stability.",
   "tasks": {
     "model-contracts:I1": "Partially implemented — algebraic force balance and tangency; positive permeability and actual differential laws in the restricted slab model.",
     "model-contracts:I2": "Lean verified — uniform-field and nonzero-current force-free witnesses in the Cartesian slab model; not toroidal confinement.",
@@ -14,7 +14,7 @@
     "mhd-stability:S1": "Partially implemented — abstract energy conservation and norm bounds conditional on a differentiable solution; same-space variant only.",
     "mhd-stability:S3": "Partially implemented — scalar two-channel Young drive inequality; integral MHD identity and geometric coercivity remain pending.",
     "mhd-stability:S4": "Partially implemented — exact neutral-drift counterexample; the MHD quotient and admissible-space characterization remain pending.",
-    "particles-and-transport:K3": "Partially implemented — all-time full-orbit trapping by IVT; 3.5 MeV alphas confined for all time in a realistically scaled exact Solov'ev equilibrium (any pitch, inner quarter of flux); symmetry-defect finite-time confinement; guiding-centre reduction and averaging lemmas; near-QA alphas only 0.8 ms.",
+    "particles-and-transport:K3": "Partially implemented — 3.5 MeV alphas confined for all time in a realistically scaled exact Solov'ev equilibrium; near-QA passing alphas 0.11 s (rigorous averaging, Boozer GC model); guiding-centre reduction and averaging lemmas.",
     "verified-numerics:N1": "Partially implemented — exact mantissa/scale decoding, interval containment, addition, negation, and nonnegative products; no text parser yet.",
     "verified-numerics:N2": "Partially implemented — continuous Lipschitz-cover clearance; Fourier and tail estimates remain pending.",
     "verified-numerics:N3": "Partially implemented — exact two-block checker plus a polynomial interval checker (kernel decide) proving Riccati/Jacobi certificates; matrix factorization pending.",
@@ -43,7 +43,7 @@
     "plasma-models-and-equilibrium:E3": "Partially implemented — an exact Solov'ev solution is verified directly against J×B=∇p (Δ*ψ=3R² checked by hand only); general Grad–Shafranov equivalence pending. A helical (JFKO-type) exact equilibrium is also verified.",
     "geometry-and-fields:G2": "Partially implemented — divergence/curl operators with sanity lemmas; Clebsch fields ∇ψ×∇χ are divergence-free for C² potentials; reciprocal-basis identities pending.",
     "geometry-and-fields:G9": "Partially implemented — exact first-integral barriers confine field lines for all time in analytic Clebsch-torus, Solov'ev and helical fields; no KAM/a posteriori torus for a perturbed or coil-produced field yet.",
-    "mhd-stability:S6": "Partially implemented — sharp Hardy inequality, Suydam sufficiency (coercive margin) and necessity (explicit unstable modes near resonance) for the localized form; screw-pinch Suydam criterion with a realistic certified profile. δW reduction is sourced, not formalized; Mercier pending.",
+    "mhd-stability:S6": "Partially implemented — Hardy/Suydam both ways; cylindrical Mercier ⇔ Suydam; general Mercier index (supplied) reduces to Suydam; helical equilibrium Mercier-unstable (a = 0 proved, a = 1/4 numerical); Solov'ev q ≥ 2.02 proved, exact Mercier positive numerically only.",
     "mhd-stability:S7": "Partially implemented — Newcomb/Picone certificates; the screw-pinch example is Newcomb-δW-stable for every integer (m,n) with m ≠ 0 (scaling in m² plus an analytic Picone function; reduction supplied, wall at edge); Barta ballooning certificate; no 3-D all-mode certificate.",
     "particles-and-transport:K1": "Lean verified — Newton–Lorentz energy and speed conservation, exact uniform-field gyration, Larmor-radius formula and realistic exact bounds.",
     "particles-and-transport:K2": "Partially implemented — Noether conservation of canonical momentum for any Killing symmetry (rotation, translation, helix) for full orbits; reduced Hamiltonian theory pending.",
@@ -53,7 +53,7 @@
     "implementation-plan:M0": "Lean verified — exact slab, screw-pinch, Solov'ev and helical equilibria with kernel force balance, all-time field-line/orbit confinement, Suydam both ways and screw-pinch Newcomb for 1 ≤ |m| ≤ 6 (idealized symmetric models).",
     "implementation-plan:M1": "Lean verified — 0-D D-T burn with fuel dilution: T ∈ [10,30] keV for all t ≥ 0 under IPB98(y,2) (ITER-like, P_aux ∈ [50,70] MW, H ∈ [1.25,2]); nominal H ≤ 1 proved insufficient in this flat-profile model; ignition point in (12,13) keV, unstable; Bosch–Hale class non-vacuous.",
     "implementation-plan:M2": "Lean verified (idealized geometries) — all-time core barrier T ≥ 10 keV: cylinder (ψ ≤ 0.3) and exact helical equilibrium (s ≤ 0.3, r ≤ 1.09 m, axis pressure ≤ equilibrium), as direct instances of the relaxed transport kernel; flux-surface average identities for the helical geometry are supplied; χ prescribed and optimistic.",
-    "implementation-plan:M3": "Partially implemented — ℓ¹_ν Banach algebra and radii-polynomial theorem; a validated nonlinear periodic BVP (technique demonstration); no plasma equilibrium validated yet.",
-    "implementation-plan:M4": "Partially implemented — guiding-centre reduction bound, Boozer GC model with trapping ∝ 1/ε_QS, gyro-Noether identity and iterated averaging lemma; near-axis QA: passing 3.5 MeV alphas trapped 0.8 ms (≈500× short of slowing-down)."
+    "implementation-plan:M3": "Partially implemented — ℓ¹ Banach algebra with exp, radii polynomial, Fourier regularity; a validated slab Grad–Shafranov equilibrium with exponential pressure profile (classical C², kernel ForceBalance, positive pressure); toroidal (2-D) validation pending.",
+    "implementation-plan:M4": "Partially implemented — Boozer GC model and rigorous 3-fold averaging: passing 3.5 MeV alphas (|v∥/v| ≥ 0.9) in reactor-scale near-axis QA stay inside for 0.11 s (≈4× short of slowing-down); trapped particles pending; near-axis model accurate only to expansion order."
   }
 }

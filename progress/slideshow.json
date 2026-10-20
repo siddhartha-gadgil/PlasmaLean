@@ -1,32 +1,32 @@
 {
   "updated": "2026-10-20",
-  "report": "2026-10-20-progress-4.md",
+  "report": "2026-10-20-progress-5.md",
   "status": "Exact symmetric equilibria with all-time orbit confinement · Local stability criteria · Not a coil-produced stellarator · Not a construction release.",
   "slides": [
     {
       "id": "where-we-are",
-      "eyebrow": "Progress briefing · Phase 3: fusion alphas confined",
-      "title": "3.5 MeV alphas confined for all time; a hot core on stellarator-like geometry.",
-      "lead": "PlasmaLean is building a Lean library for stellarator design. Phase 3 proves that every 3.5 MeV fusion alpha born in the inner core of an exact, realistically scaled equilibrium stays confined for all time, and that the core temperature stays above 10 keV on an exact helically symmetric (straight-stellarator) equilibrium. It also adds validated-numerics machinery and guiding-centre theory.",
+      "eyebrow": "Progress briefing · Phase 4: near-quasisymmetry and validation",
+      "title": "Alphas held 0.11 s in a near-quasisymmetric field; a validated plasma equilibrium.",
+      "lead": "PlasmaLean is building a Lean library for stellarator design. Phase 4 proves that passing 3.5 MeV alphas stay confined for 0.11 s in a reactor-scale near-quasisymmetric field — 137× the previous bound and within ≈ 4× of the slowing-down time — and validates the first plasma equilibrium with a non-polynomial profile. It also finds that the helical test equilibrium is MHD (Mercier) unstable.",
       "metrics": [
         {
-          "value": "96",
+          "value": "108",
           "label": "Lean modules"
         },
         {
-          "value": "1551",
+          "value": "1905",
           "label": "theorem/lemma declarations (grep count)"
         },
         {
-          "value": "4687",
+          "value": "5942",
           "label": "Project declarations in the last axiom audit"
         }
       ],
-      "progress": "M1 and M2 are checked in idealized geometries; P3 now includes 3.5 MeV alpha confinement in an exact axisymmetric equilibrium; M3 (validated equilibria) and M4 (near-quasisymmetry) have their first theorems.",
-      "boundary": "Symmetric idealized geometries; the alpha result is axisymmetric (tokamak-like); near-quasisymmetric alphas only 0.8 ms; supplied solutions and model laws; no coil-produced stellarator or 3-D all-mode stability.",
+      "progress": "P3: alphas confined for all time (axisymmetric) and for 0.11 s (near-QA, guiding-centre model). M3: first validated plasma equilibrium (slab). M1/M2 checked in idealized geometries.",
+      "boundary": "Near-QA alphas rely on a supplied guiding-centre model and a near-axis field accurate to expansion order; the validated equilibrium is 1-D; the helical barrier geometry is Mercier-unstable; no coil-produced stellarator or 3-D all-mode stability.",
       "evidence": [
         {
-          "label": "Phase 3 report",
+          "label": "Phase 4 report",
           "href": "progress.html"
         },
         {
@@ -494,7 +494,7 @@
         },
         {
           "title": "Hot core, helical geometry",
-          "text": "On the exact helically symmetric equilibrium: T ≥ 10 keV on s ≤ 0.3 for all time, 63–68 MW of heating, axis pressure below the equilibrium's. The transport kernel now allows a degenerate axis (D ≥ 0).",
+          "text": "On the exact helically symmetric equilibrium: T ≥ 10 keV on s ≤ 0.3 for all time, 63–68 MW of heating, axis pressure below the equilibrium's. The transport kernel now allows a degenerate axis (D ≥ 0). Phase 4 found this helical equilibrium Mercier-unstable, so the geometry is not MHD-stable.",
           "status": "Lean verified (averages supplied)",
           "kind": "checked"
         },
@@ -529,8 +529,56 @@
       ]
     },
     {
+      "id": "near-qa-validation",
+      "eyebrow": "13 · Phase 4: near-quasisymmetry, validation, stability",
+      "title": "From 0.8 ms to 0.11 s — and a plasma equilibrium validated to 10⁻¹¹.",
+      "lead": "Iterating an oscillatory averaging lemma three times, with exact Lie-derivative amplitudes and certified enclosures, extends passing-alpha confinement in a reactor-scale near-axis quasisymmetric field from 0.8 ms to 0.11 s. A slab Grad–Shafranov equilibrium with an exponential pressure profile is validated by the radii polynomial and proved to satisfy the kernel force balance.",
+      "cards": [
+        {
+          "title": "Near-QA alphas: 0.11 s",
+          "text": "Passing 3.5 MeV alphas (|v∥/v| ≥ 0.9) at a = 1.7 m, 5.7 T stay inside for 0.11 s; the same gap fails at 0.12 s. Slowing down takes ≈ 0.4 s, so a ≈ 4× gap remains.",
+          "status": "Lean verified (GC model)",
+          "kind": "checked"
+        },
+        {
+          "title": "Validated equilibrium",
+          "text": "P(ψ) ∝ e^ψ − ψ: a classical C² slab equilibrium within 10⁻¹¹ of a rational candidate, unique nearby in ℓ¹, satisfying StaticSlab and ForceBalance with positive pressure.",
+          "status": "Lean verified (1-D)",
+          "kind": "checked"
+        },
+        {
+          "title": "Stability findings",
+          "text": "The general Mercier index reduces to Suydam in a cylinder. The helical equilibrium is Mercier-unstable (proved at a = 0). For the Solov'ev reactor equilibrium the true safety factor is ≥ 2.02 everywhere.",
+          "status": "Lean verified + negative finding",
+          "kind": "partial"
+        },
+        {
+          "title": "Coils and coupling",
+          "text": "Face samples certify the coil field error in a whole volume (maximum principle + surface cover). One consistent plasma needs an upper temperature barrier — and so a T-dependent diffusivity in the kernel.",
+          "status": "Lean verified; design recorded",
+          "kind": "partial"
+        }
+      ],
+      "progress": "12 new modules. Reviews found an oracle factor-of-2 error (corrected; conclusion unchanged) and no soundness defects in the averaged-trapping theorem; its ≈ 6 min build is scheduled for a proof-term rewrite.",
+      "boundary": "Guiding-centre model supplied; near-axis field accurate only to expansion order; passing alphas only; the validated equilibrium is a 1-D slab; the helical barrier geometry is MHD-unstable.",
+      "evidence": [
+        {
+          "label": "New checked results",
+          "href": "progress.html#new-checked-results"
+        },
+        {
+          "label": "Quantitative certificates",
+          "href": "progress.html#quantitative-certificates"
+        },
+        {
+          "label": "Corrections",
+          "href": "progress.html#corrections-and-challenged-claims"
+        }
+      ]
+    },
+    {
       "id": "implementation-plan",
-      "eyebrow": "13 · Plan of record",
+      "eyebrow": "14 · Plan of record",
       "title": "Theory, techniques and a ladder of models — for confinement and for heat.",
       "lead": "Each cycle develops theory, turns theorems into sound certificate checkers, and applies them to the next rung of a model ladder. Every rung must prove properties of both kinds: confinement (G1) and temperature held above burn conditions (G2).",
       "cards": [
@@ -543,7 +591,7 @@
         {
           "title": "Model ladder",
           "text": "M0 exact symmetric equilibria (done) → M1 0-D burning plasma → M2 radial transport on the exact geometries → M3 validated toroidal equilibrium → M4 near-axis quasisymmetry → M5 coil-produced 3-D field → M6 integrated candidate.",
-          "status": "M0–M2 checked (idealized); M3, M4 started",
+          "status": "M0–M2 checked (idealized); M3 (slab) and M4 (0.11 s) in progress",
           "kind": "next"
         },
         {
@@ -559,7 +607,7 @@
           "kind": "next"
         }
       ],
-      "progress": "Phases 1–3 met their acceptance criteria in idealized models. The plan's status marks and progress log are updated after each phase.",
+      "progress": "Phases 1–4 met their acceptance criteria in idealized models. The plan's status marks and progress log are updated after each phase.",
       "boundary": "Nothing in the plan counts as evidence until a dated report records compiled Lean results.",
       "evidence": [
         {
@@ -574,9 +622,9 @@
     },
     {
       "id": "next-run",
-      "eyebrow": "14 · Keep every step reviewable",
+      "eyebrow": "15 · Keep every step reviewable",
       "title": "The next run must leave evidence, not just a promise.",
-      "lead": "Next (Phase 4): rigorous iterated averaging for near-quasisymmetric alpha confinement; a validated 1-D Grad–Shafranov equilibrium; transport profiles consistent with MHD equilibria; Mercier/ballooning for the Solov'ev and helical equilibria; coil error fields via the maximum principle.",
+      "lead": "Next (Phase 5): one consistent plasma — a Solov'ev equilibrium with alpha confinement and a two-sided transport barrier whose pressure stays below the equilibrium's (needs a T-dependent diffusivity); certified Solov'ev Mercier index; faster certificates; near-QA alphas toward slowing-down time; 2-D validated equilibria.",
       "cards": [
         {
           "title": "Implement & challenge",

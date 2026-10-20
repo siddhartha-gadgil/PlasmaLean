@@ -101,6 +101,18 @@ public import PlasmaLean.Design.ValidatedBVP
 public import PlasmaLean.Theory.Transport.FluxGeometry
 public import PlasmaLean.Design.HelicalFluxGeometry
 public import PlasmaLean.Design.HelicalTransportBarrier
+public import PlasmaLean.Theory.Geometry.SurfaceCover
+public import PlasmaLean.Design.VacuumPairVolumeError
+public import PlasmaLean.Certificates.FourierRegularity
+public import PlasmaLean.Design.ValidatedBVPClassical
+public import PlasmaLean.Certificates.ConvAlgebra
+public import PlasmaLean.Design.ValidatedSlabData
+public import PlasmaLean.Design.ValidatedSlabEquilibrium
+public import PlasmaLean.Theory.Stability.MercierGeneral
+public import PlasmaLean.Design.HelicalMercier
+public import PlasmaLean.Design.SolovevMercier
+public import PlasmaLean.Theory.Kinetic.AveragedTrapping
+public import PlasmaLean.Design.NearAxisQAAveraged
 
 /-!
 # PlasmaLean public library
