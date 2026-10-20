@@ -17,7 +17,7 @@ confinement is certified.
 
 On 20 October an [implementation plan](notes/implementation-plan.md) was fixed. It cycles
 between theory, certificate techniques and a ladder of successively realistic models, targeting
-both confinement and keeping the plasma hot. Eight phases are complete:
+both confinement and keeping the plasma hot. Eight phases and part of a ninth are complete:
 
 - **one consistent plasma:** for one exact Solov'ev field satisfying force balance, 3.5 MeV alphas
   born in the core are confined for all time, the core stays at or above 10 keV for all time, and
@@ -27,7 +27,8 @@ both confinement and keeping the plasma hot. Eight phases are complete:
 - **first stellarator field:** an exact non-axisymmetric vacuum field with two field periods and
   stellarator symmetry, whose magnetic axis is linearly elliptic and whose field lines near the
   axis are certified to stay confined for at least 95 toroidal transits; all-time confinement is
-  proved to follow from a single invariant torus (the KAM step remains);
+  proved to follow from a single invariant torus; an approximate torus is certified to 10⁻²³ and
+  the first KAM lemmas are proved (the Newton step remains);
 - **finite β without axisymmetry:** an explicit finite-pressure, non-axisymmetric toroidal
   equilibrium (Landreman family 1; idealized, zero shear) satisfies the kernel force balance;
 - **stability:** Mercier stability and ideal-ballooning stability of that equilibrium are certified
@@ -37,8 +38,8 @@ both confinement and keeping the plasma hot. Eight phases are complete:
 - **validation:** a slab Grad–Shafranov equilibrium with an exponential profile is validated;
 - **screw pinch:** all-mode Newcomb stability is proved.
 
-The library has 172 modules and 15033 audited declarations, using standard axioms only. See the
-[progress slideshow](docs/slides.html) and the [latest report](progress/2026-10-20-progress-10.md).
+The library has 179 modules and 15690 audited declarations, using standard axioms only. See the
+[progress slideshow](docs/slides.html) and the [latest report](progress/2026-10-21-progress.md).
 
 ## Code structure
 

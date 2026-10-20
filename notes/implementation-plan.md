@@ -324,3 +324,11 @@ Each cycle is a run. The targets are listed in priority order; anything left ove
   - **Invariant-torus trapping (K0–K1):** all-time confinement of the rational stellarator field follows from any invariant radial-graph torus.
 - **In progress:** K2 (validated approximate torus); a certified helical coil set.
 - **Long pole:** K3, an explicit-constant KAM theorem.
+
+### Phase 9 part 1, 21 October 2026 — [report](https://github.com/siddhartha-gadgil/PlasmaLean/blob/main/progress/2026-10-21-progress.md)
+
+- **Done:**
+  - **K2:** a validated approximate invariant torus of the rational stellarator field, with residual ≤ 1.2×10⁻²³, proved to be a radial graph around the axis.
+  - **K3a:** the Diophantine certificate (γ = 0.1374) and the cohomological equation with explicit estimates.
+- **In progress (K3b):** weighted error, frame and twist, the sequence lemma, and ℓ¹(ℤ²).
+- **Remaining (K3c):** Newton step and limit.

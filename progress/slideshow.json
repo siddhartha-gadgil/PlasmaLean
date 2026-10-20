@@ -1,32 +1,32 @@
 {
-  "updated": "2026-10-20",
-  "report": "2026-10-20-progress-10.md",
+  "updated": "2026-10-21",
+  "report": "2026-10-21-progress.md",
   "status": "Exact symmetric equilibria with all-time orbit confinement · Local stability criteria · Not a coil-produced stellarator · Not a construction release.",
   "slides": [
     {
       "id": "where-we-are",
-      "eyebrow": "Progress briefing · Phase 8: finite β beyond axisymmetry",
-      "title": "A finite-β non-axisymmetric equilibrium, and all-time confinement reduced to one torus.",
-      "lead": "PlasmaLean is building a Lean library for stellarator design. Phase 8 adds the library's first finite-pressure, non-axisymmetric toroidal equilibrium, and proves that all-time field-line confinement in the exact stellarator field follows from a single invariant torus — leaving one KAM step. Earlier phases joined confinement and burn temperature for one axisymmetric plasma with certified local stability.",
+      "eyebrow": "Progress briefing · Phase 9: toward all-time stellarator confinement",
+      "title": "An invariant torus to 10⁻²³ — and the first steps of a verified KAM theorem.",
+      "lead": "PlasmaLean is building a Lean library for stellarator design. Phase 9 certifies an approximate invariant torus of the exact stellarator field to within 10⁻²³ and begins a verified KAM theorem, which — with the already-proved torus-trapping lemma — would give all-time field-line confinement. Earlier phases joined confinement and burn temperature for one axisymmetric plasma with certified local stability.",
       "metrics": [
         {
-          "value": "172",
+          "value": "179",
           "label": "Lean modules"
         },
         {
-          "value": "5655",
-          "label": "theorem/lemma declarations (incl. certificate cells)"
+          "value": "15690",
+          "label": "Project declarations in the last axiom audit"
         },
         {
-          "value": "15033",
-          "label": "Project declarations in the last axiom audit"
+          "value": "10⁻²³",
+          "label": "certified invariance residual of torus A"
         }
       ],
-      "progress": "Axisymmetric one-plasma results with certified local stability; finite-β non-axisymmetric equilibrium (idealized); stellarator vacuum field confined for 95 transits, all-time pending one torus.",
-      "boundary": "The finite-β non-axisymmetric equilibrium has zero shear and no stability claim; all-time stellarator confinement still needs a validated torus and a KAM theorem; the coil realization needs a certified helical error bound.",
+      "progress": "One axisymmetric consistent plasma with certified local stability; finite-β non-axisymmetric equilibrium; stellarator field confined for 95 transits, with all-time confinement reduced to a KAM step now under construction.",
+      "boundary": "All-time stellarator confinement is not yet proved (KAM Newton step pending); no certified coil set yet; finite-β non-axisymmetric equilibrium idealized; stability reductions supplied.",
       "evidence": [
         {
-          "label": "Phase 8 report",
+          "label": "Phase 9 report",
           "href": "progress.html"
         },
         {
@@ -799,8 +799,50 @@
       ]
     },
     {
+      "id": "kam-torus",
+      "eyebrow": "19 · Phase 9: an invariant torus to 10⁻²³",
+      "title": "A certified approximate torus and the first KAM lemmas.",
+      "lead": "Torus A — a 2-D Fourier embedding with rational coefficients — solves the field-line invariance equation of the exact stellarator field to 10⁻²³ for all angles, and is a radial graph around the magnetic axis. The Diophantine and cohomological lemmas of KAM theory are proved with explicit constants.",
+      "cards": [
+        {
+          "title": "Approximate torus (K2)",
+          "text": "Exact ℓ¹ norm of the residual's Fourier coefficients via Kronecker digit sums: ≤ 1.23×10⁻²³ (R), 6.94×10⁻²⁴ (z); 0.077 ≤ r ≤ 0.19.",
+          "status": "Lean verified",
+          "kind": "checked"
+        },
+        {
+          "title": "KAM lemmas (K3a)",
+          "text": "Diophantine γ = 0.1374 (τ = 1, essentially optimal) for the torus's transform; cohomological equation solved with Rüssmann and Cauchy estimates in weighted ℓ¹.",
+          "status": "Lean verified",
+          "kind": "checked"
+        },
+        {
+          "title": "Remaining",
+          "text": "Weighted error, frame and twist, convergence lemma, ℓ¹(ℤ²) algebra (in progress); then the Newton step and the limit torus, giving all-time confinement.",
+          "status": "In progress",
+          "kind": "next"
+        }
+      ],
+      "progress": "7 new modules. Constants budget for the KAM step is an informal estimate until the frame and twist certificates land.",
+      "boundary": "No all-time confinement yet; the torus residual is certified in the sup / unweighted norm only so far.",
+      "evidence": [
+        {
+          "label": "New checked results",
+          "href": "progress.html#new-checked-results"
+        },
+        {
+          "label": "Quantitative certificates",
+          "href": "progress.html#quantitative-certificates"
+        },
+        {
+          "label": "Implementation plan",
+          "href": "implementation-plan.html"
+        }
+      ]
+    },
+    {
       "id": "implementation-plan",
-      "eyebrow": "19 · Plan of record",
+      "eyebrow": "20 · Plan of record",
       "title": "Theory, techniques and a ladder of models — for confinement and for heat.",
       "lead": "Each cycle develops theory, turns theorems into sound certificate checkers, and applies them to the next rung of a model ladder. Every rung must prove properties of both kinds: confinement (G1) and temperature held above burn conditions (G2).",
       "cards": [
@@ -844,9 +886,9 @@
     },
     {
       "id": "next-run",
-      "eyebrow": "20 · Keep every step reviewable",
+      "eyebrow": "21 · Keep every step reviewable",
       "title": "The next run must leave evidence, not just a promise.",
-      "lead": "Next: a validated approximate invariant torus (K2) and the KAM step (K3) for all-time stellarator confinement; a certified helical coil set; Landreman family 2 with shear and its stability.",
+      "lead": "Next: finish the verified KAM theorem (weighted error, frame/twist, Newton step, limit) for all-time stellarator confinement; the certified polygonal coil set; Landreman family 2 with shear.",
       "cards": [
         {
           "title": "Implement & challenge",

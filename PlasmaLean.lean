@@ -155,6 +155,13 @@ public import PlasmaLean.Design.RationalStellaratorCoilsTransfer
 public import PlasmaLean.Theory.Fields.InvariantBarrier
 public import PlasmaLean.Theory.Fields.TorusTrapping
 public import PlasmaLean.Design.LandremanEquilibrium
+public import PlasmaLean.Certificates.Kronecker2D
+public import PlasmaLean.Design.KamTorusAData
+public import PlasmaLean.Design.KamTorusAForms
+public import PlasmaLean.Design.KamTorusACheck
+public import PlasmaLean.Design.KamTorusA
+public import PlasmaLean.Theory.KAM.Diophantine
+public import PlasmaLean.Theory.KAM.Cohomological
 
 /-!
 # PlasmaLean public library

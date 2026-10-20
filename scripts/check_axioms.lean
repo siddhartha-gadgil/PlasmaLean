@@ -112,3 +112,4 @@ run_cmd do
 #print axioms PlasmaLean.Design.NearAxisQATrappedResonance.exactQA_nonresonant
 #print axioms PlasmaLean.Design.LandremanEquilibrium.force_balance
 #print axioms PlasmaLean.Fields.torus_trapping_forever
+#print axioms PlasmaLean.Design.KamTorusA.torusA_error_le
