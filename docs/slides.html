@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="description" content="Phase 10: all-time magnetic field-line confinement in an exact non-axisymmetric vacuum stellarator field, proved via a verified explicit-constant KAM theorem (exact invariant torus within 1e-10 of a certified approximate torus; every field line starting inside stays inside forever). Earlier: one consistent axisymmetric plasma with certified local stability up to ignition; coil-produced stellarator confinement for one transit; finite-β non-axisymmetric equilibria (Mercier-unstable).">
+  <meta name="description" content="Phase 10: all-time magnetic field-line confinement in an exact non-axisymmetric vacuum stellarator field, proved via a verified explicit-constant KAM theorem (exact invariant torus within 1e-10 of a certified approximate torus; from every point inside, a unique field line exists for all time and stays inside forever — no remaining hypotheses). Earlier: one consistent axisymmetric plasma with certified local stability up to ignition; coil-produced stellarator confinement for one transit; finite-β non-axisymmetric equilibria (Mercier-unstable).">
   <title>Progress slideshow · PlasmaLean</title>
   <link rel="stylesheet" href="assets/slides.css"><script defer src="assets/slides.js"></script>
 </head><body>
@@ -13,7 +13,7 @@
       <dl class="slide-metrics"><div><dt>Lean modules</dt><dd>232</dd></div><div><dt>Project declarations in the last axiom audit</dt><dd>21297</dd></div><div><dt>field-line confinement time in the exact stellarator field</dt><dd>∞</dd></div></dl>
       
       <div class="slide-progress"><h3>Progress so far</h3><p>All-time field-line confinement in a genuine stellarator field (vacuum model); one consistent axisymmetric plasma with certified local stability; coil-produced confinement for one transit.</p></div>
-      <p class="slide-boundary"><strong>Claim boundary.</strong> Field lines, not particles; vacuum field, not coil-produced or finite β; field-line existence assumed; finite-β non-axisymmetric equilibria in the library are Mercier-unstable.</p>
+      <p class="slide-boundary"><strong>Claim boundary.</strong> Field lines, not particles; vacuum field, not coil-produced or finite β; finite-β non-axisymmetric equilibria in the library are Mercier-unstable.</p>
       <footer class="slide-evidence"><span>Evidence · 2026-10-21</span><a href="progress.html">Phase 10 report <span aria-hidden="true">↗</span></a><a href="implementation-plan.html">Implementation plan <span aria-hidden="true">↗</span></a><a href="index.html#background">Original motivation &amp; graphics <span aria-hidden="true">↗</span></a></footer>
     </section>
 <section id="proof-architecture" class="slide" aria-labelledby="proof-architecture-title" tabindex="-1" data-slide>
@@ -302,7 +302,7 @@
       <p class="slide-lead">A verified KAM theorem turns the certified approximate torus (error 10⁻²²) into an exact real-analytic invariant torus of the stellarator field with rotational transform (75 + √5)/562. By the torus-trapping theorem, every field line starting inside it — at least 0.077 R₀ from the axis — stays inside forever.</p>
       
       <div class="slide-content"><div class="slide-cards cards-3"><article class="slide-card"><span class="card-status checked">Lean verified</span><h3>Verified KAM</h3><p>Strip-analytic Fourier algebra, cohomological solver, derived frame identities, flux-average lemma, quasi-Newton step with explicit constants, iteration and C^n regularity. Smallness 1.1×10⁻³ ≤ 1 (margin ≈ 900).</p></article>
-<article class="slide-card"><span class="card-status checked">Lean verified (field lines exist assumed)</span><h3>All-time confinement</h3><p>∃ ρ with 0.077 ≤ ρ ≤ 0.19: every two-sided field line of the exact field starting inside stays inside for all t. Reviewed independently: sound.</p></article>
+<article class="slide-card"><span class="card-status checked">Lean verified (no remaining hypotheses)</span><h3>All-time confinement</h3><p>∃ ρ with 0.077 ≤ ρ ≤ 0.19: every two-sided field line of the exact field starting inside stays inside for all t. Global existence and uniqueness of field lines also proved (addendum). Reviewed independently: sound.</p></article>
 <article class="slide-card"><span class="card-status next">Planned</span><h3>Next</h3><p>All-time confinement for a coil-produced field; field-line existence; stepped-pressure finite β across the torus; guiding-centre particles.</p></article></div></div>
       <div class="slide-progress"><h3>Progress so far</h3><p>17 new modules completing the KAM route; the frame-transport assumption from part 3 is now derived.</p></div>
       <p class="slide-boundary"><strong>Claim boundary.</strong> Magnetic field lines in a vacuum model field; not particles, not finite β, not coil-produced.</p>

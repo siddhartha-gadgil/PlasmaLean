@@ -366,3 +366,7 @@ Each cycle is a run. The targets are listed in priority order; anything left ove
   - Field-line existence.
   - Stepped-pressure finite β across the exact torus.
   - Particle confinement.
+
+### Phase 10 addendum, 21 October 2026 — [report](https://github.com/siddhartha-gadgil/PlasmaLean/blob/main/progress/2026-10-21-progress-6.md)
+
+- Field-line existence proved: the all-time confinement theorem (`rationalStellarator_confined_forever_exists`) has no remaining hypotheses.

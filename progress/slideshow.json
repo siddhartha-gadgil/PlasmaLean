@@ -1,6 +1,6 @@
 {
   "updated": "2026-10-21",
-  "report": "2026-10-21-progress-5.md",
+  "report": "2026-10-21-progress-6.md",
   "status": "Exact symmetric equilibria with all-time orbit confinement · Local stability criteria · Not a coil-produced stellarator · Not a construction release.",
   "slides": [
     {
@@ -23,7 +23,7 @@
         }
       ],
       "progress": "All-time field-line confinement in a genuine stellarator field (vacuum model); one consistent axisymmetric plasma with certified local stability; coil-produced confinement for one transit.",
-      "boundary": "Field lines, not particles; vacuum field, not coil-produced or finite β; field-line existence assumed; finite-β non-axisymmetric equilibria in the library are Mercier-unstable.",
+      "boundary": "Field lines, not particles; vacuum field, not coil-produced or finite β; finite-β non-axisymmetric equilibria in the library are Mercier-unstable.",
       "evidence": [
         {
           "label": "Phase 10 report",
@@ -938,8 +938,8 @@
         },
         {
           "title": "All-time confinement",
-          "text": "∃ ρ with 0.077 ≤ ρ ≤ 0.19: every two-sided field line of the exact field starting inside stays inside for all t. Reviewed independently: sound.",
-          "status": "Lean verified (field lines exist assumed)",
+          "text": "∃ ρ with 0.077 ≤ ρ ≤ 0.19: every two-sided field line of the exact field starting inside stays inside for all t. Global existence and uniqueness of field lines also proved (addendum). Reviewed independently: sound.",
+          "status": "Lean verified (no remaining hypotheses)",
           "kind": "checked"
         },
         {

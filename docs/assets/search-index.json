@@ -1,7 +1,7 @@
 [
   {
     "title": "Progress slideshow",
-    "section": "Evidence updated 2026-10-21 · Phase 10: all-time magnetic field-line confinement in an exact non-axisymmetric vacuum stellarator field, proved via a verified explicit-constant KAM theorem (exact invariant torus within 1e-10 of a certified approximate torus; every field line starting inside stays inside forever). Earlier: one consistent axisymmetric plasma with certified local stability up to ignition; coil-produced stellarator confinement for one transit; finite-β non-axisymmetric equilibria (Mercier-unstable).",
+    "section": "Evidence updated 2026-10-21 · Phase 10: all-time magnetic field-line confinement in an exact non-axisymmetric vacuum stellarator field, proved via a verified explicit-constant KAM theorem (exact invariant torus within 1e-10 of a certified approximate torus; from every point inside, a unique field line exists for all time and stays inside forever — no remaining hypotheses). Earlier: one consistent axisymmetric plasma with certified local stability up to ignition; coil-produced stellarator confinement for one transit; finite-β non-axisymmetric equilibria (Mercier-unstable).",
     "url": "slides.html",
     "text": "progress slideshow presentation latest run evidence vacuum fixture"
   },
@@ -409,9 +409,9 @@
   },
   {
     "title": "G9 · One certified invariant torus and barrier",
-    "section": "Geometry & fields · Lean verified (vacuum model) — all-time field-line confinement in the exact rational stellarator field via a verified KAM theorem (exact invariant torus, 0.077 ≤ ρ ≤ 0.19); field-line existence assumed; earlier 95-transit and symmetric barriers.",
+    "section": "Geometry & fields · Lean verified (vacuum model) — all-time field-line confinement in the exact rational stellarator field via a verified KAM theorem, with global existence and uniqueness of field lines proved (no remaining hypotheses); 0.077 ≤ ρ ≤ 0.19.",
     "url": "geometry-and-fields.html",
-    "text": "g9 one certified invariant torus and barrier theorem backlog lean verified (vacuum model) — all-time field-line confinement in the exact rational stellarator field via a verified kam theorem (exact invariant torus, 0.077 ≤ ρ ≤ 0.19); field-line existence assumed; earlier 95-transit and symmetric barriers."
+    "text": "g9 one certified invariant torus and barrier theorem backlog lean verified (vacuum model) — all-time field-line confinement in the exact rational stellarator field via a verified kam theorem, with global existence and uniqueness of field lines proved (no remaining hypotheses); 0.077 ≤ ρ ≤ 0.19."
   },
   {
     "title": "G10 · Quantitative perturbation theory over useful parameter sets",
@@ -1650,6 +1650,12 @@
     "text": "phase 10, 21 october 2026 — report implementation plan"
   },
   {
+    "title": "Phase 10 addendum, 21 October 2026 — report",
+    "section": "Implementation plan",
+    "url": "implementation-plan.html#phase-10-addendum-21-october-2026-report",
+    "text": "phase 10 addendum, 21 october 2026 — report implementation plan"
+  },
+  {
     "title": "M0 · Exact symmetric equilibria: slab, screw pinch, Solov'ev, helical",
     "section": "Implementation plan · Lean verified — exact slab, screw-pinch, Solov'ev and helical equilibria with kernel force balance, all-time field-line/orbit confinement, Suydam both ways and screw-pinch Newcomb for 1 ≤ |m| ≤ 6 (idealized symmetric models).",
     "url": "implementation-plan.html",
@@ -1801,9 +1807,9 @@
   },
   {
     "title": "Verified progress",
-    "section": "Phase 10: all-time magnetic field-line confinement in an exact non-axisymmetric vacuum stellarator field, proved via a verified explicit-constant KAM theorem (exact invariant torus within 1e-10 of a certified approximate torus; every field line starting inside stays inside forever). Earlier: one consistent axisymmetric plasma with certified local stability up to ignition; coil-produced stellarator confinement for one transit; finite-β non-axisymmetric equilibria (Mercier-unstable).",
+    "section": "Phase 10: all-time magnetic field-line confinement in an exact non-axisymmetric vacuum stellarator field, proved via a verified explicit-constant KAM theorem (exact invariant torus within 1e-10 of a certified approximate torus; from every point inside, a unique field line exists for all time and stays inside forever — no remaining hypotheses). Earlier: one consistent axisymmetric plasma with certified local stability up to ignition; coil-produced stellarator confinement for one transit; finite-β non-axisymmetric equilibria (Mercier-unstable).",
     "url": "progress.html",
-    "text": "verified progress phase 10: all-time magnetic field-line confinement in an exact non-axisymmetric vacuum stellarator field, proved via a verified explicit-constant kam theorem (exact invariant torus within 1e-10 of a certified approximate torus; every field line starting inside stays inside forever). earlier: one consistent axisymmetric plasma with certified local stability up to ignition; coil-produced stellarator confinement for one transit; finite-β non-axisymmetric equilibria (mercier-unstable)."
+    "text": "verified progress phase 10: all-time magnetic field-line confinement in an exact non-axisymmetric vacuum stellarator field, proved via a verified explicit-constant kam theorem (exact invariant torus within 1e-10 of a certified approximate torus; from every point inside, a unique field line exists for all time and stays inside forever — no remaining hypotheses). earlier: one consistent axisymmetric plasma with certified local stability up to ignition; coil-produced stellarator confinement for one transit; finite-β non-axisymmetric equilibria (mercier-unstable)."
   },
   {
     "title": "Outcome",

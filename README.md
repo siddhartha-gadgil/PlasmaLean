@@ -28,7 +28,7 @@ both confinement and keeping the plasma hot. Ten phases are complete:
   stellarator symmetry, whose magnetic axis is linearly elliptic and whose field lines near the
   axis are **confined for all time**: a verified explicit-constant KAM theorem produces an exact
   invariant torus around the axis, and every field line starting inside it stays inside forever
-  (field-line existence assumed; vacuum model field);
+  (field lines proved to exist and be unique; vacuum model field);
 - **coils:** a concrete set of closed polygonal coils produces a field whose lines near the axis
   are certified to stay confined for one toroidal transit (zero margin);
 - **finite β without axisymmetry:** an explicit finite-pressure, non-axisymmetric toroidal
@@ -42,7 +42,7 @@ both confinement and keeping the plasma hot. Ten phases are complete:
 - **screw pinch:** all-mode Newcomb stability is proved.
 
 The library has 232 modules and 21297 audited declarations, using standard axioms only. See the
-[progress slideshow](docs/slides.html) and the [latest report](progress/2026-10-21-progress-5.md).
+[progress slideshow](docs/slides.html) and the [latest report](progress/2026-10-21-progress-6.md).
 
 ## Code structure
 

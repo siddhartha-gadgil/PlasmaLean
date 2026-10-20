@@ -180,6 +180,8 @@ public import PlasmaLean.Design.LandremanFamily2
 public import PlasmaLean.Theory.Stability.MercierShearless
 public import PlasmaLean.Design.LandremanMercier
 public import PlasmaLean.Design.RationalStellaratorConfinedForever
+public import PlasmaLean.Theory.Fields.FieldLineExistence
+public import PlasmaLean.Design.RationalStellaratorFieldLines
 
 /-!
 # PlasmaLean public library
