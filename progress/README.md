@@ -40,3 +40,5 @@ dated evidence. Run `node scripts/check_site.mjs` before handing off the update.
 [21 October 2026, Phase 9 part 1: a validated approximate invariant torus, and the first KAM lemmas](2026-10-21-progress.md).
 
 [21 October 2026, Phase 9 part 2: the first coil-produced stellarator field with certified confinement; KAM convergence, algebra and composition](2026-10-21-progress-2.md).
+
+[21 October 2026, Phase 9 part 3: KAM inputs complete for the stellarator torus; a sheared finite-β non-axisymmetric equilibrium](2026-10-21-progress-3.md).

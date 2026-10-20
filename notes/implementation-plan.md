@@ -342,3 +342,10 @@ Each cycle is a run. The targets are listed in priority order; anything left ove
   - Weighted error and frame/twist (in progress).
   - The flux-average lemma.
   - The Newton step and the limit.
+
+### Phase 9 part 3, 21 October 2026 — [report](https://github.com/siddhartha-gadgil/PlasmaLean/blob/main/progress/2026-10-21-progress-3.md)
+
+- **Done:**
+  - All quantitative KAM inputs for torus A: the weighted error at r = 0.1257, frame bounds, and twist ≥ 3/10.
+  - Landreman family 2 with proved shear.
+- **In progress:** K3d, the Newton step, limit and all-time confinement.

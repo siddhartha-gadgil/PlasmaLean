@@ -167,6 +167,16 @@ public import PlasmaLean.Theory.KAM.KamSequence
 public import PlasmaLean.Theory.KAM.WeightedEll1Z2
 public import PlasmaLean.Theory.KAM.Composition
 public import PlasmaLean.Design.KamTorusAComposition
+public import PlasmaLean.Certificates.Kronecker2DWeighted
+public import PlasmaLean.Design.KamTorusAWeightedCheck
+public import PlasmaLean.Design.KamTorusAWeighted
+public import PlasmaLean.Certificates.KronExpr
+public import PlasmaLean.Design.KamTorusAFrameData
+public import PlasmaLean.Design.KamTorusAFrameCheck
+public import PlasmaLean.Design.KamTorusAFrame
+public import PlasmaLean.Design.KamTorusATwist
+public import PlasmaLean.Design.KamTorusATwistAvg
+public import PlasmaLean.Design.LandremanFamily2
 
 /-!
 # PlasmaLean public library

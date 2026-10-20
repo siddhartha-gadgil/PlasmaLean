@@ -115,3 +115,5 @@ run_cmd do
 #print axioms PlasmaLean.Design.KamTorusA.torusA_error_le
 #print axioms PlasmaLean.Design.PolygonCoil.coil_stellarator_confined_concrete
 #print axioms PlasmaLean.Theory.KAM.kam_sequence
+#print axioms PlasmaLean.Design.KamTorusA.Frame.torusA_twist
+#print axioms PlasmaLean.Design.LandremanFamily2.family2_shear
