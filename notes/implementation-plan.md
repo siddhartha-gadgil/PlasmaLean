@@ -332,3 +332,13 @@ Each cycle is a run. The targets are listed in priority order; anything left ove
   - **K3a:** the Diophantine certificate (γ = 0.1374) and the cohomological equation with explicit estimates.
 - **In progress (K3b):** weighted error, frame and twist, the sequence lemma, and ℓ¹(ℤ²).
 - **Remaining (K3c):** Newton step and limit.
+
+### Phase 9 part 2, 21 October 2026 — [report](https://github.com/siddhartha-gadgil/PlasmaLean/blob/main/progress/2026-10-21-progress-2.md)
+
+- **Done:**
+  - **First coil-produced stellarator field with certified confinement:** 1 transit, polygonal filaments, zero margin.
+  - **KAM sequence and limit lemmas;** the ℓ¹(ℤ²) Banach algebra; composition and inverse bounds.
+- **Remaining for all-time confinement:**
+  - Weighted error and frame/twist (in progress).
+  - The flux-average lemma.
+  - The Newton step and the limit.

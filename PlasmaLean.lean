@@ -162,6 +162,11 @@ public import PlasmaLean.Design.KamTorusACheck
 public import PlasmaLean.Design.KamTorusA
 public import PlasmaLean.Theory.KAM.Diophantine
 public import PlasmaLean.Theory.KAM.Cohomological
+public import PlasmaLean.Design.PolygonCoilConfined
+public import PlasmaLean.Theory.KAM.KamSequence
+public import PlasmaLean.Theory.KAM.WeightedEll1Z2
+public import PlasmaLean.Theory.KAM.Composition
+public import PlasmaLean.Design.KamTorusAComposition
 
 /-!
 # PlasmaLean public library

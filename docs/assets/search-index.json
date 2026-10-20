@@ -1,15 +1,15 @@
 [
   {
     "title": "Progress slideshow",
-    "section": "Evidence updated 2026-10-21 · Phase 9 part 1: a validated approximate invariant torus of the exact rational stellarator field (invariance residual ≤ 1.2×10⁻²³, radial graph around the axis) and the first KAM lemmas (Diophantine certificate γ = 0.1374; cohomological equation with explicit estimates) toward all-time field-line confinement. Earlier: one consistent axisymmetric plasma with certified local stability up to ignition; finite-β non-axisymmetric equilibrium; 95-transit confinement; coil chain; near-QA alphas 0.19 s.",
+    "section": "Evidence updated 2026-10-21 · Phase 9 part 2: the first coil-produced stellarator field with certified confinement (closed polygonal filaments; field lines near the axis stay confined for one toroidal transit; zero margin; field-line existence assumed) and KAM machinery (convergence lemma, weighted ℓ¹(ℤ²) Banach algebra, composition bounds) toward all-time confinement. Earlier: validated approximate torus (10⁻²³); finite-β non-axisymmetric equilibrium; one consistent axisymmetric plasma with certified local stability up to ignition.",
     "url": "slides.html",
     "text": "progress slideshow presentation latest run evidence vacuum fixture"
   },
   {
-    "title": "An invariant torus to 10⁻²³ — and the first steps of a verified KAM theorem.",
+    "title": "The first coil-produced stellarator field with certified confinement.",
     "section": "Progress slideshow",
     "url": "slides.html#where-we-are",
-    "text": "an invariant torus to 10⁻²³ — and the first steps of a verified kam theorem. plasmalean is building a lean library for stellarator design. phase 9 certifies an approximate invariant torus of the exact stellarator field to within 10⁻²³ and begins a verified kam theorem, which — with the already-proved torus-trapping lemma — would give all-time field-line confinement. earlier phases joined confinement and burn temperature for one axisymmetric plasma with certified local stability. one axisymmetric consistent plasma with certified local stability; finite-β non-axisymmetric equilibrium; stellarator field confined for 95 transits, with all-time confinement reduced to a kam step now under construction."
+    "text": "the first coil-produced stellarator field with certified confinement. plasmalean is building a lean library for stellarator design. phase 9 certifies that field lines of a concrete set of closed polygonal coils stay confined near the magnetic axis for a full toroidal transit, certifies an approximate invariant torus to 10⁻²³, and builds most of a verified kam theorem toward all-time confinement. axisymmetric one-plasma results with certified local stability; finite-β non-axisymmetric equilibrium; a coil-produced stellarator field confined for one transit; kam machinery largely built."
   },
   {
     "title": "Small assumptions. Reusable proofs. One candidate.",
@@ -124,6 +124,12 @@
     "section": "Progress slideshow",
     "url": "slides.html#kam-torus",
     "text": "a certified approximate torus and the first kam lemmas. torus a — a 2-d fourier embedding with rational coefficients — solves the field-line invariance equation of the exact stellarator field to 10⁻²³ for all angles, and is a radial graph around the magnetic axis. the diophantine and cohomological lemmas of kam theory are proved with explicit constants. 7 new modules. constants budget for the kam step is an informal estimate until the frame and twist certificates land."
+  },
+  {
+    "title": "Real coils, certified field lines.",
+    "section": "Progress slideshow",
+    "url": "slides.html#coil-confinement",
+    "text": "real coils, certified field lines. eight closed polygonal helical filaments plus a closed toroidal-field filament produce a field whose lines, starting near the axis, stay in the confinement tube for a full toroidal transit — proved from the exact biot–savart field of straight segments, a certified 6.5×10⁻⁴ frontier error and the vacuum maximum principle. 25 new modules; review found the coil chain sound (segment formula, corners, cover, symmetry, avoidance) and led to zero-margin and existence disclosures."
   },
   {
     "title": "Theory, techniques and a ladder of models — for confinement and for heat.",
@@ -1608,6 +1614,12 @@
     "text": "phase 9 part 1, 21 october 2026 — report implementation plan"
   },
   {
+    "title": "Phase 9 part 2, 21 October 2026 — report",
+    "section": "Implementation plan",
+    "url": "implementation-plan.html#phase-9-part-2-21-october-2026-report",
+    "text": "phase 9 part 2, 21 october 2026 — report implementation plan"
+  },
+  {
     "title": "M0 · Exact symmetric equilibria: slab, screw pinch, Solov'ev, helical",
     "section": "Implementation plan · Lean verified — exact slab, screw-pinch, Solov'ev and helical equilibria with kernel force balance, all-time field-line/orbit confinement, Suydam both ways and screw-pinch Newcomb for 1 ≤ |m| ≤ 6 (idealized symmetric models).",
     "url": "implementation-plan.html",
@@ -1639,9 +1651,9 @@
   },
   {
     "title": "M5 · Coil-produced 3-D field (filament Biot–Savart, existing) plus a DESC-validated finite-β equilibrium",
-    "section": "Implementation plan · Partially implemented — exact rational vacuum stellarator field with certified ≥ 95-transit field-line confinement; coil chain proved (certified TF filament, maximum-principle transfer, error ⇒ transits) with the helical-winding frontier bound still a hypothesis.",
+    "section": "Implementation plan · Partially implemented — exact rational vacuum stellarator field with ≥ 95-transit certified confinement; a concrete coil-produced field (closed polygonal filaments + TF filament) with certified confinement for one toroidal transit (zero margin); validated approximate invariant torus and KAM lemmas toward all-time confinement.",
     "url": "implementation-plan.html",
-    "text": "m5 coil-produced 3-d field (filament biot–savart, existing) plus a desc-validated finite-β equilibrium 5. model ladder (each rung proves characteristics under both g1 and g2) partially implemented — exact rational vacuum stellarator field with certified ≥ 95-transit field-line confinement; coil chain proved (certified tf filament, maximum-principle transfer, error ⇒ transits) with the helical-winding frontier bound still a hypothesis."
+    "text": "m5 coil-produced 3-d field (filament biot–savart, existing) plus a desc-validated finite-β equilibrium 5. model ladder (each rung proves characteristics under both g1 and g2) partially implemented — exact rational vacuum stellarator field with ≥ 95-transit certified confinement; a concrete coil-produced field (closed polygonal filaments + tf filament) with certified confinement for one toroidal transit (zero margin); validated approximate invariant torus and kam lemmas toward all-time confinement."
   },
   {
     "title": "M6 · Integrated candidate: coils + equilibrium + stability + transport + engineering margins",
@@ -1759,9 +1771,9 @@
   },
   {
     "title": "Verified progress",
-    "section": "Phase 9 part 1: a validated approximate invariant torus of the exact rational stellarator field (invariance residual ≤ 1.2×10⁻²³, radial graph around the axis) and the first KAM lemmas (Diophantine certificate γ = 0.1374; cohomological equation with explicit estimates) toward all-time field-line confinement. Earlier: one consistent axisymmetric plasma with certified local stability up to ignition; finite-β non-axisymmetric equilibrium; 95-transit confinement; coil chain; near-QA alphas 0.19 s.",
+    "section": "Phase 9 part 2: the first coil-produced stellarator field with certified confinement (closed polygonal filaments; field lines near the axis stay confined for one toroidal transit; zero margin; field-line existence assumed) and KAM machinery (convergence lemma, weighted ℓ¹(ℤ²) Banach algebra, composition bounds) toward all-time confinement. Earlier: validated approximate torus (10⁻²³); finite-β non-axisymmetric equilibrium; one consistent axisymmetric plasma with certified local stability up to ignition.",
     "url": "progress.html",
-    "text": "verified progress phase 9 part 1: a validated approximate invariant torus of the exact rational stellarator field (invariance residual ≤ 1.2×10⁻²³, radial graph around the axis) and the first kam lemmas (diophantine certificate γ = 0.1374; cohomological equation with explicit estimates) toward all-time field-line confinement. earlier: one consistent axisymmetric plasma with certified local stability up to ignition; finite-β non-axisymmetric equilibrium; 95-transit confinement; coil chain; near-qa alphas 0.19 s."
+    "text": "verified progress phase 9 part 2: the first coil-produced stellarator field with certified confinement (closed polygonal filaments; field lines near the axis stay confined for one toroidal transit; zero margin; field-line existence assumed) and kam machinery (convergence lemma, weighted ℓ¹(ℤ²) banach algebra, composition bounds) toward all-time confinement. earlier: validated approximate torus (10⁻²³); finite-β non-axisymmetric equilibrium; one consistent axisymmetric plasma with certified local stability up to ignition."
   },
   {
     "title": "Outcome",

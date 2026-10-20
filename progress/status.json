@@ -1,7 +1,7 @@
 {
   "updated": "2026-10-21",
-  "report": "2026-10-21-progress.md",
-  "summary": "Phase 9 part 1: a validated approximate invariant torus of the exact rational stellarator field (invariance residual ≤ 1.2×10⁻²³, radial graph around the axis) and the first KAM lemmas (Diophantine certificate γ = 0.1374; cohomological equation with explicit estimates) toward all-time field-line confinement. Earlier: one consistent axisymmetric plasma with certified local stability up to ignition; finite-β non-axisymmetric equilibrium; 95-transit confinement; coil chain; near-QA alphas 0.19 s.",
+  "report": "2026-10-21-progress-2.md",
+  "summary": "Phase 9 part 2: the first coil-produced stellarator field with certified confinement (closed polygonal filaments; field lines near the axis stay confined for one toroidal transit; zero margin; field-line existence assumed) and KAM machinery (convergence lemma, weighted ℓ¹(ℤ²) Banach algebra, composition bounds) toward all-time confinement. Earlier: validated approximate torus (10⁻²³); finite-β non-axisymmetric equilibrium; one consistent axisymmetric plasma with certified local stability up to ignition.",
   "tasks": {
     "model-contracts:I1": "Partially implemented — algebraic force balance and tangency; positive permeability and actual differential laws in the restricted slab model.",
     "model-contracts:I2": "Lean verified — uniform-field and nonzero-current force-free witnesses in the Cartesian slab model; not toroidal confinement.",
@@ -55,6 +55,6 @@
     "implementation-plan:M2": "Lean verified (idealized) — one consistent plasma on the actual Solov'ev flux geometry (coarea step stated): driven, high-Q (Q≈40) and ignited versions with two-sided bands and pressure ≤ equilibrium + offset; earlier cylinder/helical barriers.",
     "implementation-plan:M3": "Partially implemented — ℓ¹ Banach algebra with exp, radii polynomial, Fourier regularity; a validated slab Grad–Shafranov equilibrium with exponential pressure profile (classical C², kernel ForceBalance, positive pressure); toroidal (2-D) validation pending.",
     "implementation-plan:M4": "Partially implemented — passing 3.5 MeV alphas in reactor-scale near-axis QA stay inside for 0.19 s (≈ half the slowing-down time; Boozer GC model); trapped alphas: single well and non-resonant bounce-sum lemmas, kick form assumed.",
-    "implementation-plan:M5": "Partially implemented — exact rational vacuum stellarator field with certified ≥ 95-transit field-line confinement; coil chain proved (certified TF filament, maximum-principle transfer, error ⇒ transits) with the helical-winding frontier bound still a hypothesis."
+    "implementation-plan:M5": "Partially implemented — exact rational vacuum stellarator field with ≥ 95-transit certified confinement; a concrete coil-produced field (closed polygonal filaments + TF filament) with certified confinement for one toroidal transit (zero margin); validated approximate invariant torus and KAM lemmas toward all-time confinement."
   }
 }

@@ -28,7 +28,9 @@ both confinement and keeping the plasma hot. Eight phases and part of a ninth ar
   stellarator symmetry, whose magnetic axis is linearly elliptic and whose field lines near the
   axis are certified to stay confined for at least 95 toroidal transits; all-time confinement is
   proved to follow from a single invariant torus; an approximate torus is certified to 10⁻²³ and
-  the first KAM lemmas are proved (the Newton step remains);
+  most of a verified KAM theorem is built (the Newton step remains);
+- **coils:** a concrete set of closed polygonal coils produces a field whose lines near the axis
+  are certified to stay confined for one toroidal transit (zero margin);
 - **finite β without axisymmetry:** an explicit finite-pressure, non-axisymmetric toroidal
   equilibrium (Landreman family 1; idealized, zero shear) satisfies the kernel force balance;
 - **stability:** Mercier stability and ideal-ballooning stability of that equilibrium are certified
@@ -38,8 +40,8 @@ both confinement and keeping the plasma hot. Eight phases and part of a ninth ar
 - **validation:** a slab Grad–Shafranov equilibrium with an exponential profile is validated;
 - **screw pinch:** all-mode Newcomb stability is proved.
 
-The library has 179 modules and 15690 audited declarations, using standard axioms only. See the
-[progress slideshow](docs/slides.html) and the [latest report](progress/2026-10-21-progress.md).
+The library has 203 modules and 17885 audited declarations, using standard axioms only. See the
+[progress slideshow](docs/slides.html) and the [latest report](progress/2026-10-21-progress-2.md).
 
 ## Code structure
 

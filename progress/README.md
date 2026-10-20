@@ -38,3 +38,5 @@ dated evidence. Run `node scripts/check_site.mjs` before handing off the update.
 [20 October 2026, Phase 8: a finite-β non-axisymmetric equilibrium, and the invariant-torus route to all-time stellarator confinement](2026-10-20-progress-10.md).
 
 [21 October 2026, Phase 9 part 1: a validated approximate invariant torus, and the first KAM lemmas](2026-10-21-progress.md).
+
+[21 October 2026, Phase 9 part 2: the first coil-produced stellarator field with certified confinement; KAM convergence, algebra and composition](2026-10-21-progress-2.md).

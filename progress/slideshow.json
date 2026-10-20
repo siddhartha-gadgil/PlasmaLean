@@ -1,29 +1,29 @@
 {
   "updated": "2026-10-21",
-  "report": "2026-10-21-progress.md",
+  "report": "2026-10-21-progress-2.md",
   "status": "Exact symmetric equilibria with all-time orbit confinement · Local stability criteria · Not a coil-produced stellarator · Not a construction release.",
   "slides": [
     {
       "id": "where-we-are",
-      "eyebrow": "Progress briefing · Phase 9: toward all-time stellarator confinement",
-      "title": "An invariant torus to 10⁻²³ — and the first steps of a verified KAM theorem.",
-      "lead": "PlasmaLean is building a Lean library for stellarator design. Phase 9 certifies an approximate invariant torus of the exact stellarator field to within 10⁻²³ and begins a verified KAM theorem, which — with the already-proved torus-trapping lemma — would give all-time field-line confinement. Earlier phases joined confinement and burn temperature for one axisymmetric plasma with certified local stability.",
+      "eyebrow": "Progress briefing · Phase 9: coils that confine",
+      "title": "The first coil-produced stellarator field with certified confinement.",
+      "lead": "PlasmaLean is building a Lean library for stellarator design. Phase 9 certifies that field lines of a concrete set of closed polygonal coils stay confined near the magnetic axis for a full toroidal transit, certifies an approximate invariant torus to 10⁻²³, and builds most of a verified KAM theorem toward all-time confinement.",
       "metrics": [
         {
-          "value": "179",
+          "value": "203",
           "label": "Lean modules"
         },
         {
-          "value": "15690",
+          "value": "17885",
           "label": "Project declarations in the last axiom audit"
         },
         {
-          "value": "10⁻²³",
-          "label": "certified invariance residual of torus A"
+          "value": "1",
+          "label": "certified transit for a coil-produced field (zero margin)"
         }
       ],
-      "progress": "One axisymmetric consistent plasma with certified local stability; finite-β non-axisymmetric equilibrium; stellarator field confined for 95 transits, with all-time confinement reduced to a KAM step now under construction.",
-      "boundary": "All-time stellarator confinement is not yet proved (KAM Newton step pending); no certified coil set yet; finite-β non-axisymmetric equilibrium idealized; stability reductions supplied.",
+      "progress": "Axisymmetric one-plasma results with certified local stability; finite-β non-axisymmetric equilibrium; a coil-produced stellarator field confined for one transit; KAM machinery largely built.",
+      "boundary": "One transit only, at zero margin and assuming field-line existence; all-time confinement awaits the KAM Newton step; integrated plasma results remain axisymmetric.",
       "evidence": [
         {
           "label": "Phase 9 report",
@@ -841,8 +841,50 @@
       ]
     },
     {
+      "id": "coil-confinement",
+      "eyebrow": "20 · Phase 9: coils that confine",
+      "title": "Real coils, certified field lines.",
+      "lead": "Eight closed polygonal helical filaments plus a closed toroidal-field filament produce a field whose lines, starting near the axis, stay in the confinement tube for a full toroidal transit — proved from the exact Biot–Savart field of straight segments, a certified 6.5×10⁻⁴ frontier error and the vacuum maximum principle.",
+      "cards": [
+        {
+          "title": "Coil-produced confinement",
+          "text": "Exact segment fields; C¹ corner parametrization; coils avoid the region; certified frontier error; maximum principle; defect confinement. One transit, zero margin; existence of field lines assumed.",
+          "status": "Lean verified (1 transit)",
+          "kind": "checked"
+        },
+        {
+          "title": "KAM machinery",
+          "text": "Quadratic convergence with loss of analyticity, limit lemma, weighted ℓ¹(ℤ²) Banach algebra with Neumann inverses, polynomial composition and Taylor bounds for the torus equation.",
+          "status": "Lean verified",
+          "kind": "checked"
+        },
+        {
+          "title": "Next",
+          "text": "Weighted error and frame/twist certificates, the Newton step and the limit torus (all-time confinement); 10 transits for the coil field needs an ≈ 12× sharper certificate.",
+          "status": "In progress",
+          "kind": "next"
+        }
+      ],
+      "progress": "25 new modules; review found the coil chain sound (segment formula, corners, cover, symmetry, avoidance) and led to zero-margin and existence disclosures.",
+      "boundary": "One transit for the coil field; ≈ 7.5 min / 6 GB certificate build; KAM step pending.",
+      "evidence": [
+        {
+          "label": "New checked results",
+          "href": "progress.html#new-checked-results"
+        },
+        {
+          "label": "Quantitative certificates",
+          "href": "progress.html#quantitative-certificates"
+        },
+        {
+          "label": "Corrections",
+          "href": "progress.html#corrections-and-challenged-claims"
+        }
+      ]
+    },
+    {
       "id": "implementation-plan",
-      "eyebrow": "20 · Plan of record",
+      "eyebrow": "21 · Plan of record",
       "title": "Theory, techniques and a ladder of models — for confinement and for heat.",
       "lead": "Each cycle develops theory, turns theorems into sound certificate checkers, and applies them to the next rung of a model ladder. Every rung must prove properties of both kinds: confinement (G1) and temperature held above burn conditions (G2).",
       "cards": [
@@ -886,7 +928,7 @@
     },
     {
       "id": "next-run",
-      "eyebrow": "21 · Keep every step reviewable",
+      "eyebrow": "22 · Keep every step reviewable",
       "title": "The next run must leave evidence, not just a promise.",
       "lead": "Next: finish the verified KAM theorem (weighted error, frame/twist, Newton step, limit) for all-time stellarator confinement; the certified polygonal coil set; Landreman family 2 with shear.",
       "cards": [

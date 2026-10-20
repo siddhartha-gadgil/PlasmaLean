@@ -113,3 +113,5 @@ run_cmd do
 #print axioms PlasmaLean.Design.LandremanEquilibrium.force_balance
 #print axioms PlasmaLean.Fields.torus_trapping_forever
 #print axioms PlasmaLean.Design.KamTorusA.torusA_error_le
+#print axioms PlasmaLean.Design.PolygonCoil.coil_stellarator_confined_concrete
+#print axioms PlasmaLean.Theory.KAM.kam_sequence
