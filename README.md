@@ -6,17 +6,21 @@ Besides the specific goals, this project is an experiment with using the power o
 
 ## Progress
 
-The latest checked run (14 October 2026) has 53 Lean modules, 618 source
-theorems (including private helpers), and 1730 audited project declarations. New
-results: source-free Maxwell identities for closed filament fields; a sharp Hardy
-inequality giving the Suydam interchange criterion in both directions; Newcomb/Riccati
+The latest checked results (14 October 2026) are source-free Maxwell identities for closed
+filament fields; the Suydam interchange criterion in both directions; Newcomb/Riccati
 stability certificates discharged by an exact polynomial checker; and two exact
 finite-pressure equilibria (toroidal Solov'ev, and a nonaxisymmetric helically symmetric
 one at 5 T and 4% β) verified against the kernel force-balance law, with all-time
 full-orbit confinement theorems via Noether's canonical momentum. These are idealized
 symmetric models: no coil-produced stellarator, all-mode MHD stability or 3.5 MeV alpha
-confinement is certified. See the [progress slideshow](docs/slides.html) and
-[checked results and assumptions](progress/2026-10-14-progress.md).
+confinement is certified.
+
+The 20 October run added no theorem. It fixed an [implementation plan](notes/implementation-plan.md)
+that cycles between theory, certificate techniques and a ladder of successively realistic
+models, targeting both confinement and keeping the plasma hot. It also recorded corrections
+to recent notes and added a Lean proof-engineering skill. The library has 54 modules and 1781
+audited declarations. See the [progress slideshow](docs/slides.html) and the
+[latest report](progress/2026-10-20-progress.md).
 
 ## Code structure
 

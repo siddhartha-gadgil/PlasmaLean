@@ -51,8 +51,9 @@ for (const [key, status] of Object.entries(statuses.tasks)) {
   assert.ok(search.some(entry => entry.url === `${page}.html` && entry.title.startsWith(`${id} · `) && entry.section.includes(status)), `Unrendered progress: ${key}`);
 }
 const taskEntries = search.filter(entry => / · (?:Planning only|Partially implemented|Lean verified)/.test(entry.section));
-// 107 original entries plus five explicit vacuum-demonstrator work packages.
-assert.equal(taskEntries.length, 112, 'Tracked tasks have changed; audit coverage before updating this fixture');
+// 107 original entries, five vacuum-demonstrator work packages, and seven model-ladder rungs
+// (M0–M6) from notes/implementation-plan.md.
+assert.equal(taskEntries.length, 119, 'Tracked tasks have changed; audit coverage before updating this fixture');
 const landing = contents.get('index.html');
 const template = fs.readFileSync(path.join(root, 'scripts/templates/overview.html'), 'utf8');
 const canvasIds = html => [...html.matchAll(/<canvas\b[^>]*\bid="([^"]+)"/g)].map(match => match[1]);

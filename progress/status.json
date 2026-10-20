@@ -1,7 +1,7 @@
 {
-  "updated": "2026-10-14",
-  "report": "2026-10-14-progress.md",
-  "summary": "Exact finite-pressure equilibria (toroidal Solov'ev and a nonaxisymmetric helical one) now satisfy the kernel force-balance law, with all-time full-orbit confinement theorems, filament Maxwell identities, and Suydam/Newcomb stability criteria with exact certificates. All are idealized symmetric models; no coil-produced stellarator is certified and no all-mode MHD stability is proved.",
+  "updated": "2026-10-20",
+  "report": "2026-10-20-progress.md",
+  "summary": "Planning run: a cyclic implementation plan (theory tracks, certificate techniques, model ladder for confinement and burn temperature), corrections to recent notes, and a Lean proof-engineering skill. No new physics theorem; the 14 October results (exact symmetric equilibria, symmetric confinement, Suydam/Newcomb) stand. No coil-produced stellarator or all-mode stability is certified.",
   "tasks": {
     "model-contracts:I1": "Partially implemented — algebraic force balance and tangency; positive permeability and actual differential laws in the restricted slab model.",
     "model-contracts:I2": "Lean verified — uniform-field and nonzero-current force-free witnesses in the Cartesian slab model; not toroidal confinement.",
@@ -49,6 +49,7 @@
     "particles-and-transport:K2": "Partially implemented — Noether conservation of canonical momentum for any Killing symmetry (rotation, translation, helix) for full orbits; reduced Hamiltonian theory pending.",
     "roadmap:P3: confined reduced orbits": "Partially implemented — all-time full-orbit confinement in exact Solov'ev and helically symmetric equilibria (rigidity-limited; 3.5 MeV alphas not covered); finite-time bound under symmetry defects. Not for a coil-produced stellarator.",
     "roadmap:P4: finite-pressure equilibrium": "Partially implemented — exact smooth Solov'ev (toroidal, axisymmetric) and helical (straight, nonaxisymmetric) equilibria satisfy the kernel law at realistic 5 T / few-percent β; no coil or free-boundary matching.",
-    "roadmap:P5: all-mode MHD result": "Partially implemented — Suydam both directions; screw-pinch Newcomb δW ≥ 0 for all modes with 1 ≤ |m| ≤ 6 (reduction supplied, wall at edge); no all-mode result for a 3-D equilibrium."
+    "roadmap:P5: all-mode MHD result": "Partially implemented — Suydam both directions; screw-pinch Newcomb δW ≥ 0 for all modes with 1 ≤ |m| ≤ 6 (reduction supplied, wall at edge); no all-mode result for a 3-D equilibrium.",
+    "implementation-plan:M0": "Lean verified — exact slab, screw-pinch, Solov'ev and helical equilibria with kernel force balance, all-time field-line/orbit confinement, Suydam both ways and screw-pinch Newcomb for 1 ≤ |m| ≤ 6 (idealized symmetric models)."
   }
 }

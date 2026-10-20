@@ -1,24 +1,24 @@
 {
-  "updated": "2026-10-14",
-  "report": "2026-10-14-progress.md",
+  "updated": "2026-10-20",
+  "report": "2026-10-20-progress.md",
   "status": "Exact symmetric equilibria with all-time orbit confinement · Local stability criteria · Not a coil-produced stellarator · Not a construction release.",
   "slides": [
     {
       "id": "where-we-are",
-      "eyebrow": "Progress briefing · Equilibria, stability criteria and confinement",
+      "eyebrow": "Progress briefing · Plan for confinement and burn temperature",
       "title": "From a coil fixture to exact equilibria with proved confinement.",
-      "lead": "PlasmaLean is building a Lean library for stellarator design. This run proved exact finite-pressure equilibria — a toroidal Solov'ev one and a nonaxisymmetric helical one — satisfying the kernel force-balance law, with all-time particle confinement theorems and Suydam/Newcomb stability criteria.",
+      "lead": "PlasmaLean is building a Lean library for stellarator design. Its checked results (14 October) are exact finite-pressure equilibria, a toroidal Solov'ev one and a nonaxisymmetric helical one, with all-time particle confinement theorems and Suydam/Newcomb stability criteria. The 20 October run added no theorem; it fixed an implementation plan that also targets keeping the plasma hot.",
       "metrics": [
         {
-          "value": "53",
+          "value": "54",
           "label": "Lean modules"
         },
         {
-          "value": "618",
+          "value": "620",
           "label": "Source theorems, including private helpers"
         },
         {
-          "value": "1730",
+          "value": "1781",
           "label": "Project declarations in the last axiom audit"
         }
       ],
@@ -28,6 +28,10 @@
         {
           "label": "Latest run & audit",
           "href": "progress.html#validation"
+        },
+        {
+          "label": "Implementation plan",
+          "href": "implementation-plan.html"
         },
         {
           "label": "Original motivation & graphics",
@@ -381,10 +385,54 @@
       ]
     },
     {
+      "id": "implementation-plan",
+      "eyebrow": "10 · Plan of record (20 October)",
+      "title": "Theory, techniques and a ladder of models — for confinement and for heat.",
+      "lead": "Each cycle develops theory, turns theorems into sound certificate checkers, and applies them to the next rung of a model ladder. Every rung must prove properties of both kinds: confinement (G1) and temperature held above burn conditions (G2).",
+      "cards": [
+        {
+          "title": "Theory tracks",
+          "text": "Maximum principle for vacuum fields; Sturm/ballooning; parabolic comparison and transport barriers; 0-D power balance; discrete energy (SBP); radii-polynomial validation; island widths/KAM; guiding centre and maximum-J; commuted energy.",
+          "status": "Planned",
+          "kind": "next"
+        },
+        {
+          "title": "Model ladder",
+          "text": "M0 exact symmetric equilibria (done) → M1 0-D burning plasma → M2 radial transport on the exact geometries → M3 validated toroidal equilibrium → M4 near-axis quasisymmetry → M5 coil-produced 3-D field → M6 integrated candidate.",
+          "status": "M0 checked; M1–M6 planned",
+          "kind": "next"
+        },
+        {
+          "title": "Corrections first",
+          "text": "Four corrections to recent notes. Vacuum |B| has no interior maximum (minima are possible). The flux-surface line bundle is flat. 2-D ideal-MHD regularity is open. Contracts no theorem produces are vacuous.",
+          "status": "Recorded; edits in Cycle 1",
+          "kind": "next"
+        },
+        {
+          "title": "Proof engineering",
+          "text": "A new skill: grind and fun_induction for short proofs, bv_decide only when no native axiom results, and large certificates built as explicit proof terms (the SubsetSum pattern).",
+          "status": "Skill added",
+          "kind": "next"
+        }
+      ],
+      "progress": "The plan, the corrections and the skill are documents. One reference Lean module (SubsetSum) joined the build. No new physics theorem.",
+      "boundary": "Nothing in the plan counts as evidence until a dated report records compiled Lean results.",
+      "evidence": [
+        {
+          "label": "Implementation plan",
+          "href": "implementation-plan.html"
+        },
+        {
+          "label": "20 October report",
+          "href": "progress.html"
+        }
+      ]
+    },
+    {
       "id": "next-run",
-      "eyebrow": "10 · Keep every step reviewable",
+      "eyebrow": "11 · Keep every step reviewable",
       "title": "The next run must leave evidence, not just a promise.",
-      "lead": "Next proof targets: global (Newcomb/Mercier) stability of the new equilibria, quasisymmetry defect bounds with guiding-centre averaging, and coil/free-boundary matching.",
+      "lead": "Next proof targets (Cycle 1): kernel laws for vacuum fields, radial heat transport and D-T power balance with sanity checks; the vacuum maximum principle; Elsässer and SBP identities; and a 0-D burning-plasma temperature window.",
       "cards": [
         {
           "title": "Implement & challenge",

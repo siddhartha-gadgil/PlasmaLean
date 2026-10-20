@@ -26,6 +26,7 @@ const pages = [
   { source: 'notes/design/vacuum-demonstrator.md', slug: 'vacuum-demonstrator', short: 'Vacuum demonstrator', group: 'Design', summary: 'Checked tolerance-aware calibration fixture, the CNT reference direction, and the remaining boundary to a practical stellarator.' },
   { source: 'notes/formalization/07-materials-and-engineering.md', slug: 'materials-and-engineering', short: 'Materials & engineering', group: 'Design', summary: 'Heat, stress, magnets, quench, neutronics, lifetime, power, and maintenance.' },
   { source: 'notes/formalization/08-roadmap.md', slug: 'roadmap', short: 'Roadmap', group: 'Program', summary: 'Evidence gates, the first coding sequence, research questions, and progress records.' },
+  { source: 'notes/implementation-plan.md', slug: 'implementation-plan', short: 'Implementation plan', group: 'Program', summary: 'Cyclic plan: theory tracks, certificate techniques, and a ladder of successively realistic models for confinement and burn temperature.' },
   { source: 'notes/formalization/09-literature.md', slug: 'literature', short: 'Literature', group: 'Program', summary: 'Primary sources, extraction discipline, software roles, and theorem reading order.' }
 ];
 
@@ -47,7 +48,7 @@ const overviewSections = [
   ['sanity', 'Boundary & sanity checks', []],
   ['theory', 'Theory engine & graphics', ['mhd-stability', 'verified-numerics']],
   ['references', 'Literature overview', ['literature']],
-  ['agent', 'AI discovery blueprint', ['roadmap']],
+  ['agent', 'AI discovery blueprint', ['roadmap', 'implementation-plan']],
   ['realization', 'Illustrative design studio', ['coils-and-design', 'vacuum-demonstrator', 'materials-and-engineering']]
 ];
 

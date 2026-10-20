@@ -26,7 +26,7 @@ Use the inequalities and soundness targets in `05-verified-numerics.md`. Failure
 
 ## Build a small sound checker
 
-Define certificate data independently of the search algorithm. Prove a theorem of the form `check c = true → ClaimedProperty (decode c)` using exact, kernel-checkable reasoning. Keep noncomputable analytic definitions behind soundness theorems and the decidable checker in the computational layer. Do not import native execution, GPU output, Python assertions, or an SMT success flag as an unchecked theorem.
+Define certificate data independently of the search algorithm. Prove a theorem of the form `check c = true → ClaimedProperty (decode c)` using exact, kernel-checkable reasoning. Keep noncomputable analytic definitions behind soundness theorems and the decidable checker in the computational layer. Do not import native execution, GPU output, Python assertions, or an SMT success flag as an unchecked theorem. For large certificates, prefer an inductive certificate predicate whose proof term is built step by step from the witness (the SubsetSum pattern) over one monolithic `decide +kernel` run; follow `plasmalean-lean-proofs`.
 
 Test valid and invalid certificate fixtures, including missing coverage, zero denominators, altered coefficients, omitted tail bounds, and contradictory intervals. Run the affected Lean build and inspect axioms of the public soundness theorem.
 

@@ -1,7 +1,7 @@
 [
   {
     "title": "Progress slideshow",
-    "section": "Evidence updated 2026-10-14 · Exact finite-pressure equilibria (toroidal Solov'ev and a nonaxisymmetric helical one) now satisfy the kernel force-balance law, with all-time full-orbit confinement theorems, filament Maxwell identities, and Suydam/Newcomb stability criteria with exact certificates. All are idealized symmetric models; no coil-produced stellarator is certified and no all-mode MHD stability is proved.",
+    "section": "Evidence updated 2026-10-20 · Planning run: a cyclic implementation plan (theory tracks, certificate techniques, model ladder for confinement and burn temperature), corrections to recent notes, and a Lean proof-engineering skill. No new physics theorem; the 14 October results (exact symmetric equilibria, symmetric confinement, Suydam/Newcomb) stand. No coil-produced stellarator or all-mode stability is certified.",
     "url": "slides.html",
     "text": "progress slideshow presentation latest run evidence vacuum fixture"
   },
@@ -9,7 +9,7 @@
     "title": "From a coil fixture to exact equilibria with proved confinement.",
     "section": "Progress slideshow",
     "url": "slides.html#where-we-are",
-    "text": "from a coil fixture to exact equilibria with proved confinement. plasmalean is building a lean library for stellarator design. this run proved exact finite-pressure equilibria — a toroidal solov'ev one and a nonaxisymmetric helical one — satisfying the kernel force-balance law, with all-time particle confinement theorems and suydam/newcomb stability criteria. p3 (confined orbits) and p4 (finite-pressure equilibrium) now have checked instances in idealized symmetric models; p5 has local and certificate-based building blocks. p2 for a coil design remains partial."
+    "text": "from a coil fixture to exact equilibria with proved confinement. plasmalean is building a lean library for stellarator design. its checked results (14 october) are exact finite-pressure equilibria, a toroidal solov'ev one and a nonaxisymmetric helical one, with all-time particle confinement theorems and suydam/newcomb stability criteria. the 20 october run added no theorem; it fixed an implementation plan that also targets keeping the plasma hot. p3 (confined orbits) and p4 (finite-pressure equilibrium) now have checked instances in idealized symmetric models; p5 has local and certificate-based building blocks. p2 for a coil design remains partial."
   },
   {
     "title": "Small assumptions. Reusable proofs. One candidate.",
@@ -66,10 +66,16 @@
     "text": "the remaining device work is explicit. the vacuum-fixture work packages remain, now joined by an equilibrium/stability track. a four-circular-coil, cnt-inspired architecture is a reference direction, not a certified design. reusable mathematics now spans fields, equilibria, local stability and symmetric confinement. no practical build or energization specification has been released."
   },
   {
+    "title": "Theory, techniques and a ladder of models — for confinement and for heat.",
+    "section": "Progress slideshow",
+    "url": "slides.html#implementation-plan",
+    "text": "theory, techniques and a ladder of models — for confinement and for heat. each cycle develops theory, turns theorems into sound certificate checkers, and applies them to the next rung of a model ladder. every rung must prove properties of both kinds: confinement (g1) and temperature held above burn conditions (g2). the plan, the corrections and the skill are documents. one reference lean module (subsetsum) joined the build. no new physics theorem."
+  },
+  {
     "title": "The next run must leave evidence, not just a promise.",
     "section": "Progress slideshow",
     "url": "slides.html#next-run",
-    "text": "the next run must leave evidence, not just a promise. next proof targets: global (newcomb/mercier) stability of the new equilibria, quasisymmetry defect bounds with guiding-centre averaging, and coil/free-boundary matching. the linked run records checked declarations, assumptions and validation. this slideshow is a summary of that evidence, not a new design certificate."
+    "text": "the next run must leave evidence, not just a promise. next proof targets (cycle 1): kernel laws for vacuum fields, radial heat transport and d-t power balance with sanity checks; the vacuum maximum principle; elsässer and sbp identities; and a 0-d burning-plasma temperature window. the linked run records checked declarations, assumptions and validation. this slideshow is a summary of that evidence, not a new design certificate."
   },
   {
     "title": "Stellarator concepts",
@@ -1374,6 +1380,150 @@
     "text": "r8 r8. scalable proof certificates for practical resolution r8. scalable proof certificates for practical resolution planning only — no lean code written"
   },
   {
+    "title": "Implementation plan",
+    "section": "Cyclic plan: theory tracks, certificate techniques, and a ladder of successively realistic models for confinement and burn temperature.",
+    "url": "implementation-plan.html",
+    "text": "implementation plan cyclic plan: theory tracks, certificate techniques, and a ladder of successively realistic models for confinement and burn temperature."
+  },
+  {
+    "title": "0. The two goals, and where we are",
+    "section": "Implementation plan",
+    "url": "implementation-plan.html#0-the-two-goals-and-where-we-are",
+    "text": "0. the two goals, and where we are implementation plan"
+  },
+  {
+    "title": "1. Corrections to the notes (do these first; formalizing them as written would be unsound)",
+    "section": "Implementation plan",
+    "url": "implementation-plan.html#1-corrections-to-the-notes-do-these-first-formalizing-them-as-written-would-be-unsound",
+    "text": "1. corrections to the notes (do these first; formalizing them as written would be unsound) implementation plan"
+  },
+  {
+    "title": "2. Three interacting layers",
+    "section": "Implementation plan",
+    "url": "implementation-plan.html#2-three-interacting-layers",
+    "text": "2. three interacting layers implementation plan"
+  },
+  {
+    "title": "2.1 Kernel extensions (minimal, typeclasses only, no axioms)",
+    "section": "Implementation plan",
+    "url": "implementation-plan.html#21-kernel-extensions-minimal-typeclasses-only-no-axioms",
+    "text": "2.1 kernel extensions (minimal, typeclasses only, no axioms) implementation plan"
+  },
+  {
+    "title": "3. Running a cycle (one \"run\" in the sense of domain-libraries.md)",
+    "section": "Implementation plan",
+    "url": "implementation-plan.html#3-running-a-cycle-one-run-in-the-sense-of-domain-librariesmd",
+    "text": "3. running a cycle (one \"run\" in the sense of domain-libraries.md) implementation plan"
+  },
+  {
+    "title": "4. Theory tracks (with technique companions)",
+    "section": "Implementation plan",
+    "url": "implementation-plan.html#4-theory-tracks-with-technique-companions",
+    "text": "4. theory tracks (with technique companions) implementation plan"
+  },
+  {
+    "title": "5. Model ladder (each rung proves characteristics under both G1 and G2)",
+    "section": "Implementation plan",
+    "url": "implementation-plan.html#5-model-ladder-each-rung-proves-characteristics-under-both-g1-and-g2",
+    "text": "5. model ladder (each rung proves characteristics under both g1 and g2) implementation plan"
+  },
+  {
+    "title": "6. Cycle schedule",
+    "section": "Implementation plan",
+    "url": "implementation-plan.html#6-cycle-schedule",
+    "text": "6. cycle schedule implementation plan"
+  },
+  {
+    "title": "Cycle 1: kernel for G2, corrections, quick wins",
+    "section": "Implementation plan",
+    "url": "implementation-plan.html#cycle-1-kernel-for-g2-corrections-quick-wins",
+    "text": "cycle 1: kernel for g2, corrections, quick wins implementation plan"
+  },
+  {
+    "title": "Cycle 2: radial transport barriers and ballooning (M2)",
+    "section": "Implementation plan",
+    "url": "implementation-plan.html#cycle-2-radial-transport-barriers-and-ballooning-m2",
+    "text": "cycle 2: radial transport barriers and ballooning (m2) implementation plan"
+  },
+  {
+    "title": "Cycle 3: guiding centre, near-axis QS, alphas (M4 start)",
+    "section": "Implementation plan",
+    "url": "implementation-plan.html#cycle-3-guiding-centre-near-axis-qs-alphas-m4-start",
+    "text": "cycle 3: guiding centre, near-axis qs, alphas (m4 start) implementation plan"
+  },
+  {
+    "title": "Cycle 4: validated equilibria (M3)",
+    "section": "Implementation plan",
+    "url": "implementation-plan.html#cycle-4-validated-equilibria-m3",
+    "text": "cycle 4: validated equilibria (m3) implementation plan"
+  },
+  {
+    "title": "Cycle 5: 3-D field lines and coils (M5)",
+    "section": "Implementation plan",
+    "url": "implementation-plan.html#cycle-5-3-d-field-lines-and-coils-m5",
+    "text": "cycle 5: 3-d field lines and coils (m5) implementation plan"
+  },
+  {
+    "title": "Cycle 6 and later: integration (M6) and research problems",
+    "section": "Implementation plan",
+    "url": "implementation-plan.html#cycle-6-and-later-integration-m6-and-research-problems",
+    "text": "cycle 6 and later: integration (m6) and research problems implementation plan"
+  },
+  {
+    "title": "7. Sub-agent prompt template (lane A or B)",
+    "section": "Implementation plan",
+    "url": "implementation-plan.html#7-sub-agent-prompt-template-lane-a-or-b",
+    "text": "7. sub-agent prompt template (lane a or b) implementation plan"
+  },
+  {
+    "title": "8. Definition of done for each cycle",
+    "section": "Implementation plan",
+    "url": "implementation-plan.html#8-definition-of-done-for-each-cycle",
+    "text": "8. definition of done for each cycle implementation plan"
+  },
+  {
+    "title": "M0 · Exact symmetric equilibria: slab, screw pinch, Solov'ev, helical",
+    "section": "Implementation plan · Lean verified — exact slab, screw-pinch, Solov'ev and helical equilibria with kernel force balance, all-time field-line/orbit confinement, Suydam both ways and screw-pinch Newcomb for 1 ≤ |m| ≤ 6 (idealized symmetric models).",
+    "url": "implementation-plan.html",
+    "text": "m0 exact symmetric equilibria: slab, screw pinch, solov'ev, helical 5. model ladder (each rung proves characteristics under both g1 and g2) lean verified — exact slab, screw-pinch, solov'ev and helical equilibria with kernel force balance, all-time field-line/orbit confinement, suydam both ways and screw-pinch newcomb for 1 ≤ |m| ≤ 6 (idealized symmetric models)."
+  },
+  {
+    "title": "M1 · 0-D burning D-T plasma at reactor scale (n ≈ 10²⁰ m⁻³, B = 5 T, V ≈ 1000 m³)",
+    "section": "Implementation plan · Planning only — no Lean code written",
+    "url": "implementation-plan.html",
+    "text": "m1 0-d burning d-t plasma at reactor scale (n ≈ 10²⁰ m⁻³, b = 5 t, v ≈ 1000 m³) 5. model ladder (each rung proves characteristics under both g1 and g2) planning only — no lean code written"
+  },
+  {
+    "title": "M2 · 1-D radial transport on the exact Solov'ev and helical geometries (V′(ψ) taken from the M0 fields), with χ ∈ [χ_min, χ_max] supplied",
+    "section": "Implementation plan · Planning only — no Lean code written",
+    "url": "implementation-plan.html",
+    "text": "m2 1-d radial transport on the exact solov'ev and helical geometries (v′(ψ) taken from the m0 fields), with χ ∈ [χ_min, χ_max] supplied 5. model ladder (each rung proves characteristics under both g1 and g2) planning only — no lean code written"
+  },
+  {
+    "title": "M3 · Validated (radii-polynomial) toroidal Grad–Shafranov equilibrium with realistic non-polynomial profiles; Newcomb for all m",
+    "section": "Implementation plan · Planning only — no Lean code written",
+    "url": "implementation-plan.html",
+    "text": "m3 validated (radii-polynomial) toroidal grad–shafranov equilibrium with realistic non-polynomial profiles; newcomb for all m 5. model ladder (each rung proves characteristics under both g1 and g2) planning only — no lean code written"
+  },
+  {
+    "title": "M4 · Near-axis quasisymmetric stellarator (Garren–Boozer to 2nd order, explicit ε_QS)",
+    "section": "Implementation plan · Planning only — no Lean code written",
+    "url": "implementation-plan.html",
+    "text": "m4 near-axis quasisymmetric stellarator (garren–boozer to 2nd order, explicit ε_qs) 5. model ladder (each rung proves characteristics under both g1 and g2) planning only — no lean code written"
+  },
+  {
+    "title": "M5 · Coil-produced 3-D field (filament Biot–Savart, existing) plus a DESC-validated finite-β equilibrium",
+    "section": "Implementation plan · Planning only — no Lean code written",
+    "url": "implementation-plan.html",
+    "text": "m5 coil-produced 3-d field (filament biot–savart, existing) plus a desc-validated finite-β equilibrium 5. model ladder (each rung proves characteristics under both g1 and g2) planning only — no lean code written"
+  },
+  {
+    "title": "M6 · Integrated candidate: coils + equilibrium + stability + transport + engineering margins",
+    "section": "Implementation plan · Planning only — no Lean code written",
+    "url": "implementation-plan.html",
+    "text": "m6 integrated candidate: coils + equilibrium + stability + transport + engineering margins 5. model ladder (each rung proves characteristics under both g1 and g2) planning only — no lean code written"
+  },
+  {
     "title": "Literature",
     "section": "Primary sources, extraction discipline, software roles, and theorem reading order.",
     "url": "literature.html",
@@ -1483,9 +1633,9 @@
   },
   {
     "title": "Verified progress",
-    "section": "Exact finite-pressure equilibria (toroidal Solov'ev and a nonaxisymmetric helical one) now satisfy the kernel force-balance law, with all-time full-orbit confinement theorems, filament Maxwell identities, and Suydam/Newcomb stability criteria with exact certificates. All are idealized symmetric models; no coil-produced stellarator is certified and no all-mode MHD stability is proved.",
+    "section": "Planning run: a cyclic implementation plan (theory tracks, certificate techniques, model ladder for confinement and burn temperature), corrections to recent notes, and a Lean proof-engineering skill. No new physics theorem; the 14 October results (exact symmetric equilibria, symmetric confinement, Suydam/Newcomb) stand. No coil-produced stellarator or all-mode stability is certified.",
     "url": "progress.html",
-    "text": "verified progress exact finite-pressure equilibria (toroidal solov'ev and a nonaxisymmetric helical one) now satisfy the kernel force-balance law, with all-time full-orbit confinement theorems, filament maxwell identities, and suydam/newcomb stability criteria with exact certificates. all are idealized symmetric models; no coil-produced stellarator is certified and no all-mode mhd stability is proved."
+    "text": "verified progress planning run: a cyclic implementation plan (theory tracks, certificate techniques, model ladder for confinement and burn temperature), corrections to recent notes, and a lean proof-engineering skill. no new physics theorem; the 14 october results (exact symmetric equilibria, symmetric confinement, suydam/newcomb) stand. no coil-produced stellarator or all-mode stability is certified."
   },
   {
     "title": "Outcome",
@@ -1494,10 +1644,16 @@
     "text": "outcome verified progress"
   },
   {
-    "title": "Implementation loops",
+    "title": "Validation",
     "section": "Verified progress",
-    "url": "progress.html#implementation-loops",
-    "text": "implementation loops verified progress"
+    "url": "progress.html#validation",
+    "text": "validation verified progress"
+  },
+  {
+    "title": "Earlier results retained",
+    "section": "Verified progress",
+    "url": "progress.html#earlier-results-retained",
+    "text": "earlier results retained verified progress"
   },
   {
     "title": "New checked results",
@@ -1524,16 +1680,10 @@
     "text": "assumption ledger verified progress"
   },
   {
-    "title": "Earlier results retained",
+    "title": "Results from earlier runs",
     "section": "Verified progress",
-    "url": "progress.html#earlier-results-retained",
-    "text": "earlier results retained verified progress"
-  },
-  {
-    "title": "Validation",
-    "section": "Verified progress",
-    "url": "progress.html#validation",
-    "text": "validation verified progress"
+    "url": "progress.html#results-from-earlier-runs",
+    "text": "results from earlier runs verified progress"
   },
   {
     "title": "Next boundary",

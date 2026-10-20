@@ -58,6 +58,7 @@ public import PlasmaLean.Design.HelicalEquilibrium
 public import PlasmaLean.Design.HelicalReactorScale
 public import PlasmaLean.Design.ScrewPinchExample
 public import PlasmaLean.Design.ScrewPinchModes
+public import PlasmaLean.SubsetSum
 
 /-!
 # PlasmaLean public library

@@ -6,6 +6,8 @@
 
 [14 October 2026: exact equilibria, interchange criteria and symmetric confinement](2026-10-14-progress.md).
 
+[20 October 2026: implementation plan, note corrections and proof-engineering skill](2026-10-20-progress.md).
+
 `status.json` is the per-task status source used to generate the website. Keep
 declarations, scope, build results and assumptions in the dated report; update
 the manifest only after the corresponding Lean result compiles. Unlisted tasks
