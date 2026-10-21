@@ -1,7 +1,7 @@
 {
   "updated": "2026-10-21",
-  "report": "2026-10-21-progress-9.md",
-  "summary": "All-time confinement of passing 3.5 MeV alpha guiding centres (μ = 0, both signs of v∥, one exact B₀R₀ ≈ 69 T·m; Littlejohn model) in an exact non-axisymmetric stellarator field, via verified KAM — a measure-zero set of alphas, not alpha confinement in general. Also: all-time field-line confinement in that field; a coil-produced field confining field lines for 52 transits; one consistent axisymmetric plasma with certified local stability up to ignition.",
+  "report": "2026-10-21-progress-10.md",
+  "summary": "Passing 3.5 MeV alpha guiding centres (μ = 0; Littlejohn model) confined for all time in an exact stellarator field for every B₀R₀ in [67.95, 69.99] T·m (robust in B₀R₀; still measure zero in velocity space), for both signs of v∥; μ > 0 passing identity; trapped-alpha bounce certificates. Also: all-time field-line confinement; a coil-produced field confining field lines for 52 transits; one consistent axisymmetric plasma with certified local stability up to ignition.",
   "tasks": {
     "model-contracts:I1": "Partially implemented — algebraic force balance and tangency; positive permeability and actual differential laws in the restricted slab model.",
     "model-contracts:I2": "Lean verified — uniform-field and nonzero-current force-free witnesses in the Cartesian slab model; not toroidal confinement.",

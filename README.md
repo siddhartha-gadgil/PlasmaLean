@@ -29,8 +29,8 @@ both confinement and keeping the plasma hot. Ten phases are complete:
   axis are **confined for all time**: a verified explicit-constant KAM theorem produces an exact
   invariant torus around the axis, and every field line starting inside it stays inside forever
   (field lines proved to exist and be unique; vacuum model field); passing 3.5 MeV alpha guiding
-  centres (μ = 0, either sign of v∥, one exact B₀R₀ ≈ 69 T·m, Littlejohn model) are also confined for all time
-  — a measure-zero set of alphas, not alpha confinement in general;
+  centres (μ = 0, either sign of v∥, Littlejohn model) are also confined for all time, for every
+  B₀R₀ ∈ [67.95, 69.99] T·m — robust in B₀R₀ but still measure zero in velocity space;
 - **coils:** a concrete set of closed polygonal coils produces a field whose lines near the axis
   are certified to stay confined for 52 toroidal transits;
 - **finite β without axisymmetry:** an explicit finite-pressure, non-axisymmetric toroidal
@@ -43,8 +43,8 @@ both confinement and keeping the plasma hot. Ten phases are complete:
 - **validation:** a slab Grad–Shafranov equilibrium with an exponential profile is validated;
 - **screw pinch:** all-mode Newcomb stability is proved.
 
-The library has 371 modules and 33964 audited declarations, using standard axioms only. See the
-[progress slideshow](docs/slides.html) and the [latest report](progress/2026-10-21-progress-9.md).
+The library has 486 modules and about 45k audited declarations, using standard axioms only. See the
+[progress slideshow](docs/slides.html) and the [latest report](progress/2026-10-21-progress-10.md).
 
 ## Code structure
 

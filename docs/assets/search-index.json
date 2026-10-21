@@ -1,15 +1,15 @@
 [
   {
     "title": "Progress slideshow",
-    "section": "Evidence updated 2026-10-21 · All-time confinement of passing 3.5 MeV alpha guiding centres (μ = 0, both signs of v∥, one exact B₀R₀ ≈ 69 T·m; Littlejohn model) in an exact non-axisymmetric stellarator field, via verified KAM — a measure-zero set of alphas, not alpha confinement in general. Also: all-time field-line confinement in that field; a coil-produced field confining field lines for 52 transits; one consistent axisymmetric plasma with certified local stability up to ignition.",
+    "section": "Evidence updated 2026-10-21 · Passing 3.5 MeV alpha guiding centres (μ = 0; Littlejohn model) confined for all time in an exact stellarator field for every B₀R₀ in [67.95, 69.99] T·m (robust in B₀R₀; still measure zero in velocity space), for both signs of v∥; μ > 0 passing identity; trapped-alpha bounce certificates. Also: all-time field-line confinement; a coil-produced field confining field lines for 52 transits; one consistent axisymmetric plasma with certified local stability up to ignition.",
     "url": "slides.html",
     "text": "progress slideshow presentation latest run evidence vacuum fixture"
   },
   {
-    "title": "Passing alpha guiding centres confined forever in an exact stellarator field.",
+    "title": "Alpha guiding centres confined forever — over a whole range of field strengths.",
     "section": "Progress slideshow",
     "url": "slides.html#where-we-are",
-    "text": "passing alpha guiding centres confined forever in an exact stellarator field. plasmalean is building a lean library for stellarator design. in an exact non-axisymmetric stellarator field, field lines and now passing 3.5 mev alpha guiding centres (μ = 0, at one value of b₀r₀) are proved confined for all time by a verified kam theorem; a coil set confines field lines for 52 transits; and one axisymmetric plasma has proved alpha confinement, a hot core and certified local stability. all-time field-line confinement in a genuine stellarator field (vacuum model); one consistent axisymmetric plasma with certified local stability; coil-produced confinement for one transit."
+    "text": "alpha guiding centres confined forever — over a whole range of field strengths. plasmalean is building a lean library for stellarator design. in an exact non-axisymmetric stellarator field, field lines and passing 3.5 mev alpha guiding centres (μ = 0, either sign of v∥) are proved confined for all time — now for every b₀r₀ in a ±1.5% range, not just one value; a coil set confines field lines for 52 transits; one axisymmetric plasma has proved alpha confinement, a hot core and certified local stability. all-time field-line confinement in a genuine stellarator field (vacuum model); one consistent axisymmetric plasma with certified local stability; coil-produced confinement for one transit."
   },
   {
     "title": "Small assumptions. Reusable proofs. One candidate.",
@@ -156,6 +156,12 @@
     "text": "passing 3.5 mev alpha guiding centres never leave the torus. with the exact torus of the guiding-centre field b + (1/256)∇×b and b*∥ = |b|, every μ = 0 littlejohn orbit of a 3.5 mev alpha with v∥ > 0 that starts inside the torus — in the stellarator field scaled to b₀r₀ ≈ 69 t·m — stays inside for all time, and such orbits exist from every interior point. 7 new modules finishing the guiding-centre route (generic flowtorus layer, star-shapedness certificates, orbit-to-field-line reduction)."
   },
   {
+    "title": "A family of exact tori over a range of B₀R₀.",
+    "section": "Progress slideshow",
+    "url": "slides.html#robust-alpha",
+    "text": "a family of exact tori over a range of b₀r₀. a chebyshev-in-ρ family of approximate tori, certified uniformly by kronecker-ball arithmetic, gives an exact invariant torus of the guiding-centre field for every ρ_s in an interval — hence all-time confinement of passing alpha guiding centres for every b₀r₀ ∈ [67.95, 69.99] t·m. a second torus covers v∥ < 0. about 90 new modules (mostly certificates)."
+  },
+  {
     "title": "Theory, techniques and a ladder of models — for confinement and for heat.",
     "section": "Progress slideshow",
     "url": "slides.html#implementation-plan",
@@ -165,7 +171,7 @@
     "title": "The next run must leave evidence, not just a promise.",
     "section": "Progress slideshow",
     "url": "slides.html#next-run",
-    "text": "the next run must leave evidence, not just a promise. next: robustness of alpha confinement over an interval of energies and b₀r₀ (parameter-dependent kam); v∥ < 0 and μ > 0; sharp complex bounds for coil-produced kam; stepped-pressure finite β. the linked run records checked declarations, assumptions and validation. this slideshow is a summary of that evidence, not a new design certificate."
+    "text": "the next run must leave evidence, not just a promise. next: all alpha energies 0–3.5 mev; μ > 0 passing tori (positive measure in velocity space); trapped-alpha oscillatory enclosure; a mercier-stable finite-β region; sharp complex bounds for coil kam. the linked run records checked declarations, assumptions and validation. this slideshow is a summary of that evidence, not a new design certificate."
   },
   {
     "title": "Stellarator concepts",
@@ -1698,6 +1704,18 @@
     "text": "both signs of v∥, and μ > 0 identity, 21 october 2026 implementation plan"
   },
   {
+    "title": "10. Phases after Phase 10 (plan of record, 21 October 2026)",
+    "section": "Implementation plan",
+    "url": "implementation-plan.html#10-phases-after-phase-10-plan-of-record-21-october-2026",
+    "text": "10. phases after phase 10 (plan of record, 21 october 2026) implementation plan"
+  },
+  {
+    "title": "Phase 11 part 1, 21 October 2026 — report",
+    "section": "Implementation plan",
+    "url": "implementation-plan.html#phase-11-part-1-21-october-2026-report",
+    "text": "phase 11 part 1, 21 october 2026 — report implementation plan"
+  },
+  {
     "title": "M0 · Exact symmetric equilibria: slab, screw pinch, Solov'ev, helical",
     "section": "Implementation plan · Lean verified — exact slab, screw-pinch, Solov'ev and helical equilibria with kernel force balance, all-time field-line/orbit confinement, Suydam both ways and screw-pinch Newcomb for 1 ≤ |m| ≤ 6 (idealized symmetric models).",
     "url": "implementation-plan.html",
@@ -1849,9 +1867,9 @@
   },
   {
     "title": "Verified progress",
-    "section": "All-time confinement of passing 3.5 MeV alpha guiding centres (μ = 0, both signs of v∥, one exact B₀R₀ ≈ 69 T·m; Littlejohn model) in an exact non-axisymmetric stellarator field, via verified KAM — a measure-zero set of alphas, not alpha confinement in general. Also: all-time field-line confinement in that field; a coil-produced field confining field lines for 52 transits; one consistent axisymmetric plasma with certified local stability up to ignition.",
+    "section": "Passing 3.5 MeV alpha guiding centres (μ = 0; Littlejohn model) confined for all time in an exact stellarator field for every B₀R₀ in [67.95, 69.99] T·m (robust in B₀R₀; still measure zero in velocity space), for both signs of v∥; μ > 0 passing identity; trapped-alpha bounce certificates. Also: all-time field-line confinement; a coil-produced field confining field lines for 52 transits; one consistent axisymmetric plasma with certified local stability up to ignition.",
     "url": "progress.html",
-    "text": "verified progress all-time confinement of passing 3.5 mev alpha guiding centres (μ = 0, both signs of v∥, one exact b₀r₀ ≈ 69 t·m; littlejohn model) in an exact non-axisymmetric stellarator field, via verified kam — a measure-zero set of alphas, not alpha confinement in general. also: all-time field-line confinement in that field; a coil-produced field confining field lines for 52 transits; one consistent axisymmetric plasma with certified local stability up to ignition."
+    "text": "verified progress passing 3.5 mev alpha guiding centres (μ = 0; littlejohn model) confined for all time in an exact stellarator field for every b₀r₀ in [67.95, 69.99] t·m (robust in b₀r₀; still measure zero in velocity space), for both signs of v∥; μ > 0 passing identity; trapped-alpha bounce certificates. also: all-time field-line confinement; a coil-produced field confining field lines for 52 transits; one consistent axisymmetric plasma with certified local stability up to ignition."
   },
   {
     "title": "Outcome",

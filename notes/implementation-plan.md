@@ -411,3 +411,12 @@ Each cycle is a run. The targets are listed in priority order; anything left ove
   - route B: validated search for Mercier-stable regions of the Landreman families;
   - route A: stepped pressure across the exact KAM torus.
 - **Later:** the integrated stellarator candidate (M6) and engineering constraints.
+
+### Phase 11 part 1, 21 October 2026 — [report](https://github.com/siddhartha-gadgil/PlasmaLean/blob/main/progress/2026-10-21-progress-10.md)
+
+- **Done:**
+  - Alpha guiding centres (μ = 0) confined forever for every B₀R₀ ∈ [67.95, 69.99] T·m (a positive-measure range), reviewed sound.
+  - Both signs of v∥.
+  - The μ > 0 passing identity.
+  - Trapped-alpha bounce period and reference orbits.
+- **Negative:** the re-anchored trapped-alpha bound cannot close with absolute amplitudes.

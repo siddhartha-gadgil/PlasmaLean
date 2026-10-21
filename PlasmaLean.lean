@@ -226,6 +226,7 @@ public import PlasmaLean.Design.RationalStellaratorGCTorusReal
 public import PlasmaLean.Design.RationalStellaratorGCConfined
 public import PlasmaLean.Theory.KAM.DiophantineB
 public import PlasmaLean.Design.RationalStellaratorGCNegConfined
+public import PlasmaLean.Design.RationalStellaratorGCFamily
 
 /-!
 # PlasmaLean public library

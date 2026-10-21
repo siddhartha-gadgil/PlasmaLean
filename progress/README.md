@@ -54,3 +54,5 @@ dated evidence. Run `node scripts/check_site.mjs` before handing off the update.
 [21 October 2026: exact guiding-centre invariant torus for alphas; coil-KAM blocked](2026-10-21-progress-8.md).
 
 [21 October 2026: all-time confinement of passing 3.5 MeV alpha guiding centres in an exact stellarator field](2026-10-21-progress-9.md).
+
+[21 October 2026, Phase 11 part 1: robust alpha confinement over a range of B₀R₀; both signs; μ > 0 identity; trapped progress](2026-10-21-progress-10.md).

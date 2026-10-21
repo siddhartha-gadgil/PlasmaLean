@@ -1,21 +1,21 @@
 {
   "updated": "2026-10-21",
-  "report": "2026-10-21-progress-9.md",
+  "report": "2026-10-21-progress-10.md",
   "status": "Exact symmetric equilibria with all-time orbit confinement · Local stability criteria · Not a coil-produced stellarator · Not a construction release.",
   "slides": [
     {
       "id": "where-we-are",
       "eyebrow": "Progress briefing · alphas confined in a stellarator field",
-      "title": "Passing alpha guiding centres confined forever in an exact stellarator field.",
-      "lead": "PlasmaLean is building a Lean library for stellarator design. In an exact non-axisymmetric stellarator field, field lines and now passing 3.5 MeV alpha guiding centres (μ = 0, at one value of B₀R₀) are proved confined for all time by a verified KAM theorem; a coil set confines field lines for 52 transits; and one axisymmetric plasma has proved alpha confinement, a hot core and certified local stability.",
+      "title": "Alpha guiding centres confined forever — over a whole range of field strengths.",
+      "lead": "PlasmaLean is building a Lean library for stellarator design. In an exact non-axisymmetric stellarator field, field lines and passing 3.5 MeV alpha guiding centres (μ = 0, either sign of v∥) are proved confined for all time — now for every B₀R₀ in a ±1.5% range, not just one value; a coil set confines field lines for 52 transits; one axisymmetric plasma has proved alpha confinement, a hot core and certified local stability.",
       "metrics": [
         {
-          "value": "371",
+          "value": "486",
           "label": "Lean modules"
         },
         {
-          "value": "∞",
-          "label": "confinement time for passing alpha guiding centres (μ = 0, one B₀R₀)"
+          "value": "[67.95, 69.99] T·m",
+          "label": "B₀R₀ range with all-time alpha guiding-centre confinement"
         },
         {
           "value": "52",
@@ -23,7 +23,7 @@
         }
       ],
       "progress": "All-time field-line confinement in a genuine stellarator field (vacuum model); one consistent axisymmetric plasma with certified local stability; coil-produced confinement for one transit.",
-      "boundary": "The alpha result is a measure-zero set (μ = 0, full parallel energy, v∥ > 0, one exact B₀R₀) under the supplied Littlejohn model, in the vacuum model field; coil-produced all-time confinement is blocked; finite-β non-axisymmetric equilibria Mercier-unstable.",
+      "boundary": "Alpha results: μ = 0 only (measure zero in velocity space), Littlejohn model supplied, vacuum model field; trapped alphas only 1.8×10⁻⁴ s in near-QA; coil-produced all-time confinement blocked; finite-β non-axisymmetric equilibria Mercier-unstable.",
       "evidence": [
         {
           "label": "Latest report",
@@ -1051,8 +1051,50 @@
       ]
     },
     {
+      "id": "robust-alpha",
+      "eyebrow": "25 · Phase 11: robust alpha confinement",
+      "title": "A family of exact tori over a range of B₀R₀.",
+      "lead": "A Chebyshev-in-ρ family of approximate tori, certified uniformly by Kronecker-ball arithmetic, gives an exact invariant torus of the guiding-centre field for every ρ_s in an interval — hence all-time confinement of passing alpha guiding centres for every B₀R₀ ∈ [67.95, 69.99] T·m. A second torus covers v∥ < 0.",
+      "cards": [
+        {
+          "title": "Robust in B₀R₀",
+          "text": "Uniform KAM constants over the cell (smallness 0.073); profile 0.03 ≤ P ≤ 0.255; ≈ 15 CPU-minutes. Reviewed independently: sound.",
+          "status": "Lean verified",
+          "kind": "checked"
+        },
+        {
+          "title": "Both signs, μ > 0 identity",
+          "text": "ι_B torus for v∥ < 0; for μ > 0 passing orbits the grad-B drift is absorbed exactly into B + ∇×(ρ_{E,μ}b) — the KAM torus for that field is next.",
+          "status": "Lean verified / pending torus",
+          "kind": "partial"
+        },
+        {
+          "title": "Trapped alphas",
+          "text": "Exact-QA all-time; near-QA 1.8×10⁻⁴ s proved; bounce period ≤ 83 μs; the re-anchored bound cannot close with absolute amplitudes — oscillatory enclosure in progress.",
+          "status": "Partial + negative",
+          "kind": "partial"
+        }
+      ],
+      "progress": "About 90 new modules (mostly certificates).",
+      "boundary": "Still μ = 0 for confinement theorems; supplied guiding-centre model.",
+      "evidence": [
+        {
+          "label": "New checked results",
+          "href": "progress.html#new-checked-results"
+        },
+        {
+          "label": "Quantitative certificates",
+          "href": "progress.html#quantitative-certificates"
+        },
+        {
+          "label": "Implementation plan",
+          "href": "implementation-plan.html"
+        }
+      ]
+    },
+    {
       "id": "implementation-plan",
-      "eyebrow": "25 · Plan of record",
+      "eyebrow": "26 · Plan of record",
       "title": "Theory, techniques and a ladder of models — for confinement and for heat.",
       "lead": "Each cycle develops theory, turns theorems into sound certificate checkers, and applies them to the next rung of a model ladder. Every rung must prove properties of both kinds: confinement (G1) and temperature held above burn conditions (G2).",
       "cards": [
@@ -1096,9 +1138,9 @@
     },
     {
       "id": "next-run",
-      "eyebrow": "26 · Keep every step reviewable",
+      "eyebrow": "27 · Keep every step reviewable",
       "title": "The next run must leave evidence, not just a promise.",
-      "lead": "Next: robustness of alpha confinement over an interval of energies and B₀R₀ (parameter-dependent KAM); v∥ < 0 and μ > 0; sharp complex bounds for coil-produced KAM; stepped-pressure finite β.",
+      "lead": "Next: all alpha energies 0–3.5 MeV; μ > 0 passing tori (positive measure in velocity space); trapped-alpha oscillatory enclosure; a Mercier-stable finite-β region; sharp complex bounds for coil KAM.",
       "cards": [
         {
           "title": "Implement & challenge",
