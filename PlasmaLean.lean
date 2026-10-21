@@ -193,6 +193,12 @@ public import PlasmaLean.Theory.KAM.PolyExprS
 public import PlasmaLean.Theory.KAM.StripPaleyWiener
 public import PlasmaLean.Theory.Fields.BiotSavartComplex
 public import PlasmaLean.Theory.KAM.AnalyticComposition
+public import PlasmaLean.Theory.KAM.AnalyticCompositionLip
+public import PlasmaLean.Theory.KAM.CauchyTwoVar
+public import PlasmaLean.Theory.KAM.FourierSumHolo
+public import PlasmaLean.Theory.KAM.TorusFieldAna
+public import PlasmaLean.Design.CoilFieldComplex
+public import PlasmaLean.Design.CoilFieldComplexDist
 
 /-!
 # PlasmaLean public library
