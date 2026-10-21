@@ -1,25 +1,25 @@
 {
   "updated": "2026-10-21",
-  "report": "2026-10-21-progress-6.md",
+  "report": "2026-10-21-progress-7.md",
   "status": "Exact symmetric equilibria with all-time orbit confinement · Local stability criteria · Not a coil-produced stellarator · Not a construction release.",
   "slides": [
     {
       "id": "where-we-are",
       "eyebrow": "Progress briefing · Phase 10: confined forever",
       "title": "Field lines of an exact stellarator field, confined for all time — by a verified KAM theorem.",
-      "lead": "PlasmaLean is building a Lean library for stellarator design. Phase 10 proves that every magnetic field line starting inside an explicit torus around the axis of an exact non-axisymmetric stellarator field stays inside it forever, via a fully verified KAM theorem with explicit constants. Earlier phases joined confinement and burn temperature for one axisymmetric plasma with certified local stability, and certified a coil-produced stellarator field for one transit.",
+      "lead": "PlasmaLean is building a Lean library for stellarator design. Field lines of an exact non-axisymmetric stellarator field are proved confined for all time by a verified KAM theorem, and a concrete set of closed polygonal coils is certified to confine field lines for 52 toroidal transits. Earlier phases joined confinement and burn temperature for one axisymmetric plasma with certified local stability.",
       "metrics": [
         {
-          "value": "232",
+          "value": "280",
           "label": "Lean modules"
         },
         {
-          "value": "21297",
+          "value": "26045",
           "label": "Project declarations in the last axiom audit"
         },
         {
-          "value": "∞",
-          "label": "field-line confinement time in the exact stellarator field"
+          "value": "52",
+          "label": "certified transits for a coil-produced field"
         }
       ],
       "progress": "All-time field-line confinement in a genuine stellarator field (vacuum model); one consistent axisymmetric plasma with certified local stability; coil-produced confinement for one transit.",
@@ -848,8 +848,8 @@
       "cards": [
         {
           "title": "Coil-produced confinement",
-          "text": "Exact segment fields; C¹ corner parametrization; coils avoid the region; certified frontier error; maximum principle; defect confinement. One transit, zero margin; existence of field lines assumed.",
-          "status": "Lean verified (1 transit)",
+          "text": "Exact segment fields; C¹ corner parametrization; coils avoid the region; certified frontier error; maximum principle; defect confinement. One transit, zero margin; existence of field lines assumed. Later raised to 52 transits with a cubic-interpolation certificate (error 3.2×10⁻⁶).",
+          "status": "Lean verified (1 → 52 transits)",
           "kind": "checked"
         },
         {

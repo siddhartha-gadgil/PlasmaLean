@@ -30,7 +30,7 @@ both confinement and keeping the plasma hot. Ten phases are complete:
   invariant torus around the axis, and every field line starting inside it stays inside forever
   (field lines proved to exist and be unique; vacuum model field);
 - **coils:** a concrete set of closed polygonal coils produces a field whose lines near the axis
-  are certified to stay confined for one toroidal transit (zero margin);
+  are certified to stay confined for 52 toroidal transits;
 - **finite β without axisymmetry:** an explicit finite-pressure, non-axisymmetric toroidal
   equilibria (Landreman families 1 and 2, the latter with proved shear; idealized) satisfy the
   kernel force balance, but are Mercier-unstable (family 1 proved, family 2 numerically);
@@ -41,8 +41,8 @@ both confinement and keeping the plasma hot. Ten phases are complete:
 - **validation:** a slab Grad–Shafranov equilibrium with an exponential profile is validated;
 - **screw pinch:** all-mode Newcomb stability is proved.
 
-The library has 232 modules and 21297 audited declarations, using standard axioms only. See the
-[progress slideshow](docs/slides.html) and the [latest report](progress/2026-10-21-progress-6.md).
+The library has 280 modules and 26045 audited declarations, using standard axioms only. See the
+[progress slideshow](docs/slides.html) and the [latest report](progress/2026-10-21-progress-7.md).
 
 ## Code structure
 
