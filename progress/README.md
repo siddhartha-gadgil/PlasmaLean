@@ -50,3 +50,5 @@ dated evidence. Run `node scripts/check_site.mjs` before handing off the update.
 [21 October 2026, Phase 10 addendum: field-line existence — all-time confinement without hypotheses](2026-10-21-progress-6.md).
 
 [21 October 2026: coil-produced field confined for 52 transits; generic KAM; guiding-centre groundwork](2026-10-21-progress-7.md).
+
+[21 October 2026: exact guiding-centre invariant torus for alphas; coil-KAM blocked](2026-10-21-progress-8.md).

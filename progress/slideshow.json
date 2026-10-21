@@ -1,32 +1,32 @@
 {
   "updated": "2026-10-21",
-  "report": "2026-10-21-progress-7.md",
+  "report": "2026-10-21-progress-8.md",
   "status": "Exact symmetric equilibria with all-time orbit confinement · Local stability criteria · Not a coil-produced stellarator · Not a construction release.",
   "slides": [
     {
       "id": "where-we-are",
-      "eyebrow": "Progress briefing · Phase 10: confined forever",
-      "title": "Field lines of an exact stellarator field, confined for all time — by a verified KAM theorem.",
-      "lead": "PlasmaLean is building a Lean library for stellarator design. Field lines of an exact non-axisymmetric stellarator field are proved confined for all time by a verified KAM theorem, and a concrete set of closed polygonal coils is certified to confine field lines for 52 toroidal transits. Earlier phases joined confinement and burn temperature for one axisymmetric plasma with certified local stability.",
+      "eyebrow": "Progress briefing · toward confined fusion alphas",
+      "title": "An exact invariant torus for 3.5 MeV alpha guiding centres in a stellarator field.",
+      "lead": "PlasmaLean is building a Lean library for stellarator design. Field lines of an exact stellarator field are confined forever, a coil set confines field lines for 52 transits, and now the guiding-centre field of passing 3.5 MeV alphas has an exact invariant torus — the key step toward their all-time confinement. Coil-produced all-time confinement was found blocked and is recorded honestly.",
       "metrics": [
         {
-          "value": "280",
+          "value": "364",
           "label": "Lean modules"
         },
         {
-          "value": "26045",
+          "value": "33506",
           "label": "Project declarations in the last axiom audit"
         },
         {
-          "value": "52",
-          "label": "certified transits for a coil-produced field"
+          "value": "≈1470",
+          "label": "KAM smallness margin for the alpha guiding-centre torus"
         }
       ],
       "progress": "All-time field-line confinement in a genuine stellarator field (vacuum model); one consistent axisymmetric plasma with certified local stability; coil-produced confinement for one transit.",
-      "boundary": "Field lines, not particles; vacuum field, not coil-produced or finite β; finite-β non-axisymmetric equilibria in the library are Mercier-unstable.",
+      "boundary": "Alpha trapping theorem still in progress; guiding-centre (Littlejohn) model supplied, μ = 0 only; coil-produced all-time confinement blocked; vacuum field; finite-β non-axisymmetric equilibria Mercier-unstable.",
       "evidence": [
         {
-          "label": "Phase 10 report",
+          "label": "Latest report",
           "href": "progress.html"
         },
         {
@@ -967,8 +967,50 @@
       ]
     },
     {
+      "id": "gc-torus",
+      "eyebrow": "23 · Guiding centres and coils",
+      "title": "An exact torus for alpha guiding centres; coils need new analysis.",
+      "lead": "Passing (μ = 0) guiding centres follow field lines of B + ρ_s∇×b. For 3.5 MeV alphas at B₀R₀ ≈ 69 T·m (ρ_s = 1/256) this field has an exact invariant torus, proved with a KAM theorem extended to an inverse-square-root node. The analogous result for the coil-produced field is blocked by a 39-order-of-magnitude gap.",
+      "cards": [
+        {
+          "title": "Guiding-centre torus",
+          "text": "Residual ≤ 3.7×10⁻²³, twist ≈ 0.44, node validity 0.286 < 1, smallness margin ≈ 1470; exact analytic torus 10⁻¹²-close; C² real form. Trapping and the alpha corollary are in progress.",
+          "status": "Lean verified (torus)",
+          "kind": "checked"
+        },
+        {
+          "title": "Coil KAM: blocked",
+          "text": "Cauchy formula in two variables, complex coil field, Paley–Wiener sampling certificates and a full residual pipeline — but the certified residual is ≈10⁹ against ≈10⁻³⁰ needed. Paused as research.",
+          "status": "Negative result recorded",
+          "kind": "partial"
+        },
+        {
+          "title": "Next",
+          "text": "All-time confinement of passing alpha guiding centres; sharp complex bounds for coils; finite β across the torus.",
+          "status": "In progress",
+          "kind": "next"
+        }
+      ],
+      "progress": "About 75 new modules (many certificates); the vacuous coil certificate is committed but excluded from the default build.",
+      "boundary": "Littlejohn model supplied; μ = 0 only; coil-produced all-time confinement not achieved.",
+      "evidence": [
+        {
+          "label": "New checked results",
+          "href": "progress.html#new-checked-results"
+        },
+        {
+          "label": "Corrections",
+          "href": "progress.html#corrections-and-challenged-claims"
+        },
+        {
+          "label": "Implementation plan",
+          "href": "implementation-plan.html"
+        }
+      ]
+    },
+    {
       "id": "implementation-plan",
-      "eyebrow": "23 · Plan of record",
+      "eyebrow": "24 · Plan of record",
       "title": "Theory, techniques and a ladder of models — for confinement and for heat.",
       "lead": "Each cycle develops theory, turns theorems into sound certificate checkers, and applies them to the next rung of a model ladder. Every rung must prove properties of both kinds: confinement (G1) and temperature held above burn conditions (G2).",
       "cards": [
@@ -1012,9 +1054,9 @@
     },
     {
       "id": "next-run",
-      "eyebrow": "24 · Keep every step reviewable",
+      "eyebrow": "25 · Keep every step reviewable",
       "title": "The next run must leave evidence, not just a promise.",
-      "lead": "Next: all-time confinement for a coil-produced stellarator field; field-line existence; a stable finite-β stellarator via stepped pressure across the exact torus; guiding-centre particle confinement in the exact field.",
+      "lead": "Next: all-time confinement of passing 3.5 MeV alpha guiding centres in the exact stellarator field; sharp complex field bounds for coil-produced KAM; stepped-pressure finite β across the exact torus; trapped particles.",
       "cards": [
         {
           "title": "Implement & challenge",

@@ -382,3 +382,8 @@ Each cycle is a run. The targets are listed in priority order; anything left ove
 - **Coil-produced field:** confinement certified for **52 transits** (cubic interpolation certificate; reviewed sound).
 - **Groundwork:** generic KAM `FlowField`; Littlejohn guiding-centre transfer; inverse-square-root expressions.
 - **In progress:** guiding-centre KAM.
+
+### Guiding-centre torus and coil-KAM status, 21 October 2026 — [report](https://github.com/siddhartha-gadgil/PlasmaLean/blob/main/progress/2026-10-21-progress-8.md)
+
+- **Exact invariant torus of the guiding-centre field** for 3.5 MeV alphas at B₀R₀ ≈ 69 T·m (smallness margin ≈ 1470). The trapping and alpha corollary are in progress.
+- **Coil-produced all-time confinement is blocked:** the certified residual is ≈ 10⁹ vs ≈ 10⁻³⁰ needed. This is paused as research.

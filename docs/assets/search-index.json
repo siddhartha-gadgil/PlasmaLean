@@ -1,15 +1,15 @@
 [
   {
     "title": "Progress slideshow",
-    "section": "Evidence updated 2026-10-21 · Coil-produced stellarator field certified to confine field lines for 52 toroidal transits (closed polygonal coils; cubic-interpolation certificate); all-time field-line confinement in the exact stellarator field (verified KAM, no remaining hypotheses); generic KAM and guiding-centre groundwork. Earlier: one consistent axisymmetric plasma with certified local stability up to ignition; finite-β non-axisymmetric equilibria (Mercier-unstable).",
+    "section": "Evidence updated 2026-10-21 · An exact invariant torus of the guiding-centre field for 3.5 MeV alphas (μ = 0, Littlejohn model) in the exact stellarator field, via a verified KAM theorem with an inverse-square-root node; coil-produced all-time confinement found blocked (certified residual vacuous). Earlier: all-time field-line confinement in the exact stellarator field; a coil-produced field confining field lines for 52 transits; one consistent axisymmetric plasma with certified local stability up to ignition.",
     "url": "slides.html",
     "text": "progress slideshow presentation latest run evidence vacuum fixture"
   },
   {
-    "title": "Field lines of an exact stellarator field, confined for all time — by a verified KAM theorem.",
+    "title": "An exact invariant torus for 3.5 MeV alpha guiding centres in a stellarator field.",
     "section": "Progress slideshow",
     "url": "slides.html#where-we-are",
-    "text": "field lines of an exact stellarator field, confined for all time — by a verified kam theorem. plasmalean is building a lean library for stellarator design. field lines of an exact non-axisymmetric stellarator field are proved confined for all time by a verified kam theorem, and a concrete set of closed polygonal coils is certified to confine field lines for 52 toroidal transits. earlier phases joined confinement and burn temperature for one axisymmetric plasma with certified local stability. all-time field-line confinement in a genuine stellarator field (vacuum model); one consistent axisymmetric plasma with certified local stability; coil-produced confinement for one transit."
+    "text": "an exact invariant torus for 3.5 mev alpha guiding centres in a stellarator field. plasmalean is building a lean library for stellarator design. field lines of an exact stellarator field are confined forever, a coil set confines field lines for 52 transits, and now the guiding-centre field of passing 3.5 mev alphas has an exact invariant torus — the key step toward their all-time confinement. coil-produced all-time confinement was found blocked and is recorded honestly. all-time field-line confinement in a genuine stellarator field (vacuum model); one consistent axisymmetric plasma with certified local stability; coil-produced confinement for one transit."
   },
   {
     "title": "Small assumptions. Reusable proofs. One candidate.",
@@ -144,6 +144,12 @@
     "text": "an exact invariant torus, and field lines trapped for all time. a verified kam theorem turns the certified approximate torus (error 10⁻²²) into an exact real-analytic invariant torus of the stellarator field with rotational transform (75 + √5)/562. by the torus-trapping theorem, every field line starting inside it — at least 0.077 r₀ from the axis — stays inside forever. 17 new modules completing the kam route; the frame-transport assumption from part 3 is now derived."
   },
   {
+    "title": "An exact torus for alpha guiding centres; coils need new analysis.",
+    "section": "Progress slideshow",
+    "url": "slides.html#gc-torus",
+    "text": "an exact torus for alpha guiding centres; coils need new analysis. passing (μ = 0) guiding centres follow field lines of b + ρ_s∇×b. for 3.5 mev alphas at b₀r₀ ≈ 69 t·m (ρ_s = 1/256) this field has an exact invariant torus, proved with a kam theorem extended to an inverse-square-root node. the analogous result for the coil-produced field is blocked by a 39-order-of-magnitude gap. about 75 new modules (many certificates); the vacuous coil certificate is committed but excluded from the default build."
+  },
+  {
     "title": "Theory, techniques and a ladder of models — for confinement and for heat.",
     "section": "Progress slideshow",
     "url": "slides.html#implementation-plan",
@@ -153,7 +159,7 @@
     "title": "The next run must leave evidence, not just a promise.",
     "section": "Progress slideshow",
     "url": "slides.html#next-run",
-    "text": "the next run must leave evidence, not just a promise. next: all-time confinement for a coil-produced stellarator field; field-line existence; a stable finite-β stellarator via stepped pressure across the exact torus; guiding-centre particle confinement in the exact field. the linked run records checked declarations, assumptions and validation. this slideshow is a summary of that evidence, not a new design certificate."
+    "text": "the next run must leave evidence, not just a promise. next: all-time confinement of passing 3.5 mev alpha guiding centres in the exact stellarator field; sharp complex field bounds for coil-produced kam; stepped-pressure finite β across the exact torus; trapped particles. the linked run records checked declarations, assumptions and validation. this slideshow is a summary of that evidence, not a new design certificate."
   },
   {
     "title": "Stellarator concepts",
@@ -1668,6 +1674,12 @@
     "text": "coil certificate and gc groundwork, 21 october 2026 — report implementation plan"
   },
   {
+    "title": "Guiding-centre torus and coil-KAM status, 21 October 2026 — report",
+    "section": "Implementation plan",
+    "url": "implementation-plan.html#guiding-centre-torus-and-coil-kam-status-21-october-2026-report",
+    "text": "guiding-centre torus and coil-kam status, 21 october 2026 — report implementation plan"
+  },
+  {
     "title": "M0 · Exact symmetric equilibria: slab, screw pinch, Solov'ev, helical",
     "section": "Implementation plan · Lean verified — exact slab, screw-pinch, Solov'ev and helical equilibria with kernel force balance, all-time field-line/orbit confinement, Suydam both ways and screw-pinch Newcomb for 1 ≤ |m| ≤ 6 (idealized symmetric models).",
     "url": "implementation-plan.html",
@@ -1819,9 +1831,9 @@
   },
   {
     "title": "Verified progress",
-    "section": "Coil-produced stellarator field certified to confine field lines for 52 toroidal transits (closed polygonal coils; cubic-interpolation certificate); all-time field-line confinement in the exact stellarator field (verified KAM, no remaining hypotheses); generic KAM and guiding-centre groundwork. Earlier: one consistent axisymmetric plasma with certified local stability up to ignition; finite-β non-axisymmetric equilibria (Mercier-unstable).",
+    "section": "An exact invariant torus of the guiding-centre field for 3.5 MeV alphas (μ = 0, Littlejohn model) in the exact stellarator field, via a verified KAM theorem with an inverse-square-root node; coil-produced all-time confinement found blocked (certified residual vacuous). Earlier: all-time field-line confinement in the exact stellarator field; a coil-produced field confining field lines for 52 transits; one consistent axisymmetric plasma with certified local stability up to ignition.",
     "url": "progress.html",
-    "text": "verified progress coil-produced stellarator field certified to confine field lines for 52 toroidal transits (closed polygonal coils; cubic-interpolation certificate); all-time field-line confinement in the exact stellarator field (verified kam, no remaining hypotheses); generic kam and guiding-centre groundwork. earlier: one consistent axisymmetric plasma with certified local stability up to ignition; finite-β non-axisymmetric equilibria (mercier-unstable)."
+    "text": "verified progress an exact invariant torus of the guiding-centre field for 3.5 mev alphas (μ = 0, littlejohn model) in the exact stellarator field, via a verified kam theorem with an inverse-square-root node; coil-produced all-time confinement found blocked (certified residual vacuous). earlier: all-time field-line confinement in the exact stellarator field; a coil-produced field confining field lines for 52 transits; one consistent axisymmetric plasma with certified local stability up to ignition."
   },
   {
     "title": "Outcome",
