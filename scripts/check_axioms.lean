@@ -121,3 +121,4 @@ run_cmd do
 #print axioms PlasmaLean.Design.RationalStellarator.rationalStellarator_confined_forever
 #print axioms PlasmaLean.Design.RationalStellarator.rationalStellarator_confined_forever_exists
 #print axioms PlasmaLean.Design.PolygonCoil.coil_stellarator_confined_concrete_N
+#print axioms PlasmaLean.Design.RationalStellaratorGC.gc_exact_torus

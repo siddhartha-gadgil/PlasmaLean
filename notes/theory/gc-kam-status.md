@@ -197,3 +197,94 @@ Each new module separately (`lake env lean`; peak RSS includes about 1.5 GB for 
 | `Theory/KAM/InvSqrtApprox` | 5 s | 1.5 GB |
 
 None of the new modules is imported by `PlasmaLean.lean` yet; adding them is a separate edit.
+
+## 5. Update: items 1–3 done; item 4 (second half) done **[Lean]**
+
+### 5.1 Method: ball arithmetic in the strip algebra
+
+The residual of the GC torus is not polynomial in the Fourier data (node), and its exact
+Kronecker image would have degree ≈ 40 (≈ 300 MB integers). Instead every quantity is enclosed in
+a **ball** `‖X − x‖_r ≤ E` with a trigonometric-polynomial centre `x` (integer grid over `2^S`)
+that is truncated and rounded after every step; each step is one kernel check.
+
+- `Certificates/KronBall`: `phiK : ℤ[u][v] →+* 𝔸`, centres `ctr S N M w P` of weight
+  `w = (d, e, p)`, the phase bridge `evH_phaseF`, the Lipschitz part `Bd_eval_sub(_below)`, the
+  truncation identity `node_eq`, steps `node_step`, `norm_step`, `Bd_ctr_kron`.
+- `Certificates/KronBallGrid`: packed half grids (`halfGridR`, one literal per row),
+  `gridPolyNM`, static `ℓ¹` bounds, Kronecker images, reality (`isReal_ctr_sym`), derivatives
+  (`dS_ctr_grid`), embedding into a larger layout (`ctr_embedGrid`), and the complete kernel steps
+  `node_full`, `norm_full`, `center_full` (`nodeK`, `normK`, `centerK`).
+- `Theory/KAM/PolyExprSMajQ`: kernel-computable majorants of `PolyExprS` trees (`PQS`,
+  `maj_le`, `majD_le`, `majD2_le`, `nodesOK_of_all`) — used for node validity and `C₂`.
+
+Two pipelines (oracle `scripts/gc_kam/gc_cert.py`, `ballcert.py`, `slp.py`; emitter
+`emit_lean.py`; constants `gc_maj.py`):
+
+- **high resolution** (`N = 40, M = 30`, scale `2^{-101}`, 70 variables, ≈ 60 nodes) at `K₀`:
+  the residual (`e₀`) and the distances from `K₀` to the low-resolution torus;
+- **low resolution** (`N = 16, M = 12`, scale `2^{-60}`, 114 variables, ≈ 110 nodes) at **every**
+  torus within `μ + dist` of the low-resolution torus `K_S`, on every strip `e^r ≤ 74315/2^16`:
+  `D̃, ñ` and their `u, z`-derivatives (second-derivative leaves `Design/RationalStellaratorGCPoly2`),
+  `P̃`, `W₀`, the inverse-square-root node, and the torsion pieces. No Lipschitz transport is needed:
+  the input balls already contain all `μ`-close tori.
+
+The node: `V₀ ≈ (1+E)^{−1/2}` (Newton, oracle); norm nodes `‖V₀−1‖`, `‖V₀²−1‖`, `‖V₀²(1+E)−1‖`
+and `invSqrt_approx_bound` give the ball of `(1+E)^{−1/2}` (`vstep`,
+`Design/RationalStellaratorGCTorusCommon`); high resolution `ε_V ≤ 4.7 × 10⁻²⁴`.
+
+### 5.2 Declarations (all sorry-free, standard axioms)
+
+- `RationalStellaratorGCTorusAdm`: `u₀G, z₀G` (the certified torus `K₀`), `ana_u₀G`,
+  `isReal_u₀G`, `Bd_u₀G`…; **`gc_resR_bound`, `gc_resZ_bound`**: `‖resR/Z(K₀)‖_{r_A} ≤ e₀ =
+  3.7 × 10⁻²³` (kernel values `2.63 × 10⁻²³`, `3.67 × 10⁻²³`); `dist_u … dist_b`; **`gc_adm`**.
+- `RationalStellaratorGCTorusAdmL`: `cGC : SC`, **`gc_adm_near`** (all `AdmBounds` fields at every
+  `μ`-close analytic torus, strips `0 < ρ ≤ r_A`): `bD ≤ 1.2751`, `bDu ≤ 2.2351`, `bDz ≤ 0.20221`,
+  `bnR ≤ 0.10061`, `bnRu ≤ 0.94501`, `bnRz ≤ 0.74441`, `bnZ ≤ 0.10451`, `bnZu ≤ 0.86841`,
+  `bnZz ≤ 0.81671`; `‖D̃ − d₀‖ ≤ 0.3302` (`d₀ ≈ 0.94432`) ⇒ `sD = 1.6283`; `‖W₀ − w₀‖ ≤ 0.003533`
+  (`w₀ ≈ −0.009364`) ⇒ `sW = 171.51`; `‖X‖ ≤ 5.02 × 10⁻⁸`, `‖Y‖ ≤ 37.1101`, `⟨Y⟩ = 0.441631…`
+  ⇒ `tT = 37.111`, `τ = 0.441`.
+- `RationalStellaratorGCTorusMaj`: `gc_maj_E_lt` (`maj E ≤ 0.2862 < 1` below `aTQ`),
+  `gc_valid_res`, **`gc_C2R`, `gc_C2Z`**: `½ majD2 ≤ C₂ = 5.99 × 10¹⁰`.
+- `RationalStellaratorGCTorusExact`: `cGC_global`, `cGC_kamH` (`c_K ≤ 5310`, `c_L ≤ 18200`,
+  `κ ≈ 5.99 × 10¹⁰`, smallness `32κe₀/δ₀⁴ ≈ 6.8 × 10⁻⁴`, `μ = 10⁻¹²` with budgets
+  `1.2 × 10⁻¹⁵, 2.5 × 10⁻¹⁴, 4.2 × 10⁻¹⁵`), **`gc_exact_torus`**: an exact real analytic invariant
+  torus of the guiding-centre flow form `gcFlow (1/256)` with `ι = (75+√5)/562`, `10⁻¹²`-close to
+  `K₀` on the strip `r_A/7`.
+- `RationalStellaratorGCTorusReal`: **`gc_exact_torus_real`**: real `C²` periodic `R(θ, φ)`,
+  `z(θ, φ)` solving `D̃(∂_φR + ι∂_θR) = ñ_R`, `D̃(∂_φz + ι∂_θz) = ñ_z` pointwise (the GC analogue
+  of `KamNewton.exactTorus`), `10⁻¹²`-close to `K₀`.
+
+### 5.3 Build cost (`lake build`, one module at a time; peak RSS of the process tree)
+
+| modules | time | peak RSS |
+| --- | --- | --- |
+| `Certificates/KronBall`, `KronBallGrid`, `Theory/KAM/PolyExprSMajQ` | 5–10 s each | ≤ 2 GB |
+| `…GCTorusDataL`, `DataH1–4` (packed grids, 1 MB each) | ≈ 6 s each | ≤ 1.5 GB |
+| `…GCTorusEnvL/H`, `TreesL/H`, `GCPoly2`, `Common` | 3–21 s | ≤ 2 GB |
+| `…GCTorusCheckL1–4` (kernel checks) | 46–89 s | 2.3–2.7 GB |
+| `…GCTorusCheckH1–16` (kernel checks) | 27–171 s | 2.6–**5.5 GB** |
+| `…GCTorusRelL` (node identities, `ring`) | 60 s wall (≈ 800 s CPU) | 3.8 GB |
+| `…GCTorusRelH`, `Maj`, `ChainL/H`, `OutL/H`, `AdmL`, `Adm`, `Exact`, `Real` | 3–45 s | ≤ 2.5 GB |
+
+Total ≈ 35 min sequential, dominated by the 20 check modules. Two optimizations were essential:
+a list (not a 70-arm `match`) for the grid dispatch (the kernel spent ≈ 2 s per match reduction),
+and one packed literal per grid row (the shifts of a 280 kbit literal dominated time and memory).
+
+## 6. What remains (items 4–6)
+
+1. **`gcField` in cylindrical coordinates** (item 4, first half). Express the cylindrical components
+   of `gcField (1/256)` at `cylPt R φ z` as `ñ_R/R⁴`, `D̃/R³`, `ñ_z/R⁴` with `W = q^{−1/2}`
+   (`gcField_eq`, `∇Q` by the chain rule, as `field_cylPt` in `RationalStellaratorForeverCoords`).
+   Then `gc_exact_torus_real` becomes an invariant torus of `gcField`.
+2. **Trapping and existence for `gcField`** (item 5): `ContDiffOn ℝ 2 (gcField ρ)` where `B ≠ 0`
+   (needs `C³` of `b = Q^{−1/2} B`), a lower bound of `|B|` on the region, the collar Lipschitz bound
+   and angle lift for the GC torus geometry, and a new star-shapedness certificate (the GC torus is
+   centred near `R ≈ 0.962`; `R` range 0.841–1.093, `z` range ±0.129). Then genericize
+   `RationalStellaratorForever*`/`FieldLines` to get `rationalStellarator_gc_field_confined_forever`.
+3. **Guiding centres** (item 6): `littlejohn_mu0_confined` with `B*_∥ = |B| + ρ b·∇×b` bounded
+   below on the region; `rationalStellarator_gc_confined_forever`; the SI corollary
+   `alpha_gc_confined_forever` (`ρ_s = 0.2695 T·m/(B₀R₀) = 1/256 ⇔ B₀R₀ ≈ 69.0 T·m`; `μ = 0`,
+   `v_∥ > 0`, Littlejohn model). `v_∥ < 0` needs the `ρ = −1/256` torus (node validity fails with
+   the current expansion, §2).
+
+None of the new modules is imported by `PlasmaLean.lean`.

@@ -216,6 +216,7 @@ public import PlasmaLean.Design.RationalStellaratorGCPoly
 public import PlasmaLean.Design.RationalStellaratorGCFlow
 public import PlasmaLean.Theory.KAM.InvSqrtApprox
 public import PlasmaLean.Design.RationalStellaratorGCInstance
+public import PlasmaLean.Design.RationalStellaratorGCTorusReal
 
 /-!
 # PlasmaLean public library
