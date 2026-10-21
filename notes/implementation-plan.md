@@ -398,3 +398,16 @@ Each cycle is a run. The targets are listed in priority order; anything left ove
 - **`alpha_gc_confined_forever_pm`:** passing μ = 0 alpha guiding centres are confined for all time for **both** signs of v∥ at B₀R₀ ≈ 69 T·m. Each sign has its own torus: ι_A for v∥ > 0, ι_B = (161−√5)/1178 for v∥ < 0.
 - **`GuidingCentrePassing`:** for μ > 0, passing orbits are field lines of B + ∇×(ρ_{E,μ}b), with the grad-B drift absorbed exactly. The KAM torus for this field is not yet done.
 - **In progress:** a Chebyshev-in-ρ family certificate for an interval of B₀R₀.
+
+## 10. Phases after Phase 10 (plan of record, 21 October 2026)
+
+- **Phase 11, robust alpha confinement (in progress):**
+  - a Chebyshev-in-ρ torus family over an interval of B₀R₀, then over all energies 0–3.5 MeV;
+  - μ > 0 passing particles (the field-line identity is done; the KAM torus is pending).
+  - Heavy certificates (several CPU-hours) are kept out of the default build and checked on demand.
+- **Phase 12, trapped particles:** finite-time and adiabatic-invariant (J) bounds for trapped alphas; the per-bounce remainder (phase shear) is open.
+- **Phase 13, coil-produced all-time confinement (research):** sharp complex coil bounds with filament cancellation, a torus-adapted neighbourhood and anisotropic strips; more certified transits meanwhile.
+- **Phase 14, a stable finite-β stellarator:**
+  - route B: validated search for Mercier-stable regions of the Landreman families;
+  - route A: stepped pressure across the exact KAM torus.
+- **Later:** the integrated stellarator candidate (M6) and engineering constraints.
