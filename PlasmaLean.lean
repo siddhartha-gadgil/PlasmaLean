@@ -190,6 +190,8 @@ public import PlasmaLean.Design.KamFlowIteration
 public import PlasmaLean.Theory.Kinetic.GuidingCentreLittlejohn
 public import PlasmaLean.Theory.Fields.CurlProduct
 public import PlasmaLean.Theory.Kinetic.GuidingCentrePassing
+public import PlasmaLean.Theory.Kinetic.BounceShear
+public import PlasmaLean.Design.NearAxisQATrappedReanchor
 public import PlasmaLean.Theory.KAM.InvSqrt
 public import PlasmaLean.Theory.KAM.PolyExprS
 public import PlasmaLean.Theory.KAM.StripPaleyWiener
