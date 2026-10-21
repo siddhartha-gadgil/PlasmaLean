@@ -199,6 +199,13 @@ public import PlasmaLean.Theory.KAM.FourierSumHolo
 public import PlasmaLean.Theory.KAM.TorusFieldAna
 public import PlasmaLean.Design.CoilFieldComplex
 public import PlasmaLean.Design.CoilFieldComplexDist
+public import PlasmaLean.Theory.KAM.SampledBound
+public import PlasmaLean.Design.CoilKamArith
+public import PlasmaLean.Design.CoilKamSeg
+public import PlasmaLean.Design.CoilKamTorus
+public import PlasmaLean.Design.CoilKamPoint
+public import PlasmaLean.Design.CoilKamLip
+public import PlasmaLean.Design.CoilKamResidual
 public import PlasmaLean.Theory.KAM.PolyExprSStrip
 public import PlasmaLean.Design.KamFlowFieldS
 public import PlasmaLean.Design.KamFlowFrameS

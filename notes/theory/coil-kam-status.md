@@ -252,3 +252,148 @@ checked on the main results). None is imported by `PlasmaLean.lean` yet.
     certificate (`Bd_of_samples`).
   - Stage 3: frame and twist.
   - Stage 4: generic `AnaFieldAt`-based KAM step.
+
+## Stage 2: refit, sampled-residual pipeline, coarse certificate (this session)
+
+All Lean modules below compile under `lake build` with zero warnings and only the standard axioms
+(`#print axioms` checked on `coilTorus_resR_Bd`, `coilTorus_resZ_Bd`, `iota_diophantine_phi`,
+`ck_hyp`, `ck_hmap`, `coil_lip`, `pointAP_sound`, `fieldAP_sound`, `Bd_of_sample_sum`,
+`torus_hmap`, `expTableOK_sound`, `ck_grid`). No `sorry`, `axiom`, `native_decide` or plain
+`decide`; all kernel computations are `decide +kernel` on integer checkers, each evaluated once.
+None of the modules is imported by `PlasmaLean.lean`. The untrusted oracle is
+`scripts/coil_kam_oracle/` (UNTRUSTED README there).
+
+### Conventions fixed in stage 2
+
+- **Full toroidal period, no symmetry.** The TF return legs (at `x = Λ`) break both the 2-fold
+  rotation and the stellarator symmetry `σ(x,y,z) = (y,x,−z)` of `filsC` at `O(1/Λ) = 10⁻⁶`. The
+  coil torus is therefore fitted in `(θ, φ)`, `φ` the geometric angle, with all modes (the odd-`m`
+  coefficients are `≤ 1.5·10⁻⁶`). This matches `torusMapC` (its second variable is the angle).
+  Consequence for the KAM step: `𝓛 = ∂_φ + ι∂_θ` (`dS ι 1`, not `dS ι 2`), the frequency is
+  `(ι, 1)`, and the reused certificate becomes `iota_diophantine_phi :
+  Diophantine ι_A (687/20000) 1` (`γ` halves; in the `SC` formula `g = 2eγ` this is
+  `γ_eff = γ/4`).
+- **Flow form without division:** `E_R = B^φ 𝓛R − R B^R`, `E_z = B^φ 𝓛z − R B^z`
+  (`resR`, `resZ`; complexified `resCR`, `resCZ`), `D = B^φ`. The ratios only enter through
+  `D⁻¹` in the strip algebra.
+
+### Lean modules (new)
+
+- `Design/CoilKamArith.lean`: integer approximants `Approx D x (V, e)` (`|x − V/D| ≤ e/D`) with
+  `apAdd/apSub/apNeg/apSmul/apMul` and soundness lemmas; checked square-root brackets `sqrtBr`
+  (Newton with fuel, no `Nat.log2`, which the kernel does not accelerate); grid exponentials
+  `e^{2πit/L}`: table checker `expTableOK` + `expTableOK_sound`, base entry from
+  `sqrtTwoAddSeries` brackets (`twoAddBr`, `base_exp_approx`); `iota_approx`.
+- `Design/CoilKamSeg.lean`: exact evaluation of `tfField + polyCoilFieldC` at dyadic points:
+  `segAP` (bracket of `segFac'` in the direct form for `a·b ≥ 0` and the stable form
+  `(α+β)(αβ−a·b)/(αβ|a×b|²)` for `a·b < 0`, needed for the TF legs), `fieldAP`, `fieldAP_sound`.
+- `Design/CoilKamTorus.lean`: rational tori (`TRec` records), real coordinates `Rr, Zr, LRr,
+  LZr`, complex coefficient sequences `uR, uZ, uLR, uLZ` with finite Fourier sums, strip bounds
+  `norm_fourierSumC_uOfG_le`, `norm_fourierSumC_uOfG_sub_re_le`, grid evaluation `torusAP` +
+  `torusAP_sound`.
+- `Design/CoilKamPoint.lean`: the grid-point checker `pointAP` (torus point → nearest dyadic
+  point → field → Lipschitz transfer → residuals), `pointAP_sound`.
+- `Design/CoilKamLip.lean`: `lip_of_bound` (Schwarz lemma on a complex line, from `Mcoil`) and
+  `coil_lip`: `|Bc y i − Bc y' i| ≤ 2·10⁶ ‖y − y'‖` on `realTube (1/5)`, `‖y − y'‖ ≤ 1/100`.
+- `Design/CoilKamResidual.lean`: `resCR`, `resCZ`; real-point identification, biperiodicity,
+  holomorphy on `stripC ρ' ×ˢ stripC ρ'` from a mapping hypothesis, sup bounds, and
+  `torus_hmap` (mapping hypothesis from explicit numerical bounds).
+- `Theory/KAM/SampledBound.lean`: `Bd_of_sample_sum` (= `Bd_of_samples` with the DFT bounded by
+  the sum of the sample moduli), `norm_dft2_le`, `sum_box_weight_le`, `geoZ_mono`, `tailZ_mono`.
+- `Design/CoilKamNum.lean`: kernel-computable coefficient sums (`wsumN`, `zeroA`, `nzA`, …)
+  and their real meaning, `torusPt_realTube`, `exp/cosh/sinh` bounds,
+  `Mcoil (23/100) (12/100) (7/100) ≤ 45000`.
+- Data and kernel facts (emitted by `emit_lean.py`): `Design/CoilKamData.lean` (281 records,
+  table, `⌊2¹⁰⁰ι_A⌋`), `Design/CoilKamPts0`–`7` (512 theorems `ckPt_j_l`, one per grid point),
+  `Design/CoilKamRows.lean`; generic glue `Design/CoilKamGrid.lean` (`CkHyp`, `ckPt_sound`,
+  `row_bound`).
+- `Design/CoilKamCert.lean`: **`coilTorus_resR_Bd`**, **`coilTorus_resZ_Bd`**: for every
+  `x : FA` with `eval x = E_R` (resp. `E_z`) of the coarse torus `ckRecs`,
+  `Bd (1/50) x (4.5·10⁹)` (resp. `2.71·10⁹`).
+
+### Oracle results (numerical observations)
+
+- Refit (double, from torus A, quadratic Newton convergence): `N × M = 8×16, 12×24, 16×40,
+  20×56` give sup residuals `1.6·10⁻⁶, 2.8·10⁻⁷, 3.7·10⁻¹⁰, 4.9·10⁻¹³` (the last is the double
+  floor), and `ℓ¹_{0.063}` norms `1.4·10⁻⁵, 2.4·10⁻⁶, 1.0·10⁻⁸, 6.6·10⁻¹¹`. Decay `e^{−0.42 m}`
+  in `φ`, `e^{−1.3 k}` in `θ`.
+- KAM requirement (`requirement.py`, torus-A constants scaled; reproduces `κ_A = 6.0·10⁹`):
+  `e₀,req ≈ 4·10⁻³⁶` with the present constants (`r = 0.02`, `Mcoil`, `d = 0.03`),
+  `≈ 1·10⁻²⁹` with a sharp `M = 10` at `r = 0.063`, `≈ 5·10⁻²⁸` additionally with the adapted
+  neighbourhood (`ρ − r = 0.19`, `d = 0.1`). The Taylor constant now dominates `κ`
+  (`C₂ ∝ M geoZ² cK cL / d`), not `cK cL` alone as for torus A.
+
+### Coarse certificate: numbers and cost
+
+- Instance: `N = 8`, `M = 16` (sup residual `1.6·10⁻⁶`), scale `2¹⁰⁰`, grid `16 × 32`,
+  `K = (7, 15)`, strips `ρ' = 1/20`, `ρ = 1/25`, `r = 1/50`, neighbourhood
+  `coilNbhdP (23/100) (7/100)` (the real torus lies in `realTube (0.193)`; complex displacements
+  `e_R ≤ 0.0161`, `e_z ≤ 0.0158`; `|Im y| ≤ 0.066 < 0.07`; real part within `0.2287 < 0.23`).
+- Certified: `‖E_R‖_{1/50} ≤ 4.5·10⁹`, `‖E_z‖_{1/50} ≤ 2.71·10⁹`. The sampled part is only
+  `2.1·10⁻⁴` and `2.5·10⁻⁴`; the rest is the aliasing tail
+  `2 M geoZ(q)(tailZ(q,7) + tailZ(q,15))` with `M = ckMR ≈ 1.4·10⁵` (from `Mcoil ≤ 45000`) and
+  `q = 50/51`. **The bound is vacuous** (requirement `~10⁻³⁰`): the pipeline is complete, the
+  constants are not.
+- Build cost: the 512 grid-point kernel evaluations take `≈ 1.6 s` each (`≈ 0.8 s` for the 281
+  torus records, `≈ 0.6 s` for the 196 segments at 100 bits), i.e. 8 files of `≈ 100 s`,
+  `≈ 830 s` CPU in total, peak `≤ 4.3 GB` per process (kernel caches `≈ 125 MB` per evaluated
+  point, so evaluations are split one point per theorem; summing points inside one theorem was
+  superlinear). All other modules take seconds.
+- Kernel-evaluation lesson: lazily evaluated `let`s are not shared by the kernel, but forcing
+  every intermediate to a literal in continuation-passing style made `pointAP` slower
+  (`2.3 s` against `1.3 s` per point), so the plain definitions are used.
+
+### Goal (1): lower bound on `|B^φ|` on the complex neighbourhood: not certified
+
+- Numerically `R B^φ ∈ [0.981, 1.006]` on the real torus and `min |R B^φ| ≈ 0.976` on the
+  complexified torus with `|Im y| = 0.07`; `sup |B_poly| ≈ 0.15` there.
+- `R B^φ = y₀B₁ − y₁B₀` splits into the TF axis term (by hand, not formalized:
+  `½[(Λ−y₂)/√(s+(Λ−y₂)²) + (Λ+y₂)/√(s+(Λ+y₂)²)] = 1 − O(10⁻¹²)`, `s = y₀² + y₁²`, also for
+  complex `y`; formalizing it needs the complex antiderivative of `Q^{-3/2}`) and the rest. A
+  certificate needs `‖polyFieldCC‖ ≲ 0.6` on the neighbourhood. Stage 1 gives `Mcoil ≈ 4.5·10⁴`;
+  **any segment-wise triangle bound fails**, since the sum of the per-segment sups is `≥ 5.3` even
+  at real points (the 8 filaments cancel). A Schwarz/Cauchy transfer from real points with the
+  crude `M` needs `|Im y| ≲ 10⁻⁶`, and a real 3-D cover with the certified Lipschitz constant
+  `2·10⁶` needs `~10²⁰` cells.
+- What would work: a cancellation-aware complex bound, either a harmonic (Poisson) complexification
+  of a real sup bound on balls (each Cartesian component of `B_poly` is harmonic), or the sampled
+  Paley–Wiener route applied to `R B^φ ∘ K` with a sharp `M`. Both reduce to the same missing
+  ingredient as the residual tail.
+
+### Extrapolated cost of a useful certificate
+
+- With the present stage-1 infrastructure (isotropic strip `≤ 0.13` in `φ`, `M ≈ 3·10⁴`), the tail
+  forces `K ≈ 1500` in both directions (`~9·10⁶` grid points): infeasible.
+- With the stage-1 improvements listed below (strips `(0.8, 0.25)`, `M ≈ 10`): `K ≈ (120, 420)`,
+  grid `256 × 1024 ≈ 2.6·10⁵` points; refitted torus `N ≈ 56`, `M_φ ≈ 205`
+  (`≈ 2.3·10⁴` records, residual `≲ 10⁻²⁸`, `P ≈ 160` bits). With the measured costs, naive
+  evaluation (`2.8 ms` per record and point) is `~200` CPU-days; a separable torus evaluation
+  (row sums over `m` first) brings it to `≈ 1.2–1.5 s` per point, `≈ 4` CPU-days (`~1` day on 4–5
+  processes within 6 GB each), plus `~1 h` for a sharp DFT (the triangle bound of
+  `Bd_of_sample_sum` loses `e^{r·K} ~ 10¹⁷` at that size and must be replaced by the exact DFT
+  through the exponential table).
+
+### What remains
+
+1. Stage-1 sharpening (prerequisite for any non-vacuous number):
+   - anisotropic `HoloData`/Paley–Wiener (`ρ_θ ≈ 0.8`, `ρ_φ ≈ 0.25`);
+   - a torus-adapted complex neighbourhood using the true coil distance `0.297` (the square tube
+     of `Far (7/20)` limits `|Im y|` to `0.07` here);
+   - a sharp, cancellation-aware complex sup bound of the coil field (`M ≈ 10`), which also
+     gives goal (1).
+2. Oracle: high-precision refit at `N ≈ 56`, `M_φ ≈ 205` (Newton–Krylov with FFT matvecs and
+   double-double residuals); the double-precision dense Newton stops at `4.9·10⁻¹³` (`20 × 56`).
+3. Certificate engineering: separable torus evaluation in the kernel, sharp DFT enclosure,
+   `P ≈ 160`, the large grid split into many chunk modules.
+4. Stages 3–4 unchanged, now in the full-period convention (`dS ι 1`, `γ_eff = γ/4`).
+
+## Integration note (21 October 2026)
+
+The reusable stage-2 tools (`CoilKamArith`, `CoilKamSeg`, `CoilKamTorus`, `CoilKamPoint`, `CoilKamLip`,
+`CoilKamResidual`, `Theory/KAM/SampledBound`) are imported by `PlasmaLean.lean` and checked by the default
+build and the axiom audit. The demonstration certificate (`CoilKamNum`, `CoilKamGrid`, `CoilKamData`,
+`CoilKamPts0`–`7`, `CoilKamRows`, `CoilKamCert`) is committed but **not** imported. It costs ≈ 830 s of CPU
+and proves only a vacuous residual bound (≈ 10⁹ against a requirement of ≈ 10⁻³⁰), so it is kept out of the
+default build. Build it on demand with `lake build PlasmaLean.Design.CoilKamCert`. Coil-produced all-time
+confinement is **not** achieved; the blockers are listed above (sharp complex sup bound, torus-adapted
+neighbourhood, anisotropic strips, a lower bound on |B^φ| that captures filament cancellation).
