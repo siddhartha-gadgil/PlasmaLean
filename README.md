@@ -30,13 +30,14 @@ both confinement and keeping the plasma hot. Ten phases are complete:
   invariant torus around the axis, and every field line starting inside it stays inside forever
   (field lines proved to exist and be unique; vacuum model field); passing 3.5 MeV alpha guiding
   centres (μ = 0, either sign of v∥, Littlejohn model) are also confined for all time, for every
-  B₀R₀ ∈ [67.95, 69.99] T·m — robust in B₀R₀ but still measure zero in velocity space;
+  B₀R₀ ∈ [67.95, 69.99] T·m, and with μ > 0 for every pitch angle in a cone (λ ∈ [0, 1/16]) at one
+  energy — positive measure in pitch angle, not yet in 3-D velocity space;
 - **coils:** a concrete set of closed polygonal coils produces a field whose lines near the axis
   are certified to stay confined for 52 toroidal transits;
 - **finite β without axisymmetry:** an explicit finite-pressure, non-axisymmetric toroidal
   equilibria (Landreman families 1 and 2, the latter with proved shear; idealized) satisfy the
   kernel force balance; family 1 is Mercier-unstable, while family 2 at low β (λ = 200) has a
-  certified Mercier-stable band of flux surfaces (flux labels hand-derived);
+  certified Mercier-stable band of flux surfaces (flux labels derived from the field);
 - **stability:** Mercier stability and ideal-ballooning stability of that equilibrium are certified
   on every flux surface (with the standard reductions supplied);
 - **near-quasisymmetric alphas:** passing alphas are held for 0.19 s;
@@ -44,8 +45,8 @@ both confinement and keeping the plasma hot. Ten phases are complete:
 - **validation:** a slab Grad–Shafranov equilibrium with an exponential profile is validated;
 - **screw pinch:** all-mode Newcomb stability is proved.
 
-The library has 524 modules and about 48k audited declarations, using standard axioms only. See the
-[progress slideshow](docs/slides.html) and the [latest report](progress/2026-10-21-progress-11.md).
+The library has 637 modules and about 56k audited declarations, using standard axioms only. See the
+[progress slideshow](docs/slides.html) and the [latest report](progress/2026-10-21-progress-12.md).
 
 ## Code structure
 

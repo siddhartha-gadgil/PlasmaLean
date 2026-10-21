@@ -426,3 +426,10 @@ Each cycle is a run. The targets are listed in priority order; anything left ove
 - **Done:** a Mercier-stable band (k ∈ [0.7, 0.9]) of Landreman family 2 at λ = 200 (low β); reviewed sound.
 - **Caveat:** the flux labels and area element are hand-derived (change of variables unformalized).
 - **Trapped alphas:** kick bound 0.0816; the long-time result is parked as research.
+
+### Phase 11 part 2, 21 October 2026 — [report](https://github.com/siddhartha-gadgil/PlasmaLean/blob/main/progress/2026-10-21-progress-12.md)
+
+- **Done:**
+  - μ > 0 passing alpha guiding centres confined forever for pitch angles with λ ∈ [0, 1/16] (positive measure in pitch angle; one energy and B₀R₀); reviewed sound.
+  - Family-2 Mercier labels derived from the field; shear and hill certified.
+- **Next:** a wider λ range, energies below 3.5 MeV and a joint B₀R₀ range, toward positive measure in 3-D velocity space.

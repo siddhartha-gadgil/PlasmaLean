@@ -288,3 +288,36 @@ and one packed literal per grid row (the shifts of a 280 kbit literal dominated 
    the current expansion, §2).
 
 None of the new modules is imported by `PlasmaLean.lean`.
+
+## 7. Passing guiding centres with `μ > 0`: a pitch-angle cell (`Design/RationalStellaratorGCMu*`)
+
+**Result.** In the Littlejohn model, for every `λ = μB₀/E ∈ [0, 1/16]` and `ρ₀ = (m/q)√(2E/m)/(B₀R₀) = 1/256`,
+there is one exact KAM torus (`0.03 ≤ rt ≤ 0.255`) that traps, for all time, every passing
+(`v_∥(0) > 0`) guiding centre that starts inside it. Such orbits stay passing: `v_∥ = √(2(E − μ|B|)/m) > 0`.
+They exist from every interior point. The covered pitch angles satisfy `sin²χ ≤ |B|/(16B₀)`, about 14.5° near the axis. This is a positive-measure set of pitch angles at one energy and one B₀R₀, still measure zero in 3-D velocity space.
+The main theorems are:
+- `rationalStellarator_gc_mu_confined_forever` (model units);
+- `gc_mu_passing_confined_forever_SI`;
+- `alpha_gc_passing_confined_forever` (3.5 MeV alphas, `B₀R₀ = 256 m v/(2e) ∈ [68.9, 69] T·m`, every `μ ∈ [0, K/(16B₀)]`).
+
+The top module is `RationalStellaratorGCMuFamily`, which is now imported by `PlasmaLean.lean`.
+
+**Chain.**
+1. `modFieldFn (rhoE …) = gcFieldMu ρ₀ λ = gcField(ρ₀F)` pointwise, with `F = (1 − λ|B|/2)/√(1 − λ|B|)` (`Field`). The reason is that `∇ρ × b ∥ B × ∇Q`.
+2. `gcFlowMu` has the flow form, with `divFree` and flux identities from split sympy certificates (`Flow`, `Instance`).
+3. The torus is a Chebyshev family in `λ` of degree 12. The certificate is a family ball pipeline with three new nodes (`V₄`, `|B|`, `N = (1 − λ|B|)^{−1/2}`, the sharper step `vstep2`). It gives `e0 = 3.4e-21` and KAM smallness 0.098 (`Data`/`Check`/`Rel`/`Chain`/`Out`).
+4. The majorants are uniform in `λ` via `ConstLe` (`Maj`, `Theory/KAM/PolyExprSConstMono`).
+5. Exact tori come from `mu_family_torus`; flow torus and trapping from `Forever`.
+6. A bootstrap (`Theory/Fields/FieldLineBootstrap`: continuity plus Grönwall uniqueness) identifies the orbit with the trapped field line of `VmuF` (`littlejohn_mu_eq_fieldLine`). This needs no a priori passing assumption.
+7. SI scaling: `MuSI`, `littlejohnSI_iff`.
+
+**Cost.** Each module was built once with `lake build`; the peak RSS is per process.
+- Total for the certificate chain: about 1450 s of CPU and 1530 s of wall time (`Data*` 320 s, `CheckH1–64` 564 s, `CheckL1–8` 209 s, `RelL` about 200 s of CPU over 31 s wall).
+- The upstream new modules (`Poly`, `Flow`, …) add about 225 s.
+- Altogether that is about 28 CPU-minutes, with a peak of **5.5 GB** (`CheckL3`).
+
+**Why `λ₁ = 1/16`.** `λ₁ = 1/8` (degree 15) certified numerically (`e0 = 3.6e-21`). Its double-width kernel checks (`qph`, `K3`) need 6.3–6.6 GB in a single `decide +kernel`. The packed integer has `b·W·R·K_w ≈ 238·145·109·61` bits. With `λ₁ = 1/16`, degree 12 gives the same tail (Chebyshev ratio 55 instead of 25), so `K_w` drops from 61 to 49 and memory drops by about 20%.
+- Each `CheckH` module holds at most one double-width check (`LAM_HCAP=1`).
+- `λ₁ = 1/4` would need degree about 21 and fails the uniform node bound.
+
+**Extending.** A second cell `[1/16, 1/8]` (same pipeline, `lamF` shifted) would double the cost to about 56 CPU-minutes.

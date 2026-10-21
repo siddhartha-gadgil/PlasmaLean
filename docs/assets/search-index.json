@@ -1,15 +1,15 @@
 [
   {
     "title": "Progress slideshow",
-    "section": "Evidence updated 2026-10-21 · A Mercier-stable band of a finite-β non-axisymmetric equilibrium (Landreman family 2, λ = 200, low β; labels hand-derived) joins all-time confinement of field lines and of passing alpha guiding centres (μ = 0, B₀R₀ ∈ [67.95, 69.99] T·m) in an exact stellarator field, 52-transit coil confinement, and one consistent axisymmetric plasma with certified local stability up to ignition.",
+    "section": "Evidence updated 2026-10-21 · Passing 3.5 MeV alpha guiding centres confined for all time in an exact stellarator field over a positive-measure set of pitch angles (μ ∈ [0, E/(16B₀)], one energy and B₀R₀; Littlejohn model), and for μ = 0 over B₀R₀ ∈ [67.95, 69.99] T·m; a Mercier-stable finite-β non-axisymmetric band with labels derived from the field; all-time field-line confinement; 52-transit coil confinement; one consistent axisymmetric plasma with certified local stability up to ignition.",
     "url": "slides.html",
     "text": "progress slideshow presentation latest run evidence vacuum fixture"
   },
   {
-    "title": "Alpha guiding centres confined forever — over a whole range of field strengths.",
+    "title": "Alpha guiding centres confined forever — now across a cone of pitch angles.",
     "section": "Progress slideshow",
     "url": "slides.html#where-we-are",
-    "text": "alpha guiding centres confined forever — over a whole range of field strengths. plasmalean is building a lean library for stellarator design. in an exact non-axisymmetric stellarator field, field lines and passing 3.5 mev alpha guiding centres (μ = 0, either sign of v∥) are proved confined for all time — now for every b₀r₀ in a ±1.5% range, not just one value; a coil set confines field lines for 52 transits; one axisymmetric plasma has proved alpha confinement, a hot core and certified local stability. all-time field-line confinement in a genuine stellarator field (vacuum model); one consistent axisymmetric plasma with certified local stability; coil-produced confinement for one transit."
+    "text": "alpha guiding centres confined forever — now across a cone of pitch angles. plasmalean is building a lean library for stellarator design. in an exact non-axisymmetric stellarator field, passing 3.5 mev alpha guiding centres are proved confined for all time for every pitch angle in a cone (μ > 0), and for a range of b₀r₀ at μ = 0; field lines are confined forever; a coil set confines field lines for 52 transits; a finite-β non-axisymmetric band is mercier-stable; one axisymmetric plasma has proved alpha confinement, a hot core and certified local stability. all-time field-line confinement in a genuine stellarator field (vacuum model); one consistent axisymmetric plasma with certified local stability; coil-produced confinement for one transit."
   },
   {
     "title": "Small assumptions. Reusable proofs. One candidate.",
@@ -168,6 +168,12 @@
     "text": "finite pressure, no axisymmetry — and mercier-stable. landreman family 2 at λ = 200 is mercier-stable on every flux surface k ∈ [0.7, 0.9], certified by validated quadrature with a fully proved checker. the surfaces have a magnetic hill; shear stabilizes them at low β. about 40 new modules; review found the checker sound and the label gap, now disclosed."
   },
   {
+    "title": "A cone of pitch angles, confined forever.",
+    "section": "Progress slideshow",
+    "url": "slides.html#mu-cell",
+    "text": "a cone of pitch angles, confined forever. passing guiding centres with μ > 0 follow field lines of b + ∇×(ρ_{e,μ}b). a chebyshev family of exact tori in λ = μb₀/e ∈ [0, 1/16] traps every passing 3.5 mev alpha guiding centre starting inside — and proves it stays passing. about 120 new modules (mostly certificates)."
+  },
+  {
     "title": "Theory, techniques and a ladder of models — for confinement and for heat.",
     "section": "Progress slideshow",
     "url": "slides.html#implementation-plan",
@@ -177,7 +183,7 @@
     "title": "The next run must leave evidence, not just a promise.",
     "section": "Progress slideshow",
     "url": "slides.html#next-run",
-    "text": "the next run must leave evidence, not just a promise. next: all alpha energies 0–3.5 mev; μ > 0 passing tori (positive measure in velocity space); trapped-alpha oscillatory enclosure; a mercier-stable finite-β region; sharp complex bounds for coil kam. the linked run records checked declarations, assumptions and validation. this slideshow is a summary of that evidence, not a new design certificate."
+    "text": "the next run must leave evidence, not just a promise. next: wider pitch-angle range, lower energies and a joint b₀r₀ range (toward positive measure in velocity space); trapped alphas and coil-produced all-time confinement (research); a higher-β stable region and ballooning for it. the linked run records checked declarations, assumptions and validation. this slideshow is a summary of that evidence, not a new design certificate."
   },
   {
     "title": "Stellarator concepts",
@@ -1728,6 +1734,12 @@
     "text": "phase 14 route b, 21 october 2026 — report implementation plan"
   },
   {
+    "title": "Phase 11 part 2, 21 October 2026 — report",
+    "section": "Implementation plan",
+    "url": "implementation-plan.html#phase-11-part-2-21-october-2026-report",
+    "text": "phase 11 part 2, 21 october 2026 — report implementation plan"
+  },
+  {
     "title": "M0 · Exact symmetric equilibria: slab, screw pinch, Solov'ev, helical",
     "section": "Implementation plan · Lean verified — exact slab, screw-pinch, Solov'ev and helical equilibria with kernel force balance, all-time field-line/orbit confinement, Suydam both ways and screw-pinch Newcomb for 1 ≤ |m| ≤ 6 (idealized symmetric models).",
     "url": "implementation-plan.html",
@@ -1879,9 +1891,9 @@
   },
   {
     "title": "Verified progress",
-    "section": "A Mercier-stable band of a finite-β non-axisymmetric equilibrium (Landreman family 2, λ = 200, low β; labels hand-derived) joins all-time confinement of field lines and of passing alpha guiding centres (μ = 0, B₀R₀ ∈ [67.95, 69.99] T·m) in an exact stellarator field, 52-transit coil confinement, and one consistent axisymmetric plasma with certified local stability up to ignition.",
+    "section": "Passing 3.5 MeV alpha guiding centres confined for all time in an exact stellarator field over a positive-measure set of pitch angles (μ ∈ [0, E/(16B₀)], one energy and B₀R₀; Littlejohn model), and for μ = 0 over B₀R₀ ∈ [67.95, 69.99] T·m; a Mercier-stable finite-β non-axisymmetric band with labels derived from the field; all-time field-line confinement; 52-transit coil confinement; one consistent axisymmetric plasma with certified local stability up to ignition.",
     "url": "progress.html",
-    "text": "verified progress a mercier-stable band of a finite-β non-axisymmetric equilibrium (landreman family 2, λ = 200, low β; labels hand-derived) joins all-time confinement of field lines and of passing alpha guiding centres (μ = 0, b₀r₀ ∈ [67.95, 69.99] t·m) in an exact stellarator field, 52-transit coil confinement, and one consistent axisymmetric plasma with certified local stability up to ignition."
+    "text": "verified progress passing 3.5 mev alpha guiding centres confined for all time in an exact stellarator field over a positive-measure set of pitch angles (μ ∈ [0, e/(16b₀)], one energy and b₀r₀; littlejohn model), and for μ = 0 over b₀r₀ ∈ [67.95, 69.99] t·m; a mercier-stable finite-β non-axisymmetric band with labels derived from the field; all-time field-line confinement; 52-transit coil confinement; one consistent axisymmetric plasma with certified local stability up to ignition."
   },
   {
     "title": "Outcome",

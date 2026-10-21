@@ -1,7 +1,7 @@
 {
   "updated": "2026-10-21",
-  "report": "2026-10-21-progress-11.md",
-  "summary": "A Mercier-stable band of a finite-β non-axisymmetric equilibrium (Landreman family 2, λ = 200, low β; labels hand-derived) joins all-time confinement of field lines and of passing alpha guiding centres (μ = 0, B₀R₀ ∈ [67.95, 69.99] T·m) in an exact stellarator field, 52-transit coil confinement, and one consistent axisymmetric plasma with certified local stability up to ignition.",
+  "report": "2026-10-21-progress-12.md",
+  "summary": "Passing 3.5 MeV alpha guiding centres confined for all time in an exact stellarator field over a positive-measure set of pitch angles (μ ∈ [0, E/(16B₀)], one energy and B₀R₀; Littlejohn model), and for μ = 0 over B₀R₀ ∈ [67.95, 69.99] T·m; a Mercier-stable finite-β non-axisymmetric band with labels derived from the field; all-time field-line confinement; 52-transit coil confinement; one consistent axisymmetric plasma with certified local stability up to ignition.",
   "tasks": {
     "model-contracts:I1": "Partially implemented — algebraic force balance and tangency; positive permeability and actual differential laws in the restricted slab model.",
     "model-contracts:I2": "Lean verified — uniform-field and nonzero-current force-free witnesses in the Cartesian slab model; not toroidal confinement.",
