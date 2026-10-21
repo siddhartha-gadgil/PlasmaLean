@@ -1,15 +1,15 @@
 [
   {
     "title": "Progress slideshow",
-    "section": "Evidence updated 2026-10-21 · An exact invariant torus of the guiding-centre field for 3.5 MeV alphas (μ = 0, Littlejohn model) in the exact stellarator field, via a verified KAM theorem with an inverse-square-root node; coil-produced all-time confinement found blocked (certified residual vacuous). Earlier: all-time field-line confinement in the exact stellarator field; a coil-produced field confining field lines for 52 transits; one consistent axisymmetric plasma with certified local stability up to ignition.",
+    "section": "Evidence updated 2026-10-21 · All-time confinement of passing 3.5 MeV alpha guiding centres (μ = 0, v∥ > 0, one exact B₀R₀ ≈ 69 T·m; Littlejohn model) in an exact non-axisymmetric stellarator field, via verified KAM — a measure-zero set of alphas, not alpha confinement in general. Also: all-time field-line confinement in that field; a coil-produced field confining field lines for 52 transits; one consistent axisymmetric plasma with certified local stability up to ignition.",
     "url": "slides.html",
     "text": "progress slideshow presentation latest run evidence vacuum fixture"
   },
   {
-    "title": "An exact invariant torus for 3.5 MeV alpha guiding centres in a stellarator field.",
+    "title": "Passing alpha guiding centres confined forever in an exact stellarator field.",
     "section": "Progress slideshow",
     "url": "slides.html#where-we-are",
-    "text": "an exact invariant torus for 3.5 mev alpha guiding centres in a stellarator field. plasmalean is building a lean library for stellarator design. field lines of an exact stellarator field are confined forever, a coil set confines field lines for 52 transits, and now the guiding-centre field of passing 3.5 mev alphas has an exact invariant torus — the key step toward their all-time confinement. coil-produced all-time confinement was found blocked and is recorded honestly. all-time field-line confinement in a genuine stellarator field (vacuum model); one consistent axisymmetric plasma with certified local stability; coil-produced confinement for one transit."
+    "text": "passing alpha guiding centres confined forever in an exact stellarator field. plasmalean is building a lean library for stellarator design. in an exact non-axisymmetric stellarator field, field lines and now passing 3.5 mev alpha guiding centres (μ = 0, at one value of b₀r₀) are proved confined for all time by a verified kam theorem; a coil set confines field lines for 52 transits; and one axisymmetric plasma has proved alpha confinement, a hot core and certified local stability. all-time field-line confinement in a genuine stellarator field (vacuum model); one consistent axisymmetric plasma with certified local stability; coil-produced confinement for one transit."
   },
   {
     "title": "Small assumptions. Reusable proofs. One candidate.",
@@ -150,6 +150,12 @@
     "text": "an exact torus for alpha guiding centres; coils need new analysis. passing (μ = 0) guiding centres follow field lines of b + ρ_s∇×b. for 3.5 mev alphas at b₀r₀ ≈ 69 t·m (ρ_s = 1/256) this field has an exact invariant torus, proved with a kam theorem extended to an inverse-square-root node. the analogous result for the coil-produced field is blocked by a 39-order-of-magnitude gap. about 75 new modules (many certificates); the vacuous coil certificate is committed but excluded from the default build."
   },
   {
+    "title": "Passing 3.5 MeV alpha guiding centres never leave the torus.",
+    "section": "Progress slideshow",
+    "url": "slides.html#alpha-gc-forever",
+    "text": "passing 3.5 mev alpha guiding centres never leave the torus. with the exact torus of the guiding-centre field b + (1/256)∇×b and b*∥ = |b|, every μ = 0 littlejohn orbit of a 3.5 mev alpha with v∥ > 0 that starts inside the torus — in the stellarator field scaled to b₀r₀ ≈ 69 t·m — stays inside for all time, and such orbits exist from every interior point. 7 new modules finishing the guiding-centre route (generic flowtorus layer, star-shapedness certificates, orbit-to-field-line reduction)."
+  },
+  {
     "title": "Theory, techniques and a ladder of models — for confinement and for heat.",
     "section": "Progress slideshow",
     "url": "slides.html#implementation-plan",
@@ -159,7 +165,7 @@
     "title": "The next run must leave evidence, not just a promise.",
     "section": "Progress slideshow",
     "url": "slides.html#next-run",
-    "text": "the next run must leave evidence, not just a promise. next: all-time confinement of passing 3.5 mev alpha guiding centres in the exact stellarator field; sharp complex field bounds for coil-produced kam; stepped-pressure finite β across the exact torus; trapped particles. the linked run records checked declarations, assumptions and validation. this slideshow is a summary of that evidence, not a new design certificate."
+    "text": "the next run must leave evidence, not just a promise. next: robustness of alpha confinement over an interval of energies and b₀r₀ (parameter-dependent kam); v∥ < 0 and μ > 0; sharp complex bounds for coil-produced kam; stepped-pressure finite β. the linked run records checked declarations, assumptions and validation. this slideshow is a summary of that evidence, not a new design certificate."
   },
   {
     "title": "Stellarator concepts",
@@ -721,9 +727,9 @@
   },
   {
     "title": "K3 · Approximate-invariant finite-time confinement",
-    "section": "Particles & transport · Partially implemented — 3.5 MeV alphas confined for all time in a realistically scaled exact Solov'ev equilibrium; near-QA passing alphas 0.11 s (rigorous averaging, Boozer GC model); guiding-centre reduction and averaging lemmas.",
+    "section": "Particles & transport · Partially implemented — 3.5 MeV alphas confined for all time in an exact Solov'ev equilibrium (full orbits); passing μ = 0 alpha guiding centres confined for all time in an exact stellarator field at one B₀R₀ (Littlejohn model; measure-zero set); near-QA passing alphas 0.19 s; trapped alphas open.",
     "url": "particles-and-transport.html",
-    "text": "k3 approximate-invariant finite-time confinement theorem backlog partially implemented — 3.5 mev alphas confined for all time in a realistically scaled exact solov'ev equilibrium; near-qa passing alphas 0.11 s (rigorous averaging, boozer gc model); guiding-centre reduction and averaging lemmas."
+    "text": "k3 approximate-invariant finite-time confinement theorem backlog partially implemented — 3.5 mev alphas confined for all time in an exact solov'ev equilibrium (full orbits); passing μ = 0 alpha guiding centres confined for all time in an exact stellarator field at one b₀r₀ (littlejohn model; measure-zero set); near-qa passing alphas 0.19 s; trapped alphas open."
   },
   {
     "title": "K4 · Omnigeneity/action relation in a specified class",
@@ -1680,6 +1686,12 @@
     "text": "guiding-centre torus and coil-kam status, 21 october 2026 — report implementation plan"
   },
   {
+    "title": "Alpha guiding centres, 21 October 2026 — report",
+    "section": "Implementation plan",
+    "url": "implementation-plan.html#alpha-guiding-centres-21-october-2026-report",
+    "text": "alpha guiding centres, 21 october 2026 — report implementation plan"
+  },
+  {
     "title": "M0 · Exact symmetric equilibria: slab, screw pinch, Solov'ev, helical",
     "section": "Implementation plan · Lean verified — exact slab, screw-pinch, Solov'ev and helical equilibria with kernel force balance, all-time field-line/orbit confinement, Suydam both ways and screw-pinch Newcomb for 1 ≤ |m| ≤ 6 (idealized symmetric models).",
     "url": "implementation-plan.html",
@@ -1831,9 +1843,9 @@
   },
   {
     "title": "Verified progress",
-    "section": "An exact invariant torus of the guiding-centre field for 3.5 MeV alphas (μ = 0, Littlejohn model) in the exact stellarator field, via a verified KAM theorem with an inverse-square-root node; coil-produced all-time confinement found blocked (certified residual vacuous). Earlier: all-time field-line confinement in the exact stellarator field; a coil-produced field confining field lines for 52 transits; one consistent axisymmetric plasma with certified local stability up to ignition.",
+    "section": "All-time confinement of passing 3.5 MeV alpha guiding centres (μ = 0, v∥ > 0, one exact B₀R₀ ≈ 69 T·m; Littlejohn model) in an exact non-axisymmetric stellarator field, via verified KAM — a measure-zero set of alphas, not alpha confinement in general. Also: all-time field-line confinement in that field; a coil-produced field confining field lines for 52 transits; one consistent axisymmetric plasma with certified local stability up to ignition.",
     "url": "progress.html",
-    "text": "verified progress an exact invariant torus of the guiding-centre field for 3.5 mev alphas (μ = 0, littlejohn model) in the exact stellarator field, via a verified kam theorem with an inverse-square-root node; coil-produced all-time confinement found blocked (certified residual vacuous). earlier: all-time field-line confinement in the exact stellarator field; a coil-produced field confining field lines for 52 transits; one consistent axisymmetric plasma with certified local stability up to ignition."
+    "text": "verified progress all-time confinement of passing 3.5 mev alpha guiding centres (μ = 0, v∥ > 0, one exact b₀r₀ ≈ 69 t·m; littlejohn model) in an exact non-axisymmetric stellarator field, via verified kam — a measure-zero set of alphas, not alpha confinement in general. also: all-time field-line confinement in that field; a coil-produced field confining field lines for 52 transits; one consistent axisymmetric plasma with certified local stability up to ignition."
   },
   {
     "title": "Outcome",

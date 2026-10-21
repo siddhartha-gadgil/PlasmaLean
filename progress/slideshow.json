@@ -1,29 +1,29 @@
 {
   "updated": "2026-10-21",
-  "report": "2026-10-21-progress-8.md",
+  "report": "2026-10-21-progress-9.md",
   "status": "Exact symmetric equilibria with all-time orbit confinement · Local stability criteria · Not a coil-produced stellarator · Not a construction release.",
   "slides": [
     {
       "id": "where-we-are",
-      "eyebrow": "Progress briefing · toward confined fusion alphas",
-      "title": "An exact invariant torus for 3.5 MeV alpha guiding centres in a stellarator field.",
-      "lead": "PlasmaLean is building a Lean library for stellarator design. Field lines of an exact stellarator field are confined forever, a coil set confines field lines for 52 transits, and now the guiding-centre field of passing 3.5 MeV alphas has an exact invariant torus — the key step toward their all-time confinement. Coil-produced all-time confinement was found blocked and is recorded honestly.",
+      "eyebrow": "Progress briefing · alphas confined in a stellarator field",
+      "title": "Passing alpha guiding centres confined forever in an exact stellarator field.",
+      "lead": "PlasmaLean is building a Lean library for stellarator design. In an exact non-axisymmetric stellarator field, field lines and now passing 3.5 MeV alpha guiding centres (μ = 0, at one value of B₀R₀) are proved confined for all time by a verified KAM theorem; a coil set confines field lines for 52 transits; and one axisymmetric plasma has proved alpha confinement, a hot core and certified local stability.",
       "metrics": [
         {
-          "value": "364",
+          "value": "371",
           "label": "Lean modules"
         },
         {
-          "value": "33506",
-          "label": "Project declarations in the last axiom audit"
+          "value": "∞",
+          "label": "confinement time for passing alpha guiding centres (μ = 0, one B₀R₀)"
         },
         {
-          "value": "≈1470",
-          "label": "KAM smallness margin for the alpha guiding-centre torus"
+          "value": "52",
+          "label": "certified transits for a coil-produced field"
         }
       ],
       "progress": "All-time field-line confinement in a genuine stellarator field (vacuum model); one consistent axisymmetric plasma with certified local stability; coil-produced confinement for one transit.",
-      "boundary": "Alpha trapping theorem still in progress; guiding-centre (Littlejohn) model supplied, μ = 0 only; coil-produced all-time confinement blocked; vacuum field; finite-β non-axisymmetric equilibria Mercier-unstable.",
+      "boundary": "The alpha result is a measure-zero set (μ = 0, full parallel energy, v∥ > 0, one exact B₀R₀) under the supplied Littlejohn model, in the vacuum model field; coil-produced all-time confinement is blocked; finite-β non-axisymmetric equilibria Mercier-unstable.",
       "evidence": [
         {
           "label": "Latest report",
@@ -974,7 +974,7 @@
       "cards": [
         {
           "title": "Guiding-centre torus",
-          "text": "Residual ≤ 3.7×10⁻²³, twist ≈ 0.44, node validity 0.286 < 1, smallness margin ≈ 1470; exact analytic torus 10⁻¹²-close; C² real form. Trapping and the alpha corollary are in progress.",
+          "text": "Residual ≤ 3.7×10⁻²³, twist ≈ 0.44, node validity 0.286 < 1, smallness margin ≈ 1470; exact analytic torus 10⁻¹²-close; C² real form. Trapping and the alpha corollary were completed next.",
           "status": "Lean verified (torus)",
           "kind": "checked"
         },
@@ -1009,8 +1009,50 @@
       ]
     },
     {
+      "id": "alpha-gc-forever",
+      "eyebrow": "24 · Alpha guiding centres confined forever",
+      "title": "Passing 3.5 MeV alpha guiding centres never leave the torus.",
+      "lead": "With the exact torus of the guiding-centre field B + (1/256)∇×b and B*∥ = |B|, every μ = 0 Littlejohn orbit of a 3.5 MeV alpha with v∥ > 0 that starts inside the torus — in the stellarator field scaled to B₀R₀ ≈ 69 T·m — stays inside for all time, and such orbits exist from every interior point.",
+      "cards": [
+        {
+          "title": "The theorem",
+          "text": "alpha_gc_confined_forever: CODATA-rounded mass and charge, B₀R₀ ∈ [68.9, 69.0] T·m, trapping region 0.03 ≤ ρ/R₀ ≤ 0.253; existence and all-time confinement. Reviewed independently: sound.",
+          "status": "Lean verified",
+          "kind": "checked"
+        },
+        {
+          "title": "Scope — read this",
+          "text": "Measure-zero set of alphas: μ = 0, full parallel energy, v∥ > 0, one exact B₀R₀; Littlejohn model supplied; non-relativistic; no collisions or E-field; vacuum model field, not coils. Not alpha confinement in general.",
+          "status": "Limits",
+          "kind": "partial"
+        },
+        {
+          "title": "Next",
+          "text": "KAM over a parameter interval in ρ_s (robust in energy and B₀R₀); v∥ < 0; μ > 0.",
+          "status": "Planned",
+          "kind": "next"
+        }
+      ],
+      "progress": "7 new modules finishing the guiding-centre route (generic FlowTorus layer, star-shapedness certificates, orbit-to-field-line reduction).",
+      "boundary": "Measure-zero alpha population; supplied guiding-centre model.",
+      "evidence": [
+        {
+          "label": "New checked results",
+          "href": "progress.html#new-checked-results"
+        },
+        {
+          "label": "Corrections",
+          "href": "progress.html#corrections-and-challenged-claims"
+        },
+        {
+          "label": "Implementation plan",
+          "href": "implementation-plan.html"
+        }
+      ]
+    },
+    {
       "id": "implementation-plan",
-      "eyebrow": "24 · Plan of record",
+      "eyebrow": "25 · Plan of record",
       "title": "Theory, techniques and a ladder of models — for confinement and for heat.",
       "lead": "Each cycle develops theory, turns theorems into sound certificate checkers, and applies them to the next rung of a model ladder. Every rung must prove properties of both kinds: confinement (G1) and temperature held above burn conditions (G2).",
       "cards": [
@@ -1054,9 +1096,9 @@
     },
     {
       "id": "next-run",
-      "eyebrow": "25 · Keep every step reviewable",
+      "eyebrow": "26 · Keep every step reviewable",
       "title": "The next run must leave evidence, not just a promise.",
-      "lead": "Next: all-time confinement of passing 3.5 MeV alpha guiding centres in the exact stellarator field; sharp complex field bounds for coil-produced KAM; stepped-pressure finite β across the exact torus; trapped particles.",
+      "lead": "Next: robustness of alpha confinement over an interval of energies and B₀R₀ (parameter-dependent KAM); v∥ < 0 and μ > 0; sharp complex bounds for coil-produced KAM; stepped-pressure finite β.",
       "cards": [
         {
           "title": "Implement & challenge",

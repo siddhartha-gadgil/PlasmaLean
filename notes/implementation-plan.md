@@ -387,3 +387,8 @@ Each cycle is a run. The targets are listed in priority order; anything left ove
 
 - **Exact invariant torus of the guiding-centre field** for 3.5 MeV alphas at B₀R₀ ≈ 69 T·m (smallness margin ≈ 1470). The trapping and alpha corollary are in progress.
 - **Coil-produced all-time confinement is blocked:** the certified residual is ≈ 10⁹ vs ≈ 10⁻³⁰ needed. This is paused as research.
+
+### Alpha guiding centres, 21 October 2026 — [report](https://github.com/siddhartha-gadgil/PlasmaLean/blob/main/progress/2026-10-21-progress-9.md)
+
+- **Done:** all-time confinement of passing 3.5 MeV alpha guiding centres (μ = 0, v_∥ > 0, B₀R₀ ≈ 69 T·m, Littlejohn model) in the exact stellarator field. Reviewed: sound. This is a measure-zero set of alphas.
+- **Next:** a parameter family over ρ_s (robustness in energy and B₀R₀); v_∥ < 0; μ > 0.

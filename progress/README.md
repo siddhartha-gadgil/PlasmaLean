@@ -52,3 +52,5 @@ dated evidence. Run `node scripts/check_site.mjs` before handing off the update.
 [21 October 2026: coil-produced field confined for 52 transits; generic KAM; guiding-centre groundwork](2026-10-21-progress-7.md).
 
 [21 October 2026: exact guiding-centre invariant torus for alphas; coil-KAM blocked](2026-10-21-progress-8.md).
+
+[21 October 2026: all-time confinement of passing 3.5 MeV alpha guiding centres in an exact stellarator field](2026-10-21-progress-9.md).
