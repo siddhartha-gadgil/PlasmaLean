@@ -157,3 +157,121 @@ From `reactorQA_trapped_reanchored`, `N` bounces from `ψ₀` require
    For example, `N = 300` needs `301 R + 6.9 e ≤ 0.165`. The RK4 values `R ≈ 2×10⁻⁴`, `e ≈ 0.014` give `0.157`.
    In time, `N = 300` is about `0.02 s` at the simulated period. The proved `P ≤ 83 μs` only caps this at `0.025 s`; converting bounces into a guaranteed time would need a *lower* period bound, which is not proved.
 3. **Remainders `R, e`.** Still unproved, as in §3 item 1.
+
+## 6. Phase 12c: the oscillatory kick enclosed (21 October 2026)
+
+New modules (not imported in `PlasmaLean.lean`; standard axioms only; zero warnings):
+- `PlasmaLean/Theory/Kinetic/BounceClamp.lean`: signed cell sums (exact per-cell weights).
+- `PlasmaLean/Design/NearAxisQATrappedOscTrig.lean`: fixed-point `cos`/`sin` enclosures.
+- `PlasmaLean/Design/NearAxisQATrappedOscCells.lean`: the cell checker and its soundness.
+- `PlasmaLean/Design/NearAxisQATrappedOscLegs.lean`: rate identities, generic pieces, the two legs.
+- `PlasmaLean/Design/NearAxisQATrappedOscKick.lean`: assembly, conditional on a cover.
+- `PlasmaLean/Design/NearAxisQATrappedOscRows01.lean`–`Rows16.lean`: the kernel checks of the 126 leaves.
+- `PlasmaLean/Design/NearAxisQATrappedOscCover.lean`: the cover and the final theorems.
+
+Untrusted scripts in `scripts/trapped_reanchor/`:
+- `osc_cells.py`: float prototype, used to design the cells;
+- `osc_mirror.py`: a bit-exact integer mirror of the Lean checker (checked against the kernel on
+  `CTI_tab` and on a full box);
+- `osc_gen.py`: the adaptive cover, the oracle data and the generated Lean files.
+
+### 6.1 Item 1: the oscillatory amplitude is certified (done)
+
+| Declaration | Statement |
+| --- | --- |
+| `exactQA_kick_osc` | Every reference bounce of the start window closes at `P ∈ [59, 72] μs`, with `Δ = φ(P) − φ(0) ∈ [1.70, 2.49]` and `sin Δ ≥ 3/5`. The normalised kick integrals `Ĉ = ∫₀ᴾ A w cos 2(φ − φ₀)`, `Ŝ = ∫₀ᴾ A w sin 2(φ − φ₀)` satisfy `√(Ĉ² + Ŝ²) ≤ 40 sin Δ`. RK4: `≈ 11 sin Δ`. |
+| `reference_kick_osc` | For `reactorQA` (`b₁ = −4.3×10⁻⁴`): the reference kick is `C sin 2φ₀ + S cos 2φ₀`, and in flux units `√(C² + S²)/(q ι₀ sin Δ) ≤ M_eff = 0.0816 T m²`. Hence `\|C/(q ι₀ sin Δ)\|, \|S/(q ι₀ sin Δ)\| ≤ 0.0816`. |
+| `exactQA_kick_osc_of_cover`, `reference_kick_osc_of_cover` | The same statements for any `OscCover Kn Pmin Pmax DlS DhS 0 120 0 128`. |
+| `inner_leg_osc`, `outer_leg_osc` | The leg checks enclose the leg integrals of `A w cos`, `A w sin`, of `Ω` and of `1`. |
+| `osc_cover` | 126 leaves on the `PBI × TBI` index grid; `ψ₀ ∈ [4.75, 5.8047]`, `B_t ∈ [5.4, 5.5]`. |
+
+`M_eff = 0.0816` compares as follows:
+- previously certified: `0.2364`;
+- simulated: `0.023`;
+- needed for the window: `< 0.13`.
+
+So the amplitude obstruction of §5.1 is removed: the certified data `(C k, S k, Δ k, dC k, dS k)`
+of every fresh exact-QA reference are admissible for `reactorQA_trapped_reanchored` with
+`M = 0.0816`.
+
+**Method.**
+- **Rates.** Every rate is `A` times an explicit function of the leg coordinate `x` and `c = cos θ`:
+  - `ẋ = A |∂_θB|`, `Ω = A n`, `|φ̇| = A K/ι₀`;
+  - `θ̇ = −A (n + K)` (inner leg) or `A (K − n)` (outer leg), with `K = 2λ B_t x B³/(2B_t − B)`;
+  - so `A` cancels from all ratios (`Afac_mul_KR`, `phiDot_eq`, `thetaDot_eq`).
+- **Cells.**
+  - Flanks (`|θ| ≥ 3/5`): `x`-cells of width `1/40`.
+  - Bottom: `θ`-cells of width `1/40`. The leg coordinate of a bottom cell is the hull of the
+    `x`-cells whose cosine enclosure meets the cell's cosine range.
+  - The bottom densities use `|θ̇|/A = K ± n` directly. This avoids the `n`-dependency blow-up of
+    the old `ratR` form.
+- **Phase.** `Φ = 2(φ − φ₀)` is never integrated over the large streaming swings.
+  - On a flank it is accumulated from the nearer turning point. All cells between are full, so
+    the partial-cell losses vanish.
+  - On the bottom it is `(2/ι₀)(θ − θ₀ + ∫₀ᵗ Ω)`, with `θ` known to the cell width (`prec_eq`).
+  - `θ₀` is enclosed once per box from the tip cosine, checked with `cosSinC`. At the lower tip
+    `θ = −θ₀`.
+- **Signed integrands.** `integral_le_clamp_sum` integrates `Ω ≤ U_i ẋ` exactly cell by cell, for
+  `U_i` of either sign.
+- **Trigonometry.** `cosSinC` is the centred form around the midpoint (quadrant reduction, Taylor
+  at `y/16`, four doublings). Its width is close to the true range.
+- **Kernel budget.** The box check is split into the two legs, with literal interfaces from the
+  exact mirror. This keeps every kernel process at `≤ 4.6 GB` and about `5.5 s` per leg.
+- **Resolution floor.** Even a point box gives `√(Ĉ² + Ŝ²)/sin Δ ≈ 20` (`M ≈ 0.04`) at this cell
+  size. The adaptive boxes add the rest, up to `40`.
+
+### 6.2 Item 2: the re-anchored budget and the period lower bound
+
+Certified per reference bounce:
+- `59 μs ≤ P ≤ 72 μs` (RK4: `63.6–66.6`);
+- `Δ ∈ [1.70, 2.49]`, so `sin Δ ≥ 3/5`;
+- `M = 0.0816`.
+
+From `ψ₀ = 5.27` (gap `0.52`), the hypothesis of `reactorQA_trapped_reanchored` for `N` bounces is
+
+`0.3264 + R + N (R + γ + 0.0816 (e + σ)) ≤ 0.52`.
+
+- **Crude shears fail** (`osc_crude_shears_fail`).
+  - With `σ = 2.49 − 1.70 = 0.79` and `γ = 2M`, the hypothesis fails for every `N ≥ 1`, every
+    `R, e ≥ 0` and every start, since `4M + γ + Mσ = 0.554 > 0.52`.
+  - Certified shears at the `10⁻³` level are therefore indispensable.
+  - They are a Lipschitz (derivative) property of `Δ` and of `(C, S)/sin Δ` in `(ψ₀, B_t)`. The box
+    enclosures cannot give them, because each box's `dC` enclosure is itself about `±M` wide.
+- **Simulated shears and remainders** (`osc_budget_simulated`).
+  - With `σ = 0.0076`, `γ = 7×10⁻⁴`, `R = 2.1×10⁻⁴`, `e = 0.0141`, the hypothesis closes for
+    `N = 72`.
+  - In reference time this is at least `72 · 59 μs = 4.2 ms`. With the simulated `M = 0.023` it
+    was `N = 300`: the certified `M` multiplies the shear term `M(e + σ)`.
+  - Converting bounces of the actual orbit into time needs a lower bound on its inter-tip intervals.
+    That is the reference period `≥ 59 μs` minus one more one-bounce remainder `δP` (unproved).
+
+### 6.3 Item 3: conserved-quantity comparison (not achieved)
+
+`conserved_quantity_insufficient` shows the gap:
+- Over one bounce (`P ≤ 72 μs`), the worst-case helical-momentum drift of a `reactorQA` orbit
+  (`helicalMomentum_drift_le`, `ε_QS = 0.0024854 T`) bounds the tip-flux change only by
+  `≥ 0.30 T m²`.
+- The requirement is `R ≤ 0.0027` (`N = 72`, simulated shears), or `R ≤ 0.097` even for `N = 1`.
+
+Conserved quantities fix the banana (exactly `E`, and `P_φ` to `0.3`) but not the phase along it.
+`R` compares the near-QA kick integrand `−2b₁ q A w sin 2φ_near` (plus `O(b₁²)`) with the reference
+`−2b₁ q A w sin 2φ_ref`. So it needs:
+- `|φ_near − φ_ref| ≲ 10⁻²` rad along one bounce;
+- the leg-coordinate relation `x ↦ c` of the near orbit to the same relative accuracy;
+- and the analogous statement for `e` (the phase step) and for `δP`.
+
+The term `b₁ cos 2φ` changes `B` by at most `|b₁| r² ≤ 1.6×10⁻³ T` at fixed `(ψ, θ)`. One plausible
+route is therefore to run the same cell machinery on the near-QA reduced equations, with this term
+as an interval perturbation of the parameter box. That is the variational content that the
+Grönwall estimate fails to provide.
+
+### 6.4 What remains (precise)
+
+1. **Remainders `R`, `e`, `δP`** over one bounce, at the levels of §6.2 (`R ≲ 2×10⁻³`,
+   `e ≲ 0.015`). They are not touched by the conserved-quantity bound (§6.3).
+2. **Shears `σ`, `γ` at the `10⁻³` level**, between anchors `≤ 2M + R ≈ 0.17 T m²` apart in `ψ₀`
+   and `≤ 1.6×10⁻³ T` apart in `B_t`. This needs a derivative (Lipschitz) certificate for `Δ` and
+   for `(C, S)/sin Δ`.
+3. **Resolution of `M`.** `M = 0.0816` (target `Kn = 40`) against the simulated `0.023`:
+   - smaller boxes give `0.077` (`Kn = 38`, 152 leaves) and `0.071` (`Kn = 35`, 207 leaves);
+   - the cell floor is `≈ 0.04`, and finer cells cost proportionally more kernel time.

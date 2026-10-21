@@ -194,6 +194,8 @@ public import PlasmaLean.Theory.Kinetic.BounceShear
 public import PlasmaLean.Design.NearAxisQATrappedReanchor
 public import PlasmaLean.Design.NearAxisQATrappedBouncePeriod
 public import PlasmaLean.Design.NearAxisQATrappedReference
+public import PlasmaLean.Theory.Kinetic.BounceClamp
+public import PlasmaLean.Design.NearAxisQATrappedOscCover
 public import PlasmaLean.Theory.KAM.InvSqrt
 public import PlasmaLean.Theory.KAM.PolyExprS
 public import PlasmaLean.Theory.KAM.StripPaleyWiener
