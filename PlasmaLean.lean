@@ -192,6 +192,8 @@ public import PlasmaLean.Theory.Fields.CurlProduct
 public import PlasmaLean.Theory.Kinetic.GuidingCentrePassing
 public import PlasmaLean.Theory.Kinetic.BounceShear
 public import PlasmaLean.Design.NearAxisQATrappedReanchor
+public import PlasmaLean.Design.NearAxisQATrappedBouncePeriod
+public import PlasmaLean.Design.NearAxisQATrappedReference
 public import PlasmaLean.Theory.KAM.InvSqrt
 public import PlasmaLean.Theory.KAM.PolyExprS
 public import PlasmaLean.Theory.KAM.StripPaleyWiener
