@@ -275,3 +275,31 @@ stepped-pressure work reuse. And the cost is low.
 
 Novelty: none claimed. The note's contributions are the routing decision, the sympy checks, the explicit
 linearized Hamilton–Jacobi computation for our field (§4.2) and the Lean statements.
+
+## 8. Phase 14B follow-up: family-2 labels derived from the field (21 Oct 2026)
+
+The Mercier band `family2_mercier_stable` (ε = 1/4, S = 4, λ = 200, k ∈ [0.7, 0.9]) used labels
+ψ_t, ψ_p, V, I defined as primitives of hand-derived 1-D integrals, and the area element `JacR` from
+paper (3.18). These are now theorems about the actual field:
+
+- `LandremanFamily2Coords`: the coordinate map `(k, χ, ζ) ↦ surfPt` (ψ = k²/2) has Fréchet derivative
+  `jacMatrix`; the σ-derivatives are handled abstractly and the needed combination
+  `z_k σ_χ − z_χ σ_k = k/(λ cos λz T)` comes from differentiating `Re v ∘ x = k cos χ` (uniqueness of
+  derivatives). `coordDeriv_det`: det = k·JacR; `coordDerivPsi_det`: det in `(ψ, χ, ζ)` is JacR.
+  Injective on the box (explicit inverse via `Complex.arg`), image = shell `0 < ψ ≤ k₀²/2` of the region
+  `R` (`|σ − 4| < π/2`, `|λz| < π/2`, k₀ ≤ 19/20); the axis is null.
+- `LandremanFamily2FluxLabels`: Lebesgue volume of `{x ∈ R | ψ ≤ k₀²/2}` = `volK`; flux of B through the
+  section ζ = 0 (parametrized surface, `fderiv` partials, Mathlib `⨯₃`) = 2π `psiT`; flux through the
+  ribbon χ = 0 from the axis = 2π `psiP`; μ₀ × (flux of J = curl B/μ₀ through ζ = 0)/2π = `curK`.
+  The key analytic step is `∫∫ JacR dχ dζ = Z E/(2λ)`: the `ε cos 2ζ/(2h)` part of G/h integrates to 0
+  by `u = sin 2ζ`.
+- `LandremanFamily2Coarea`: for continuous f, `d/dψ ∫_{ψ' ≤ ψ} f = ∫∫ f JacR dζ dχ`, so JacR dχ dζ is
+  the coarea measure dS/|∇ψ|.
+- `LandremanFamily2SignCert`: 10 cells, 1-D quadratures only, give ι′ > 0 and V″ > 0 on the band
+  (λ-independent numerators). So the band has a certified magnetic hill, stabilized by shear.
+- `LandremanFamily2MercierDerived.family2_mercier_stable_derived`: the band restated for
+  `family2DataPhys` (built from the fluxes, Lebesgue volume, current and |det Dx|/k), proved equal to
+  `family2Data`.
+
+Still assumed: the Landreman–Jorge Mercier formula itself, and the choice of the cross-sections ζ = 0
+and χ = 0. We did not formalize that ∇·B = 0 makes the fluxes independent of the section.
