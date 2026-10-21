@@ -190,6 +190,9 @@ public import PlasmaLean.Design.KamFlowIteration
 public import PlasmaLean.Theory.Kinetic.GuidingCentreLittlejohn
 public import PlasmaLean.Theory.KAM.InvSqrt
 public import PlasmaLean.Theory.KAM.PolyExprS
+public import PlasmaLean.Theory.KAM.StripPaleyWiener
+public import PlasmaLean.Theory.Fields.BiotSavartComplex
+public import PlasmaLean.Theory.KAM.AnalyticComposition
 
 /-!
 # PlasmaLean public library
