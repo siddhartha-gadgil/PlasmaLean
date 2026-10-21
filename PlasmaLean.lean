@@ -199,6 +199,16 @@ public import PlasmaLean.Theory.KAM.FourierSumHolo
 public import PlasmaLean.Theory.KAM.TorusFieldAna
 public import PlasmaLean.Design.CoilFieldComplex
 public import PlasmaLean.Design.CoilFieldComplexDist
+public import PlasmaLean.Theory.KAM.PolyExprSStrip
+public import PlasmaLean.Design.KamFlowFieldS
+public import PlasmaLean.Design.KamFlowFrameS
+public import PlasmaLean.Design.KamFlowStepS
+public import PlasmaLean.Design.KamFlowIterationS
+public import PlasmaLean.Design.RationalStellaratorGC
+public import PlasmaLean.Design.RationalStellaratorGCPoly
+public import PlasmaLean.Design.RationalStellaratorGCFlow
+public import PlasmaLean.Theory.KAM.InvSqrtApprox
+public import PlasmaLean.Design.RationalStellaratorGCInstance
 
 /-!
 # PlasmaLean public library
