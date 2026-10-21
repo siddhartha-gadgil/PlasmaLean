@@ -182,6 +182,11 @@ public import PlasmaLean.Design.LandremanMercier
 public import PlasmaLean.Design.RationalStellaratorConfinedForever
 public import PlasmaLean.Theory.Fields.FieldLineExistence
 public import PlasmaLean.Design.RationalStellaratorFieldLines
+public import PlasmaLean.Design.KamFlowField
+public import PlasmaLean.Design.KamFlowFrame
+public import PlasmaLean.Design.KamFlowStep
+public import PlasmaLean.Design.KamFlowIteration
+public import PlasmaLean.Theory.Kinetic.GuidingCentreLittlejohn
 
 /-!
 # PlasmaLean public library

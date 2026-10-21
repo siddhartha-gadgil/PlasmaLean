@@ -370,3 +370,9 @@ Each cycle is a run. The targets are listed in priority order; anything left ove
 ### Phase 10 addendum, 21 October 2026 — [report](https://github.com/siddhartha-gadgil/PlasmaLean/blob/main/progress/2026-10-21-progress-6.md)
 
 - Field-line existence proved: the all-time confinement theorem (`rationalStellarator_confined_forever_exists`) has no remaining hypotheses.
+
+### Infrastructure, 21 October 2026
+
+- **Generic KAM:** the KAM Newton step and iteration now take an abstract `FlowField` (`Design/KamFlow*`). The field(1/4) results are re-derived as an instance, and the regression theorems are byte-for-byte unchanged.
+- **Guiding centres:** the Littlejohn equations are supplied as a model (`Theory/Kinetic/GuidingCentreLittlejohn`). For μ = 0, guiding-centre orbits are reparametrized field lines of the divergence-free field B + ρ_s∇×b, and confinement transfers to them.
+- **Next (from `notes/theory/after-kam.md`):** KAM for the guiding-centre field, aiming at all-time confinement of passing alphas in the exact stellarator field. After that, coil-produced KAM confinement.

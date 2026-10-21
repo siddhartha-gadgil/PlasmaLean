@@ -486,7 +486,7 @@ theorem adm_T : Bd ρ (Talg u z) tTA ∧ τA ≤ ‖avg (Talg u z)‖ := by
     have hQ := eval_ne_zero_of_unit hU' θ ψ
     rw [hFk, eval_Fp]
     rw [hRPk, eval_RPp]
-    simp only [Talg, Di, Wi, eval_mul, eval_pow', eval_inverse hDu, eval_inverse hWu,
+    simp only [Talg_eq, eval_mul, eval_pow', eval_inverse hDu, eval_inverse hWu,
       eval_inverse hU', eval_add', eval_one] at hQ ⊢
     have hq0 : eval qS θ ψ ≠ 0 := left_ne_zero_of_mul hQ
     field_simp
