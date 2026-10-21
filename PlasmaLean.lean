@@ -233,6 +233,7 @@ public import PlasmaLean.Theory.KAM.DiophantineB
 public import PlasmaLean.Design.RationalStellaratorGCNegConfined
 public import PlasmaLean.Design.RationalStellaratorGCFamily
 public import PlasmaLean.Design.RationalStellaratorGCMuFamily
+public import PlasmaLean.Design.RationalStellaratorGCBoxConfined
 
 /-!
 # PlasmaLean public library

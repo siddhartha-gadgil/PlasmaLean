@@ -433,3 +433,9 @@ Each cycle is a run. The targets are listed in priority order; anything left ove
   - μ > 0 passing alpha guiding centres confined forever for pitch angles with λ ∈ [0, 1/16] (positive measure in pitch angle; one energy and B₀R₀); reviewed sound.
   - Family-2 Mercier labels derived from the field; shear and hill certified.
 - **Next:** a wider λ range, energies below 3.5 MeV and a joint B₀R₀ range, toward positive measure in 3-D velocity space.
+
+### Positive measure in 3-D velocity space (technicality), 21 October 2026
+
+- **`alpha_gc_confined_forever_velocity_set`:** all-time confinement for a set of initial velocities of positive Lebesgue measure in ℝ³: pitch angles λ ∈ [0, 1/16], v∥ > 0, and energies in [(1 − 2⁻⁷⁸)²K, K].
+- **Caveat:** the energy window has relative width ≈ 7×10⁻²⁴ (≈ 2×10⁻¹⁷ eV), so this is a technicality, not physical robustness.
+- **Physically meaningful widths** need a genuine 2-D (ρ, λ) Chebyshev family: ≈ 3 CPU-hours for ±3 eV, ≈ 10 CPU-hours for ±1%, plus new evaluate-and-interpolate infrastructure (`notes/theory/gc-kam-status.md` §8).

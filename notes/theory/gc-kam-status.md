@@ -321,3 +321,63 @@ The top module is `RationalStellaratorGCMuFamily`, which is now imported by `Pla
 - `λ₁ = 1/4` would need degree about 21 and fails the uniform node bound.
 
 **Extending.** A second cell `[1/16, 1/8]` (same pipeline, `lamF` shifted) would double the cost to about 56 CPU-minutes.
+
+## 8. A positive-measure set in 3-D velocity space: the frozen-torus box (`Design/RationalStellaratorGCBox*`)
+
+**Result [Lean].** At the fixed design value `B₀R₀ = 256 m√(2K/m)/(2e) ∈ [68.9, 69] T·m`
+(`K = 3.5 MeV`, CODATA-rounded alpha mass and charge), for every starting point `x₀` within
+`0.03 R₀` of the magnetic axis, the set of initial velocity vectors
+`alphaBoxVel = {w ∈ ℝ³ : (1 − 2⁻⁷⁸)² K ≤ m|w|²/2 ≤ K, ⟨w, b(x₀)⟩ > 0, μ(w)B₀ ≤ (m|w|²/2)/16}`
+(`μ(w) = m|w − ⟨w,b⟩b|²/(2|B(x₀)|)`, i.e. `sin²χ ≤ |B(x₀)|/(16B₀)`) has positive Lebesgue measure
+in `ℝ³` (`alphaBoxVel_volume_pos`: it contains a nonempty open set), and every Littlejohn
+guiding-centre orbit with `X(0) = x₀`, `v_∥(0) = ⟨w, b⟩`, `μ = μ(w)` stays inside a KAM torus
+(`0.03 ≤ P ≤ 0.255`), within `0.255 R₀` of the axis, and passing, for all time; such orbits exist
+(`alpha_gc_confined_forever_velocity_set`). Scope: Littlejohn model supplied, non-relativistic,
+collisionless (fixed `E`, `μ`), static vacuum model field, not coil-produced.
+
+Other declarations: `box_family_torus` (exact tori for every `(ρ, λ) ∈ rhoBox × [0, 1/16]`,
+`rhoBox = [1/256 − 2⁻⁸⁶, 1/256]`), `box_family_master`, `rationalStellarator_gc_box_confined_forever`
+(model units), `gc_box_passing_confined_forever_SI`, `alpha_gc_box_confined_forever` (every
+`E ∈ [(1 − 2⁻⁷⁸)² K, K]`, every `μ ∈ [0, E/(16B₀)]`).
+
+**Method: no new Chebyshev family.** The flow form is affine in the gyro-length:
+`gcFlowMu ρ λ = gcFlowMu (1/256) λ + (ρ − 1/256)·F Y` (`eval_gcDM_sub`, `resR_gcFlowMu_sub`, …).
+The certified pitch-angle family torus `K(λ)` of §7 is kept **frozen** for all `ρ` in the box, with
+the same constants `cM`:
+- residual: the certified values at `1/256` are `2.03e-21` (`R`) and `3.31e-21` (`z`) against
+  `e₀ = 3.4e-21`; the perturbation is `≤ 2⁻⁸⁶·1131 ≈ 1.5e-23` (`boxResR/Z`);
+- admissibility: the bounds of the low-resolution chain have slack; the nine field components move
+  by `≤ 2⁻⁸⁶·30768`; `D̃⁻¹`, the torsion numerator (`DBd` bookkeeping) and the twist are
+  re-bounded (`boxAdm`);
+- the correction majorants (`‖F Y_D‖ ≤ 177`, …, `‖∂_u(F Y_z)‖ ≤ 30768`) are kernel-evaluated
+  `PQS` mirrors, uniform in `λ` by `ConstLe` (`Bd_corr`);
+- `C₂` and node validity: `ρ` enters only through a constant of modulus `≤ 1/256`, so the existing
+  kernel bound covers the box by `ConstLe` (`box_C2`); this is why the box is one-sided
+  (`ρ ≤ 1/256`, energies `≤ K`);
+- trapping and the guiding-centre bootstrap are §7 with `1/256` replaced by `ρ`
+  (`RationalStellaratorGCBoxForever`, `…BoxConfined`).
+
+**How small.** Relative energy width `≈ 2⁻⁷⁷ ≈ 7e-24` (`≈ 2e-17 eV` at 3.5 MeV), times the full
+pitch-angle range of §7. It is a genuine positive-measure set in 3-D velocity space (informally also
+in phase space `(x₀, w)`; not formalised), but physically negligible in energy. A frozen torus
+cannot do much better (estimate): even with `e₀` pushed to the limits of the displacement budgets
+(`e₀ ≲ 1.4e-20`) the width is `≲ 10⁻²¹` relative.
+
+**Cost.** Five modules, ≈ 18 s user CPU (24 s wall) in total, peak 2.3 GB; no heavy kernel checks
+(the only kernel computations are the nine correction majorants and a few chain-value
+comparisons). Suitable for the default build (not yet imported by `PlasmaLean.lean`; top module
+`PlasmaLean.Design.RationalStellaratorGCBoxConfined`).
+
+**A genuine two-parameter Chebyshev box (not done; estimates, not measured).**
+- *Kronecker in a fourth variable* (`ℤ[u][v][w][y]`): every packed product grows by the number of
+  `y`-slots (≥ 3 for degree 1 in `ρ`, more for nested products). The degree-12 `λ`-family already
+  peaks at 5.5 GB, so staying ≤ 6 GB would force `λ`-degree ≲ 3 (a `λ`-width ≈ 10⁻⁶).
+- *Evaluation/interpolation in `ρ`* (per-node values at `deg(tree)·d_ρ + 1` rational `ρ`-points,
+  each a `λ`-family-sized check, followed by a Lagrange bound): memory per module stays at today's
+  level, but time scales with the number of points. Taylor degree `d_ρ = 2` gives a relative
+  `ρ`-half-width ≈ 4e-7 (energy ±3 eV) with ≈ 11 passes ≈ 2.5–3 CPU-h of checks plus data. `d_ρ = 3`
+  (energy ±70 eV) ≈ 16 passes ≈ 4 CPU-h. A ±1% energy box needs `d_ρ ≈ 8`, ≈ 40 passes ≈ 10 CPU-h.
+  All of these also need new infrastructure: a 4-variable family algebra, a two-parameter
+  contraction and interpolation lemma, and a new emitter.
+- Smallest feasible meaningful box within 3 CPU-h: about `d_ρ = 2`, i.e. energy width ~10⁻⁶
+  relative times `λ ∈ [0, 1/16]`. This is borderline and untested.

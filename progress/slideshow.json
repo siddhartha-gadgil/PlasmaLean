@@ -1148,7 +1148,7 @@
         },
         {
           "title": "Scope",
-          "text": "Positive measure in pitch angle at one energy and one B₀R₀ — still measure zero in 3-D velocity space. Littlejohn model; non-relativistic; collisionless; vacuum model field.",
+          "text": "Positive measure in pitch angle at one energy and one B₀R₀ — still measure zero in 3-D velocity space. Littlejohn model; non-relativistic; collisionless; vacuum model field. A frozen-torus perturbation gives a set of positive measure in ℝ³ velocity space, but its energy window is only ≈ 7×10⁻²⁴ relative — a technicality.",
           "status": "Limits",
           "kind": "partial"
         },
