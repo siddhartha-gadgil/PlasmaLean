@@ -1,7 +1,7 @@
 {
   "updated": "2026-10-21",
-  "report": "2026-10-21-progress-10.md",
-  "summary": "Passing 3.5 MeV alpha guiding centres (μ = 0; Littlejohn model) confined for all time in an exact stellarator field for every B₀R₀ in [67.95, 69.99] T·m (robust in B₀R₀; still measure zero in velocity space), for both signs of v∥; μ > 0 passing identity; trapped-alpha bounce certificates. Also: all-time field-line confinement; a coil-produced field confining field lines for 52 transits; one consistent axisymmetric plasma with certified local stability up to ignition.",
+  "report": "2026-10-21-progress-11.md",
+  "summary": "A Mercier-stable band of a finite-β non-axisymmetric equilibrium (Landreman family 2, λ = 200, low β; labels hand-derived) joins all-time confinement of field lines and of passing alpha guiding centres (μ = 0, B₀R₀ ∈ [67.95, 69.99] T·m) in an exact stellarator field, 52-transit coil confinement, and one consistent axisymmetric plasma with certified local stability up to ignition.",
   "tasks": {
     "model-contracts:I1": "Partially implemented — algebraic force balance and tangency; positive permeability and actual differential laws in the restricted slab model.",
     "model-contracts:I2": "Lean verified — uniform-field and nonzero-current force-free witnesses in the Cartesian slab model; not toroidal confinement.",
@@ -43,7 +43,7 @@
     "plasma-models-and-equilibrium:E3": "Partially implemented — an exact Solov'ev solution is verified directly against J×B=∇p (Δ*ψ=3R² checked by hand only); general Grad–Shafranov equivalence pending. A helical (JFKO-type) exact equilibrium is also verified.",
     "geometry-and-fields:G2": "Partially implemented — divergence/curl operators with sanity lemmas; Clebsch fields ∇ψ×∇χ are divergence-free for C² potentials; reciprocal-basis identities pending.",
     "geometry-and-fields:G9": "Lean verified (vacuum model) — all-time field-line confinement in the exact rational stellarator field via a verified KAM theorem, with global existence and uniqueness of field lines proved (no remaining hypotheses); 0.077 ≤ ρ ≤ 0.19.",
-    "mhd-stability:S6": "Partially implemented — Suydam both ways; general Mercier (supplied) certified positive on every surface of the reactor Solov'ev equilibrium; helical equilibrium and Landreman family 1 proved Mercier-unstable; family 2 unstable numerically.",
+    "mhd-stability:S6": "Partially implemented — Suydam both ways; Mercier certified for the reactor Solov'ev equilibrium and on a band k ∈ [0.7, 0.9] of Landreman family 2 at λ = 200 (finite-β non-axisymmetric, low β; flux labels hand-derived); helical equilibrium and family 1 proved Mercier-unstable.",
     "mhd-stability:S7": "Partially implemented — screw-pinch Newcomb all modes m ≠ 0; ideal ballooning of the reactor Solov'ev equilibrium on every flux surface for every field line and θ_k (reduction supplied); certified Mercier; no 3-D all-mode certificate.",
     "particles-and-transport:K1": "Lean verified — Newton–Lorentz energy and speed conservation, exact uniform-field gyration, Larmor-radius formula and realistic exact bounds.",
     "particles-and-transport:K2": "Partially implemented — Noether conservation of canonical momentum for any Killing symmetry (rotation, translation, helix) for full orbits; reduced Hamiltonian theory pending.",

@@ -56,3 +56,5 @@ dated evidence. Run `node scripts/check_site.mjs` before handing off the update.
 [21 October 2026: all-time confinement of passing 3.5 MeV alpha guiding centres in an exact stellarator field](2026-10-21-progress-9.md).
 
 [21 October 2026, Phase 11 part 1: robust alpha confinement over a range of B₀R₀; both signs; μ > 0 identity; trapped progress](2026-10-21-progress-10.md).
+
+[21 October 2026, Phase 14B: a Mercier-stable finite-β non-axisymmetric band; trapped-alpha kick bound](2026-10-21-progress-11.md).

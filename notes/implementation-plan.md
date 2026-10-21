@@ -420,3 +420,9 @@ Each cycle is a run. The targets are listed in priority order; anything left ove
   - The μ > 0 passing identity.
   - Trapped-alpha bounce period and reference orbits.
 - **Negative:** the re-anchored trapped-alpha bound cannot close with absolute amplitudes.
+
+### Phase 14 route B, 21 October 2026 — [report](https://github.com/siddhartha-gadgil/PlasmaLean/blob/main/progress/2026-10-21-progress-11.md)
+
+- **Done:** a Mercier-stable band (k ∈ [0.7, 0.9]) of Landreman family 2 at λ = 200 (low β); reviewed sound.
+- **Caveat:** the flux labels and area element are hand-derived (change of variables unformalized).
+- **Trapped alphas:** kick bound 0.0816; the long-time result is parked as research.

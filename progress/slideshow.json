@@ -1,6 +1,6 @@
 {
   "updated": "2026-10-21",
-  "report": "2026-10-21-progress-10.md",
+  "report": "2026-10-21-progress-11.md",
   "status": "Exact symmetric equilibria with all-time orbit confinement · Local stability criteria · Not a coil-produced stellarator · Not a construction release.",
   "slides": [
     {
@@ -10,7 +10,7 @@
       "lead": "PlasmaLean is building a Lean library for stellarator design. In an exact non-axisymmetric stellarator field, field lines and passing 3.5 MeV alpha guiding centres (μ = 0, either sign of v∥) are proved confined for all time — now for every B₀R₀ in a ±1.5% range, not just one value; a coil set confines field lines for 52 transits; one axisymmetric plasma has proved alpha confinement, a hot core and certified local stability.",
       "metrics": [
         {
-          "value": "486",
+          "value": "524",
           "label": "Lean modules"
         },
         {
@@ -23,7 +23,7 @@
         }
       ],
       "progress": "All-time field-line confinement in a genuine stellarator field (vacuum model); one consistent axisymmetric plasma with certified local stability; coil-produced confinement for one transit.",
-      "boundary": "Alpha results: μ = 0 only (measure zero in velocity space), Littlejohn model supplied, vacuum model field; trapped alphas only 1.8×10⁻⁴ s in near-QA; coil-produced all-time confinement blocked; finite-β non-axisymmetric equilibria Mercier-unstable.",
+      "boundary": "Alpha results: μ = 0 only, Littlejohn model supplied, vacuum model field; trapped near-QA alphas only 1.8×10⁻⁴ s; coil-produced all-time confinement blocked; the only Mercier-stable finite-β non-axisymmetric band is low-β with hand-derived flux labels.",
       "evidence": [
         {
           "label": "Latest report",
@@ -1093,8 +1093,50 @@
       ]
     },
     {
+      "id": "mercier-stable-band",
+      "eyebrow": "26 · Phase 14: a stable finite-β band",
+      "title": "Finite pressure, no axisymmetry — and Mercier-stable.",
+      "lead": "Landreman family 2 at λ = 200 is Mercier-stable on every flux surface k ∈ [0.7, 0.9], certified by validated quadrature with a fully proved checker. The surfaces have a magnetic hill; shear stabilizes them at low β.",
+      "cards": [
+        {
+          "title": "Stable band",
+          "text": "D_Merc > 0 on k ∈ [0.7, 0.9] for both signs and all pressure scales; force balance with positive pressure; rejection fixtures at the axis and λ = 15.",
+          "status": "Lean verified",
+          "kind": "checked"
+        },
+        {
+          "title": "Caveats",
+          "text": "Supplied Mercier formula (local interchange); flux labels and area element hand-derived from the paper (numerically checked to 7–15 digits); low β ≈ 3×10⁻⁴.",
+          "status": "Disclosed",
+          "kind": "partial"
+        },
+        {
+          "title": "Trapped alphas",
+          "text": "Certified kick bound 0.0816 (< 0.13 needed), period 59–72 μs; one-bounce remainders remain — parked as research.",
+          "status": "Partial",
+          "kind": "partial"
+        }
+      ],
+      "progress": "About 40 new modules; review found the checker sound and the label gap, now disclosed.",
+      "boundary": "Low β; change of variables unformalized; no ballooning for this band yet.",
+      "evidence": [
+        {
+          "label": "New checked results",
+          "href": "progress.html#new-checked-results"
+        },
+        {
+          "label": "Corrections",
+          "href": "progress.html#corrections-and-challenged-claims"
+        },
+        {
+          "label": "Implementation plan",
+          "href": "implementation-plan.html"
+        }
+      ]
+    },
+    {
       "id": "implementation-plan",
-      "eyebrow": "26 · Plan of record",
+      "eyebrow": "27 · Plan of record",
       "title": "Theory, techniques and a ladder of models — for confinement and for heat.",
       "lead": "Each cycle develops theory, turns theorems into sound certificate checkers, and applies them to the next rung of a model ladder. Every rung must prove properties of both kinds: confinement (G1) and temperature held above burn conditions (G2).",
       "cards": [
@@ -1138,7 +1180,7 @@
     },
     {
       "id": "next-run",
-      "eyebrow": "27 · Keep every step reviewable",
+      "eyebrow": "28 · Keep every step reviewable",
       "title": "The next run must leave evidence, not just a promise.",
       "lead": "Next: all alpha energies 0–3.5 MeV; μ > 0 passing tori (positive measure in velocity space); trapped-alpha oscillatory enclosure; a Mercier-stable finite-β region; sharp complex bounds for coil KAM.",
       "cards": [

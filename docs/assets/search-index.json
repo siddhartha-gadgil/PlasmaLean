@@ -1,7 +1,7 @@
 [
   {
     "title": "Progress slideshow",
-    "section": "Evidence updated 2026-10-21 · Passing 3.5 MeV alpha guiding centres (μ = 0; Littlejohn model) confined for all time in an exact stellarator field for every B₀R₀ in [67.95, 69.99] T·m (robust in B₀R₀; still measure zero in velocity space), for both signs of v∥; μ > 0 passing identity; trapped-alpha bounce certificates. Also: all-time field-line confinement; a coil-produced field confining field lines for 52 transits; one consistent axisymmetric plasma with certified local stability up to ignition.",
+    "section": "Evidence updated 2026-10-21 · A Mercier-stable band of a finite-β non-axisymmetric equilibrium (Landreman family 2, λ = 200, low β; labels hand-derived) joins all-time confinement of field lines and of passing alpha guiding centres (μ = 0, B₀R₀ ∈ [67.95, 69.99] T·m) in an exact stellarator field, 52-transit coil confinement, and one consistent axisymmetric plasma with certified local stability up to ignition.",
     "url": "slides.html",
     "text": "progress slideshow presentation latest run evidence vacuum fixture"
   },
@@ -160,6 +160,12 @@
     "section": "Progress slideshow",
     "url": "slides.html#robust-alpha",
     "text": "a family of exact tori over a range of b₀r₀. a chebyshev-in-ρ family of approximate tori, certified uniformly by kronecker-ball arithmetic, gives an exact invariant torus of the guiding-centre field for every ρ_s in an interval — hence all-time confinement of passing alpha guiding centres for every b₀r₀ ∈ [67.95, 69.99] t·m. a second torus covers v∥ < 0. about 90 new modules (mostly certificates)."
+  },
+  {
+    "title": "Finite pressure, no axisymmetry — and Mercier-stable.",
+    "section": "Progress slideshow",
+    "url": "slides.html#mercier-stable-band",
+    "text": "finite pressure, no axisymmetry — and mercier-stable. landreman family 2 at λ = 200 is mercier-stable on every flux surface k ∈ [0.7, 0.9], certified by validated quadrature with a fully proved checker. the surfaces have a magnetic hill; shear stabilizes them at low β. about 40 new modules; review found the checker sound and the label gap, now disclosed."
   },
   {
     "title": "Theory, techniques and a ladder of models — for confinement and for heat.",
@@ -637,9 +643,9 @@
   },
   {
     "title": "S6 · Source-specific local stability criteria",
-    "section": "MHD stability · Partially implemented — Suydam both ways; general Mercier (supplied) certified positive on every surface of the reactor Solov'ev equilibrium; helical equilibrium and Landreman family 1 proved Mercier-unstable; family 2 unstable numerically.",
+    "section": "MHD stability · Partially implemented — Suydam both ways; Mercier certified for the reactor Solov'ev equilibrium and on a band k ∈ [0.7, 0.9] of Landreman family 2 at λ = 200 (finite-β non-axisymmetric, low β; flux labels hand-derived); helical equilibrium and family 1 proved Mercier-unstable.",
     "url": "mhd-stability.html",
-    "text": "s6 source-specific local stability criteria theorem backlog partially implemented — suydam both ways; general mercier (supplied) certified positive on every surface of the reactor solov'ev equilibrium; helical equilibrium and landreman family 1 proved mercier-unstable; family 2 unstable numerically."
+    "text": "s6 source-specific local stability criteria theorem backlog partially implemented — suydam both ways; mercier certified for the reactor solov'ev equilibrium and on a band k ∈ [0.7, 0.9] of landreman family 2 at λ = 200 (finite-β non-axisymmetric, low β; flux labels hand-derived); helical equilibrium and family 1 proved mercier-unstable."
   },
   {
     "title": "S7 · All-mode certified bound for a restricted useful configuration",
@@ -1716,6 +1722,12 @@
     "text": "phase 11 part 1, 21 october 2026 — report implementation plan"
   },
   {
+    "title": "Phase 14 route B, 21 October 2026 — report",
+    "section": "Implementation plan",
+    "url": "implementation-plan.html#phase-14-route-b-21-october-2026-report",
+    "text": "phase 14 route b, 21 october 2026 — report implementation plan"
+  },
+  {
     "title": "M0 · Exact symmetric equilibria: slab, screw pinch, Solov'ev, helical",
     "section": "Implementation plan · Lean verified — exact slab, screw-pinch, Solov'ev and helical equilibria with kernel force balance, all-time field-line/orbit confinement, Suydam both ways and screw-pinch Newcomb for 1 ≤ |m| ≤ 6 (idealized symmetric models).",
     "url": "implementation-plan.html",
@@ -1867,9 +1879,9 @@
   },
   {
     "title": "Verified progress",
-    "section": "Passing 3.5 MeV alpha guiding centres (μ = 0; Littlejohn model) confined for all time in an exact stellarator field for every B₀R₀ in [67.95, 69.99] T·m (robust in B₀R₀; still measure zero in velocity space), for both signs of v∥; μ > 0 passing identity; trapped-alpha bounce certificates. Also: all-time field-line confinement; a coil-produced field confining field lines for 52 transits; one consistent axisymmetric plasma with certified local stability up to ignition.",
+    "section": "A Mercier-stable band of a finite-β non-axisymmetric equilibrium (Landreman family 2, λ = 200, low β; labels hand-derived) joins all-time confinement of field lines and of passing alpha guiding centres (μ = 0, B₀R₀ ∈ [67.95, 69.99] T·m) in an exact stellarator field, 52-transit coil confinement, and one consistent axisymmetric plasma with certified local stability up to ignition.",
     "url": "progress.html",
-    "text": "verified progress passing 3.5 mev alpha guiding centres (μ = 0; littlejohn model) confined for all time in an exact stellarator field for every b₀r₀ in [67.95, 69.99] t·m (robust in b₀r₀; still measure zero in velocity space), for both signs of v∥; μ > 0 passing identity; trapped-alpha bounce certificates. also: all-time field-line confinement; a coil-produced field confining field lines for 52 transits; one consistent axisymmetric plasma with certified local stability up to ignition."
+    "text": "verified progress a mercier-stable band of a finite-β non-axisymmetric equilibrium (landreman family 2, λ = 200, low β; labels hand-derived) joins all-time confinement of field lines and of passing alpha guiding centres (μ = 0, b₀r₀ ∈ [67.95, 69.99] t·m) in an exact stellarator field, 52-transit coil confinement, and one consistent axisymmetric plasma with certified local stability up to ignition."
   },
   {
     "title": "Outcome",

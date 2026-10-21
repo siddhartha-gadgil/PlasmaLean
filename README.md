@@ -35,7 +35,8 @@ both confinement and keeping the plasma hot. Ten phases are complete:
   are certified to stay confined for 52 toroidal transits;
 - **finite β without axisymmetry:** an explicit finite-pressure, non-axisymmetric toroidal
   equilibria (Landreman families 1 and 2, the latter with proved shear; idealized) satisfy the
-  kernel force balance, but are Mercier-unstable (family 1 proved, family 2 numerically);
+  kernel force balance; family 1 is Mercier-unstable, while family 2 at low β (λ = 200) has a
+  certified Mercier-stable band of flux surfaces (flux labels hand-derived);
 - **stability:** Mercier stability and ideal-ballooning stability of that equilibrium are certified
   on every flux surface (with the standard reductions supplied);
 - **near-quasisymmetric alphas:** passing alphas are held for 0.19 s;
@@ -43,8 +44,8 @@ both confinement and keeping the plasma hot. Ten phases are complete:
 - **validation:** a slab Grad–Shafranov equilibrium with an exponential profile is validated;
 - **screw pinch:** all-mode Newcomb stability is proved.
 
-The library has 486 modules and about 45k audited declarations, using standard axioms only. See the
-[progress slideshow](docs/slides.html) and the [latest report](progress/2026-10-21-progress-10.md).
+The library has 524 modules and about 48k audited declarations, using standard axioms only. See the
+[progress slideshow](docs/slides.html) and the [latest report](progress/2026-10-21-progress-11.md).
 
 ## Code structure
 

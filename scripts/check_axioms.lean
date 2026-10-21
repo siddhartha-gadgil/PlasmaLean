@@ -125,3 +125,4 @@ run_cmd do
 #print axioms PlasmaLean.Design.RationalStellaratorGC.alpha_gc_confined_forever
 #print axioms PlasmaLean.Design.RationalStellaratorGCNeg.alpha_gc_confined_forever_pm
 #print axioms PlasmaLean.Design.RationalStellaratorGC.alpha_gc_confined_forever_robust
+#print axioms PlasmaLean.Design.LandremanFamily2Cert.family2_mercier_stable

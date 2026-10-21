@@ -56,7 +56,10 @@ formula**, whose derivation from `δW` is not formalized; `D_Merc > 0` is a nece
   (`hill_of_shear`); near the axis `∫B²w ~ 1/k²` and the hill term dominates every other term.
 * Lean: `mercierIndex_neg_of_hill_dominates` (general algebraic criterion) and
   `family2_mercier_unstable_of_enclosures` (`k = 1/20`), whose numerical hypotheses need only
-  factor-`2.5` accuracy. **Not certified**: no validated quadrature was carried out for
+  factor-`2.5` accuracy. **Not certified here** (at λ = 15). Validated quadrature for
+  family 2 was later done in
+  `LandremanFamily2MercierStable` (λ = 200, Mercier *stable* on k ∈ [0.7, 0.9]). At λ = 15 no
+  quadrature was carried out for
   family 2 (the inputs `ι'`, `V''`, `I'` are `ψ`-derivatives of flux/volume/current integrals
   whose identification with coordinate integrals needs unformalized change of variables and
   Stokes; `∫B·Ξ w` involves a `5·10⁻⁵` cancellation between `∫J·B w` and `I'∫B²w`).
