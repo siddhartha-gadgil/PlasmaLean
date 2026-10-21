@@ -29,7 +29,7 @@ both confinement and keeping the plasma hot. Ten phases are complete:
   axis are **confined for all time**: a verified explicit-constant KAM theorem produces an exact
   invariant torus around the axis, and every field line starting inside it stays inside forever
   (field lines proved to exist and be unique; vacuum model field); passing 3.5 MeV alpha guiding
-  centres (μ = 0, v∥ > 0, one exact B₀R₀ ≈ 69 T·m, Littlejohn model) are also confined for all time
+  centres (μ = 0, either sign of v∥, one exact B₀R₀ ≈ 69 T·m, Littlejohn model) are also confined for all time
   — a measure-zero set of alphas, not alpha confinement in general;
 - **coils:** a concrete set of closed polygonal coils produces a field whose lines near the axis
   are certified to stay confined for 52 toroidal transits;

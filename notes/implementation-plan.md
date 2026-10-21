@@ -392,3 +392,9 @@ Each cycle is a run. The targets are listed in priority order; anything left ove
 
 - **Done:** all-time confinement of passing 3.5 MeV alpha guiding centres (μ = 0, v_∥ > 0, B₀R₀ ≈ 69 T·m, Littlejohn model) in the exact stellarator field. Reviewed: sound. This is a measure-zero set of alphas.
 - **Next:** a parameter family over ρ_s (robustness in energy and B₀R₀); v_∥ < 0; μ > 0.
+
+### Both signs of v∥, and μ > 0 identity, 21 October 2026
+
+- **`alpha_gc_confined_forever_pm`:** passing μ = 0 alpha guiding centres are confined for all time for **both** signs of v∥ at B₀R₀ ≈ 69 T·m. Each sign has its own torus: ι_A for v∥ > 0, ι_B = (161−√5)/1178 for v∥ < 0.
+- **`GuidingCentrePassing`:** for μ > 0, passing orbits are field lines of B + ∇×(ρ_{E,μ}b), with the grad-B drift absorbed exactly. The KAM torus for this field is not yet done.
+- **In progress:** a Chebyshev-in-ρ family certificate for an interval of B₀R₀.

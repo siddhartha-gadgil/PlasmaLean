@@ -1,7 +1,7 @@
 [
   {
     "title": "Progress slideshow",
-    "section": "Evidence updated 2026-10-21 · All-time confinement of passing 3.5 MeV alpha guiding centres (μ = 0, v∥ > 0, one exact B₀R₀ ≈ 69 T·m; Littlejohn model) in an exact non-axisymmetric stellarator field, via verified KAM — a measure-zero set of alphas, not alpha confinement in general. Also: all-time field-line confinement in that field; a coil-produced field confining field lines for 52 transits; one consistent axisymmetric plasma with certified local stability up to ignition.",
+    "section": "Evidence updated 2026-10-21 · All-time confinement of passing 3.5 MeV alpha guiding centres (μ = 0, both signs of v∥, one exact B₀R₀ ≈ 69 T·m; Littlejohn model) in an exact non-axisymmetric stellarator field, via verified KAM — a measure-zero set of alphas, not alpha confinement in general. Also: all-time field-line confinement in that field; a coil-produced field confining field lines for 52 transits; one consistent axisymmetric plasma with certified local stability up to ignition.",
     "url": "slides.html",
     "text": "progress slideshow presentation latest run evidence vacuum fixture"
   },
@@ -1692,6 +1692,12 @@
     "text": "alpha guiding centres, 21 october 2026 — report implementation plan"
   },
   {
+    "title": "Both signs of v∥, and μ > 0 identity, 21 October 2026",
+    "section": "Implementation plan",
+    "url": "implementation-plan.html#both-signs-of-v-and-0-identity-21-october-2026",
+    "text": "both signs of v∥, and μ > 0 identity, 21 october 2026 implementation plan"
+  },
+  {
     "title": "M0 · Exact symmetric equilibria: slab, screw pinch, Solov'ev, helical",
     "section": "Implementation plan · Lean verified — exact slab, screw-pinch, Solov'ev and helical equilibria with kernel force balance, all-time field-line/orbit confinement, Suydam both ways and screw-pinch Newcomb for 1 ≤ |m| ≤ 6 (idealized symmetric models).",
     "url": "implementation-plan.html",
@@ -1843,9 +1849,9 @@
   },
   {
     "title": "Verified progress",
-    "section": "All-time confinement of passing 3.5 MeV alpha guiding centres (μ = 0, v∥ > 0, one exact B₀R₀ ≈ 69 T·m; Littlejohn model) in an exact non-axisymmetric stellarator field, via verified KAM — a measure-zero set of alphas, not alpha confinement in general. Also: all-time field-line confinement in that field; a coil-produced field confining field lines for 52 transits; one consistent axisymmetric plasma with certified local stability up to ignition.",
+    "section": "All-time confinement of passing 3.5 MeV alpha guiding centres (μ = 0, both signs of v∥, one exact B₀R₀ ≈ 69 T·m; Littlejohn model) in an exact non-axisymmetric stellarator field, via verified KAM — a measure-zero set of alphas, not alpha confinement in general. Also: all-time field-line confinement in that field; a coil-produced field confining field lines for 52 transits; one consistent axisymmetric plasma with certified local stability up to ignition.",
     "url": "progress.html",
-    "text": "verified progress all-time confinement of passing 3.5 mev alpha guiding centres (μ = 0, v∥ > 0, one exact b₀r₀ ≈ 69 t·m; littlejohn model) in an exact non-axisymmetric stellarator field, via verified kam — a measure-zero set of alphas, not alpha confinement in general. also: all-time field-line confinement in that field; a coil-produced field confining field lines for 52 transits; one consistent axisymmetric plasma with certified local stability up to ignition."
+    "text": "verified progress all-time confinement of passing 3.5 mev alpha guiding centres (μ = 0, both signs of v∥, one exact b₀r₀ ≈ 69 t·m; littlejohn model) in an exact non-axisymmetric stellarator field, via verified kam — a measure-zero set of alphas, not alpha confinement in general. also: all-time field-line confinement in that field; a coil-produced field confining field lines for 52 transits; one consistent axisymmetric plasma with certified local stability up to ignition."
   },
   {
     "title": "Outcome",

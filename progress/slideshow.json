@@ -1016,13 +1016,13 @@
       "cards": [
         {
           "title": "The theorem",
-          "text": "alpha_gc_confined_forever: CODATA-rounded mass and charge, B₀R₀ ∈ [68.9, 69.0] T·m, trapping region 0.03 ≤ ρ/R₀ ≤ 0.253; existence and all-time confinement. Reviewed independently: sound.",
+          "text": "alpha_gc_confined_forever: CODATA-rounded mass and charge, B₀R₀ ∈ [68.9, 69.0] T·m, trapping region 0.03 ≤ ρ/R₀ ≤ 0.253; existence and all-time confinement. Reviewed independently: sound. Extended to v∥ < 0 (alpha_gc_confined_forever_pm, second torus with ι_B).",
           "status": "Lean verified",
           "kind": "checked"
         },
         {
           "title": "Scope — read this",
-          "text": "Measure-zero set of alphas: μ = 0, full parallel energy, v∥ > 0, one exact B₀R₀; Littlejohn model supplied; non-relativistic; no collisions or E-field; vacuum model field, not coils. Not alpha confinement in general.",
+          "text": "Measure-zero set of alphas: μ = 0, full parallel energy, either sign of v∥ (separate tori), one exact B₀R₀; Littlejohn model supplied; non-relativistic; no collisions or E-field; vacuum model field, not coils. Not alpha confinement in general.",
           "status": "Limits",
           "kind": "partial"
         },
