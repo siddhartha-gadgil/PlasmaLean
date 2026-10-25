@@ -95,6 +95,7 @@ The script exits nonzero if any task failed or does not fit the laptop.
 Options:
 - `--skip-numerics`: re-emit and rebuild only.
 - `--no-push`: commit without pushing.
+- `--skip-push-check`: do not test push access before starting.
 - `--branch NAME`: use a different branch name.
 - `--jobs N`: set the parallelism (default: all CPUs).
 

@@ -10,6 +10,7 @@
 #                     Lean modules with resource measurement and the laptop budget; no git
 #   --skip-numerics   run emission and the Lean build only (numerics outputs already present)
 #   --no-push         commit on the results branch but do not push
+#   --skip-push-check do not test non-interactive push access before starting
 #   --branch NAME     results branch (default workstation/<tasks>-<UTC stamp>)
 #   --jobs N          parallelism exported to tasks as WS_JOBS (default: number of CPUs)
 # environment:
@@ -60,7 +61,7 @@ if [ "${1:-}" = "__step" ]; then
 fi
 
 ORIG_ARGS=("$@")
-LIST=0; SETUP_ONLY=0; VERIFY=0; SKIP_NUM=0; PUSH=1; BRANCH=""; JOBS="$(ncpu)"; TASKS=""
+PUSH_CHECK=1; LIST=0; SETUP_ONLY=0; VERIFY=0; SKIP_NUM=0; PUSH=1; BRANCH=""; JOBS="$(ncpu)"; TASKS=""
 while [ $# -gt 0 ]; do
   case "$1" in
     --list) LIST=1 ;;
@@ -68,9 +69,10 @@ while [ $# -gt 0 ]; do
     --verify-only) VERIFY=1 ;;
     --skip-numerics) SKIP_NUM=1 ;;
     --no-push) PUSH=0 ;;
+    --skip-push-check) PUSH_CHECK=0 ;;
     --branch) shift; BRANCH="${1:?--branch needs a name}" ;;
     --jobs) shift; JOBS="${1:?--jobs needs a number}" ;;
-    -h|--help) sed -n '2,23p' "$0"; exit 0 ;;
+    -h|--help) sed -n '2,24p' "$0"; exit 0 ;;
     -*) die "unknown option $1" ;;
     *) TASKS="$TASKS $1" ;;
   esac
@@ -124,17 +126,19 @@ setup() {
 
 # Fail early (not after hours of work) if pushing would need a password typed by hand.
 check_push_auth() {
-  say "checking non-interactive push access to origin"
-  if ! GIT_TERMINAL_PROMPT=0 GIT_ASKPASS=/bin/false SSH_ASKPASS=/bin/false \
-       GIT_SSH_COMMAND="${GIT_SSH_COMMAND:-ssh} -o BatchMode=yes" \
-       git push --dry-run -q origin HEAD:refs/heads/workstation/auth-check >/dev/null 2>&1; then
-    die "git push to origin needs interactive authentication; set up an ssh key or a stored
-       credential (see Workstation.md, 'Push access'), or rerun with --no-push"
+  say "checking non-interactive push access to origin ($(git remote get-url origin))"
+  local err
+  if ! err="$(GIT_TERMINAL_PROMPT=0 GIT_SSH_COMMAND="${GIT_SSH_COMMAND:-ssh} -o BatchMode=yes" \
+       git push --dry-run origin HEAD:refs/heads/workstation/auth-check 2>&1)"; then
+    printf '%s\n' "$err" >&2
+    die "git push --dry-run to origin failed without a terminal prompt (output above). Set up an ssh
+       key or a stored credential (Workstation.md, 'Push access'), or skip this check with
+       --skip-push-check if you are sure pushing works unattended"
   fi
 }
 
 setup
-if [ "$VERIFY" = 0 ] && [ "$PUSH" = 1 ]; then check_push_auth; fi
+if [ "$VERIFY" = 0 ] && [ "$PUSH" = 1 ] && [ "$PUSH_CHECK" = 1 ]; then check_push_auth; fi
 if [ "$SETUP_ONLY" = 1 ]; then say "setup complete"; exit 0; fi
 [ -n "$TASKS" ] || die "no task given (see --list)"
 for t in $TASKS; do [ -f "$TASK_DIR/$t.sh" ] || die "unknown task '$t'"; done
