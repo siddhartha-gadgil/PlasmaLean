@@ -122,7 +122,19 @@ setup() {
   mkdir -p "$WS_WORK"
 }
 
+# Fail early (not after hours of work) if pushing would need a password typed by hand.
+check_push_auth() {
+  say "checking non-interactive push access to origin"
+  if ! GIT_TERMINAL_PROMPT=0 GIT_ASKPASS=/bin/false SSH_ASKPASS=/bin/false \
+       GIT_SSH_COMMAND="${GIT_SSH_COMMAND:-ssh} -o BatchMode=yes" \
+       git push --dry-run -q origin HEAD:refs/heads/workstation/auth-check >/dev/null 2>&1; then
+    die "git push to origin needs interactive authentication; set up an ssh key or a stored
+       credential (see Workstation.md, 'Push access'), or rerun with --no-push"
+  fi
+}
+
 setup
+if [ "$VERIFY" = 0 ] && [ "$PUSH" = 1 ]; then check_push_auth; fi
 if [ "$SETUP_ONLY" = 1 ]; then say "setup complete"; exit 0; fi
 [ -n "$TASKS" ] || die "no task given (see --list)"
 for t in $TASKS; do [ -f "$TASK_DIR/$t.sh" ] || die "unknown task '$t'"; done

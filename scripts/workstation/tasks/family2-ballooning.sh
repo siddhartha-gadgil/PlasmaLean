@@ -31,9 +31,10 @@ TASK_DESC="family-2 ballooning: certificate search on $F2B_NK surfaces of k in [
 # coefficients, emit.py's chunk size) and one header LandremanFamily2BallooningDatak<1000 k>.
 # TASK_MODULES is computed when this file is sourced (run.sh runs task_emit in a subshell).
 _f2b_tags() {
-  "$WS_PY" -c "
-import numpy as np
-n=int('$F2B_NK'); ks=np.linspace(float('$F2B_KLO'),float('$F2B_KHI'),n) if n>1 else [float('$F2B_KLO')]
+  # system python3, standard library only (the venv may not exist yet when this file is sourced)
+  python3 -I -c "
+n=int('$F2B_NK'); a=float('$F2B_KLO'); b=float('$F2B_KHI')
+ks=[a+(b-a)*i/(n-1) for i in range(n)] if n>1 else [a]
 print(' '.join('k%04d'%int(round(k*1000)) for k in ks))"
 }
 _f2b_modules() {

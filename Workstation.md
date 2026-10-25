@@ -24,12 +24,33 @@ if the workstation cores are faster than the laptop's.
 
 - Linux or macOS, with `bash`, `git` and `python3` ≥ 3.10 (with `venv`/`pip`).
   On Debian/Ubuntu: `sudo apt install git python3-venv build-essential`.
-- Push access to the GitHub repository, via an ssh key (`ssh -T git@github.com`) or a credential helper.
+- Push access to the GitHub repository **without typing a password** (see below). `run.sh` checks
+  this before starting and stops at once if a push would prompt.
 - Lean set up once by hand in the clone: `elan` (Lean v4.34.1 from `lean-toolchain`),
   `lake exe cache get` and `lake build`. This is already done on the workstation. The script only
   checks that `lake` is available. Later builds are incremental: each task builds only what changed.
 - The script installs the Python packages itself, into a venv `.venv-ws`, from
   [`scripts/requirements.txt`](scripts/requirements.txt).
+
+### Push access
+
+GitHub does not accept account passwords for `git push` over HTTPS, and a run pushes unattended,
+so set up one of these once:
+
+- **ssh key (recommended):**
+  ```bash
+  ssh-keygen -t ed25519 -C hornbill            # empty passphrase, or load it with ssh-agent
+  cat ~/.ssh/id_ed25519.pub                    # add at github.com → Settings → SSH keys
+  ssh -T git@github.com                        # should greet you by user name
+  git remote set-url origin git@github.com:siddhartha-gadgil/PlasmaLean.git
+  ```
+- **GitHub CLI:** `gh auth login` (HTTPS), then `gh auth setup-git`.
+- **Stored token:** create a personal access token (repo scope), then
+  `git config --global credential.helper store` and push once by hand, entering the token as the
+  password. (`credential.helper cache` forgets it after 15 minutes, which is why it kept asking.)
+
+Check with `git push --dry-run origin HEAD:refs/heads/workstation/auth-check`: it must finish
+without a prompt.
 
 ## First time
 

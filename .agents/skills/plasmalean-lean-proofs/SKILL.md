@@ -29,9 +29,9 @@ theorem subsetSum_correct (l : List Int) (indices : List Nat) :
 
 | Size of the check | Use | Do not use |
 | --- | --- | --- |
-| A few closed numeric facts (`(37:ℚ)/5 < 8`, an explicit polynomial value) | `norm_num`, `simp`, `rfl` | `decide` |
+| A few closed numeric facts (`(37:ℚ)/5 < 8`, an explicit polynomial value) | `norm_num`, `simp`, `rfl` | `decide`, `decide +kernel` |
 | Medium concrete checks: a Boolean checker on ℚ/ℕ/lists with up to a few hundred evaluation steps (a `QPoly.checkOn` fixture on 32 pieces, a 100–400 element list, a finite case split) | **`decide_cbv`** | plain `decide` |
-| Large certificates (many pieces, long lists, high-degree polynomial interval checks, many modes) | an explicit proof term built step by step: **the SubsetSum pattern (§3)** | one monolithic `decide_cbv` / `decide +kernel` on a Boolean checker |
+| Large certificates (many pieces, long lists, high-degree polynomial interval checks, many modes) | an explicit proof term built step by step: **the SubsetSum pattern (§3)** | one monolithic `decide_cbv`; `decide +kernel` (legacy only, see below) |
 
 **Plain `decide` is inefficient.** It evaluates the `Decidable` instance in the elaborator, and on ℚ arithmetic it typically just fails ("did not reduce to `isTrue`"). Do not use it for anything nontrivial.
 
@@ -42,7 +42,12 @@ theorem subsetSum_correct (l : List Int) (indices : List Nat) :
 - **Cost:** on structurally recursive ℚ checkers it is slower than `decide +kernel` and builds a large proof term. Measured times: `tightQuartic_check` 5 s vs 0.4 s; `dipQuadratic_reject` 2 s vs 0.06 s; `allGeB (1/3)` on 400 rationals 5.6 s vs 0.35 s. The 64-piece Ballooning residual check took 58 s vs 2.5 s and needed `maxHeartbeats 0`. That is past "medium": use §3.
 - **Limits:** long lists and deep recursion hit `maxRecDepth` (raise it, e.g. `set_option maxRecDepth 100000 in`), and large checks hit `cbv.maxSteps` (default 100 000). If you need both raised, the check belongs in §3. Use `@[cbv_opaque]` to stop it unfolding a definition and `@[cbv_eval]` to give it a rewrite rule instead. It does not enter binders.
 
-**`decide +kernel`** (also standard axioms only) is faster for structurally recursive checkers but gets stuck on well-founded recursion, and every call re-evaluates the whole checker with nothing reused. The existing `QPoly.checkOn` fixtures (`Certificates/PolyInterval.lean`, `Design/ScrewPinchModes.lean`, `Theory/Stability/Ballooning.lean`) use it. Keep them while they stay fast, and migrate them to §3 when a certificate grows. For new medium checks, start with `decide_cbv`. Fall back to `decide +kernel` only if `decide_cbv` is too slow and the checker is structurally recursive.
+**`decide +kernel` is not for new code** (policy of 25 October 2026). It is fast on structurally recursive checkers, but a failure gives only "did not reduce to `isTrue`", it re-evaluates the whole checker on every call, and it hides the computation in one opaque kernel evaluation. New code and **generators** (Python emitters) use:
+- `norm_num` / `rfl` for a few closed facts, including single bound checks such as `B 5 + E 5 ≤ 1623/10000` (unfold the defs with `norm_num [B, E]`, or prove `B 5 + E 5 = q` by `decide_cbv` and finish with `norm_num`);
+- `decide_cbv` for medium checks;
+- the SubsetSum proof-term pattern (§3) for large certificates, with leaf steps that are small `Nat`/`ℚ` facts closed by `rfl`, `norm_num` or `decide_cbv`. The kernel's `Nat` arithmetic is GMP-backed, so a leaf `a * b = c` on big literals closed by `rfl` is cheap.
+
+The existing `decide +kernel` checks (the `QPoly.checkOn` fixtures, the KAM-family Kronecker checks `…Check*`, and the `…Adm` bound checks) are legacy: migrate them when a generator is touched. **Generators must validate every emitted bound with exact rational arithmetic before writing it** (round outward, recompute in `Fraction`, assert), so that a wrong constant fails in Python, not in a Lean build hours later.
 
 **`bv_decide` (niche):** use it only for genuine SAT problems over `Bool` / `BitVec n` / fixed-width integers. It does not compute with `ℚ`, `ℝ` or lists. When the SAT solver is actually used, the proof depends on a native axiom such as `foo._native.bv_decide.ax_1_5`, which `check_axioms.lean` rejects. Always run `#print axioms`, and never leave such a proof in the library.
 
