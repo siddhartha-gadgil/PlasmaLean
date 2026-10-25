@@ -10,6 +10,7 @@ public import PlasmaLean.Theory.Transport.BoschHaleFine
 public import PlasmaLean.Sanity.BoschHaleFineInstance
 public import PlasmaLean.Design.SolovevFluxGeometry
 public import PlasmaLean.Certificates.KernelFact
+public import PlasmaLean.Certificates.BoolCert
 
 /-!
 # A high-`Q` two-sided transport band on the Solov'ev geometry, and `solovev_one_plasma_highQ`
@@ -99,6 +100,8 @@ public section
 noncomputable section
 
 namespace PlasmaLean.Design.SolovevBandHighQ
+
+open PlasmaLean.Certificates.BoolCert
 
 open Set Filter Topology PlasmaLean.Transport PlasmaLean.Fusion PlasmaLean.Certificates
   PlasmaLean.Design.TransportBarrier PlasmaLean.Design.QuasilinearBarrier
@@ -648,59 +651,59 @@ set_option maxHeartbeats 1000000 in
 theorem highQ_sub_check_ll :
     pieceCheckL (lowA highQ_aux highQ_fs (39 / 50) (49 / 100)) highQ_fs
       kirchhoffQ (1 / 200) 0 highQ_subP = true := by
-  kernel_fact
+  bool_cert
 /-- Lower barrier, corner `χ₀ = 39 / 50`, `γ = 0.525`. -/
 theorem highQ_sub_check_lu :
     pieceCheckL (lowA highQ_aux highQ_fs (39 / 50) (21 / 40)) highQ_fs
       kirchhoffQ (1 / 200) 0 highQ_subP = true := by
-  kernel_fact
+  bool_cert
 /-- Lower barrier, corner `χ₀ = 21 / 25`, `γ = 0.49`. -/
 theorem highQ_sub_check_hl :
     pieceCheckL (lowA highQ_aux highQ_fs (21 / 25) (49 / 100)) highQ_fs
       kirchhoffQ (1 / 200) 0 highQ_subP = true := by
-  kernel_fact
+  bool_cert
 /-- Lower barrier, corner `χ₀ = 21 / 25`, `γ = 0.525`. -/
 theorem highQ_sub_check_hu :
     pieceCheckL (lowA highQ_aux highQ_fs (21 / 25) (21 / 40)) highQ_fs
       kirchhoffQ (1 / 200) 0 highQ_subP = true := by
-  kernel_fact
+  bool_cert
 /-- Upper barrier, corner `χ₀ = 39 / 50`, `γ = 0.49`. -/
 theorem highQ_sup_check_ll :
     pieceCheckL (upA highQ_aux highQ_fu (39 / 50) (49 / 100)) highQ_fu
       kirchhoffQ (1 / 200) 0 highQ_supP = true := by
-  kernel_fact
+  bool_cert
 /-- Upper barrier, corner `χ₀ = 39 / 50`, `γ = 0.525`. -/
 theorem highQ_sup_check_lu :
     pieceCheckL (upA highQ_aux highQ_fu (39 / 50) (21 / 40)) highQ_fu
       kirchhoffQ (1 / 200) 0 highQ_supP = true := by
-  kernel_fact
+  bool_cert
 /-- Upper barrier, corner `χ₀ = 21 / 25`, `γ = 0.49`. -/
 theorem highQ_sup_check_hl :
     pieceCheckL (upA highQ_aux highQ_fu (21 / 25) (49 / 100)) highQ_fu
       kirchhoffQ (1 / 200) 0 highQ_supP = true := by
-  kernel_fact
+  bool_cert
 /-- Upper barrier, corner `χ₀ = 21 / 25`, `γ = 0.525`. -/
 theorem highQ_sup_check_hu :
     pieceCheckL (upA highQ_aux highQ_fu (21 / 25) (21 / 40)) highQ_fu
       kirchhoffQ (1 / 200) 0 highQ_supP = true := by
-  kernel_fact
+  bool_cert
 /-- Pressure certificate (`Δ = 40000 Pa`). -/
 theorem highQ_pres_check :
     pieceCheckL (presD 40000) highQ_fu kirchhoffQ 0 0 highQ_presP = true := by
-  kernel_fact
+  bool_cert
 
 /-- Monotonicity: `−F_sub' ≥ 0` on `[0,1]`. -/
 theorem highQ_fs_deriv_check :
     QPoly.checkOn (QPoly.scale (-1) (QPoly.deriv highQ_fs)) 0 0 1 (gridN 8) = true := by
-  kernel_fact
+  bool_cert
 /-- Monotonicity: `−F_sup' ≥ 0` on `[0,1]`. -/
 theorem highQ_fu_deriv_check :
     QPoly.checkOn (QPoly.scale (-1) (QPoly.deriv highQ_fu)) 0 0 1 (gridN 8) = true := by
-  kernel_fact
+  bool_cert
 /-- Ordering: `F_sup − F_sub ≥ 0` on `[0,1]`. -/
 theorem highQ_gap_check :
     QPoly.checkOn (QPoly.add highQ_fu (QPoly.scale (-1) highQ_fs)) 0 0 1 (gridN 8) = true := by
-  kernel_fact
+  bool_cert
 
 /-- Label and endpoint facts, checked once. -/
 theorem highQ_labels_check :
@@ -713,7 +716,7 @@ theorem highQ_labels_check :
       decide (QPoly.evalQ highQ_fs 0 ≤ kirchhoffQ 60) &&
       decide (kirchhoffQ 10 ≤ QPoly.evalQ highQ_fs (3 / 10)) &&
       decide (QPoly.evalQ highQ_fu 0 ≤ kirchhoffQ 19)) = true := by
-  kernel_fact
+  bool_cert
 
 /-- Unpacked label and endpoint facts. -/
 theorem highQ_labels_facts :

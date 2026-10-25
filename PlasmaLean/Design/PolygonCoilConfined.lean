@@ -7,6 +7,7 @@ module
 
 public import PlasmaLean.Design.PolygonCoilFrontier
 public import PlasmaLean.Certificates.KernelFact
+public import PlasmaLean.Certificates.BoolCert
 
 /-!
 # Confinement in the field of a concrete polygonal coil set
@@ -39,6 +40,8 @@ public section
 noncomputable section
 
 namespace PlasmaLean.Design.PolygonCoil
+
+open PlasmaLean.Certificates.BoolCert
 open PlasmaLean.Fields PlasmaLean.Vacuum PlasmaLean.Design.RationalStellarator
   PlasmaLean.Design.RationalStellarator.Coils PlasmaLean.Design.RationalStellarator.CoilsTF
   PlasmaLean.Design.RationalStellarator.Confined Set Real
@@ -180,7 +183,7 @@ theorem polyCoilField_vacuum : VacuumField Uc polyCoilField := by
     decide (3420 * 2 ^ 32 < |p.2.2| * 32761)
 
 /-- Every segment starts at a far vertex (one kernel evaluation). -/
-theorem vertFar_all : ((allSegs fils).all fun z => vertFar z.2.1) = true := by kernel_fact
+theorem vertFar_all : ((allSegs fils).all fun z => vertFar z.2.1) = true := by bool_cert
 
 theorem vertFar_sound {p : ℤ × ℤ × ℤ} (h : vertFar p = true) :
     aF < |sc (ptR p)| ∨ aF < |ptR p 2| := by

@@ -880,7 +880,7 @@ def emit_rel_L(p, treemod, envmod):
     spl = sorted(p.dummies + [i for i in range(nv) if p.nm(i) == 'V0'] +
                  [i for i in range(nv) if i >= 114])
     spl_short = sorted(i for i in spl if i < 114)
-    out = [HEADER, 'public import PlasmaLean.Design.%s\n' % treemod, 'public import PlasmaLean.Design.%s\n' % envmod,
+    out = [HEADER, 'public import PlasmaLean.Certificates.BoolCert\n', 'public import PlasmaLean.Design.%s\n' % treemod, 'public import PlasmaLean.Design.%s\n' % envmod,
            'public import PlasmaLean.Design.RationalStellaratorGCTorusRelL\n']
     out.append('''
 /-!
@@ -905,6 +905,7 @@ namespace %s
 
 open PlasmaLean.Theory.KAM PlasmaLean.Design.KamNewton PlasmaLean.Certificates.KronExpr
   PlasmaLean.Certificates.KronBall PlasmaLean.Certificates.KronBallCheb WEll1Z2 Complex PolyExpr
+  PlasmaLean.Certificates.BoolCert
 
 /-- **The parameter of the family** at `w = c`: `ρ = (64 + Re c)/2^14` (for `c = e^{iϑ}`:
 `ρ = (64 + cos ϑ)/16384`, in `[63/16384, 65/16384]`). -/
@@ -964,7 +965,7 @@ theorem X@T@_congr (c : ℂ) (u z : FA) : ∀ j, (!sp@T@ j) = true → X@T@ c u 
 /-- The identity of the node `%s` (from the `ρ = 1/256` pipeline). -/
 theorem rel%s_%s (c : ℂ) (u z : FA) :
     %s • X%s c u z %d = Ex.eval (X%s c u z) (toEx tr%sN_%s) :=
-  rel_congr (X%s_congr c u z) (by decide +kernel) (X%s_old c u z (j := %d) rfl) (relL_%s u z)
+  rel_congr (X%s_congr c u z) (by bool_cert) (X%s_old c u z (j := %d) rfl) (relL_%s u z)
 
 ''' % (nm, T, nm, cl, T, n, T, T, nm, T, T, n, OLDL['names'][n].replace("'", "p")))
         else:
@@ -1021,7 +1022,7 @@ def emit_rel_H(p, pl, treemod, extra):
     mod = '%sRel%s' % (PRE, p.tag)
     nv = p.nvar
     lmap, hmap = hl_maps(p, pl)
-    out = [HEADER, 'public import PlasmaLean.Design.%s\n' % treemod]
+    out = [HEADER, 'public import PlasmaLean.Certificates.BoolCert\n', 'public import PlasmaLean.Design.%s\n' % treemod]
     out += ['public import PlasmaLean.Design.%s\n' % m for m in extra]
     out.append('''
 /-!
@@ -1044,6 +1045,7 @@ namespace %s
 
 open PlasmaLean.Theory.KAM PlasmaLean.Design.KamNewton PlasmaLean.Certificates.KronExpr
   PlasmaLean.Certificates.KronBall PlasmaLean.Certificates.KronBallCheb WEll1Z2 Complex PolyExpr
+  PlasmaLean.Certificates.BoolCert
 
 /-- The low-resolution index of a shared variable (list). -/
 def lmap%sl : List ℕ :=%s
@@ -1111,7 +1113,7 @@ theorem X@T@_hmap (c : ℂ) :
 /-- The identity of the node `%s` (renamed from the low-resolution node `%s`). -/
 theorem rel%s_%s (c : ℂ) :
     %s • X%s c %d = Ex.eval (X%s c) (toEx tr%sN_%s) :=
-  rel_rename (X%s_hmap c) (eL := trLFN_%s) rfl (by decide +kernel) (X%s_rel c (i := %d) rfl)
+  rel_rename (X%s_hmap c) (eL := trLFN_%s) rfl (by bool_cert) (X%s_rel c (i := %d) rfl)
     (relLF_%s c (x%s c 4) (x%s c 5))
 
 ''' % (nm, lnm, T, nm, cl, T, n, T, T, nm, T, lnm, T, n, lnm, T, T))

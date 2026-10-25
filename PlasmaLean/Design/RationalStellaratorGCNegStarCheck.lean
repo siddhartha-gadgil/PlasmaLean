@@ -8,6 +8,7 @@ module
 public import PlasmaLean.Design.RationalStellaratorGCNegTorusEnvH
 public import PlasmaLean.Design.KamTorusACheck
 public import PlasmaLean.Certificates.KernelFact
+public import PlasmaLean.Certificates.DigitSumCert
 
 /-!
 # Kernel checks: the `v∥ < 0` guiding-centre torus `K₀` is star-shaped about the magnetic axis
@@ -64,11 +65,13 @@ theorem apriori_windG : LH 4 * LH 9 + LH 5 * LH 8 + c0windG < 2 ^ (257 - 1) := b
 set_option maxRecDepth 100000 in
 /-- `‖Ŵ − c0radG u^{N+1} v^M‖₁ ≤ L` with `(c0radG − L)/2^{102} ≥ 0.028`. -/
 theorem check_radG : 250 * l1Kron 130 13 radIntG + 7 * 2 ^ 102 ≤ 250 * c0radG := by
-  kernel_fact
+  l1kron_cert
 
+set_option maxHeartbeats 1000000 in
+-- `l1kron_cert`: the meta witness reads the 2^15 digits of a 1 MB image
 set_option maxRecDepth 100000 in
 /-- `‖N̂ − c0windG u^{2N} v^{2M}‖₁ ≤ L` with `(c0windG − L)/2^{202} ≥ 0.0058`. -/
 theorem check_windG : 5000 * l1Kron 257 15 windIntG + 29 * 2 ^ 202 ≤ 5000 * c0windG := by
-  kernel_fact
+  l1kron_cert
 
 end PlasmaLean.Design.RationalStellaratorGCNeg

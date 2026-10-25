@@ -8,6 +8,7 @@ module
 public import PlasmaLean.Design.QuasilinearBarrier
 public import PlasmaLean.Design.SolovevOnePlasma
 public import PlasmaLean.Certificates.KernelFact
+public import PlasmaLean.Certificates.BoolCert
 
 /-!
 # A quasilinear two-sided transport band on the Solov'ev geometry, and `solovev_one_plasma`
@@ -91,6 +92,8 @@ public section
 noncomputable section
 
 namespace PlasmaLean.Design.SolovevBand
+
+open PlasmaLean.Certificates.BoolCert
 
 open Set Filter Topology PlasmaLean.Transport PlasmaLean.Fusion PlasmaLean.Certificates
   PlasmaLean.Design.TransportBarrier PlasmaLean.Design.QuasilinearBarrier
@@ -437,47 +440,47 @@ theorem presS_eval (k K : ℚ) (s : ℝ) : QPoly.eval (presS k K) s =
 
 /-- Lower barrier, corner `χ₀ = 8/5`, `γ = 0.49`. -/
 theorem sub_check_ll : pieceCheckL (lowS fsS (8 / 5) (49 / 100)) fsS kirchhoffQ (1 / 20) 0 subP
-    = true := by kernel_fact
+    = true := by bool_cert
 /-- Lower barrier, corner `χ₀ = 8/5`, `γ = 0.525`. -/
 theorem sub_check_lu : pieceCheckL (lowS fsS (8 / 5) (21 / 40)) fsS kirchhoffQ (1 / 20) 0 subP
-    = true := by kernel_fact
+    = true := by bool_cert
 /-- Lower barrier, corner `χ₀ = 33/20`, `γ = 0.49`. -/
 theorem sub_check_hl :
     pieceCheckL (lowS fsS (33 / 20) (49 / 100)) fsS kirchhoffQ (1 / 20) 0 subP = true := by
-  kernel_fact
+  bool_cert
 /-- Lower barrier, corner `χ₀ = 33/20`, `γ = 0.525`. -/
 theorem sub_check_hu :
     pieceCheckL (lowS fsS (33 / 20) (21 / 40)) fsS kirchhoffQ (1 / 20) 0 subP = true := by
-  kernel_fact
+  bool_cert
 /-- Upper barrier, corner `χ₀ = 8/5`, `γ = 0.49`. -/
 theorem sup_check_ll : pieceCheckL (upS fuS (8 / 5) (49 / 100)) fuS kirchhoffQ (1 / 20) 0 supP
-    = true := by kernel_fact
+    = true := by bool_cert
 /-- Upper barrier, corner `χ₀ = 8/5`, `γ = 0.525`. -/
 theorem sup_check_lu : pieceCheckL (upS fuS (8 / 5) (21 / 40)) fuS kirchhoffQ (1 / 20) 0 supP
-    = true := by kernel_fact
+    = true := by bool_cert
 /-- Upper barrier, corner `χ₀ = 33/20`, `γ = 0.49`. -/
 theorem sup_check_hl :
     pieceCheckL (upS fuS (33 / 20) (49 / 100)) fuS kirchhoffQ (1 / 20) 0 supP = true := by
-  kernel_fact
+  bool_cert
 /-- Upper barrier, corner `χ₀ = 33/20`, `γ = 0.525`. -/
 theorem sup_check_hu :
     pieceCheckL (upS fuS (33 / 20) (21 / 40)) fuS kirchhoffQ (1 / 20) 0 supP = true := by
-  kernel_fact
+  bool_cert
 /-- Pressure certificate. -/
-theorem pres_check : pieceCheckL presS fuS kirchhoffQ 0 0 presP = true := by kernel_fact
+theorem pres_check : pieceCheckL presS fuS kirchhoffQ 0 0 presP = true := by bool_cert
 
 /-- Monotonicity: `−F_sub' ≥ 0` on `[0,1]`. -/
 theorem fsS_deriv_check :
     QPoly.checkOn (QPoly.scale (-1) (QPoly.deriv fsS)) 0 0 1 (gridN 8) = true := by
-  kernel_fact
+  bool_cert
 /-- Monotonicity: `−F_sup' ≥ 0` on `[0,1]`. -/
 theorem fuS_deriv_check :
     QPoly.checkOn (QPoly.scale (-1) (QPoly.deriv fuS)) 0 0 1 (gridN 8) = true := by
-  kernel_fact
+  bool_cert
 /-- Ordering: `F_sup − F_sub ≥ 0` on `[0,1]`. -/
 theorem gapS_check :
     QPoly.checkOn (QPoly.add fuS (QPoly.scale (-1) fsS)) 0 0 1 (gridN 16) = true := by
-  kernel_fact
+  bool_cert
 
 /-- Label and endpoint facts, checked once. -/
 theorem labelsS_check :
@@ -492,7 +495,7 @@ theorem labelsS_check :
       decide (kirchhoffQ 10 ≤ QPoly.evalQ fsS (3 / 10)) &&
       decide (QPoly.evalQ fuS 0 ≤ kirchhoffQ 18) &&
       presP.all (fun p => decide (0 ≤ p.2.2))) = true := by
-  kernel_fact
+  bool_cert
 
 /-- Unpacked label and endpoint facts. -/
 theorem labelsS_facts :

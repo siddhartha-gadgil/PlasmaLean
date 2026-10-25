@@ -8,6 +8,7 @@ module
 public import PlasmaLean.Theory.Transport.Comparison
 public import PlasmaLean.Certificates.PolyInterval
 public import PlasmaLean.Certificates.KernelFact
+public import PlasmaLean.Certificates.BoolCert
 
 /-!
 # Barrier comparison with a degenerate axis, and a rational piecewise barrier checker
@@ -65,6 +66,8 @@ public section
 noncomputable section
 
 namespace PlasmaLean.Transport
+
+open PlasmaLean.Certificates.BoolCert
 
 open Set Filter Topology
 
@@ -528,38 +531,38 @@ theorem degenerateAxis_of_zero (c : RadialCoefficients) (hD : ∀ ψ T, c.D ψ T
 labels `1`, bonus `0`, margin `0`. -/
 theorem pieceCheck_accept :
     pieceCheck [1, -1] [2, -1] 0 (fun _ => 0) 0 [(1 / 2, 1), (1, 1)] = true := by
-  kernel_fact
+  bool_cert
 
 /-- Sanity (rejected fixture): `Q = 1 − 2x` is negative near `x = 1`, so margin `0` fails. -/
 theorem pieceCheck_reject :
     pieceCheck [1, -2] [2, -1] 0 (fun _ => 0) 0 [(1 / 2, 1), (1, 1)] = false := by
-  kernel_fact
+  bool_cert
 
 /-- Sanity (the bonus is used): `Q = −1` with bonus `2` on label `1` passes margin `1`. -/
 theorem pieceCheck_bonus :
     pieceCheck [-1] [2, -1] 1 (fun k => if k = 1 then 2 else 0) 0 [(1, 1)] = true := by
-  kernel_fact
+  bool_cert
 
 /-- Sanity (two-label checker, accepted fixture): `F = 2 − x` lies in `[1, 2]` on `[0,1]`, the
 labels `(1, 2)` bracket it, and `Q = 1 − x` with bonus `0` has margin `0`. -/
 theorem pieceCheck2_accept :
     pieceCheck2 [1, -1] [2, -1] id 0 (fun _ _ => 0) 0 [(1 / 2, 1, 2), (1, 1, 2)] = true := by
-  kernel_fact
+  bool_cert
 
 /-- Sanity (label-dependent checker, accepted fixture): `Q_k = k − x` with labels `k = 1`. -/
 theorem pieceCheckL_accept :
     pieceCheckL (fun k _ => [k, -1]) [2, -1] id 0 0 [(1 / 2, 1, 2), (1, 1, 2)] = true := by
-  kernel_fact
+  bool_cert
 
 /-- Sanity (label-dependent checker, rejected fixture): with `k = 1/2`, `Q_k = k − x` is
 negative near `x = 1`. -/
 theorem pieceCheckL_reject :
     pieceCheckL (fun k _ => [k, -1]) [2, -1] id 0 0 [(1 / 2, 1 / 2, 2), (1, 1 / 2, 2)] = false := by
-  kernel_fact
+  bool_cert
 
 /-- Sanity (two-label checker, rejected fixture): the upper label `3/2` is below `F(0) = 2`. -/
 theorem pieceCheck2_reject_label :
     pieceCheck2 [1, -1] [2, -1] id 0 (fun _ _ => 0) 0 [(1 / 2, 1, 3 / 2), (1, 1, 2)] = false := by
-  kernel_fact
+  bool_cert
 
 end PlasmaLean.Transport

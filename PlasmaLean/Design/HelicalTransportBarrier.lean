@@ -9,6 +9,7 @@ public import PlasmaLean.Design.HelicalFluxGeometry
 public import PlasmaLean.Design.TransportBarrier
 public import PlasmaLean.Design.HelicalReactorScale
 public import PlasmaLean.Certificates.KernelFact
+public import PlasmaLean.Certificates.BoolCert
 
 /-!
 # M2 on helical geometry: an all-time core-temperature barrier with an edge χ drop
@@ -80,6 +81,8 @@ public section
 noncomputable section
 
 namespace PlasmaLean.Design.HelicalTransportBarrier
+
+open PlasmaLean.Certificates.BoolCert
 
 open Set PlasmaLean.Transport PlasmaLean.Fusion PlasmaLean.Certificates
   PlasmaLean.Design.HelicalFluxGeometry
@@ -266,24 +269,24 @@ theorem condLB_eval (s : ℝ) : QPoly.eval condLB s =
 theorem hPieces_end : pieceEnd 0 hPieces = 1 := by simp [pieceEnd, hPieces]
 
 /-- All labels are nonnegative. -/
-theorem hPieces_labels : hPieces.all (fun p => decide (0 ≤ p.2)) = true := by kernel_fact
+theorem hPieces_labels : hPieces.all (fun p => decide (0 ≤ p.2)) = true := by bool_cert
 
 /-- **Certificate at `χ₀ = 2/5`** (12 pieces, kernel-checked). -/
 theorem hTsub_check_max :
     pieceCheck resMax hTsubCoeffs (1 / 20) alphaBonus 0 hPieces = true := by
-  kernel_fact
+  bool_cert
 
 /-- **Certificate at `χ₀ = 0`** (12 pieces, kernel-checked). -/
 theorem hTsub_check_zero :
     pieceCheck srcLB hTsubCoeffs (1 / 20) alphaBonus 0 hPieces = true := by
-  kernel_fact
+  bool_cert
 
 /-- Sanity (rejected fixture): the same pieces do **not** certify the margin at the larger core
 diffusivity `χ₀ = 1/2`, so the accepted certificate is not vacuous. -/
 theorem hTsub_check_reject :
     pieceCheck (QPoly.add (QPoly.scale (1 / 2 * (25 / 32)) condLB) srcLB) hTsubCoeffs (1 / 20)
       alphaBonus 0 hPieces = false := by
-  kernel_fact
+  bool_cert
 
 /-- Explicit form of `srcLB`. -/
 theorem srcLB_eval (s : ℝ) :

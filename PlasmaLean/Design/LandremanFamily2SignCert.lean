@@ -7,6 +7,7 @@ module
 
 public import PlasmaLean.Design.LandremanFamily2MercierData
 public import PlasmaLean.Certificates.KernelFact
+public import PlasmaLean.Certificates.BoolCert
 
 /-!
 # Family 2 (`ε = 1/4`, `S = 4`): certified shear `ι' > 0` and magnetic hill `V'' > 0`
@@ -31,6 +32,8 @@ public section
 noncomputable section
 
 namespace PlasmaLean.Design.LandremanFamily2SignCert
+
+open PlasmaLean.Certificates.BoolCert
 
 open Real PlasmaLean.Certificates.ValidatedQuadrature PlasmaLean.Design.LandremanFamily2Quad
 open PlasmaLean.Design.LandremanFamily2Labels PlasmaLean.Design.LandremanFamily2MercierData
@@ -109,39 +112,39 @@ theorem SignCovered.sound {a b : ℚ} (h : SignCovered a b) {k : ℝ} (h1 : (a :
 
 set_option maxRecDepth 100000 in
 /-- Cell `[7/10, 18/25]`. -/
-theorem sc0 : signCheck 16 (7 / 10) (18 / 25) = true := by kernel_fact
+theorem sc0 : signCheck 16 (7 / 10) (18 / 25) = true := by bool_cert
 set_option maxRecDepth 100000 in
 /-- Cell `[18/25, 37/50]`. -/
-theorem sc1 : signCheck 16 (18 / 25) (37 / 50) = true := by kernel_fact
+theorem sc1 : signCheck 16 (18 / 25) (37 / 50) = true := by bool_cert
 set_option maxRecDepth 100000 in
 /-- Cell `[37/50, 19/25]`. -/
-theorem sc2 : signCheck 16 (37 / 50) (19 / 25) = true := by kernel_fact
+theorem sc2 : signCheck 16 (37 / 50) (19 / 25) = true := by bool_cert
 set_option maxRecDepth 100000 in
 /-- Cell `[19/25, 39/50]`. -/
-theorem sc3 : signCheck 16 (19 / 25) (39 / 50) = true := by kernel_fact
+theorem sc3 : signCheck 16 (19 / 25) (39 / 50) = true := by bool_cert
 set_option maxRecDepth 100000 in
 /-- Cell `[39/50, 4/5]`. -/
-theorem sc4 : signCheck 16 (39 / 50) (4 / 5) = true := by kernel_fact
+theorem sc4 : signCheck 16 (39 / 50) (4 / 5) = true := by bool_cert
 set_option maxRecDepth 100000 in
 /-- Cell `[4/5, 41/50]`. -/
-theorem sc5 : signCheck 16 (4 / 5) (41 / 50) = true := by kernel_fact
+theorem sc5 : signCheck 16 (4 / 5) (41 / 50) = true := by bool_cert
 set_option maxRecDepth 100000 in
 /-- Cell `[41/50, 21/25]`. -/
-theorem sc6 : signCheck 16 (41 / 50) (21 / 25) = true := by kernel_fact
+theorem sc6 : signCheck 16 (41 / 50) (21 / 25) = true := by bool_cert
 set_option maxRecDepth 100000 in
 /-- Cell `[21/25, 43/50]`. -/
-theorem sc7 : signCheck 16 (21 / 25) (43 / 50) = true := by kernel_fact
+theorem sc7 : signCheck 16 (21 / 25) (43 / 50) = true := by bool_cert
 set_option maxRecDepth 100000 in
 /-- Cell `[43/50, 22/25]`. -/
-theorem sc8 : signCheck 16 (43 / 50) (22 / 25) = true := by kernel_fact
+theorem sc8 : signCheck 16 (43 / 50) (22 / 25) = true := by bool_cert
 set_option maxRecDepth 100000 in
 /-- Cell `[22/25, 9/10]`. -/
-theorem sc9 : signCheck 16 (22 / 25) (9 / 10) = true := by kernel_fact
+theorem sc9 : signCheck 16 (22 / 25) (9 / 10) = true := by bool_cert
 
 set_option maxRecDepth 100000 in
 /-- Rejected fixture (non-vacuity): the single coarse cell `k ∈ [1/20, 9/10]` with two
 one-dimensional cells is not accepted (its enclosures are too wide). -/
-theorem signCheck_rejects_coarse : signCheck 2 (1 / 20) (9 / 10) = false := by kernel_fact
+theorem signCheck_rejects_coarse : signCheck 2 (1 / 20) (9 / 10) = false := by bool_cert
 
 /-- **The cover of `[7/10, 9/10]`** by ten kernel-checked cells. -/
 theorem sign_cover : SignCovered (7 / 10) (9 / 10) :=

@@ -207,16 +207,20 @@ bound the number of concurrent kernel processes during a build.)
 def emit_cells(k, F, g, eta, mods):
     n = len(g)
     T = [HDR, '\n'.join('public import PlasmaLean.Design.' + m for m in mods),
-         'public import PlasmaLean.Design.PolygonCoilCubicFrontier', '', '''/-!
+         'public import PlasmaLean.Design.PolygonCoilCubicFrontier',
+         'public import PlasmaLean.Certificates.BoolCert',
+         'public import PlasmaLean.Certificates.KernelFact', '', '''/-!
 # Cubic frontier certificate: the cells and the cover of face %d
 
-* `rowCF_i`: kernel evaluation (`decide +kernel`) of `cellsRow4` on the records of the grid lines
-  `i, …, i+3` of face `F` (one evaluation per row keeps the kernel memory small);
+* `rowCF_i`: `cellsRow4` on the records of the grid lines `i, …, i+3` of face `F`, by an explicit
+  `BCert` certificate (`bool_cert`, `Certificates/BoolCert`): one `&&` step per cell, and per cell
+  its geometric conditions and its error bound `Nat.ble … η` as kernel-checked comparison leaves;
 * `cellsCF`: all cells of the face pass (`cellsAll4`, assembled from the rows);
 * `linesC_F`, `rowsC_F`: the facts certified by the line checks `lCF_k` (`lineOut4_sound`);
 * `coverC_F`, `faceCovC_F`: the certified bound on the face (`face_sound`).
 -/''' % k, '', 'public section', '', 'namespace PlasmaLean.Design.PolygonCoil', '',
-         'open PlasmaLean.Fields PlasmaLean.Design.RationalStellarator Set Real', '']
+         'open PlasmaLean.Fields PlasmaLean.Design.RationalStellarator Set Real',
+         '  PlasmaLean.Certificates.BoolCert', '']
     T.append('/-- The line records of face %d. -/' % k)
     T.append('@[expose]')
     T.append(wrap('def dataC%d : List (List CRec) := [' % k
@@ -227,7 +231,7 @@ def emit_cells(k, F, g, eta, mods):
         T.append(wrap('theorem rowC%d_%d : cellsRow4 faceC%d etaC (%d) (%d) (%d) (%d) dC%d_%d dC%d_%d dC%d_%d dC%d_%d'
                       ' faceC%d.wn = true := by' % (k, i, k, g[i], g[i + 1], g[i + 2], g[i + 3], k, i, k, i + 1,
                                                     k, i + 2, k, i + 3, k)))
-        T.append('  decide +kernel')
+        T.append('  bool_cert')
         T.append('')
     T.append('/-- **All cells of face %d pass** (`η = %d·2⁻⁴⁰`). -/' % (k, eta))
     T.append('theorem cellsC%d : cellsAll4 etaC faceC%d gridC%d dataC%d = true :=' % (k, k, k, k))
@@ -257,15 +261,15 @@ def emit_cells(k, F, g, eta, mods):
              % (k, k, g[1], g[-2]))
     T.append('    (((%d : ℤ) : ℝ) / ((%d : ℕ) : ℝ)) (((%d : ℤ) : ℝ) / ((%d : ℕ) : ℝ)) := by'
              % (wlo, F.wd, whi, F.wd))
-    T.append('  have h := face_sound filsC faceC%d face4OK_%d etaC (by decide) gridC%d dataC%d linesC_%d'
+    T.append('  have h := face_sound filsC faceC%d face4OK_%d etaC (by kernel_fact) gridC%d dataC%d linesC_%d'
              % (k, k, k, k, k))
-    T.append('    rowsC_%d cellsC%d (by decide)' % (k, k))
-    T.append('  rw [show gridC%d.length = %d by decide +kernel, show faceC%d.wn.length = %d by decide +kernel]'
+    T.append('    rowsC_%d cellsC%d (by kernel_fact)' % (k, k))
+    T.append('  rw [show gridC%d.length = %d by kernel_fact, show faceC%d.wn.length = %d by kernel_fact]'
              ' at h' % (k, n, k, len(F.wn)))
-    T.append('  rwa [show gridC%d.getD 1 0 = %d by decide +kernel,' % (k, g[1]))
-    T.append('    show gridC%d.getD %d 0 = %d by decide +kernel,' % (k, n - 2, g[-2]))
-    T.append('    show faceC%d.wn.getD 1 0 = %d by decide +kernel,' % (k, wlo))
-    T.append('    show faceC%d.wn.getD %d 0 = %d by decide +kernel,' % (k, len(F.wn) - 2, whi))
+    T.append('  rwa [show gridC%d.getD 1 0 = %d by kernel_fact,' % (k, g[1]))
+    T.append('    show gridC%d.getD %d 0 = %d by kernel_fact,' % (k, n - 2, g[-2]))
+    T.append('    show faceC%d.wn.getD 1 0 = %d by kernel_fact,' % (k, wlo))
+    T.append('    show faceC%d.wn.getD %d 0 = %d by kernel_fact,' % (k, len(F.wn) - 2, whi))
     T.append('    show faceC%d.wd = %d from rfl, show faceC%d.kind = %d from rfl] at h' % (k, F.wd, k, k))
     T.append('')
     T.append('/-- **The cover of face %d.** -/' % k)

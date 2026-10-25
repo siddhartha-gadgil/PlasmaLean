@@ -9,6 +9,7 @@ public import PlasmaLean.Design.TransportBarrier
 public import Mathlib.Analysis.Calculus.Deriv.Inverse
 public import Mathlib.Topology.Order.MonotoneContinuity
 public import PlasmaLean.Certificates.KernelFact
+public import PlasmaLean.Certificates.BoolCert
 
 /-!
 # A two-sided transport band with temperature-dependent diffusivity (kernel change K2)
@@ -86,6 +87,8 @@ public section
 noncomputable section
 
 namespace PlasmaLean.Design.QuasilinearBarrier
+
+open PlasmaLean.Certificates.BoolCert
 
 open Set Filter Topology PlasmaLean.Transport PlasmaLean.Fusion PlasmaLean.Certificates
   PlasmaLean.Design.TransportBarrier
@@ -433,25 +436,25 @@ source-increased problem at `χ₀ = 1/2`, edge `3/2 keV`; untrusted). -/
 theorem fsub_check_lo :
     pieceCheck2 (lowQ fsubCoeffs (1 / 2)) fsubCoeffs kirchhoffQ (1 / 20) lowBonus 0 subPieces
       = true := by
-  kernel_fact
+  bool_cert
 
 /-- Certificate: lower barrier at `χ₀ = 4/5`. -/
 theorem fsub_check_hi :
     pieceCheck2 (lowQ fsubCoeffs (4 / 5)) fsubCoeffs kirchhoffQ (1 / 20) lowBonus 0 subPieces
       = true := by
-  kernel_fact
+  bool_cert
 
 /-- Certificate: upper barrier at `χ₀ = 1/2` (23 pieces). -/
 theorem fsup_check_lo :
     pieceCheck2 (upQ fsupCoeffs (1 / 2)) fsupCoeffs kirchhoffQ (1 / 20) upBonus 0 supPieces
       = true := by
-  kernel_fact
+  bool_cert
 
 /-- Certificate: upper barrier at `χ₀ = 4/5`. -/
 theorem fsup_check_hi :
     pieceCheck2 (upQ fsupCoeffs (4 / 5)) fsupCoeffs kirchhoffQ (1 / 20) upBonus 0 supPieces
       = true := by
-  kernel_fact
+  bool_cert
 
 /-- Grid with `n` equal steps on `[0,1]`. -/
 @[expose] def gridN (n : ℕ) : List ℚ := (List.range n).map (fun i : ℕ => ((i : ℚ) + 1) / n)
@@ -459,18 +462,18 @@ theorem fsup_check_hi :
 /-- Monotonicity certificate: `−F_sub' ≥ 0` on `[0,1]`. -/
 theorem fsub_deriv_check :
     QPoly.checkOn (QPoly.scale (-1) (QPoly.deriv fsubCoeffs)) 0 0 1 (gridN 8) = true := by
-  kernel_fact
+  bool_cert
 
 /-- Monotonicity certificate: `−F_sup' ≥ 0` on `[0,1]`. -/
 theorem fsup_deriv_check :
     QPoly.checkOn (QPoly.scale (-1) (QPoly.deriv fsupCoeffs)) 0 0 1 (gridN 8) = true := by
-  kernel_fact
+  bool_cert
 
 /-- Ordering certificate: `F_sup − F_sub ≥ 0` on `[0,1]`. -/
 theorem gap_check :
     QPoly.checkOn (QPoly.add fsupCoeffs (QPoly.scale (-1) fsubCoeffs)) 0 0 1 (gridN 16)
       = true := by
-  kernel_fact
+  bool_cert
 
 /-- Label and endpoint facts, checked once: lower labels `k ≥ 0`; upper labels end a window
 and are `≤ 60`; both piece lists end at `1`; `F_sub(1) = Φ(1)`, `F_sup(1) = Φ(3/2)`,
@@ -485,7 +488,7 @@ theorem labels_check :
       decide (QPoly.evalQ fsubCoeffs 0 ≤ kirchhoffQ 60) &&
       decide (kirchhoffQ 10 ≤ QPoly.evalQ fsubCoeffs (3 / 10)) &&
       decide (QPoly.evalQ fsupCoeffs 0 ≤ kirchhoffQ (47 / 2))) = true := by
-  kernel_fact
+  bool_cert
 
 /-! ### Consequences of the certificates -/
 

@@ -10,6 +10,7 @@ public import PlasmaLean.Design.PolygonCoilCert04
 public import PlasmaLean.Design.PolygonCoilCert05
 public import PlasmaLean.Design.PolygonCoilSoundD
 public import PlasmaLean.Certificates.KernelFact
+public import PlasmaLean.Certificates.BoolCert
 
 /-!
 # The certified frontier bound on the four faces of the fundamental frontier piece
@@ -28,12 +29,14 @@ public section
 noncomputable section
 
 namespace PlasmaLean.Design.PolygonCoil
+
+open PlasmaLean.Certificates.BoolCert
 open PlasmaLean.Fields PlasmaLean.Design.RationalStellarator
     PlasmaLean.Design.RationalStellarator.Coils
   Set Real
 
 /-- The integer coil data is valid (one kernel evaluation). -/
-theorem dataOK_eq : dataOK = true := by kernel_fact
+theorem dataOK_eq : dataOK = true := by bool_cert
 
 /-- Every filament is nonempty and there are at most `nSeg` segments. -/
 theorem fils_shape : (fils.all fun f => !f.2.isEmpty) = true ∧ (allSegs fils).length ≤ nSeg := by

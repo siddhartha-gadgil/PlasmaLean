@@ -8,6 +8,7 @@ module
 public import PlasmaLean.Design.PolygonCoilCubicConfined
 public import PlasmaLean.Theory.Fields.BiotSavartComplex
 public import PlasmaLean.Certificates.KernelFact
+public import PlasmaLean.Certificates.BoolCert
 
 /-!
 # Certified distance from the confinement region to the coils
@@ -39,6 +40,8 @@ the coil set `filsC` (192 segments).
 noncomputable section
 
 namespace PlasmaLean.Design.CoilFieldComplex
+
+open PlasmaLean.Certificates.BoolCert
 
 open PlasmaLean.Fields PlasmaLean.Design.PolygonCoil PlasmaLean.Design.RationalStellarator
   PlasmaLean.Design.RationalStellarator.CoilsTF PlasmaLean.Design.RationalStellarator.Confined
@@ -238,7 +241,7 @@ theorem segCheck_sound {A : ℚ} {p q : ℤ × ℤ × ℤ} :
       · exact segCheck_sound n h2 (le_of_not_ge hm) hte
 
 /-- **Kernel certificate**: every segment of the coil set passes the check at `A = 7/20`. -/
-theorem farAll_true : farAll (7 / 20) 3 (allSegs filsC) = true := by kernel_fact
+theorem farAll_true : farAll (7 / 20) 3 (allSegs filsC) = true := by bool_cert
 
 /-- Every point of every coil segment is `Far (7/20)`. -/
 theorem filsC_far {z : ℤ × (ℤ × ℤ × ℤ) × (ℤ × ℤ × ℤ)} (hz : z ∈ allSegs filsC) {t : ℝ}
@@ -305,7 +308,7 @@ def dataOK (z : ℤ × (ℤ × ℤ × ℤ) × (ℤ × ℤ × ℤ)) : Bool :=
     (z.2.2.2.2 - z.2.1.2.2) ^ 2) ≤ 529 * 4294967296 ^ 2)
 
 /-- Kernel check of the data bounds. -/
-theorem dataOK_all : (allSegs filsC).all dataOK = true := by kernel_fact
+theorem dataOK_all : (allSegs filsC).all dataOK = true := by bool_cert
 
 /-- The current numerators are bounded: `|K| ≤ 90485364`. -/
 theorem filsC_kappa {z : ℤ × (ℤ × ℤ × ℤ) × (ℤ × ℤ × ℤ)} (hz : z ∈ allSegs filsC) :

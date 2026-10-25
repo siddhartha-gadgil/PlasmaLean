@@ -7,6 +7,7 @@ module
 
 public import PlasmaLean.Kernel.Fusion
 public import PlasmaLean.Certificates.KernelFact
+public import PlasmaLean.Certificates.BoolCert
 
 /-!
 # Finer supplied Bosch–Hale reactivity windows (quarter-keV on `[5, 30]` keV)
@@ -45,6 +46,8 @@ public section
 noncomputable section
 
 namespace PlasmaLean.Transport
+
+open PlasmaLean.Certificates.BoolCert
 
 open PlasmaLean.Fusion
 
@@ -174,7 +177,7 @@ tighter enclosures. -/
 /-- The refinement check over all fine windows (evaluated once). -/
 theorem fine_refines_check :
     boschHaleFineWindows.all (fun wf => boschHaleWindows.any (windowRefines wf)) = true := by
-  kernel_fact
+  bool_cert
 
 /-- **Consistency with the coarse kernel data.** Every fine window lies inside a coarse
 window `[k, k+1]` and its enclosure is contained in the coarse one: the fine data refine the
@@ -193,7 +196,7 @@ theorem fine_refines_coarse : ∀ wf ∈ boschHaleFineWindows, ∃ wc ∈ boschH
 /-- Both supplied window lists are well formed. -/
 theorem windows_wf_check :
     (windowsWF boschHaleWindows && windowsWF boschHaleFineWindows) = true := by
-  kernel_fact
+  bool_cert
 
 /-- **Floor from one window.** If `w` holds, `1 ≤ w.lo ≤ w.hi`, `w.lo = k ≤ T ≤ 60` and `sv`
 is increasing on `[1,60]`, then `w.svLo ≤ sv T`. -/
@@ -300,6 +303,6 @@ theorem svFloorF_fixture : svFloorF (61 / 4) = 2.795e-22 := by kernel_fact
 
 /-- Sanity (rejected fixture): `61/8 keV` is not a window end, so it is not a valid ceiling
 label. -/
-theorem ceilOK_reject : ceilOK (61 / 8) = false := by kernel_fact
+theorem ceilOK_reject : ceilOK (61 / 8) = false := by bool_cert
 
 end PlasmaLean.Transport

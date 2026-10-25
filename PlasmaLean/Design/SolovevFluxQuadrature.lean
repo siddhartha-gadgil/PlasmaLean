@@ -8,6 +8,7 @@ module
 public import PlasmaLean.Design.SolovevMercierQuadrature
 public import PlasmaLean.Certificates.PolyInterval
 public import PlasmaLean.Certificates.KernelFact
+public import PlasmaLean.Certificates.BoolCert
 
 /-!
 # Certified enclosures of the Solov'ev flux-surface averages (polynomial quadrature)
@@ -64,6 +65,8 @@ public section
 noncomputable section
 
 namespace PlasmaLean.Design.SolovevFluxQuadrature
+
+open PlasmaLean.Certificates.BoolCert
 
 open Real Set MeasureTheory intervalIntegral PlasmaLean.Certificates
 open PlasmaLean.Design.SolovevMercierQuadrature (Gn Pn fP fQ Gn_pos)
@@ -233,21 +236,21 @@ end BPoly
 
 /-- `U₃ ≥ 0` on `[-12/25, 12/25]`. -/
 theorem U3_nonneg_check : QPoly.checkOn U3 0 (-12 / 25) (12 / 25) xPts = true := by
-  kernel_fact
+  bool_cert
 
 /-- `L₃ ≥ 0` on `[-12/25, 12/25]`. -/
 theorem L3_nonneg_check : QPoly.checkOn L3 0 (-12 / 25) (12 / 25) xPts = true := by
-  kernel_fact
+  bool_cert
 
 /-- `U₃²(1+x)³ - 1 ≥ 5·10⁻⁸` on `[-12/25, 12/25]`. -/
 theorem U3_sq_check : QPoly.checkOn (QPoly.add (QPoly.mul (QPoly.mul U3 U3) cube1) [-1])
     (1 / (2 * 10 ^ 7)) (-12 / 25) (12 / 25) xPts = true := by
-  kernel_fact
+  bool_cert
 
 /-- `1 - L₃²(1+x)³ ≥ 5·10⁻⁸` on `[-12/25, 12/25]`. -/
 theorem L3_sq_check : QPoly.checkOn (QPoly.add [1] (QPoly.scale (-1) (QPoly.mul (QPoly.mul L3 L3)
     cube1))) (1 / (2 * 10 ^ 7)) (-12 / 25) (12 / 25) xPts = true := by
-  kernel_fact
+  bool_cert
 
 /-- `(1+x)³` evaluates to `(1+x)³`. -/
 theorem cube1_eval (x : ℝ) : QPoly.eval cube1 x = (1 + x) ^ 3 := by
@@ -424,29 +427,29 @@ end squeezes
 /-- `192 LG - 539 UP ≥ 0` (lower bound of `g/s`). -/
 theorem glo_check :
     QPoly.checkOn (QPoly.add (QPoly.scale 192 LG) (QPoly.scale (-539) UP)) 0 0 (12 / 25) epsPts
-      = true := by kernel_fact
+      = true := by bool_cert
 
 /-- `385 LP - 128 UG ≥ 0` (upper bound of `g/s`). -/
 theorem gup_check :
     QPoly.checkOn (QPoly.add (QPoly.scale 385 LP) (QPoly.scale (-128) UG)) 0 0 (12 / 25) epsPts
-      = true := by kernel_fact
+      = true := by bool_cert
 
 /-- `192 LH - 539 UP ≥ 0` (lower bound of `h`). -/
 theorem hlo_check :
     QPoly.checkOn (QPoly.add (QPoly.scale 192 LH) (QPoly.scale (-539) UP)) 0 0 (12 / 25) epsPts
-      = true := by kernel_fact
+      = true := by bool_cert
 
 /-- `385 LP - 128 UH ≥ 0` (upper bound of `h`). -/
 theorem hup_check :
     QPoly.checkOn (QPoly.add (QPoly.scale 385 LP) (QPoly.scale (-128) UH)) 0 0 (12 / 25) epsPts
-      = true := by kernel_fact
+      = true := by bool_cert
 
 /-- Rejected fixture: the checker does NOT certify `IGn ≤ 3 Pn` (`g ≤ (144/275) s`, the axis
 value, which fails just off the axis to within the enclosure width): the certificate's
 margin is genuine, not vacuous. -/
 theorem gup_tight_rejected :
     QPoly.checkOn (QPoly.add (QPoly.scale 3 LP) (QPoly.scale (-1) UG)) 0 0 (12 / 25) epsPts
-      = false := by kernel_fact
+      = false := by bool_cert
 
 /-- From a polynomial check to a real inequality on `[0, 12/25]`. -/
 theorem check_apply {p q : List ℚ} {a b : ℚ}
