@@ -156,22 +156,14 @@ laptop with a small parameter setting, then commit it to `main` before running i
 Kept up to date from the laptop after every review ("update from workstation"). Run them on the
 workstation, inside `tmux`; `run.sh` pulls `main` itself.
 
-**Status (25 October 2026): wait.** The generator bug behind the failed Mu3 runs (a template
-number substituted twice, giving a false bound in `Mu3Adm`) is being fixed; these commands become
-useful once the fix is on `main` (the next laptop commit will say so here). Push access must work
-without a password (see "Push access" above).
+**Status (25 October 2026, evening): run now.** The generator bug is fixed on `main` (9f20af1), and
+the cell λ ∈ [1/8, 3/16] (Mu3) was reproduced and certified on the laptop, so only the last cell
+remains. Push access must work without a password (see "Push access" above).
 
 ```bash
-# Pitch cell λ ∈ [1/8, 3/16] (tag Mu3): numerics are cached on the workstation, so this re-emits
-# with the fixed generator and builds (about 30 CPU-min of Lean).
-LAM_LO=1/8 LAM_HI=3/16 LAM_TAG=3 scripts/workstation/run.sh --skip-numerics lambda-cell
-
-# Pitch cell λ ∈ [3/16, 1/4] (tag Mu4): from scratch, about 40 min of Python plus 30 CPU-min of Lean.
+# Pitch cell λ ∈ [3/16, 1/4] (tag Mu4): about 40 min of Python plus about 15 CPU-min of Lean
+# (low-memory format, peak about 4.4 GB per process).
 LAM_LO=3/16 LAM_HI=1/4 LAM_TAG=4 scripts/workstation/run.sh lambda-cell
 ```
 
-The certificates are now emitted in the low-memory format (peak ≈ 4.4 GB per process), so the
-default 6 GB laptop limit applies; `LAPTOP_MAX_RSS_GB=9` is no longer needed.
-
-Run the two commands separately (not joined by `&&`): they are independent. Then say "update
-from workstation" on the laptop.
+Then say "update from workstation" on the laptop.
