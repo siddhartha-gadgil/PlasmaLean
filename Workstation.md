@@ -204,7 +204,7 @@ laptop with a small parameter setting, then commit it to `main` before running i
 Kept up to date from the laptop after every review ("update from workstation"). Run them on the
 workstation, inside `tmux`; `run.sh` pulls `main` itself.
 
-**Status (25 October 2026, night): run now.** The cell [3/16, 1/4] failed the KAM smallness
+**Status (25 October 2026, night; updated): run now.** The cell [3/16, 1/4] failed the KAM smallness
 condition (2.64 > 1; it grows with λ: 0.16 for [1/16, 1/8], 0.50 for [1/8, 3/16]), and the new
 validator stopped it before any Lean was written. Halving the cell width should shrink the
 residual enough. The two half-width cells use different tags, so run them one after the other
@@ -218,6 +218,16 @@ rm -rf ~/plasmalean-work/lambda-cell-4
 LAM_LO=3/16 LAM_HI=7/32 LAM_TAG=4 scripts/workstation/run.sh lambda-cell
 # Pitch cell λ ∈ [7/32, 1/4] (tag Mu5)
 LAM_LO=7/32 LAM_HI=1/4 LAM_TAG=5 scripts/workstation/run.sh lambda-cell
+```
+
+After the two cells, migrate the on-demand certificate families to proof terms (Phase 16; no
+`decide +kernel` left in them). The tasks only rebuild Lean, with no numerics; run them one at a time:
+
+```bash
+PT_FAMILIES="RationalStellaratorGCMu2" scripts/workstation/run.sh proofterm-migrate
+PT_FAMILIES="RationalStellaratorGCMu3" scripts/workstation/run.sh proofterm-migrate
+PT_FAMILIES="RationalStellaratorGCEw1 RationalStellaratorGCEw2 RationalStellaratorGCEw3 RationalStellaratorGCEw4" \
+  scripts/workstation/run.sh proofterm-migrate
 ```
 
 If a run stops with "smallness condition fails", report the value: the next step is a higher
