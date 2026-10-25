@@ -1,0 +1,8 @@
+{
+ "cmd": "bash /home/gadgil/code/PlasmaLean/scripts/workstation/run.sh __step emit lambda-cell",
+ "status": "failed",
+ "returncode": 1,
+ "wall_min": 0.02,
+ "cpu_min": 0.02,
+ "peak_rss_gb": 0.11
+}
