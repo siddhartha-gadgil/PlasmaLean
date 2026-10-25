@@ -129,3 +129,5 @@ run_cmd do
 #print axioms PlasmaLean.Design.RationalStellaratorGC.alpha_gc_passing_confined_forever
 #print axioms PlasmaLean.Design.LandremanFamily2Ballooning.family2_stable_of_cert
 #print axioms PlasmaLean.Theory.KAM.norm_sub_interp_le
+#print axioms PlasmaLean.Stability.BallooningSecular.jpar_transport
+#print axioms PlasmaLean.Design.LandremanFamily2BallooningSecular.family2_stable_of_secular_cert

@@ -370,3 +370,87 @@ instability witness is excluded numerically.
 **Next step.** Prove `B·∇J∥ = −q₁` (from `∇·J = 0`, which needs `C²`, now available). Then build
 an explicit σ-dependent flux using the scaled variable `u = σ|∇ψ|²/|B|`, with the tail fixed by
 the averaged condition.
+
+## 10. Family-2 ballooning certificate: secular reduction proved, search prototyped (25 Oct 2026)
+
+**What the certificate must satisfy.** `family2_stable_of_cert` needs a `C¹` function `Φ(x, s)`
+on `Space × ℝ` (`HasFDerivAt` at every point of the line, derivative continuous along it) with
+`DΦ(B, d) + Φ²/P ≤ q₀ + s q₁` for every `s ∈ ℝ`, where `P = 1/g2 + s² g2/B2`.
+- As `s → ±∞`, the `s`-linear terms force `Φ = a s + O(1)` with `B · ∇a = q₁` solved EXACTLY.
+- A fitted `a` therefore cannot work. The exact solution is `a = c₀ − J∥`.
+- The next order gives the Mercier-type tail condition `B · ∇f₀ ≤ q₀ − d a − a² B2/g2 − δ`.
+- A rational `Φ` must have the same slope `c₀` at `±∞`. The principal Riccati solution does not
+  (numerically it leaves at the edge `c₀ ≈ 199.9` of the stable range `[198.8, 199.9]`, k = 0.7),
+  so the certificate must sit strictly inside the range.
+
+**Proved in Lean (new files; standard axioms; zero warnings; single-module builds ~10 s).**
+- `Theory/Stability/BallooningSecular`, for a general 3-D equilibrium:
+  - `secular_algebra`, `inner_curl_dir`: pointwise algebra. Only the symmetric second
+    derivatives, `tr M = 0` and the differentiated force balance are used. The identity holds up
+    to `−tr M |B|² ⟪curl M, B⟫`.
+  - `jparOf`, `jparDeriv`, `hasFDerivAt_jpar`, `force_balance_deriv`, `hasFDerivAt_grad_symm`.
+  - `jpar_transport`: `B · ∇J∥ = 2μ⟪B × ∇ψ, κ⟫/|B|² = −q₁`.
+  - `eikLine_stable_of_secularCert`: with `Φ = (c₀ − j)s + F`, stability follows from the
+    `q₁`-free inequality `DF(B,d) + d(c₀ − j) + ((c₀ − j)s + F)²/P ≤ q₀`.
+  - Sanity: `jparOf_zero`, `jparOf_rotation`, `eikLine_secular_noDrive_stable`.
+- `Design/LandremanFamily2BallooningSecular`:
+  - `jpar2`, `jparD2`, `hasFDerivAt_fieldDeriv`, `fieldDeriv2_symm`.
+  - `family2_jpar_hasFDerivAt` and `family2_jpar_transport` (shell, every `λ > 0`).
+  - `cont_jparD2`.
+  - **`family2_stable_of_secular_cert`**.
+  - Sanity `jpar2_surfPt`: `J∥ = λ + BD/Bsq` on the surface, in closed form.
+
+This settles the "next step" of §9: the secular part of the certificate is exact and is in Lean.
+
+**Numerics (untrusted, `scripts/family2_ballooning_cert/`).**
+- `geom.py`: vectorised forward-mode AD of the Lean field formula. It checks
+  `B · ∇J∥ = −q₁` to about 1e-8 (finite differences) and the paper's `χ̇ = √(1 − Y²)`,
+  `ζ̇ = T/(2G)` to 1e-16.
+- Geometry at `k = 0.7`:
+  - The ridge of `|∇ψ|` sits at `χ = φ(ζ)` (the rotation of `LandremanFamily2Rotated`) to 1e-3.
+  - `g2` runs from 3–5 at the tips (half-width about 0.03 in `χ`) to 1e4 in the flats.
+  - `d` runs from −2.45 at the tips to 1e-3 in the flats; `q₀ < 0` everywhere.
+  - The natural secular width `w = |B|/g2` runs from 0.06 down to 2.4e-5.
+- Tail optimum at `k = 0.7, 0.8, 0.9`: `c₀ = 199.36, 198.86, 197.67`, with averaged margin
+  `6.1e-5, 2.0e-4, 9.6e-4`.
+- `model.py` ansatz: `F = Σ_j f_j(θ, ζ) r_j(s)`.
+  - `θ` is a tip-clustering angle, `tan(χ − φ(ζ)) = ε_m tan θ`.
+  - The `f_j` are periodic cubic B-splines (`NT × NZ`).
+  - The `r_j` are `1`, `1/(1+u²)` and `u/(1+u²)`, with scaled `u = s/(σ w(x))` and absolute
+    widths.
+  - The search is an SOCP (Clarabel) over sampled `(x, s)` with active-set refinement
+    (`search.py`).
+- Results:
+  - Tail LP, `k = 0.7`: feasible only for `NT ≥ 96–128`, `NZ ≥ 12–16`. The margin is 0.41e-4 out
+    of 0.61e-4 possible (128×16). At `k = 0.9`: 8.9e-4 out of 9.55e-4.
+  - Full problem, best at `k = 0.9`: 9 `s`-functions on 96×12 (15,552 unknowns, 1.1e7 nonzeros,
+    2.7 GB, 95 s per solve). The margin is positive on the samples, but the dense check fails
+    (minimum −128; 37k of 155k candidate samples violated).
+  - All samples at once (8.6e7 nonzeros) gave `NumericalError` at 8.3 GB.
+  - **No certificate was found.** It is open whether a 9-function rational-in-`s` basis
+    suffices.
+
+**Workstation task** `scripts/workstation/tasks/family2-ballooning.sh`.
+- Parameters: `F2B_KLO/KHI/NK/RES/MAXNNZ/EMIT_DIR`.
+- It runs `search.py band` and `emit.py` (Lean DATA modules, coefficients `m/2⁴⁰`; one module of
+  15.5k integers builds in 2.8 s at 0.7 GB).
+- No kernel checker yet, so a run proves nothing new.
+- Estimated cost:
+  - One surface at 128×16: 1.3–2.4e8 nonzeros per solve, 30–60 GB, 20–90 min per solve,
+    10–15 active-set rounds, so 10–20 h.
+  - The 9-surface band: 100–200 CPU-h.
+- Extra Python package: `clarabel`.
+
+**Remaining obstacles (in order).**
+1. A representable certificate. The `s`-structure lives at the `x`-dependent width `w`, spanning
+   3.5 decades. The tail needs about 2,000 coefficients per function at `k = 0.7`.
+2. A kernel checker. It must enclose `d` and `q₀` (first derivatives of `B`) on `(χ, ζ)` boxes
+   with second-order (chord) control, i.e. third derivatives of the field. The plan: mirror trees
+   of `fieldDeriv` over the Space-level atoms, with atom enclosures from the surface closed forms.
+   None of this exists yet; the estimate is 3–5k lines.
+3. Size. Take about 8,000 boxes per surface (2× the 128×16 knot grid in each direction), a
+   polynomial in `s` of degree 12–20 per box (Pólya), and about 1–5 s per box (Solovev: 0.27 s
+   with roughly 10× smaller trees).
+   - One surface: about 2–11 CPU-h, i.e. 1–3 modules at the 240-min cap. Borderline.
+   - The band `[0.7, 0.9]` adds a `k`-direction (20–50 cells): 50–500 CPU-h, beyond the laptop
+     re-check budget.
