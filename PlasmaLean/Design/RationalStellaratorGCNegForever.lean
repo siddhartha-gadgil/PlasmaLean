@@ -7,6 +7,7 @@ module
 
 public import PlasmaLean.Design.RationalStellaratorGCForever
 public import PlasmaLean.Design.RationalStellaratorGCNegStar
+public import PlasmaLean.Certificates.KernelFact
 
 /-!
 # All-time confinement of the field lines of the guiding-centre field (`ρ_s = −1/256`, `v∥ < 0`)
@@ -111,10 +112,10 @@ theorem gc_exact_torus_data : ∃ Rk zk : ℝ → ℝ → ℝ,
   have hrpos : 0 < KamTorusA.rA / 7 := by norm_num [KamTorusA.rA]
   have hq7 : Real.exp (KamTorusA.rA / 7) ≤ (74315 : ℕ) / 2 ^ 16 :=
     (Real.exp_le_exp.2 h7).trans exp_rA_le'
-  have e1' := qle (show (1 / 10 ^ 12 + 1562 / 10 ^ 17 : ℚ) ≤ EL 4 by decide +kernel)
-  have e2' := qle (show (1 / 10 ^ 12 + 6909 / 10 ^ 18 : ℚ) ≤ EL 5 by decide +kernel)
-  have e3' := qle (show (1 / 10 ^ 12 + 8004 / 10 ^ 17 : ℚ) ≤ EL 6 by decide +kernel)
-  have e4' := qle (show (1 / 10 ^ 12 + 4518 / 10 ^ 17 : ℚ) ≤ EL 7 by decide +kernel)
+  have e1' := qle (show (1 / 10 ^ 12 + 1562 / 10 ^ 17 : ℚ) ≤ EL 4 by kernel_fact)
+  have e2' := qle (show (1 / 10 ^ 12 + 6909 / 10 ^ 18 : ℚ) ≤ EL 5 by kernel_fact)
+  have e3' := qle (show (1 / 10 ^ 12 + 8004 / 10 ^ 17 : ℚ) ≤ EL 6 by kernel_fact)
+  have e4' := qle (show (1 / 10 ^ 12 + 4518 / 10 ^ 17 : ℚ) ≤ EL 7 by kernel_fact)
   push_cast at e1' e2' e3' e4'
   obtain ⟨hU, hZ', hA, hB⟩ := inputs_L h7 hC dist_u dist_z dist_a dist_b
     (by rw [μG]; push_cast; linarith) (by rw [μG]; push_cast; linarith)

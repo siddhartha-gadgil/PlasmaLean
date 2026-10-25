@@ -7,6 +7,7 @@ module
 
 public import PlasmaLean.Design.RationalStellaratorGCNegTorusEnvH
 public import PlasmaLean.Design.KamTorusACheck
+public import PlasmaLean.Certificates.KernelFact
 
 /-!
 # Kernel checks: the `v∥ < 0` guiding-centre torus `K₀` is star-shaped about the magnetic axis
@@ -54,20 +55,20 @@ def windIntG : ℤ :=
 
 /-- A priori bound for `Ŵ − c0radG · mono`: below `2^129`. -/
 theorem apriori_radG : 2 * (LH 4 + LH 5) + c0radG < 2 ^ (130 - 1) := by
-  decide +kernel
+  kernel_fact
 
 /-- A priori bound for `N̂ − c0windG · mono`: below `2^256`. -/
 theorem apriori_windG : LH 4 * LH 9 + LH 5 * LH 8 + c0windG < 2 ^ (257 - 1) := by
-  decide +kernel
+  kernel_fact
 
 set_option maxRecDepth 100000 in
 /-- `‖Ŵ − c0radG u^{N+1} v^M‖₁ ≤ L` with `(c0radG − L)/2^{102} ≥ 0.028`. -/
 theorem check_radG : 250 * l1Kron 130 13 radIntG + 7 * 2 ^ 102 ≤ 250 * c0radG := by
-  decide +kernel
+  kernel_fact
 
 set_option maxRecDepth 100000 in
 /-- `‖N̂ − c0windG u^{2N} v^{2M}‖₁ ≤ L` with `(c0windG − L)/2^{202} ≥ 0.0058`. -/
 theorem check_windG : 5000 * l1Kron 257 15 windIntG + 29 * 2 ^ 202 ≤ 5000 * c0windG := by
-  decide +kernel
+  kernel_fact
 
 end PlasmaLean.Design.RationalStellaratorGCNeg

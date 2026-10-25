@@ -7,6 +7,7 @@ module
 
 public import PlasmaLean.Design.RationalStellaratorGCFamExact
 public import PlasmaLean.Design.RationalStellaratorGCConfined
+public import PlasmaLean.Certificates.KernelFact
 
 /-!
 # All-time confinement for a whole interval of `ρ` (`gc_family_field_confined_forever`)
@@ -70,7 +71,7 @@ theorem famL_inputs : Bd KamTorusA.rA (xLF c 4 - xLF c 4) (ELF 4) ∧
   have hB7 : xLF c 7 = dTh (xLF c 5) := by rw [xLF_der_B hc0]; simp [dTh]
   have z : ∀ i, Bd KamTorusA.rA (0 : FA) (ELF i) := fun i => (Bd_zero _).le (by
     have := (show ∀ i, (0 : ℚ) ≤ ELF i from getD_prop (Pr := fun q : ℚ => 0 ≤ q)
-      (by decide +kernel) le_rfl) i
+      (by kernel_fact) le_rfl) i
     exact_mod_cast this)
   refine ⟨?_, ?_, ?_, ?_⟩
   · rw [sub_self]; exact z 4
@@ -113,19 +114,19 @@ theorem famL_old_b : Bd KamTorusA.rA (dTh (xLF c 5) - dTh (xL 5)) ((1259 / 10 ^ 
 
 /-- **`‖u(ρ) − u₀‖ ≤ 1.85 × 10⁻³`**: the family torus is close to the `ρ = 1/256` torus. -/
 theorem famOld_u : Bd KamTorusA.rA (xHF c 4 - u₀G) (185 / 100000) :=
-  (Bd_three (fdist_u hc) (famL_old_u hc) dist_u).le (margin_le (by decide +kernel))
+  (Bd_three (fdist_u hc) (famL_old_u hc) dist_u).le (margin_le (by kernel_fact))
 
 /-- `‖z(ρ) − z₀‖ ≤ 1.85 × 10⁻³`. -/
 theorem famOld_z : Bd KamTorusA.rA (xHF c 5 - z₀G) (185 / 100000) :=
-  (Bd_three (fdist_z hc) (famL_old_z hc) dist_z).le (margin_le (by decide +kernel))
+  (Bd_three (fdist_z hc) (famL_old_z hc) dist_z).le (margin_le (by kernel_fact))
 
 /-- `‖∂_θ u(ρ) − ∂_θ u₀‖ ≤ 1.85 × 10⁻³`. -/
 theorem famOld_a : Bd KamTorusA.rA (dTh (xHF c 4) - dTh u₀G) (185 / 100000) :=
-  (Bd_three (fdist_a hc) (famL_old_a hc) dist_a).le (margin_le (by decide +kernel))
+  (Bd_three (fdist_a hc) (famL_old_a hc) dist_a).le (margin_le (by kernel_fact))
 
 /-- `‖∂_θ z(ρ) − ∂_θ z₀‖ ≤ 1.85 × 10⁻³`. -/
 theorem famOld_b : Bd KamTorusA.rA (dTh (xHF c 5) - dTh z₀G) (185 / 100000) :=
-  (Bd_three (fdist_b hc) (famL_old_b hc) dist_b).le (margin_le (by decide +kernel))
+  (Bd_three (fdist_b hc) (famL_old_b hc) dist_b).le (margin_le (by kernel_fact))
 
 end Old
 

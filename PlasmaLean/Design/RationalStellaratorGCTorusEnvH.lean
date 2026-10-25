@@ -12,6 +12,7 @@ public import PlasmaLean.Design.RationalStellaratorGCTorusDataH3
 public import PlasmaLean.Design.RationalStellaratorGCTorusDataH4
 public import PlasmaLean.Design.RationalStellaratorGCTorusEnvL
 public import PlasmaLean.Design.KamTorusAData
+public import PlasmaLean.Certificates.KernelFact
 
 /-!
 # The high-resolution ball environment of the guiding-centre torus certificate
@@ -445,7 +446,7 @@ def xH (i : ℕ) : FA := ctr SH NH MH (WtH i) (PH i)
 
 /-- The phases are below `4`. -/
 theorem hWH : ∀ i, (WtH i).2.2 < 4 :=
-  getD_prop (Pr := fun w : ℕ × ℕ × ℕ => w.2.2 < 4) (by decide +kernel) (by decide +kernel)
+  getD_prop (Pr := fun w : ℕ × ℕ × ℕ => w.2.2 < 4) (by kernel_fact) (by kernel_fact)
 
 /-- Degree boxes. -/
 theorem boxH : ∀ i, InBox (PH i) (BxH i).1 (BxH i).2
@@ -462,147 +463,147 @@ theorem l1H : ∀ i, l1 (PH i) ≤ LH i
   | 2 => l1_cPoly
   | 3 => l1_sPoly
   | 4 =>
-    l1_dataGrid_le NH MH FH datH_U 0 (by decide +kernel)
+    l1_dataGrid_le NH MH FH datH_U 0 (by kernel_fact)
   | 5 =>
-    l1_dataGrid_le NH MH FH datH_Z 1 (by decide +kernel)
+    l1_dataGrid_le NH MH FH datH_Z 1 (by kernel_fact)
   | 6 =>
     l1_gridPolyNM_le_const NH MH fun i j hi hj => abs_wgridN_le NH MH KamTorusA.Iq (2 ^ 97) (fun
-      i j => abs_dataGrid_le NH MH FH datH_U 0 (by decide +kernel) i j) hi hj
+      i j => abs_dataGrid_le NH MH FH datH_U 0 (by kernel_fact) i j) hi hj
   | 7 =>
     l1_gridPolyNM_le_const NH MH fun i j hi hj => abs_wgridN_le NH MH KamTorusA.Iq (2 ^ 97) (fun
-      i j => abs_dataGrid_le NH MH FH datH_Z 1 (by decide +kernel) i j) hi hj
+      i j => abs_dataGrid_le NH MH FH datH_Z 1 (by kernel_fact) i j) hi hj
   | 8 =>
     l1_gridPolyNM_le_const NH MH fun i j hi hj => abs_wgridN_le NH MH 1 0 (fun i j =>
-      abs_dataGrid_le NH MH FH datH_U 0 (by decide +kernel) i j) hi hj
+      abs_dataGrid_le NH MH FH datH_U 0 (by kernel_fact) i j) hi hj
   | 9 =>
     l1_gridPolyNM_le_const NH MH fun i j hi hj => abs_wgridN_le NH MH 1 0 (fun i j =>
-      abs_dataGrid_le NH MH FH datH_Z 1 (by decide +kernel) i j) hi hj
+      abs_dataGrid_le NH MH FH datH_Z 1 (by kernel_fact) i j) hi hj
   | 10 =>
     l1_gridPolyNM_le_const NH MH fun i j _ _ => abs_embedGridN_le NL ML (NH - NL) (MH - ML) (SH
-      - SL) (fun i j => abs_dataGrid_le NL ML FL datL_U 0 (by decide +kernel) i j) i j
+      - SL) (fun i j => abs_dataGrid_le NL ML FL datL_U 0 (by kernel_fact) i j) i j
   | 11 =>
     l1_gridPolyNM_le_const NH MH fun i j _ _ => abs_embedGridN_le NL ML (NH - NL) (MH - ML) (SH
-      - SL) (fun i j => abs_dataGrid_le NL ML FL datL_Z 1 (by decide +kernel) i j) i j
+      - SL) (fun i j => abs_dataGrid_le NL ML FL datL_Z 1 (by kernel_fact) i j) i j
   | 12 =>
     l1_gridPolyNM_le_const NH MH fun i j hi hj => abs_wgridN_le NH MH 1 0 (fun i j =>
       abs_embedGridN_le NL ML (NH - NL) (MH - ML) (SH - SL) (fun i j => abs_dataGrid_le NL ML FL
-      datL_U 0 (by decide +kernel) i j) i j) hi hj
+      datL_U 0 (by kernel_fact) i j) i j) hi hj
   | 13 =>
     l1_gridPolyNM_le_const NH MH fun i j hi hj => abs_wgridN_le NH MH 1 0 (fun i j =>
       abs_embedGridN_le NL ML (NH - NL) (MH - ML) (SH - SL) (fun i j => abs_dataGrid_le NL ML FL
-      datL_Z 1 (by decide +kernel) i j) i j) hi hj
+      datL_Z 1 (by kernel_fact) i j) i j) hi hj
   | 14 =>
-    l1_dataGrid_le NH MH FH datH_m02 2 (by decide +kernel)
+    l1_dataGrid_le NH MH FH datH_m02 2 (by kernel_fact)
   | 15 =>
-    l1_dataGrid_le NH MH FH datH_m11 1 (by decide +kernel)
+    l1_dataGrid_le NH MH FH datH_m11 1 (by kernel_fact)
   | 16 =>
-    l1_dataGrid_le NH MH FH datH_m20 0 (by decide +kernel)
+    l1_dataGrid_le NH MH FH datH_m20 0 (by kernel_fact)
   | 17 =>
-    l1_dataGrid_le NH MH FH datH_m03 3 (by decide +kernel)
+    l1_dataGrid_le NH MH FH datH_m03 3 (by kernel_fact)
   | 18 =>
-    l1_dataGrid_le NH MH FH datH_m12 2 (by decide +kernel)
+    l1_dataGrid_le NH MH FH datH_m12 2 (by kernel_fact)
   | 19 =>
-    l1_dataGrid_le NH MH FH datH_m21 1 (by decide +kernel)
+    l1_dataGrid_le NH MH FH datH_m21 1 (by kernel_fact)
   | 20 =>
-    l1_dataGrid_le NH MH FH datH_m30 0 (by decide +kernel)
+    l1_dataGrid_le NH MH FH datH_m30 0 (by kernel_fact)
   | 21 =>
-    l1_dataGrid_le NH MH FH datH_m13 3 (by decide +kernel)
+    l1_dataGrid_le NH MH FH datH_m13 3 (by kernel_fact)
   | 22 =>
-    l1_dataGrid_le NH MH FH datH_m22 2 (by decide +kernel)
+    l1_dataGrid_le NH MH FH datH_m22 2 (by kernel_fact)
   | 23 =>
-    l1_dataGrid_le NH MH FH datH_m31 1 (by decide +kernel)
+    l1_dataGrid_le NH MH FH datH_m31 1 (by kernel_fact)
   | 24 =>
-    l1_dataGrid_le NH MH FH datH_m40 0 (by decide +kernel)
+    l1_dataGrid_le NH MH FH datH_m40 0 (by kernel_fact)
   | 25 =>
-    l1_dataGrid_le NH MH FH datH_m41 1 (by decide +kernel)
+    l1_dataGrid_le NH MH FH datH_m41 1 (by kernel_fact)
   | 26 =>
-    l1_dataGrid_le NH MH FH datH_m50 0 (by decide +kernel)
+    l1_dataGrid_le NH MH FH datH_m50 0 (by kernel_fact)
   | 27 =>
-    l1_dataGrid_le NH MH FH datH_m51 1 (by decide +kernel)
+    l1_dataGrid_le NH MH FH datH_m51 1 (by kernel_fact)
   | 28 =>
-    l1_dataGrid_le NH MH FH datH_m60 0 (by decide +kernel)
+    l1_dataGrid_le NH MH FH datH_m60 0 (by kernel_fact)
   | 29 =>
-    l1_dataGrid_le NH MH FH datH_Dp 0 (by decide +kernel)
+    l1_dataGrid_le NH MH FH datH_Dp 0 (by kernel_fact)
   | 30 =>
-    l1_dataGrid_le NH MH FH datH_nRp 3 (by decide +kernel)
+    l1_dataGrid_le NH MH FH datH_nRp 3 (by kernel_fact)
   | 31 =>
-    l1_dataGrid_le NH MH FH datH_nZp 0 (by decide +kernel)
+    l1_dataGrid_le NH MH FH datH_nZp 0 (by kernel_fact)
   | 32 =>
-    l1_dataGrid_le NH MH FH datH_DuP 0 (by decide +kernel)
+    l1_dataGrid_le NH MH FH datH_DuP 0 (by kernel_fact)
   | 33 =>
-    l1_dataGrid_le NH MH FH datH_DzP 3 (by decide +kernel)
+    l1_dataGrid_le NH MH FH datH_DzP 3 (by kernel_fact)
   | 34 =>
-    l1_dataGrid_le NH MH FH datH_DphP 1 (by decide +kernel)
+    l1_dataGrid_le NH MH FH datH_DphP 1 (by kernel_fact)
   | 35 =>
-    l1_dataGrid_le NH MH FH datH_nRuP 3 (by decide +kernel)
+    l1_dataGrid_le NH MH FH datH_nRuP 3 (by kernel_fact)
   | 36 =>
-    l1_dataGrid_le NH MH FH datH_nRzP 0 (by decide +kernel)
+    l1_dataGrid_le NH MH FH datH_nRzP 0 (by kernel_fact)
   | 37 =>
-    l1_dataGrid_le NH MH FH datH_nRphP 0 (by decide +kernel)
+    l1_dataGrid_le NH MH FH datH_nRphP 0 (by kernel_fact)
   | 38 =>
-    l1_dataGrid_le NH MH FH datH_nZuP 0 (by decide +kernel)
+    l1_dataGrid_le NH MH FH datH_nZuP 0 (by kernel_fact)
   | 39 =>
-    l1_dataGrid_le NH MH FH datH_nZzP 1 (by decide +kernel)
+    l1_dataGrid_le NH MH FH datH_nZzP 1 (by kernel_fact)
   | 40 =>
-    l1_dataGrid_le NH MH FH datH_nZphP 3 (by decide +kernel)
+    l1_dataGrid_le NH MH FH datH_nZphP 3 (by kernel_fact)
   | 41 =>
-    l1_dataGrid_le NH MH FH datH_PuP 0 (by decide +kernel)
+    l1_dataGrid_le NH MH FH datH_PuP 0 (by kernel_fact)
   | 42 =>
-    l1_dataGrid_le NH MH FH datH_RD 0 (by decide +kernel)
+    l1_dataGrid_le NH MH FH datH_RD 0 (by kernel_fact)
   | 43 =>
-    l1_dataGrid_le NH MH FH datH_RDu 0 (by decide +kernel)
+    l1_dataGrid_le NH MH FH datH_RDu 0 (by kernel_fact)
   | 44 =>
-    l1_dataGrid_le NH MH FH datH_RDz 3 (by decide +kernel)
+    l1_dataGrid_le NH MH FH datH_RDz 3 (by kernel_fact)
   | 45 =>
-    l1_dataGrid_le NH MH FH datH_RDph 1 (by decide +kernel)
+    l1_dataGrid_le NH MH FH datH_RDph 1 (by kernel_fact)
   | 46 =>
-    l1_dataGrid_le NH MH FH datH_q 2 (by decide +kernel)
+    l1_dataGrid_le NH MH FH datH_q 2 (by kernel_fact)
   | 47 =>
-    l1_dataGrid_le NH MH FH datH_qR 0 (by decide +kernel)
+    l1_dataGrid_le NH MH FH datH_qR 0 (by kernel_fact)
   | 48 =>
-    l1_dataGrid_le NH MH FH datH_qz 3 (by decide +kernel)
+    l1_dataGrid_le NH MH FH datH_qz 3 (by kernel_fact)
   | 49 =>
-    l1_dataGrid_le NH MH FH datH_qph 3 (by decide +kernel)
+    l1_dataGrid_le NH MH FH datH_qph 3 (by kernel_fact)
   | 50 =>
-    l1_dataGrid_le NH MH FH datH_P2 0 (by decide +kernel)
+    l1_dataGrid_le NH MH FH datH_P2 0 (by kernel_fact)
   | 51 =>
-    l1_dataGrid_le NH MH FH datH_E 2 (by decide +kernel)
+    l1_dataGrid_le NH MH FH datH_E 2 (by kernel_fact)
   | 52 =>
-    l1_dataGrid_le NH MH FH datH_V0 0 (by decide +kernel)
+    l1_dataGrid_le NH MH FH datH_V0 0 (by kernel_fact)
   | 53 =>
-    l1_dataGrid_le NH MH FH datH_V0 0 (by decide +kernel)
+    l1_dataGrid_le NH MH FH datH_V0 0 (by kernel_fact)
   | 54 =>
-    l1_dataGrid_le NH MH FH datH_W 0 (by decide +kernel)
+    l1_dataGrid_le NH MH FH datH_W 0 (by kernel_fact)
   | 55 =>
-    l1_dataGrid_le NH MH FH datH_W2 0 (by decide +kernel)
+    l1_dataGrid_le NH MH FH datH_W2 0 (by kernel_fact)
   | 56 =>
-    l1_dataGrid_le NH MH FH datH_W3 0 (by decide +kernel)
+    l1_dataGrid_le NH MH FH datH_W3 0 (by kernel_fact)
   | 57 =>
-    l1_dataGrid_le NH MH FH datH_R2 0 (by decide +kernel)
+    l1_dataGrid_le NH MH FH datH_R2 0 (by kernel_fact)
   | 58 =>
-    l1_dataGrid_le NH MH FH datH_R3 0 (by decide +kernel)
+    l1_dataGrid_le NH MH FH datH_R3 0 (by kernel_fact)
   | 59 =>
-    l1_dataGrid_le NH MH FH datH_A1 0 (by decide +kernel)
+    l1_dataGrid_le NH MH FH datH_A1 0 (by kernel_fact)
   | 60 =>
-    l1_dataGrid_le NH MH FH datH_A2 3 (by decide +kernel)
+    l1_dataGrid_le NH MH FH datH_A2 3 (by kernel_fact)
   | 61 =>
-    l1_dataGrid_le NH MH FH datH_K1 0 (by decide +kernel)
+    l1_dataGrid_le NH MH FH datH_K1 0 (by kernel_fact)
   | 62 =>
-    l1_dataGrid_le NH MH FH datH_K2 3 (by decide +kernel)
+    l1_dataGrid_le NH MH FH datH_K2 3 (by kernel_fact)
   | 63 =>
-    l1_dataGrid_le NH MH FH datH_K3 2 (by decide +kernel)
+    l1_dataGrid_le NH MH FH datH_K3 2 (by kernel_fact)
   | 64 =>
-    l1_dataGrid_le NH MH FH datH_KD 0 (by decide +kernel)
+    l1_dataGrid_le NH MH FH datH_KD 0 (by kernel_fact)
   | 65 =>
-    l1_dataGrid_le NH MH FH datH_KR 3 (by decide +kernel)
+    l1_dataGrid_le NH MH FH datH_KR 3 (by kernel_fact)
   | 66 =>
-    l1_dataGrid_le NH MH FH datH_KZ 2 (by decide +kernel)
+    l1_dataGrid_le NH MH FH datH_KZ 2 (by kernel_fact)
   | 67 =>
-    l1_dataGrid_le NH MH FH datH_Dt 0 (by decide +kernel)
+    l1_dataGrid_le NH MH FH datH_Dt 0 (by kernel_fact)
   | 68 =>
-    l1_dataGrid_le NH MH FH datH_nRt 3 (by decide +kernel)
+    l1_dataGrid_le NH MH FH datH_nRt 3 (by kernel_fact)
   | 69 =>
-    l1_dataGrid_le NH MH FH datH_nZt 0 (by decide +kernel)
+    l1_dataGrid_le NH MH FH datH_nZt 0 (by kernel_fact)
   | n + 70 =>
     (l1_gridPolyNM_le_const NH MH (C := 0) fun i j _ _ => by rw [gH_out n]; simp).trans
       (by simp)

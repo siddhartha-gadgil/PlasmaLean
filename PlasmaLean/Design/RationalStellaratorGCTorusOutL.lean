@@ -6,6 +6,7 @@ Authors: PlasmaLean contributors
 module
 
 public import PlasmaLean.Design.RationalStellaratorGCTorusChainL
+public import PlasmaLean.Certificates.KernelFact
 
 /-!
 # Results of the low-resolution ball chain of the guiding-centre torus
@@ -127,7 +128,7 @@ theorem normL_X {r : ℝ} (hr : 0 ≤ r) (hq : Real.exp r ≤ (74315 : ℕ) / 2 
     (hA : Bd r (dTh u - xL 6) (EL 6)) (hB : Bd r (dTh z - xL 7) (EL 7)) :
     Bd r (Ex.eval (XL u z) trL_X) (((251 / 5000000000 : ℚ) : ℚ) : ℝ) :=
   norm_full hr hq hWL boxL l1L kronL (fun _ => rfl) (fun i hi => normL hq i (by omega)) (ballL_113 hr hq hU hZ hA hB) trL_X (2, 0, 0) 64 48 182 65 7 6 32 24 34401203416047555730711263018348720474168531797758422274812121786753721689200751935418746476254098113238774008155895197800842162894545748710000399504520687930245350543173456992276229599973929485999351083461252796409191420898248234644033351654578880067068103946719065246124861954760763451383719395328
-      (251 / 5000000000 : ℚ) (by decide +kernel) (by decide +kernel) (by decide +kernel) lL_X kL_X (by decide +kernel)
+      (251 / 5000000000 : ℚ) (by kernel_fact) (by kernel_fact) (by kernel_fact) lL_X kL_X (by kernel_fact)
 
 set_option linter.style.longLine false in
 set_option maxRecDepth 100000 in
@@ -137,7 +138,7 @@ theorem normL_Ddev {r : ℝ} (hr : 0 ≤ r) (hq : Real.exp r ≤ (74315 : ℕ) /
     (hA : Bd r (dTh u - xL 6) (EL 6)) (hB : Bd r (dTh z - xL 7) (EL 7)) :
     Bd r (Ex.eval (XL u z) trL_Ddev) (((743500000000000 : ℚ) : ℚ) : ℝ) :=
   norm_full hr hq hWL boxL l1L kronL (fun _ => rfl) (fun i hi => normL hq i (by omega)) (ballL_114 hr hq hU hZ hA hB) trL_Ddev (1, 0, 0) 32 24 143 33 6 5 16 12 623037720790149518265358835333402875254533738676496186665505837623344331169437768923722781498099846521303074383271205066842533235930851094264327491872167245968247357440
-      (743500000000000 : ℚ) (by decide +kernel) (by decide +kernel) (by decide +kernel) lL_Ddev kL_Ddev (by decide +kernel)
+      (743500000000000 : ℚ) (by kernel_fact) (by kernel_fact) (by kernel_fact) lL_Ddev kL_Ddev (by kernel_fact)
 
 set_option linter.style.longLine false in
 set_option maxRecDepth 100000 in
@@ -147,6 +148,6 @@ theorem normL_Wdev {r : ℝ} (hr : 0 ≤ r) (hq : Real.exp r ≤ (74315 : ℕ) /
     (hA : Bd r (dTh u - xL 6) (EL 6)) (hB : Bd r (dTh z - xL 7) (EL 7)) :
     Bd r (Ex.eval (XL u z) trL_Wdev) (((2037000000000000 : ℚ) : ℚ) : ℝ) :=
   norm_full hr hq hWL boxL l1L kronL (fun _ => rfl) (fun i hi => normL hq i (by omega)) (ballL_114 hr hq hU hZ hA hB) trL_Wdev (1, 0, 0) 32 24 151 33 6 5 16 12 1706668308053297469914231830136828653323161403607109826558205442892232298495925191562972822967599088138548327178438977401078051092622501386930207222331817933370053099520
-      (2037000000000000 : ℚ) (by decide +kernel) (by decide +kernel) (by decide +kernel) lL_Wdev kL_Wdev (by decide +kernel)
+      (2037000000000000 : ℚ) (by kernel_fact) (by kernel_fact) (by kernel_fact) lL_Wdev kL_Wdev (by kernel_fact)
 
 end PlasmaLean.Design.RationalStellaratorGC

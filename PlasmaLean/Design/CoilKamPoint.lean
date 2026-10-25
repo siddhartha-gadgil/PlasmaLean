@@ -6,6 +6,7 @@ Authors: PlasmaLean contributors
 module
 
 public import PlasmaLean.Design.CoilKamTorus
+public import PlasmaLean.Certificates.KernelFact
 
 /-!
 # The sampled flow-form residual at one grid point
@@ -196,9 +197,9 @@ theorem pointAP_sound {D₀ L q N₁ E : ℕ} (hD₀ : 0 < D₀) (hL : 0 < L) (h
 /-! ## Sanity -/
 
 /-- Accepted fixture: `(1, 0, 0)` lies in the tube of half-width `1/4` (scale `4`). -/
-theorem tubeOK_fixture : tubeOK 4 1 4 0 0 = true := by decide +kernel
+theorem tubeOK_fixture : tubeOK 4 1 4 0 0 = true := by kernel_fact
 
 /-- Rejected fixture: the origin does not. -/
-theorem not_tubeOK_fixture : tubeOK 4 1 0 0 0 = false := by decide +kernel
+theorem not_tubeOK_fixture : tubeOK 4 1 0 0 0 = false := by kernel_fact
 
 end PlasmaLean.Design.CoilKam

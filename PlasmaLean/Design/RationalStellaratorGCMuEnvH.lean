@@ -7,6 +7,7 @@ module
 
 public import PlasmaLean.Design.RationalStellaratorGCMuKvH
 public import PlasmaLean.Certificates.KronBallChebEnv
+public import PlasmaLean.Certificates.KernelFact
 
 /-!
 # The high-resolution environment of the `μ > 0` passing guiding-centre torus family certificate
@@ -42,70 +43,70 @@ def PHM (i : ℕ) : P3 :=
 
 /-- The kinds are at most `6`. -/
 theorem kindHM_le (i : ℕ) : kindHM i ≤ 6 :=
-  getD_prop (Pr := fun k : ℕ => k ≤ 6) (by decide +kernel) (by decide +kernel) i
+  getD_prop (Pr := fun k : ℕ => k ≤ 6) (by kernel_fact) (by kernel_fact) i
 
 set_option maxRecDepth 100000 in
 /-- The variables beyond the last have kind `5` (zero). -/
 theorem kindHM_ge {i : ℕ} (h : 96 ≤ i) : kindHM i = 5 := by
   unfold kindHM
   rw [List.getD_eq_getElem?_getD,
-    List.getElem?_eq_none ((by decide +kernel : kindHMl.length = 96).trans_le h)]
+    List.getElem?_eq_none ((by kernel_fact : kindHMl.length = 96).trans_le h)]
   rfl
 
 /-- Stored families are below the last variable. -/
 theorem lt_of_kindHM {i : ℕ} (h : kindHM i = 6) : i < 96 := by
   by_contra h'
   rw [kindHM_ge (by omega)] at h
-  exact absurd h (by decide +kernel)
+  exact absurd h (by kernel_fact)
 
 set_option maxRecDepth 100000 in
 /-- The static conditions of the stored families. -/
 theorem staticHM : ∀ i, i < 96 → kindHM i = 6 →
     FamStatic NHM MHM DHM ddHM drHM dwHM (famHM i) := by
-  decide +kernel
+  kernel_fact
 
 set_option maxRecDepth 100000 in
 /-- The minimal widths of the fast images. -/
 theorem dynHM : ∀ i, i < 96 → kindHM i = 6 →
     FamDyn (bMinHM i) (wMinHM i) (c0HM i) (famHM i) := by
-  decide +kernel
+  kernel_fact
 
 set_option maxRecDepth 100000 in
 /-- The static `ℓ¹` bounds of the stored families. -/
 theorem l1famHM : ∀ i, i < 96 → kindHM i = 6 →
     famL1 NHM MHM (c0HM i : ℤ) 0 0 0 (famHM i) ≤ LHM i := by
-  decide +kernel
+  kernel_fact
 
 set_option maxRecDepth 100000 in
 /-- The degree boxes of the stored families. -/
 theorem bx6HM : ∀ i, i < 96 → kindHM i = 6 → BxHM i = (2 * NHM, 2 * MHM, 2 * DHM) := by
-  decide +kernel
+  kernel_fact
 
 set_option maxRecDepth 100000 in
 /-- The degree box and bound of `t`. -/
 theorem bx0HM : ∀ i, i < 96 → kindHM i = 0 → BxHM i = (NHM, MHM, DHM) ∧ 2 ^ SHM ≤ LHM i := by
-  decide +kernel
+  kernel_fact
 
 set_option maxRecDepth 100000 in
 /-- The degree box and bound of `V`. -/
 theorem bx1HM : ∀ i, i < 96 → kindHM i = 1 → BxHM i = (0, 1, 0) ∧ 2 ≤ LHM i := by
-  decide +kernel
+  kernel_fact
 
 set_option maxRecDepth 100000 in
 /-- The degree box and bound of `cos 2φ`. -/
 theorem bx2HM : ∀ i, i < 96 → kindHM i = 2 → BxHM i = (0, 2, 0) ∧ 2 ≤ LHM i := by
-  decide +kernel
+  kernel_fact
 
 set_option maxRecDepth 100000 in
 /-- The degree box and bound of `sin 2φ`. -/
 theorem bx3HM : ∀ i, i < 96 → kindHM i = 3 → BxHM i = (0, 2, 0) ∧ 2 ≤ LHM i := by
-  decide +kernel
+  kernel_fact
 
 set_option maxRecDepth 100000 in
 /-- The degree box and bound of the parameter. -/
 theorem bx4HM : ∀ i, i < 96 → kindHM i = 4 →
     BxHM i = (NHM, MHM, DHM + 1) ∧ 2 ^ (SHM + 6) + 2 * 2 ^ (SHM - 1) ≤ LHM i := by
-  decide +kernel
+  kernel_fact
 
 /-- The polynomial of `t`. -/
 theorem PHM_k0 {i : ℕ} (h : kindHM i = 0) : PHM i = T3 SHM NHM MHM DHM := by
@@ -216,7 +217,7 @@ theorem l1HM (R i : ℕ) : l1 (flat R (PHM i)) ≤ LHM i := by
 
 /-- The phases are below `4`. -/
 theorem hWHM : ∀ i, (WtHM i).2.2 < 4 :=
-  getD_prop (Pr := fun w : ℕ × ℕ × ℕ => w.2.2 < 4) (by decide +kernel) (by decide +kernel)
+  getD_prop (Pr := fun w : ℕ × ℕ × ℕ => w.2.2 < 4) (by kernel_fact) (by kernel_fact)
 
 /-- **The family centres** at the parameter `w = c`. -/
 def xHM (c : ℂ) (i : ℕ) : FA := ctr3 SHM NHM MHM DHM c (WtHM i) (PHM i)
@@ -253,7 +254,7 @@ theorem xHM_s (c : ℂ) : xHM c 3 = ctr SHM NHM MHM (0, 1, 0) sPoly := by
 /-- The centre of the parameter `r` is `64 + (c + c⁻¹)/2`. -/
 theorem xHM_r {c : ℂ} (hc : c ≠ 0) : xHM c 71 = algebraMap ℂ FA (64 + (c + c⁻¹) / 2) := by
   rw [xHM, show WtHM 71 = (1, 0, 0) from rfl, show PHM 71 = Pr3 SHM NHM MHM DHM from rfl]
-  exact ctr3_Pr3 _ _ _ _ (by decide +kernel) (by decide +kernel) hc
+  exact ctr3_Pr3 _ _ _ _ (by kernel_fact) (by kernel_fact) hc
 
 /-- The centres of the variables of kind `5` (dummies) vanish. -/
 theorem xHM_zero (c : ℂ) {i : ℕ} (h : kindHM i = 5) : xHM c i = 0 := by

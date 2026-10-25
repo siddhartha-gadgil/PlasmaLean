@@ -7,6 +7,7 @@ module
 
 public import PlasmaLean.Design.CoilFieldComplexDist
 public import PlasmaLean.Theory.KAM.TorusFieldAna
+public import PlasmaLean.Certificates.KernelFact
 
 /-!
 # The full coil field at complex points
@@ -485,7 +486,7 @@ theorem norm_list_sum_le {ι : Type*} (f : ι → CVec) {T : ℝ} :
       _ = ((l.length + 1 : ℕ) : ℝ) * T := by push_cast; ring
 
 /-- The coil set has `192` segments. -/
-theorem length_allSegs_filsC : (allSegs filsC).length = 192 := by decide +kernel
+theorem length_allSegs_filsC : (allSegs filsC).length = 192 := by kernel_fact
 
 /-- The current scale `κ₀ = 90485364/2³²` of the coil segments. -/
 def κ0 : ℝ := 90485364 / S32

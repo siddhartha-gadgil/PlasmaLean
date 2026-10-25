@@ -58,7 +58,7 @@ theorem gc_C2R_cell {a : Fin 6 → ℝ} (ha : ∀ i, 0 ≤ a i) (haa : ∀ i, a 
     (hρ : |ρ| ≤ 65 / 16384) :
     PolyExprS.majD2 a (fun i => (mvQ i : ℝ)) (gcFlow ρ).resRp / 2 ≤ (C2Q : ℝ) := by
   have hb : ∀ i, (0 : ℝ) ≤ (mvQ i : ℝ) := fun i => by
-    have := (show ∀ i, (0 : ℚ) ≤ mvQ i by decide +kernel) i
+    have := (show ∀ i, (0 : ℚ) ≤ mvQ i by kernel_fact) i
     exact_mod_cast this
   have := majD2_resRp_mono ha hb hρ
   linarith [gc_C2R ha haa]
@@ -68,7 +68,7 @@ theorem gc_C2Z_cell {a : Fin 6 → ℝ} (ha : ∀ i, 0 ≤ a i) (haa : ∀ i, a 
     (hρ : |ρ| ≤ 65 / 16384) :
     PolyExprS.majD2 a (fun i => (mvQ i : ℝ)) (gcFlow ρ).resZp / 2 ≤ (C2Q : ℝ) := by
   have hb : ∀ i, (0 : ℝ) ≤ (mvQ i : ℝ) := fun i => by
-    have := (show ∀ i, (0 : ℚ) ≤ mvQ i by decide +kernel) i
+    have := (show ∀ i, (0 : ℚ) ≤ mvQ i by kernel_fact) i
     exact_mod_cast this
   have := majD2_resZp_mono ha hb hρ
   linarith [gc_C2Z ha haa]

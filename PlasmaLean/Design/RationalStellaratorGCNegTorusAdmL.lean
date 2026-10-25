@@ -8,6 +8,7 @@ module
 public import PlasmaLean.Design.RationalStellaratorGCNegTorusOutL
 public import PlasmaLean.Design.RationalStellaratorGCNegTorusMaj
 public import PlasmaLean.Design.KamTorusAExact
+public import PlasmaLean.Certificates.KernelFact
 
 /-!
 # Admissibility of the Newton step near a reference torus (guiding-centre field, `v∥ < 0`)
@@ -192,7 +193,7 @@ end Field
 
 /-- The average of the torsion centre `Y`. -/
 theorem avg_xL_Y : avg (xL 113) = ((377180894814424862 / 2 ^ 60 : ℝ) : ℂ) := by
-  have hg : gL 113 16 12 = 377180894814424862 := by decide +kernel
+  have hg : gL 113 16 12 = 377180894814424862 := by kernel_fact
   change coeff (ctr SL NL ML (1, 0, 0) (gridPolyNM NL ML (gL 113))) (0, 0) = _
   rw [coeff_ctr_grid]
   simp only [abs_zero, Nat.cast_nonneg, and_self, ↓reduceIte, zero_add, Int.toNat_natCast,
@@ -259,7 +260,7 @@ theorem adm_T_gc : Bd r ((gcFlow (-1 / 256)).Talg u z) tTG ∧
   refine ⟨?_, ?_⟩
   · rw [hrep]
     refine (hY.mul hr hInv).le ?_
-    have h1 := qle (show BL 113 + EL 113 ≤ 431701 / 10000 by decide +kernel)
+    have h1 := qle (show BL 113 + EL 113 ≤ 431701 / 10000 by kernel_fact)
     push_cast at h1 ⊢
     rw [tTG]
     calc ((BL 113 : ℝ) + EL 113) * (1 / (1 - 1587 / 2000000000)) ≤
@@ -284,8 +285,8 @@ theorem adm_T_gc : Bd r ((gcFlow (-1 / 256)).Talg u z) tTG ∧
         norm_sub_rev] at this
       linarith
     have h5 := norm_sub_norm_le (avg Y) (avg (Y * (q * F - 1) * Ring.inverse (q * F)))
-    have hB1 := qle (show BL 113 + EL 113 ≤ 431701 / 10000 by decide +kernel)
-    have hE1 := qle (show EL 113 ≤ 1 / 10 ^ 4 by decide +kernel)
+    have hB1 := qle (show BL 113 + EL 113 ≤ 431701 / 10000 by kernel_fact)
+    have hE1 := qle (show EL 113 ≤ 1 / 10 ^ 4 by kernel_fact)
     push_cast at h1 hB1 hE1 h3
     have h6 : ((BL 113 : ℝ) + EL 113) * (1587 / 2000000000) * (1 / (1 - 1587 / 2000000000)) ≤
         (431701 / 10000) * (1587 / 2000000000) * (1 / (1 - 1587 / 2000000000)) := by gcongr
@@ -319,10 +320,10 @@ theorem gc_adm_near {ρ : ℝ} (hρ : 0 < ρ) (hρA : ρ ≤ KamTorusA.rA) {u z 
     (h4 : Bd KamTorusA.rA (dTh z₀ - dTh (xL 5)) ((4518 / 10 ^ 17 : ℚ) : ℝ)) :
     (gcFlow (-1 / 256)).AdmBounds cGC iotaB ρ u z := by
   have hq : Real.exp ρ ≤ (74315 : ℕ) / 2 ^ 16 := (Real.exp_le_exp.2 hρA).trans exp_rA_le'
-  have e1 := qle (show (1 / 10 ^ 12 + 1562 / 10 ^ 17 : ℚ) ≤ EL 4 by decide +kernel)
-  have e2 := qle (show (1 / 10 ^ 12 + 6909 / 10 ^ 18 : ℚ) ≤ EL 5 by decide +kernel)
-  have e3 := qle (show (1 / 10 ^ 12 + 8004 / 10 ^ 17 : ℚ) ≤ EL 6 by decide +kernel)
-  have e4 := qle (show (1 / 10 ^ 12 + 4518 / 10 ^ 17 : ℚ) ≤ EL 7 by decide +kernel)
+  have e1 := qle (show (1 / 10 ^ 12 + 1562 / 10 ^ 17 : ℚ) ≤ EL 4 by kernel_fact)
+  have e2 := qle (show (1 / 10 ^ 12 + 6909 / 10 ^ 18 : ℚ) ≤ EL 5 by kernel_fact)
+  have e3 := qle (show (1 / 10 ^ 12 + 8004 / 10 ^ 17 : ℚ) ≤ EL 6 by kernel_fact)
+  have e4 := qle (show (1 / 10 ^ 12 + 4518 / 10 ^ 17 : ℚ) ≤ EL 7 by kernel_fact)
   push_cast at e1 e2 e3 e4
   obtain ⟨hU, hZ, hA, hB⟩ := inputs_L hρA hC h1 h2 h3 h4
     (by rw [μG]; push_cast; linarith) (by rw [μG]; push_cast; linarith)
@@ -378,31 +379,31 @@ theorem gc_adm_near {ρ : ℝ} (hρ : 0 < ρ) (hρA : ρ ≤ KamTorusA.rA) {u z 
     hLR := tLR
     hLz := tLz
     hbD := by
-      have := fb (gcL_Dt hρ0 hq hU hZ hA hB) (c := 14631 / 10000) (by decide +kernel)
+      have := fb (gcL_Dt hρ0 hq hU hZ hA hB) (c := 14631 / 10000) (by kernel_fact)
       push_cast at this; exact this
     hbDu := by
-      have := fb (gcL_Dtu hρ0 hq hU hZ hA hB) (c := 24101 / 10000) (by decide +kernel)
+      have := fb (gcL_Dtu hρ0 hq hU hZ hA hB) (c := 24101 / 10000) (by kernel_fact)
       push_cast at this; exact this
     hbDz := by
-      have := fb (gcL_Dtz hρ0 hq hU hZ hA hB) (c := 24241 / 100000) (by decide +kernel)
+      have := fb (gcL_Dtz hρ0 hq hU hZ hA hB) (c := 24241 / 100000) (by kernel_fact)
       push_cast at this; exact this
     hbnR := by
-      have := fb (gcL_nRt hρ0 hq hU hZ hA hB) (c := 16911 / 100000) (by decide +kernel)
+      have := fb (gcL_nRt hρ0 hq hU hZ hA hB) (c := 16911 / 100000) (by kernel_fact)
       push_cast at this; exact this
     hbnRu := by
-      have := fb (gcL_nRtu hρ0 hq hU hZ hA hB) (c := 13101 / 10000) (by decide +kernel)
+      have := fb (gcL_nRtu hρ0 hq hU hZ hA hB) (c := 13101 / 10000) (by kernel_fact)
       push_cast at this; exact this
     hbnRz := by
-      have := fb (gcL_nRtz hρ0 hq hU hZ hA hB) (c := 76871 / 100000) (by decide +kernel)
+      have := fb (gcL_nRtz hρ0 hq hU hZ hA hB) (c := 76871 / 100000) (by kernel_fact)
       push_cast at this; exact this
     hbnZ := by
-      have := fb (gcL_nZt hρ0 hq hU hZ hA hB) (c := 16281 / 100000) (by decide +kernel)
+      have := fb (gcL_nZt hρ0 hq hU hZ hA hB) (c := 16281 / 100000) (by kernel_fact)
       push_cast at this; exact this
     hbnZu := by
-      have := fb (gcL_nZtu hρ0 hq hU hZ hA hB) (c := 10401 / 10000) (by decide +kernel)
+      have := fb (gcL_nZtu hρ0 hq hU hZ hA hB) (c := 10401 / 10000) (by kernel_fact)
       push_cast at this; exact this
     hbnZz := by
-      have := fb (gcL_nZtz hρ0 hq hU hZ hA hB) (c := 95821 / 100000) (by decide +kernel)
+      have := fb (gcL_nZtz hρ0 hq hU hZ hA hB) (c := 95821 / 100000) (by kernel_fact)
       push_cast at this; exact this
     hsD := hDb
     hsR := hRb

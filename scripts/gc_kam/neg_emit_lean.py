@@ -6,12 +6,16 @@ Files (PlasmaLean/Design/):
   RationalStellaratorGCNegTorusDataL.lean, ...DataH{k}.lean     packed half grids of the centres
   RationalStellaratorGCNegTorusEnvL.lean, ...EnvH.lean          the environments (weights, polynomials,
                                                               Kronecker images, norms, radii)
-  RationalStellaratorGCNegTorusCheckL{k}.lean, ...CheckH{k}.lean kernel facts (decide +kernel)
+  RationalStellaratorGCNegTorusCheckL{k}.lean, ...CheckH{k}.lean kernel facts (converted to proof terms by
+                                                              proofterm/proofterm_emit.py)
+The side conditions of the other modules are emitted as `kernel_fact` proof terms.
 Usage: python neg_emit_lean.py env|rel|checks|chain|outputs
 """
 import sys, os, pickle
 from fractions import Fraction as Fr
 sys.path.insert(0, os.path.dirname(__file__))
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), 'proofterm'))
+from proofterm_emit import kernel_fact_text  # side conditions as `kernel_fact` proof terms
 
 OUT = '/Users/gadgil/code/PlasmaLean/PlasmaLean/Design/'
 NS = 'PlasmaLean.Design.RationalStellaratorGCNeg'
@@ -426,7 +430,7 @@ def E%s (i : ℕ) : ℚ := E%sl.getD i 0
 end %s
 ''' % (T, lst(Bl, 'q'), T, T, T, lst(El, 'q'), T, T, NS))
     mod = 'RationalStellaratorGCNegTorusEnv%s' % T
-    open(OUT + mod + '.lean', 'w').write(''.join(out))
+    open(OUT + mod + '.lean', 'w').write(kernel_fact_text(''.join(out)))
     return mod
 
 
@@ -739,7 +743,7 @@ def XL (u z : FA) : ℕ → FA
         out.append('set_option linter.unusedSimpArgs false in\n/-- The identity of the node `%s`. -/\ntheorem rel%s_%s%s :\n    %s • %s = Ex.eval %s tr%s_%s := by\n%s\n\n'
                    % (p.nm(n), T, p.nm(n), args, cl, lhsX, rhsX, T, p.nm(n), rel_proof(p, r, meta).replace('(KL)', '(KL u z)')))
     out.append('end %s\n' % NS)
-    open(OUT + mod + '.lean', 'w').write(''.join(out))
+    open(OUT + mod + '.lean', 'w').write(kernel_fact_text(''.join(out)))
     return mod
 
 
@@ -862,7 +866,7 @@ theorem x%s_s : x%s 3 = sS := ctr_sPoly S%s N%s M%s
                    '    ∀ i, i < %d → Bd r (%s i - x%s i) (E%s i) :=\n  chain_succ (ball%s_%d %s)\n    (%s)\n\n'
                    % (nm, T, k + 1, targs, k + 1, X, T, T, T, k, targs_use, step))
     out.append('end %s\n' % NS)
-    open(OUT + mod + '.lean', 'w').write(''.join(out))
+    open(OUT + mod + '.lean', 'w').write(kernel_fact_text(''.join(out)))
     return mod
 
 if __name__ == '__main__' and 'checks' in sys.argv:
@@ -1046,7 +1050,7 @@ theorem val%s_le %s
                                  norm_call(p, rr, Rq, hE='(ball%s_%d %s)' % (T, n, targs_use),
                                            hn='(fun i hi => norm%s hq i (by omega))' % T)))
     out.append('end %s\n' % NS)
-    open(OUT + mod + '.lean', 'w').write(''.join(out))
+    open(OUT + mod + '.lean', 'w').write(kernel_fact_text(''.join(out)))
     return mod
 
 if __name__ == '__main__' and 'outputs' in sys.argv:

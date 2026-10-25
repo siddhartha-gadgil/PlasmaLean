@@ -6,6 +6,7 @@ Authors: PlasmaLean contributors
 module
 
 public import PlasmaLean.Design.RationalStellaratorGCBoxPert
+public import PlasmaLean.Certificates.KernelFact
 
 /-!
 # Residual and admissibility over the box of gyro-lengths and pitch parameters
@@ -189,15 +190,15 @@ theorem box_components' :
   refine ⟨d1.le ?_ (g (by norm_num)), d2.le ?_ (g (by norm_num)), d3.le ?_ (g (by norm_num)),
     d4.le ?_ (g (by norm_num)), d5.le ?_ (g (by norm_num)), d6.le ?_ (g (by norm_num)),
     d7.le ?_ (g (by norm_num)), d8.le ?_ (g le_rfl), d9.le ?_ (g (by norm_num))⟩
-  · exact (f (i := 154) (s := 13 / 10) (by decide +kernel)).trans (by norm_num)
-  · exact (f (i := 160) (s := 23 / 10) (by decide +kernel)).trans (by norm_num)
-  · exact (f (i := 162) (s := 21 / 100) (by decide +kernel)).trans (by norm_num)
-  · exact (f (i := 156) (s := 11 / 100) (by decide +kernel)).trans (by norm_num)
-  · exact (f (i := 164) (s := 95 / 100) (by decide +kernel)).trans (by norm_num)
-  · exact (f (i := 166) (s := 75 / 100) (by decide +kernel)).trans (by norm_num)
-  · exact (f (i := 158) (s := 11 / 100) (by decide +kernel)).trans (by norm_num)
-  · exact (f (i := 168) (s := 87 / 100) (by decide +kernel)).trans (by norm_num)
-  · exact (f (i := 170) (s := 82 / 100) (by decide +kernel)).trans (by norm_num)
+  · exact (f (i := 154) (s := 13 / 10) (by kernel_fact)).trans (by norm_num)
+  · exact (f (i := 160) (s := 23 / 10) (by kernel_fact)).trans (by norm_num)
+  · exact (f (i := 162) (s := 21 / 100) (by kernel_fact)).trans (by norm_num)
+  · exact (f (i := 156) (s := 11 / 100) (by kernel_fact)).trans (by norm_num)
+  · exact (f (i := 164) (s := 95 / 100) (by kernel_fact)).trans (by norm_num)
+  · exact (f (i := 166) (s := 75 / 100) (by kernel_fact)).trans (by norm_num)
+  · exact (f (i := 158) (s := 11 / 100) (by kernel_fact)).trans (by norm_num)
+  · exact (f (i := 168) (s := 87 / 100) (by kernel_fact)).trans (by norm_num)
+  · exact (f (i := 170) (s := 82 / 100) (by kernel_fact)).trans (by norm_num)
 
 /-- **The torsion numerator over the box**: `‖P(ρ) − P(1/256)‖ ≤ 2⁻⁶⁵`, `‖P(1/256)‖ ≤ 1`. -/
 theorem box_Pof :
@@ -242,10 +243,10 @@ theorem box_T : Bd r ((gcFlowMu ρ (lamF c)).Talg u z) tTM ∧
   set q := xLM c 174 with hq_def
   have hqb : Bd r q 28660 := by
     have h := valLM_le hr hq hc hU hZ hA hB 174 (by norm_num)
-    exact h.le ((qle (show BLM 174 + ELM 174 ≤ 28660 by decide +kernel)).trans (by norm_num))
+    exact h.le ((qle (show BLM 174 + ELM 174 ≤ 28660 by kernel_fact)).trans (by norm_num))
   have hWb : Bd r (W0of u z) (13 / 1000) := by
     have h := valLM_le hr hq hc hU hZ hA hB 108 (by norm_num)
-    exact h.le ((qle (show BLM 108 + ELM 108 ≤ 13 / 1000 by decide +kernel)).trans
+    exact h.le ((qle (show BLM 108 + ELM 108 ≤ 13 / 1000 by kernel_fact)).trans
       (by norm_num))
   obtain ⟨dD, -⟩ := box_components' hρ hr0 hq hc hU hZ hA hB tu tz
   -- the factor `F = D̃³ W₀²`
@@ -297,8 +298,8 @@ theorem box_T : Bd r ((gcFlowMu ρ (lamF c)).Talg u z) tTM ∧
       eval_inverse hWu, eval_add', eval_one] at hQ ⊢
     have hq0 : eval q θ ψ ≠ 0 := left_ne_zero_of_mul hQ
     field_simp
-  have hB1 := qle (show BLM 175 + ELM 175 ≤ 74271 / 2000 by decide +kernel)
-  have hE1 := qle (show ELM 175 ≤ 51 / 2000 by decide +kernel)
+  have hB1 := qle (show BLM 175 + ELM 175 ≤ 74271 / 2000 by kernel_fact)
+  have hE1 := qle (show ELM 175 ≤ 51 / 2000 by kernel_fact)
   push_cast at hB1 hE1
   refine ⟨?_, ?_⟩
   · rw [hrep]
@@ -384,31 +385,31 @@ theorem boxAdm_core (hu : Ana u) (hz : Ana z) (tRt : Bd r (dTh u) aRtM) (tzt : B
     hLR := tLR
     hLz := tLz
     hbD := by
-      have := fb d1 (by norm_num) (s := 12751 / 10000) (by decide +kernel)
+      have := fb d1 (by norm_num) (s := 12751 / 10000) (by kernel_fact)
       push_cast at this; exact this
     hbDu := by
-      have := fb d2 (by norm_num) (s := 22351 / 10000) (by decide +kernel)
+      have := fb d2 (by norm_num) (s := 22351 / 10000) (by kernel_fact)
       push_cast at this; exact this
     hbDz := by
-      have := fb d3 (by norm_num) (s := 20231 / 100000) (by decide +kernel)
+      have := fb d3 (by norm_num) (s := 20231 / 100000) (by kernel_fact)
       push_cast at this; exact this
     hbnR := by
-      have := fb d4 (by norm_num) (s := 10071 / 100000) (by decide +kernel)
+      have := fb d4 (by norm_num) (s := 10071 / 100000) (by kernel_fact)
       push_cast at this; exact this
     hbnRu := by
-      have := fb d5 (by norm_num) (s := 94511 / 100000) (by decide +kernel)
+      have := fb d5 (by norm_num) (s := 94511 / 100000) (by kernel_fact)
       push_cast at this; exact this
     hbnRz := by
-      have := fb d6 (by norm_num) (s := 74451 / 100000) (by decide +kernel)
+      have := fb d6 (by norm_num) (s := 74451 / 100000) (by kernel_fact)
       push_cast at this; exact this
     hbnZ := by
-      have := fb d7 (by norm_num) (s := 10461 / 100000) (by decide +kernel)
+      have := fb d7 (by norm_num) (s := 10461 / 100000) (by kernel_fact)
       push_cast at this; exact this
     hbnZu := by
-      have := fb d8 le_rfl (s := 86851 / 100000) (by decide +kernel)
+      have := fb d8 le_rfl (s := 86851 / 100000) (by kernel_fact)
       push_cast at this; exact this
     hbnZz := by
-      have := fb d9 (by norm_num) (s := 81681 / 100000) (by decide +kernel)
+      have := fb d9 (by norm_num) (s := 81681 / 100000) (by kernel_fact)
       push_cast at this; exact this
     hsD := hDb
     hsR := hRb

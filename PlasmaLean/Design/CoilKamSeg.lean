@@ -7,6 +7,7 @@ module
 
 public import PlasmaLean.Design.CoilKamArith
 public import PlasmaLean.Design.CoilFieldComplex
+public import PlasmaLean.Certificates.KernelFact
 
 /-!
 # Exact sampled evaluation of the coil field at dyadic points
@@ -517,9 +518,9 @@ theorem fieldAP_sound {D₀ : ℕ} (hD₀ : 0 < D₀) {Y : ℤ × ℤ × ℤ} {w
 /-! ## Sanity -/
 
 /-- Accepted fixture: the field at `(1, 0, 0)` (scale `2³²`) passes all checks. -/
-theorem fieldAP_fixture : (fieldAP 1 (4294967296, 0, 0)).isSome = true := by decide +kernel
+theorem fieldAP_fixture : (fieldAP 1 (4294967296, 0, 0)).isSome = true := by kernel_fact
 
 /-- Rejected fixture: a segment through the evaluation point is rejected. -/
-theorem segAP_degenerate : segAP 4 1 (0, 0, 0) (4, 0, 0) (0, 0, 0) = none := by decide +kernel
+theorem segAP_degenerate : segAP 4 1 (0, 0, 0) (4, 0, 0) (0, 0, 0) = none := by kernel_fact
 
 end PlasmaLean.Design.CoilKam

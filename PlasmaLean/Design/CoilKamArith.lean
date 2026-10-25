@@ -8,6 +8,7 @@ module
 public import PlasmaLean.Theory.KAM.Diophantine
 public import Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic
 public import Mathlib.Analysis.SpecialFunctions.Complex.Circle
+public import PlasmaLean.Certificates.KernelFact
 
 /-!
 # Integer approximants for the sampled coil-KAM certificate
@@ -16,7 +17,7 @@ Stage 2 of the coil-field KAM (`notes/theory/coil-kam-status.md`). The sampled r
 certificate evaluates real quantities (trigonometric values at grid angles, torus coordinates,
 segment fields) as **approximants**: a pair `(V, e) : ℤ × ℕ` approximates `x : ℝ` at scale `D`
 if `|x - V/D| ≤ e/D` (`Approx`). All operations are computable on integers, so the kernel can
-evaluate them (`decide +kernel`), and each comes with a soundness lemma proved once:
+evaluate them (`kernel_fact`), and each comes with a soundness lemma proved once:
 
 * `apAdd`, `apSub`, `apNeg`, `apSmul` (exact) and `apMul` (product, rounded down to scale `D`,
   error `(|V₁|e₂ + |V₂|e₁ + e₁e₂)/D + 1`): `Approx.add`, `Approx.sub`, `Approx.neg`,
@@ -241,7 +242,7 @@ theorem sqrtBr_sound (g n : ℕ) :
   sqrtBrOf_sound n _
 
 /-- Accepted fixture: `√16 ∈ [4, 5]`. -/
-theorem sqrtBr_fixture : sqrtBr 8 16 = (4, 5) := by decide +kernel
+theorem sqrtBr_fixture : sqrtBr 8 16 = (4, 5) := by kernel_fact
 
 /-! ## Grid exponentials -/
 
@@ -529,7 +530,7 @@ theorem iota_approx {D : ℕ} (hD : 0 < D) {I : ℤ} (h0 : 75 * (D : ℤ) ≤ 56
 /-! ## Sanity -/
 
 /-- `1 · 1 = 1` at scale `4` (fixture for `apMul`). -/
-theorem apMul_one : apMul 4 (4, 0) (4, 0) = (4, 1) := by decide +kernel
+theorem apMul_one : apMul 4 (4, 0) (4, 0) = (4, 1) := by kernel_fact
 
 /-- Rejected fixture: `(0, 0)` does not approximate `1`. -/
 theorem not_approx_fixture : ¬ Approx 1 1 (0, 0) := by

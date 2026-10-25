@@ -7,6 +7,7 @@ module
 
 public import PlasmaLean.Design.RationalStellaratorGCFamKvL
 public import PlasmaLean.Certificates.KronBallChebEnv
+public import PlasmaLean.Certificates.KernelFact
 
 /-!
 # The low-resolution environment of the guiding-centre torus family certificate
@@ -42,7 +43,7 @@ def PLF (i : ℕ) : P3 :=
 
 /-- The kinds are at most `6`. -/
 theorem kindLF_le (i : ℕ) : kindLF i ≤ 6 :=
-  getD_prop (Pr := fun k : ℕ => k ≤ 6) (by decide +kernel) (by decide +kernel) i
+  getD_prop (Pr := fun k : ℕ => k ≤ 6) (by kernel_fact) (by kernel_fact) i
 
 /-- The variables beyond the last have kind `5` (zero). -/
 theorem kindLF_ge {i : ℕ} (h : 142 ≤ i) : kindLF i = 5 := by
@@ -54,56 +55,56 @@ theorem kindLF_ge {i : ℕ} (h : 142 ≤ i) : kindLF i = 5 := by
 theorem lt_of_kindLF {i : ℕ} (h : kindLF i = 6) : i < 142 := by
   by_contra h'
   rw [kindLF_ge (by omega)] at h
-  exact absurd h (by decide +kernel)
+  exact absurd h (by kernel_fact)
 
 set_option maxRecDepth 100000 in
 /-- The static conditions of the stored families. -/
 theorem staticLF : ∀ i, i < 142 → kindLF i = 6 →
     FamStatic NLF MLF DLF ddLF drLF dwLF (famLF i) := by
-  decide +kernel
+  kernel_fact
 
 set_option maxRecDepth 100000 in
 /-- The minimal widths of the fast images. -/
 theorem dynLF : ∀ i, i < 142 → kindLF i = 6 →
     FamDyn (bMinLF i) (wMinLF i) (c0LF i) (famLF i) := by
-  decide +kernel
+  kernel_fact
 
 set_option maxRecDepth 100000 in
 /-- The static `ℓ¹` bounds of the stored families. -/
 theorem l1famLF : ∀ i, i < 142 → kindLF i = 6 →
     famL1 NLF MLF (c0LF i : ℤ) 0 0 0 (famLF i) ≤ LLF i := by
-  decide +kernel
+  kernel_fact
 
 set_option maxRecDepth 100000 in
 /-- The degree boxes of the stored families. -/
 theorem bx6LF : ∀ i, i < 142 → kindLF i = 6 → BxLF i = (2 * NLF, 2 * MLF, 2 * DLF) := by
-  decide +kernel
+  kernel_fact
 
 set_option maxRecDepth 100000 in
 /-- The degree box and bound of `t`. -/
 theorem bx0LF : ∀ i, i < 142 → kindLF i = 0 → BxLF i = (NLF, MLF, DLF) ∧ 2 ^ SLF ≤ LLF i := by
-  decide +kernel
+  kernel_fact
 
 set_option maxRecDepth 100000 in
 /-- The degree box and bound of `V`. -/
 theorem bx1LF : ∀ i, i < 142 → kindLF i = 1 → BxLF i = (0, 1, 0) ∧ 2 ≤ LLF i := by
-  decide +kernel
+  kernel_fact
 
 set_option maxRecDepth 100000 in
 /-- The degree box and bound of `cos 2φ`. -/
 theorem bx2LF : ∀ i, i < 142 → kindLF i = 2 → BxLF i = (0, 2, 0) ∧ 2 ≤ LLF i := by
-  decide +kernel
+  kernel_fact
 
 set_option maxRecDepth 100000 in
 /-- The degree box and bound of `sin 2φ`. -/
 theorem bx3LF : ∀ i, i < 142 → kindLF i = 3 → BxLF i = (0, 2, 0) ∧ 2 ≤ LLF i := by
-  decide +kernel
+  kernel_fact
 
 set_option maxRecDepth 100000 in
 /-- The degree box and bound of the parameter. -/
 theorem bx4LF : ∀ i, i < 142 → kindLF i = 4 →
     BxLF i = (NLF, MLF, DLF + 1) ∧ 2 ^ (SLF + 6) + 2 * 2 ^ (SLF - 1) ≤ LLF i := by
-  decide +kernel
+  kernel_fact
 
 /-- The polynomial of `t`. -/
 theorem PLF_k0 {i : ℕ} (h : kindLF i = 0) : PLF i = T3 SLF NLF MLF DLF := by
@@ -214,7 +215,7 @@ theorem l1LF (R i : ℕ) : l1 (flat R (PLF i)) ≤ LLF i := by
 
 /-- The phases are below `4`. -/
 theorem hWLF : ∀ i, (WtLF i).2.2 < 4 :=
-  getD_prop (Pr := fun w : ℕ × ℕ × ℕ => w.2.2 < 4) (by decide +kernel) (by decide +kernel)
+  getD_prop (Pr := fun w : ℕ × ℕ × ℕ => w.2.2 < 4) (by kernel_fact) (by kernel_fact)
 
 /-- **The family centres** at the parameter `w = c`. -/
 def xLF (c : ℂ) (i : ℕ) : FA := ctr3 SLF NLF MLF DLF c (WtLF i) (PLF i)
@@ -251,7 +252,7 @@ theorem xLF_s (c : ℂ) : xLF c 3 = ctr SLF NLF MLF (0, 1, 0) sPoly := by
 /-- The centre of the parameter `r` is `64 + (c + c⁻¹)/2`. -/
 theorem xLF_r {c : ℂ} (hc : c ≠ 0) : xLF c 114 = algebraMap ℂ FA (64 + (c + c⁻¹) / 2) := by
   rw [xLF, show WtLF 114 = (1, 0, 0) from rfl, show PLF 114 = Pr3 SLF NLF MLF DLF from rfl]
-  exact ctr3_Pr3 _ _ _ _ (by decide +kernel) (by decide +kernel) hc
+  exact ctr3_Pr3 _ _ _ _ (by kernel_fact) (by kernel_fact) hc
 
 /-- The centres of the variables of kind `5` (dummies) vanish. -/
 theorem xLF_zero (c : ℂ) {i : ℕ} (h : kindLF i = 5) : xLF c i = 0 := by

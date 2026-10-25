@@ -7,6 +7,7 @@ module
 
 public import PlasmaLean.Design.ValidatedBVP
 public import PlasmaLean.Certificates.FourierRegularity
+public import PlasmaLean.Certificates.KernelFact
 
 /-!
 # The validated BVP has a classical `C²` solution
@@ -83,10 +84,10 @@ theorem validated_bvp_classical :
     ring
 
 /-- Exact value `ū(0) = -0.31845` (rational check). -/
-theorem abar_sum_zero : ∑ k ∈ blk, abarq k = -31845 / 100000 := by decide +kernel
+theorem abar_sum_zero : ∑ k ∈ blk, abarq k = -31845 / 100000 := by kernel_fact
 
 /-- Exact value `ū(π) = 0.60587` (rational check). -/
-theorem abar_sum_pi : ∑ k ∈ blk, abarq k * (-1) ^ k = 60587 / 100000 := by decide +kernel
+theorem abar_sum_pi : ∑ k ∈ blk, abarq k * (-1) ^ k = 60587 / 100000 := by kernel_fact
 
 /-- Non-triviality: the classical solution is not constant, since
 `U(π) - U(0) ≥ 9/10` (the candidate has `ū(π) - ū(0) = 0.92432`). -/

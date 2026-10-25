@@ -8,6 +8,7 @@ module
 public import PlasmaLean.Design.RationalStellaratorGCFamTreesL
 public import PlasmaLean.Design.RationalStellaratorGCFamEnvL
 public import PlasmaLean.Design.RationalStellaratorGCTorusRelL
+public import PlasmaLean.Certificates.KernelFact
 
 /-!
 # True values of the low-resolution family pipeline of the guiding-centre torus
@@ -111,541 +112,541 @@ set_option maxRecDepth 100000 in
 /-- The identity of the node `m02` (from the `ρ = 1/256` pipeline). -/
 theorem relLF_m02 (c : ℂ) (u z : FA) :
     ((1 : ℤ) : ℂ) • XLF c u z 8 = Ex.eval (XLF c u z) (toEx trLFN_m02) :=
-  rel_congr (XLF_congr c u z) (by decide +kernel) (XLF_old c u z (j := 8) rfl) (relL_m02 u z)
+  rel_congr (XLF_congr c u z) (by kernel_fact) (XLF_old c u z (j := 8) rfl) (relL_m02 u z)
 
 set_option maxRecDepth 100000 in
 /-- The identity of the node `m11` (from the `ρ = 1/256` pipeline). -/
 theorem relLF_m11 (c : ℂ) (u z : FA) :
     ((1 : ℤ) : ℂ) • XLF c u z 9 = Ex.eval (XLF c u z) (toEx trLFN_m11) :=
-  rel_congr (XLF_congr c u z) (by decide +kernel) (XLF_old c u z (j := 9) rfl) (relL_m11 u z)
+  rel_congr (XLF_congr c u z) (by kernel_fact) (XLF_old c u z (j := 9) rfl) (relL_m11 u z)
 
 set_option maxRecDepth 100000 in
 /-- The identity of the node `m20` (from the `ρ = 1/256` pipeline). -/
 theorem relLF_m20 (c : ℂ) (u z : FA) :
     ((1 : ℤ) : ℂ) • XLF c u z 10 = Ex.eval (XLF c u z) (toEx trLFN_m20) :=
-  rel_congr (XLF_congr c u z) (by decide +kernel) (XLF_old c u z (j := 10) rfl) (relL_m20 u z)
+  rel_congr (XLF_congr c u z) (by kernel_fact) (XLF_old c u z (j := 10) rfl) (relL_m20 u z)
 
 set_option maxRecDepth 100000 in
 /-- The identity of the node `m03` (from the `ρ = 1/256` pipeline). -/
 theorem relLF_m03 (c : ℂ) (u z : FA) :
     ((1 : ℤ) : ℂ) • XLF c u z 11 = Ex.eval (XLF c u z) (toEx trLFN_m03) :=
-  rel_congr (XLF_congr c u z) (by decide +kernel) (XLF_old c u z (j := 11) rfl) (relL_m03 u z)
+  rel_congr (XLF_congr c u z) (by kernel_fact) (XLF_old c u z (j := 11) rfl) (relL_m03 u z)
 
 set_option maxRecDepth 100000 in
 /-- The identity of the node `m12` (from the `ρ = 1/256` pipeline). -/
 theorem relLF_m12 (c : ℂ) (u z : FA) :
     ((1 : ℤ) : ℂ) • XLF c u z 12 = Ex.eval (XLF c u z) (toEx trLFN_m12) :=
-  rel_congr (XLF_congr c u z) (by decide +kernel) (XLF_old c u z (j := 12) rfl) (relL_m12 u z)
+  rel_congr (XLF_congr c u z) (by kernel_fact) (XLF_old c u z (j := 12) rfl) (relL_m12 u z)
 
 set_option maxRecDepth 100000 in
 /-- The identity of the node `m21` (from the `ρ = 1/256` pipeline). -/
 theorem relLF_m21 (c : ℂ) (u z : FA) :
     ((1 : ℤ) : ℂ) • XLF c u z 13 = Ex.eval (XLF c u z) (toEx trLFN_m21) :=
-  rel_congr (XLF_congr c u z) (by decide +kernel) (XLF_old c u z (j := 13) rfl) (relL_m21 u z)
+  rel_congr (XLF_congr c u z) (by kernel_fact) (XLF_old c u z (j := 13) rfl) (relL_m21 u z)
 
 set_option maxRecDepth 100000 in
 /-- The identity of the node `m30` (from the `ρ = 1/256` pipeline). -/
 theorem relLF_m30 (c : ℂ) (u z : FA) :
     ((1 : ℤ) : ℂ) • XLF c u z 14 = Ex.eval (XLF c u z) (toEx trLFN_m30) :=
-  rel_congr (XLF_congr c u z) (by decide +kernel) (XLF_old c u z (j := 14) rfl) (relL_m30 u z)
+  rel_congr (XLF_congr c u z) (by kernel_fact) (XLF_old c u z (j := 14) rfl) (relL_m30 u z)
 
 set_option maxRecDepth 100000 in
 /-- The identity of the node `m13` (from the `ρ = 1/256` pipeline). -/
 theorem relLF_m13 (c : ℂ) (u z : FA) :
     ((1 : ℤ) : ℂ) • XLF c u z 15 = Ex.eval (XLF c u z) (toEx trLFN_m13) :=
-  rel_congr (XLF_congr c u z) (by decide +kernel) (XLF_old c u z (j := 15) rfl) (relL_m13 u z)
+  rel_congr (XLF_congr c u z) (by kernel_fact) (XLF_old c u z (j := 15) rfl) (relL_m13 u z)
 
 set_option maxRecDepth 100000 in
 /-- The identity of the node `m22` (from the `ρ = 1/256` pipeline). -/
 theorem relLF_m22 (c : ℂ) (u z : FA) :
     ((1 : ℤ) : ℂ) • XLF c u z 16 = Ex.eval (XLF c u z) (toEx trLFN_m22) :=
-  rel_congr (XLF_congr c u z) (by decide +kernel) (XLF_old c u z (j := 16) rfl) (relL_m22 u z)
+  rel_congr (XLF_congr c u z) (by kernel_fact) (XLF_old c u z (j := 16) rfl) (relL_m22 u z)
 
 set_option maxRecDepth 100000 in
 /-- The identity of the node `m31` (from the `ρ = 1/256` pipeline). -/
 theorem relLF_m31 (c : ℂ) (u z : FA) :
     ((1 : ℤ) : ℂ) • XLF c u z 17 = Ex.eval (XLF c u z) (toEx trLFN_m31) :=
-  rel_congr (XLF_congr c u z) (by decide +kernel) (XLF_old c u z (j := 17) rfl) (relL_m31 u z)
+  rel_congr (XLF_congr c u z) (by kernel_fact) (XLF_old c u z (j := 17) rfl) (relL_m31 u z)
 
 set_option maxRecDepth 100000 in
 /-- The identity of the node `m40` (from the `ρ = 1/256` pipeline). -/
 theorem relLF_m40 (c : ℂ) (u z : FA) :
     ((1 : ℤ) : ℂ) • XLF c u z 18 = Ex.eval (XLF c u z) (toEx trLFN_m40) :=
-  rel_congr (XLF_congr c u z) (by decide +kernel) (XLF_old c u z (j := 18) rfl) (relL_m40 u z)
+  rel_congr (XLF_congr c u z) (by kernel_fact) (XLF_old c u z (j := 18) rfl) (relL_m40 u z)
 
 set_option maxRecDepth 100000 in
 /-- The identity of the node `m41` (from the `ρ = 1/256` pipeline). -/
 theorem relLF_m41 (c : ℂ) (u z : FA) :
     ((1 : ℤ) : ℂ) • XLF c u z 19 = Ex.eval (XLF c u z) (toEx trLFN_m41) :=
-  rel_congr (XLF_congr c u z) (by decide +kernel) (XLF_old c u z (j := 19) rfl) (relL_m41 u z)
+  rel_congr (XLF_congr c u z) (by kernel_fact) (XLF_old c u z (j := 19) rfl) (relL_m41 u z)
 
 set_option maxRecDepth 100000 in
 /-- The identity of the node `m50` (from the `ρ = 1/256` pipeline). -/
 theorem relLF_m50 (c : ℂ) (u z : FA) :
     ((1 : ℤ) : ℂ) • XLF c u z 20 = Ex.eval (XLF c u z) (toEx trLFN_m50) :=
-  rel_congr (XLF_congr c u z) (by decide +kernel) (XLF_old c u z (j := 20) rfl) (relL_m50 u z)
+  rel_congr (XLF_congr c u z) (by kernel_fact) (XLF_old c u z (j := 20) rfl) (relL_m50 u z)
 
 set_option maxRecDepth 100000 in
 /-- The identity of the node `m51` (from the `ρ = 1/256` pipeline). -/
 theorem relLF_m51 (c : ℂ) (u z : FA) :
     ((1 : ℤ) : ℂ) • XLF c u z 21 = Ex.eval (XLF c u z) (toEx trLFN_m51) :=
-  rel_congr (XLF_congr c u z) (by decide +kernel) (XLF_old c u z (j := 21) rfl) (relL_m51 u z)
+  rel_congr (XLF_congr c u z) (by kernel_fact) (XLF_old c u z (j := 21) rfl) (relL_m51 u z)
 
 set_option maxRecDepth 100000 in
 /-- The identity of the node `m60` (from the `ρ = 1/256` pipeline). -/
 theorem relLF_m60 (c : ℂ) (u z : FA) :
     ((1 : ℤ) : ℂ) • XLF c u z 22 = Ex.eval (XLF c u z) (toEx trLFN_m60) :=
-  rel_congr (XLF_congr c u z) (by decide +kernel) (XLF_old c u z (j := 22) rfl) (relL_m60 u z)
+  rel_congr (XLF_congr c u z) (by kernel_fact) (XLF_old c u z (j := 22) rfl) (relL_m60 u z)
 
 set_option maxRecDepth 100000 in
 /-- The identity of the node `Dp` (from the `ρ = 1/256` pipeline). -/
 theorem relLF_Dp (c : ℂ) (u z : FA) :
     ((8 : ℤ) : ℂ) • XLF c u z 23 = Ex.eval (XLF c u z) (toEx trLFN_Dp) :=
-  rel_congr (XLF_congr c u z) (by decide +kernel) (XLF_old c u z (j := 23) rfl) (relL_Dp u z)
+  rel_congr (XLF_congr c u z) (by kernel_fact) (XLF_old c u z (j := 23) rfl) (relL_Dp u z)
 
 set_option maxRecDepth 100000 in
 /-- The identity of the node `nRp` (from the `ρ = 1/256` pipeline). -/
 theorem relLF_nRp (c : ℂ) (u z : FA) :
     ((8 : ℤ) : ℂ) • XLF c u z 24 = Ex.eval (XLF c u z) (toEx trLFN_nRp) :=
-  rel_congr (XLF_congr c u z) (by decide +kernel) (XLF_old c u z (j := 24) rfl) (relL_nRp u z)
+  rel_congr (XLF_congr c u z) (by kernel_fact) (XLF_old c u z (j := 24) rfl) (relL_nRp u z)
 
 set_option maxRecDepth 100000 in
 /-- The identity of the node `nZp` (from the `ρ = 1/256` pipeline). -/
 theorem relLF_nZp (c : ℂ) (u z : FA) :
     ((16 : ℤ) : ℂ) • XLF c u z 25 = Ex.eval (XLF c u z) (toEx trLFN_nZp) :=
-  rel_congr (XLF_congr c u z) (by decide +kernel) (XLF_old c u z (j := 25) rfl) (relL_nZp u z)
+  rel_congr (XLF_congr c u z) (by kernel_fact) (XLF_old c u z (j := 25) rfl) (relL_nZp u z)
 
 set_option maxRecDepth 100000 in
 /-- The identity of the node `DuP` (from the `ρ = 1/256` pipeline). -/
 theorem relLF_DuP (c : ℂ) (u z : FA) :
     ((2 : ℤ) : ℂ) • XLF c u z 26 = Ex.eval (XLF c u z) (toEx trLFN_DuP) :=
-  rel_congr (XLF_congr c u z) (by decide +kernel) (XLF_old c u z (j := 26) rfl) (relL_DuP u z)
+  rel_congr (XLF_congr c u z) (by kernel_fact) (XLF_old c u z (j := 26) rfl) (relL_DuP u z)
 
 set_option maxRecDepth 100000 in
 /-- The identity of the node `DzP` (from the `ρ = 1/256` pipeline). -/
 theorem relLF_DzP (c : ℂ) (u z : FA) :
     ((8 : ℤ) : ℂ) • XLF c u z 27 = Ex.eval (XLF c u z) (toEx trLFN_DzP) :=
-  rel_congr (XLF_congr c u z) (by decide +kernel) (XLF_old c u z (j := 27) rfl) (relL_DzP u z)
+  rel_congr (XLF_congr c u z) (by kernel_fact) (XLF_old c u z (j := 27) rfl) (relL_DzP u z)
 
 set_option maxRecDepth 100000 in
 /-- The identity of the node `DphP` (from the `ρ = 1/256` pipeline). -/
 theorem relLF_DphP (c : ℂ) (u z : FA) :
     ((4 : ℤ) : ℂ) • XLF c u z 28 = Ex.eval (XLF c u z) (toEx trLFN_DphP) :=
-  rel_congr (XLF_congr c u z) (by decide +kernel) (XLF_old c u z (j := 28) rfl) (relL_DphP u z)
+  rel_congr (XLF_congr c u z) (by kernel_fact) (XLF_old c u z (j := 28) rfl) (relL_DphP u z)
 
 set_option maxRecDepth 100000 in
 /-- The identity of the node `nRuP` (from the `ρ = 1/256` pipeline). -/
 theorem relLF_nRuP (c : ℂ) (u z : FA) :
     ((8 : ℤ) : ℂ) • XLF c u z 29 = Ex.eval (XLF c u z) (toEx trLFN_nRuP) :=
-  rel_congr (XLF_congr c u z) (by decide +kernel) (XLF_old c u z (j := 29) rfl) (relL_nRuP u z)
+  rel_congr (XLF_congr c u z) (by kernel_fact) (XLF_old c u z (j := 29) rfl) (relL_nRuP u z)
 
 set_option maxRecDepth 100000 in
 /-- The identity of the node `nRzP` (from the `ρ = 1/256` pipeline). -/
 theorem relLF_nRzP (c : ℂ) (u z : FA) :
     ((8 : ℤ) : ℂ) • XLF c u z 30 = Ex.eval (XLF c u z) (toEx trLFN_nRzP) :=
-  rel_congr (XLF_congr c u z) (by decide +kernel) (XLF_old c u z (j := 30) rfl) (relL_nRzP u z)
+  rel_congr (XLF_congr c u z) (by kernel_fact) (XLF_old c u z (j := 30) rfl) (relL_nRzP u z)
 
 set_option maxRecDepth 100000 in
 /-- The identity of the node `nRphP` (from the `ρ = 1/256` pipeline). -/
 theorem relLF_nRphP (c : ℂ) (u z : FA) :
     ((4 : ℤ) : ℂ) • XLF c u z 31 = Ex.eval (XLF c u z) (toEx trLFN_nRphP) :=
-  rel_congr (XLF_congr c u z) (by decide +kernel) (XLF_old c u z (j := 31) rfl) (relL_nRphP u z)
+  rel_congr (XLF_congr c u z) (by kernel_fact) (XLF_old c u z (j := 31) rfl) (relL_nRphP u z)
 
 set_option maxRecDepth 100000 in
 /-- The identity of the node `nZuP` (from the `ρ = 1/256` pipeline). -/
 theorem relLF_nZuP (c : ℂ) (u z : FA) :
     ((8 : ℤ) : ℂ) • XLF c u z 32 = Ex.eval (XLF c u z) (toEx trLFN_nZuP) :=
-  rel_congr (XLF_congr c u z) (by decide +kernel) (XLF_old c u z (j := 32) rfl) (relL_nZuP u z)
+  rel_congr (XLF_congr c u z) (by kernel_fact) (XLF_old c u z (j := 32) rfl) (relL_nZuP u z)
 
 set_option maxRecDepth 100000 in
 /-- The identity of the node `nZzP` (from the `ρ = 1/256` pipeline). -/
 theorem relLF_nZzP (c : ℂ) (u z : FA) :
     ((2 : ℤ) : ℂ) • XLF c u z 33 = Ex.eval (XLF c u z) (toEx trLFN_nZzP) :=
-  rel_congr (XLF_congr c u z) (by decide +kernel) (XLF_old c u z (j := 33) rfl) (relL_nZzP u z)
+  rel_congr (XLF_congr c u z) (by kernel_fact) (XLF_old c u z (j := 33) rfl) (relL_nZzP u z)
 
 set_option maxRecDepth 100000 in
 /-- The identity of the node `nZphP` (from the `ρ = 1/256` pipeline). -/
 theorem relLF_nZphP (c : ℂ) (u z : FA) :
     ((8 : ℤ) : ℂ) • XLF c u z 34 = Ex.eval (XLF c u z) (toEx trLFN_nZphP) :=
-  rel_congr (XLF_congr c u z) (by decide +kernel) (XLF_old c u z (j := 34) rfl) (relL_nZphP u z)
+  rel_congr (XLF_congr c u z) (by kernel_fact) (XLF_old c u z (j := 34) rfl) (relL_nZphP u z)
 
 set_option maxRecDepth 100000 in
 /-- The identity of the node `PuP` (from the `ρ = 1/256` pipeline). -/
 theorem relLF_PuP (c : ℂ) (u z : FA) :
     ((1 : ℤ) : ℂ) • XLF c u z 35 = Ex.eval (XLF c u z) (toEx trLFN_PuP) :=
-  rel_congr (XLF_congr c u z) (by decide +kernel) (XLF_old c u z (j := 35) rfl) (relL_PuP u z)
+  rel_congr (XLF_congr c u z) (by kernel_fact) (XLF_old c u z (j := 35) rfl) (relL_PuP u z)
 
 set_option maxRecDepth 100000 in
 /-- The identity of the node `PdP` (from the `ρ = 1/256` pipeline). -/
 theorem relLF_PdP (c : ℂ) (u z : FA) :
     ((1 : ℤ) : ℂ) • XLF c u z 36 = Ex.eval (XLF c u z) (toEx trLFN_PdP) :=
-  rel_congr (XLF_congr c u z) (by decide +kernel) (XLF_old c u z (j := 36) rfl) (relL_PdP u z)
+  rel_congr (XLF_congr c u z) (by kernel_fact) (XLF_old c u z (j := 36) rfl) (relL_PdP u z)
 
 set_option maxRecDepth 100000 in
 /-- The identity of the node `DuuP` (from the `ρ = 1/256` pipeline). -/
 theorem relLF_DuuP (c : ℂ) (u z : FA) :
     ((2 : ℤ) : ℂ) • XLF c u z 37 = Ex.eval (XLF c u z) (toEx trLFN_DuuP) :=
-  rel_congr (XLF_congr c u z) (by decide +kernel) (XLF_old c u z (j := 37) rfl) (relL_DuuP u z)
+  rel_congr (XLF_congr c u z) (by kernel_fact) (XLF_old c u z (j := 37) rfl) (relL_DuuP u z)
 
 set_option maxRecDepth 100000 in
 /-- The identity of the node `DuzP` (from the `ρ = 1/256` pipeline). -/
 theorem relLF_DuzP (c : ℂ) (u z : FA) :
     ((2 : ℤ) : ℂ) • XLF c u z 38 = Ex.eval (XLF c u z) (toEx trLFN_DuzP) :=
-  rel_congr (XLF_congr c u z) (by decide +kernel) (XLF_old c u z (j := 38) rfl) (relL_DuzP u z)
+  rel_congr (XLF_congr c u z) (by kernel_fact) (XLF_old c u z (j := 38) rfl) (relL_DuzP u z)
 
 set_option maxRecDepth 100000 in
 /-- The identity of the node `DzzP` (from the `ρ = 1/256` pipeline). -/
 theorem relLF_DzzP (c : ℂ) (u z : FA) :
     ((1 : ℤ) : ℂ) • XLF c u z 39 = Ex.eval (XLF c u z) (toEx trLFN_DzzP) :=
-  rel_congr (XLF_congr c u z) (by decide +kernel) (XLF_old c u z (j := 39) rfl) (relL_DzzP u z)
+  rel_congr (XLF_congr c u z) (by kernel_fact) (XLF_old c u z (j := 39) rfl) (relL_DzzP u z)
 
 set_option maxRecDepth 100000 in
 /-- The identity of the node `DuphP` (from the `ρ = 1/256` pipeline). -/
 theorem relLF_DuphP (c : ℂ) (u z : FA) :
     ((1 : ℤ) : ℂ) • XLF c u z 40 = Ex.eval (XLF c u z) (toEx trLFN_DuphP) :=
-  rel_congr (XLF_congr c u z) (by decide +kernel) (XLF_old c u z (j := 40) rfl) (relL_DuphP u z)
+  rel_congr (XLF_congr c u z) (by kernel_fact) (XLF_old c u z (j := 40) rfl) (relL_DuphP u z)
 
 set_option maxRecDepth 100000 in
 /-- The identity of the node `DzphP` (from the `ρ = 1/256` pipeline). -/
 theorem relLF_DzphP (c : ℂ) (u z : FA) :
     ((4 : ℤ) : ℂ) • XLF c u z 41 = Ex.eval (XLF c u z) (toEx trLFN_DzphP) :=
-  rel_congr (XLF_congr c u z) (by decide +kernel) (XLF_old c u z (j := 41) rfl) (relL_DzphP u z)
+  rel_congr (XLF_congr c u z) (by kernel_fact) (XLF_old c u z (j := 41) rfl) (relL_DzphP u z)
 
 set_option maxRecDepth 100000 in
 /-- The identity of the node `nRuuP` (from the `ρ = 1/256` pipeline). -/
 theorem relLF_nRuuP (c : ℂ) (u z : FA) :
     ((2 : ℤ) : ℂ) • XLF c u z 42 = Ex.eval (XLF c u z) (toEx trLFN_nRuuP) :=
-  rel_congr (XLF_congr c u z) (by decide +kernel) (XLF_old c u z (j := 42) rfl) (relL_nRuuP u z)
+  rel_congr (XLF_congr c u z) (by kernel_fact) (XLF_old c u z (j := 42) rfl) (relL_nRuuP u z)
 
 set_option maxRecDepth 100000 in
 /-- The identity of the node `nRuzP` (from the `ρ = 1/256` pipeline). -/
 theorem relLF_nRuzP (c : ℂ) (u z : FA) :
     ((8 : ℤ) : ℂ) • XLF c u z 43 = Ex.eval (XLF c u z) (toEx trLFN_nRuzP) :=
-  rel_congr (XLF_congr c u z) (by decide +kernel) (XLF_old c u z (j := 43) rfl) (relL_nRuzP u z)
+  rel_congr (XLF_congr c u z) (by kernel_fact) (XLF_old c u z (j := 43) rfl) (relL_nRuzP u z)
 
 set_option maxRecDepth 100000 in
 /-- The identity of the node `nRzzP` (from the `ρ = 1/256` pipeline). -/
 theorem relLF_nRzzP (c : ℂ) (u z : FA) :
     ((1 : ℤ) : ℂ) • XLF c u z 44 = Ex.eval (XLF c u z) (toEx trLFN_nRzzP) :=
-  rel_congr (XLF_congr c u z) (by decide +kernel) (XLF_old c u z (j := 44) rfl) (relL_nRzzP u z)
+  rel_congr (XLF_congr c u z) (by kernel_fact) (XLF_old c u z (j := 44) rfl) (relL_nRzzP u z)
 
 set_option maxRecDepth 100000 in
 /-- The identity of the node `nRuphP` (from the `ρ = 1/256` pipeline). -/
 theorem relLF_nRuphP (c : ℂ) (u z : FA) :
     ((-4 : ℤ) : ℂ) • XLF c u z 45 = Ex.eval (XLF c u z) (toEx trLFN_nRuphP) :=
-  rel_congr (XLF_congr c u z) (by decide +kernel) (XLF_old c u z (j := 45) rfl) (relL_nRuphP u z)
+  rel_congr (XLF_congr c u z) (by kernel_fact) (XLF_old c u z (j := 45) rfl) (relL_nRuphP u z)
 
 set_option maxRecDepth 100000 in
 /-- The identity of the node `nRzphP` (from the `ρ = 1/256` pipeline). -/
 theorem relLF_nRzphP (c : ℂ) (u z : FA) :
     ((4 : ℤ) : ℂ) • XLF c u z 46 = Ex.eval (XLF c u z) (toEx trLFN_nRzphP) :=
-  rel_congr (XLF_congr c u z) (by decide +kernel) (XLF_old c u z (j := 46) rfl) (relL_nRzphP u z)
+  rel_congr (XLF_congr c u z) (by kernel_fact) (XLF_old c u z (j := 46) rfl) (relL_nRzphP u z)
 
 set_option maxRecDepth 100000 in
 /-- The identity of the node `nZuuP` (from the `ρ = 1/256` pipeline). -/
 theorem relLF_nZuuP (c : ℂ) (u z : FA) :
     ((8 : ℤ) : ℂ) • XLF c u z 47 = Ex.eval (XLF c u z) (toEx trLFN_nZuuP) :=
-  rel_congr (XLF_congr c u z) (by decide +kernel) (XLF_old c u z (j := 47) rfl) (relL_nZuuP u z)
+  rel_congr (XLF_congr c u z) (by kernel_fact) (XLF_old c u z (j := 47) rfl) (relL_nZuuP u z)
 
 set_option maxRecDepth 100000 in
 /-- The identity of the node `nZuzP` (from the `ρ = 1/256` pipeline). -/
 theorem relLF_nZuzP (c : ℂ) (u z : FA) :
     ((1 : ℤ) : ℂ) • XLF c u z 48 = Ex.eval (XLF c u z) (toEx trLFN_nZuzP) :=
-  rel_congr (XLF_congr c u z) (by decide +kernel) (XLF_old c u z (j := 48) rfl) (relL_nZuzP u z)
+  rel_congr (XLF_congr c u z) (by kernel_fact) (XLF_old c u z (j := 48) rfl) (relL_nZuzP u z)
 
 set_option maxRecDepth 100000 in
 /-- The identity of the node `nZzzP` (from the `ρ = 1/256` pipeline). -/
 theorem relLF_nZzzP (c : ℂ) (u z : FA) :
     ((2 : ℤ) : ℂ) • XLF c u z 49 = Ex.eval (XLF c u z) (toEx trLFN_nZzzP) :=
-  rel_congr (XLF_congr c u z) (by decide +kernel) (XLF_old c u z (j := 49) rfl) (relL_nZzzP u z)
+  rel_congr (XLF_congr c u z) (by kernel_fact) (XLF_old c u z (j := 49) rfl) (relL_nZzzP u z)
 
 set_option maxRecDepth 100000 in
 /-- The identity of the node `nZuphP` (from the `ρ = 1/256` pipeline). -/
 theorem relLF_nZuphP (c : ℂ) (u z : FA) :
     ((4 : ℤ) : ℂ) • XLF c u z 50 = Ex.eval (XLF c u z) (toEx trLFN_nZuphP) :=
-  rel_congr (XLF_congr c u z) (by decide +kernel) (XLF_old c u z (j := 50) rfl) (relL_nZuphP u z)
+  rel_congr (XLF_congr c u z) (by kernel_fact) (XLF_old c u z (j := 50) rfl) (relL_nZuphP u z)
 
 set_option maxRecDepth 100000 in
 /-- The identity of the node `nZzphP` (from the `ρ = 1/256` pipeline). -/
 theorem relLF_nZzphP (c : ℂ) (u z : FA) :
     ((1 : ℤ) : ℂ) • XLF c u z 51 = Ex.eval (XLF c u z) (toEx trLFN_nZzphP) :=
-  rel_congr (XLF_congr c u z) (by decide +kernel) (XLF_old c u z (j := 51) rfl) (relL_nZzphP u z)
+  rel_congr (XLF_congr c u z) (by kernel_fact) (XLF_old c u z (j := 51) rfl) (relL_nZzphP u z)
 
 set_option maxRecDepth 100000 in
 /-- The identity of the node `RD` (from the `ρ = 1/256` pipeline). -/
 theorem relLF_RD (c : ℂ) (u z : FA) :
     ((1 : ℤ) : ℂ) • XLF c u z 52 = Ex.eval (XLF c u z) (toEx trLFN_RD) :=
-  rel_congr (XLF_congr c u z) (by decide +kernel) (XLF_old c u z (j := 52) rfl) (relL_RD u z)
+  rel_congr (XLF_congr c u z) (by kernel_fact) (XLF_old c u z (j := 52) rfl) (relL_RD u z)
 
 set_option maxRecDepth 100000 in
 /-- The identity of the node `RDu` (from the `ρ = 1/256` pipeline). -/
 theorem relLF_RDu (c : ℂ) (u z : FA) :
     ((1 : ℤ) : ℂ) • XLF c u z 53 = Ex.eval (XLF c u z) (toEx trLFN_RDu) :=
-  rel_congr (XLF_congr c u z) (by decide +kernel) (XLF_old c u z (j := 53) rfl) (relL_RDu u z)
+  rel_congr (XLF_congr c u z) (by kernel_fact) (XLF_old c u z (j := 53) rfl) (relL_RDu u z)
 
 set_option maxRecDepth 100000 in
 /-- The identity of the node `RDz` (from the `ρ = 1/256` pipeline). -/
 theorem relLF_RDz (c : ℂ) (u z : FA) :
     ((1 : ℤ) : ℂ) • XLF c u z 54 = Ex.eval (XLF c u z) (toEx trLFN_RDz) :=
-  rel_congr (XLF_congr c u z) (by decide +kernel) (XLF_old c u z (j := 54) rfl) (relL_RDz u z)
+  rel_congr (XLF_congr c u z) (by kernel_fact) (XLF_old c u z (j := 54) rfl) (relL_RDz u z)
 
 set_option maxRecDepth 100000 in
 /-- The identity of the node `RDph` (from the `ρ = 1/256` pipeline). -/
 theorem relLF_RDph (c : ℂ) (u z : FA) :
     ((1 : ℤ) : ℂ) • XLF c u z 55 = Ex.eval (XLF c u z) (toEx trLFN_RDph) :=
-  rel_congr (XLF_congr c u z) (by decide +kernel) (XLF_old c u z (j := 55) rfl) (relL_RDph u z)
+  rel_congr (XLF_congr c u z) (by kernel_fact) (XLF_old c u z (j := 55) rfl) (relL_RDph u z)
 
 set_option maxRecDepth 100000 in
 /-- The identity of the node `q` (from the `ρ = 1/256` pipeline). -/
 theorem relLF_q (c : ℂ) (u z : FA) :
     ((1 : ℤ) : ℂ) • XLF c u z 56 = Ex.eval (XLF c u z) (toEx trLFN_q) :=
-  rel_congr (XLF_congr c u z) (by decide +kernel) (XLF_old c u z (j := 56) rfl) (relL_q u z)
+  rel_congr (XLF_congr c u z) (by kernel_fact) (XLF_old c u z (j := 56) rfl) (relL_q u z)
 
 set_option maxRecDepth 100000 in
 /-- The identity of the node `qR` (from the `ρ = 1/256` pipeline). -/
 theorem relLF_qR (c : ℂ) (u z : FA) :
     ((1 : ℤ) : ℂ) • XLF c u z 57 = Ex.eval (XLF c u z) (toEx trLFN_qR) :=
-  rel_congr (XLF_congr c u z) (by decide +kernel) (XLF_old c u z (j := 57) rfl) (relL_qR u z)
+  rel_congr (XLF_congr c u z) (by kernel_fact) (XLF_old c u z (j := 57) rfl) (relL_qR u z)
 
 set_option maxRecDepth 100000 in
 /-- The identity of the node `qz` (from the `ρ = 1/256` pipeline). -/
 theorem relLF_qz (c : ℂ) (u z : FA) :
     ((1 : ℤ) : ℂ) • XLF c u z 58 = Ex.eval (XLF c u z) (toEx trLFN_qz) :=
-  rel_congr (XLF_congr c u z) (by decide +kernel) (XLF_old c u z (j := 58) rfl) (relL_qz u z)
+  rel_congr (XLF_congr c u z) (by kernel_fact) (XLF_old c u z (j := 58) rfl) (relL_qz u z)
 
 set_option maxRecDepth 100000 in
 /-- The identity of the node `qph` (from the `ρ = 1/256` pipeline). -/
 theorem relLF_qph (c : ℂ) (u z : FA) :
     ((1 : ℤ) : ℂ) • XLF c u z 59 = Ex.eval (XLF c u z) (toEx trLFN_qph) :=
-  rel_congr (XLF_congr c u z) (by decide +kernel) (XLF_old c u z (j := 59) rfl) (relL_qph u z)
+  rel_congr (XLF_congr c u z) (by kernel_fact) (XLF_old c u z (j := 59) rfl) (relL_qph u z)
 
 set_option maxRecDepth 100000 in
 /-- The identity of the node `P2` (from the `ρ = 1/256` pipeline). -/
 theorem relLF_P2 (c : ℂ) (u z : FA) :
     ((1 : ℤ) : ℂ) • XLF c u z 60 = Ex.eval (XLF c u z) (toEx trLFN_P2) :=
-  rel_congr (XLF_congr c u z) (by decide +kernel) (XLF_old c u z (j := 60) rfl) (relL_P2 u z)
+  rel_congr (XLF_congr c u z) (by kernel_fact) (XLF_old c u z (j := 60) rfl) (relL_P2 u z)
 
 set_option maxRecDepth 100000 in
 /-- The identity of the node `E` (from the `ρ = 1/256` pipeline). -/
 theorem relLF_E (c : ℂ) (u z : FA) :
     ((1 : ℤ) : ℂ) • XLF c u z 61 = Ex.eval (XLF c u z) (toEx trLFN_E) :=
-  rel_congr (XLF_congr c u z) (by decide +kernel) (XLF_old c u z (j := 61) rfl) (relL_E u z)
+  rel_congr (XLF_congr c u z) (by kernel_fact) (XLF_old c u z (j := 61) rfl) (relL_E u z)
 
 set_option maxRecDepth 100000 in
 /-- The identity of the node `W` (from the `ρ = 1/256` pipeline). -/
 theorem relLF_W (c : ℂ) (u z : FA) :
     ((1 : ℤ) : ℂ) • XLF c u z 64 = Ex.eval (XLF c u z) (toEx trLFN_W) :=
-  rel_congr (XLF_congr c u z) (by decide +kernel) (XLF_old c u z (j := 64) rfl) (relL_W u z)
+  rel_congr (XLF_congr c u z) (by kernel_fact) (XLF_old c u z (j := 64) rfl) (relL_W u z)
 
 set_option maxRecDepth 100000 in
 /-- The identity of the node `W2` (from the `ρ = 1/256` pipeline). -/
 theorem relLF_W2 (c : ℂ) (u z : FA) :
     ((1 : ℤ) : ℂ) • XLF c u z 65 = Ex.eval (XLF c u z) (toEx trLFN_W2) :=
-  rel_congr (XLF_congr c u z) (by decide +kernel) (XLF_old c u z (j := 65) rfl) (relL_W2 u z)
+  rel_congr (XLF_congr c u z) (by kernel_fact) (XLF_old c u z (j := 65) rfl) (relL_W2 u z)
 
 set_option maxRecDepth 100000 in
 /-- The identity of the node `W3` (from the `ρ = 1/256` pipeline). -/
 theorem relLF_W3 (c : ℂ) (u z : FA) :
     ((1 : ℤ) : ℂ) • XLF c u z 66 = Ex.eval (XLF c u z) (toEx trLFN_W3) :=
-  rel_congr (XLF_congr c u z) (by decide +kernel) (XLF_old c u z (j := 66) rfl) (relL_W3 u z)
+  rel_congr (XLF_congr c u z) (by kernel_fact) (XLF_old c u z (j := 66) rfl) (relL_W3 u z)
 
 set_option maxRecDepth 100000 in
 /-- The identity of the node `R2` (from the `ρ = 1/256` pipeline). -/
 theorem relLF_R2 (c : ℂ) (u z : FA) :
     ((1 : ℤ) : ℂ) • XLF c u z 67 = Ex.eval (XLF c u z) (toEx trLFN_R2) :=
-  rel_congr (XLF_congr c u z) (by decide +kernel) (XLF_old c u z (j := 67) rfl) (relL_R2 u z)
+  rel_congr (XLF_congr c u z) (by kernel_fact) (XLF_old c u z (j := 67) rfl) (relL_R2 u z)
 
 set_option maxRecDepth 100000 in
 /-- The identity of the node `R3` (from the `ρ = 1/256` pipeline). -/
 theorem relLF_R3 (c : ℂ) (u z : FA) :
     ((1 : ℤ) : ℂ) • XLF c u z 68 = Ex.eval (XLF c u z) (toEx trLFN_R3) :=
-  rel_congr (XLF_congr c u z) (by decide +kernel) (XLF_old c u z (j := 68) rfl) (relL_R3 u z)
+  rel_congr (XLF_congr c u z) (by kernel_fact) (XLF_old c u z (j := 68) rfl) (relL_R3 u z)
 
 set_option maxRecDepth 100000 in
 /-- The identity of the node `A1` (from the `ρ = 1/256` pipeline). -/
 theorem relLF_A1 (c : ℂ) (u z : FA) :
     ((1 : ℤ) : ℂ) • XLF c u z 69 = Ex.eval (XLF c u z) (toEx trLFN_A1) :=
-  rel_congr (XLF_congr c u z) (by decide +kernel) (XLF_old c u z (j := 69) rfl) (relL_A1 u z)
+  rel_congr (XLF_congr c u z) (by kernel_fact) (XLF_old c u z (j := 69) rfl) (relL_A1 u z)
 
 set_option maxRecDepth 100000 in
 /-- The identity of the node `A2` (from the `ρ = 1/256` pipeline). -/
 theorem relLF_A2 (c : ℂ) (u z : FA) :
     ((1 : ℤ) : ℂ) • XLF c u z 70 = Ex.eval (XLF c u z) (toEx trLFN_A2) :=
-  rel_congr (XLF_congr c u z) (by decide +kernel) (XLF_old c u z (j := 70) rfl) (relL_A2 u z)
+  rel_congr (XLF_congr c u z) (by kernel_fact) (XLF_old c u z (j := 70) rfl) (relL_A2 u z)
 
 set_option maxRecDepth 100000 in
 /-- The identity of the node `K1` (from the `ρ = 1/256` pipeline). -/
 theorem relLF_K1 (c : ℂ) (u z : FA) :
     ((1 : ℤ) : ℂ) • XLF c u z 71 = Ex.eval (XLF c u z) (toEx trLFN_K1) :=
-  rel_congr (XLF_congr c u z) (by decide +kernel) (XLF_old c u z (j := 71) rfl) (relL_K1 u z)
+  rel_congr (XLF_congr c u z) (by kernel_fact) (XLF_old c u z (j := 71) rfl) (relL_K1 u z)
 
 set_option maxRecDepth 100000 in
 /-- The identity of the node `K2` (from the `ρ = 1/256` pipeline). -/
 theorem relLF_K2 (c : ℂ) (u z : FA) :
     ((1 : ℤ) : ℂ) • XLF c u z 72 = Ex.eval (XLF c u z) (toEx trLFN_K2) :=
-  rel_congr (XLF_congr c u z) (by decide +kernel) (XLF_old c u z (j := 72) rfl) (relL_K2 u z)
+  rel_congr (XLF_congr c u z) (by kernel_fact) (XLF_old c u z (j := 72) rfl) (relL_K2 u z)
 
 set_option maxRecDepth 100000 in
 /-- The identity of the node `K3` (from the `ρ = 1/256` pipeline). -/
 theorem relLF_K3 (c : ℂ) (u z : FA) :
     ((1 : ℤ) : ℂ) • XLF c u z 73 = Ex.eval (XLF c u z) (toEx trLFN_K3) :=
-  rel_congr (XLF_congr c u z) (by decide +kernel) (XLF_old c u z (j := 73) rfl) (relL_K3 u z)
+  rel_congr (XLF_congr c u z) (by kernel_fact) (XLF_old c u z (j := 73) rfl) (relL_K3 u z)
 
 set_option maxRecDepth 100000 in
 /-- The identity of the node `KD` (from the `ρ = 1/256` pipeline). -/
 theorem relLF_KD (c : ℂ) (u z : FA) :
     ((1 : ℤ) : ℂ) • XLF c u z 74 = Ex.eval (XLF c u z) (toEx trLFN_KD) :=
-  rel_congr (XLF_congr c u z) (by decide +kernel) (XLF_old c u z (j := 74) rfl) (relL_KD u z)
+  rel_congr (XLF_congr c u z) (by kernel_fact) (XLF_old c u z (j := 74) rfl) (relL_KD u z)
 
 set_option maxRecDepth 100000 in
 /-- The identity of the node `KR` (from the `ρ = 1/256` pipeline). -/
 theorem relLF_KR (c : ℂ) (u z : FA) :
     ((1 : ℤ) : ℂ) • XLF c u z 75 = Ex.eval (XLF c u z) (toEx trLFN_KR) :=
-  rel_congr (XLF_congr c u z) (by decide +kernel) (XLF_old c u z (j := 75) rfl) (relL_KR u z)
+  rel_congr (XLF_congr c u z) (by kernel_fact) (XLF_old c u z (j := 75) rfl) (relL_KR u z)
 
 set_option maxRecDepth 100000 in
 /-- The identity of the node `KZ` (from the `ρ = 1/256` pipeline). -/
 theorem relLF_KZ (c : ℂ) (u z : FA) :
     ((1 : ℤ) : ℂ) • XLF c u z 76 = Ex.eval (XLF c u z) (toEx trLFN_KZ) :=
-  rel_congr (XLF_congr c u z) (by decide +kernel) (XLF_old c u z (j := 76) rfl) (relL_KZ u z)
+  rel_congr (XLF_congr c u z) (by kernel_fact) (XLF_old c u z (j := 76) rfl) (relL_KZ u z)
 
 set_option maxRecDepth 100000 in
 /-- The identity of the node `qRu` (from the `ρ = 1/256` pipeline). -/
 theorem relLF_qRu (c : ℂ) (u z : FA) :
     ((1 : ℤ) : ℂ) • XLF c u z 80 = Ex.eval (XLF c u z) (toEx trLFN_qRu) :=
-  rel_congr (XLF_congr c u z) (by decide +kernel) (XLF_old c u z (j := 80) rfl) (relL_qRu u z)
+  rel_congr (XLF_congr c u z) (by kernel_fact) (XLF_old c u z (j := 80) rfl) (relL_qRu u z)
 
 set_option maxRecDepth 100000 in
 /-- The identity of the node `qRz` (from the `ρ = 1/256` pipeline). -/
 theorem relLF_qRz (c : ℂ) (u z : FA) :
     ((1 : ℤ) : ℂ) • XLF c u z 81 = Ex.eval (XLF c u z) (toEx trLFN_qRz) :=
-  rel_congr (XLF_congr c u z) (by decide +kernel) (XLF_old c u z (j := 81) rfl) (relL_qRz u z)
+  rel_congr (XLF_congr c u z) (by kernel_fact) (XLF_old c u z (j := 81) rfl) (relL_qRz u z)
 
 set_option maxRecDepth 100000 in
 /-- The identity of the node `qzz` (from the `ρ = 1/256` pipeline). -/
 theorem relLF_qzz (c : ℂ) (u z : FA) :
     ((1 : ℤ) : ℂ) • XLF c u z 82 = Ex.eval (XLF c u z) (toEx trLFN_qzz) :=
-  rel_congr (XLF_congr c u z) (by decide +kernel) (XLF_old c u z (j := 82) rfl) (relL_qzz u z)
+  rel_congr (XLF_congr c u z) (by kernel_fact) (XLF_old c u z (j := 82) rfl) (relL_qzz u z)
 
 set_option maxRecDepth 100000 in
 /-- The identity of the node `qzu` (from the `ρ = 1/256` pipeline). -/
 theorem relLF_qzu (c : ℂ) (u z : FA) :
     ((1 : ℤ) : ℂ) • XLF c u z 83 = Ex.eval (XLF c u z) (toEx trLFN_qzu) :=
-  rel_congr (XLF_congr c u z) (by decide +kernel) (XLF_old c u z (j := 83) rfl) (relL_qzu u z)
+  rel_congr (XLF_congr c u z) (by kernel_fact) (XLF_old c u z (j := 83) rfl) (relL_qzu u z)
 
 set_option maxRecDepth 100000 in
 /-- The identity of the node `qphu` (from the `ρ = 1/256` pipeline). -/
 theorem relLF_qphu (c : ℂ) (u z : FA) :
     ((1 : ℤ) : ℂ) • XLF c u z 84 = Ex.eval (XLF c u z) (toEx trLFN_qphu) :=
-  rel_congr (XLF_congr c u z) (by decide +kernel) (XLF_old c u z (j := 84) rfl) (relL_qphu u z)
+  rel_congr (XLF_congr c u z) (by kernel_fact) (XLF_old c u z (j := 84) rfl) (relL_qphu u z)
 
 set_option maxRecDepth 100000 in
 /-- The identity of the node `qphz` (from the `ρ = 1/256` pipeline). -/
 theorem relLF_qphz (c : ℂ) (u z : FA) :
     ((1 : ℤ) : ℂ) • XLF c u z 85 = Ex.eval (XLF c u z) (toEx trLFN_qphz) :=
-  rel_congr (XLF_congr c u z) (by decide +kernel) (XLF_old c u z (j := 85) rfl) (relL_qphz u z)
+  rel_congr (XLF_congr c u z) (by kernel_fact) (XLF_old c u z (j := 85) rfl) (relL_qphz u z)
 
 set_option maxRecDepth 100000 in
 /-- The identity of the node `qu` (from the `ρ = 1/256` pipeline). -/
 theorem relLF_qu (c : ℂ) (u z : FA) :
     ((1 : ℤ) : ℂ) • XLF c u z 86 = Ex.eval (XLF c u z) (toEx trLFN_qu) :=
-  rel_congr (XLF_congr c u z) (by decide +kernel) (XLF_old c u z (j := 86) rfl) (relL_qu u z)
+  rel_congr (XLF_congr c u z) (by kernel_fact) (XLF_old c u z (j := 86) rfl) (relL_qu u z)
 
 set_option maxRecDepth 100000 in
 /-- The identity of the node `qzd` (from the `ρ = 1/256` pipeline). -/
 theorem relLF_qzd (c : ℂ) (u z : FA) :
     ((1 : ℤ) : ℂ) • XLF c u z 87 = Ex.eval (XLF c u z) (toEx trLFN_qzd) :=
-  rel_congr (XLF_congr c u z) (by decide +kernel) (XLF_old c u z (j := 87) rfl) (relL_qzd u z)
+  rel_congr (XLF_congr c u z) (by kernel_fact) (XLF_old c u z (j := 87) rfl) (relL_qzd u z)
 
 set_option maxRecDepth 100000 in
 /-- The identity of the node `Eu` (from the `ρ = 1/256` pipeline). -/
 theorem relLF_Eu (c : ℂ) (u z : FA) :
     ((1 : ℤ) : ℂ) • XLF c u z 88 = Ex.eval (XLF c u z) (toEx trLFN_Eu) :=
-  rel_congr (XLF_congr c u z) (by decide +kernel) (XLF_old c u z (j := 88) rfl) (relL_Eu u z)
+  rel_congr (XLF_congr c u z) (by kernel_fact) (XLF_old c u z (j := 88) rfl) (relL_Eu u z)
 
 set_option maxRecDepth 100000 in
 /-- The identity of the node `Ez` (from the `ρ = 1/256` pipeline). -/
 theorem relLF_Ez (c : ℂ) (u z : FA) :
     ((1 : ℤ) : ℂ) • XLF c u z 89 = Ex.eval (XLF c u z) (toEx trLFN_Ez) :=
-  rel_congr (XLF_congr c u z) (by decide +kernel) (XLF_old c u z (j := 89) rfl) (relL_Ez u z)
+  rel_congr (XLF_congr c u z) (by kernel_fact) (XLF_old c u z (j := 89) rfl) (relL_Ez u z)
 
 set_option maxRecDepth 100000 in
 /-- The identity of the node `V3` (from the `ρ = 1/256` pipeline). -/
 theorem relLF_V3 (c : ℂ) (u z : FA) :
     ((1 : ℤ) : ℂ) • XLF c u z 90 = Ex.eval (XLF c u z) (toEx trLFN_V3) :=
-  rel_congr (XLF_congr c u z) (by decide +kernel) (XLF_old c u z (j := 90) rfl) (relL_V3 u z)
+  rel_congr (XLF_congr c u z) (by kernel_fact) (XLF_old c u z (j := 90) rfl) (relL_V3 u z)
 
 set_option maxRecDepth 100000 in
 /-- The identity of the node `Wu` (from the `ρ = 1/256` pipeline). -/
 theorem relLF_Wu (c : ℂ) (u z : FA) :
     ((2 : ℤ) : ℂ) • XLF c u z 91 = Ex.eval (XLF c u z) (toEx trLFN_Wu) :=
-  rel_congr (XLF_congr c u z) (by decide +kernel) (XLF_old c u z (j := 91) rfl) (relL_Wu u z)
+  rel_congr (XLF_congr c u z) (by kernel_fact) (XLF_old c u z (j := 91) rfl) (relL_Wu u z)
 
 set_option maxRecDepth 100000 in
 /-- The identity of the node `Wz` (from the `ρ = 1/256` pipeline). -/
 theorem relLF_Wz (c : ℂ) (u z : FA) :
     ((-2 : ℤ) : ℂ) • XLF c u z 92 = Ex.eval (XLF c u z) (toEx trLFN_Wz) :=
-  rel_congr (XLF_congr c u z) (by decide +kernel) (XLF_old c u z (j := 92) rfl) (relL_Wz u z)
+  rel_congr (XLF_congr c u z) (by kernel_fact) (XLF_old c u z (j := 92) rfl) (relL_Wz u z)
 
 set_option maxRecDepth 100000 in
 /-- The identity of the node `W3u` (from the `ρ = 1/256` pipeline). -/
 theorem relLF_W3u (c : ℂ) (u z : FA) :
     ((1 : ℤ) : ℂ) • XLF c u z 93 = Ex.eval (XLF c u z) (toEx trLFN_W3u) :=
-  rel_congr (XLF_congr c u z) (by decide +kernel) (XLF_old c u z (j := 93) rfl) (relL_W3u u z)
+  rel_congr (XLF_congr c u z) (by kernel_fact) (XLF_old c u z (j := 93) rfl) (relL_W3u u z)
 
 set_option maxRecDepth 100000 in
 /-- The identity of the node `W3z` (from the `ρ = 1/256` pipeline). -/
 theorem relLF_W3z (c : ℂ) (u z : FA) :
     ((1 : ℤ) : ℂ) • XLF c u z 94 = Ex.eval (XLF c u z) (toEx trLFN_W3z) :=
-  rel_congr (XLF_congr c u z) (by decide +kernel) (XLF_old c u z (j := 94) rfl) (relL_W3z u z)
+  rel_congr (XLF_congr c u z) (by kernel_fact) (XLF_old c u z (j := 94) rfl) (relL_W3z u z)
 
 set_option maxRecDepth 100000 in
 /-- The identity of the node `KDu` (from the `ρ = 1/256` pipeline). -/
 theorem relLF_KDu (c : ℂ) (u z : FA) :
     ((1 : ℤ) : ℂ) • XLF c u z 95 = Ex.eval (XLF c u z) (toEx trLFN_KDu) :=
-  rel_congr (XLF_congr c u z) (by decide +kernel) (XLF_old c u z (j := 95) rfl) (relL_KDu u z)
+  rel_congr (XLF_congr c u z) (by kernel_fact) (XLF_old c u z (j := 95) rfl) (relL_KDu u z)
 
 set_option maxRecDepth 100000 in
 /-- The identity of the node `KDz` (from the `ρ = 1/256` pipeline). -/
 theorem relLF_KDz (c : ℂ) (u z : FA) :
     ((1 : ℤ) : ℂ) • XLF c u z 96 = Ex.eval (XLF c u z) (toEx trLFN_KDz) :=
-  rel_congr (XLF_congr c u z) (by decide +kernel) (XLF_old c u z (j := 96) rfl) (relL_KDz u z)
+  rel_congr (XLF_congr c u z) (by kernel_fact) (XLF_old c u z (j := 96) rfl) (relL_KDz u z)
 
 set_option maxRecDepth 100000 in
 /-- The identity of the node `KRu` (from the `ρ = 1/256` pipeline). -/
 theorem relLF_KRu (c : ℂ) (u z : FA) :
     ((1 : ℤ) : ℂ) • XLF c u z 97 = Ex.eval (XLF c u z) (toEx trLFN_KRu) :=
-  rel_congr (XLF_congr c u z) (by decide +kernel) (XLF_old c u z (j := 97) rfl) (relL_KRu u z)
+  rel_congr (XLF_congr c u z) (by kernel_fact) (XLF_old c u z (j := 97) rfl) (relL_KRu u z)
 
 set_option maxRecDepth 100000 in
 /-- The identity of the node `KRz` (from the `ρ = 1/256` pipeline). -/
 theorem relLF_KRz (c : ℂ) (u z : FA) :
     ((1 : ℤ) : ℂ) • XLF c u z 98 = Ex.eval (XLF c u z) (toEx trLFN_KRz) :=
-  rel_congr (XLF_congr c u z) (by decide +kernel) (XLF_old c u z (j := 98) rfl) (relL_KRz u z)
+  rel_congr (XLF_congr c u z) (by kernel_fact) (XLF_old c u z (j := 98) rfl) (relL_KRz u z)
 
 set_option maxRecDepth 100000 in
 /-- The identity of the node `KZu` (from the `ρ = 1/256` pipeline). -/
 theorem relLF_KZu (c : ℂ) (u z : FA) :
     ((1 : ℤ) : ℂ) • XLF c u z 99 = Ex.eval (XLF c u z) (toEx trLFN_KZu) :=
-  rel_congr (XLF_congr c u z) (by decide +kernel) (XLF_old c u z (j := 99) rfl) (relL_KZu u z)
+  rel_congr (XLF_congr c u z) (by kernel_fact) (XLF_old c u z (j := 99) rfl) (relL_KZu u z)
 
 set_option maxRecDepth 100000 in
 /-- The identity of the node `KZz` (from the `ρ = 1/256` pipeline). -/
 theorem relLF_KZz (c : ℂ) (u z : FA) :
     ((1 : ℤ) : ℂ) • XLF c u z 100 = Ex.eval (XLF c u z) (toEx trLFN_KZz) :=
-  rel_congr (XLF_congr c u z) (by decide +kernel) (XLF_old c u z (j := 100) rfl) (relL_KZz u z)
+  rel_congr (XLF_congr c u z) (by kernel_fact) (XLF_old c u z (j := 100) rfl) (relL_KZz u z)
 
 set_option maxRecDepth 100000 in
 /-- The identity of the node `W0` (from the `ρ = 1/256` pipeline). -/
 theorem relLF_W0 (c : ℂ) (u z : FA) :
     ((1 : ℤ) : ℂ) • XLF c u z 108 = Ex.eval (XLF c u z) (toEx trLFN_W0) :=
-  rel_congr (XLF_congr c u z) (by decide +kernel) (XLF_old c u z (j := 108) rfl) (relL_W0 u z)
+  rel_congr (XLF_congr c u z) (by kernel_fact) (XLF_old c u z (j := 108) rfl) (relL_W0 u z)
 
 set_option maxRecDepth 100000 in
 /-- The identity of the node `W02` (from the `ρ = 1/256` pipeline). -/
 theorem relLF_W02 (c : ℂ) (u z : FA) :
     ((1 : ℤ) : ℂ) • XLF c u z 110 = Ex.eval (XLF c u z) (toEx trLFN_W02) :=
-  rel_congr (XLF_congr c u z) (by decide +kernel) (XLF_old c u z (j := 110) rfl) (relL_W02 u z)
+  rel_congr (XLF_congr c u z) (by kernel_fact) (XLF_old c u z (j := 110) rfl) (relL_W02 u z)
 
 set_option linter.unusedSimpArgs false in
 set_option maxRecDepth 100000 in

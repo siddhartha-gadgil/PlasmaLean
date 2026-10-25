@@ -6,6 +6,7 @@ Authors: PlasmaLean contributors
 module
 
 public import PlasmaLean.Design.RationalStellaratorGCBoxAdm
+public import PlasmaLean.Certificates.KernelFact
 
 /-!
 # Exact invariant tori of the `μ > 0` passing fields over a box of energies and pitch angles
@@ -65,7 +66,7 @@ theorem box_C2 {a : Fin 6 → ℝ} (ha : ∀ i, 0 ≤ a i)
     PolyExprS.majD2 a (fun i => (RationalStellaratorGCMu.mvQ i : ℝ)) (gcFlowMu ρ lm).resZp / 2 ≤
       (RationalStellaratorGCMu.C2Q : ℝ) := by
   have hb : ∀ i, (0 : ℝ) ≤ (RationalStellaratorGCMu.mvQ i : ℝ) := fun i => by
-    have := (show ∀ i, (0 : ℚ) ≤ RationalStellaratorGCMu.mvQ i by decide +kernel) i
+    have := (show ∀ i, (0 : ℚ) ≤ RationalStellaratorGCMu.mvQ i by kernel_fact) i
     exact_mod_cast this
   obtain ⟨cR, cZ⟩ := constLe_res_box hρ hlm
   have vR := PQS.valid_of_nodesOK RationalStellaratorGCMu.nodesOK_res.1

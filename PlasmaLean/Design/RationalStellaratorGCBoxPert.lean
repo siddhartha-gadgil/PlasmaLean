@@ -6,6 +6,7 @@ Authors: PlasmaLean contributors
 module
 
 public import PlasmaLean.Design.RationalStellaratorGCMuExact
+public import PlasmaLean.Certificates.KernelFact
 
 /-!
 # Perturbation in the gyro-length: the `μ > 0` passing fields of a two-parameter box
@@ -166,10 +167,10 @@ section Corr
 open RationalStellaratorGCMu PQS
 
 /-- The validity bounds `aTμ` are nonnegative (rational form). -/
-theorem aTQ_nonnegQ : ∀ i, (0 : ℚ) ≤ aTμ i := by decide +kernel
+theorem aTQ_nonnegQ : ∀ i, (0 : ℚ) ≤ aTμ i := by kernel_fact
 
 /-- The node bound is nonnegative (rational form). -/
-theorem gQ_nonnegQ : (0 : ℚ) ≤ gμ := by decide +kernel
+theorem gQ_nonnegQ : (0 : ℚ) ≤ gμ := by kernel_fact
 
 /-- **Strip bound of a tree through a rational mirror**: if `e` is `ConstLe` the embedding of the
 mirror `P` and the nodes of `P` are controlled at `aTμ`, then at every input bounded by
@@ -258,7 +259,7 @@ theorem corr_majQ :
     mDQ aTμ bU gμ eYDFQ ≤ 4997 ∧ mDQ aTμ bZ gμ eYDFQ ≤ 1620 ∧
     mDQ aTμ bU gμ eYRFQ ≤ 2623 ∧ mDQ aTμ bZ gμ eYRFQ ≤ 861 ∧
     mDQ aTμ bU gμ eYZFQ ≤ 30768 ∧ mDQ aTμ bZ gμ eYZFQ ≤ 6181 := by
-  decide +kernel
+  kernel_fact
 
 end Corr
 
@@ -286,8 +287,8 @@ theorem Bd_corr :
   obtain ⟨cD, cR, cZ⟩ := constLe_corr hlm
   obtain ⟨nD, nR, nZ⟩ := nodesOK_corr
   obtain ⟨m1, m2, m3, m4, m5, m6, m7, m8, m9⟩ := corr_majQ
-  have hbU : ∀ i, (0 : ℚ) ≤ bU i := by decide +kernel
-  have hbZ : ∀ i, (0 : ℚ) ≤ bZ i := by decide +kernel
+  have hbU : ∀ i, (0 : ℚ) ≤ bU i := by kernel_fact
+  have hbZ : ∀ i, (0 : ℚ) ≤ bZ i := by kernel_fact
   have q : ∀ {X : FA} {s t : ℚ}, Bd r X (s : ℝ) → s ≤ t → Bd r X (t : ℝ) :=
     fun h hst => h.le (by exact_mod_cast hst)
   refine ⟨?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_⟩

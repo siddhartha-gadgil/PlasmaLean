@@ -23,6 +23,7 @@ public import PlasmaLean.Design.SolovevBallooningCells12
 public import PlasmaLean.Design.SolovevBallooningCells13
 public import PlasmaLean.Design.SolovevBallooningCells14
 public import PlasmaLean.Design.SolovevBallooningCells15
+public import PlasmaLean.Certificates.KernelFact
 
 /-!
 # Ideal-ballooning stability of ALL flux surfaces of the reactor Solov'ev equilibrium
@@ -348,13 +349,13 @@ theorem reactor_ballooning_edge (c : ℝ) :
 outboard box near `s = 4` fails, so the profiles are essential and the checker is not
 vacuous. -/
 theorem noProfile_rejected :
-    boxOK ⟨gdata.dl, [], [], []⟩ 2048 2304 4096 5120 = false := by decide +kernel
+    boxOK ⟨gdata.dl, [], [], []⟩ 2048 2304 4096 5120 = false := by kernel_fact
 
 /-- Accepted fixture: a single box of the cover passes. -/
-theorem box_accepted : boxOK gdata (-3584) (-3328) 4096 5120 = true := by decide +kernel
+theorem box_accepted : boxOK gdata (-3584) (-3328) 4096 5120 = true := by kernel_fact
 
 /-- The axis box test refuses boxes away from the axis: `axisOK` needs `n₁ > 0` and the
 axis boxes are only used through `Cover.axis` (lower edge `s = 0`). -/
-theorem axisOK_needs_positive : axisOK gdata (-4096) (-3840) 0 = false := by decide +kernel
+theorem axisOK_needs_positive : axisOK gdata (-4096) (-3840) 0 = false := by kernel_fact
 
 end PlasmaLean.Design.SolovevBallooning

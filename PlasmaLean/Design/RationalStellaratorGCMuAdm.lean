@@ -9,6 +9,7 @@ public import PlasmaLean.Design.RationalStellaratorGCMuOutH
 public import PlasmaLean.Design.RationalStellaratorGCMuOutL
 public import PlasmaLean.Design.RationalStellaratorGCMuMaj
 public import PlasmaLean.Design.RationalStellaratorGCTorusExact
+public import PlasmaLean.Certificates.KernelFact
 
 /-!
 # Admissibility, residual and constants of the guiding-centre torus family
@@ -129,7 +130,7 @@ theorem Bd_uM {c : ℂ} (hc : ‖c‖ = 1) : Bd KamTorusA.rA (xHM c 4) (193 / 10
   have h := valHM_rA hc 4 (by norm_num)
   rw [XHM_eq_U hc] at h
   refine h.le ?_
-  have := qle (show BHM 4 + EHM 4 ≤ 193 / 1000 by decide +kernel)
+  have := qle (show BHM 4 + EHM 4 ≤ 193 / 1000 by kernel_fact)
   push_cast at this ⊢; exact this
 
 /-- `‖z‖_{r_A} ≤ 0.1636`. -/
@@ -137,7 +138,7 @@ theorem Bd_zM {c : ℂ} (hc : ‖c‖ = 1) : Bd KamTorusA.rA (xHM c 5) (1623 / 1
   have h := valHM_rA hc 5 (by norm_num)
   rw [XHM_eq_Z hc] at h
   refine h.le ?_
-  have := qle (show BHM 5 + EHM 5 ≤ 1623 / 10000 by decide +kernel)
+  have := qle (show BHM 5 + EHM 5 ≤ 1623 / 10000 by kernel_fact)
   push_cast at this ⊢; exact this
 
 /-- `∂_θ` of the family torus. -/
@@ -152,51 +153,51 @@ theorem dTh_xHM_Z {c : ℂ} (hc : ‖c‖ = 1) : xHM c 9 = dTh (xHM c 5) := by
 theorem Bd_dTh_uM {c : ℂ} (hc : ‖c‖ = 1) : Bd KamTorusA.rA (dTh (xHM c 4)) (327 / 2000) := by
   rw [← dTh_xHM_U hc]
   refine (normHM exp_rA_le' hc 8 (by norm_num)).le ?_
-  have := qle (show BHM 8 ≤ 327 / 2000 by decide +kernel); push_cast at this ⊢; exact this
+  have := qle (show BHM 8 ≤ 327 / 2000 by kernel_fact); push_cast at this ⊢; exact this
 
 /-- `‖∂_θ z‖_{r_A} ≤ 0.1629`. -/
 theorem Bd_dTh_zM {c : ℂ} (hc : ‖c‖ = 1) : Bd KamTorusA.rA (dTh (xHM c 5)) (1617 / 10000) := by
   rw [← dTh_xHM_Z hc]
   refine (normHM exp_rA_le' hc 9 (by norm_num)).le ?_
-  have := qle (show BHM 9 ≤ 1617 / 10000 by decide +kernel); push_cast at this ⊢; exact this
+  have := qle (show BHM 9 ≤ 1617 / 10000 by kernel_fact); push_cast at this ⊢; exact this
 
 /-- `‖𝓛 u‖_{r_A} ≤ 0.1105`. -/
 theorem Bd_Lt_uM {c : ℂ} (hc : ‖c‖ = 1) :
     Bd KamTorusA.rA (Lt KamTorusA.iota (xHM c 4)) (547 / 5000) := by
   have h := valHM_rA hc 6 (by norm_num)
-  rw [XHM_spec c (i := 6) (by decide +kernel)] at h
+  rw [XHM_spec c (i := 6) (by kernel_fact)] at h
   refine (Bd_inv_pow96 h).le ?_
-  have := qle (show (BHM 6 + EHM 6) / 2 ^ 96 ≤ 547 / 5000 by decide +kernel)
+  have := qle (show (BHM 6 + EHM 6) / 2 ^ 96 ≤ 547 / 5000 by kernel_fact)
   push_cast at this ⊢; exact this
 
 /-- `‖𝓛 z‖_{r_A} ≤ 0.1048`. -/
 theorem Bd_Lt_zM {c : ℂ} (hc : ‖c‖ = 1) :
     Bd KamTorusA.rA (Lt KamTorusA.iota (xHM c 5)) (1037 / 10000) := by
   have h := valHM_rA hc 7 (by norm_num)
-  rw [XHM_spec c (i := 7) (by decide +kernel)] at h
+  rw [XHM_spec c (i := 7) (by kernel_fact)] at h
   refine (Bd_inv_pow96 h).le ?_
-  have := qle (show (BHM 7 + EHM 7) / 2 ^ 96 ≤ 1037 / 10000 by decide +kernel)
+  have := qle (show (BHM 7 + EHM 7) / 2 ^ 96 ≤ 1037 / 10000 by kernel_fact)
   push_cast at this ⊢; exact this
 
 /-- The family torus is analytic. -/
 theorem ana_uM {c : ℂ} (hc : ‖c‖ = 1) : Ana (xHM c 4) := by
-  rw [xHM_fam (ne_zero_of_norm_one_mu hc) (i := 4) (by decide +kernel) (p := 0) rfl]
+  rw [xHM_fam (ne_zero_of_norm_one_mu hc) (i := 4) (by kernel_fact) (p := 0) rfl]
   exact ana_famCtr _ _ _ _ _ _ _ _ c _ _
 
 /-- The family torus is analytic. -/
 theorem ana_zM {c : ℂ} (hc : ‖c‖ = 1) : Ana (xHM c 5) := by
-  rw [xHM_fam (ne_zero_of_norm_one_mu hc) (i := 5) (by decide +kernel) (p := 1) rfl]
+  rw [xHM_fam (ne_zero_of_norm_one_mu hc) (i := 5) (by kernel_fact) (p := 1) rfl]
   exact ana_famCtr _ _ _ _ _ _ _ _ c _ _
 
 /-- The family torus is real. -/
 theorem isReal_uM {c : ℂ} (hc : ‖c‖ = 1) : IsReal (xHM c 4) := by
-  rw [xHM_fam (ne_zero_of_norm_one_mu hc) (i := 4) (by decide +kernel) (p := 0) rfl]
+  rw [xHM_fam (ne_zero_of_norm_one_mu hc) (i := 4) (by kernel_fact) (p := 0) rfl]
   have := isReal_famCtr SHM NHM MHM 0 1 hc 0 (famHM 4)
   simpa [oddHM, oddHMl, c0HM, c0HMl] using this
 
 /-- The family torus is real. -/
 theorem isReal_zM {c : ℂ} (hc : ‖c‖ = 1) : IsReal (xHM c 5) := by
-  rw [xHM_fam (ne_zero_of_norm_one_mu hc) (i := 5) (by decide +kernel) (p := 1) rfl]
+  rw [xHM_fam (ne_zero_of_norm_one_mu hc) (i := 5) (by kernel_fact) (p := 1) rfl]
   have := isReal_famCtr SHM NHM MHM 1 1 hc 0 (famHM 5)
   simpa [oddHM, oddHMl, c0HM, c0HMl] using this
 
@@ -352,17 +353,17 @@ end Field
 /-- The centre entry of the leading Chebyshev coefficient of the torsion centre. -/
 theorem avgY0M : sliceG NLM MLM (if oddLM 175 then -1 else 1) (c0LM 175 : ℤ) 0 0
     ((famLM 175).headD SliceData.zero) NLM MLM = 509184485886532820 := by
-  decide +kernel
+  kernel_fact
 
 /-- The centre entries of the other Chebyshev coefficients of the torsion centre. -/
 theorem avgY1M : avgB NLM MLM (if oddLM 175 then -1 else 1) (c0LM 175 : ℤ) (famLM 175).tail =
     15897089878618 := by
-  decide +kernel
+  kernel_fact
 
 /-- **The average of the torsion centre** at every parameter value. -/
 theorem avg_xLM_Y {c : ℂ} (hc : ‖c‖ = 1) :
     ‖avg (xLM c 175) - ((509184485886532820 / 2 ^ 60 : ℝ) : ℂ)‖ ≤ 15897089878618 / 2 ^ 59 := by
-  rw [xLM_fam (ne_zero_of_norm_one_mu hc) (i := 175) (by decide +kernel) (p := 0) rfl,
+  rw [xLM_fam (ne_zero_of_norm_one_mu hc) (i := 175) (by kernel_fact) (p := 0) rfl,
     show famLM 175 = (famLM 175).headD SliceData.zero :: (famLM 175).tail from rfl,
     avg_famCtr_cons, avgY0M]
   have h := norm_avg_famCtr_le SLM NLM MLM (if oddLM 175 then -1 else 1) (c0LM 175 : ℤ) hc 1
@@ -432,7 +433,7 @@ theorem adm_T_M : Bd r ((gcFlowMu (1 / 256) (lamF c)).Talg u z) tTM ∧
   refine ⟨?_, ?_⟩
   · rw [hrep]
     refine (hY.mul hr hInv).le ?_
-    have h1 := qle (show BLM 175 + ELM 175 ≤ 74271 / 2000 by decide +kernel)
+    have h1 := qle (show BLM 175 + ELM 175 ≤ 74271 / 2000 by kernel_fact)
     push_cast at h1 ⊢
     rw [tTM]
     calc ((BLM 175 : ℝ) + ELM 175) * (1 / (1 - 313 / 25000000)) ≤
@@ -467,8 +468,8 @@ theorem adm_T_M : Bd r ((gcFlowMu (1 / 256) (lamF c)).Talg u z) tTM ∧
         linarith
       linarith
     have h5 := norm_sub_norm_le (avg Y) (avg (Y * (q * F - 1) * Ring.inverse (q * F)))
-    have hB1 := qle (show BLM 175 + ELM 175 ≤ 74271 / 2000 by decide +kernel)
-    have hE1 := qle (show ELM 175 ≤ 51 / 2000 by decide +kernel)
+    have hB1 := qle (show BLM 175 + ELM 175 ≤ 74271 / 2000 by kernel_fact)
+    have hE1 := qle (show ELM 175 ≤ 51 / 2000 by kernel_fact)
     push_cast at h1 hB1 hE1 h3
     have h6 : ((BLM 175 : ℝ) + ELM 175) * (313 / 25000000) * (1 / (1 - 313 / 25000000)) ≤
         (74271 / 2000) * (313 / 25000000) * (1 / (1 - 313 / 25000000)) := by gcongr
@@ -492,10 +493,10 @@ theorem inputs_LM {ρ : ℝ} (hρA : ρ ≤ KamTorusA.rA) {c : ℂ} (hc : ‖c�
     Bd ρ (u - xLM c 4) (ELM 4) ∧ Bd ρ (z - xLM c 5) (ELM 5) ∧ Bd ρ (dTh u - xLM c 6) (ELM 6) ∧
       Bd ρ (dTh z - xLM c 7) (ELM 7) := by
   have hc0 := ne_zero_of_norm_one_mu hc
-  have e1 := qle (show (1 / 10 ^ 11 + (3037 / 10 ^ 15 : ℚ)) ≤ ELM 4 by decide +kernel)
-  have e2 := qle (show (1 / 10 ^ 11 + (137 / 50000000000000 : ℚ)) ≤ ELM 5 by decide +kernel)
-  have e3 := qle (show (1 / 10 ^ 11 + (1541 / 500000000000000 : ℚ)) ≤ ELM 6 by decide +kernel)
-  have e4 := qle (show (1 / 10 ^ 11 + (2959 / 10 ^ 15 : ℚ)) ≤ ELM 7 by decide +kernel)
+  have e1 := qle (show (1 / 10 ^ 11 + (3037 / 10 ^ 15 : ℚ)) ≤ ELM 4 by kernel_fact)
+  have e2 := qle (show (1 / 10 ^ 11 + (137 / 50000000000000 : ℚ)) ≤ ELM 5 by kernel_fact)
+  have e3 := qle (show (1 / 10 ^ 11 + (1541 / 500000000000000 : ℚ)) ≤ ELM 6 by kernel_fact)
+  have e4 := qle (show (1 / 10 ^ 11 + (2959 / 10 ^ 15 : ℚ)) ≤ ELM 7 by kernel_fact)
   push_cast at e1 e2 e3 e4
   have hA6 : xLM c 6 = dTh (xLM c 4) := by rw [xLM_der_A hc0]; simp [dTh]
   have hB7 : xLM c 7 = dTh (xLM c 5) := by rw [xLM_der_B hc0]; simp [dTh]
@@ -566,31 +567,31 @@ theorem muAdm {ρ : ℝ} (hρ : 0 < ρ) (hρA : ρ ≤ KamTorusA.rA) {c : ℂ} (
     hLR := tLR
     hLz := tLz
     hbD := by
-      have := fb (v 154 (by norm_num)) (q := 12751 / 10000) (by decide +kernel)
+      have := fb (v 154 (by norm_num)) (q := 12751 / 10000) (by kernel_fact)
       push_cast at this; exact this
     hbDu := by
-      have := fb (v 160 (by norm_num)) (q := 22351 / 10000) (by decide +kernel)
+      have := fb (v 160 (by norm_num)) (q := 22351 / 10000) (by kernel_fact)
       push_cast at this; exact this
     hbDz := by
-      have := fb (v 162 (by norm_num)) (q := 20231 / 100000) (by decide +kernel)
+      have := fb (v 162 (by norm_num)) (q := 20231 / 100000) (by kernel_fact)
       push_cast at this; exact this
     hbnR := by
-      have := fb (v 156 (by norm_num)) (q := 10071 / 100000) (by decide +kernel)
+      have := fb (v 156 (by norm_num)) (q := 10071 / 100000) (by kernel_fact)
       push_cast at this; exact this
     hbnRu := by
-      have := fb (v 164 (by norm_num)) (q := 94511 / 100000) (by decide +kernel)
+      have := fb (v 164 (by norm_num)) (q := 94511 / 100000) (by kernel_fact)
       push_cast at this; exact this
     hbnRz := by
-      have := fb (v 166 (by norm_num)) (q := 74451 / 100000) (by decide +kernel)
+      have := fb (v 166 (by norm_num)) (q := 74451 / 100000) (by kernel_fact)
       push_cast at this; exact this
     hbnZ := by
-      have := fb (v 158 (by norm_num)) (q := 10461 / 100000) (by decide +kernel)
+      have := fb (v 158 (by norm_num)) (q := 10461 / 100000) (by kernel_fact)
       push_cast at this; exact this
     hbnZu := by
-      have := fb (v 168 (by norm_num)) (q := 86851 / 100000) (by decide +kernel)
+      have := fb (v 168 (by norm_num)) (q := 86851 / 100000) (by kernel_fact)
       push_cast at this; exact this
     hbnZz := by
-      have := fb (v 170 (by norm_num)) (q := 81681 / 100000) (by decide +kernel)
+      have := fb (v 170 (by norm_num)) (q := 81681 / 100000) (by kernel_fact)
       push_cast at this; exact this
     hsD := hDb
     hsR := hRb

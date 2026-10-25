@@ -8,6 +8,7 @@ module
 public import PlasmaLean.Certificates.KronBallGrid
 public import PlasmaLean.Design.RationalStellaratorGCNegTorusDataL
 public import PlasmaLean.Design.KamFlowField
+public import PlasmaLean.Certificates.KernelFact
 
 /-!
 # The low-resolution ball environment of the guiding-centre torus certificate (`v∥ < 0`)
@@ -669,7 +670,7 @@ def xL (i : ℕ) : FA := ctr SL NL ML (WtL i) (PL i)
 
 /-- The phases are below `4`. -/
 theorem hWL : ∀ i, (WtL i).2.2 < 4 :=
-  getD_prop (Pr := fun w : ℕ × ℕ × ℕ => w.2.2 < 4) (by decide +kernel) (by decide +kernel)
+  getD_prop (Pr := fun w : ℕ × ℕ × ℕ => w.2.2 < 4) (by kernel_fact) (by kernel_fact)
 
 /-- Degree boxes. -/
 theorem boxL : ∀ i, InBox (PL i) (BxL i).1 (BxL i).2
@@ -686,227 +687,227 @@ theorem l1L : ∀ i, l1 (PL i) ≤ LL i
   | 2 => l1_cPoly
   | 3 => l1_sPoly
   | 4 =>
-    l1_dataGrid_le NL ML FL datL_U 0 (by decide +kernel)
+    l1_dataGrid_le NL ML FL datL_U 0 (by kernel_fact)
   | 5 =>
-    l1_dataGrid_le NL ML FL datL_Z 1 (by decide +kernel)
+    l1_dataGrid_le NL ML FL datL_Z 1 (by kernel_fact)
   | 6 =>
     l1_gridPolyNM_le_const NL ML fun i j hi hj => abs_wgridN_le NL ML 1 0 (fun i j =>
-      abs_dataGrid_le NL ML FL datL_U 0 (by decide +kernel) i j) hi hj
+      abs_dataGrid_le NL ML FL datL_U 0 (by kernel_fact) i j) hi hj
   | 7 =>
     l1_gridPolyNM_le_const NL ML fun i j hi hj => abs_wgridN_le NL ML 1 0 (fun i j =>
-      abs_dataGrid_le NL ML FL datL_Z 1 (by decide +kernel) i j) hi hj
+      abs_dataGrid_le NL ML FL datL_Z 1 (by kernel_fact) i j) hi hj
   | 8 =>
-    l1_dataGrid_le NL ML FL datL_m02 2 (by decide +kernel)
+    l1_dataGrid_le NL ML FL datL_m02 2 (by kernel_fact)
   | 9 =>
-    l1_dataGrid_le NL ML FL datL_m11 1 (by decide +kernel)
+    l1_dataGrid_le NL ML FL datL_m11 1 (by kernel_fact)
   | 10 =>
-    l1_dataGrid_le NL ML FL datL_m20 0 (by decide +kernel)
+    l1_dataGrid_le NL ML FL datL_m20 0 (by kernel_fact)
   | 11 =>
-    l1_dataGrid_le NL ML FL datL_m03 3 (by decide +kernel)
+    l1_dataGrid_le NL ML FL datL_m03 3 (by kernel_fact)
   | 12 =>
-    l1_dataGrid_le NL ML FL datL_m12 2 (by decide +kernel)
+    l1_dataGrid_le NL ML FL datL_m12 2 (by kernel_fact)
   | 13 =>
-    l1_dataGrid_le NL ML FL datL_m21 1 (by decide +kernel)
+    l1_dataGrid_le NL ML FL datL_m21 1 (by kernel_fact)
   | 14 =>
-    l1_dataGrid_le NL ML FL datL_m30 0 (by decide +kernel)
+    l1_dataGrid_le NL ML FL datL_m30 0 (by kernel_fact)
   | 15 =>
-    l1_dataGrid_le NL ML FL datL_m13 3 (by decide +kernel)
+    l1_dataGrid_le NL ML FL datL_m13 3 (by kernel_fact)
   | 16 =>
-    l1_dataGrid_le NL ML FL datL_m22 2 (by decide +kernel)
+    l1_dataGrid_le NL ML FL datL_m22 2 (by kernel_fact)
   | 17 =>
-    l1_dataGrid_le NL ML FL datL_m31 1 (by decide +kernel)
+    l1_dataGrid_le NL ML FL datL_m31 1 (by kernel_fact)
   | 18 =>
-    l1_dataGrid_le NL ML FL datL_m40 0 (by decide +kernel)
+    l1_dataGrid_le NL ML FL datL_m40 0 (by kernel_fact)
   | 19 =>
-    l1_dataGrid_le NL ML FL datL_m41 1 (by decide +kernel)
+    l1_dataGrid_le NL ML FL datL_m41 1 (by kernel_fact)
   | 20 =>
-    l1_dataGrid_le NL ML FL datL_m50 0 (by decide +kernel)
+    l1_dataGrid_le NL ML FL datL_m50 0 (by kernel_fact)
   | 21 =>
-    l1_dataGrid_le NL ML FL datL_m51 1 (by decide +kernel)
+    l1_dataGrid_le NL ML FL datL_m51 1 (by kernel_fact)
   | 22 =>
-    l1_dataGrid_le NL ML FL datL_m60 0 (by decide +kernel)
+    l1_dataGrid_le NL ML FL datL_m60 0 (by kernel_fact)
   | 23 =>
-    l1_dataGrid_le NL ML FL datL_Dp 0 (by decide +kernel)
+    l1_dataGrid_le NL ML FL datL_Dp 0 (by kernel_fact)
   | 24 =>
-    l1_dataGrid_le NL ML FL datL_nRp 3 (by decide +kernel)
+    l1_dataGrid_le NL ML FL datL_nRp 3 (by kernel_fact)
   | 25 =>
-    l1_dataGrid_le NL ML FL datL_nZp 0 (by decide +kernel)
+    l1_dataGrid_le NL ML FL datL_nZp 0 (by kernel_fact)
   | 26 =>
-    l1_dataGrid_le NL ML FL datL_DuP 0 (by decide +kernel)
+    l1_dataGrid_le NL ML FL datL_DuP 0 (by kernel_fact)
   | 27 =>
-    l1_dataGrid_le NL ML FL datL_DzP 3 (by decide +kernel)
+    l1_dataGrid_le NL ML FL datL_DzP 3 (by kernel_fact)
   | 28 =>
-    l1_dataGrid_le NL ML FL datL_DphP 1 (by decide +kernel)
+    l1_dataGrid_le NL ML FL datL_DphP 1 (by kernel_fact)
   | 29 =>
-    l1_dataGrid_le NL ML FL datL_nRuP 3 (by decide +kernel)
+    l1_dataGrid_le NL ML FL datL_nRuP 3 (by kernel_fact)
   | 30 =>
-    l1_dataGrid_le NL ML FL datL_nRzP 0 (by decide +kernel)
+    l1_dataGrid_le NL ML FL datL_nRzP 0 (by kernel_fact)
   | 31 =>
-    l1_dataGrid_le NL ML FL datL_nRphP 0 (by decide +kernel)
+    l1_dataGrid_le NL ML FL datL_nRphP 0 (by kernel_fact)
   | 32 =>
-    l1_dataGrid_le NL ML FL datL_nZuP 0 (by decide +kernel)
+    l1_dataGrid_le NL ML FL datL_nZuP 0 (by kernel_fact)
   | 33 =>
-    l1_dataGrid_le NL ML FL datL_nZzP 1 (by decide +kernel)
+    l1_dataGrid_le NL ML FL datL_nZzP 1 (by kernel_fact)
   | 34 =>
-    l1_dataGrid_le NL ML FL datL_nZphP 3 (by decide +kernel)
+    l1_dataGrid_le NL ML FL datL_nZphP 3 (by kernel_fact)
   | 35 =>
-    l1_dataGrid_le NL ML FL datL_PuP 0 (by decide +kernel)
+    l1_dataGrid_le NL ML FL datL_PuP 0 (by kernel_fact)
   | 36 =>
-    l1_dataGrid_le NL ML FL datL_PdP 0 (by decide +kernel)
+    l1_dataGrid_le NL ML FL datL_PdP 0 (by kernel_fact)
   | 37 =>
-    l1_dataGrid_le NL ML FL datL_DuuP 0 (by decide +kernel)
+    l1_dataGrid_le NL ML FL datL_DuuP 0 (by kernel_fact)
   | 38 =>
-    l1_dataGrid_le NL ML FL datL_DuzP 3 (by decide +kernel)
+    l1_dataGrid_le NL ML FL datL_DuzP 3 (by kernel_fact)
   | 39 =>
-    l1_dataGrid_le NL ML FL datL_DzzP 0 (by decide +kernel)
+    l1_dataGrid_le NL ML FL datL_DzzP 0 (by kernel_fact)
   | 40 =>
-    l1_dataGrid_le NL ML FL datL_DuphP 1 (by decide +kernel)
+    l1_dataGrid_le NL ML FL datL_DuphP 1 (by kernel_fact)
   | 41 =>
-    l1_dataGrid_le NL ML FL datL_DzphP 0 (by decide +kernel)
+    l1_dataGrid_le NL ML FL datL_DzphP 0 (by kernel_fact)
   | 42 =>
-    l1_dataGrid_le NL ML FL datL_nRuuP 3 (by decide +kernel)
+    l1_dataGrid_le NL ML FL datL_nRuuP 3 (by kernel_fact)
   | 43 =>
-    l1_dataGrid_le NL ML FL datL_nRuzP 0 (by decide +kernel)
+    l1_dataGrid_le NL ML FL datL_nRuzP 0 (by kernel_fact)
   | 44 =>
-    l1_dataGrid_le NL ML FL datL_nRzzP 3 (by decide +kernel)
+    l1_dataGrid_le NL ML FL datL_nRzzP 3 (by kernel_fact)
   | 45 =>
-    l1_dataGrid_le NL ML FL datL_nRuphP 0 (by decide +kernel)
+    l1_dataGrid_le NL ML FL datL_nRuphP 0 (by kernel_fact)
   | 46 =>
-    l1_dataGrid_le NL ML FL datL_nRzphP 3 (by decide +kernel)
+    l1_dataGrid_le NL ML FL datL_nRzphP 3 (by kernel_fact)
   | 47 =>
-    l1_dataGrid_le NL ML FL datL_nZuuP 0 (by decide +kernel)
+    l1_dataGrid_le NL ML FL datL_nZuuP 0 (by kernel_fact)
   | 48 =>
-    l1_dataGrid_le NL ML FL datL_nZuzP 1 (by decide +kernel)
+    l1_dataGrid_le NL ML FL datL_nZuzP 1 (by kernel_fact)
   | 49 =>
-    l1_dataGrid_le NL ML FL datL_nZzzP 0 (by decide +kernel)
+    l1_dataGrid_le NL ML FL datL_nZzzP 0 (by kernel_fact)
   | 50 =>
-    l1_dataGrid_le NL ML FL datL_nZuphP 3 (by decide +kernel)
+    l1_dataGrid_le NL ML FL datL_nZuphP 3 (by kernel_fact)
   | 51 =>
-    l1_dataGrid_le NL ML FL datL_nZzphP 0 (by decide +kernel)
+    l1_dataGrid_le NL ML FL datL_nZzphP 0 (by kernel_fact)
   | 52 =>
-    l1_dataGrid_le NL ML FL datL_RD 0 (by decide +kernel)
+    l1_dataGrid_le NL ML FL datL_RD 0 (by kernel_fact)
   | 53 =>
-    l1_dataGrid_le NL ML FL datL_RDu 0 (by decide +kernel)
+    l1_dataGrid_le NL ML FL datL_RDu 0 (by kernel_fact)
   | 54 =>
-    l1_dataGrid_le NL ML FL datL_RDz 3 (by decide +kernel)
+    l1_dataGrid_le NL ML FL datL_RDz 3 (by kernel_fact)
   | 55 =>
-    l1_dataGrid_le NL ML FL datL_RDph 1 (by decide +kernel)
+    l1_dataGrid_le NL ML FL datL_RDph 1 (by kernel_fact)
   | 56 =>
-    l1_dataGrid_le NL ML FL datL_q 2 (by decide +kernel)
+    l1_dataGrid_le NL ML FL datL_q 2 (by kernel_fact)
   | 57 =>
-    l1_dataGrid_le NL ML FL datL_qR 0 (by decide +kernel)
+    l1_dataGrid_le NL ML FL datL_qR 0 (by kernel_fact)
   | 58 =>
-    l1_dataGrid_le NL ML FL datL_qz 3 (by decide +kernel)
+    l1_dataGrid_le NL ML FL datL_qz 3 (by kernel_fact)
   | 59 =>
-    l1_dataGrid_le NL ML FL datL_qph 3 (by decide +kernel)
+    l1_dataGrid_le NL ML FL datL_qph 3 (by kernel_fact)
   | 60 =>
-    l1_dataGrid_le NL ML FL datL_P2 0 (by decide +kernel)
+    l1_dataGrid_le NL ML FL datL_P2 0 (by kernel_fact)
   | 61 =>
-    l1_dataGrid_le NL ML FL datL_E 2 (by decide +kernel)
+    l1_dataGrid_le NL ML FL datL_E 2 (by kernel_fact)
   | 62 =>
-    l1_dataGrid_le NL ML FL datL_V0 0 (by decide +kernel)
+    l1_dataGrid_le NL ML FL datL_V0 0 (by kernel_fact)
   | 63 =>
-    l1_dataGrid_le NL ML FL datL_V0 0 (by decide +kernel)
+    l1_dataGrid_le NL ML FL datL_V0 0 (by kernel_fact)
   | 64 =>
-    l1_dataGrid_le NL ML FL datL_W 0 (by decide +kernel)
+    l1_dataGrid_le NL ML FL datL_W 0 (by kernel_fact)
   | 65 =>
-    l1_dataGrid_le NL ML FL datL_W2 0 (by decide +kernel)
+    l1_dataGrid_le NL ML FL datL_W2 0 (by kernel_fact)
   | 66 =>
-    l1_dataGrid_le NL ML FL datL_W3 0 (by decide +kernel)
+    l1_dataGrid_le NL ML FL datL_W3 0 (by kernel_fact)
   | 67 =>
-    l1_dataGrid_le NL ML FL datL_R2 0 (by decide +kernel)
+    l1_dataGrid_le NL ML FL datL_R2 0 (by kernel_fact)
   | 68 =>
-    l1_dataGrid_le NL ML FL datL_R3 0 (by decide +kernel)
+    l1_dataGrid_le NL ML FL datL_R3 0 (by kernel_fact)
   | 69 =>
-    l1_dataGrid_le NL ML FL datL_A1 0 (by decide +kernel)
+    l1_dataGrid_le NL ML FL datL_A1 0 (by kernel_fact)
   | 70 =>
-    l1_dataGrid_le NL ML FL datL_A2 3 (by decide +kernel)
+    l1_dataGrid_le NL ML FL datL_A2 3 (by kernel_fact)
   | 71 =>
-    l1_dataGrid_le NL ML FL datL_K1 0 (by decide +kernel)
+    l1_dataGrid_le NL ML FL datL_K1 0 (by kernel_fact)
   | 72 =>
-    l1_dataGrid_le NL ML FL datL_K2 3 (by decide +kernel)
+    l1_dataGrid_le NL ML FL datL_K2 3 (by kernel_fact)
   | 73 =>
-    l1_dataGrid_le NL ML FL datL_K3 2 (by decide +kernel)
+    l1_dataGrid_le NL ML FL datL_K3 2 (by kernel_fact)
   | 74 =>
-    l1_dataGrid_le NL ML FL datL_KD 0 (by decide +kernel)
+    l1_dataGrid_le NL ML FL datL_KD 0 (by kernel_fact)
   | 75 =>
-    l1_dataGrid_le NL ML FL datL_KR 3 (by decide +kernel)
+    l1_dataGrid_le NL ML FL datL_KR 3 (by kernel_fact)
   | 76 =>
-    l1_dataGrid_le NL ML FL datL_KZ 2 (by decide +kernel)
+    l1_dataGrid_le NL ML FL datL_KZ 2 (by kernel_fact)
   | 77 =>
-    l1_dataGrid_le NL ML FL datL_Dt 0 (by decide +kernel)
+    l1_dataGrid_le NL ML FL datL_Dt 0 (by kernel_fact)
   | 78 =>
-    l1_dataGrid_le NL ML FL datL_nRt 3 (by decide +kernel)
+    l1_dataGrid_le NL ML FL datL_nRt 3 (by kernel_fact)
   | 79 =>
-    l1_dataGrid_le NL ML FL datL_nZt 0 (by decide +kernel)
+    l1_dataGrid_le NL ML FL datL_nZt 0 (by kernel_fact)
   | 80 =>
-    l1_dataGrid_le NL ML FL datL_qRu 0 (by decide +kernel)
+    l1_dataGrid_le NL ML FL datL_qRu 0 (by kernel_fact)
   | 81 =>
-    l1_dataGrid_le NL ML FL datL_qRz 3 (by decide +kernel)
+    l1_dataGrid_le NL ML FL datL_qRz 3 (by kernel_fact)
   | 82 =>
-    l1_dataGrid_le NL ML FL datL_qzz 0 (by decide +kernel)
+    l1_dataGrid_le NL ML FL datL_qzz 0 (by kernel_fact)
   | 83 =>
-    l1_dataGrid_le NL ML FL datL_qzu 3 (by decide +kernel)
+    l1_dataGrid_le NL ML FL datL_qzu 3 (by kernel_fact)
   | 84 =>
-    l1_dataGrid_le NL ML FL datL_qphu 1 (by decide +kernel)
+    l1_dataGrid_le NL ML FL datL_qphu 1 (by kernel_fact)
   | 85 =>
-    l1_dataGrid_le NL ML FL datL_qphz 0 (by decide +kernel)
+    l1_dataGrid_le NL ML FL datL_qphz 0 (by kernel_fact)
   | 86 =>
-    l1_dataGrid_le NL ML FL datL_qu 0 (by decide +kernel)
+    l1_dataGrid_le NL ML FL datL_qu 0 (by kernel_fact)
   | 87 =>
-    l1_dataGrid_le NL ML FL datL_qzd 3 (by decide +kernel)
+    l1_dataGrid_le NL ML FL datL_qzd 3 (by kernel_fact)
   | 88 =>
-    l1_dataGrid_le NL ML FL datL_Eu 2 (by decide +kernel)
+    l1_dataGrid_le NL ML FL datL_Eu 2 (by kernel_fact)
   | 89 =>
-    l1_dataGrid_le NL ML FL datL_Ez 3 (by decide +kernel)
+    l1_dataGrid_le NL ML FL datL_Ez 3 (by kernel_fact)
   | 90 =>
-    l1_dataGrid_le NL ML FL datL_V3 0 (by decide +kernel)
+    l1_dataGrid_le NL ML FL datL_V3 0 (by kernel_fact)
   | 91 =>
-    l1_dataGrid_le NL ML FL datL_Wu 0 (by decide +kernel)
+    l1_dataGrid_le NL ML FL datL_Wu 0 (by kernel_fact)
   | 92 =>
-    l1_dataGrid_le NL ML FL datL_Wz 3 (by decide +kernel)
+    l1_dataGrid_le NL ML FL datL_Wz 3 (by kernel_fact)
   | 93 =>
-    l1_dataGrid_le NL ML FL datL_W3u 0 (by decide +kernel)
+    l1_dataGrid_le NL ML FL datL_W3u 0 (by kernel_fact)
   | 94 =>
-    l1_dataGrid_le NL ML FL datL_W3z 3 (by decide +kernel)
+    l1_dataGrid_le NL ML FL datL_W3z 3 (by kernel_fact)
   | 95 =>
-    l1_dataGrid_le NL ML FL datL_KDu 0 (by decide +kernel)
+    l1_dataGrid_le NL ML FL datL_KDu 0 (by kernel_fact)
   | 96 =>
-    l1_dataGrid_le NL ML FL datL_KDz 3 (by decide +kernel)
+    l1_dataGrid_le NL ML FL datL_KDz 3 (by kernel_fact)
   | 97 =>
-    l1_dataGrid_le NL ML FL datL_KRu 3 (by decide +kernel)
+    l1_dataGrid_le NL ML FL datL_KRu 3 (by kernel_fact)
   | 98 =>
-    l1_dataGrid_le NL ML FL datL_KRz 0 (by decide +kernel)
+    l1_dataGrid_le NL ML FL datL_KRz 0 (by kernel_fact)
   | 99 =>
-    l1_dataGrid_le NL ML FL datL_KZu 2 (by decide +kernel)
+    l1_dataGrid_le NL ML FL datL_KZu 2 (by kernel_fact)
   | 100 =>
-    l1_dataGrid_le NL ML FL datL_KZz 3 (by decide +kernel)
+    l1_dataGrid_le NL ML FL datL_KZz 3 (by kernel_fact)
   | 101 =>
-    l1_dataGrid_le NL ML FL datL_Dtu 0 (by decide +kernel)
+    l1_dataGrid_le NL ML FL datL_Dtu 0 (by kernel_fact)
   | 102 =>
-    l1_dataGrid_le NL ML FL datL_Dtz 3 (by decide +kernel)
+    l1_dataGrid_le NL ML FL datL_Dtz 3 (by kernel_fact)
   | 103 =>
-    l1_dataGrid_le NL ML FL datL_nRtu 3 (by decide +kernel)
+    l1_dataGrid_le NL ML FL datL_nRtu 3 (by kernel_fact)
   | 104 =>
-    l1_dataGrid_le NL ML FL datL_nRtz 0 (by decide +kernel)
+    l1_dataGrid_le NL ML FL datL_nRtz 0 (by kernel_fact)
   | 105 =>
-    l1_dataGrid_le NL ML FL datL_nZtu 0 (by decide +kernel)
+    l1_dataGrid_le NL ML FL datL_nZtu 0 (by kernel_fact)
   | 106 =>
-    l1_dataGrid_le NL ML FL datL_nZtz 1 (by decide +kernel)
+    l1_dataGrid_le NL ML FL datL_nZtz 1 (by kernel_fact)
   | 107 =>
-    l1_dataGrid_le NL ML FL datL_Ptor 0 (by decide +kernel)
+    l1_dataGrid_le NL ML FL datL_Ptor 0 (by kernel_fact)
   | 108 =>
-    l1_dataGrid_le NL ML FL datL_W0 0 (by decide +kernel)
+    l1_dataGrid_le NL ML FL datL_W0 0 (by kernel_fact)
   | 109 =>
-    l1_dataGrid_le NL ML FL datL_Dt3 0 (by decide +kernel)
+    l1_dataGrid_le NL ML FL datL_Dt3 0 (by kernel_fact)
   | 110 =>
-    l1_dataGrid_le NL ML FL datL_W02 0 (by decide +kernel)
+    l1_dataGrid_le NL ML FL datL_W02 0 (by kernel_fact)
   | 111 =>
-    l1_dataGrid_le NL ML FL datL_F 0 (by decide +kernel)
+    l1_dataGrid_le NL ML FL datL_F 0 (by kernel_fact)
   | 112 =>
-    l1_dataGrid_le NL ML FL datL_qi 0 (by decide +kernel)
+    l1_dataGrid_le NL ML FL datL_qi 0 (by kernel_fact)
   | 113 =>
-    l1_dataGrid_le NL ML FL datL_Y 0 (by decide +kernel)
+    l1_dataGrid_le NL ML FL datL_Y 0 (by kernel_fact)
   | n + 114 =>
     (l1_gridPolyNM_le_const NL ML (C := 0) fun i j _ _ => by rw [gL_out n]; simp).trans
       (by simp)

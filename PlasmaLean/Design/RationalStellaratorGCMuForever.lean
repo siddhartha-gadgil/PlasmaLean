@@ -9,6 +9,7 @@ public import PlasmaLean.Design.RationalStellaratorGCMuExact
 public import PlasmaLean.Design.RationalStellaratorGCMuReal
 public import PlasmaLean.Design.RationalStellaratorGCMuOrbit
 public import PlasmaLean.Design.RationalStellaratorGCConfined
+public import PlasmaLean.Certificates.KernelFact
 
 /-!
 # All-time confinement for the `μ > 0` passing guiding-centre fields of a pitch-angle cell
@@ -76,7 +77,7 @@ theorem muL_inputs : Bd KamTorusA.rA (xLM c 4 - xLM c 4) (ELM 4) ∧
   have hB7 : xLM c 7 = dTh (xLM c 5) := by rw [xLM_der_B hc0]; simp [dTh]
   have z : ∀ i, Bd KamTorusA.rA (0 : FA) (ELM i) := fun i => (Bd_zero _).le (by
     have := (show ∀ i, (0 : ℚ) ≤ ELM i from getD_prop (Pr := fun q : ℚ => 0 ≤ q)
-      (by decide +kernel) le_rfl) i
+      (by kernel_fact) le_rfl) i
     exact_mod_cast this)
   refine ⟨?_, ?_, ?_, ?_⟩
   · rw [sub_self]; exact z 4
@@ -119,19 +120,19 @@ theorem muL_old_b : Bd KamTorusA.rA (dTh (xLM c 5) - dTh (xL 5)) ((5717 / 10 ^ 8
 
 /-- **`‖u(λ) − u₀‖ ≤ 1.85 × 10⁻³`**: the family torus is close to the `μ = 0` torus. -/
 theorem muOld_u : Bd KamTorusA.rA (xHM c 4 - u₀G) (185 / 100000) :=
-  (Bd_three_mu (mdist_u hc) (muL_old_u hc) dist_u).le (margin_le_mu (by decide +kernel))
+  (Bd_three_mu (mdist_u hc) (muL_old_u hc) dist_u).le (margin_le_mu (by kernel_fact))
 
 /-- `‖z(λ) − z₀‖ ≤ 1.85 × 10⁻³`. -/
 theorem muOld_z : Bd KamTorusA.rA (xHM c 5 - z₀G) (185 / 100000) :=
-  (Bd_three_mu (mdist_z hc) (muL_old_z hc) dist_z).le (margin_le_mu (by decide +kernel))
+  (Bd_three_mu (mdist_z hc) (muL_old_z hc) dist_z).le (margin_le_mu (by kernel_fact))
 
 /-- `‖∂_θ u(λ) − ∂_θ u₀‖ ≤ 1.85 × 10⁻³`. -/
 theorem muOld_a : Bd KamTorusA.rA (dTh (xHM c 4) - dTh u₀G) (185 / 100000) :=
-  (Bd_three_mu (mdist_a hc) (muL_old_a hc) dist_a).le (margin_le_mu (by decide +kernel))
+  (Bd_three_mu (mdist_a hc) (muL_old_a hc) dist_a).le (margin_le_mu (by kernel_fact))
 
 /-- `‖∂_θ z(λ) − ∂_θ z₀‖ ≤ 1.85 × 10⁻³`. -/
 theorem muOld_b : Bd KamTorusA.rA (dTh (xHM c 5) - dTh z₀G) (185 / 100000) :=
-  (Bd_three_mu (mdist_b hc) (muL_old_b hc) dist_b).le (margin_le_mu (by decide +kernel))
+  (Bd_three_mu (mdist_b hc) (muL_old_b hc) dist_b).le (margin_le_mu (by kernel_fact))
 
 end Old
 

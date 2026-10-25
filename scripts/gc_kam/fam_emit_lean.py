@@ -5,7 +5,9 @@ Light modules (import only Certificates/KronChebCompute; kernel checks in small 
   RationalStellaratorGCFamData{H1..Hk,L}  stored Chebyshev coefficients (SliceData)
   RationalStellaratorGCFamKv{H,L}         layouts, weights, boxes, l1 bounds, Kronecker images
   RationalStellaratorGCFamTrees{H,L}      light expression trees (ExN)
-  RationalStellaratorGCFamCheck{H,L}{k}   kernel checks (decide +kernel)
+  RationalStellaratorGCFamCheck{H,L}{k}   kernel checks (converted to proof terms by
+                                          lowmem/lowmem_emit.py, proofterm/proofterm_emit.py)
+The side conditions of the other modules are emitted as `kernel_fact` proof terms.
 Heavy modules:
   RationalStellaratorGCFamEnv{H,L}        polynomials, boxes, l1 bounds, Kronecker images (proofs)
   ... (relations, chains, outputs: later stages)
@@ -14,6 +16,8 @@ Usage: python fam_emit_lean.py data|checks|...
 import sys, os, pickle
 from fractions import Fraction as Fr
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), 'proofterm'))
+from proofterm_emit import kernel_fact_text  # side conditions as `kernel_fact` proof terms
 from fam_ball import decode_slice, encode_slice, famL1
 from ballcert import majN
 
@@ -798,7 +802,7 @@ def E%s (i : ℕ) : ℚ := E%sl.getD i 0
 
 end %s
 """ % (T, lst(Bl), T, T, T, lst(El), T, T, NS))
-    open(OUT + mod + '.lean', 'w').write(''.join(out))
+    open(OUT + mod + '.lean', 'w').write(kernel_fact_text(''.join(out)))
     return mod
 
 
@@ -988,7 +992,7 @@ theorem rel%s_%s (c : ℂ) (u z : FA) :
        wrap('X%snew, ' % T + S0 + ''.join(', ' + x for x in extra), 13),
        wrap(EVALS, 13)))
     out.append('end %s\n' % NS)
-    open(OUT + mod + '.lean', 'w').write(''.join(out))
+    open(OUT + mod + '.lean', 'w').write(kernel_fact_text(''.join(out)))
     return mod
 
 
@@ -1123,7 +1127,7 @@ theorem rel%s_%s (c : ℂ) :
 
 ''' % (nm, T, nm, cl, T, n, T, T, nm, wrap('tr%sN_%s, toEx, Ex.eval, ' % (T, nm) + ', '.join(facts), 13), T))
     out.append('end %s\n' % NS)
-    open(OUT + mod + '.lean', 'w').write(''.join(out))
+    open(OUT + mod + '.lean', 'w').write(kernel_fact_text(''.join(out)))
     return mod
 
 
@@ -1472,7 +1476,7 @@ theorem stepHF_%s {r : ℝ} (hq : Real.exp r ≤ (74315 : ℕ) / 2 ^ 16) {c : �
                    '    ∀ i, i < %d → Bd r (%s i - x%s c i) (E%s i) :=\n  chain_succ (ball%s_%d %s)\n    (%s)\n\n'
                    % (nm, T, k_ + 1, targs, k_ + 1, X, T, T, T, k_, use, step))
     out.append('end %s\n' % NS)
-    open(OUT + mod + '.lean', 'w').write(''.join(out))
+    open(OUT + mod + '.lean', 'w').write(kernel_fact_text(''.join(out)))
     return mod
 
 
@@ -1534,7 +1538,7 @@ theorem val%s_le %s
                                  norm_call(p, r, Rq, '(fun i hi => norm%s hq hc i (by omega))' % T,
                                            '(ball%s_%d %s)' % (T, n, use))))
     out.append('end %s\n' % NS)
-    open(OUT + mod + '.lean', 'w').write(''.join(out))
+    open(OUT + mod + '.lean', 'w').write(kernel_fact_text(''.join(out)))
     return mod
 
 

@@ -6,6 +6,7 @@ Authors: PlasmaLean contributors
 module
 
 public import PlasmaLean.Design.SolovevBandHighQ
+public import PlasmaLean.Certificates.KernelFact
 
 /-!
 # An ignited two-sided transport band on the Solov'ev geometry: `solovev_one_plasma_ignited`
@@ -182,59 +183,59 @@ set_option maxHeartbeats 1000000 in
 theorem ignited_sub_check_ll :
     pieceCheckL (lowA ignited_aux ignited_fs (63 / 100) (49 / 100)) ignited_fs
       kirchhoffQ (1 / 200) 0 ignited_subP = true := by
-  decide +kernel
+  kernel_fact
 /-- Lower barrier, corner `χ₀ = 63 / 100`, `γ = 0.525`. -/
 theorem ignited_sub_check_lu :
     pieceCheckL (lowA ignited_aux ignited_fs (63 / 100) (21 / 40)) ignited_fs
       kirchhoffQ (1 / 200) 0 ignited_subP = true := by
-  decide +kernel
+  kernel_fact
 /-- Lower barrier, corner `χ₀ = 16 / 25`, `γ = 0.49`. -/
 theorem ignited_sub_check_hl :
     pieceCheckL (lowA ignited_aux ignited_fs (16 / 25) (49 / 100)) ignited_fs
       kirchhoffQ (1 / 200) 0 ignited_subP = true := by
-  decide +kernel
+  kernel_fact
 /-- Lower barrier, corner `χ₀ = 16 / 25`, `γ = 0.525`. -/
 theorem ignited_sub_check_hu :
     pieceCheckL (lowA ignited_aux ignited_fs (16 / 25) (21 / 40)) ignited_fs
       kirchhoffQ (1 / 200) 0 ignited_subP = true := by
-  decide +kernel
+  kernel_fact
 /-- Upper barrier, corner `χ₀ = 63 / 100`, `γ = 0.49`. -/
 theorem ignited_sup_check_ll :
     pieceCheckL (upA ignited_aux ignited_fu (63 / 100) (49 / 100)) ignited_fu
       kirchhoffQ (1 / 200) 0 ignited_supP = true := by
-  decide +kernel
+  kernel_fact
 /-- Upper barrier, corner `χ₀ = 63 / 100`, `γ = 0.525`. -/
 theorem ignited_sup_check_lu :
     pieceCheckL (upA ignited_aux ignited_fu (63 / 100) (21 / 40)) ignited_fu
       kirchhoffQ (1 / 200) 0 ignited_supP = true := by
-  decide +kernel
+  kernel_fact
 /-- Upper barrier, corner `χ₀ = 16 / 25`, `γ = 0.49`. -/
 theorem ignited_sup_check_hl :
     pieceCheckL (upA ignited_aux ignited_fu (16 / 25) (49 / 100)) ignited_fu
       kirchhoffQ (1 / 200) 0 ignited_supP = true := by
-  decide +kernel
+  kernel_fact
 /-- Upper barrier, corner `χ₀ = 16 / 25`, `γ = 0.525`. -/
 theorem ignited_sup_check_hu :
     pieceCheckL (upA ignited_aux ignited_fu (16 / 25) (21 / 40)) ignited_fu
       kirchhoffQ (1 / 200) 0 ignited_supP = true := by
-  decide +kernel
+  kernel_fact
 /-- Pressure certificate (`Δ = 90000 Pa`). -/
 theorem ignited_pres_check :
     pieceCheckL (presD 90000) ignited_fu kirchhoffQ 0 0 ignited_presP = true := by
-  decide +kernel
+  kernel_fact
 
 /-- Monotonicity: `−F_sub' ≥ 0` on `[0,1]`. -/
 theorem ignited_fs_deriv_check :
     QPoly.checkOn (QPoly.scale (-1) (QPoly.deriv ignited_fs)) 0 0 1 (gridN 8) = true := by
-  decide +kernel
+  kernel_fact
 /-- Monotonicity: `−F_sup' ≥ 0` on `[0,1]`. -/
 theorem ignited_fu_deriv_check :
     QPoly.checkOn (QPoly.scale (-1) (QPoly.deriv ignited_fu)) 0 0 1 (gridN 8) = true := by
-  decide +kernel
+  kernel_fact
 /-- Ordering: `F_sup − F_sub ≥ 0` on `[0,1]`. -/
 theorem ignited_gap_check :
     QPoly.checkOn (QPoly.add ignited_fu (QPoly.scale (-1) ignited_fs)) 0 0 1 (gridN 8) = true := by
-  decide +kernel
+  kernel_fact
 
 /-- Label and endpoint facts, checked once. -/
 theorem ignited_labels_check :
@@ -247,7 +248,7 @@ theorem ignited_labels_check :
       decide (QPoly.evalQ ignited_fs 0 ≤ kirchhoffQ 60) &&
       decide (kirchhoffQ 10 ≤ QPoly.evalQ ignited_fs (3 / 10)) &&
       decide (QPoly.evalQ ignited_fu 0 ≤ kirchhoffQ 20)) = true := by
-  decide +kernel
+  kernel_fact
 
 /-- Unpacked label and endpoint facts. -/
 theorem ignited_labels_facts :

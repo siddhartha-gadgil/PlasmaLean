@@ -7,6 +7,7 @@ module
 
 public import PlasmaLean.Design.RationalStellaratorGCNegTorusAdmL
 public import PlasmaLean.Design.RationalStellaratorGCNegTorusOutH
+public import PlasmaLean.Certificates.KernelFact
 
 /-!
 # The `v∥ < 0` guiding-centre torus `K₀` and admissibility of the KAM step
@@ -60,26 +61,26 @@ theorem valH_rA (i : ℕ) (hi : i < 70) : Bd KamTorusA.rA (XH i) ((BH i + EH i :
 /-- `‖u₀‖_{r_A} ≤ 0.2174`. -/
 theorem Bd_u₀G : Bd KamTorusA.rA u₀G (1087 / 5000) :=
   (valH_rA 4 (by norm_num)).le (by
-    have := qle (show BH 4 + EH 4 ≤ 1087 / 5000 by decide +kernel)
+    have := qle (show BH 4 + EH 4 ≤ 1087 / 5000 by kernel_fact)
     push_cast at this ⊢; exact this)
 
 /-- `‖z₀‖_{r_A} ≤ 0.1794`. -/
 theorem Bd_z₀G : Bd KamTorusA.rA z₀G (897 / 5000) :=
   (valH_rA 5 (by norm_num)).le (by
-    have := qle (show BH 5 + EH 5 ≤ 897 / 5000 by decide +kernel)
+    have := qle (show BH 5 + EH 5 ≤ 897 / 5000 by kernel_fact)
     push_cast at this ⊢; exact this)
 
 /-- `‖∂_θ u₀‖_{r_A} ≤ 0.1818`. -/
 theorem Bd_dTh_u₀G : Bd KamTorusA.rA (dTh u₀G) (909 / 5000) := by
   rw [← dTh_xH_thU]
   refine (normH exp_rA_le' 8 (by norm_num)).le ?_
-  have := qle (show BH 8 ≤ 909 / 5000 by decide +kernel); push_cast at this ⊢; exact this
+  have := qle (show BH 8 ≤ 909 / 5000 by kernel_fact); push_cast at this ⊢; exact this
 
 /-- `‖∂_θ z₀‖_{r_A} ≤ 0.1749`. -/
 theorem Bd_dTh_z₀G : Bd KamTorusA.rA (dTh z₀G) (1749 / 10000) := by
   rw [← dTh_xH_thZ]
   refine (normH exp_rA_le' 9 (by norm_num)).le ?_
-  have := qle (show BH 9 ≤ 1749 / 10000 by decide +kernel); push_cast at this ⊢; exact this
+  have := qle (show BH 9 ≤ 1749 / 10000 by kernel_fact); push_cast at this ⊢; exact this
 
 /-- `‖2^{−96} X‖ ≤ 2^{−96} ‖X‖`. -/
 theorem Bd_inv_pow96 {r : ℝ} {X : FA} {B : ℝ} (h : Bd r ((2 : ℂ) ^ 96 • X) B) :
@@ -93,14 +94,14 @@ theorem Bd_inv_pow96 {r : ℝ} {X : FA} {B : ℝ} (h : Bd r ((2 : ℂ) ^ 96 • 
 theorem Bd_Lt_u₀G : Bd KamTorusA.rA (Lt iotaB u₀G) (1319 / 10000) := by
   have h := Bd_inv_pow96 (valH_rA 6 (by norm_num))
   refine h.le ?_
-  have := qle (show (BH 6 + EH 6) / 2 ^ 96 ≤ 1319 / 10000 by decide +kernel)
+  have := qle (show (BH 6 + EH 6) / 2 ^ 96 ≤ 1319 / 10000 by kernel_fact)
   push_cast at this ⊢; exact this
 
 /-- `‖𝓛 z₀‖_{r_A} ≤ 0.1222`. -/
 theorem Bd_Lt_z₀G : Bd KamTorusA.rA (Lt iotaB z₀G) (611 / 5000) := by
   have h := Bd_inv_pow96 (valH_rA 7 (by norm_num))
   refine h.le ?_
-  have := qle (show (BH 7 + EH 7) / 2 ^ 96 ≤ 611 / 5000 by decide +kernel)
+  have := qle (show (BH 7 + EH 7) / 2 ^ 96 ≤ 611 / 5000 by kernel_fact)
   push_cast at this ⊢; exact this
 
 /-! ## The residual of `K₀` -/

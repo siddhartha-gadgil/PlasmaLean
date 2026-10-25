@@ -7,6 +7,7 @@ module
 
 public import PlasmaLean.Theory.Transport.BoschHaleFine
 public import PlasmaLean.Sanity.BoschHaleInstance
+public import PlasmaLean.Certificates.KernelFact
 public meta import Lean
 public meta import Qq
 
@@ -205,7 +206,7 @@ among the coarse and fine windows starting at or below `T`. -/
 @[expose] def bhFineSv : ℝ → ℝ := pl4 bhFineNodes
 
 /-- There are 237 nodes (`T = 1, …, 60` keV in steps of `1/4`). -/
-theorem bhFineNodes_length : bhFineNodes.length = 237 := by decide +kernel
+theorem bhFineNodes_length : bhFineNodes.length = 237 := by kernel_fact
 
 /-- Boolean test that a list is nondecreasing. -/
 @[expose] def nonDecrB : List ℚ → Bool
@@ -222,7 +223,7 @@ theorem nonDecr_of_nonDecrB : ∀ v : List ℚ, nonDecrB v = true → NonDecr v
 
 /-- The node values are nondecreasing (one kernel evaluation of the Boolean test). -/
 theorem bhFineNodes_nonDecr : NonDecr bhFineNodes :=
-  nonDecr_of_nonDecrB _ (by decide +kernel)
+  nonDecr_of_nonDecrB _ (by kernel_fact)
 
 /-- The certificate for the 61 coarse kernel windows, built as an explicit proof term. -/
 theorem bhFineNodes_coarse_cert : QWindowsCert bhFineNodes boschHaleWindows := by
@@ -235,7 +236,7 @@ theorem bhFineNodes_fine_cert : QWindowsCert bhFineNodes boschHaleFineWindows :=
   all_goals norm_num
 
 /-- `bhFineNodes` as an explicit cons cell (for the soundness theorem). -/
-theorem bhFineNodes_cons : bhFineNodes = 6.788e-27 :: bhFineNodes.tail := by decide +kernel
+theorem bhFineNodes_cons : bhFineNodes = 6.788e-27 :: bhFineNodes.tail := by kernel_fact
 
 /-- **Non-vacuity of `BoschHaleFine`.** The explicit interpolant `bhFineSv` satisfies every
 supplied Bosch–Hale fact: nonnegativity, continuity, monotonicity on `[1, 60]` keV, the 61
@@ -244,7 +245,7 @@ are jointly consistent. -/
 instance bhFineSv_boschHaleFine : BoschHaleFine bhFineSv where
   nonneg T _ := by
     have h := pl4_ge_head bhFineNodes bhFineNodes_nonDecr T
-    have e : bhFineNodes.headD 0 = 6.788e-27 := by decide +kernel
+    have e : bhFineNodes.headD 0 = 6.788e-27 := by kernel_fact
     have h0 : (0 : ℝ) ≤ (bhFineNodes.headD 0 : ℚ) := by rw [e]; norm_num
     exact h0.trans h
   continuousOn := (pl4_continuous bhFineNodes).continuousOn
@@ -268,7 +269,7 @@ instance bhFineSv_boschHaleFine : BoschHaleFine bhFineSv where
 theorem bhFineSv_fifteen : bhFineSv 15 = 2.712e-22 := by
   have h := pl4_node 6.788e-27 bhFineNodes.tail 56
   rw [show ((56 : ℕ) : ℝ) / 4 + 1 = 15 by norm_num, ← bhFineNodes_cons] at h
-  have e : bhFineNodes.getD 56 (lastD bhFineNodes) = 2.712e-22 := by decide +kernel
+  have e : bhFineNodes.getD 56 (lastD bhFineNodes) = 2.712e-22 := by kernel_fact
   rw [bhFineSv, h, e]
   norm_num
 

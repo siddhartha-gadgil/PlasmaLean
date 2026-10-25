@@ -9,6 +9,7 @@ public import PlasmaLean.Design.ValidatedSlabData
 public import PlasmaLean.Certificates.ConvAlgebra
 public import PlasmaLean.Theory.Equilibrium.Slab
 public import Mathlib.Analysis.Complex.ExponentialBounds
+public import PlasmaLean.Certificates.KernelFact
 
 /-!
 # A validated slab equilibrium with an exponential pressure profile
@@ -927,7 +928,7 @@ theorem presProfile_ge (μ₀ ψ : ℝ) (hμ : 0 < μ₀) : aR / μ₀ ≤ presP
 
 /-- `ū(0) - ū(π) ≥ 0.98` (exact rational check). -/
 theorem ubar_shear : 98 / 100 ≤ ∑ k ∈ blk, ubarq k - ∑ k ∈ blk, ubarq k * (-1) ^ k := by
-  decide +kernel
+  kernel_fact
 
 /-- **Validated slab equilibrium with exponential pressure.** For every `μ₀ > 0` and guide
 field `B₀`, there is a `C²`, even, `2π`-periodic flux function `Φ`, uniformly within `10⁻¹¹` of

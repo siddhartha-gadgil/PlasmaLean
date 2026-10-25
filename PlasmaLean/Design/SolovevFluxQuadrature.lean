@@ -7,6 +7,7 @@ module
 
 public import PlasmaLean.Design.SolovevMercierQuadrature
 public import PlasmaLean.Certificates.PolyInterval
+public import PlasmaLean.Certificates.KernelFact
 
 /-!
 # Certified enclosures of the Solov'ev flux-surface averages (polynomial quadrature)
@@ -39,7 +40,7 @@ different, fully rigorous route is used:
    ≤ U₃` on `|x| ≤ 12/25` (`fQ_bounds`), where `L₃`, `U₃` are the degree-11 Taylor polynomial
    (shifted by `10⁻⁷`, `U₃` with an extra `x¹²` term). They are certified through the
    polynomial inequalities `U₃ ≥ 0`, `L₃ ≥ 0`, `U₃²(1+x)³ ≥ 1`, `L₃²(1+x)³ ≤ 1`, each checked by
-   the exact piecewise Horner checker `QPoly.checkOn` (48 pieces, one `decide +kernel` each).
+   the exact piecewise Horner checker `QPoly.checkOn` (48 pieces, one `kernel_fact` each).
 2. **Bivariate polynomials** `BPoly` (`Σ c ε^a y^b`, exact product `BPoly.mul`): the
    integrands are squeezed between `G · L₃(εy)` and `G · U₃(εy)` (`G, H ≥ 0`; for `Pn` use
    `v^{-1/2} = v · v^{-3/2}`).
@@ -232,21 +233,21 @@ end BPoly
 
 /-- `U₃ ≥ 0` on `[-12/25, 12/25]`. -/
 theorem U3_nonneg_check : QPoly.checkOn U3 0 (-12 / 25) (12 / 25) xPts = true := by
-  decide +kernel
+  kernel_fact
 
 /-- `L₃ ≥ 0` on `[-12/25, 12/25]`. -/
 theorem L3_nonneg_check : QPoly.checkOn L3 0 (-12 / 25) (12 / 25) xPts = true := by
-  decide +kernel
+  kernel_fact
 
 /-- `U₃²(1+x)³ - 1 ≥ 5·10⁻⁸` on `[-12/25, 12/25]`. -/
 theorem U3_sq_check : QPoly.checkOn (QPoly.add (QPoly.mul (QPoly.mul U3 U3) cube1) [-1])
     (1 / (2 * 10 ^ 7)) (-12 / 25) (12 / 25) xPts = true := by
-  decide +kernel
+  kernel_fact
 
 /-- `1 - L₃²(1+x)³ ≥ 5·10⁻⁸` on `[-12/25, 12/25]`. -/
 theorem L3_sq_check : QPoly.checkOn (QPoly.add [1] (QPoly.scale (-1) (QPoly.mul (QPoly.mul L3 L3)
     cube1))) (1 / (2 * 10 ^ 7)) (-12 / 25) (12 / 25) xPts = true := by
-  decide +kernel
+  kernel_fact
 
 /-- `(1+x)³` evaluates to `(1+x)³`. -/
 theorem cube1_eval (x : ℝ) : QPoly.eval cube1 x = (1 + x) ^ 3 := by
@@ -423,29 +424,29 @@ end squeezes
 /-- `192 LG - 539 UP ≥ 0` (lower bound of `g/s`). -/
 theorem glo_check :
     QPoly.checkOn (QPoly.add (QPoly.scale 192 LG) (QPoly.scale (-539) UP)) 0 0 (12 / 25) epsPts
-      = true := by decide +kernel
+      = true := by kernel_fact
 
 /-- `385 LP - 128 UG ≥ 0` (upper bound of `g/s`). -/
 theorem gup_check :
     QPoly.checkOn (QPoly.add (QPoly.scale 385 LP) (QPoly.scale (-128) UG)) 0 0 (12 / 25) epsPts
-      = true := by decide +kernel
+      = true := by kernel_fact
 
 /-- `192 LH - 539 UP ≥ 0` (lower bound of `h`). -/
 theorem hlo_check :
     QPoly.checkOn (QPoly.add (QPoly.scale 192 LH) (QPoly.scale (-539) UP)) 0 0 (12 / 25) epsPts
-      = true := by decide +kernel
+      = true := by kernel_fact
 
 /-- `385 LP - 128 UH ≥ 0` (upper bound of `h`). -/
 theorem hup_check :
     QPoly.checkOn (QPoly.add (QPoly.scale 385 LP) (QPoly.scale (-128) UH)) 0 0 (12 / 25) epsPts
-      = true := by decide +kernel
+      = true := by kernel_fact
 
 /-- Rejected fixture: the checker does NOT certify `IGn ≤ 3 Pn` (`g ≤ (144/275) s`, the axis
 value, which fails just off the axis to within the enclosure width): the certificate's
 margin is genuine, not vacuous. -/
 theorem gup_tight_rejected :
     QPoly.checkOn (QPoly.add (QPoly.scale 3 LP) (QPoly.scale (-1) UG)) 0 0 (12 / 25) epsPts
-      = false := by decide +kernel
+      = false := by kernel_fact
 
 /-- From a polynomial check to a real inequality on `[0, 12/25]`. -/
 theorem check_apply {p q : List ℚ} {a b : ℚ}

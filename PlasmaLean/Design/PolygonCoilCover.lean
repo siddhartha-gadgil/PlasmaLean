@@ -9,6 +9,7 @@ public import PlasmaLean.Design.PolygonCoilCert03
 public import PlasmaLean.Design.PolygonCoilCert04
 public import PlasmaLean.Design.PolygonCoilCert05
 public import PlasmaLean.Design.PolygonCoilSoundD
+public import PlasmaLean.Certificates.KernelFact
 
 /-!
 # The certified frontier bound on the four faces of the fundamental frontier piece
@@ -16,7 +17,7 @@ public import PlasmaLean.Design.PolygonCoilSoundD
 Assembles the kernel certificates `cert_F_i` (`Design/PolygonCoilCert00`–`05`) through the
 soundness theorem `grid_cover` (`Design/PolygonCoilSoundD`):
 
-* `filsValid`: the integer coil data passes `filOK` (checked once by `decide +kernel`);
+* `filsValid`: the integer coil data passes `filOK` (checked once by `kernel_fact`);
 * `faceOK0`–`faceOK3`: the face data carries the proved `hel` constants;
 * `cover0`–`cover3`: on each face `F`, for `φ ∈ [φ_1696, φ_9889] ⊇ [π/4, 3π/4]` and every `w` in
   the face range, `‖Bseg fils - hel‖ ≤ etaFp·2⁻⁴⁰` and the distance to every coil segment is
@@ -32,13 +33,13 @@ open PlasmaLean.Fields PlasmaLean.Design.RationalStellarator
   Set Real
 
 /-- The integer coil data is valid (one kernel evaluation). -/
-theorem dataOK_eq : dataOK = true := by decide +kernel
+theorem dataOK_eq : dataOK = true := by kernel_fact
 
 /-- Every filament is nonempty and there are at most `nSeg` segments. -/
 theorem fils_shape : (fils.all fun f => !f.2.isEmpty) = true ∧ (allSegs fils).length ≤ nSeg := by
   constructor
-  · decide +kernel
-  · decide +kernel
+  · kernel_fact
+  · kernel_fact
 
 /-- **Validity of the coil data.** -/
 theorem filsValid : FilsValid offs fils := by

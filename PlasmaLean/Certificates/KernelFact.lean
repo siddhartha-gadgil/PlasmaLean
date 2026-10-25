@@ -22,6 +22,10 @@ on `ℕ` are expanded element by element, and the leaves are kernel facts closed
 (`Nat.ble a c = true`, `Nat.beq a c = false`, `Rat.blt a c`, `a = a`), which only the kernel
 evaluates. No `decide`.
 
+Quantifiers `∀ i : Fin n` are expanded through `Fin.forall_fin_succ`, and implications `a = c → B`
+with a closed hypothesis on `ℕ` are decided from the values of both sides (the failing case is the
+kernel fact `Nat.beq a c = false`).
+
 **Sanity.** `kernelFact_fixture`.
 -/
 
@@ -58,6 +62,20 @@ theorem forall_mem_nil' {α : Type} (p : α → Prop) : ∀ x ∈ ([] : List α)
 theorem forall_mem_cons' {α : Type} (p : α → Prop) (a : α) (l : List α) (h : p a)
     (t : ∀ x ∈ l, p x) : ∀ x ∈ a :: l, p x :=
   List.forall_mem_cons.2 ⟨h, t⟩
+
+/-- `∀ i : Fin 0, p i`. -/
+theorem forall_fin_zero' (p : Fin 0 → Prop) : ∀ i, p i := fun i => i.elim0
+
+/-- `∀ i : Fin (n + 1), p i` from `p 0` and `∀ i : Fin n, p i.succ`. -/
+theorem forall_fin_succ' (n : Nat) (p : Fin (n + 1) → Prop) (h : p ⟨0, Nat.succ_pos n⟩)
+    (t : ∀ i : Fin n, p i.succ) : ∀ i, p i := Fin.forall_fin_succ.2 ⟨h, t⟩
+
+/-- An implication whose hypothesis holds, from its conclusion. -/
+theorem imp_of_concl' {A B : Prop} (h : B) : A → B := fun _ => h
+
+/-- An implication whose hypothesis `a = c` on `ℕ` fails (the kernel fact `Nat.beq a c = false`). -/
+theorem imp_of_nat_ne' (a c : Nat) (B : Prop) (h : Nat.beq a c = false) : a = c → B :=
+  fun e => absurd e (Nat.ne_of_beq_eq_false h)
 
 /-- The value of a small closed natural-number expression, by `whnf` (no compiled code, so that
 no `meta import` of the data modules is needed). -/
@@ -108,7 +126,14 @@ meta partial def kernelFactTerm (P : Expr) (fuel : Nat := 16) : MetaM Expr := do
       | none =>
         match forallLe? P with
         | some (strict, n, p) => forallLe strict p (← natValue n) n
-        | none => unfoldOrFail P
+        | none =>
+          match forallFin? P with
+          | some (n, p) => forallFin p (← natValue n)
+          | none =>
+            match P with
+            | .forallE _ A B _ =>
+              if B.hasLooseBVars then unfoldOrFail P else implication A B
+            | _ => unfoldOrFail P
   mkExpectedTypeHint pf P
 where
   /-- Unfold the head of the goal and retry. -/
@@ -141,6 +166,36 @@ where
         else some (hyp.isAppOf ``LT.lt, m, .lam n α (q.lowerLooseBVars 1 1) bi)
       | _ => none
     | _ => none
+  /-- `∀ i : Fin n, q i` as `(n, fun i => q i)`. -/
+  forallFin? (P : Expr) : Option (Expr × Expr) :=
+    match P with
+    | .forallE n α q bi =>
+      match α.getAppFnArgs with
+      | (``Fin, #[m]) => if m.hasLooseBVars then none else some (m, .lam n α q bi)
+      | _ => none
+    | _ => none
+  /-- Expand `∀ i : Fin n, p i` (for the value `n` of the bound) through `Fin.forall_fin_succ`. -/
+  forallFin (p : Expr) (nv : Nat) : MetaM Expr := do
+    if nv = 0 then return mkApp (mkConst ``forall_fin_zero') p
+    let n' := mkRawNatLit (nv - 1)
+    let i₀ := mkApp3 (mkConst ``Fin.mk) (mkApp (mkConst ``Nat.succ) n') (mkRawNatLit 0)
+      (mkApp (mkConst ``Nat.succ_pos) n')
+    let h₀ ← kernelFactTerm (mkApp p i₀).headBeta fuel
+    let pS := Expr.lam `i (mkApp (mkConst ``Fin) n')
+      (mkApp p (mkApp2 (mkConst ``Fin.succ) n' (.bvar 0))) .default
+    let t ← forallFin pS (nv - 1)
+    return mkApp4 (mkConst ``forall_fin_succ') n' p h₀ t
+  /-- An implication `A → B` with a closed hypothesis: `A` is an equation on `ℕ`, decided from
+  the values of both sides (`imp_of_nat_ne'` when it fails), or holds (`imp_of_concl'`). -/
+  implication (A B : Expr) : MetaM Expr := do
+    match A.getAppFnArgs with
+    | (``Eq, #[α, a, c]) =>
+      if α.isConstOf ``Nat then
+        if (← natValue a) == (← natValue c) then
+          return mkApp3 (mkConst ``imp_of_concl') A B (← kernelFactTerm B fuel)
+        else return mkApp4 (mkConst ``imp_of_nat_ne') a c B (reflBool false)
+      else throwError "kernel_fact: unsupported hypothesis{indentExpr A}"
+    | _ => throwError "kernel_fact: unsupported hypothesis{indentExpr A}"
   /-- Expand `∀ i ≤ k, p i` (`strict`: `∀ i < k`) for the value `kv` of `k`, one index at a time. -/
   forallLe (strict : Bool) (p : Expr) (kv : Nat) (k : Expr) : MetaM Expr := do
     if strict then
@@ -179,7 +234,8 @@ syntax (name := kernelFact) "kernel_fact" : tactic
 /-- **Sanity**: `kernel_fact` on a conjunction of closed facts. -/
 theorem kernelFact_fixture : 2 ≤ 3 ∧ 3 < 2 ^ 2 ∧ (5 : Nat) ≠ 6 ∧ 2 + 2 = 4 ∧ 7 ≥ 7 ∧
     (1 / 3 : Rat) < 1 / 2 ∧ (2 / 4 : Rat) ≤ 1 / 2 ∧ (∀ x ∈ [1, 2, 3], x ≤ 3) ∧
-    (∀ i ≤ 3, i * i ≤ 9) ∧ (∀ i < 2 * 2, i + 1 ≤ 4) ∧ ∀ i < 0, i = 7 := by
+    (∀ i ≤ 3, i * i ≤ 9) ∧ (∀ i < 2 * 2, i + 1 ≤ 4) ∧ (∀ i < 0, i = 7) ∧
+    (∀ i : Fin 3, (i : Nat) ≤ 2) ∧ (∀ i < 4, i % 2 = 0 → i ≤ 2) := by
   kernel_fact
 
 end PlasmaLean.Certificates.KronProof

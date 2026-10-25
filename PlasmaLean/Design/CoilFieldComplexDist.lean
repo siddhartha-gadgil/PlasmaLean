@@ -7,6 +7,7 @@ module
 
 public import PlasmaLean.Design.PolygonCoilCubicConfined
 public import PlasmaLean.Theory.Fields.BiotSavartComplex
+public import PlasmaLean.Certificates.KernelFact
 
 /-!
 # Certified distance from the confinement region to the coils
@@ -22,11 +23,11 @@ the coil set `filsC` (192 segments).
   `≤ -A`, or `r²(t)` (a convex quadratic) stays `≤ (1 - A)²` (endpoints suffice) or `≥ (1 + A)²`
   (exact minimum of the quadratic on the piece). `segCheck` adds bisection with fuel.
 * `pieceOK_sound`, `segCheck_sound`: the checkers imply `Far A` along the piece.
-* `farAll_true` (kernel certificate, `decide +kernel`): every segment of `allSegs filsC` passes
+* `farAll_true` (kernel certificate, `kernel_fact`): every segment of `allSegs filsC` passes
   with `A = 7/20` and fuel `3`; hence `filsC_far`.
 * `realTube w`: `|√(x₀² + x₁²) - 1| ≤ w`, `|x₂| ≤ w`; `dist_of_far`: points of `realTube w` are at
   distance `≥ d` from every `Far A` point when `w + d ≤ A`.
-* Data bounds (`decide +kernel`): `filsC_kappa` (`|K| ≤ 90485364`), `filsC_norm_le`
+* Data bounds (`kernel_fact`): `filsC_kappa` (`|K| ≤ 90485364`), `filsC_norm_le`
   (`‖p‖ ≤ 3` for every segment start), `filsC_len_le` (`‖q - p‖ ≤ 23/10`).
 
 **Sanity.** `far_vertex_fixture` (a coil vertex is `Far`), the rejected fixture
@@ -237,7 +238,7 @@ theorem segCheck_sound {A : ℚ} {p q : ℤ × ℤ × ℤ} :
       · exact segCheck_sound n h2 (le_of_not_ge hm) hte
 
 /-- **Kernel certificate**: every segment of the coil set passes the check at `A = 7/20`. -/
-theorem farAll_true : farAll (7 / 20) 3 (allSegs filsC) = true := by decide +kernel
+theorem farAll_true : farAll (7 / 20) 3 (allSegs filsC) = true := by kernel_fact
 
 /-- Every point of every coil segment is `Far (7/20)`. -/
 theorem filsC_far {z : ℤ × (ℤ × ℤ × ℤ) × (ℤ × ℤ × ℤ)} (hz : z ∈ allSegs filsC) {t : ℝ}
@@ -304,7 +305,7 @@ def dataOK (z : ℤ × (ℤ × ℤ × ℤ) × (ℤ × ℤ × ℤ)) : Bool :=
     (z.2.2.2.2 - z.2.1.2.2) ^ 2) ≤ 529 * 4294967296 ^ 2)
 
 /-- Kernel check of the data bounds. -/
-theorem dataOK_all : (allSegs filsC).all dataOK = true := by decide +kernel
+theorem dataOK_all : (allSegs filsC).all dataOK = true := by kernel_fact
 
 /-- The current numerators are bounded: `|K| ≤ 90485364`. -/
 theorem filsC_kappa {z : ℤ × (ℤ × ℤ × ℤ) × (ℤ × ℤ × ℤ)} (hz : z ∈ allSegs filsC) :

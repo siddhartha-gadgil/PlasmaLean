@@ -9,6 +9,7 @@ public import PlasmaLean.Theory.Transport.BarrierCheck
 public import PlasmaLean.Kernel.Fusion
 public import Mathlib.Analysis.SpecialFunctions.Sqrt
 public import Mathlib.Analysis.Real.Pi.Bounds
+public import PlasmaLean.Certificates.KernelFact
 
 /-!
 # Model rung M2: an all-time core-temperature barrier for radial heat transport
@@ -334,7 +335,7 @@ window starting at `k`, or `0` if there is none. -/
 /-- Every supplied window starts at `≥ 1 keV` and is nondegenerate. -/
 theorem boschHaleWindows_wf :
     boschHaleWindows.all (fun w => decide (1 ≤ w.lo) && decide (w.lo ≤ w.hi)) = true := by
-  decide +kernel
+  kernel_fact
 
 /-- **Reactivity floor.** If `0 ≤ k ≤ T ≤ 60` keV then `svFloor k ≤ ⟨σv⟩(T)`: the window at
 `k` bounds `⟨σv⟩(k)` below, and `⟨σv⟩` is increasing on `[1,60]` keV. -/
@@ -413,7 +414,7 @@ theorem tsub_flux_div (ψ : ℝ) : ψ * Tsub'' ψ + Tsub' ψ = -720 * ψ * (1 - 
 theorem tsub_deriv_check :
     QPoly.checkOn (QPoly.scale (-1) (QPoly.deriv tsubCoeffs)) 0 0 1
       [1 / 6, 2 / 6, 3 / 6, 4 / 6, 5 / 6, 1] = true := by
-  decide +kernel
+  kernel_fact
 
 /-- `T_sub` is decreasing on `[0,1]`. -/
 theorem tsub_antitone : AntitoneOn Tsub (Icc 0 1) := by
@@ -430,7 +431,7 @@ theorem tsub_bounds {ψ : ℝ} (hψ : ψ ∈ Icc (0 : ℝ) 1) : 1 ≤ Tsub ψ �
 /-- **Core temperature.** `T_sub ≥ 10 keV` on the core `ψ ≤ 3/10` (`r ≤ 1.37 m`). -/
 theorem tsub_core {ψ : ℝ} (h0 : 0 ≤ ψ) (h1 : ψ ≤ 3 / 10) : 10 ≤ Tsub ψ := by
   have hc : (10 : ℝ) ≤ Tsub (3 / 10) := by
-    have : (10 : ℚ) ≤ QPoly.evalQ tsubCoeffs (3 / 10) := by decide +kernel
+    have : (10 : ℚ) ≤ QPoly.evalQ tsubCoeffs (3 / 10) := by kernel_fact
     simp only [Tsub]
     rw [show ((3 : ℝ) / 10) = ((3 / 10 : ℚ) : ℝ) by norm_num, QPoly.eval_cast]
     exact_mod_cast this
@@ -473,11 +474,11 @@ theorem tsubPieces_end : pieceEnd 0 tsubPieces = 1 := by
 alpha-free lower bound plus the alpha bonus at the piece label is at least `κ = 1/20`. -/
 theorem tsub_pieceCheck :
     pieceCheck residualLB tsubCoeffs (1 / 20) alphaBonus 0 tsubPieces = true := by
-  decide +kernel
+  kernel_fact
 
 /-- All piece labels are nonnegative. -/
 theorem tsubPieces_labels : tsubPieces.all (fun p => decide (0 ≤ p.2)) = true := by
-  decide +kernel
+  kernel_fact
 
 /-- `√T ≤ (T+4)/4` for `T ≥ 0` (AM–GM). -/
 theorem sqrt_le_quarter {T : ℝ} (hT : 0 ≤ T) : Real.sqrt T ≤ (T + 4) / 4 := by
@@ -600,7 +601,7 @@ theorem gUp_regular : ProfileRegular gUp (fun _ => -96) (fun _ => 0) := by
 /-- Certificate: `q_aux ≤ 32/5` keV/s on `[0,1]` (42 pieces). -/
 theorem auxRate_check :
     QPoly.checkOn (QPoly.add [32 / 5] (QPoly.scale (-1) auxRateCoeffs)) 0 0 1 grid42 = true := by
-  decide +kernel
+  kernel_fact
 
 /-- `q_aux ≤ 6.4` keV/s on `[0,1]` (maximum ≈ 6.23 at `ψ = 1/9`). -/
 theorem auxRate_le {ψ : ℝ} (hψ : ψ ∈ Icc (0 : ℝ) 1) : QPoly.eval auxRateCoeffs ψ ≤ 32 / 5 := by
@@ -729,7 +730,7 @@ theorem m2_exhaust_power_numeric (sv : ℝ → ℝ) [BoschHaleDT sv] {χ : ℝ} 
 theorem gap_deriv_check :
     QPoly.checkOn (QPoly.scale (-1) (QPoly.deriv gapCoeffs)) 0 0 1
       [1 / 4, 2 / 4, 3 / 4, 1] = true := by
-  decide +kernel
+  kernel_fact
 
 /-- The barriers are ordered: `T_sub ≤ g` on `[0,1]` (they meet at the edge). -/
 theorem tsub_le_gUp {ψ : ℝ} (hψ : ψ ∈ Icc (0 : ℝ) 1) : Tsub ψ ≤ gUp ψ := by

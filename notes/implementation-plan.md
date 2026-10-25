@@ -512,3 +512,9 @@ Each cycle is a run. The targets are listed in priority order; anything left ove
 ### Phase 11: fifth pitch cell (workstation), 25 October 2026
 
 - **Done:** λ ∈ [7/32, 1/4] (`Mu5.rationalStellarator_gc_mu_confined_forever`), workstation (24 CPU-min, peak 4.1 GB), spot-checked on the laptop. The five on-demand cells Mu, Mu2–Mu5 now cover λ ∈ [0, 1/4], the limit of the passing argument (λ|B| < 1 on the tube). **Next:** a combined theorem over λ ∈ [0, 1/4] (extending `MuWide`), and proof-term migration of Mu4 and Mu5.
+
+### Phase 16: default build, second stage, 25 October 2026
+
+- **Done:** Mu/Fam auxiliary modules (568 uses, `kernel_fact`), Torus/NegTorus (4,356 uses; new `Certificates/KronProof2D.lean` with `kron2_proof` and the `PCert2` digit-reading certificate for the older `nodeK`/`centerK` format), and 28 smaller default-build modules. Default build: 9,079 → 3,961 `decide +kernel`; CPU ≈ 1.0×, peak ≤ 5.8 GB; all main theorems on standard axioms. Generators updated.
+- **Not yet in the spirit of the policy:** many `kernel_fact` leaves are still one big `Eq.refl` on a whole Boolean checker or ℚ value (`Ex.allV … = true`, `farAll … = true`, `l1Kron` in the Star checks). They are not `decide`, but are as opaque as it. Each needs a per-checker certificate predicate (SubsetSum pattern), as for `SCert`/`PCert`.
+- **Remaining default-build families:** BallooningCells, PolygonCoil lines/cells, NearAxisQA oscillation rows, Landreman Cert*, ValidatedBVP/Slab (need `∀ x ∈ Finset`), NearAxisQAAveraged and LandremanFamily2MercierStable (memory already near or above 6 GB).
