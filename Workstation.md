@@ -204,22 +204,16 @@ laptop with a small parameter setting, then commit it to `main` before running i
 Kept up to date from the laptop after every review ("update from workstation"). Run them on the
 workstation, inside `tmux`; `run.sh` pulls `main` itself.
 
-**Status (25 October 2026, late night): run now.** The cell [3/16, 7/32] (Mu4) passed and is
-merged. Remaining, one at a time (add `--no-push` and push by hand if needed):
+**Status (25 October 2026, late night; updated): run now.** All pitch cells up to λ = 1/4 are
+certified (Mu5 merged). What remains is the proof-term migration of the on-demand families
+(Phase 16; Lean only, no numerics), one at a time:
 
 ```bash
-# Last pitch cell λ ∈ [7/32, 1/4] (tag Mu5): about 40 min of Python plus about 25 CPU-min of Lean.
-LAM_LO=7/32 LAM_HI=1/4 LAM_TAG=5 scripts/workstation/run.sh lambda-cell
-
-# Proof-term migration of the on-demand families (Phase 16; Lean only, no numerics).
 PT_FAMILIES="RationalStellaratorGCMu2" scripts/workstation/run.sh proofterm-migrate
 PT_FAMILIES="RationalStellaratorGCMu3" scripts/workstation/run.sh proofterm-migrate
-PT_FAMILIES="RationalStellaratorGCMu4" scripts/workstation/run.sh proofterm-migrate
+PT_FAMILIES="RationalStellaratorGCMu4 RationalStellaratorGCMu5" scripts/workstation/run.sh proofterm-migrate
 PT_FAMILIES="RationalStellaratorGCEw1 RationalStellaratorGCEw2 RationalStellaratorGCEw3 RationalStellaratorGCEw4" \
   scripts/workstation/run.sh proofterm-migrate
 ```
-
-If Mu5 stops with "smallness condition fails", report the value: the next step would be a
-higher Chebyshev degree.
 
 Then say "update from workstation" on the laptop.

@@ -508,3 +508,7 @@ Each cycle is a run. The targets are listed in priority order; anything left ove
 ### Phase 11: fourth pitch cell (workstation), 25 October 2026
 
 - **Done:** λ ∈ [3/16, 7/32] (`Mu4.rationalStellarator_gc_mu_confined_forever`), computed and built on the workstation (24 CPU-min, peak 4.1 GB), merged after a laptop spot check. The full cell [3/16, 1/4] had failed KAM smallness (2.64); the half-width cell passes. Pitch cells now cover λ ∈ [0, 7/32] in four on-demand pieces; a combined theorem (like `MuWide`) is still to be written. Mu4 is in the legacy low-memory format and is queued for `proofterm-migrate`.
+
+### Phase 11: fifth pitch cell (workstation), 25 October 2026
+
+- **Done:** λ ∈ [7/32, 1/4] (`Mu5.rationalStellarator_gc_mu_confined_forever`), workstation (24 CPU-min, peak 4.1 GB), spot-checked on the laptop. The five on-demand cells Mu, Mu2–Mu5 now cover λ ∈ [0, 1/4], the limit of the passing argument (λ|B| < 1 on the tube). **Next:** a combined theorem over λ ∈ [0, 1/4] (extending `MuWide`), and proof-term migration of Mu4 and Mu5.
