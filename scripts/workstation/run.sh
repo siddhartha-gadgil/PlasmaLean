@@ -59,6 +59,7 @@ if [ "${1:-}" = "__step" ]; then
   exit $?
 fi
 
+ORIG_ARGS=("$@")
 LIST=0; SETUP_ONLY=0; VERIFY=0; SKIP_NUM=0; PUSH=1; BRANCH=""; JOBS="$(ncpu)"; TASKS=""
 while [ $# -gt 0 ]; do
   case "$1" in
@@ -77,6 +78,18 @@ while [ $# -gt 0 ]; do
 done
 export WS_JOBS="$JOBS"
 cd "$REPO"
+
+# Always start from an up-to-date main (a previous run leaves results on its own branch), then
+# re-run the updated copy of this script.
+if [ "$VERIFY" = 0 ] && [ "$LIST" = 0 ] && [ -z "${WS_SYNCED:-}" ]; then
+  [ -z "$(git status --porcelain --untracked-files=no)" ] \
+    || die "tracked files are modified; run in a clean clone"
+  cur="$(git rev-parse --abbrev-ref HEAD)"
+  if [ "$cur" != main ]; then say "switching from $cur to main"; git checkout -q main; fi
+  git pull --ff-only -q
+  export WS_SYNCED=1
+  exec bash "$SCRIPT_DIR/run.sh" ${ORIG_ARGS[@]+"${ORIG_ARGS[@]}"}
+fi
 
 if [ "$LIST" = 1 ]; then
   for f in "$TASK_DIR"/*.sh; do
@@ -121,7 +134,6 @@ BASE="$(git rev-parse --short HEAD)"
 if [ "$VERIFY" = 0 ]; then
   [ -z "$(git status --porcelain --untracked-files=no)" ] \
     || die "tracked files are modified; run in a clean clone"
-  if [ "$(git rev-parse --abbrev-ref HEAD)" = main ]; then git pull --ff-only; fi
   BASE="$(git rev-parse --short HEAD)"
   [ -n "$BRANCH" ] || BRANCH="workstation/$(echo $TASKS | tr ' ' '+')-$STAMP"
   git checkout -b "$BRANCH"
@@ -220,4 +232,6 @@ if [ "$PUSH" = 1 ]; then
 else
   say "committed locally on $BRANCH (not pushed)"
 fi
+git checkout -q main
+say "back on main"
 exit "$ANY_FAIL"

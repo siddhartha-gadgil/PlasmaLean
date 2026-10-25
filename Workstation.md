@@ -53,8 +53,9 @@ scripts/workstation/run.sh energy-window          # one or more tasks
 
 For each task, the script:
 
-1. creates a branch `workstation/<tasks>-<UTC stamp>` from the current `main`. It refuses to run
-   if tracked files are modified;
+1. switches to `main` and pulls (a previous run leaves the clone on its results branch only if it
+   failed), then creates a branch `workstation/<tasks>-<UTC stamp>`. It refuses to run if tracked
+   files are modified;
 2. runs the task's **numerics** (untrusted Python), with intermediate data kept in `$WS_WORK`
    (default `~/plasmalean-work`, never committed);
 3. **emits** the Lean certificate files;
@@ -65,7 +66,7 @@ For each task, the script:
 6. writes `workstation/results/<task>/<stamp>/` with the step records, truncated logs and
    `summary.json`, which contains the laptop verdict;
 7. commits the results and, if every step succeeded, the generated files. It then pushes the
-   branch. A failed task still commits its logs, so that the failure can be diagnosed on the laptop.
+   branch and switches back to `main`. A failed task still commits its logs, so that the failure can be diagnosed on the laptop.
 
 The script exits nonzero if any task failed or does not fit the laptop.
 
