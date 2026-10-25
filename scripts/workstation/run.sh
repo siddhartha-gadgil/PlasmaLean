@@ -193,8 +193,12 @@ EOF
   [ "$ok" = 1 ] || ANY_FAIL=1
   if [ "$VERIFY" = 0 ]; then
     COMMIT_PATHS="$COMMIT_PATHS workstation/results/$t/$STAMP"
+    # generated files are committed even when a later step failed, so that the failure can be
+    # reproduced on the laptop (a failed run is never merged)
+    for g in $TASK_OUTPUTS; do
+      for f in $g; do [ -e "$f" ] && COMMIT_PATHS="$COMMIT_PATHS $f"; done
+    done
     if [ "$ok" = 1 ]; then
-      for g in $TASK_OUTPUTS; do COMMIT_PATHS="$COMMIT_PATHS $g"; done
       if [ -n "$TASK_ARTIFACTS" ]; then
         mkdir -p "workstation/artifacts/$t"
         for a in $TASK_ARTIFACTS; do

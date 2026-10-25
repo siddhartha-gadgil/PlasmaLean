@@ -66,7 +66,8 @@ For each task, the script:
 6. writes `workstation/results/<task>/<stamp>/` with the step records, truncated logs and
    `summary.json`, which contains the laptop verdict;
 7. commits the results and, if every step succeeded, the generated files. It then pushes the
-   branch and switches back to `main`. A failed task still commits its logs, so that the failure can be diagnosed on the laptop.
+   branch and switches back to `main`. A failed task still commits its logs and whatever files it generated, so that the failure can be
+   reproduced on the laptop.
 
 The script exits nonzero if any task failed or does not fit the laptop.
 
