@@ -1,0 +1,3 @@
+{"task": "smoke", "description": "pipeline smoke test (Python packages, one small Lean module, axioms, push)", "stamp": "20261025T091004Z", "base_commit": "e048289",
+ "host": "hornbill", "os": "Linux x86_64", "cpus": 24, "jobs": 24,
+ "mode": "workstation", "target": "default"}

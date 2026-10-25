@@ -1,0 +1,57 @@
+{
+ "task": "smoke",
+ "description": "pipeline smoke test (Python packages, one small Lean module, axioms, push)",
+ "stamp": "20261025T091004Z",
+ "base_commit": "e048289",
+ "host": "hornbill",
+ "os": "Linux x86_64",
+ "cpus": 24,
+ "jobs": 24,
+ "mode": "workstation",
+ "target": "default",
+ "steps": {
+  "axioms": {
+   "cmd": "lake env lean /home/gadgil/code/PlasmaLean/workstation/results/smoke/20261025T091004Z/axioms.lean",
+   "status": "ok",
+   "returncode": 0,
+   "wall_min": 0.02,
+   "cpu_min": 0.02,
+   "peak_rss_gb": 1.86
+  },
+  "build-PlasmaLean.SubsetSum": {
+   "cmd": "lake build PlasmaLean.SubsetSum",
+   "status": "ok",
+   "returncode": 0,
+   "wall_min": 0.01,
+   "cpu_min": 0.01,
+   "peak_rss_gb": 0.84
+  },
+  "emit": {
+   "cmd": "bash /home/gadgil/code/PlasmaLean/scripts/workstation/run.sh __step emit smoke",
+   "status": "ok",
+   "returncode": 0,
+   "wall_min": 0.0,
+   "cpu_min": 0.0,
+   "peak_rss_gb": 0.01
+  },
+  "numerics": {
+   "cmd": "bash /home/gadgil/code/PlasmaLean/scripts/workstation/run.sh __step numerics smoke",
+   "status": "ok",
+   "returncode": 0,
+   "wall_min": 0.0,
+   "cpu_min": 0.03,
+   "peak_rss_gb": 0.06
+  }
+ },
+ "laptop": {
+  "lean_cpu_min_scaled": 0.0,
+  "lean_peak_rss_gb": 0.84,
+  "budget": {
+   "max_rss_gb": 6.0,
+   "default_cpu_min": 60.0,
+   "max_cpu_min": 240.0,
+   "slowdown": 1.0
+  },
+  "verdict": "laptop ok, default build (~0 CPU-min)"
+ }
+}
