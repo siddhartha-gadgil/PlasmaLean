@@ -381,3 +381,56 @@ comparisons). Suitable for the default build (not yet imported by `PlasmaLean.le
   contraction and interpolation lemma, and a new emitter.
 - Smallest feasible meaningful box within 3 CPU-h: about `d_ρ = 2`, i.e. energy width ~10⁻⁶
   relative times `λ ∈ [0, 1/16]`. This is borderline and untested.
+
+## 9. An energy window: a genuine (energy × pitch angle) family (`Design/RationalStellaratorGCEw*`)
+
+**Result [Lean].** At the fixed design `B₀R₀ = 256 m√(2K/m)/(2e) ∈ [68.9, 69] T·m` (`K = 3.5 MeV`),
+for **every** energy `E` with `|E − K| ≤ 0.4 eV` (exactly: `E ∈ [(1 − 2⁻²⁴)²K, (1 + 2⁻²⁴)²K]`, i.e.
+gyro-lengths `|ρ − 1/256| ≤ 2⁻³²`, `±0.417 eV`) and every `μ ∈ [0, E/(16B₀)]` (`λ ∈ [0, 1/16]`), there
+is an exact KAM torus (`0.03 ≤ P ≤ 0.255`) trapping every passing Littlejohn guiding centre that
+starts inside, for all time, and keeping it passing; such orbits exist
+(**`alpha_gc_confined_forever_energy_window`**, `alpha_gc_ew_confined_forever`). The velocity set with
+kinetic energy in that window, `⟨w, b⟩ > 0`, `sin²χ ≤ |B(x₀)|/(16B₀)` has positive Lebesgue measure
+(**`alphaEwVel_volume_pos`**, `alpha_gc_ew_confined_forever_velocity_set`). Exact tori for every
+`(ρ, λ)` of the window: `ew_family_torus`. Scope: Littlejohn model, non-relativistic, collisionless,
+static vacuum model field. Relative energy width `2.4 × 10⁻⁷`, `≈ 3 × 10¹⁶` times the box of §8.
+Top module (not imported by `PlasmaLean.lean`):
+`lake build PlasmaLean.Design.RationalStellaratorGCEwFamily`.
+
+**Method: evaluate at nodes, interpolate with an analytic remainder.**
+- `Theory/KAM/ParamInterp` (new, generic): `hasFDerivAt_invSqrt`; `PolyExprS.differentiableAt_eval`
+  (trees with inverse-square-root nodes are complex differentiable in a parameter where valid);
+  `exists_coeff_bound` (Cauchy: `‖aₙ‖ ≤ M/Rⁿ`); **`norm_sub_interp_le`**
+  (`‖f(h) − ∑ wⱼ f(xⱼ)‖ ≤ (1 + Λ) M (ρ/R)^m/(1 − ρ/R)` for weights exact on degree `< m`) and its
+  strip-algebra form **`Bd_interp`**.
+- Four node pipelines `Ew{1..4}*H` (λ-family ball pipelines, Chebyshev degree 12, `N, M = 36, 27`)
+  at `ρ_j = 1/256 + t_j 2⁻³²`, `t_j ∈ {−1, −5/16, 5/16, 1}` (dyadic, Lebesgue constant `1.70`,
+  proved `≤ 2` in `wEw_leb`); the field at `ρ_j` enters as the nodes `DtJ = DtF + (ρ_j − ρ₀)F Y_D/2`
+  etc. Node residuals `2.03 × 10⁻²¹` (`R`), `3.31 × 10⁻²¹` (`z`) (`EwNodes`).
+- The family `K(s) = ∑ ℓ_j(s) K_j` (`EwInterp`, `combEw`); the residual is affine in `ρ`, so
+  `s ↦ res(1/256 + s 2⁻³²)(K(s))` is `T₀(x(s)) + 2⁻³² s T₁(x(s))` (`resR_combEw`). Coefficient norms of
+  `C_k = ∑ V⁻¹_{kj} K_j` by kernel-checked integer combinations (`EwComb*`: `‖C₁‖ ≤ 7.0 × 10⁻⁹`,
+  `‖C₂‖ ≤ 6.8 × 10⁻¹⁷`, `‖C₃‖ ≤ 1.8 × 10⁻²⁴` in `s`). On the complex disc `|s| ≤ 2²⁰` (complex
+  `|ρ − ρ₀| ≤ 2⁻¹²`) the inputs are bounded by `aDQ` (`u ≤ 0.2005`), the trees valid (node bound
+  `1.207`) and `M ≤ 6.54` (`EwDisc`). Hence `‖res‖ ≤ 2 · 3.31 × 10⁻²¹ + 1.6 × 10⁻²³ ≤ e₀ = 7 × 10⁻²¹`
+  for every `|s| ≤ 1` (`ewResR_family`, `ewResZ_family`).
+- Admissibility (`EwAdm`, `EwExact`): `‖K(s) − K_L‖ ≤ 7.0 × 10⁻⁹` fits the admissibility balls
+  (`1.18 × 10⁻⁸`) of the **certified** low-resolution chain of §7 (re-used; its Python pickle was
+  re-created bit-for-bit from the Lean data, `ew_leandata.py`); the flow moves by `≤ 2⁻³² · 30768`,
+  re-bounded as in §8 with constants `cE` (`b_{n_z,u} = 0.86852`, `tT = 37.17`, `τ = 0.38`,
+  `c_K ≤ 6400`, `c_L ≤ 21900`, `C₂ = 1.2 × 10¹¹` at `|ρ| ≤ 1/256 + 2⁻³²` (`EwMaj`)); smallness
+  `≈ 0.26` (`EwConst`).
+
+**Why ±0.4 eV and not ±3 eV.** The family moves by `≈ 30 h` in `u` for a gyro-length shift `h`;
+`h = 2⁻³²` is the largest dyadic shift inside the certified admissibility balls. ±3 eV (`h ≈ 2⁻²⁹`,
+shift `5.6 × 10⁻⁸`) needs a new low-resolution chain with balls `≈ 7 × 10⁻⁸` (tested in Python:
+twist drops to `0.28`, `c_K ≈ 8350`, smallness `≈ 0.4`, still fine) and new window constants; the
+interpolation itself would need the same 4 nodes (remainder `q⁴`, `q = h/R`). Not done.
+
+**Cost (laptop, one module at a time).** 343 modules, about 70 CPU-minutes in total (node data
+`≈ 22`, node kernel checks `≈ 40`, chains `≈ 4`, combinations and glue `≈ 3`), plus about 50 CPU-min
+of untrusted Python per run (four node pipelines, `≈ 12 min` and `≈ 8 GB` each). **Memory:** the node
+kernel checks peak at 5–8.8 GB per process (36 of 272 above 6 GB); measured the same way, the existing
+`RationalStellaratorGCMuCheckH*` of §7 peak at 6.9 GB. Smaller digit-sum blocks (`FAM_LBLK=4`)
+*increase* the peak (9.8 GB); larger blocks lower it only to `≈ 6.1 GB` and destroy the residual
+precision. Everything else ≤ 3 GB. Workstation task: `scripts/workstation/tasks/energy-window.sh`.

@@ -128,3 +128,4 @@ run_cmd do
 #print axioms PlasmaLean.Design.LandremanFamily2Cert.family2_mercier_stable
 #print axioms PlasmaLean.Design.RationalStellaratorGC.alpha_gc_passing_confined_forever
 #print axioms PlasmaLean.Design.LandremanFamily2Ballooning.family2_stable_of_cert
+#print axioms PlasmaLean.Theory.KAM.norm_sub_interp_le
