@@ -1,0 +1,9 @@
+init: a00 = 0.970425209598
+Traceback (most recent call last):
+  File "/home/gadgil/code/PlasmaLean/scripts/gc_kam/lamcell/maj.py", line 17, in <module>
+    lc.run_patched('lam_maj.py', [
+  File "/home/gadgil/code/PlasmaLean/scripts/gc_kam/lamcell/lc.py", line 84, in run_patched
+    exec(compile(src, path + ' (lamcell-patched)', 'exec'), g)
+  File "/home/gadgil/code/PlasmaLean/scripts/gc_kam/lam_maj.py (lamcell-patched)", line 275, in <module>
+  File "/home/gadgil/code/PlasmaLean/scripts/gc_kam/lam_maj.py (lamcell-patched)", line 192, in node_bounds
+AssertionError: ('node invalid', 1.61556923163)
