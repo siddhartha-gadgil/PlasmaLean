@@ -1,0 +1,745 @@
+{
+ "task": "proofterm-migrate",
+ "description": "proof-term migration (no decide +kernel) of the families: RationalStellaratorGCMu2",
+ "stamp": "20261025T162057Z",
+ "base_commit": "244e42b",
+ "host": "hornbill",
+ "os": "Linux x86_64",
+ "cpus": 24,
+ "jobs": 24,
+ "mode": "workstation",
+ "target": "separate",
+ "steps": {
+  "axioms": {
+   "cmd": "lake env lean /home/gadgil/code/PlasmaLean/workstation/results/proofterm-migrate/20261025T162057Z/axioms.lean",
+   "status": "ok",
+   "returncode": 0,
+   "wall_min": 0.03,
+   "cpu_min": 0.03,
+   "peak_rss_gb": 3.32
+  },
+  "build-PlasmaLean.Certificates.KernelFact": {
+   "cmd": "lake build PlasmaLean.Certificates.KernelFact",
+   "status": "ok",
+   "returncode": 0,
+   "wall_min": 0.02,
+   "cpu_min": 0.02,
+   "peak_rss_gb": 0.81
+  },
+  "build-PlasmaLean.Certificates.KronProof": {
+   "cmd": "lake build PlasmaLean.Certificates.KronProof",
+   "status": "ok",
+   "returncode": 0,
+   "wall_min": 0.02,
+   "cpu_min": 0.03,
+   "peak_rss_gb": 0.81
+  },
+  "build-PlasmaLean.Design.RationalStellaratorGCMu2Adm": {
+   "cmd": "lake build PlasmaLean.Design.RationalStellaratorGCMu2Adm",
+   "status": "ok",
+   "returncode": 0,
+   "wall_min": 0.37,
+   "cpu_min": 0.46,
+   "peak_rss_gb": 2.45
+  },
+  "build-PlasmaLean.Design.RationalStellaratorGCMu2ChainH": {
+   "cmd": "lake build PlasmaLean.Design.RationalStellaratorGCMu2ChainH",
+   "status": "ok",
+   "returncode": 0,
+   "wall_min": 1.75,
+   "cpu_min": 6.23,
+   "peak_rss_gb": 3.81
+  },
+  "build-PlasmaLean.Design.RationalStellaratorGCMu2ChainL": {
+   "cmd": "lake build PlasmaLean.Design.RationalStellaratorGCMu2ChainL",
+   "status": "ok",
+   "returncode": 0,
+   "wall_min": 0.28,
+   "cpu_min": 0.54,
+   "peak_rss_gb": 2.38
+  },
+  "build-PlasmaLean.Design.RationalStellaratorGCMu2CheckH1": {
+   "cmd": "lake build PlasmaLean.Design.RationalStellaratorGCMu2CheckH1",
+   "status": "ok",
+   "returncode": 0,
+   "wall_min": 0.19,
+   "cpu_min": 0.2,
+   "peak_rss_gb": 3.88
+  },
+  "build-PlasmaLean.Design.RationalStellaratorGCMu2CheckH10": {
+   "cmd": "lake build PlasmaLean.Design.RationalStellaratorGCMu2CheckH10",
+   "status": "ok",
+   "returncode": 0,
+   "wall_min": 0.12,
+   "cpu_min": 0.12,
+   "peak_rss_gb": 2.68
+  },
+  "build-PlasmaLean.Design.RationalStellaratorGCMu2CheckH11": {
+   "cmd": "lake build PlasmaLean.Design.RationalStellaratorGCMu2CheckH11",
+   "status": "ok",
+   "returncode": 0,
+   "wall_min": 0.12,
+   "cpu_min": 0.12,
+   "peak_rss_gb": 2.68
+  },
+  "build-PlasmaLean.Design.RationalStellaratorGCMu2CheckH12": {
+   "cmd": "lake build PlasmaLean.Design.RationalStellaratorGCMu2CheckH12",
+   "status": "ok",
+   "returncode": 0,
+   "wall_min": 0.12,
+   "cpu_min": 0.12,
+   "peak_rss_gb": 2.72
+  },
+  "build-PlasmaLean.Design.RationalStellaratorGCMu2CheckH13": {
+   "cmd": "lake build PlasmaLean.Design.RationalStellaratorGCMu2CheckH13",
+   "status": "ok",
+   "returncode": 0,
+   "wall_min": 0.09,
+   "cpu_min": 0.09,
+   "peak_rss_gb": 2.16
+  },
+  "build-PlasmaLean.Design.RationalStellaratorGCMu2CheckH14": {
+   "cmd": "lake build PlasmaLean.Design.RationalStellaratorGCMu2CheckH14",
+   "status": "ok",
+   "returncode": 0,
+   "wall_min": 0.1,
+   "cpu_min": 0.1,
+   "peak_rss_gb": 2.14
+  },
+  "build-PlasmaLean.Design.RationalStellaratorGCMu2CheckH15": {
+   "cmd": "lake build PlasmaLean.Design.RationalStellaratorGCMu2CheckH15",
+   "status": "ok",
+   "returncode": 0,
+   "wall_min": 0.1,
+   "cpu_min": 0.1,
+   "peak_rss_gb": 2.16
+  },
+  "build-PlasmaLean.Design.RationalStellaratorGCMu2CheckH16": {
+   "cmd": "lake build PlasmaLean.Design.RationalStellaratorGCMu2CheckH16",
+   "status": "ok",
+   "returncode": 0,
+   "wall_min": 0.1,
+   "cpu_min": 0.1,
+   "peak_rss_gb": 2.16
+  },
+  "build-PlasmaLean.Design.RationalStellaratorGCMu2CheckH17": {
+   "cmd": "lake build PlasmaLean.Design.RationalStellaratorGCMu2CheckH17",
+   "status": "ok",
+   "returncode": 0,
+   "wall_min": 0.1,
+   "cpu_min": 0.1,
+   "peak_rss_gb": 2.16
+  },
+  "build-PlasmaLean.Design.RationalStellaratorGCMu2CheckH18": {
+   "cmd": "lake build PlasmaLean.Design.RationalStellaratorGCMu2CheckH18",
+   "status": "ok",
+   "returncode": 0,
+   "wall_min": 0.1,
+   "cpu_min": 0.1,
+   "peak_rss_gb": 2.12
+  },
+  "build-PlasmaLean.Design.RationalStellaratorGCMu2CheckH19": {
+   "cmd": "lake build PlasmaLean.Design.RationalStellaratorGCMu2CheckH19",
+   "status": "ok",
+   "returncode": 0,
+   "wall_min": 0.11,
+   "cpu_min": 0.11,
+   "peak_rss_gb": 2.14
+  },
+  "build-PlasmaLean.Design.RationalStellaratorGCMu2CheckH2": {
+   "cmd": "lake build PlasmaLean.Design.RationalStellaratorGCMu2CheckH2",
+   "status": "ok",
+   "returncode": 0,
+   "wall_min": 0.17,
+   "cpu_min": 0.17,
+   "peak_rss_gb": 3.49
+  },
+  "build-PlasmaLean.Design.RationalStellaratorGCMu2CheckH20": {
+   "cmd": "lake build PlasmaLean.Design.RationalStellaratorGCMu2CheckH20",
+   "status": "ok",
+   "returncode": 0,
+   "wall_min": 0.11,
+   "cpu_min": 0.11,
+   "peak_rss_gb": 2.11
+  },
+  "build-PlasmaLean.Design.RationalStellaratorGCMu2CheckH21": {
+   "cmd": "lake build PlasmaLean.Design.RationalStellaratorGCMu2CheckH21",
+   "status": "ok",
+   "returncode": 0,
+   "wall_min": 0.11,
+   "cpu_min": 0.11,
+   "peak_rss_gb": 2.13
+  },
+  "build-PlasmaLean.Design.RationalStellaratorGCMu2CheckH22": {
+   "cmd": "lake build PlasmaLean.Design.RationalStellaratorGCMu2CheckH22",
+   "status": "ok",
+   "returncode": 0,
+   "wall_min": 0.11,
+   "cpu_min": 0.11,
+   "peak_rss_gb": 2.09
+  },
+  "build-PlasmaLean.Design.RationalStellaratorGCMu2CheckH23": {
+   "cmd": "lake build PlasmaLean.Design.RationalStellaratorGCMu2CheckH23",
+   "status": "ok",
+   "returncode": 0,
+   "wall_min": 0.11,
+   "cpu_min": 0.11,
+   "peak_rss_gb": 2.1
+  },
+  "build-PlasmaLean.Design.RationalStellaratorGCMu2CheckH24": {
+   "cmd": "lake build PlasmaLean.Design.RationalStellaratorGCMu2CheckH24",
+   "status": "ok",
+   "returncode": 0,
+   "wall_min": 0.11,
+   "cpu_min": 0.11,
+   "peak_rss_gb": 2.07
+  },
+  "build-PlasmaLean.Design.RationalStellaratorGCMu2CheckH25": {
+   "cmd": "lake build PlasmaLean.Design.RationalStellaratorGCMu2CheckH25",
+   "status": "ok",
+   "returncode": 0,
+   "wall_min": 0.11,
+   "cpu_min": 0.11,
+   "peak_rss_gb": 2.08
+  },
+  "build-PlasmaLean.Design.RationalStellaratorGCMu2CheckH26": {
+   "cmd": "lake build PlasmaLean.Design.RationalStellaratorGCMu2CheckH26",
+   "status": "ok",
+   "returncode": 0,
+   "wall_min": 0.12,
+   "cpu_min": 0.12,
+   "peak_rss_gb": 2.25
+  },
+  "build-PlasmaLean.Design.RationalStellaratorGCMu2CheckH27": {
+   "cmd": "lake build PlasmaLean.Design.RationalStellaratorGCMu2CheckH27",
+   "status": "ok",
+   "returncode": 0,
+   "wall_min": 0.12,
+   "cpu_min": 0.12,
+   "peak_rss_gb": 2.3
+  },
+  "build-PlasmaLean.Design.RationalStellaratorGCMu2CheckH28": {
+   "cmd": "lake build PlasmaLean.Design.RationalStellaratorGCMu2CheckH28",
+   "status": "ok",
+   "returncode": 0,
+   "wall_min": 0.12,
+   "cpu_min": 0.12,
+   "peak_rss_gb": 2.27
+  },
+  "build-PlasmaLean.Design.RationalStellaratorGCMu2CheckH29": {
+   "cmd": "lake build PlasmaLean.Design.RationalStellaratorGCMu2CheckH29",
+   "status": "ok",
+   "returncode": 0,
+   "wall_min": 0.12,
+   "cpu_min": 0.12,
+   "peak_rss_gb": 2.24
+  },
+  "build-PlasmaLean.Design.RationalStellaratorGCMu2CheckH3": {
+   "cmd": "lake build PlasmaLean.Design.RationalStellaratorGCMu2CheckH3",
+   "status": "ok",
+   "returncode": 0,
+   "wall_min": 0.16,
+   "cpu_min": 0.16,
+   "peak_rss_gb": 3.46
+  },
+  "build-PlasmaLean.Design.RationalStellaratorGCMu2CheckH30": {
+   "cmd": "lake build PlasmaLean.Design.RationalStellaratorGCMu2CheckH30",
+   "status": "ok",
+   "returncode": 0,
+   "wall_min": 0.13,
+   "cpu_min": 0.13,
+   "peak_rss_gb": 2.34
+  },
+  "build-PlasmaLean.Design.RationalStellaratorGCMu2CheckH31": {
+   "cmd": "lake build PlasmaLean.Design.RationalStellaratorGCMu2CheckH31",
+   "status": "ok",
+   "returncode": 0,
+   "wall_min": 0.12,
+   "cpu_min": 0.12,
+   "peak_rss_gb": 2.09
+  },
+  "build-PlasmaLean.Design.RationalStellaratorGCMu2CheckH32": {
+   "cmd": "lake build PlasmaLean.Design.RationalStellaratorGCMu2CheckH32",
+   "status": "ok",
+   "returncode": 0,
+   "wall_min": 0.12,
+   "cpu_min": 0.12,
+   "peak_rss_gb": 2.33
+  },
+  "build-PlasmaLean.Design.RationalStellaratorGCMu2CheckH33": {
+   "cmd": "lake build PlasmaLean.Design.RationalStellaratorGCMu2CheckH33",
+   "status": "ok",
+   "returncode": 0,
+   "wall_min": 0.12,
+   "cpu_min": 0.12,
+   "peak_rss_gb": 2.42
+  },
+  "build-PlasmaLean.Design.RationalStellaratorGCMu2CheckH34": {
+   "cmd": "lake build PlasmaLean.Design.RationalStellaratorGCMu2CheckH34",
+   "status": "ok",
+   "returncode": 0,
+   "wall_min": 0.12,
+   "cpu_min": 0.12,
+   "peak_rss_gb": 2.27
+  },
+  "build-PlasmaLean.Design.RationalStellaratorGCMu2CheckH35": {
+   "cmd": "lake build PlasmaLean.Design.RationalStellaratorGCMu2CheckH35",
+   "status": "ok",
+   "returncode": 0,
+   "wall_min": 0.12,
+   "cpu_min": 0.12,
+   "peak_rss_gb": 2.33
+  },
+  "build-PlasmaLean.Design.RationalStellaratorGCMu2CheckH36": {
+   "cmd": "lake build PlasmaLean.Design.RationalStellaratorGCMu2CheckH36",
+   "status": "ok",
+   "returncode": 0,
+   "wall_min": 0.13,
+   "cpu_min": 0.13,
+   "peak_rss_gb": 2.31
+  },
+  "build-PlasmaLean.Design.RationalStellaratorGCMu2CheckH37": {
+   "cmd": "lake build PlasmaLean.Design.RationalStellaratorGCMu2CheckH37",
+   "status": "ok",
+   "returncode": 0,
+   "wall_min": 0.11,
+   "cpu_min": 0.11,
+   "peak_rss_gb": 2.28
+  },
+  "build-PlasmaLean.Design.RationalStellaratorGCMu2CheckH38": {
+   "cmd": "lake build PlasmaLean.Design.RationalStellaratorGCMu2CheckH38",
+   "status": "ok",
+   "returncode": 0,
+   "wall_min": 0.12,
+   "cpu_min": 0.12,
+   "peak_rss_gb": 2.3
+  },
+  "build-PlasmaLean.Design.RationalStellaratorGCMu2CheckH39": {
+   "cmd": "lake build PlasmaLean.Design.RationalStellaratorGCMu2CheckH39",
+   "status": "ok",
+   "returncode": 0,
+   "wall_min": 0.12,
+   "cpu_min": 0.12,
+   "peak_rss_gb": 2.32
+  },
+  "build-PlasmaLean.Design.RationalStellaratorGCMu2CheckH4": {
+   "cmd": "lake build PlasmaLean.Design.RationalStellaratorGCMu2CheckH4",
+   "status": "ok",
+   "returncode": 0,
+   "wall_min": 0.16,
+   "cpu_min": 0.15,
+   "peak_rss_gb": 3.11
+  },
+  "build-PlasmaLean.Design.RationalStellaratorGCMu2CheckH40": {
+   "cmd": "lake build PlasmaLean.Design.RationalStellaratorGCMu2CheckH40",
+   "status": "ok",
+   "returncode": 0,
+   "wall_min": 0.13,
+   "cpu_min": 0.13,
+   "peak_rss_gb": 2.4
+  },
+  "build-PlasmaLean.Design.RationalStellaratorGCMu2CheckH41": {
+   "cmd": "lake build PlasmaLean.Design.RationalStellaratorGCMu2CheckH41",
+   "status": "ok",
+   "returncode": 0,
+   "wall_min": 0.12,
+   "cpu_min": 0.12,
+   "peak_rss_gb": 2.28
+  },
+  "build-PlasmaLean.Design.RationalStellaratorGCMu2CheckH42": {
+   "cmd": "lake build PlasmaLean.Design.RationalStellaratorGCMu2CheckH42",
+   "status": "ok",
+   "returncode": 0,
+   "wall_min": 0.12,
+   "cpu_min": 0.12,
+   "peak_rss_gb": 2.39
+  },
+  "build-PlasmaLean.Design.RationalStellaratorGCMu2CheckH43": {
+   "cmd": "lake build PlasmaLean.Design.RationalStellaratorGCMu2CheckH43",
+   "status": "ok",
+   "returncode": 0,
+   "wall_min": 0.11,
+   "cpu_min": 0.11,
+   "peak_rss_gb": 2.02
+  },
+  "build-PlasmaLean.Design.RationalStellaratorGCMu2CheckH44": {
+   "cmd": "lake build PlasmaLean.Design.RationalStellaratorGCMu2CheckH44",
+   "status": "ok",
+   "returncode": 0,
+   "wall_min": 0.12,
+   "cpu_min": 0.12,
+   "peak_rss_gb": 2.35
+  },
+  "build-PlasmaLean.Design.RationalStellaratorGCMu2CheckH45": {
+   "cmd": "lake build PlasmaLean.Design.RationalStellaratorGCMu2CheckH45",
+   "status": "ok",
+   "returncode": 0,
+   "wall_min": 0.12,
+   "cpu_min": 0.12,
+   "peak_rss_gb": 2.37
+  },
+  "build-PlasmaLean.Design.RationalStellaratorGCMu2CheckH46": {
+   "cmd": "lake build PlasmaLean.Design.RationalStellaratorGCMu2CheckH46",
+   "status": "ok",
+   "returncode": 0,
+   "wall_min": 0.1,
+   "cpu_min": 0.1,
+   "peak_rss_gb": 1.87
+  },
+  "build-PlasmaLean.Design.RationalStellaratorGCMu2CheckH47": {
+   "cmd": "lake build PlasmaLean.Design.RationalStellaratorGCMu2CheckH47",
+   "status": "ok",
+   "returncode": 0,
+   "wall_min": 0.12,
+   "cpu_min": 0.12,
+   "peak_rss_gb": 2.07
+  },
+  "build-PlasmaLean.Design.RationalStellaratorGCMu2CheckH48": {
+   "cmd": "lake build PlasmaLean.Design.RationalStellaratorGCMu2CheckH48",
+   "status": "ok",
+   "returncode": 0,
+   "wall_min": 0.13,
+   "cpu_min": 0.13,
+   "peak_rss_gb": 2.41
+  },
+  "build-PlasmaLean.Design.RationalStellaratorGCMu2CheckH49": {
+   "cmd": "lake build PlasmaLean.Design.RationalStellaratorGCMu2CheckH49",
+   "status": "ok",
+   "returncode": 0,
+   "wall_min": 0.12,
+   "cpu_min": 0.12,
+   "peak_rss_gb": 2.36
+  },
+  "build-PlasmaLean.Design.RationalStellaratorGCMu2CheckH5": {
+   "cmd": "lake build PlasmaLean.Design.RationalStellaratorGCMu2CheckH5",
+   "status": "ok",
+   "returncode": 0,
+   "wall_min": 0.15,
+   "cpu_min": 0.15,
+   "peak_rss_gb": 3.0
+  },
+  "build-PlasmaLean.Design.RationalStellaratorGCMu2CheckH50": {
+   "cmd": "lake build PlasmaLean.Design.RationalStellaratorGCMu2CheckH50",
+   "status": "ok",
+   "returncode": 0,
+   "wall_min": 0.12,
+   "cpu_min": 0.12,
+   "peak_rss_gb": 2.37
+  },
+  "build-PlasmaLean.Design.RationalStellaratorGCMu2CheckH51": {
+   "cmd": "lake build PlasmaLean.Design.RationalStellaratorGCMu2CheckH51",
+   "status": "ok",
+   "returncode": 0,
+   "wall_min": 0.13,
+   "cpu_min": 0.13,
+   "peak_rss_gb": 2.41
+  },
+  "build-PlasmaLean.Design.RationalStellaratorGCMu2CheckH52": {
+   "cmd": "lake build PlasmaLean.Design.RationalStellaratorGCMu2CheckH52",
+   "status": "ok",
+   "returncode": 0,
+   "wall_min": 0.17,
+   "cpu_min": 0.17,
+   "peak_rss_gb": 2.46
+  },
+  "build-PlasmaLean.Design.RationalStellaratorGCMu2CheckH53": {
+   "cmd": "lake build PlasmaLean.Design.RationalStellaratorGCMu2CheckH53",
+   "status": "ok",
+   "returncode": 0,
+   "wall_min": 0.17,
+   "cpu_min": 0.17,
+   "peak_rss_gb": 2.39
+  },
+  "build-PlasmaLean.Design.RationalStellaratorGCMu2CheckH54": {
+   "cmd": "lake build PlasmaLean.Design.RationalStellaratorGCMu2CheckH54",
+   "status": "ok",
+   "returncode": 0,
+   "wall_min": 0.17,
+   "cpu_min": 0.17,
+   "peak_rss_gb": 1.99
+  },
+  "build-PlasmaLean.Design.RationalStellaratorGCMu2CheckH55": {
+   "cmd": "lake build PlasmaLean.Design.RationalStellaratorGCMu2CheckH55",
+   "status": "ok",
+   "returncode": 0,
+   "wall_min": 0.17,
+   "cpu_min": 0.17,
+   "peak_rss_gb": 2.09
+  },
+  "build-PlasmaLean.Design.RationalStellaratorGCMu2CheckH56": {
+   "cmd": "lake build PlasmaLean.Design.RationalStellaratorGCMu2CheckH56",
+   "status": "ok",
+   "returncode": 0,
+   "wall_min": 0.17,
+   "cpu_min": 0.17,
+   "peak_rss_gb": 2.08
+  },
+  "build-PlasmaLean.Design.RationalStellaratorGCMu2CheckH57": {
+   "cmd": "lake build PlasmaLean.Design.RationalStellaratorGCMu2CheckH57",
+   "status": "ok",
+   "returncode": 0,
+   "wall_min": 0.17,
+   "cpu_min": 0.17,
+   "peak_rss_gb": 2.05
+  },
+  "build-PlasmaLean.Design.RationalStellaratorGCMu2CheckH58": {
+   "cmd": "lake build PlasmaLean.Design.RationalStellaratorGCMu2CheckH58",
+   "status": "ok",
+   "returncode": 0,
+   "wall_min": 0.15,
+   "cpu_min": 0.15,
+   "peak_rss_gb": 2.01
+  },
+  "build-PlasmaLean.Design.RationalStellaratorGCMu2CheckH59": {
+   "cmd": "lake build PlasmaLean.Design.RationalStellaratorGCMu2CheckH59",
+   "status": "ok",
+   "returncode": 0,
+   "wall_min": 0.15,
+   "cpu_min": 0.15,
+   "peak_rss_gb": 2.03
+  },
+  "build-PlasmaLean.Design.RationalStellaratorGCMu2CheckH6": {
+   "cmd": "lake build PlasmaLean.Design.RationalStellaratorGCMu2CheckH6",
+   "status": "ok",
+   "returncode": 0,
+   "wall_min": 0.16,
+   "cpu_min": 0.16,
+   "peak_rss_gb": 3.21
+  },
+  "build-PlasmaLean.Design.RationalStellaratorGCMu2CheckH60": {
+   "cmd": "lake build PlasmaLean.Design.RationalStellaratorGCMu2CheckH60",
+   "status": "ok",
+   "returncode": 0,
+   "wall_min": 0.17,
+   "cpu_min": 0.17,
+   "peak_rss_gb": 2.01
+  },
+  "build-PlasmaLean.Design.RationalStellaratorGCMu2CheckH61": {
+   "cmd": "lake build PlasmaLean.Design.RationalStellaratorGCMu2CheckH61",
+   "status": "ok",
+   "returncode": 0,
+   "wall_min": 0.23,
+   "cpu_min": 0.23,
+   "peak_rss_gb": 2.04
+  },
+  "build-PlasmaLean.Design.RationalStellaratorGCMu2CheckH62": {
+   "cmd": "lake build PlasmaLean.Design.RationalStellaratorGCMu2CheckH62",
+   "status": "ok",
+   "returncode": 0,
+   "wall_min": 0.18,
+   "cpu_min": 0.18,
+   "peak_rss_gb": 2.04
+  },
+  "build-PlasmaLean.Design.RationalStellaratorGCMu2CheckH63": {
+   "cmd": "lake build PlasmaLean.Design.RationalStellaratorGCMu2CheckH63",
+   "status": "ok",
+   "returncode": 0,
+   "wall_min": 0.37,
+   "cpu_min": 0.37,
+   "peak_rss_gb": 2.64
+  },
+  "build-PlasmaLean.Design.RationalStellaratorGCMu2CheckH64": {
+   "cmd": "lake build PlasmaLean.Design.RationalStellaratorGCMu2CheckH64",
+   "status": "ok",
+   "returncode": 0,
+   "wall_min": 0.36,
+   "cpu_min": 0.35,
+   "peak_rss_gb": 2.64
+  },
+  "build-PlasmaLean.Design.RationalStellaratorGCMu2CheckH7": {
+   "cmd": "lake build PlasmaLean.Design.RationalStellaratorGCMu2CheckH7",
+   "status": "ok",
+   "returncode": 0,
+   "wall_min": 0.16,
+   "cpu_min": 0.16,
+   "peak_rss_gb": 3.24
+  },
+  "build-PlasmaLean.Design.RationalStellaratorGCMu2CheckH8": {
+   "cmd": "lake build PlasmaLean.Design.RationalStellaratorGCMu2CheckH8",
+   "status": "ok",
+   "returncode": 0,
+   "wall_min": 0.14,
+   "cpu_min": 0.13,
+   "peak_rss_gb": 2.86
+  },
+  "build-PlasmaLean.Design.RationalStellaratorGCMu2CheckH9": {
+   "cmd": "lake build PlasmaLean.Design.RationalStellaratorGCMu2CheckH9",
+   "status": "ok",
+   "returncode": 0,
+   "wall_min": 0.13,
+   "cpu_min": 0.13,
+   "peak_rss_gb": 2.64
+  },
+  "build-PlasmaLean.Design.RationalStellaratorGCMu2CheckL1": {
+   "cmd": "lake build PlasmaLean.Design.RationalStellaratorGCMu2CheckL1",
+   "status": "ok",
+   "returncode": 0,
+   "wall_min": 0.59,
+   "cpu_min": 0.59,
+   "peak_rss_gb": 2.9
+  },
+  "build-PlasmaLean.Design.RationalStellaratorGCMu2CheckL2": {
+   "cmd": "lake build PlasmaLean.Design.RationalStellaratorGCMu2CheckL2",
+   "status": "ok",
+   "returncode": 0,
+   "wall_min": 0.56,
+   "cpu_min": 0.56,
+   "peak_rss_gb": 2.81
+  },
+  "build-PlasmaLean.Design.RationalStellaratorGCMu2CheckL3": {
+   "cmd": "lake build PlasmaLean.Design.RationalStellaratorGCMu2CheckL3",
+   "status": "ok",
+   "returncode": 0,
+   "wall_min": 0.5,
+   "cpu_min": 0.5,
+   "peak_rss_gb": 2.56
+  },
+  "build-PlasmaLean.Design.RationalStellaratorGCMu2CheckL4": {
+   "cmd": "lake build PlasmaLean.Design.RationalStellaratorGCMu2CheckL4",
+   "status": "ok",
+   "returncode": 0,
+   "wall_min": 0.55,
+   "cpu_min": 0.55,
+   "peak_rss_gb": 2.43
+  },
+  "build-PlasmaLean.Design.RationalStellaratorGCMu2CheckL5": {
+   "cmd": "lake build PlasmaLean.Design.RationalStellaratorGCMu2CheckL5",
+   "status": "ok",
+   "returncode": 0,
+   "wall_min": 0.55,
+   "cpu_min": 0.55,
+   "peak_rss_gb": 2.51
+  },
+  "build-PlasmaLean.Design.RationalStellaratorGCMu2CheckL6": {
+   "cmd": "lake build PlasmaLean.Design.RationalStellaratorGCMu2CheckL6",
+   "status": "ok",
+   "returncode": 0,
+   "wall_min": 0.63,
+   "cpu_min": 0.63,
+   "peak_rss_gb": 2.61
+  },
+  "build-PlasmaLean.Design.RationalStellaratorGCMu2CheckL7": {
+   "cmd": "lake build PlasmaLean.Design.RationalStellaratorGCMu2CheckL7",
+   "status": "ok",
+   "returncode": 0,
+   "wall_min": 0.66,
+   "cpu_min": 0.66,
+   "peak_rss_gb": 3.42
+  },
+  "build-PlasmaLean.Design.RationalStellaratorGCMu2CheckL8": {
+   "cmd": "lake build PlasmaLean.Design.RationalStellaratorGCMu2CheckL8",
+   "status": "ok",
+   "returncode": 0,
+   "wall_min": 0.74,
+   "cpu_min": 0.74,
+   "peak_rss_gb": 2.96
+  },
+  "build-PlasmaLean.Design.RationalStellaratorGCMu2Confined": {
+   "cmd": "lake build PlasmaLean.Design.RationalStellaratorGCMu2Confined",
+   "status": "ok",
+   "returncode": 0,
+   "wall_min": 0.03,
+   "cpu_min": 0.04,
+   "peak_rss_gb": 1.54
+  },
+  "build-PlasmaLean.Design.RationalStellaratorGCMu2Exact": {
+   "cmd": "lake build PlasmaLean.Design.RationalStellaratorGCMu2Exact",
+   "status": "ok",
+   "returncode": 0,
+   "wall_min": 0.05,
+   "cpu_min": 0.18,
+   "peak_rss_gb": 1.66
+  },
+  "build-PlasmaLean.Design.RationalStellaratorGCMu2Forever": {
+   "cmd": "lake build PlasmaLean.Design.RationalStellaratorGCMu2Forever",
+   "status": "ok",
+   "returncode": 0,
+   "wall_min": 0.06,
+   "cpu_min": 0.12,
+   "peak_rss_gb": 1.66
+  },
+  "build-PlasmaLean.Design.RationalStellaratorGCMu2KvSH": {
+   "cmd": "lake build PlasmaLean.Design.RationalStellaratorGCMu2KvSH",
+   "status": "ok",
+   "returncode": 0,
+   "wall_min": 1.11,
+   "cpu_min": 5.92,
+   "peak_rss_gb": 0.83
+  },
+  "build-PlasmaLean.Design.RationalStellaratorGCMu2KvSL": {
+   "cmd": "lake build PlasmaLean.Design.RationalStellaratorGCMu2KvSL",
+   "status": "ok",
+   "returncode": 0,
+   "wall_min": 0.02,
+   "cpu_min": 0.02,
+   "peak_rss_gb": 0.82
+  },
+  "build-PlasmaLean.Design.RationalStellaratorGCMu2LowMemH": {
+   "cmd": "lake build PlasmaLean.Design.RationalStellaratorGCMu2LowMemH",
+   "status": "ok",
+   "returncode": 0,
+   "wall_min": 0.09,
+   "cpu_min": 0.16,
+   "peak_rss_gb": 1.65
+  },
+  "build-PlasmaLean.Design.RationalStellaratorGCMu2LowMemL": {
+   "cmd": "lake build PlasmaLean.Design.RationalStellaratorGCMu2LowMemL",
+   "status": "ok",
+   "returncode": 0,
+   "wall_min": 0.05,
+   "cpu_min": 0.11,
+   "peak_rss_gb": 1.5
+  },
+  "build-PlasmaLean.Design.RationalStellaratorGCMu2OutH": {
+   "cmd": "lake build PlasmaLean.Design.RationalStellaratorGCMu2OutH",
+   "status": "ok",
+   "returncode": 0,
+   "wall_min": 0.03,
+   "cpu_min": 0.04,
+   "peak_rss_gb": 1.51
+  },
+  "build-PlasmaLean.Design.RationalStellaratorGCMu2OutL": {
+   "cmd": "lake build PlasmaLean.Design.RationalStellaratorGCMu2OutL",
+   "status": "ok",
+   "returncode": 0,
+   "wall_min": 0.03,
+   "cpu_min": 0.04,
+   "peak_rss_gb": 1.51
+  },
+  "build-PlasmaLean.Design.RationalStellaratorGCMuWide": {
+   "cmd": "lake build PlasmaLean.Design.RationalStellaratorGCMuWide",
+   "status": "ok",
+   "returncode": 0,
+   "wall_min": 2.6,
+   "cpu_min": 29.79,
+   "peak_rss_gb": 4.18
+  },
+  "emit": {
+   "cmd": "bash /home/gadgil/code/PlasmaLean/scripts/workstation/run.sh __step emit proofterm-migrate",
+   "status": "ok",
+   "returncode": 0,
+   "wall_min": 0.01,
+   "cpu_min": 0.01,
+   "peak_rss_gb": 0.04
+  },
+  "numerics": {
+   "cmd": "bash /home/gadgil/code/PlasmaLean/scripts/workstation/run.sh __step numerics proofterm-migrate",
+   "status": "ok",
+   "returncode": 0,
+   "wall_min": 0.01,
+   "cpu_min": 0.01,
+   "peak_rss_gb": 0.04
+  }
+ },
+ "laptop": {
+  "lean_cpu_min_scaled": 57.4,
+  "lean_peak_rss_gb": 4.18,
+  "budget": {
+   "max_rss_gb": 6.0,
+   "default_cpu_min": 60.0,
+   "max_cpu_min": 240.0,
+   "slowdown": 1.0
+  },
+  "verdict": "laptop ok, default build (~57 CPU-min)"
+ }
+}
