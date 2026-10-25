@@ -79,8 +79,13 @@ Options:
 
 ## Back on the laptop
 
+In a Claude Code session here, say **"update from workstation"**: the skill
+`plasmalean-workstation-update` lists pending runs (`scripts/workstation/pending.sh`), re-checks the
+passing ones with `--verify-only`, merges and integrates them, records every run in
+`workstation/REVIEWED.md`, pushes and reports. The manual steps are:
+
 ```bash
-git fetch
+scripts/workstation/pending.sh                              # unmerged runs and their verdicts
 git log --oneline origin/workstation/<branch> -3
 cat workstation/results/<task>/<stamp>/summary.json        # after checking out the branch
 git checkout -b review origin/workstation/<branch>

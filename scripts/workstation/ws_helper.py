@@ -8,6 +8,7 @@ Subcommands:
                                    and Quot.sound are allowed
   summary TASKDIR                  combine the step records of one task into summary.json and
                                    print the laptop-budget verdict
+  show                             print a summary.json read from stdin (used by pending.sh)
 """
 
 import glob
@@ -113,6 +114,19 @@ def summary(task_dir):
     return 0 if not failed and not verdict.startswith("TOO") else 1
 
 
+def show():
+    d = json.load(sys.stdin)
+    lap = d["laptop"]
+    print(f"   {d['task']} [{d['stamp']}, base {d['base_commit']}, {d['host']}]")
+    print(f"     verdict: {lap['verdict']}")
+    print(f"     lean: {lap['lean_cpu_min_scaled']} CPU-min (scaled), "
+          f"peak {lap['lean_peak_rss_gb']} GB")
+    for k, v in d["steps"].items():
+        print(f"     {k:40s} {v['status']:6s} {v['wall_min']:8.1f} min "
+              f"{v['peak_rss_gb']:6.2f} GB")
+    return 0
+
+
 def main():
     if len(sys.argv) < 2:
         sys.exit(__doc__)
@@ -125,6 +139,8 @@ def main():
         sys.exit(axioms(sys.argv[2]))
     if sub == "summary":
         sys.exit(summary(sys.argv[2]))
+    if sub == "show":
+        sys.exit(show())
     sys.exit(__doc__)
 
 
