@@ -479,3 +479,10 @@ Each cycle is a run. The targets are listed in priority order; anything left ove
 
 - **Workstation run [1/8, 3/16] failed** in the numerics (`node invalid`): `lam_maj.py` bounded the three inverse-square-root nodes by one uniform g, which needs g²(1 − λ₁·mQQ·g²) ≥ 1, impossible for λ₁ > 1/(4·mQQ) ≈ 0.157. An artifact of the bound, not of the field.
 - **Fix:** per-node majorants (`Theory/KAM/PolyExprSMajQG.lean`, default build; `scripts/gc_kam/lamcell/maj_g.py`); only λ₁·mQQ·gE·gE4 < 1 is needed (0.47 at λ₁ = 1/4). The cheap node check passes for [1/8, 3/16] and [3/16, 1/4] (C₂ = 1.11e11 and 1.42e11, vs 9.67e10 for the certified cell). `lambda-cell.sh` now uses it, with a fail-fast check.
+
+### Infrastructure: low-memory kernel checks, 25 October 2026
+
+- **Diagnosis:** the KAM-family check modules' memory is in the kernel (whnf caches keep every intermediate big number until the declaration is checked), not elaboration (0.7 GB) or literals.
+- **Fix:** sign–magnitude integers, per-row masks placed by divide and conquer, row block sums by two multiplications (`Certificates/KronLowMemCompute.lean`, `KronBallLowMem.lean`; emitter `scripts/gc_kam/lowmem/lowmem_emit.py`). The bridge lemmas re-prove the original statements, so chains and theorems are unchanged.
+- **Migrated:** Mu, Mu2, Ew1–4 and Fam families. Peak per process **8.8 → 4.3 GB** (default build and on-demand modules alike); check CPU ≈ halved (Mu H 554 → 329 s, Ew H 2596 → 1437 s). The 6 GB laptop target now holds everywhere. `energy-window.sh` and `lambda-cell.sh` emit the new format.
+- **Open:** the checks still use `decide +kernel` (one kernel evaluation per check). Proof terms with `rfl` leaves would put 12–24 MB intermediates into the oleans; `Nat.le_of_ble_eq_true rfl` doubles time and memory (elaborator evaluation). Policy decision pending.

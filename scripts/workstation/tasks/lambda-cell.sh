@@ -42,17 +42,21 @@ _lc_modules() {
   printf '%sDataL ' "$P"
   for k in 1 2 3 4 5 6; do printf '%sDataH%d ' "$P" "$k"; done
   printf '%sKvL %sKvH %sTreesL %sTreesH %sEnvL %sEnvH %sRelL %sRelH ' "$P" "$P" "$P" "$P" "$P" "$P" "$P" "$P"
+  # low-memory format (scripts/gc_kam/lowmem/lowmem_emit.py): signed images, checks, bridges
+  printf '%sKvSL %sKvSH ' "$P" "$P"
   for k in $(seq 1 "$LAM_GL"); do printf '%sCheckL%d ' "$P" "$k"; done
   for k in $(seq 1 "$LAM_GH"); do printf '%sCheckH%d ' "$P" "$k"; done
+  printf '%sLowMemL %sLowMemH ' "$P" "$P"
   printf '%sChainL %sChainH %sOutL %sOutH %sMaj %sAdm %sExact %sForever %sConfined' \
     "$P" "$P" "$P" "$P" "$P" "$P" "$P" "$P" "$P"
 }
 
 # Lean modules, dependencies first (each built in its own process). Measured on the laptop for
-# [1/16, 1/8] (97 modules with the hand-written MuWide): 31 CPU-min, 29 min wall. Peak RSS 7.8 GB
-# (CheckH3); 10 check modules are above 6 GB. The certified cell [0, 1/16] measures the same way
-# (its CheckH1 is 8.8 GB). See notes/theory/gc-kam-status.md.
-TASK_MODULES="PlasmaLean.Theory.KAM.PolyExprSMajQG $(_lc_modules)"
+# [1/16, 1/8] in the old format: 31 CPU-min, peak RSS 7.8 GB (CheckH3). The low-memory format
+# (task_emit runs scripts/gc_kam/lowmem/lowmem_emit.py) brings the check modules to about 4.4 GB
+# and roughly halves their CPU time. See notes/theory/gc-kam-status.md.
+TASK_MODULES="PlasmaLean.Theory.KAM.PolyExprSMajQG PlasmaLean.Certificates.KronLowMemCompute \
+PlasmaLean.Certificates.KronBallLowMem $(_lc_modules)"
 
 TASK_ENTRYPOINTS="PlasmaLean.Design.RationalStellaratorGC.Mu${LAM_TAG}.rationalStellarator_gc_mu_confined_forever \
 PlasmaLean.Design.RationalStellaratorGC.Mu${LAM_TAG}.mu_family_torus \
@@ -94,4 +98,10 @@ task_emit() {
   "$WS_PY" -I $G/emit.py > "$LAM_WORK/emit.log" || return 1
   "$WS_PY" -I $G/emit_kam.py > "$LAM_WORK/emit_kam.log" || return 1
   "$WS_PY" -I $G/install.py --force > "$LAM_WORK/install.log" || return 1
+  # low-memory kernel checks (peak about 4.4 GB instead of 7.8 GB; same statements downstream)
+  local T
+  for T in H L; do
+    "$WS_PY" -I scripts/gc_kam/lowmem/lowmem_emit.py "RationalStellaratorGCMu${LAM_TAG}" "$T" \
+      --inplace --patch-chain >> "$LAM_WORK/lowmem.log" || return 1
+  done
 }

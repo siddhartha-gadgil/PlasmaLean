@@ -26,10 +26,12 @@ _ew_node_modules() {
     printf 'PlasmaLean.Design.RationalStellaratorGCEw%dTreesH ' "$j"
     printf 'PlasmaLean.Design.RationalStellaratorGCEw%dEnvH ' "$j"
     printf 'PlasmaLean.Design.RationalStellaratorGCEw%dRelH ' "$j"
+    printf 'PlasmaLean.Design.RationalStellaratorGCEw%dKvSH ' "$j"
     for k in $(ls PlasmaLean/Design/RationalStellaratorGCEw${j}CheckH*.lean 2>/dev/null \
         | sed 's/.*CheckH\([0-9]*\)\.lean/\1/' | sort -n); do
       printf 'PlasmaLean.Design.RationalStellaratorGCEw%dCheckH%d ' "$j" "$k"
     done
+    printf 'PlasmaLean.Design.RationalStellaratorGCEw%dLowMemH ' "$j"
     printf 'PlasmaLean.Design.RationalStellaratorGCEw%dChainH ' "$j"
     printf 'PlasmaLean.Design.RationalStellaratorGCEw%dOutH ' "$j"
   done
@@ -43,10 +45,13 @@ _ew_comb_checks() {
   done
 }
 
-# Lean modules, dependencies first (each built in its own process). Measured on the laptop: about
-# 70 CPU-min in total; the node kernel checks (RationalStellaratorGCEw<j>CheckH*) peak at 5-8.8 GB
-# (36 of 272 above 6 GB, as do the existing RationalStellaratorGCMuCheckH* at 6.9 GB), the rest <= 3 GB.
+# Lean modules, dependencies first (each built in its own process). Measured on the laptop in the
+# old format: about 70 CPU-min in total, node kernel checks (RationalStellaratorGCEw<j>CheckH*) at
+# 5-8.8 GB. In the low-memory format (task_emit runs scripts/gc_kam/lowmem/lowmem_emit.py) the
+# check modules peak at about 4.4 GB; the rest stays <= 3 GB.
 TASK_MODULES="PlasmaLean.Theory.KAM.ParamInterp \
+PlasmaLean.Certificates.KronLowMemCompute \
+PlasmaLean.Certificates.KronBallLowMem \
 PlasmaLean.Design.RationalStellaratorGCEwInterp \
 PlasmaLean.Design.RationalStellaratorGCEwAdm \
 PlasmaLean.Design.RationalStellaratorGCEwMaj \
@@ -130,6 +135,9 @@ task_emit() {
     LAM_PKL_H="$W/H$j/lam_cert_H.pkl" LAM_PKL_L="$W/L0/lam_cert_L.pkl" EW_RHO="$R" EW_TMP="$W/emit$j" \
       LAM_GH=68 LAM_HCAP=1 "$WS_PY" -I $G/ew_emit_lean.py all > "$W/emit$j.log"
     "$WS_PY" -I $G/ew_rename.py "$W/emit$j" "$j" "1/256 + ($(echo "$e" | cut -d: -f3)) 2⁻³²"
+    # low-memory kernel checks (scripts/gc_kam/lowmem/lowmem_emit.py; same statements downstream)
+    "$WS_PY" -I $G/lowmem/lowmem_emit.py "RationalStellaratorGCEw$j" H --inplace --patch-chain \
+      >> "$W/lowmem.log" || return 1
   done
   "$WS_PY" -I $G/ew_nodes.py
   EW_COMB_OUT="$W" "$WS_PY" -I $G/ew_comb.py "$W/H1/lam_cert_H.pkl" "$W/H2/lam_cert_H.pkl" \

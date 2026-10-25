@@ -75,6 +75,7 @@ public import PlasmaLean.Design.RationalStellaratorGCEw4CheckH66
 public import PlasmaLean.Design.RationalStellaratorGCEw4CheckH67
 public import PlasmaLean.Design.RationalStellaratorGCEw4CheckH68
 public import PlasmaLean.Design.RationalStellaratorGCMuCommon
+public import PlasmaLean.Design.RationalStellaratorGCEw4LowMemH
 
 /-!
 # The high-resolution ball chain of the guiding-centre torus family
