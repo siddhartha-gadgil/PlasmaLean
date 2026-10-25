@@ -131,3 +131,4 @@ run_cmd do
 #print axioms PlasmaLean.Theory.KAM.norm_sub_interp_le
 #print axioms PlasmaLean.Stability.BallooningSecular.jpar_transport
 #print axioms PlasmaLean.Design.LandremanFamily2BallooningSecular.family2_stable_of_secular_cert
+#print axioms PlasmaLean.Theory.KAM.PQG.valid_of_nodesOK
