@@ -1,15 +1,15 @@
 [
   {
     "title": "Progress slideshow",
-    "section": "Evidence updated 2026-10-21 · Passing 3.5 MeV alpha guiding centres confined for all time in an exact stellarator field over a positive-measure set of pitch angles (μ ∈ [0, E/(16B₀)], one energy and B₀R₀; Littlejohn model), and for μ = 0 over B₀R₀ ∈ [67.95, 69.99] T·m; a Mercier-stable finite-β non-axisymmetric band with labels derived from the field; all-time field-line confinement; 52-transit coil confinement; one consistent axisymmetric plasma with certified local stability up to ignition.",
+    "section": "Evidence updated 2026-10-25 · Passing 3.5 MeV alpha guiding centres confined for all time in an exact stellarator field for every pitch angle with λ ∈ [0, 1/8] at one energy, and over a positive-measure velocity set with |E − 3.5 MeV| ≤ 0.4 eV × λ ∈ [0, 1/16] (one B₀R₀; Littlejohn model; vacuum model field; heavy certificates on demand), and for μ = 0 over B₀R₀ ∈ [67.95, 69.99] T·m; a Mercier-stable finite-β non-axisymmetric band with labels derived from the field, whose ballooning stability is reduced to one pointwise certificate but not yet certified; all-time field-line confinement; 52-transit coil confinement; one consistent axisymmetric plasma with certified local stability up to ignition; a workstation pipeline for heavy certificates.",
     "url": "slides.html",
     "text": "progress slideshow presentation latest run evidence vacuum fixture"
   },
   {
-    "title": "Alpha guiding centres confined forever — now across a cone of pitch angles.",
+    "title": "Alpha guiding centres confined forever — over λ ∈ [0, 1/8] and a narrow energy window.",
     "section": "Progress slideshow",
     "url": "slides.html#where-we-are",
-    "text": "alpha guiding centres confined forever — now across a cone of pitch angles. plasmalean is building a lean library for stellarator design. in an exact non-axisymmetric stellarator field, passing 3.5 mev alpha guiding centres are proved confined for all time for every pitch angle in a cone (μ > 0), and for a range of b₀r₀ at μ = 0; field lines are confined forever; a coil set confines field lines for 52 transits; a finite-β non-axisymmetric band is mercier-stable; one axisymmetric plasma has proved alpha confinement, a hot core and certified local stability. all-time field-line confinement in a genuine stellarator field (vacuum model); one consistent axisymmetric plasma with certified local stability; coil-produced confinement for one transit."
+    "text": "alpha guiding centres confined forever — over λ ∈ [0, 1/8] and a narrow energy window. plasmalean is building a lean library for stellarator design. in an exact non-axisymmetric stellarator field, passing 3.5 mev alpha guiding centres are proved confined for all time for every pitch angle with λ ∈ [0, 1/8] at one energy, over a positive-measure set of velocities with |e − 3.5 mev| ≤ 0.4 ev × λ ∈ [0, 1/16], and for a range of b₀r₀ at μ = 0; field lines are confined forever; a coil set confines field lines for 52 transits; a finite-β non-axisymmetric band is mercier-stable (ballooning reduced, not certified); one axisymmetric plasma has proved alpha confinement, a hot core and certified local stability. all-time field-line and passing-alpha guiding-centre confinement in a genuine stellarator field (vacuum model); one consistent axisymmetric plasma with certified local stability; heavy certificates now built on demand, with a workstation pipeline."
   },
   {
     "title": "Small assumptions. Reusable proofs. One candidate.",
@@ -174,6 +174,24 @@
     "text": "a cone of pitch angles, confined forever. passing guiding centres with μ > 0 follow field lines of b + ∇×(ρ_{e,μ}b). a chebyshev family of exact tori in λ = μb₀/e ∈ [0, 1/16] traps every passing 3.5 mev alpha guiding centre starting inside — and proves it stays passing. about 120 new modules (mostly certificates)."
   },
   {
+    "title": "Positive measure in velocity space — in a narrow energy band.",
+    "section": "Progress slideshow",
+    "url": "slides.html#energy-window",
+    "text": "positive measure in velocity space — in a narrow energy band. tori certified at four energies are interpolated with a proved analytic remainder. every passing alpha guiding centre with |e − 3.5 mev| ≤ 0.4 ev and λ ∈ [0, 1/16] starting inside an exact torus stays inside, and stays passing, forever. a second pitch cell extends the one-energy result to λ ∈ [0, 1/8]. about 440 new files, nearly all certificate modules outside the default build."
+  },
+  {
+    "title": "Reduced exactly to one inequality — but not yet certified.",
+    "section": "Progress slideshow",
+    "url": "slides.html#ballooning-reduction",
+    "text": "reduced exactly to one inequality — but not yet certified. a general 3-d surface ballooning framework reduces stability of every field line and every θ_k on a family-2 surface to one pointwise inequality on surface × ℝ. the secular part of that inequality is now solved exactly in lean. numerically the band is stable, but no certificate has been found. five modules join the default build."
+  },
+  {
+    "title": "Search on a big machine; re-check on the laptop.",
+    "section": "Progress slideshow",
+    "url": "slides.html#workstation",
+    "text": "search on a big machine; re-check on the laptop. heavy numerics and first builds of large certificates run on a workstation and are pushed to workstation/* branches; the laptop re-checks them within its build budget before merging. no theorem comes from the workstation yet; merged lean must still build on the laptop."
+  },
+  {
     "title": "Theory, techniques and a ladder of models — for confinement and for heat.",
     "section": "Progress slideshow",
     "url": "slides.html#implementation-plan",
@@ -183,7 +201,7 @@
     "title": "The next run must leave evidence, not just a promise.",
     "section": "Progress slideshow",
     "url": "slides.html#next-run",
-    "text": "the next run must leave evidence, not just a promise. next: wider pitch-angle range, lower energies and a joint b₀r₀ range (toward positive measure in velocity space); trapped alphas and coil-produced all-time confinement (research); a higher-β stable region and ballooning for it. the linked run records checked declarations, assumptions and validation. this slideshow is a summary of that evidence, not a new design certificate."
+    "text": "the next run must leave evidence, not just a promise. next: wider energy windows (±3 ev, then ±1%) and a joint b₀r₀ range via the workstation; further λ cells; a family-2 ballooning certificate and kernel checker; kernel-check memory under 6 gb; trapped alphas and coil-produced all-time confinement (research). the linked run records checked declarations, assumptions and validation. this slideshow is a summary of that evidence, not a new design certificate."
   },
   {
     "title": "Stellarator concepts",
@@ -649,15 +667,15 @@
   },
   {
     "title": "S6 · Source-specific local stability criteria",
-    "section": "MHD stability · Partially implemented — Suydam both ways; Mercier certified for the reactor Solov'ev equilibrium and on a band k ∈ [0.7, 0.9] of Landreman family 2 at λ = 200 (finite-β non-axisymmetric, low β; flux labels hand-derived); helical equilibrium and family 1 proved Mercier-unstable.",
+    "section": "MHD stability · Partially implemented — Suydam both ways; Mercier certified for the reactor Solov'ev equilibrium and on a band k ∈ [0.7, 0.9] of Landreman family 2 at λ = 200 (finite-β non-axisymmetric, low β; flux labels derived from the field; Mercier formula supplied); helical equilibrium and family 1 proved Mercier-unstable.",
     "url": "mhd-stability.html",
-    "text": "s6 source-specific local stability criteria theorem backlog partially implemented — suydam both ways; mercier certified for the reactor solov'ev equilibrium and on a band k ∈ [0.7, 0.9] of landreman family 2 at λ = 200 (finite-β non-axisymmetric, low β; flux labels hand-derived); helical equilibrium and family 1 proved mercier-unstable."
+    "text": "s6 source-specific local stability criteria theorem backlog partially implemented — suydam both ways; mercier certified for the reactor solov'ev equilibrium and on a band k ∈ [0.7, 0.9] of landreman family 2 at λ = 200 (finite-β non-axisymmetric, low β; flux labels derived from the field; mercier formula supplied); helical equilibrium and family 1 proved mercier-unstable."
   },
   {
     "title": "S7 · All-mode certified bound for a restricted useful configuration",
-    "section": "MHD stability · Partially implemented — screw-pinch Newcomb all modes m ≠ 0; ideal ballooning of the reactor Solov'ev equilibrium on every flux surface for every field line and θ_k (reduction supplied); certified Mercier; no 3-D all-mode certificate.",
+    "section": "MHD stability · Partially implemented — screw-pinch Newcomb all modes m ≠ 0; ideal ballooning of the reactor Solov'ev equilibrium on every flux surface for every field line and θ_k (reduction supplied); a general 3-D surface ballooning framework with exact secular part, reducing family-2 ballooning to one pointwise certificate (numerically stable, not certified); certified Mercier; no 3-D all-mode certificate.",
     "url": "mhd-stability.html",
-    "text": "s7 all-mode certified bound for a restricted useful configuration theorem backlog partially implemented — screw-pinch newcomb all modes m ≠ 0; ideal ballooning of the reactor solov'ev equilibrium on every flux surface for every field line and θ_k (reduction supplied); certified mercier; no 3-d all-mode certificate."
+    "text": "s7 all-mode certified bound for a restricted useful configuration theorem backlog partially implemented — screw-pinch newcomb all modes m ≠ 0; ideal ballooning of the reactor solov'ev equilibrium on every flux surface for every field line and θ_k (reduction supplied); a general 3-d surface ballooning framework with exact secular part, reducing family-2 ballooning to one pointwise certificate (numerically stable, not certified); certified mercier; no 3-d all-mode certificate."
   },
   {
     "title": "S8 · Free-boundary certificate with coils/vacuum/wall",
@@ -745,9 +763,9 @@
   },
   {
     "title": "K3 · Approximate-invariant finite-time confinement",
-    "section": "Particles & transport · Partially implemented — 3.5 MeV alphas confined for all time in an exact Solov'ev equilibrium (full orbits); passing μ = 0 alpha guiding centres confined for all time in an exact stellarator field at one B₀R₀ (Littlejohn model; measure-zero set); near-QA passing alphas 0.19 s; trapped alphas open.",
+    "section": "Particles & transport · Partially implemented — 3.5 MeV alphas confined for all time in an exact Solov'ev equilibrium (full orbits); passing alpha guiding centres confined for all time in an exact stellarator field (Littlejohn model, vacuum model field): μ = 0 over B₀R₀ ∈ [67.95, 69.99] T·m, λ ∈ [0, 1/8] at one energy, and a positive-measure velocity set with |E − 3.5 MeV| ≤ 0.4 eV × λ ∈ [0, 1/16] (on-demand build); near-QA passing alphas 0.19 s; trapped alphas open.",
     "url": "particles-and-transport.html",
-    "text": "k3 approximate-invariant finite-time confinement theorem backlog partially implemented — 3.5 mev alphas confined for all time in an exact solov'ev equilibrium (full orbits); passing μ = 0 alpha guiding centres confined for all time in an exact stellarator field at one b₀r₀ (littlejohn model; measure-zero set); near-qa passing alphas 0.19 s; trapped alphas open."
+    "text": "k3 approximate-invariant finite-time confinement theorem backlog partially implemented — 3.5 mev alphas confined for all time in an exact solov'ev equilibrium (full orbits); passing alpha guiding centres confined for all time in an exact stellarator field (littlejohn model, vacuum model field): μ = 0 over b₀r₀ ∈ [67.95, 69.99] t·m, λ ∈ [0, 1/8] at one energy, and a positive-measure velocity set with |e − 3.5 mev| ≤ 0.4 ev × λ ∈ [0, 1/16] (on-demand build); near-qa passing alphas 0.19 s; trapped alphas open."
   },
   {
     "title": "K4 · Omnigeneity/action relation in a specified class",
@@ -1746,6 +1764,36 @@
     "text": "positive measure in 3-d velocity space (technicality), 21 october 2026 implementation plan"
   },
   {
+    "title": "Phase 14 route B: ballooning on the family-2 band, 25 October 2026",
+    "section": "Implementation plan",
+    "url": "implementation-plan.html#phase-14-route-b-ballooning-on-the-family-2-band-25-october-2026",
+    "text": "phase 14 route b: ballooning on the family-2 band, 25 october 2026 implementation plan"
+  },
+  {
+    "title": "Phase 15: workstation pipeline, 25 October 2026",
+    "section": "Implementation plan",
+    "url": "implementation-plan.html#phase-15-workstation-pipeline-25-october-2026",
+    "text": "phase 15: workstation pipeline, 25 october 2026 implementation plan"
+  },
+  {
+    "title": "Phase 11: energy window (genuine energy × pitch family), 25 October 2026",
+    "section": "Implementation plan",
+    "url": "implementation-plan.html#phase-11-energy-window-genuine-energy-pitch-family-25-october-2026",
+    "text": "phase 11: energy window (genuine energy × pitch family), 25 october 2026 implementation plan"
+  },
+  {
+    "title": "Phase 11: second pitch cell, 25 October 2026",
+    "section": "Implementation plan",
+    "url": "implementation-plan.html#phase-11-second-pitch-cell-25-october-2026",
+    "text": "phase 11: second pitch cell, 25 october 2026 implementation plan"
+  },
+  {
+    "title": "Phase 14 route B: ballooning certificate search, 25 October 2026",
+    "section": "Implementation plan",
+    "url": "implementation-plan.html#phase-14-route-b-ballooning-certificate-search-25-october-2026",
+    "text": "phase 14 route b: ballooning certificate search, 25 october 2026 implementation plan"
+  },
+  {
     "title": "M0 · Exact symmetric equilibria: slab, screw pinch, Solov'ev, helical",
     "section": "Implementation plan · Lean verified — exact slab, screw-pinch, Solov'ev and helical equilibria with kernel force balance, all-time field-line/orbit confinement, Suydam both ways and screw-pinch Newcomb for 1 ≤ |m| ≤ 6 (idealized symmetric models).",
     "url": "implementation-plan.html",
@@ -1897,9 +1945,9 @@
   },
   {
     "title": "Verified progress",
-    "section": "Passing 3.5 MeV alpha guiding centres confined for all time in an exact stellarator field over a positive-measure set of pitch angles (μ ∈ [0, E/(16B₀)], one energy and B₀R₀; Littlejohn model), and for μ = 0 over B₀R₀ ∈ [67.95, 69.99] T·m; a Mercier-stable finite-β non-axisymmetric band with labels derived from the field; all-time field-line confinement; 52-transit coil confinement; one consistent axisymmetric plasma with certified local stability up to ignition.",
+    "section": "Passing 3.5 MeV alpha guiding centres confined for all time in an exact stellarator field for every pitch angle with λ ∈ [0, 1/8] at one energy, and over a positive-measure velocity set with |E − 3.5 MeV| ≤ 0.4 eV × λ ∈ [0, 1/16] (one B₀R₀; Littlejohn model; vacuum model field; heavy certificates on demand), and for μ = 0 over B₀R₀ ∈ [67.95, 69.99] T·m; a Mercier-stable finite-β non-axisymmetric band with labels derived from the field, whose ballooning stability is reduced to one pointwise certificate but not yet certified; all-time field-line confinement; 52-transit coil confinement; one consistent axisymmetric plasma with certified local stability up to ignition; a workstation pipeline for heavy certificates.",
     "url": "progress.html",
-    "text": "verified progress passing 3.5 mev alpha guiding centres confined for all time in an exact stellarator field over a positive-measure set of pitch angles (μ ∈ [0, e/(16b₀)], one energy and b₀r₀; littlejohn model), and for μ = 0 over b₀r₀ ∈ [67.95, 69.99] t·m; a mercier-stable finite-β non-axisymmetric band with labels derived from the field; all-time field-line confinement; 52-transit coil confinement; one consistent axisymmetric plasma with certified local stability up to ignition."
+    "text": "verified progress passing 3.5 mev alpha guiding centres confined for all time in an exact stellarator field for every pitch angle with λ ∈ [0, 1/8] at one energy, and over a positive-measure velocity set with |e − 3.5 mev| ≤ 0.4 ev × λ ∈ [0, 1/16] (one b₀r₀; littlejohn model; vacuum model field; heavy certificates on demand), and for μ = 0 over b₀r₀ ∈ [67.95, 69.99] t·m; a mercier-stable finite-β non-axisymmetric band with labels derived from the field, whose ballooning stability is reduced to one pointwise certificate but not yet certified; all-time field-line confinement; 52-transit coil confinement; one consistent axisymmetric plasma with certified local stability up to ignition; a workstation pipeline for heavy certificates."
   },
   {
     "title": "Outcome",

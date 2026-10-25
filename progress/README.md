@@ -60,3 +60,5 @@ dated evidence. Run `node scripts/check_site.mjs` before handing off the update.
 [21 October 2026, Phase 14B: a Mercier-stable finite-β non-axisymmetric band; trapped-alpha kick bound](2026-10-21-progress-11.md).
 
 [21 October 2026, Phase 11 part 2: μ > 0 alpha guiding centres over a pitch-angle cell; stable band with derived labels](2026-10-21-progress-12.md).
+
+[25 October 2026, Phase 11 part 3, Phase 14B, Phase 15: an energy window and λ ∈ [0, 1/8] for alpha guiding centres; family-2 ballooning reduced (not certified); a workstation pipeline](2026-10-25-progress-13.md).

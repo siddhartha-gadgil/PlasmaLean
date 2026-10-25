@@ -20,7 +20,7 @@ confinement is certified.
 
 On 20 October an [implementation plan](notes/implementation-plan.md) was fixed. It cycles
 between theory, certificate techniques and a ladder of successively realistic models, targeting
-both confinement and keeping the plasma hot. Ten phases are complete:
+both confinement and keeping the plasma hot. Ten phases are complete, and Phases 11, 14 and 15 are in progress:
 
 - **one consistent plasma:** for one exact Solov'ev field satisfying force balance, 3.5 MeV alphas
   born in the core are confined for all time, the core stays at or above 10 keV for all time, and
@@ -33,23 +33,32 @@ both confinement and keeping the plasma hot. Ten phases are complete:
   invariant torus around the axis, and every field line starting inside it stays inside forever
   (field lines proved to exist and be unique; vacuum model field); passing 3.5 MeV alpha guiding
   centres (μ = 0, either sign of v∥, Littlejohn model) are also confined for all time, for every
-  B₀R₀ ∈ [67.95, 69.99] T·m, and with μ > 0 for every pitch angle in a cone (λ ∈ [0, 1/16]) at one
-  energy — positive measure in pitch angle, not yet in 3-D velocity space;
+  B₀R₀ ∈ [67.95, 69.99] T·m, and with μ > 0 for every pitch angle with λ ∈ [0, 1/8] at one energy;
+  over the energy window |E − 3.5 MeV| ≤ 0.4 eV × λ ∈ [0, 1/16] the confined initial velocities
+  form a set of positive measure in 3-D velocity space, but only in a narrow energy band and at one
+  B₀R₀ (these heavy certificates are on-demand top modules, outside the default build);
 - **coils:** a concrete set of closed polygonal coils produces a field whose lines near the axis
   are certified to stay confined for 52 toroidal transits;
 - **finite β without axisymmetry:** an explicit finite-pressure, non-axisymmetric toroidal
   equilibria (Landreman families 1 and 2, the latter with proved shear; idealized) satisfy the
   kernel force balance; family 1 is Mercier-unstable, while family 2 at low β (λ = 200) has a
-  certified Mercier-stable band of flux surfaces (flux labels derived from the field);
-- **stability:** Mercier stability and ideal-ballooning stability of that equilibrium are certified
+  certified Mercier-stable band of flux surfaces (flux labels derived from the field); its ideal
+  ballooning stability is reduced exactly to one pointwise certificate and is numerically stable
+  (tail margin ×2.36–×9.39 in pressure), but **no certificate has been found**;
+- **stability:** Mercier stability and ideal-ballooning stability of the Solov'ev equilibrium are certified
   on every flux surface (with the standard reductions supplied);
 - **near-quasisymmetric alphas:** passing alphas are held for 0.19 s;
 - **burn windows** follow from the IPB98 and ISS04 scaling laws;
 - **validation:** a slab Grad–Shafranov equilibrium with an exponential profile is validated;
 - **screw pinch:** all-mode Newcomb stability is proved.
 
-The library has 637 modules and about 56k audited declarations, using standard axioms only. See the
-[progress slideshow](docs/slides.html) and the [latest report](progress/2026-10-21-progress-12.md).
+Heavy certificates are now offloaded through a workstation pipeline (Phase 15; a smoke run passed
+on a 24-CPU Linux workstation) and re-checked on the laptop before merging; see
+[Workstation.md](Workstation.md). Kernel checks currently peak at 8.8 GB per process, above the
+6 GB laptop target.
+
+The library uses standard axioms only (no project axioms). See the
+[progress slideshow](docs/slides.html) and the [latest report](progress/2026-10-25-progress-13.md).
 
 ## Code structure
 

@@ -887,7 +887,7 @@ theorem field_tangent_to_pressure (eq : MHDEquilibrium Ω) :
                         Mathematical Theory Engine: Asymmetric Solvability & Stability
                     </h2>
                     <p class="text-stone-600 leading-relaxed text-sm sm:text-base">
-                        This section outlines theoretical tools in mathematical physics (`PlasmaLean.Theory`). Implemented so far: abstract energy bounds, Suydam (both directions), Newcomb, Mercier and ballooning criteria, Noether and guiding-centre confinement, and transport comparison. The theorems below are still planned: drawing on functional analysis and Sobolev space theory ($H^k(\Omega)$), the library is meant to formulate precisely scoped theorems about when 3D MHD models admit <strong>stable non-axisymmetric plasma equilibria</strong> ($\delta W > 0$).
+                        This section outlines theoretical tools in mathematical physics (`PlasmaLean.Theory`). Implemented so far: abstract energy bounds, Suydam (both directions), Newcomb, Mercier and ballooning criteria (including a 3-D surface ballooning reduction, not yet certified for a stellarator band), Noether confinement, an explicit-constant KAM theorem with all-time guiding-centre confinement over a pitch-angle range and a narrow energy window, and transport comparison. The theorems below are still planned: drawing on functional analysis and Sobolev space theory ($H^k(\Omega)$), the library is meant to formulate precisely scoped theorems about when 3D MHD models admit <strong>stable non-axisymmetric plasma equilibria</strong> ($\delta W > 0$).
                     </p>
                 </div>
             </div>
@@ -1163,7 +1163,7 @@ mathlib = { git = "https://github.com/leanprover-community/mathlib4.git", rev = 
                         </div>
                         <div class="p-2.5 bg-purple-50 rounded-lg border border-purple-200">
                             <span class="font-bold text-purple-900">PlasmaLean/Theory/</span>
-                            <span class="block text-[11px] text-purple-800 font-sans mt-0.5">Theoretical API: `Stability/` (Suydam, Newcomb, Mercier, ballooning), `Kinetic/`, `Transport/`, `Fields/`. Planned: asymmetric existence, KAM, 3-D energy spectrum.</span>
+                            <span class="block text-[11px] text-purple-800 font-sans mt-0.5">Theoretical API: `Stability/` (Suydam, Newcomb, Mercier, ballooning), `Kinetic/`, `Transport/`, `Fields/`. Done: explicit-constant KAM. Planned: asymmetric existence, 3-D energy spectrum.</span>
                         </div>
                         <div class="p-2.5 bg-emerald-50 rounded-lg border border-emerald-200">
                             <span class="font-bold text-emerald-900">PlasmaLean/Bridge/</span>

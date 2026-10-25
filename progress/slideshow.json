@@ -1,29 +1,29 @@
 {
-  "updated": "2026-10-21",
-  "report": "2026-10-21-progress-12.md",
+  "updated": "2026-10-25",
+  "report": "2026-10-25-progress-13.md",
   "status": "Exact symmetric equilibria with all-time orbit confinement · Local stability criteria · Not a coil-produced stellarator · Not a construction release.",
   "slides": [
     {
       "id": "where-we-are",
       "eyebrow": "Progress briefing · alphas confined in a stellarator field",
-      "title": "Alpha guiding centres confined forever — now across a cone of pitch angles.",
-      "lead": "PlasmaLean is building a Lean library for stellarator design. In an exact non-axisymmetric stellarator field, passing 3.5 MeV alpha guiding centres are proved confined for all time for every pitch angle in a cone (μ > 0), and for a range of B₀R₀ at μ = 0; field lines are confined forever; a coil set confines field lines for 52 transits; a finite-β non-axisymmetric band is Mercier-stable; one axisymmetric plasma has proved alpha confinement, a hot core and certified local stability.",
+      "title": "Alpha guiding centres confined forever — over λ ∈ [0, 1/8] and a narrow energy window.",
+      "lead": "PlasmaLean is building a Lean library for stellarator design. In an exact non-axisymmetric stellarator field, passing 3.5 MeV alpha guiding centres are proved confined for all time for every pitch angle with λ ∈ [0, 1/8] at one energy, over a positive-measure set of velocities with |E − 3.5 MeV| ≤ 0.4 eV × λ ∈ [0, 1/16], and for a range of B₀R₀ at μ = 0; field lines are confined forever; a coil set confines field lines for 52 transits; a finite-β non-axisymmetric band is Mercier-stable (ballooning reduced, not certified); one axisymmetric plasma has proved alpha confinement, a hot core and certified local stability.",
       "metrics": [
         {
-          "value": "637",
-          "label": "Lean modules"
+          "value": "λ ∈ [0, 1/8]",
+          "label": "pitch-angle range with all-time alpha guiding-centre confinement (one energy)"
         },
         {
-          "value": "λ ∈ [0, 1/16]",
-          "label": "pitch-angle cell with all-time alpha guiding-centre confinement"
+          "value": "± 0.4 eV",
+          "label": "energy window at 3.5 MeV (× λ ∈ [0, 1/16]): positive measure in velocity space"
         },
         {
           "value": "52",
           "label": "certified transits for a coil-produced field"
         }
       ],
-      "progress": "All-time field-line confinement in a genuine stellarator field (vacuum model); one consistent axisymmetric plasma with certified local stability; coil-produced confinement for one transit.",
-      "boundary": "Alpha results: one energy (μ > 0 cell) or μ = 0 (B₀R₀ range) — not yet positive measure in 3-D velocity space; Littlejohn model supplied; vacuum model field; trapped near-QA alphas only 1.8×10⁻⁴ s; coil-produced all-time confinement blocked; the stable finite-β band is low-β.",
+      "progress": "All-time field-line and passing-alpha guiding-centre confinement in a genuine stellarator field (vacuum model); one consistent axisymmetric plasma with certified local stability; heavy certificates now built on demand, with a workstation pipeline.",
+      "boundary": "Alpha results: one B₀R₀ and a narrow energy band (±0.4 eV) — not robust to slowing-down; Littlejohn model supplied; vacuum model field; trapped alphas open; coil-produced all-time confinement blocked; the stable finite-β band is low-β and not certified ballooning-stable; kernel checks peak at 8.8 GB per process.",
       "evidence": [
         {
           "label": "Latest report",
@@ -1177,8 +1177,130 @@
       ]
     },
     {
+      "id": "energy-window",
+      "eyebrow": "28 · Phase 11: an energy window and λ ∈ [0, 1/8]",
+      "title": "Positive measure in velocity space — in a narrow energy band.",
+      "lead": "Tori certified at four energies are interpolated with a proved analytic remainder. Every passing alpha guiding centre with |E − 3.5 MeV| ≤ 0.4 eV and λ ∈ [0, 1/16] starting inside an exact torus stays inside, and stays passing, forever. A second pitch cell extends the one-energy result to λ ∈ [0, 1/8].",
+      "cards": [
+        {
+          "title": "Energy window",
+          "text": "alpha_gc_confined_forever_energy_window; alphaEwVel_volume_pos: the velocity set has positive Lebesgue measure; relative width ±1.2×10⁻⁷, ≈ 3×10¹⁶ times the earlier box; smallness ≈ 0.26. On-demand top module RationalStellaratorGCEwFamily: 343 modules, ≈ 70 CPU-min.",
+          "status": "Lean verified (on demand)",
+          "kind": "checked"
+        },
+        {
+          "title": "λ ∈ [0, 1/8]",
+          "text": "alpha_gc_passing_confined_forever_wide: second cell λ ∈ [1/16, 1/8], Chebyshev degree 12, e₀ = 5.3×10⁻²¹, smallness 0.158; passing proved (λ|B| ≤ 3/8). On-demand top module RationalStellaratorGCMuWide: 97 modules, 31 CPU-min.",
+          "status": "Lean verified (on demand)",
+          "kind": "checked"
+        },
+        {
+          "title": "Scope and memory",
+          "text": "One B₀R₀; ±3 eV not reached; Littlejohn model, collisionless, vacuum model field. Correction: the default-build cell peaks at 8.8 GB per process, not 5.5 GB; both new families peak at 7.8–8.8 GB.",
+          "status": "Limits disclosed",
+          "kind": "partial"
+        }
+      ],
+      "progress": "About 440 new files, nearly all certificate modules outside the default build.",
+      "boundary": "A narrow energy band at one B₀R₀ is not robustness to slowing-down or to field changes.",
+      "evidence": [
+        {
+          "label": "New checked results",
+          "href": "progress.html#new-checked-results"
+        },
+        {
+          "label": "Quantitative certificates",
+          "href": "progress.html#quantitative-certificates"
+        },
+        {
+          "label": "Corrections",
+          "href": "progress.html#corrections-and-challenged-claims"
+        }
+      ]
+    },
+    {
+      "id": "ballooning-reduction",
+      "eyebrow": "29 · Phase 14B: ballooning for the stable band",
+      "title": "Reduced exactly to one inequality — but not yet certified.",
+      "lead": "A general 3-D surface ballooning framework reduces stability of every field line and every θ_k on a family-2 surface to one pointwise inequality on surface × ℝ. The secular part of that inequality is now solved exactly in Lean. Numerically the band is stable, but no certificate has been found.",
+      "cards": [
+        {
+          "title": "Framework and secular identity",
+          "text": "eik_complete, eikLine_stable_of_surfaceCert; jpar_transport: B·∇J∥ = 2μ⟪B×∇ψ, κ⟫/|B|²; family2_stable_of_secular_cert. Ballooning reduction supplied.",
+          "status": "Lean verified",
+          "kind": "checked"
+        },
+        {
+          "title": "Numerical evidence",
+          "text": "Untrusted: stable on k ∈ [0.7, 0.9] at the physical pressure and twice it; the long-line tail goes unstable only at pressure × 2.36 (k = 0.70) to × 9.39 (k = 0.90).",
+          "status": "Untrusted numerics",
+          "kind": "partial"
+        },
+        {
+          "title": "Certificate",
+          "text": "Affine-in-s certificates are infeasible; a B-spline × rational-in-s SOCP search fails the dense check at k = 0.9; the kernel checker is unwritten (≈ 2–11 CPU-h per surface).",
+          "status": "Open — negative so far",
+          "kind": "next"
+        }
+      ],
+      "progress": "Five modules join the default build.",
+      "boundary": "The family-2 band is not certified ballooning-stable.",
+      "evidence": [
+        {
+          "label": "New checked results",
+          "href": "progress.html#new-checked-results"
+        },
+        {
+          "label": "Quantitative certificates",
+          "href": "progress.html#quantitative-certificates"
+        },
+        {
+          "label": "Corrections",
+          "href": "progress.html#corrections-and-challenged-claims"
+        }
+      ]
+    },
+    {
+      "id": "workstation",
+      "eyebrow": "30 · Phase 15: a workstation for heavy certificates",
+      "title": "Search on a big machine; re-check on the laptop.",
+      "lead": "Heavy numerics and first builds of large certificates run on a workstation and are pushed to workstation/* branches; the laptop re-checks them within its build budget before merging.",
+      "cards": [
+        {
+          "title": "Pipeline",
+          "text": "scripts/workstation/run.sh (numerics → Lean emission → per-module build with CPU and memory measurement → axiom check → verdict), --verify-only on the laptop, and the skill plasmalean-workstation-update.",
+          "status": "Infrastructure",
+          "kind": "checked"
+        },
+        {
+          "title": "Smoke run",
+          "text": "Passed on hornbill (Linux, 24 CPUs): Python packages, Lean build, axioms, push.",
+          "status": "Pipeline ok",
+          "kind": "checked"
+        },
+        {
+          "title": "Tasks",
+          "text": "energy-window (wider windows), lambda-cell (further λ cells), family2-ballooning (search and data only until a checker exists).",
+          "status": "Registered",
+          "kind": "next"
+        }
+      ],
+      "progress": "No theorem comes from the workstation yet; merged Lean must still build on the laptop.",
+      "boundary": "Laptop budget: ≤ 6 GB per process (currently exceeded by kernel checks), ≤ 60 CPU-min default, ≤ 240 CPU-min per on-demand top module.",
+      "evidence": [
+        {
+          "label": "Validation",
+          "href": "progress.html#validation"
+        },
+        {
+          "label": "Implementation plan",
+          "href": "implementation-plan.html"
+        }
+      ]
+    },
+    {
       "id": "implementation-plan",
-      "eyebrow": "28 · Plan of record",
+      "eyebrow": "31 · Plan of record",
       "title": "Theory, techniques and a ladder of models — for confinement and for heat.",
       "lead": "Each cycle develops theory, turns theorems into sound certificate checkers, and applies them to the next rung of a model ladder. Every rung must prove properties of both kinds: confinement (G1) and temperature held above burn conditions (G2).",
       "cards": [
@@ -1222,9 +1344,9 @@
     },
     {
       "id": "next-run",
-      "eyebrow": "29 · Keep every step reviewable",
+      "eyebrow": "32 · Keep every step reviewable",
       "title": "The next run must leave evidence, not just a promise.",
-      "lead": "Next: wider pitch-angle range, lower energies and a joint B₀R₀ range (toward positive measure in velocity space); trapped alphas and coil-produced all-time confinement (research); a higher-β stable region and ballooning for it.",
+      "lead": "Next: wider energy windows (±3 eV, then ±1%) and a joint B₀R₀ range via the workstation; further λ cells; a family-2 ballooning certificate and kernel checker; kernel-check memory under 6 GB; trapped alphas and coil-produced all-time confinement (research).",
       "cards": [
         {
           "title": "Implement & challenge",
