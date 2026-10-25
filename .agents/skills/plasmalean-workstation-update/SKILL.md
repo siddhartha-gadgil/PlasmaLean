@@ -96,4 +96,8 @@ Final report to the user, concise:
 - suggested next workstation tasks, or fixes for failed runs, as exact `run.sh` commands for the
   user to type on the workstation.
 
+After every review, rewrite the **"Next Commands"** section at the end of `Workstation.md`: a
+dated status line (run now / wait, and why) and the exact commands for the next useful runs.
+Commit it with the review.
+
 Do not delete remote `workstation/*` branches unless the user asks.

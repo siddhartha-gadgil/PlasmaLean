@@ -87,8 +87,8 @@ For each task, the script:
 6. writes `workstation/results/<task>/<stamp>/` with the step records, truncated logs and
    `summary.json`, which contains the laptop verdict;
 7. commits the results and, if every step succeeded, the generated files. It then pushes the
-   branch and switches back to `main`. A failed task still commits its logs and whatever files it generated, so that the failure can be
-   reproduced on the laptop.
+   branch and switches back to `main`. A failed task still commits its logs and whatever files it
+   generated, so that the failure can be reproduced on the laptop.
 
 The script exits nonzero if any task failed or does not fit the laptop.
 
@@ -150,3 +150,25 @@ laptop with a small parameter setting, then commit it to `main` before running i
 - **Generated Lean too big for the laptop:** the verdict says so and nothing should be merged.
   Split the certificate over several modules (each ≤ 6 GB), use proof-term certificates (see
   `.claude/skills/plasmalean-lean-proofs`), or ask the numerics for a smaller witness.
+
+## Next Commands
+
+Kept up to date from the laptop after every review ("update from workstation"). Run them on the
+workstation, inside `tmux`; `run.sh` pulls `main` itself.
+
+**Status (25 October 2026): wait.** The generator bug behind the failed Mu3 runs (a template
+number substituted twice, giving a false bound in `Mu3Adm`) is being fixed; these commands become
+useful once the fix is on `main` (the next laptop commit will say so here). Push access must work
+without a password (see "Push access" above).
+
+```bash
+# Pitch cell λ ∈ [1/8, 3/16] (tag Mu3): numerics are cached on the workstation, so this re-emits
+# with the fixed generator and builds (about 30 CPU-min of Lean).
+LAM_LO=1/8 LAM_HI=3/16 LAM_TAG=3 LAPTOP_MAX_RSS_GB=9 scripts/workstation/run.sh --skip-numerics lambda-cell
+
+# Pitch cell λ ∈ [3/16, 1/4] (tag Mu4): from scratch, about 40 min of Python plus 30 CPU-min of Lean.
+LAM_LO=3/16 LAM_HI=1/4 LAM_TAG=4 LAPTOP_MAX_RSS_GB=9 scripts/workstation/run.sh lambda-cell
+```
+
+Run the two commands separately (not joined by `&&`): they are independent. Then say "update
+from workstation" on the laptop.
