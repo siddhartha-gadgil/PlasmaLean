@@ -6,6 +6,7 @@ Authors: PlasmaLean contributors
 module
 
 public import PlasmaLean.Design.LandremanFamily2Quad
+public import PlasmaLean.Certificates.EvalCertFIv
 
 /-!
 # Mercier certificate for Landreman's family 2, `λ = 200`: cell group 4
@@ -15,7 +16,8 @@ Kernel-checked runs of the validated checker
 `N₁ = 128`, grids `(ntip, nside, N₂)` per cell) on the `k`-cells below. Each cell is checked in
 pieces to bound kernel memory (`cellCheck_of_pieces`): the one-dimensional quadratures
 (`oneD`), the four outer-arc surface-integral contributions (`outerArc`) and the final
-combination (`cellCheckOf`) are separate `decide +kernel` checks against literal enclosures
+combination (`cellCheckOf`) are separate checks (`decide +kernel` for the quadratures, an
+evaluation certificate `fiv_cert` for the final combination) against literal enclosures
 (`Dc…`, `Oc…`), which were produced by `#eval` of the same functions (untrusted; the kernel
 re-checks them). Each accepted cell proves `(2π)⁶ D_Merc > 0` for both signs `s_G = ±1` on the
 whole cell (`cellCheck_sound`).
@@ -79,7 +81,7 @@ theorem c13_arc3 : outerArc (lamC 200) (Ecell (123/160) (31/40)) (Ecell (123/160
 
 /-- Final combination of cell `[123/160, 31/40]`. -/
 theorem c13_final : cellCheckOf 200 128 12 12 6 (123/160) (31/40) Dc13
-    (add3 (add3 Oc13_0 Oc13_1) (add3 Oc13_2 Oc13_3)) = true := by decide +kernel
+    (add3 (add3 Oc13_0 Oc13_1) (add3 Oc13_2 Oc13_3)) = true := by fiv_cert
 
 /-- **Certificate for the cell `[123/160, 31/40]`.** -/
 theorem cell13 : cellCheck 200 128 12 12 6 (123/160) (31/40) = true :=
@@ -134,7 +136,7 @@ theorem c14_arc3 : outerArc (lamC 200) (Ecell (31/40) (25/32)) (Ecell (31/40) (2
 
 /-- Final combination of cell `[31/40, 25/32]`. -/
 theorem c14_final : cellCheckOf 200 128 12 12 6 (31/40) (25/32) Dc14
-    (add3 (add3 Oc14_0 Oc14_1) (add3 Oc14_2 Oc14_3)) = true := by decide +kernel
+    (add3 (add3 Oc14_0 Oc14_1) (add3 Oc14_2 Oc14_3)) = true := by fiv_cert
 
 /-- **Certificate for the cell `[31/40, 25/32]`.** -/
 theorem cell14 : cellCheck 200 128 12 12 6 (31/40) (25/32) = true :=
@@ -189,7 +191,7 @@ theorem c15_arc3 : outerArc (lamC 200) (Ecell (25/32) (63/80)) (Ecell (25/32) (6
 
 /-- Final combination of cell `[25/32, 63/80]`. -/
 theorem c15_final : cellCheckOf 200 128 8 8 4 (25/32) (63/80) Dc15
-    (add3 (add3 Oc15_0 Oc15_1) (add3 Oc15_2 Oc15_3)) = true := by decide +kernel
+    (add3 (add3 Oc15_0 Oc15_1) (add3 Oc15_2 Oc15_3)) = true := by fiv_cert
 
 /-- **Certificate for the cell `[25/32, 63/80]`.** -/
 theorem cell15 : cellCheck 200 128 8 8 4 (25/32) (63/80) = true :=
@@ -244,7 +246,7 @@ theorem c16_arc3 : outerArc (lamC 200) (Ecell (63/80) (127/160)) (Ecell (63/80) 
 
 /-- Final combination of cell `[63/80, 127/160]`. -/
 theorem c16_final : cellCheckOf 200 128 8 8 4 (63/80) (127/160) Dc16
-    (add3 (add3 Oc16_0 Oc16_1) (add3 Oc16_2 Oc16_3)) = true := by decide +kernel
+    (add3 (add3 Oc16_0 Oc16_1) (add3 Oc16_2 Oc16_3)) = true := by fiv_cert
 
 /-- **Certificate for the cell `[63/80, 127/160]`.** -/
 theorem cell16 : cellCheck 200 128 8 8 4 (63/80) (127/160) = true :=
@@ -299,7 +301,7 @@ theorem c17_arc3 : outerArc (lamC 200) (Ecell (127/160) (4/5)) (Ecell (127/160) 
 
 /-- Final combination of cell `[127/160, 4/5]`. -/
 theorem c17_final : cellCheckOf 200 128 8 8 4 (127/160) (4/5) Dc17
-    (add3 (add3 Oc17_0 Oc17_1) (add3 Oc17_2 Oc17_3)) = true := by decide +kernel
+    (add3 (add3 Oc17_0 Oc17_1) (add3 Oc17_2 Oc17_3)) = true := by fiv_cert
 
 /-- **Certificate for the cell `[127/160, 4/5]`.** -/
 theorem cell17 : cellCheck 200 128 8 8 4 (127/160) (4/5) = true :=
@@ -354,7 +356,7 @@ theorem c18_arc3 : outerArc (lamC 200) (Ecell (4/5) (129/160)) (Ecell (4/5) (129
 
 /-- Final combination of cell `[4/5, 129/160]`. -/
 theorem c18_final : cellCheckOf 200 128 8 8 4 (4/5) (129/160) Dc18
-    (add3 (add3 Oc18_0 Oc18_1) (add3 Oc18_2 Oc18_3)) = true := by decide +kernel
+    (add3 (add3 Oc18_0 Oc18_1) (add3 Oc18_2 Oc18_3)) = true := by fiv_cert
 
 /-- **Certificate for the cell `[4/5, 129/160]`.** -/
 theorem cell18 : cellCheck 200 128 8 8 4 (4/5) (129/160) = true :=

@@ -1,0 +1,63 @@
+/-
+Copyright (c) 2026 PlasmaLean contributors. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: PlasmaLean contributors
+-/
+module
+
+public import PlasmaLean.Certificates.EvalCert
+public import PlasmaLean.Certificates.ValidatedQuadrature
+
+/-!
+# Evaluation certificates for fixed-point interval checkers (`fiv_cert`)
+
+`fiv_cert` is `eval_cert` (`Certificates/EvalCert.lean`) with the fixed-point interval operations
+of `Certificates/ValidatedQuadrature` (`FIv.add`, `sub`, `neg`, `mul`, `sq`, `inv`, `sqrt`,
+`ofInt`, `ofFrac`) as kernel leaves: each node of an interval evaluation is one interval
+operation applied to interval values, and everything else (cell recursions, records, `if`,
+`match`) is unfolded into `ECert` steps.
+
+**Sanity.** `fivCert_fixture` (accepted), `fivCert_reject_fixture` (rejected).
+-/
+
+public section
+
+namespace PlasmaLean.Certificates.EvalCert
+
+open PlasmaLean.Certificates.ValidatedQuadrature
+
+/-- **`fiv_cert`**: `eval_cert` with the `FIv` interval operations as kernel leaves. -/
+macro "fiv_cert" : tactic => `(tactic| eval_cert [
+  PlasmaLean.Certificates.ValidatedQuadrature.FIv.add,
+  PlasmaLean.Certificates.ValidatedQuadrature.FIv.sub,
+  PlasmaLean.Certificates.ValidatedQuadrature.FIv.neg,
+  PlasmaLean.Certificates.ValidatedQuadrature.FIv.mul,
+  PlasmaLean.Certificates.ValidatedQuadrature.FIv.sq,
+  PlasmaLean.Certificates.ValidatedQuadrature.FIv.inv,
+  PlasmaLean.Certificates.ValidatedQuadrature.FIv.sqrt,
+  PlasmaLean.Certificates.ValidatedQuadrature.FIv.ofInt,
+  PlasmaLean.Certificates.ValidatedQuadrature.FIv.ofFrac])
+
+/-- `fiv_cert?`: `fiv_cert`, reporting the numbers of nodes and kernel leaves. -/
+macro "fiv_cert?" : tactic => `(tactic| eval_cert? [
+  PlasmaLean.Certificates.ValidatedQuadrature.FIv.add,
+  PlasmaLean.Certificates.ValidatedQuadrature.FIv.sub,
+  PlasmaLean.Certificates.ValidatedQuadrature.FIv.neg,
+  PlasmaLean.Certificates.ValidatedQuadrature.FIv.mul,
+  PlasmaLean.Certificates.ValidatedQuadrature.FIv.sq,
+  PlasmaLean.Certificates.ValidatedQuadrature.FIv.inv,
+  PlasmaLean.Certificates.ValidatedQuadrature.FIv.sqrt,
+  PlasmaLean.Certificates.ValidatedQuadrature.FIv.ofInt,
+  PlasmaLean.Certificates.ValidatedQuadrature.FIv.ofFrac])
+
+/-- **Sanity** (accepted): `√2` and `1/(1/3 + 1/3)` as interval evaluations. -/
+theorem fivCert_fixture :
+    ((FIv.ofInt 2).sqrt.add ((FIv.ofFrac 1 3).add (FIv.ofFrac 1 3)).inv).ok = true := by
+  fiv_cert
+
+/-- **Sanity** (rejected): the inverse of an interval containing `0` is not valid. -/
+theorem fivCert_reject_fixture : True := by
+  fail_if_success (have : (FIv.ofFrac (-1) 2).inv.ok = true := by fiv_cert)
+  trivial
+
+end PlasmaLean.Certificates.EvalCert

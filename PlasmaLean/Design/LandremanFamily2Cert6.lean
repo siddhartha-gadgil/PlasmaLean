@@ -6,6 +6,7 @@ Authors: PlasmaLean contributors
 module
 
 public import PlasmaLean.Design.LandremanFamily2Quad
+public import PlasmaLean.Certificates.EvalCertFIv
 
 /-!
 # Mercier certificate for Landreman's family 2, `λ = 200`: cell group 6
@@ -15,7 +16,8 @@ Kernel-checked runs of the validated checker
 `N₁ = 128`, grids `(ntip, nside, N₂)` per cell) on the `k`-cells below. Each cell is checked in
 pieces to bound kernel memory (`cellCheck_of_pieces`): the one-dimensional quadratures
 (`oneD`), the four outer-arc surface-integral contributions (`outerArc`) and the final
-combination (`cellCheckOf`) are separate `decide +kernel` checks against literal enclosures
+combination (`cellCheckOf`) are separate checks (`decide +kernel` for the quadratures, an
+evaluation certificate `fiv_cert` for the final combination) against literal enclosures
 (`Dc…`, `Oc…`), which were produced by `#eval` of the same functions (untrusted; the kernel
 re-checks them). Each accepted cell proves `(2π)⁶ D_Merc > 0` for both signs `s_G = ±1` on the
 whole cell (`cellCheck_sound`).
@@ -79,7 +81,7 @@ theorem c27_arc3 : outerArc (lamC 200) (Ecell (137/160) (69/80)) (Ecell (137/160
 
 /-- Final combination of cell `[137/160, 69/80]`. -/
 theorem c27_final : cellCheckOf 200 128 12 12 6 (137/160) (69/80) Dc27
-    (add3 (add3 Oc27_0 Oc27_1) (add3 Oc27_2 Oc27_3)) = true := by decide +kernel
+    (add3 (add3 Oc27_0 Oc27_1) (add3 Oc27_2 Oc27_3)) = true := by fiv_cert
 
 /-- **Certificate for the cell `[137/160, 69/80]`.** -/
 theorem cell27 : cellCheck 200 128 12 12 6 (137/160) (69/80) = true :=
@@ -134,7 +136,7 @@ theorem c28_arc3 : outerArc (lamC 200) (Ecell (69/80) (139/160)) (Ecell (69/80) 
 
 /-- Final combination of cell `[69/80, 139/160]`. -/
 theorem c28_final : cellCheckOf 200 128 12 12 6 (69/80) (139/160) Dc28
-    (add3 (add3 Oc28_0 Oc28_1) (add3 Oc28_2 Oc28_3)) = true := by decide +kernel
+    (add3 (add3 Oc28_0 Oc28_1) (add3 Oc28_2 Oc28_3)) = true := by fiv_cert
 
 /-- **Certificate for the cell `[69/80, 139/160]`.** -/
 theorem cell28 : cellCheck 200 128 12 12 6 (69/80) (139/160) = true :=
@@ -189,7 +191,7 @@ theorem c29_arc3 : outerArc (lamC 200) (Ecell (139/160) (7/8)) (Ecell (139/160) 
 
 /-- Final combination of cell `[139/160, 7/8]`. -/
 theorem c29_final : cellCheckOf 200 128 12 12 6 (139/160) (7/8) Dc29
-    (add3 (add3 Oc29_0 Oc29_1) (add3 Oc29_2 Oc29_3)) = true := by decide +kernel
+    (add3 (add3 Oc29_0 Oc29_1) (add3 Oc29_2 Oc29_3)) = true := by fiv_cert
 
 /-- **Certificate for the cell `[139/160, 7/8]`.** -/
 theorem cell29 : cellCheck 200 128 12 12 6 (139/160) (7/8) = true :=
@@ -244,7 +246,7 @@ theorem c30_arc3 : outerArc (lamC 200) (Ecell (7/8) (141/160)) (Ecell (7/8) (141
 
 /-- Final combination of cell `[7/8, 141/160]`. -/
 theorem c30_final : cellCheckOf 200 128 12 12 6 (7/8) (141/160) Dc30
-    (add3 (add3 Oc30_0 Oc30_1) (add3 Oc30_2 Oc30_3)) = true := by decide +kernel
+    (add3 (add3 Oc30_0 Oc30_1) (add3 Oc30_2 Oc30_3)) = true := by fiv_cert
 
 /-- **Certificate for the cell `[7/8, 141/160]`.** -/
 theorem cell30 : cellCheck 200 128 12 12 6 (7/8) (141/160) = true :=

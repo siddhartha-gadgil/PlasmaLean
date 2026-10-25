@@ -42,6 +42,8 @@ public import PlasmaLean.Certificates.RationalIntervals
 public import PlasmaLean.Certificates.BlockBounds
 public import PlasmaLean.Certificates.Contraction
 public import PlasmaLean.Certificates.PolyInterval
+public import PlasmaLean.Certificates.EvalCert
+public import PlasmaLean.Certificates.EvalCertFIv
 public import PlasmaLean.Bridge.Contracts
 public import PlasmaLean.Design.ScalarRoot
 public import PlasmaLean.Design.SlabExample

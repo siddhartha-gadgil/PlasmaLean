@@ -75,6 +75,7 @@ Authors: PlasmaLean contributors
 module
 
 public import PlasmaLean.Design.NearAxisQATrappedOscCells
+public import PlasmaLean.Certificates.EvalCertFIv
 
 /-!
 # Kernel checks of the oscillatory-kick cover, part {part}
@@ -84,8 +85,10 @@ Leaves {first}–{last} of the adaptive cover of the start window used by
 `[{Pmin}, {Pmax}] μs`, precession range `ι₀ Δ ∈ [{DlS}, {DhS}] · 2⁻³²`).
 For each index box `[a, b] × [c, d]` (`ψ₀ ∈ PBI a b`, `B_t ∈ TBI c d`) the inner-leg check
 `legAOk`, the outer-leg check `legBOk` (with the inner leg's `I(z₁)` enclosure) and the final
-check `finalOk` are evaluated by `decide +kernel` on the oracle enclosures (all computed by the
-untrusted exact mirror `scripts/trapped_reanchor/osc_mirror.py`; the kernel recomputes them).
+check `finalOk` are checked on the oracle enclosures (all computed by the untrusted exact
+mirror `scripts/trapped_reanchor/osc_mirror.py`): the leg checks by `decide +kernel`, the final
+check by an evaluation certificate (`fiv_cert`, `Certificates/EvalCert`: one kernel leaf per
+interval operation).
 -/
 public section
 namespace PlasmaLean.Design.NearAxisQATrappedOsc
@@ -117,7 +120,7 @@ theorem oscB_{n} : {B} = true := by
 set_option maxRecDepth 100000 in
 /-- Final check of the box `[{a}, {b}] × [{c}, {d}]`. -/
 theorem oscF_{n} : {Fn} = true := by
-  decide +kernel
+  fiv_cert
 
 /-- The box `[{a}, {b}] × [{c}, {d}]` is a leaf of the cover. -/
 theorem oscLeaf_{n} : OscLeaf {Kn} {Pmin} {Pmax} {DlS} {DhS} {a} {b} {c} {d} :=

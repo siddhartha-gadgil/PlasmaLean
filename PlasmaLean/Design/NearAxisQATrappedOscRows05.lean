@@ -6,6 +6,7 @@ Authors: PlasmaLean contributors
 module
 
 public import PlasmaLean.Design.NearAxisQATrappedOscCells
+public import PlasmaLean.Certificates.EvalCertFIv
 
 /-!
 # Kernel checks of the oscillatory-kick cover, part 5
@@ -15,8 +16,10 @@ Leaves 32–39 of the adaptive cover of the start window used by
 `[59, 72] μs`, precession range `ι₀ Δ ∈ [3086000000, 4502000000] · 2⁻³²`).
 For each index box `[a, b] × [c, d]` (`ψ₀ ∈ PBI a b`, `B_t ∈ TBI c d`) the inner-leg check
 `legAOk`, the outer-leg check `legBOk` (with the inner leg's `I(z₁)` enclosure) and the final
-check `finalOk` are evaluated by `decide +kernel` on the oracle enclosures (all computed by the
-untrusted exact mirror `scripts/trapped_reanchor/osc_mirror.py`; the kernel recomputes them).
+check `finalOk` are checked on the oracle enclosures (all computed by the untrusted exact
+mirror `scripts/trapped_reanchor/osc_mirror.py`): the leg checks by `decide +kernel`, the final
+check by an evaluation certificate (`fiv_cert`, `Certificates/EvalCert`: one kernel leaf per
+interval operation).
 -/
 public section
 namespace PlasmaLean.Design.NearAxisQATrappedOsc
@@ -45,7 +48,7 @@ theorem oscF_15_30_36_40 : finalOk
     ⟨3657932024, 4369563586, true⟩ ⟨121428376592, 139111746915, true⟩
     ⟨142577965033, 160259871288, true⟩ 40 1 59 72
     3086000000 4502000000 = true := by
-  decide +kernel
+  fiv_cert
 
 /-- The box `[15, 30] × [36, 40]` is a leaf of the cover. -/
 theorem oscLeaf_15_30_36_40 : OscLeaf 40 59 72 3086000000 4502000000 15 30 36 40 :=
@@ -74,7 +77,7 @@ theorem oscF_15_30_40_48 : finalOk
     ⟨3638377880, 4370656301, true⟩ ⟨121873074373, 138520720036, true⟩
     ⟨142401038273, 161898923951, true⟩ 40 1 59 72
     3086000000 4502000000 = true := by
-  decide +kernel
+  fiv_cert
 
 /-- The box `[15, 30] × [40, 48]` is a leaf of the cover. -/
 theorem oscLeaf_15_30_40_48 : OscLeaf 40 59 72 3086000000 4502000000 15 30 40 48 :=
@@ -103,7 +106,7 @@ theorem oscF_15_30_48_56 : finalOk
     ⟨3564081166, 4366945980, true⟩ ⟨120156719077, 139387288073, true⟩
     ⟨140772722491, 162250789431, true⟩ 40 1 59 72
     3086000000 4502000000 = true := by
-  decide +kernel
+  fiv_cert
 
 /-- The box `[15, 30] × [48, 56]` is a leaf of the cover. -/
 theorem oscLeaf_15_30_48_56 : OscLeaf 40 59 72 3086000000 4502000000 15 30 48 56 :=
@@ -132,7 +135,7 @@ theorem oscF_15_30_56_64 : finalOk
     ⟨3560175659, 4325483308, true⟩ ⟨121032586050, 140210593681, true⟩
     ⟨141168874250, 160077983373, true⟩ 40 1 59 72
     3086000000 4502000000 = true := by
-  decide +kernel
+  fiv_cert
 
 /-- The box `[15, 30] × [56, 64]` is a leaf of the cover. -/
 theorem oscLeaf_15_30_56_64 : OscLeaf 40 59 72 3086000000 4502000000 15 30 56 64 :=
@@ -161,7 +164,7 @@ theorem oscF_15_30_64_72 : finalOk
     ⟨3554348114, 4324076262, true⟩ ⟨121865825670, 141278617032, true⟩
     ⟨141537543721, 160348228579, true⟩ 40 1 59 72
     3086000000 4502000000 = true := by
-  decide +kernel
+  fiv_cert
 
 /-- The box `[15, 30] × [64, 72]` is a leaf of the cover. -/
 theorem oscLeaf_15_30_64_72 : OscLeaf 40 59 72 3086000000 4502000000 15 30 64 72 :=
@@ -190,7 +193,7 @@ theorem oscF_15_30_72_80 : finalOk
     ⟨3552396501, 4319499398, true⟩ ⟨122842479526, 142172927458, true⟩
     ⟨141964184735, 160634525098, true⟩ 40 1 59 72
     3086000000 4502000000 = true := by
-  decide +kernel
+  fiv_cert
 
 /-- The box `[15, 30] × [72, 80]` is a leaf of the cover. -/
 theorem oscLeaf_15_30_72_80 : OscLeaf 40 59 72 3086000000 4502000000 15 30 72 80 :=
@@ -219,7 +222,7 @@ theorem oscF_15_30_80_88 : finalOk
     ⟨3551564171, 4263792844, true⟩ ⟨123881976789, 140212343705, true⟩
     ⟨142404869383, 161005582744, true⟩ 40 1 59 72
     3086000000 4502000000 = true := by
-  decide +kernel
+  fiv_cert
 
 /-- The box `[15, 30] × [80, 88]` is a leaf of the cover. -/
 theorem oscLeaf_15_30_80_88 : OscLeaf 40 59 72 3086000000 4502000000 15 30 80 88 :=
@@ -248,7 +251,7 @@ theorem oscF_15_30_88_96 : finalOk
     ⟨3479564521, 4264835194, true⟩ ⟨122310779677, 141297903790, true⟩
     ⟨140877929503, 161438249208, true⟩ 40 1 59 72
     3086000000 4502000000 = true := by
-  decide +kernel
+  fiv_cert
 
 /-- The box `[15, 30] × [88, 96]` is a leaf of the cover. -/
 theorem oscLeaf_15_30_88_96 : OscLeaf 40 59 72 3086000000 4502000000 15 30 88 96 :=
