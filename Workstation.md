@@ -164,11 +164,14 @@ without a password (see "Push access" above).
 ```bash
 # Pitch cell λ ∈ [1/8, 3/16] (tag Mu3): numerics are cached on the workstation, so this re-emits
 # with the fixed generator and builds (about 30 CPU-min of Lean).
-LAM_LO=1/8 LAM_HI=3/16 LAM_TAG=3 LAPTOP_MAX_RSS_GB=9 scripts/workstation/run.sh --skip-numerics lambda-cell
+LAM_LO=1/8 LAM_HI=3/16 LAM_TAG=3 scripts/workstation/run.sh --skip-numerics lambda-cell
 
 # Pitch cell λ ∈ [3/16, 1/4] (tag Mu4): from scratch, about 40 min of Python plus 30 CPU-min of Lean.
-LAM_LO=3/16 LAM_HI=1/4 LAM_TAG=4 LAPTOP_MAX_RSS_GB=9 scripts/workstation/run.sh lambda-cell
+LAM_LO=3/16 LAM_HI=1/4 LAM_TAG=4 scripts/workstation/run.sh lambda-cell
 ```
+
+The certificates are now emitted in the low-memory format (peak ≈ 4.4 GB per process), so the
+default 6 GB laptop limit applies; `LAPTOP_MAX_RSS_GB=9` is no longer needed.
 
 Run the two commands separately (not joined by `&&`): they are independent. Then say "update
 from workstation" on the laptop.
