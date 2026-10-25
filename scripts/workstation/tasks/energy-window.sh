@@ -48,10 +48,14 @@ _ew_comb_checks() {
 # Lean modules, dependencies first (each built in its own process). Measured on the laptop in the
 # old format: about 70 CPU-min in total, node kernel checks (RationalStellaratorGCEw<j>CheckH*) at
 # 5-8.8 GB. In the low-memory format (task_emit runs scripts/gc_kam/lowmem/lowmem_emit.py) the
-# check modules peak at about 4.4 GB; the rest stays <= 3 GB.
+# check modules peak at about 4.4 GB; the rest stays <= 3 GB. task_emit then converts the checks to
+# explicit proof terms (scripts/gc_kam/proofterm/proofterm_emit.py, no decide +kernel; about
+# 1.15-1.45x the CPU of the low-memory checks, same peak).
 TASK_MODULES="PlasmaLean.Theory.KAM.ParamInterp \
 PlasmaLean.Certificates.KronLowMemCompute \
 PlasmaLean.Certificates.KronBallLowMem \
+PlasmaLean.Certificates.KronProof \
+PlasmaLean.Certificates.KernelFact \
 PlasmaLean.Design.RationalStellaratorGCEwInterp \
 PlasmaLean.Design.RationalStellaratorGCEwAdm \
 PlasmaLean.Design.RationalStellaratorGCEwMaj \
@@ -138,6 +142,9 @@ task_emit() {
     # low-memory kernel checks (scripts/gc_kam/lowmem/lowmem_emit.py; same statements downstream)
     "$WS_PY" -I $G/lowmem/lowmem_emit.py "RationalStellaratorGCEw$j" H --inplace --patch-chain \
       >> "$W/lowmem.log" || return 1
+    # proof terms instead of decide +kernel (Certificates/KronProof; same statements downstream)
+    "$WS_PY" -I $G/proofterm/proofterm_emit.py "RationalStellaratorGCEw$j" H --inplace \
+      >> "$W/proofterm.log" || return 1
   done
   "$WS_PY" -I $G/ew_nodes.py
   EW_COMB_OUT="$W" "$WS_PY" -I $G/ew_comb.py "$W/H1/lam_cert_H.pkl" "$W/H2/lam_cert_H.pkl" \

@@ -240,7 +240,6 @@ public import PlasmaLean.Theory.KAM.PolyExprSMajQG
 public import PlasmaLean.Design.RationalStellaratorGCNegConfined
 public import PlasmaLean.Design.RationalStellaratorGCFamily
 public import PlasmaLean.Design.RationalStellaratorGCMuFamily
-public import PlasmaLean.Design.RationalStellaratorGCMuCheckPH1
 public import PlasmaLean.Design.RationalStellaratorGCBoxConfined
 
 /-!

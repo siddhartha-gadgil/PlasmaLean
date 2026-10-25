@@ -16,6 +16,7 @@ public import PlasmaLean.Design.RationalStellaratorGCMuCheckL7
 public import PlasmaLean.Design.RationalStellaratorGCMuCheckL8
 public import PlasmaLean.Design.RationalStellaratorGCMuCommon
 public import PlasmaLean.Design.RationalStellaratorGCMuLowMemL
+public import PlasmaLean.Certificates.KernelFact
 
 /-!
 # The low-resolution ball chain of the guiding-centre torus family
@@ -36,6 +37,8 @@ set_option linter.style.longLine false
 
 namespace PlasmaLean.Design.RationalStellaratorGC
 
+-- kernel_fact side conditions: elaboration budget for the proof terms
+
 open PlasmaLean.Theory.KAM PlasmaLean.Design.KamNewton PlasmaLean.Certificates.KronExpr
   PlasmaLean.Certificates.KronBall PlasmaLean.Certificates.KronBallCheb
   PlasmaLean.Certificates.Kron2 WEll1Z2 Complex
@@ -45,7 +48,7 @@ set_option maxRecDepth 100000 in
 Kronecker image. -/
 theorem kderLM_A : KvLM 74 33 25 6 = famPack 74 33 25 NLM MLM DLM (if oddLM 4 then -1 else 1) 0
     ((c0LM 4 : ℤ) * 1) ((c0LM 4 : ℤ) * 0) ddLM drLM 0 (famLM 4) := by
-  decide +kernel
+  kernel_fact
 
 set_option maxRecDepth 100000 in
 /-- The stored derivative `A` is the symbol family of `U` (equal Kronecker images). -/
@@ -54,31 +57,31 @@ theorem PLM_der_A : PLM 6 = famPoly NLM MLM DLM (if oddLM 4 then -1 else 1) 0
   have hk : kron 74 33 (flat 25 (PLM 6)) = kron 74 33 (flat 25 (famPoly NLM MLM DLM (if oddLM 4 then -1 else 1) 0
     ((c0LM 4 : ℤ) * 1) ((c0LM 4 : ℤ) * 0) 0 (famLM 4))) := by
     rw [kronLM, ← famPack_eq 74 33 25 NLM MLM DLM _ _ _ _ 0 (famLM 4)
-      fun sd h => ((staticLM 4 (by decide +kernel) (by decide +kernel)).2.2.2 sd h).1]
+      fun sd h => ((staticLM 4 (by kernel_fact) (by kernel_fact)).2.2.2 sd h).1]
     exact kderLM_A
   have hbox := boxLM 6
-  rw [bx6LM 6 (by decide +kernel) (by decide +kernel)] at hbox
+  rw [bx6LM 6 (by kernel_fact) (by kernel_fact)] at hbox
   refine eq_of_kron_flat (b := 74) (W := 33) (R := 25) (d := 14) (by norm_num) hbox
-    (inBox3_famPoly _ _ _ _ _ _ _ 0 _ (by decide +kernel)) (by decide +kernel) (by decide +kernel)
-    (by decide +kernel) ?_ hk
+    (inBox3_famPoly _ _ _ _ _ _ _ 0 _ (by kernel_fact)) (by kernel_fact) (by kernel_fact)
+    (by kernel_fact) ?_ hk
   refine lt_of_le_of_lt (add_le_add (l1LM 25 6) (l1_flat_famPoly_le 25 NLM MLM DLM
-    (by decide +kernel) _ _ _ 0 _
-    fun sd h => ((staticLM 4 (by decide +kernel) (by decide +kernel)).2.2.2 sd h).1.2.2.2.2))
-    (by decide +kernel)
+    (by kernel_fact) _ _ _ 0 _
+    fun sd h => ((staticLM 4 (by kernel_fact) (by kernel_fact)).2.2.2 sd h).1.2.2.2.2))
+    (by kernel_fact)
 
 /-- The centre `A` is a derivative of the centre `U`. -/
 theorem xLM_der_A {c : ℂ} (hc : c ≠ 0) :
     xLM c 6 = dS ((1 : ℤ) : ℂ) ((0 : ℤ) : ℂ) (xLM c 4) := by
   rw [xLM_fam hc (i := 4) rfl (p := 0) rfl, dS_famCtr, xLM, PLM_der_A,
     show WtLM 6 = (1, 0, (0 + 3) % 4) from rfl]
-  exact ctr3_famPoly _ _ _ _ _ _ _ _ _ hc 0 _ (by decide +kernel)
+  exact ctr3_famPoly _ _ _ _ _ _ _ _ _ hc 0 _ (by kernel_fact)
 
 set_option maxRecDepth 100000 in
 /-- Kernel check: the stored derivative `B` and the symbol family of `Z` have the same
 Kronecker image. -/
 theorem kderLM_B : KvLM 74 33 25 7 = famPack 74 33 25 NLM MLM DLM (if oddLM 5 then -1 else 1) 0
     ((c0LM 5 : ℤ) * 1) ((c0LM 5 : ℤ) * 0) ddLM drLM 0 (famLM 5) := by
-  decide +kernel
+  kernel_fact
 
 set_option maxRecDepth 100000 in
 /-- The stored derivative `B` is the symbol family of `Z` (equal Kronecker images). -/
@@ -87,31 +90,31 @@ theorem PLM_der_B : PLM 7 = famPoly NLM MLM DLM (if oddLM 5 then -1 else 1) 0
   have hk : kron 74 33 (flat 25 (PLM 7)) = kron 74 33 (flat 25 (famPoly NLM MLM DLM (if oddLM 5 then -1 else 1) 0
     ((c0LM 5 : ℤ) * 1) ((c0LM 5 : ℤ) * 0) 0 (famLM 5))) := by
     rw [kronLM, ← famPack_eq 74 33 25 NLM MLM DLM _ _ _ _ 0 (famLM 5)
-      fun sd h => ((staticLM 5 (by decide +kernel) (by decide +kernel)).2.2.2 sd h).1]
+      fun sd h => ((staticLM 5 (by kernel_fact) (by kernel_fact)).2.2.2 sd h).1]
     exact kderLM_B
   have hbox := boxLM 7
-  rw [bx6LM 7 (by decide +kernel) (by decide +kernel)] at hbox
+  rw [bx6LM 7 (by kernel_fact) (by kernel_fact)] at hbox
   refine eq_of_kron_flat (b := 74) (W := 33) (R := 25) (d := 14) (by norm_num) hbox
-    (inBox3_famPoly _ _ _ _ _ _ _ 0 _ (by decide +kernel)) (by decide +kernel) (by decide +kernel)
-    (by decide +kernel) ?_ hk
+    (inBox3_famPoly _ _ _ _ _ _ _ 0 _ (by kernel_fact)) (by kernel_fact) (by kernel_fact)
+    (by kernel_fact) ?_ hk
   refine lt_of_le_of_lt (add_le_add (l1LM 25 7) (l1_flat_famPoly_le 25 NLM MLM DLM
-    (by decide +kernel) _ _ _ 0 _
-    fun sd h => ((staticLM 5 (by decide +kernel) (by decide +kernel)).2.2.2 sd h).1.2.2.2.2))
-    (by decide +kernel)
+    (by kernel_fact) _ _ _ 0 _
+    fun sd h => ((staticLM 5 (by kernel_fact) (by kernel_fact)).2.2.2 sd h).1.2.2.2.2))
+    (by kernel_fact)
 
 /-- The centre `B` is a derivative of the centre `Z`. -/
 theorem xLM_der_B {c : ℂ} (hc : c ≠ 0) :
     xLM c 7 = dS ((1 : ℤ) : ℂ) ((0 : ℤ) : ℂ) (xLM c 5) := by
   rw [xLM_fam hc (i := 5) rfl (p := 1) rfl, dS_famCtr, xLM, PLM_der_B,
     show WtLM 7 = (1, 0, (1 + 3) % 4) from rfl]
-  exact ctr3_famPoly _ _ _ _ _ _ _ _ _ hc 0 _ (by decide +kernel)
+  exact ctr3_famPoly _ _ _ _ _ _ _ _ _ hc 0 _ (by kernel_fact)
 
 set_option maxRecDepth 100000 in
 /-- Kernel check: the stored derivative `Ao` and the symbol family of `Uo` have the same
 Kronecker image. -/
 theorem kderLM_Ao : KvLM 74 33 25 178 = famPack 74 33 25 NLM MLM DLM (if oddLM 176 then -1 else 1) 0
     ((c0LM 176 : ℤ) * 1) ((c0LM 176 : ℤ) * 0) ddLM drLM 0 (famLM 176) := by
-  decide +kernel
+  kernel_fact
 
 set_option maxRecDepth 100000 in
 /-- The stored derivative `Ao` is the symbol family of `Uo` (equal Kronecker images). -/
@@ -120,31 +123,31 @@ theorem PLM_der_Ao : PLM 178 = famPoly NLM MLM DLM (if oddLM 176 then -1 else 1)
   have hk : kron 74 33 (flat 25 (PLM 178)) = kron 74 33 (flat 25 (famPoly NLM MLM DLM (if oddLM 176 then -1 else 1) 0
     ((c0LM 176 : ℤ) * 1) ((c0LM 176 : ℤ) * 0) 0 (famLM 176))) := by
     rw [kronLM, ← famPack_eq 74 33 25 NLM MLM DLM _ _ _ _ 0 (famLM 176)
-      fun sd h => ((staticLM 176 (by decide +kernel) (by decide +kernel)).2.2.2 sd h).1]
+      fun sd h => ((staticLM 176 (by kernel_fact) (by kernel_fact)).2.2.2 sd h).1]
     exact kderLM_Ao
   have hbox := boxLM 178
-  rw [bx6LM 178 (by decide +kernel) (by decide +kernel)] at hbox
+  rw [bx6LM 178 (by kernel_fact) (by kernel_fact)] at hbox
   refine eq_of_kron_flat (b := 74) (W := 33) (R := 25) (d := 14) (by norm_num) hbox
-    (inBox3_famPoly _ _ _ _ _ _ _ 0 _ (by decide +kernel)) (by decide +kernel) (by decide +kernel)
-    (by decide +kernel) ?_ hk
+    (inBox3_famPoly _ _ _ _ _ _ _ 0 _ (by kernel_fact)) (by kernel_fact) (by kernel_fact)
+    (by kernel_fact) ?_ hk
   refine lt_of_le_of_lt (add_le_add (l1LM 25 178) (l1_flat_famPoly_le 25 NLM MLM DLM
-    (by decide +kernel) _ _ _ 0 _
-    fun sd h => ((staticLM 176 (by decide +kernel) (by decide +kernel)).2.2.2 sd h).1.2.2.2.2))
-    (by decide +kernel)
+    (by kernel_fact) _ _ _ 0 _
+    fun sd h => ((staticLM 176 (by kernel_fact) (by kernel_fact)).2.2.2 sd h).1.2.2.2.2))
+    (by kernel_fact)
 
 /-- The centre `Ao` is a derivative of the centre `Uo`. -/
 theorem xLM_der_Ao {c : ℂ} (hc : c ≠ 0) :
     xLM c 178 = dS ((1 : ℤ) : ℂ) ((0 : ℤ) : ℂ) (xLM c 176) := by
   rw [xLM_fam hc (i := 176) rfl (p := 0) rfl, dS_famCtr, xLM, PLM_der_Ao,
     show WtLM 178 = (1, 0, (0 + 3) % 4) from rfl]
-  exact ctr3_famPoly _ _ _ _ _ _ _ _ _ hc 0 _ (by decide +kernel)
+  exact ctr3_famPoly _ _ _ _ _ _ _ _ _ hc 0 _ (by kernel_fact)
 
 set_option maxRecDepth 100000 in
 /-- Kernel check: the stored derivative `Bo` and the symbol family of `Zo` have the same
 Kronecker image. -/
 theorem kderLM_Bo : KvLM 74 33 25 179 = famPack 74 33 25 NLM MLM DLM (if oddLM 177 then -1 else 1) 0
     ((c0LM 177 : ℤ) * 1) ((c0LM 177 : ℤ) * 0) ddLM drLM 0 (famLM 177) := by
-  decide +kernel
+  kernel_fact
 
 set_option maxRecDepth 100000 in
 /-- The stored derivative `Bo` is the symbol family of `Zo` (equal Kronecker images). -/
@@ -153,24 +156,24 @@ theorem PLM_der_Bo : PLM 179 = famPoly NLM MLM DLM (if oddLM 177 then -1 else 1)
   have hk : kron 74 33 (flat 25 (PLM 179)) = kron 74 33 (flat 25 (famPoly NLM MLM DLM (if oddLM 177 then -1 else 1) 0
     ((c0LM 177 : ℤ) * 1) ((c0LM 177 : ℤ) * 0) 0 (famLM 177))) := by
     rw [kronLM, ← famPack_eq 74 33 25 NLM MLM DLM _ _ _ _ 0 (famLM 177)
-      fun sd h => ((staticLM 177 (by decide +kernel) (by decide +kernel)).2.2.2 sd h).1]
+      fun sd h => ((staticLM 177 (by kernel_fact) (by kernel_fact)).2.2.2 sd h).1]
     exact kderLM_Bo
   have hbox := boxLM 179
-  rw [bx6LM 179 (by decide +kernel) (by decide +kernel)] at hbox
+  rw [bx6LM 179 (by kernel_fact) (by kernel_fact)] at hbox
   refine eq_of_kron_flat (b := 74) (W := 33) (R := 25) (d := 14) (by norm_num) hbox
-    (inBox3_famPoly _ _ _ _ _ _ _ 0 _ (by decide +kernel)) (by decide +kernel) (by decide +kernel)
-    (by decide +kernel) ?_ hk
+    (inBox3_famPoly _ _ _ _ _ _ _ 0 _ (by kernel_fact)) (by kernel_fact) (by kernel_fact)
+    (by kernel_fact) ?_ hk
   refine lt_of_le_of_lt (add_le_add (l1LM 25 179) (l1_flat_famPoly_le 25 NLM MLM DLM
-    (by decide +kernel) _ _ _ 0 _
-    fun sd h => ((staticLM 177 (by decide +kernel) (by decide +kernel)).2.2.2 sd h).1.2.2.2.2))
-    (by decide +kernel)
+    (by kernel_fact) _ _ _ 0 _
+    fun sd h => ((staticLM 177 (by kernel_fact) (by kernel_fact)).2.2.2 sd h).1.2.2.2.2))
+    (by kernel_fact)
 
 /-- The centre `Bo` is a derivative of the centre `Zo`. -/
 theorem xLM_der_Bo {c : ℂ} (hc : c ≠ 0) :
     xLM c 179 = dS ((1 : ℤ) : ℂ) ((0 : ℤ) : ℂ) (xLM c 177) := by
   rw [xLM_fam hc (i := 177) rfl (p := 1) rfl, dS_famCtr, xLM, PLM_der_Bo,
     show WtLM 179 = (1, 0, (1 + 3) % 4) from rfl]
-  exact ctr3_famPoly _ _ _ _ _ _ _ _ _ hc 0 _ (by decide +kernel)
+  exact ctr3_famPoly _ _ _ _ _ _ _ _ _ hc 0 _ (by kernel_fact)
 
 set_option maxRecDepth 100000 in
 /-- The stored `ρ = 1/256` low-resolution centre `Uo` is the old centre. -/
@@ -179,7 +182,7 @@ theorem xLM_old_Uo {c : ℂ} (hc : c ≠ 0) : xLM c 176 = xL 4 := by
     show famLM 176 = [(famLM 176).getD 0 SliceData.zero] from rfl, famCtr_single]
   have hg : ∀ i, i ≤ 2 * NLM → ∀ j, j ≤ 2 * MLM → sliceG NLM MLM (if oddLM 176 then -1 else 1)
       (c0LM 176 : ℤ) 0 0 ((famLM 176).getD 0 SliceData.zero) i j = gL_U i j := by
-    decide +kernel
+    kernel_fact
   rw [gridPolyNM_congr fun i j hi hj => hg i hi j hj]
   rfl
 
@@ -190,7 +193,7 @@ theorem xLM_old_Zo {c : ℂ} (hc : c ≠ 0) : xLM c 177 = xL 5 := by
     show famLM 177 = [(famLM 177).getD 0 SliceData.zero] from rfl, famCtr_single]
   have hg : ∀ i, i ≤ 2 * NLM → ∀ j, j ≤ 2 * MLM → sliceG NLM MLM (if oddLM 177 then -1 else 1)
       (c0LM 177 : ℤ) 0 0 ((famLM 177).getD 0 SliceData.zero) i j = gL_Z i j := by
-    decide +kernel
+    kernel_fact
   rw [gridPolyNM_congr fun i j hi hj => hg i hi j hj]
   rfl
 
@@ -360,6 +363,8 @@ theorem XLM_eq_Bo {c : ℂ} (hc : ‖c‖ = 1) (u z : FA) :
   rw [XLM_new c _ _ (j := 179) rfl, xLM_der_Bo (ne_zero_of_norm_one_mu hc), xLM_old_Zo (ne_zero_of_norm_one_mu hc)]
   simp [XLMnew, dTh]
 
+set_option maxHeartbeats 400000 in
+-- the proof-term side conditions (`kernel_fact`) add elaboration work to this long proof
 set_option linter.style.longLine false in
 set_option maxRecDepth 100000 in
 set_option exponentiation.threshold 4096 in
@@ -371,196 +376,196 @@ theorem normLM {r : ℝ} (hq : Real.exp r ≤ (74315 : ℕ) / 2 ^ 16) {c : ℂ} 
   | 2, _ => by rw [xLM_c, ctr_cPoly]; exact (Bd_cS_q hq).le (by norm_num [BLM, BLMl])
   | 3, _ => by rw [xLM_s, ctr_sPoly]; exact (Bd_sS_q hq).le (by norm_num [BLM, BLMl])
   | 4, _ => center3_fullN hq hc boxLM (l1LM 25) (fun _ => rfl) 4 0 70 33 11 9 1 33 16 12
-      161668655486752332749960854537041649406716589364707636764340006772799280168274521581936544128317637333474796939626725457476233290746587278138078734057472 (BLM 4) (kronLM 70 33 25) rfl (by decide +kernel) clLM_U cLM_U (by decide +kernel)
+      161668655486752332749960854537041649406716589364707636764340006772799280168274521581936544128317637333474796939626725457476233290746587278138078734057472 (BLM 4) (kronLM 70 33 25) rfl (by kernel_fact) clLM_U cLM_U (by kernel_fact)
   | 5, _ => center3_fullN hq hc boxLM (l1LM 25) (fun _ => rfl) 5 1 70 33 11 9 1 33 16 12
-      135952821823082321011848015530185668057179606798636080153443184595016628995531715452314357502504840346957283606352133939204286721296213036014252914114560 (BLM 5) (kronLM 70 33 25) rfl (by decide +kernel) clLM_Z cLM_Z (by decide +kernel)
+      135952821823082321011848015530185668057179606798636080153443184595016628995531715452314357502504840346957283606352133939204286721296213036014252914114560 (BLM 5) (kronLM 70 33 25) rfl (by kernel_fact) clLM_Z cLM_Z (by kernel_fact)
   | 6, _ => center3_fullN hq hc boxLM (l1LM 25) (fun _ => rfl) 6 3 74 33 11 9 1 33 16 12
-      136928638139236109820441891194678812414689830990015626774548271372300929096968955469821970237393557922891162670921300919434549974180690015750124868730880 (BLM 6) (kronLM 74 33 25) rfl (by decide +kernel) clLM_A cLM_A (by decide +kernel)
+      136928638139236109820441891194678812414689830990015626774548271372300929096968955469821970237393557922891162670921300919434549974180690015750124868730880 (BLM 6) (kronLM 74 33 25) rfl (by kernel_fact) clLM_A cLM_A (by kernel_fact)
   | 7, _ => center3_fullN hq hc boxLM (l1LM 25) (fun _ => rfl) 7 0 74 33 11 9 1 33 16 12
-      135423788363223499404707933482307536246788387292830690301770093907570455421105442078556521449252803559970825653758762860620077088022956735763003337605120 (BLM 7) (kronLM 74 33 25) rfl (by decide +kernel) clLM_B cLM_B (by decide +kernel)
+      135423788363223499404707933482307536246788387292830690301770093907570455421105442078556521449252803559970825653758762860620077088022956735763003337605120 (BLM 7) (kronLM 74 33 25) rfl (by kernel_fact) clLM_B cLM_B (by kernel_fact)
   | 8, _ => center3_fullN hq hc boxLM (l1LM 25) (fun _ => rfl) 8 2 66 33 11 9 1 33 16 12
-      18482511512840623544158531080163315413524297074573677480365009873984495878459572404642842516605206716003301724203395129506848160774497774043504243113984 (BLM 8) (kronLM 66 33 25) rfl (by decide +kernel) clLM_m02 cLM_m02 (by decide +kernel)
+      18482511512840623544158531080163315413524297074573677480365009873984495878459572404642842516605206716003301724203395129506848160774497774043504243113984 (BLM 8) (kronLM 66 33 25) rfl (by kernel_fact) clLM_m02 cLM_m02 (by kernel_fact)
   | 9, _ => center3_fullN hq hc boxLM (l1LM 25) (fun _ => rfl) 9 1 66 33 11 9 1 33 16 12
-      13853894371967894630017562052016371561055612698424155685116391485095161801341924817471834761965884759261038633627544602525127116061956713951002959544320 (BLM 9) (kronLM 66 33 25) rfl (by decide +kernel) clLM_m11 cLM_m11 (by decide +kernel)
+      13853894371967894630017562052016371561055612698424155685116391485095161801341924817471834761965884759261038633627544602525127116061956713951002959544320 (BLM 9) (kronLM 66 33 25) rfl (by kernel_fact) clLM_m11 cLM_m11 (by kernel_fact)
   | 10, _ => center3_fullN hq hc boxLM (l1LM 25) (fun _ => rfl) 10 0 66 33 11 9 1 33 16 12
-      26772481590460178252128770015293922744788759276948978370259407873677361715536849446006163983681896933529014070086215715085634474640646102316167450329088 (BLM 10) (kronLM 66 33 25) rfl (by decide +kernel) clLM_m20 cLM_m20 (by decide +kernel)
+      26772481590460178252128770015293922744788759276948978370259407873677361715536849446006163983681896933529014070086215715085634474640646102316167450329088 (BLM 10) (kronLM 66 33 25) rfl (by kernel_fact) clLM_m20 cLM_m20 (by kernel_fact)
   | 11, _ => center3_fullN hq hc boxLM (l1LM 25) (fun _ => rfl) 11 3 63 33 11 9 1 33 16 12
-      2586842810350354666370733400957569975880559599284243008283214336034199776124759947858131809310716677355572946843834260156598545336066227567338759127040 (BLM 11) (kronLM 63 33 25) rfl (by decide +kernel) clLM_m03 cLM_m03 (by decide +kernel)
+      2586842810350354666370733400957569975880559599284243008283214336034199776124759947858131809310716677355572946843834260156598545336066227567338759127040 (BLM 11) (kronLM 63 33 25) rfl (by kernel_fact) clLM_m03 cLM_m03 (by kernel_fact)
   | 12, _ => center3_fullN hq hc boxLM (l1LM 25) (fun _ => rfl) 12 2 62 33 11 9 1 33 16 12
-      1825601624833580994621707643208172019084797004731872177709194307868433854328074902421903996866023807031407418196487868104370844615959592602330357301248 (BLM 12) (kronLM 62 33 25) rfl (by decide +kernel) clLM_m12 cLM_m12 (by decide +kernel)
+      1825601624833580994621707643208172019084797004731872177709194307868433854328074902421903996866023807031407418196487868104370844615959592602330357301248 (BLM 12) (kronLM 62 33 25) rfl (by kernel_fact) clLM_m12 cLM_m12 (by kernel_fact)
   | 13, _ => center3_fullN hq hc boxLM (l1LM 25) (fun _ => rfl) 13 1 62 33 11 9 1 33 16 12
-      2057831425052529169227228464987492450804963209420123043549430858904441746940633158122839391161703850187440980268885667731381828419355127155799904747520 (BLM 13) (kronLM 62 33 25) rfl (by decide +kernel) clLM_m21 cLM_m21 (by decide +kernel)
+      2057831425052529169227228464987492450804963209420123043549430858904441746940633158122839391161703850187440980268885667731381828419355127155799904747520 (BLM 13) (kronLM 62 33 25) rfl (by kernel_fact) clLM_m21 cLM_m21 (by kernel_fact)
   | 14, _ => center3_fullN hq hc boxLM (l1LM 25) (fun _ => rfl) 14 0 64 33 11 9 1 33 16 12
-      4415151862811246239306589779016990291320048630382828608437917572476120994752273487757325637539646527793723115468148802003601099577476260344310194503680 (BLM 14) (kronLM 64 33 25) rfl (by decide +kernel) clLM_m30 cLM_m30 (by decide +kernel)
+      4415151862811246239306589779016990291320048630382828608437917572476120994752273487757325637539646527793723115468148802003601099577476260344310194503680 (BLM 14) (kronLM 64 33 25) rfl (by kernel_fact) clLM_m30 cLM_m30 (by kernel_fact)
   | 15, _ => center3_fullN hq hc boxLM (l1LM 25) (fun _ => rfl) 15 3 59 33 11 9 1 33 16 12
-      202371044634683018938327343887478105664818465093829587481869647243392234453347244120401706038306528217247937067924188171208022099907006267215252029440 (BLM 15) (kronLM 59 33 25) rfl (by decide +kernel) clLM_m13 cLM_m13 (by decide +kernel)
+      202371044634683018938327343887478105664818465093829587481869647243392234453347244120401706038306528217247937067924188171208022099907006267215252029440 (BLM 15) (kronLM 59 33 25) rfl (by kernel_fact) clLM_m13 cLM_m13 (by kernel_fact)
   | 16, _ => center3_fullN hq hc boxLM (l1LM 25) (fun _ => rfl) 16 2 58 33 11 9 1 33 16 12
-      189075942333735566315645861677435847935772340715101450934759559186646238416486541904177235614533345447429588323043125959634705729229425423028766900224 (BLM 16) (kronLM 58 33 25) rfl (by decide +kernel) clLM_m22 cLM_m22 (by decide +kernel)
+      189075942333735566315645861677435847935772340715101450934759559186646238416486541904177235614533345447429588323043125959634705729229425423028766900224 (BLM 16) (kronLM 58 33 25) rfl (by kernel_fact) clLM_m22 cLM_m22 (by kernel_fact)
   | 17, _ => center3_fullN hq hc boxLM (l1LM 25) (fun _ => rfl) 17 1 59 33 11 9 1 33 16 12
-      289303081179980694569782396633625596803873808437240068930924588837458636629879520129063766797168034841596440544691251384649795306847703021532563374080 (BLM 17) (kronLM 59 33 25) rfl (by decide +kernel) clLM_m31 cLM_m31 (by decide +kernel)
+      289303081179980694569782396633625596803873808437240068930924588837458636629879520129063766797168034841596440544691251384649795306847703021532563374080 (BLM 17) (kronLM 59 33 25) rfl (by kernel_fact) clLM_m31 cLM_m31 (by kernel_fact)
   | 18, _ => center3_fullN hq hc boxLM (l1LM 25) (fun _ => rfl) 18 0 60 33 11 9 1 33 16 12
-      724493804180619312343956186843075764440055041651098518447882781313076515140860195533799258964735378050463582750906297423555233518676402395542924034048 (BLM 18) (kronLM 60 33 25) rfl (by decide +kernel) clLM_m40 cLM_m40 (by decide +kernel)
+      724493804180619312343956186843075764440055041651098518447882781313076515140860195533799258964735378050463582750906297423555233518676402395542924034048 (BLM 18) (kronLM 60 33 25) rfl (by kernel_fact) clLM_m40 cLM_m40 (by kernel_fact)
   | 19, _ => center3_fullN hq hc boxLM (l1LM 25) (fun _ => rfl) 19 1 56 33 11 9 1 33 16 12
-      43370614932184284741972847294375415698299251065241986149472275516924059472452895569803706577454910420179873659337521518106620776180783976263272366080 (BLM 19) (kronLM 56 33 25) rfl (by decide +kernel) clLM_m41 cLM_m41 (by decide +kernel)
+      43370614932184284741972847294375415698299251065241986149472275516924059472452895569803706577454910420179873659337521518106620776180783976263272366080 (BLM 19) (kronLM 56 33 25) rfl (by kernel_fact) clLM_m41 cLM_m41 (by kernel_fact)
   | 20, _ => center3_fullN hq hc boxLM (l1LM 25) (fun _ => rfl) 20 0 58 33 11 9 1 33 16 12
-      118628444434919677893866784071761112148898115439769257889140432086528297393077873408935124328215085677969353657238154559558965375899520640585903898624 (BLM 20) (kronLM 58 33 25) rfl (by decide +kernel) clLM_m50 cLM_m50 (by decide +kernel)
+      118628444434919677893866784071761112148898115439769257889140432086528297393077873408935124328215085677969353657238154559558965375899520640585903898624 (BLM 20) (kronLM 58 33 25) rfl (by kernel_fact) clLM_m50 cLM_m50 (by kernel_fact)
   | 21, _ => center3_fullN hq hc boxLM (l1LM 25) (fun _ => rfl) 21 1 53 33 11 9 1 33 16 12
-      6511643810782606682124037507957552115000028368163599110361197427126465882243453497042757659428267511286645197560579602528876260193505233146856079360 (BLM 21) (kronLM 53 33 25) rfl (by decide +kernel) clLM_m51 cLM_m51 (by decide +kernel)
+      6511643810782606682124037507957552115000028368163599110361197427126465882243453497042757659428267511286645197560579602528876260193505233146856079360 (BLM 21) (kronLM 53 33 25) rfl (by kernel_fact) clLM_m51 cLM_m51 (by kernel_fact)
   | 22, _ => center3_fullN hq hc boxLM (l1LM 25) (fun _ => rfl) 22 0 55 33 11 9 1 33 16 12
-      19314986359528475458199892584921814619002955754674798663589319668226307789436828736382918543613175280662345320870833334232552712906391719432119386112 (BLM 22) (kronLM 55 33 25) rfl (by decide +kernel) clLM_m60 cLM_m60 (by decide +kernel)
+      19314986359528475458199892584921814619002955754674798663589319668226307789436828736382918543613175280662345320870833334232552712906391719432119386112 (BLM 22) (kronLM 55 33 25) rfl (by kernel_fact) clLM_m60 cLM_m60 (by kernel_fact)
   | 23, _ => center3_fullN hq hc boxLM (l1LM 25) (fun _ => rfl) 23 0 73 33 11 9 1 33 16 12
-      1068382435100674023179242257894353197409904126794649998003152479661092544069809411564722682204769926463331101062335995101910461710413122877330144609959936 (BLM 23) (kronLM 73 33 25) rfl (by decide +kernel) clLM_Dp cLM_Dp (by decide +kernel)
+      1068382435100674023179242257894353197409904126794649998003152479661092544069809411564722682204769926463331101062335995101910461710413122877330144609959936 (BLM 23) (kronLM 73 33 25) rfl (by kernel_fact) clLM_Dp cLM_Dp (by kernel_fact)
   | 24, _ => center3_fullN hq hc boxLM (l1LM 25) (fun _ => rfl) 24 3 69 33 11 9 1 33 16 12
-      83872977754287504457982334365130471606708437699988266653088124909810083429667679346251367190666783722761553325215759407122418354571910659989033503948800 (BLM 24) (kronLM 69 33 25) rfl (by decide +kernel) clLM_nRp cLM_nRp (by decide +kernel)
+      83872977754287504457982334365130471606708437699988266653088124909810083429667679346251367190666783722761553325215759407122418354571910659989033503948800 (BLM 24) (kronLM 69 33 25) rfl (by kernel_fact) clLM_nRp cLM_nRp (by kernel_fact)
   | 25, _ => center3_fullN hq hc boxLM (l1LM 25) (fun _ => rfl) 25 0 69 33 11 9 1 33 16 12
-      83916767650063242019092145503821453405775891470901627959226945214796193988076435798477564548373556043713833318546836849078778217082421789330448484139008 (BLM 25) (kronLM 69 33 25) rfl (by decide +kernel) clLM_nZp cLM_nZp (by decide +kernel)
+      83916767650063242019092145503821453405775891470901627959226945214796193988076435798477564548373556043713833318546836849078778217082421789330448484139008 (BLM 25) (kronLM 69 33 25) rfl (by kernel_fact) clLM_nZp cLM_nZp (by kernel_fact)
   | 26, _ => center3_fullN hq hc boxLM (l1LM 25) (fun _ => rfl) 26 0 74 33 11 9 1 33 16 12
-      1874626483490960703271407220320312542794686085533412828742725031727389393471713301260155392455555548825292446356626055536230726799714742413104321109426176 (BLM 26) (kronLM 74 33 25) rfl (by decide +kernel) clLM_DuP cLM_DuP (by decide +kernel)
+      1874626483490960703271407220320312542794686085533412828742725031727389393471713301260155392455555548825292446356626055536230726799714742413104321109426176 (BLM 26) (kronLM 74 33 25) rfl (by kernel_fact) clLM_DuP cLM_DuP (by kernel_fact)
   | 27, _ => center3_fullN hq hc boxLM (l1LM 25) (fun _ => rfl) 27 3 70 33 11 9 1 33 16 12
-      171654547576132139725721248478803104728538622852646086448769123580608247888013364740823253400261456577776362648489696910448437718042189544844481454407680 (BLM 27) (kronLM 70 33 25) rfl (by decide +kernel) clLM_DzP cLM_DzP (by decide +kernel)
+      171654547576132139725721248478803104728538622852646086448769123580608247888013364740823253400261456577776362648489696910448437718042189544844481454407680 (BLM 27) (kronLM 70 33 25) rfl (by kernel_fact) clLM_DzP cLM_DzP (by kernel_fact)
   | 28, _ => center3_fullN hq hc boxLM (l1LM 25) (fun _ => rfl) 28 1 67 33 11 9 1 33 16 12
-      19606579043825159566849755390765905951417091676040724244294529199963398616123774023031150329284656656769246472098657385143637703236602761900273099079680 (BLM 28) (kronLM 67 33 25) rfl (by decide +kernel) clLM_DphP cLM_DphP (by decide +kernel)
+      19606579043825159566849755390765905951417091676040724244294529199963398616123774023031150329284656656769246472098657385143637703236602761900273099079680 (BLM 28) (kronLM 67 33 25) rfl (by kernel_fact) clLM_DphP cLM_DphP (by kernel_fact)
   | 29, _ => center3_fullN hq hc boxLM (l1LM 25) (fun _ => rfl) 29 3 72 33 11 9 1 33 16 12
-      787078419055668924100729869785393444093068105024511993049451169543679073543457110924594210609056329245611339555016493227048299967808575030069230294794240 (BLM 29) (kronLM 72 33 25) rfl (by decide +kernel) clLM_nRuP cLM_nRuP (by decide +kernel)
+      787078419055668924100729869785393444093068105024511993049451169543679073543457110924594210609056329245611339555016493227048299967808575030069230294794240 (BLM 29) (kronLM 72 33 25) rfl (by kernel_fact) clLM_nRuP cLM_nRuP (by kernel_fact)
   | 30, _ => center3_fullN hq hc boxLM (l1LM 25) (fun _ => rfl) 30 0 72 33 11 9 1 33 16 12
-      617988968154125994036801432062516065463243535171632637504540191226429111036278952633728027469139823961523093002420250601031066745379889499591334703398912 (BLM 30) (kronLM 72 33 25) rfl (by decide +kernel) clLM_nRzP cLM_nRzP (by decide +kernel)
+      617988968154125994036801432062516065463243535171632637504540191226429111036278952633728027469139823961523093002420250601031066745379889499591334703398912 (BLM 30) (kronLM 72 33 25) rfl (by kernel_fact) clLM_nRzP cLM_nRzP (by kernel_fact)
   | 31, _ => center3_fullN hq hc boxLM (l1LM 25) (fun _ => rfl) 31 0 70 33 11 9 1 33 16 12
-      169738066370252856810385692899580907076848456748958296406727198679825068565750742044568398305988898182265120468083295695905474055354685826621465404899328 (BLM 31) (kronLM 70 33 25) rfl (by decide +kernel) clLM_nRphP cLM_nRphP (by decide +kernel)
+      169738066370252856810385692899580907076848456748958296406727198679825068565750742044568398305988898182265120468083295695905474055354685826621465404899328 (BLM 31) (kronLM 70 33 25) rfl (by kernel_fact) clLM_nRphP cLM_nRphP (by kernel_fact)
   | 32, _ => center3_fullN hq hc boxLM (l1LM 25) (fun _ => rfl) 32 0 72 33 11 9 1 33 16 12
-      723328806402080641794174304318746157361603149970614071619737048530632192199972129611178276153913402982633638857576053776966016024564568852032472720867328 (BLM 32) (kronLM 72 33 25) rfl (by decide +kernel) clLM_nZuP cLM_nZuP (by decide +kernel)
+      723328806402080641794174304318746157361603149970614071619737048530632192199972129611178276153913402982633638857576053776966016024564568852032472720867328 (BLM 32) (kronLM 72 33 25) rfl (by kernel_fact) clLM_nZuP cLM_nZuP (by kernel_fact)
   | 33, _ => center3_fullN hq hc boxLM (l1LM 25) (fun _ => rfl) 33 1 72 33 11 9 1 33 16 12
-      680082567926329255771630042115730573762166299978492149938838793359942274128740005207852323449245564520161164863553227311444157247278453443927465032417280 (BLM 33) (kronLM 72 33 25) rfl (by decide +kernel) clLM_nZzP cLM_nZzP (by decide +kernel)
+      680082567926329255771630042115730573762166299978492149938838793359942274128740005207852323449245564520161164863553227311444157247278453443927465032417280 (BLM 33) (kronLM 72 33 25) rfl (by kernel_fact) clLM_nZzP cLM_nZzP (by kernel_fact)
   | 34, _ => center3_fullN hq hc boxLM (l1LM 25) (fun _ => rfl) 34 3 70 33 11 9 1 33 16 12
-      168741357364757256628833553531071405445943677686197243387038002087785444196118824242432904095593507206766422622818252022998020603884109535628545983774720 (BLM 34) (kronLM 70 33 25) rfl (by decide +kernel) clLM_nZphP cLM_nZphP (by decide +kernel)
+      168741357364757256628833553531071405445943677686197243387038002087785444196118824242432904095593507206766422622818252022998020603884109535628545983774720 (BLM 34) (kronLM 70 33 25) rfl (by kernel_fact) clLM_nZphP cLM_nZphP (by kernel_fact)
   | 35, _ => center3_fullN hq hc boxLM (l1LM 25) (fun _ => rfl) 35 0 74 33 11 9 1 33 16 12
-      1513127851141920397050226993296791319320582129014308642639825888603739536909425093063401047418662675559336896977086779597282307454639179735685399199088640 (BLM 35) (kronLM 74 33 25) rfl (by decide +kernel) clLM_PuP cLM_PuP (by decide +kernel)
+      1513127851141920397050226993296791319320582129014308642639825888603739536909425093063401047418662675559336896977086779597282307454639179735685399199088640 (BLM 35) (kronLM 74 33 25) rfl (by kernel_fact) clLM_PuP cLM_PuP (by kernel_fact)
   | 36, _ => center3_fullN hq hc boxLM (l1LM 25) (fun _ => rfl) 36 0 75 33 11 9 1 33 16 12
-      5495860721892012929861723995412014403055349213936711999959426464923170292026870708012504346998265321722084322390078484208946106537449844552842114618097664 (BLM 36) (kronLM 75 33 25) rfl (by decide +kernel) clLM_PdP cLM_PdP (by decide +kernel)
+      5495860721892012929861723995412014403055349213936711999959426464923170292026870708012504346998265321722084322390078484208946106537449844552842114618097664 (BLM 36) (kronLM 75 33 25) rfl (by kernel_fact) clLM_PdP cLM_PdP (by kernel_fact)
   | 37, _ => center3_fullN hq hc boxLM (l1LM 25) (fun _ => rfl) 37 0 75 33 11 9 1 33 16 12
-      2988286023101632710849916155668342518166710629626183812089125321829915687710460419880139040709212240232736723089492501933432566821694278695688376281989120 (BLM 37) (kronLM 75 33 25) rfl (by decide +kernel) clLM_DuuP cLM_DuuP (by decide +kernel)
+      2988286023101632710849916155668342518166710629626183812089125321829915687710460419880139040709212240232736723089492501933432566821694278695688376281989120 (BLM 37) (kronLM 75 33 25) rfl (by kernel_fact) clLM_DuuP cLM_DuuP (by kernel_fact)
   | 38, _ => center3_fullN hq hc boxLM (l1LM 25) (fun _ => rfl) 38 3 73 33 11 9 1 33 16 12
-      971422559119786994414818833820439688305185259102146883332303261881184560503209831388652344217820172161975417362795960589200312811471936525039392029409280 (BLM 38) (kronLM 73 33 25) rfl (by decide +kernel) clLM_DuzP cLM_DuzP (by decide +kernel)
+      971422559119786994414818833820439688305185259102146883332303261881184560503209831388652344217820172161975417362795960589200312811471936525039392029409280 (BLM 38) (kronLM 73 33 25) rfl (by kernel_fact) clLM_DuzP cLM_DuzP (by kernel_fact)
   | 39, _ => center3_fullN hq hc boxLM (l1LM 25) (fun _ => rfl) 39 0 74 33 11 9 1 33 16 12
-      1397238884288549403745427144159445302236456084595706830941098693959069898981947177989161825437457711240720424749290482809682499729453757270049542880886784 (BLM 39) (kronLM 74 33 25) rfl (by decide +kernel) clLM_DzzP cLM_DzzP (by decide +kernel)
+      1397238884288549403745427144159445302236456084595706830941098693959069898981947177989161825437457711240720424749290482809682499729453757270049542880886784 (BLM 39) (kronLM 74 33 25) rfl (by kernel_fact) clLM_DzzP cLM_DzzP (by kernel_fact)
   | 40, _ => center3_fullN hq hc boxLM (l1LM 25) (fun _ => rfl) 40 1 71 33 11 9 1 33 16 12
-      348795806850544588266594210408036055023449782152092313163911952020543972349813924675721148241980091016945489752928237332256994979698513143847367024312320 (BLM 40) (kronLM 71 33 25) rfl (by decide +kernel) clLM_DuphP cLM_DuphP (by decide +kernel)
+      348795806850544588266594210408036055023449782152092313163911952020543972349813924675721148241980091016945489752928237332256994979698513143847367024312320 (BLM 40) (kronLM 71 33 25) rfl (by kernel_fact) clLM_DuphP cLM_DuphP (by kernel_fact)
   | 41, _ => center3_fullN hq hc boxLM (l1LM 25) (fun _ => rfl) 41 0 71 33 11 9 1 33 16 12
-      353257253953362802106759708298955140513829368493325949049256784522912097812968229929711093678857032281383412516601891445941721385379132662142495056986112 (BLM 41) (kronLM 71 33 25) rfl (by decide +kernel) clLM_DzphP cLM_DzphP (by decide +kernel)
+      353257253953362802106759708298955140513829368493325949049256784522912097812968229929711093678857032281383412516601891445941721385379132662142495056986112 (BLM 41) (kronLM 71 33 25) rfl (by kernel_fact) clLM_DzphP cLM_DzphP (by kernel_fact)
   | 42, _ => center3_fullN hq hc boxLM (l1LM 25) (fun _ => rfl) 42 3 75 33 11 9 1 33 16 12
-      3291211592969054330602541017051255385071871594239524231100277260434471942983364337462993500420560709716750951510052292056664390038065768625760555740692480 (BLM 42) (kronLM 75 33 25) rfl (by decide +kernel) clLM_nRuuP cLM_nRuuP (by decide +kernel)
+      3291211592969054330602541017051255385071871594239524231100277260434471942983364337462993500420560709716750951510052292056664390038065768625760555740692480 (BLM 42) (kronLM 75 33 25) rfl (by kernel_fact) clLM_nRuuP cLM_nRuuP (by kernel_fact)
   | 43, _ => center3_fullN hq hc boxLM (l1LM 25) (fun _ => rfl) 43 0 71 33 11 9 1 33 16 12
-      396623308832082097193345788894537087963470283119189391870077809216682407021137869666788769462858631541426263734826013018317862155408322359401023912542208 (BLM 43) (kronLM 71 33 25) rfl (by decide +kernel) clLM_nRuzP cLM_nRuzP (by decide +kernel)
+      396623308832082097193345788894537087963470283119189391870077809216682407021137869666788769462858631541426263734826013018317862155408322359401023912542208 (BLM 43) (kronLM 71 33 25) rfl (by kernel_fact) clLM_nRuzP cLM_nRuzP (by kernel_fact)
   | 44, _ => center3_fullN hq hc boxLM (l1LM 25) (fun _ => rfl) 44 3 73 33 11 9 1 33 16 12
-      1372794845435836940075146240276167108959290548017105744640731564049411112632119830861800079892954576719439507474670238799122408170363603791778848283033600 (BLM 44) (kronLM 73 33 25) rfl (by decide +kernel) clLM_nRzzP cLM_nRzzP (by decide +kernel)
+      1372794845435836940075146240276167108959290548017105744640731564049411112632119830861800079892954576719439507474670238799122408170363603791778848283033600 (BLM 44) (kronLM 73 33 25) rfl (by kernel_fact) clLM_nRzzP cLM_nRzzP (by kernel_fact)
   | 45, _ => center3_fullN hq hc boxLM (l1LM 25) (fun _ => rfl) 45 0 73 33 11 9 1 33 16 12
-      1585311781104294438989518481870567723511197035756152166055893406655517461223241401255959845355737060705607053313591961922484003656112746582674318141947904 (BLM 45) (kronLM 73 33 25) rfl (by decide +kernel) clLM_nRuphP cLM_nRuphP (by decide +kernel)
+      1585311781104294438989518481870567723511197035756152166055893406655517461223241401255959845355737060705607053313591961922484003656112746582674318141947904 (BLM 45) (kronLM 73 33 25) rfl (by kernel_fact) clLM_nRuphP cLM_nRuphP (by kernel_fact)
   | 46, _ => center3_fullN hq hc boxLM (l1LM 25) (fun _ => rfl) 46 3 73 33 11 9 1 33 16 12
-      1235776392546546103208610335191689692139388360424721285430173939596571359130077601573030167061860629602475367493325140869389219194491994116817605760122880 (BLM 46) (kronLM 73 33 25) rfl (by decide +kernel) clLM_nRzphP cLM_nRzphP (by decide +kernel)
+      1235776392546546103208610335191689692139388360424721285430173939596571359130077601573030167061860629602475367493325140869389219194491994116817605760122880 (BLM 46) (kronLM 73 33 25) rfl (by kernel_fact) clLM_nRzphP cLM_nRzphP (by kernel_fact)
   | 47, _ => center3_fullN hq hc boxLM (l1LM 25) (fun _ => rfl) 47 0 74 33 11 9 1 33 16 12
-      2179255832678145790793763522742019206140344739227369676023299163038371799906635018623049910619963072231254820328090941747356307318813661706038376191229952 (BLM 47) (kronLM 74 33 25) rfl (by decide +kernel) clLM_nZuuP cLM_nZuuP (by decide +kernel)
+      2179255832678145790793763522742019206140344739227369676023299163038371799906635018623049910619963072231254820328090941747356307318813661706038376191229952 (BLM 47) (kronLM 74 33 25) rfl (by kernel_fact) clLM_nZuuP cLM_nZuuP (by kernel_fact)
   | 48, _ => center3_fullN hq hc boxLM (l1LM 25) (fun _ => rfl) 48 1 73 33 11 9 1 33 16 12
-      1372794845435836940075146240276167108959290548017105744640731564049411112632119830861800079892954576719439507474670238799122408170363603791778848283033600 (BLM 48) (kronLM 73 33 25) rfl (by decide +kernel) clLM_nZuzP cLM_nZuzP (by decide +kernel)
+      1372794845435836940075146240276167108959290548017105744640731564049411112632119830861800079892954576719439507474670238799122408170363603791778848283033600 (BLM 48) (kronLM 73 33 25) rfl (by kernel_fact) clLM_nZuzP cLM_nZuzP (by kernel_fact)
   | 49, _ => center3_fullN hq hc boxLM (l1LM 25) (fun _ => rfl) 49 0 74 33 11 9 1 33 16 12
-      1784407374756536822517047126012815995260762920154642703845044677070533747655701105150486535709117605623069467653274909922726998589991810101088515801481216 (BLM 49) (kronLM 74 33 25) rfl (by decide +kernel) clLM_nZzzP cLM_nZzzP (by decide +kernel)
+      1784407374756536822517047126012815995260762920154642703845044677070533747655701105150486535709117605623069467653274909922726998589991810101088515801481216 (BLM 49) (kronLM 74 33 25) rfl (by kernel_fact) clLM_nZzzP cLM_nZzzP (by kernel_fact)
   | 50, _ => center3_fullN hq hc boxLM (l1LM 25) (fun _ => rfl) 50 3 73 33 11 9 1 33 16 12
-      1440168245754219703095599574133578133902378689810996136331523738323811285942898613318392865102030998335516998136001966958770126301061725647299425641431040 (BLM 50) (kronLM 73 33 25) rfl (by decide +kernel) clLM_nZuphP cLM_nZuphP (by decide +kernel)
+      1440168245754219703095599574133578133902378689810996136331523738323811285942898613318392865102030998335516998136001966958770126301061725647299425641431040 (BLM 50) (kronLM 73 33 25) rfl (by kernel_fact) clLM_nZuphP cLM_nZuphP (by kernel_fact)
   | 51, _ => center3_fullN hq hc boxLM (l1LM 25) (fun _ => rfl) 51 0 73 33 11 9 1 33 16 12
-      1368197396985482524358681082639684034143934084460781632109299608053514685056251204960549368802479935429029384391542312270219838364244158884516454354386944 (BLM 51) (kronLM 73 33 25) rfl (by decide +kernel) clLM_nZzphP cLM_nZzphP (by decide +kernel)
+      1368197396985482524358681082639684034143934084460781632109299608053514685056251204960549368802479935429029384391542312270219838364244158884516454354386944 (BLM 51) (kronLM 73 33 25) rfl (by kernel_fact) clLM_nZzphP cLM_nZzphP (by kernel_fact)
   | 52, _ => center3_fullN hq hc boxLM (l1LM 25) (fun _ => rfl) 52 0 73 33 11 9 1 33 16 12
-      1174938301579614837591888416229386155833595218973126743265711699225824283546426992175869548918869412346387806880692612621079345112942564241432151288971264 (BLM 52) (kronLM 73 33 25) rfl (by decide +kernel) clLM_RD cLM_RD (by decide +kernel)
+      1174938301579614837591888416229386155833595218973126743265711699225824283546426992175869548918869412346387806880692612621079345112942564241432151288971264 (BLM 52) (kronLM 73 33 25) rfl (by kernel_fact) clLM_RD cLM_RD (by kernel_fact)
   | 53, _ => center3_fullN hq hc boxLM (l1LM 25) (fun _ => rfl) 53 0 74 33 11 9 1 33 16 12
-      1986327174985548308610492914497637442399872030353033658436925557371162544675655764263279808588116834557052700199472671632353872710674015956639300322328576 (BLM 53) (kronLM 74 33 25) rfl (by decide +kernel) clLM_RDu cLM_RDu (by decide +kernel)
+      1986327174985548308610492914497637442399872030353033658436925557371162544675655764263279808588116834557052700199472671632353872710674015956639300322328576 (BLM 53) (kronLM 74 33 25) rfl (by kernel_fact) clLM_RDu cLM_RDu (by kernel_fact)
   | 54, _ => center3_fullN hq hc boxLM (l1LM 25) (fun _ => rfl) 54 3 70 33 11 9 1 33 16 12
-      168201077845730077966826633377112010905243237537778450971515482146826976787237572124397445488025877408113358665875514564112509104199921728586183417528320 (BLM 54) (kronLM 70 33 25) rfl (by decide +kernel) clLM_RDz cLM_RDz (by decide +kernel)
+      168201077845730077966826633377112010905243237537778450971515482146826976787237572124397445488025877408113358665875514564112509104199921728586183417528320 (BLM 54) (kronLM 70 33 25) rfl (by kernel_fact) clLM_RDz cLM_RDz (by kernel_fact)
   | 55, _ => center3_fullN hq hc boxLM (l1LM 25) (fun _ => rfl) 55 1 67 33 11 9 1 33 16 12
-      19023722010671564981463354869727192874521348346822447228769826185898826057816167586468520552301108547245718590468313306592954623407219536706197824471040 (BLM 55) (kronLM 67 33 25) rfl (by decide +kernel) clLM_RDph cLM_RDph (by decide +kernel)
+      19023722010671564981463354869727192874521348346822447228769826185898826057816167586468520552301108547245718590468313306592954623407219536706197824471040 (BLM 55) (kronLM 67 33 25) rfl (by kernel_fact) clLM_RDph cLM_RDph (by kernel_fact)
   | 56, _ => center3_fullN hq hc boxLM (l1LM 25) (fun _ => rfl) 56 2 73 33 11 9 1 33 16 12
-      1572373052930304336202498271046140954748825231506089801119582692334606320775164205824569931998058506613268287228876605373194076379891744662938015928156160 (BLM 56) (kronLM 73 33 25) rfl (by decide +kernel) clLM_q cLM_q (by decide +kernel)
+      1572373052930304336202498271046140954748825231506089801119582692334606320775164205824569931998058506613268287228876605373194076379891744662938015928156160 (BLM 56) (kronLM 73 33 25) rfl (by kernel_fact) clLM_q cLM_q (by kernel_fact)
   | 57, _ => center3_fullN hq hc boxLM (l1LM 25) (fun _ => rfl) 57 0 76 33 11 9 1 33 16 12
-      8274796713609439646185851311680248458296115630040156602402349379982258889500293796012300642086517894356866582179858944222738705937887320656730326858465280 (BLM 57) (kronLM 76 33 25) rfl (by decide +kernel) clLM_qR cLM_qR (by decide +kernel)
+      8274796713609439646185851311680248458296115630040156602402349379982258889500293796012300642086517894356866582179858944222738705937887320656730326858465280 (BLM 57) (kronLM 76 33 25) rfl (by kernel_fact) clLM_qR cLM_qR (by kernel_fact)
   | 58, _ => center3_fullN hq hc boxLM (l1LM 25) (fun _ => rfl) 58 3 71 33 11 9 1 33 16 12
-      287627385733358687010892064428854252368449665713409594222549108138675075896349415920804205728336376850164655367437991839786902214826707497476586670653440 (BLM 58) (kronLM 71 33 25) rfl (by decide +kernel) clLM_qz cLM_qz (by decide +kernel)
+      287627385733358687010892064428854252368449665713409594222549108138675075896349415920804205728336376850164655367437991839786902214826707497476586670653440 (BLM 58) (kronLM 71 33 25) rfl (by kernel_fact) clLM_qz cLM_qz (by kernel_fact)
   | 59, _ => center3_fullN hq hc boxLM (l1LM 25) (fun _ => rfl) 59 3 67 33 11 9 1 33 16 12
-      40524075507738750567798040730609294261808145382072335958135564007703537536915108923691915041931936343477661663984672699547014095694458098429839225651200 (BLM 59) (kronLM 67 33 25) rfl (by decide +kernel) clLM_qph cLM_qph (by decide +kernel)
+      40524075507738750567798040730609294261808145382072335958135564007703537536915108923691915041931936343477661663984672699547014095694458098429839225651200 (BLM 59) (kronLM 67 33 25) rfl (by kernel_fact) clLM_qph cLM_qph (by kernel_fact)
   | 60, _ => center3_fullN hq hc boxLM (l1LM 25) (fun _ => rfl) 60 0 74 33 11 9 1 33 16 12
-      2676045552327235117100900107882015158547180480270625343595868972361055493586586213036036928275841806755318016276268164060147803777541711563950943811938628 (BLM 60) (kronLM 74 33 25) rfl (by decide +kernel) clLM_P2 cLM_P2 (by decide +kernel)
+      2676045552327235117100900107882015158547180480270625343595868972361055493586586213036036928275841806755318016276268164060147803777541711563950943811938628 (BLM 60) (kronLM 74 33 25) rfl (by kernel_fact) clLM_P2 cLM_P2 (by kernel_fact)
   | 61, _ => center3_fullN hq hc boxLM (l1LM 25) (fun _ => rfl) 61 2 67 33 11 9 1 33 16 12
-      30099144051783030629160729624138591237599863674969771086216673916477872095157710746972214236911444221073834930912169748457618642437547221862598566810786 (BLM 61) (kronLM 67 33 25) rfl (by decide +kernel) clLM_E cLM_E (by decide +kernel)
+      30099144051783030629160729624138591237599863674969771086216673916477872095157710746972214236911444221073834930912169748457618642437547221862598566810786 (BLM 61) (kronLM 67 33 25) rfl (by kernel_fact) clLM_E cLM_E (by kernel_fact)
   | 62, _ => center3_fullN hq hc boxLM (l1LM 25) (fun _ => rfl) 62 0 74 33 11 9 1 33 16 12
-      853361989196679805886680913876951234663020529931241069116067094727128329845545873322239644945456477988510529177824397168808769762605051487352697239906628 (BLM 62) (kronLM 74 33 25) rfl (by decide +kernel) clLM_V0 cLM_V0 (by decide +kernel)
+      853361989196679805886680913876951234663020529931241069116067094727128329845545873322239644945456477988510529177824397168808769762605051487352697239906628 (BLM 62) (kronLM 74 33 25) rfl (by kernel_fact) clLM_V0 cLM_V0 (by kernel_fact)
   | 63, _ => center3_fullN hq hc boxLM (l1LM 25) (fun _ => rfl) 63 0 74 33 11 9 1 33 16 12
-      853361989196679805886680913876951234663020529931241069116067094727128329845545873322239644945456477988510529177824397168808769762605051487352697239906628 (BLM 63) (kronLM 74 33 25) rfl (by decide +kernel) clLM_Vn cLM_Vn (by decide +kernel)
+      853361989196679805886680913876951234663020529931241069116067094727128329845545873322239644945456477988510529177824397168808769762605051487352697239906628 (BLM 63) (kronLM 74 33 25) rfl (by kernel_fact) clLM_Vn cLM_Vn (by kernel_fact)
   | 64, _ => center3_fullN hq hc boxLM (l1LM 25) (fun _ => rfl) 64 0 74 33 11 9 1 33 16 12
-      1538885623785884141282576597188672403294908311727987802257515877072951099455304417293309221339893889989211355469707420318386452781887332699485538601171916 (BLM 64) (kronLM 74 33 25) rfl (by decide +kernel) clLM_W cLM_W (by decide +kernel)
+      1538885623785884141282576597188672403294908311727987802257515877072951099455304417293309221339893889989211355469707420318386452781887332699485538601171916 (BLM 64) (kronLM 74 33 25) rfl (by kernel_fact) clLM_W cLM_W (by kernel_fact)
   | 65, _ => center3_fullN hq hc boxLM (l1LM 25) (fun _ => rfl) 65 0 74 33 11 9 1 33 16 12
-      2763467789432009441033349023798819314900270938572357404244179990593231365216059739161281388035579124683683634683860497725353908328447705034386185050725446 (BLM 65) (kronLM 74 33 25) rfl (by decide +kernel) clLM_W2 cLM_W2 (by decide +kernel)
+      2763467789432009441033349023798819314900270938572357404244179990593231365216059739161281388035579124683683634683860497725353908328447705034386185050725446 (BLM 65) (kronLM 74 33 25) rfl (by kernel_fact) clLM_W2 cLM_W2 (by kernel_fact)
   | 66, _ => center3_fullN hq hc boxLM (l1LM 25) (fun _ => rfl) 66 0 74 33 11 9 1 33 16 12
-      4881701887778846375261650380035333494955298684073619056010480642617423040921877222965692958194851557282806255870998608092443582067261142098659955957941740 (BLM 66) (kronLM 74 33 25) rfl (by decide +kernel) clLM_W3 cLM_W3 (by decide +kernel)
+      4881701887778846375261650380035333494955298684073619056010480642617423040921877222965692958194851557282806255870998608092443582067261142098659955957941740 (BLM 66) (kronLM 74 33 25) rfl (by kernel_fact) clLM_W3 cLM_W3 (by kernel_fact)
   | 67, _ => center3_fullN hq hc boxLM (l1LM 25) (fun _ => rfl) 67 0 73 33 11 9 1 33 16 12
-      1059882710365410602776246195587835360502637520317954277824011928621612044738854605694612248940161891779187897539489239613978145592914990873753834190012416 (BLM 67) (kronLM 73 33 25) rfl (by decide +kernel) clLM_R2 cLM_R2 (by decide +kernel)
+      1059882710365410602776246195587835360502637520317954277824011928621612044738854605694612248940161891779187897539489239613978145592914990873753834190012416 (BLM 67) (kronLM 73 33 25) rfl (by kernel_fact) clLM_R2 cLM_R2 (by kernel_fact)
   | 68, _ => center3_fullN hq hc boxLM (l1LM 25) (fun _ => rfl) 68 0 73 33 11 9 1 33 16 12
-      1177349428397519095277661231707529611549231283873384506721535253976697301285157052931609020826840724524696977204897326376733357084928490815266607522119680 (BLM 68) (kronLM 73 33 25) rfl (by decide +kernel) clLM_R3 cLM_R3 (by decide +kernel)
+      1177349428397519095277661231707529611549231283873384506721535253976697301285157052931609020826840724524696977204897326376733357084928490815266607522119680 (BLM 68) (kronLM 73 33 25) rfl (by kernel_fact) clLM_R3 cLM_R3 (by kernel_fact)
   | 69, _ => center3_fullN hq hc boxLM (l1LM 25) (fun _ => rfl) 69 0 76 33 11 9 1 33 16 12
-      9145949291333456422485921357673304643479974074769844706936453819675369633584227231921181069366424184895942656930196531349505065738645157449372578431238144 (BLM 69) (kronLM 76 33 25) rfl (by decide +kernel) clLM_A1 cLM_A1 (by decide +kernel)
+      9145949291333456422485921357673304643479974074769844706936453819675369633584227231921181069366424184895942656930196531349505065738645157449372578431238144 (BLM 69) (kronLM 76 33 25) rfl (by kernel_fact) clLM_A1 cLM_A1 (by kernel_fact)
   | 70, _ => center3_fullN hq hc boxLM (l1LM 25) (fun _ => rfl) 70 3 71 33 11 9 1 33 16 12
-      303927359884436774593993270331439177980776432332442220684885323739542628175142567923822957719900589431010948854705078982260014516086081524780763940126720 (BLM 70) (kronLM 71 33 25) rfl (by decide +kernel) clLM_A2 cLM_A2 (by decide +kernel)
+      303927359884436774593993270331439177980776432332442220684885323739542628175142567923822957719900589431010948854705078982260014516086081524780763940126720 (BLM 70) (kronLM 71 33 25) rfl (by kernel_fact) clLM_A2 cLM_A2 (by kernel_fact)
   | 71, _ => center3_fullN hq hc boxLM (l1LM 25) (fun _ => rfl) 71 0 70 33 11 9 1 33 16 12
-      251889030468490103813216667795706588122106561904560782715425153447582935629121754398343915519720157788951412917392095325050191206141492303814955024515072 (BLM 71) (kronLM 70 33 25) rfl (by decide +kernel) clLM_K1 cLM_K1 (by decide +kernel)
+      251889030468490103813216667795706588122106561904560782715425153447582935629121754398343915519720157788951412917392095325050191206141492303814955024515072 (BLM 71) (kronLM 70 33 25) rfl (by kernel_fact) clLM_K1 cLM_K1 (by kernel_fact)
   | 72, _ => center3_fullN hq hc boxLM (l1LM 25) (fun _ => rfl) 72 3 71 33 11 9 1 33 16 12
-      373203832835763927787430058274184018764975377989017772096038434812798735071445091755966454106089276285127016145156689543079041282403440714086882937405440 (BLM 72) (kronLM 71 33 25) rfl (by decide +kernel) clLM_K2 cLM_K2 (by decide +kernel)
+      373203832835763927787430058274184018764975377989017772096038434812798735071445091755966454106089276285127016145156689543079041282403440714086882937405440 (BLM 72) (kronLM 71 33 25) rfl (by kernel_fact) clLM_K2 cLM_K2 (by kernel_fact)
   | 73, _ => center3_fullN hq hc boxLM (l1LM 25) (fun _ => rfl) 73 2 74 33 11 9 1 33 16 12
-      4560657527189837682940701068280731325887657532406301184625801281530765228663548973342589897657400304338013060909691689262451016553479981089256713121431552 (BLM 73) (kronLM 74 33 25) rfl (by decide +kernel) clLM_K3 cLM_K3 (by decide +kernel)
+      4560657527189837682940701068280731325887657532406301184625801281530765228663548973342589897657400304338013060909691689262451016553479981089256713121431552 (BLM 73) (kronLM 74 33 25) rfl (by kernel_fact) clLM_K3 cLM_K3 (by kernel_fact)
   | 74, _ => center3_fullN hq hc boxLM (l1LM 25) (fun _ => rfl) 74 0 70 33 11 9 1 33 16 12
-      294138687270767132173842646503519019489255446274244220535768211836283319258780218599831981381882995889455046842074871514251020278287740048588300913868800 (BLM 74) (kronLM 70 33 25) rfl (by decide +kernel) clLM_KD cLM_KD (by decide +kernel)
+      294138687270767132173842646503519019489255446274244220535768211836283319258780218599831981381882995889455046842074871514251020278287740048588300913868800 (BLM 74) (kronLM 70 33 25) rfl (by kernel_fact) clLM_KD cLM_KD (by kernel_fact)
   | 75, _ => center3_fullN hq hc boxLM (l1LM 25) (fun _ => rfl) 75 3 71 33 11 9 1 33 16 12
-      454277765715440708040169161558910133973856506371422446337793846172451656741697676887825032895679961645265726373798505099221540049642119045135890540134400 (BLM 75) (kronLM 71 33 25) rfl (by decide +kernel) clLM_KR cLM_KR (by decide +kernel)
+      454277765715440708040169161558910133973856506371422446337793846172451656741697676887825032895679961645265726373798505099221540049642119045135890540134400 (BLM 75) (kronLM 71 33 25) rfl (by kernel_fact) clLM_KR cLM_KR (by kernel_fact)
   | 76, _ => center3_fullN hq hc boxLM (l1LM 25) (fun _ => rfl) 76 2 75 33 11 9 1 33 16 12
-      6057561564480077761119853021226402588680472691260760407291756092339805804677816236436425336109731066411380130818536431174857239182724970082103455388139520 (BLM 76) (kronLM 75 33 25) rfl (by decide +kernel) clLM_KZ cLM_KZ (by decide +kernel)
+      6057561564480077761119853021226402588680472691260760407291756092339805804677816236436425336109731066411380130818536431174857239182724970082103455388139520 (BLM 76) (kronLM 75 33 25) rfl (by kernel_fact) clLM_KZ cLM_KZ (by kernel_fact)
   | 77, _ => by rw [xLM_zero c (i := 77) rfl]; exact (Bd_zero r).le (by norm_num [BLM, BLMl])
   | 78, _ => by rw [xLM_zero c (i := 78) rfl]; exact (Bd_zero r).le (by norm_num [BLM, BLMl])
   | 79, _ => by rw [xLM_zero c (i := 79) rfl]; exact (Bd_zero r).le (by norm_num [BLM, BLMl])
   | 80, _ => center3_fullN hq hc boxLM (l1LM 25) (fun _ => rfl) 80 0 78 33 11 9 1 33 16 12
-      39764127093609861819461481537119244717311898833228698294543416534420473811357920513074575576140264203797059023417068795443813799393691589925299273926967296 (BLM 80) (kronLM 78 33 25) rfl (by decide +kernel) clLM_qRu cLM_qRu (by decide +kernel)
+      39764127093609861819461481537119244717311898833228698294543416534420473811357920513074575576140264203797059023417068795443813799393691589925299273926967296 (BLM 80) (kronLM 78 33 25) rfl (by kernel_fact) clLM_qRu cLM_qRu (by kernel_fact)
   | 81, _ => center3_fullN hq hc boxLM (l1LM 25) (fun _ => rfl) 81 3 74 33 11 9 1 33 16 12
-      3633180062246309890967839347126442813225439917040258366379451978910084762460824717453250090280363700187379345817553016155212313382778405679859417542819840 (BLM 81) (kronLM 74 33 25) rfl (by decide +kernel) clLM_qRz cLM_qRz (by decide +kernel)
+      3633180062246309890967839347126442813225439917040258366379451978910084762460824717453250090280363700187379345817553016155212313382778405679859417542819840 (BLM 81) (kronLM 74 33 25) rfl (by kernel_fact) clLM_qRz cLM_qRz (by kernel_fact)
   | 82, _ => center3_fullN hq hc boxLM (l1LM 25) (fun _ => rfl) 82 0 74 33 11 9 1 33 16 12
-      3805233084580778842930788483751001203919996346160711635930770117430833975057381092603835438527223280517091478276954677671533570156004027843104715076665344 (BLM 82) (kronLM 74 33 25) rfl (by decide +kernel) clLM_qzz cLM_qzz (by decide +kernel)
+      3805233084580778842930788483751001203919996346160711635930770117430833975057381092603835438527223280517091478276954677671533570156004027843104715076665344 (BLM 82) (kronLM 74 33 25) rfl (by kernel_fact) clLM_qzz cLM_qzz (by kernel_fact)
   | 83, _ => center3_fullN hq hc boxLM (l1LM 25) (fun _ => rfl) 83 3 74 33 11 9 1 33 16 12
-      3633180062246309880219277207292808315355599557057832751951758656925639030909091309966065167532867917803419659518396066555818943082416102912111741867130880 (BLM 83) (kronLM 74 33 25) rfl (by decide +kernel) clLM_qzu cLM_qzu (by decide +kernel)
+      3633180062246309880219277207292808315355599557057832751951758656925639030909091309966065167532867917803419659518396066555818943082416102912111741867130880 (BLM 83) (kronLM 74 33 25) rfl (by kernel_fact) clLM_qzu cLM_qzu (by kernel_fact)
   | 84, _ => center3_fullN hq hc boxLM (l1LM 25) (fun _ => rfl) 84 1 72 33 11 9 1 33 16 12
-      821783890718518186332025771476077335946566183786009035796167058506357620865764564532735424946315008080694022179810300716815038445075348782730639370687650 (BLM 84) (kronLM 72 33 25) rfl (by decide +kernel) clLM_qphu cLM_qphu (by decide +kernel)
+      821783890718518186332025771476077335946566183786009035796167058506357620865764564532735424946315008080694022179810300716815038445075348782730639370687650 (BLM 84) (kronLM 72 33 25) rfl (by kernel_fact) clLM_qphu cLM_qphu (by kernel_fact)
   | 85, _ => center3_fullN hq hc boxLM (l1LM 25) (fun _ => rfl) 85 0 72 33 11 9 1 33 16 12
-      741566721079707039828640746159126478918977839360314359220217368938344653863631465535545678510542695196733410298583025579576970862157294467949726928732160 (BLM 85) (kronLM 72 33 25) rfl (by decide +kernel) clLM_qphz cLM_qphz (by decide +kernel)
+      741566721079707039828640746159126478918977839360314359220217368938344653863631465535545678510542695196733410298583025579576970862157294467949726928732160 (BLM 85) (kronLM 72 33 25) rfl (by kernel_fact) clLM_qphz cLM_qphz (by kernel_fact)
   | 86, _ => center3_fullN hq hc boxLM (l1LM 25) (fun _ => rfl) 86 0 76 33 11 9 1 33 16 12
-      8274796713609439646185851311680248458296115630040156602402349379982258889500293796012300642086517894356866582179858944222738705937887320656730326858465280 (BLM 86) (kronLM 76 33 25) rfl (by decide +kernel) clLM_qu cLM_qu (by decide +kernel)
+      8274796713609439646185851311680248458296115630040156602402349379982258889500293796012300642086517894356866582179858944222738705937887320656730326858465280 (BLM 86) (kronLM 76 33 25) rfl (by kernel_fact) clLM_qu cLM_qu (by kernel_fact)
   | 87, _ => center3_fullN hq hc boxLM (l1LM 25) (fun _ => rfl) 87 3 71 33 11 9 1 33 16 12
-      287627385733358687010892064428854252368449665713409594222549108138675075896349415920804205728336376850164655367437991839786902214826707497476586670653440 (BLM 87) (kronLM 71 33 25) rfl (by decide +kernel) clLM_qzd cLM_qzd (by decide +kernel)
+      287627385733358687010892064428854252368449665713409594222549108138675075896349415920804205728336376850164655367437991839786902214826707497476586670653440 (BLM 87) (kronLM 71 33 25) rfl (by kernel_fact) clLM_qzd cLM_qzd (by kernel_fact)
   | 88, _ => center3_fullN hq hc boxLM (l1LM 25) (fun _ => rfl) 88 2 71 33 11 9 1 33 16 12
-      406135890682215672224946746860993513786356405683637992261133554717068158446009747523478183888817594270773090605049122916525021032020857315932317443041604 (BLM 88) (kronLM 71 33 25) rfl (by decide +kernel) clLM_Eu cLM_Eu (by decide +kernel)
+      406135890682215672224946746860993513786356405683637992261133554717068158446009747523478183888817594270773090605049122916525021032020857315932317443041604 (BLM 88) (kronLM 71 33 25) rfl (by kernel_fact) clLM_Eu cLM_Eu (by kernel_fact)
   | 89, _ => center3_fullN hq hc boxLM (l1LM 25) (fun _ => rfl) 89 3 71 33 11 9 1 33 16 12
-      374746259177490152144700807950665352765711008216466635430551257317566583415477914955723316749186530564482389282269120279227748699711538885050536763921570 (BLM 89) (kronLM 71 33 25) rfl (by decide +kernel) clLM_Ez cLM_Ez (by decide +kernel)
+      374746259177490152144700807950665352765711008216466635430551257317566583415477914955723316749186530564482389282269120279227748699711538885050536763921570 (BLM 89) (kronLM 71 33 25) rfl (by kernel_fact) clLM_Ez cLM_Ez (by kernel_fact)
   | 90, _ => center3_fullN hq hc boxLM (l1LM 25) (fun _ => rfl) 90 0 74 33 11 9 1 33 16 12
-      884782053601046851757706666037752957275002345462610734736425220625465107036213132687965757498620336332300521040782396393816004744938506496403150315124632 (BLM 90) (kronLM 74 33 25) rfl (by decide +kernel) clLM_V3 cLM_V3 (by decide +kernel)
+      884782053601046851757706666037752957275002345462610734736425220625465107036213132687965757498620336332300521040782396393816004744938506496403150315124632 (BLM 90) (kronLM 74 33 25) rfl (by kernel_fact) clLM_V3 cLM_V3 (by kernel_fact)
   | 91, _ => center3_fullN hq hc boxLM (l1LM 25) (fun _ => rfl) 91 0 75 33 11 9 1 33 16 12
-      5931631433162331278466434864901295386812914789040104675581592608805467590498996284336769008226657146699006125829439123227000268425899746765180869631446954 (BLM 91) (kronLM 75 33 25) rfl (by decide +kernel) clLM_Wu cLM_Wu (by decide +kernel)
+      5931631433162331278466434864901295386812914789040104675581592608805467590498996284336769008226657146699006125829439123227000268425899746765180869631446954 (BLM 91) (kronLM 75 33 25) rfl (by kernel_fact) clLM_Wu cLM_Wu (by kernel_fact)
   | 92, _ => center3_fullN hq hc boxLM (l1LM 25) (fun _ => rfl) 92 3 71 33 11 9 1 33 16 12
-      317303541341024290545103930923656819228730552800989081108896302326868286608950037578846959408085810320670302056120459615929710599617226163438096636344900 (BLM 92) (kronLM 71 33 25) rfl (by decide +kernel) clLM_Wz cLM_Wz (by decide +kernel)
+      317303541341024290545103930923656819228730552800989081108896302326868286608950037578846959408085810320670302056120459615929710599617226163438096636344900 (BLM 92) (kronLM 71 33 25) rfl (by kernel_fact) clLM_Wz cLM_Wz (by kernel_fact)
   | 93, _ => center3_fullN hq hc boxLM (l1LM 25) (fun _ => rfl) 93 0 78 33 11 9 1 33 16 12
-      55567111525835221177691043926689745710046229965679574952572300828070141351544125066101708764483786088671209431897539503638787181245117585235185961201372348 (BLM 93) (kronLM 78 33 25) rfl (by decide +kernel) clLM_W3u cLM_W3u (by decide +kernel)
+      55567111525835221177691043926689745710046229965679574952572300828070141351544125066101708764483786088671209431897539503638787181245117585235185961201372348 (BLM 93) (kronLM 78 33 25) rfl (by kernel_fact) clLM_W3u cLM_W3u (by kernel_fact)
   | 94, _ => center3_fullN hq hc boxLM (l1LM 25) (fun _ => rfl) 94 3 73 33 11 9 1 33 16 12
-      2626676278293377293267872573481893194026264422894576414764049722318583897630997784203160377349702532089733839340138884769833097654685925779901002667893230 (BLM 94) (kronLM 73 33 25) rfl (by decide +kernel) clLM_W3z cLM_W3z (by decide +kernel)
+      2626676278293377293267872573481893194026264422894576414764049722318583897630997784203160377349702532089733839340138884769833097654685925779901002667893230 (BLM 94) (kronLM 73 33 25) rfl (by kernel_fact) clLM_W3z cLM_W3z (by kernel_fact)
   | 95, _ => center3_fullN hq hc boxLM (l1LM 25) (fun _ => rfl) 95 0 74 33 11 9 1 33 16 12
-      5284221656301387299243139023765099604794024171242853194936902514361980789199710235548720129118663276041165946837410308562081886541349995882171199574900736 (BLM 95) (kronLM 74 33 25) rfl (by decide +kernel) clLM_KDu cLM_KDu (by decide +kernel)
+      5284221656301387299243139023765099604794024171242853194936902514361980789199710235548720129118663276041165946837410308562081886541349995882171199574900736 (BLM 95) (kronLM 74 33 25) rfl (by kernel_fact) clLM_KDu cLM_KDu (by kernel_fact)
   | 96, _ => center3_fullN hq hc boxLM (l1LM 25) (fun _ => rfl) 96 3 73 33 11 9 1 33 16 12
-      2837218991757470471249793034662655133090807772766849647489821075023868232534289535760673905344470561690532410540896971636583432065427222803464202297218210 (BLM 96) (kronLM 73 33 25) rfl (by decide +kernel) clLM_KDz cLM_KDz (by decide +kernel)
+      2837218991757470471249793034662655133090807772766849647489821075023868232534289535760673905344470561690532410540896971636583432065427222803464202297218210 (BLM 96) (kronLM 73 33 25) rfl (by kernel_fact) clLM_KDz cLM_KDz (by kernel_fact)
   | 97, _ => center3_fullN hq hc boxLM (l1LM 25) (fun _ => rfl) 97 3 75 33 11 9 1 33 16 12
-      9178940659378214777548468587113292749741357980891120900589637711225252911745174434276911165068826191901017538092653409823991750118059828229675733093127330 (BLM 97) (kronLM 75 33 25) rfl (by decide +kernel) clLM_KRu cLM_KRu (by decide +kernel)
+      9178940659378214777548468587113292749741357980891120900589637711225252911745174434276911165068826191901017538092653409823991750118059828229675733093127330 (BLM 97) (kronLM 75 33 25) rfl (by kernel_fact) clLM_KRu cLM_KRu (by kernel_fact)
   | 98, _ => center3_fullN hq hc boxLM (l1LM 25) (fun _ => rfl) 98 0 74 33 11 9 1 33 16 12
-      7255857977444191208173945886721726355631406344949563709085378792799139913245682164951864312329136705165095341945413747086411581852512143612432334650212352 (BLM 98) (kronLM 74 33 25) rfl (by decide +kernel) clLM_KRz cLM_KRz (by decide +kernel)
+      7255857977444191208173945886721726355631406344949563709085378792799139913245682164951864312329136705165095341945413747086411581852512143612432334650212352 (BLM 98) (kronLM 74 33 25) rfl (by kernel_fact) clLM_KRz cLM_KRz (by kernel_fact)
   | 99, _ => center3_fullN hq hc boxLM (l1LM 25) (fun _ => rfl) 99 2 78 33 11 9 1 33 16 12
-      69440282333113521782279800351077214164824801657225920623386467584197476749435151154715708218574477474750617515900466944048529228790988106020736083133273250 (BLM 99) (kronLM 78 33 25) rfl (by decide +kernel) clLM_KZu cLM_KZu (by decide +kernel)
+      69440282333113521782279800351077214164824801657225920623386467584197476749435151154715708218574477474750617515900466944048529228790988106020736083133273250 (BLM 99) (kronLM 78 33 25) rfl (by kernel_fact) clLM_KZu cLM_KZu (by kernel_fact)
   | 100, _ => center3_fullN hq hc boxLM (l1LM 25) (fun _ => rfl) 100 3 74 33 11 9 1 33 16 12
-      4105023470442084550688562577383062525334795047277537151596600712051027737290352815385841822115628535213366127796709911451476710874612357303865782426413380 (BLM 100) (kronLM 74 33 25) rfl (by decide +kernel) clLM_KZz cLM_KZz (by decide +kernel)
+      4105023470442084550688562577383062525334795047277537151596600712051027737290352815385841822115628535213366127796709911451476710874612357303865782426413380 (BLM 100) (kronLM 74 33 25) rfl (by kernel_fact) clLM_KZz cLM_KZz (by kernel_fact)
   | 101, _ => by rw [xLM_zero c (i := 101) rfl]; exact (Bd_zero r).le (by norm_num [BLM, BLMl])
   | 102, _ => by rw [xLM_zero c (i := 102) rfl]; exact (Bd_zero r).le (by norm_num [BLM, BLMl])
   | 103, _ => by rw [xLM_zero c (i := 103) rfl]; exact (Bd_zero r).le (by norm_num [BLM, BLMl])
@@ -569,145 +574,145 @@ theorem normLM {r : ℝ} (hq : Real.exp r ≤ (74315 : ℕ) / 2 ^ 16) {c : ℂ} 
   | 106, _ => by rw [xLM_zero c (i := 106) rfl]; exact (Bd_zero r).le (by norm_num [BLM, BLMl])
   | 107, _ => by rw [xLM_zero c (i := 107) rfl]; exact (Bd_zero r).le (by norm_num [BLM, BLMl])
   | 108, _ => center3_fullN hq hc boxLM (l1LM 25) (fun _ => rfl) 108 0 67 33 11 9 1 33 16 12
-      10815803722094887542535576250268533772532889192726183170503310081423304818136751215480323533940943018475869814423224001261703726686147044899087259271168 (BLM 108) (kronLM 67 33 25) rfl (by decide +kernel) clLM_W0 cLM_W0 (by decide +kernel)
+      10815803722094887542535576250268533772532889192726183170503310081423304818136751215480323533940943018475869814423224001261703726686147044899087259271168 (BLM 108) (kronLM 67 33 25) rfl (by kernel_fact) clLM_W0 cLM_W0 (by kernel_fact)
   | 109, _ => by rw [xLM_zero c (i := 109) rfl]; exact (Bd_zero r).le (by norm_num [BLM, BLMl])
   | 110, _ => center3_fullN hq hc boxLM (l1LM 25) (fun _ => rfl) 110 0 60 33 11 9 1 33 16 12
-      130963825892108955225856816191898111233457155970344361040763797271436159682879069452285640041713748750239587766018937580714480921878129165240299945984 (BLM 110) (kronLM 60 33 25) rfl (by decide +kernel) clLM_W02 cLM_W02 (by decide +kernel)
+      130963825892108955225856816191898111233457155970344361040763797271436159682879069452285640041713748750239587766018937580714480921878129165240299945984 (BLM 110) (kronLM 60 33 25) rfl (by kernel_fact) clLM_W02 cLM_W02 (by kernel_fact)
   | 111, _ => by rw [xLM_zero c (i := 111) rfl]; exact (Bd_zero r).le (by norm_num [BLM, BLMl])
   | 112, _ => by rw [xLM_zero c (i := 112) rfl]; exact (Bd_zero r).le (by norm_num [BLM, BLMl])
   | 113, _ => by rw [xLM_zero c (i := 113) rfl]; exact (Bd_zero r).le (by norm_num [BLM, BLMl])
   | 114, _ => center3_fullN hq hc boxLM (l1LM 13) (fun _ => rfl) 114 0 80 17 7 7 1 17 16 12
-      54469219715391800717019476555211249892884923646156598097001968365119666372173784593257614336303045174990754423882599581593375148923532940407386699087216640 (BLM 114) (kronLM 80 17 13) rfl (by decide +kernel) clLM_r cLM_r (by decide +kernel)
+      54469219715391800717019476555211249892884923646156598097001968365119666372173784593257614336303045174990754423882599581593375148923532940407386699087216640 (BLM 114) (kronLM 80 17 13) rfl (by kernel_fact) clLM_r cLM_r (by kernel_fact)
   | 115, _ => center3_fullN hq hc boxLM (l1LM 25) (fun _ => rfl) 115 0 74 33 11 9 1 33 16 12
-      1833308166772988785213168054080638099971784661993313599785703956949891391582462236868157466192696654645332553785166482274447541475923108781359494170935296 (BLM 115) (kronLM 74 33 25) rfl (by decide +kernel) clLM_P4P cLM_P4P (by decide +kernel)
+      1833308166772988785213168054080638099971784661993313599785703956949891391582462236868157466192696654645332553785166482274447541475923108781359494170935296 (BLM 115) (kronLM 74 33 25) rfl (by kernel_fact) clLM_P4P cLM_P4P (by kernel_fact)
   | 116, _ => center3_fullN hq hc boxLM (l1LM 25) (fun _ => rfl) 116 0 76 33 11 9 1 33 16 12
-      8851807324233283372157224591851937177178152042701928418506509503403777433671419000092431003201843902128358238960624011826966146476271274388827765871738880 (BLM 116) (kronLM 76 33 25) rfl (by decide +kernel) clLM_P4uP cLM_P4uP (by decide +kernel)
+      8851807324233283372157224591851937177178152042701928418506509503403777433671419000092431003201843902128358238960624011826966146476271274388827765871738880 (BLM 116) (kronLM 76 33 25) rfl (by kernel_fact) clLM_P4uP cLM_P4uP (by kernel_fact)
   | 117, _ => center3_fullN hq hc boxLM (l1LM 25) (fun _ => rfl) 117 0 73 33 11 9 1 33 16 12
-      1300959201413884524337977077973715188894205157975869143265422115737754570710326986628024456751635813057655386548125754322444707022854689704146257095688192 (BLM 117) (kronLM 73 33 25) rfl (by decide +kernel) clLM_R4 cLM_R4 (by decide +kernel)
+      1300959201413884524337977077973715188894205157975869143265422115737754570710326986628024456751635813057655386548125754322444707022854689704146257095688192 (BLM 117) (kronLM 73 33 25) rfl (by kernel_fact) clLM_R4 cLM_R4 (by kernel_fact)
   | 118, _ => center3_fullN hq hc boxLM (l1LM 25) (fun _ => rfl) 118 0 73 33 11 9 1 33 16 12
-      1929216723521345228928415915908118277700554304560336631694110076831348322676148093723282450237843912859368393370520597481413391326078687910856483558916096 (BLM 118) (kronLM 73 33 25) rfl (by decide +kernel) clLM_R8 cLM_R8 (by decide +kernel)
+      1929216723521345228928415915908118277700554304560336631694110076831348322676148093723282450237843912859368393370520597481413391326078687910856483558916096 (BLM 118) (kronLM 73 33 25) rfl (by kernel_fact) clLM_R8 cLM_R8 (by kernel_fact)
   | 119, _ => center3_fullN hq hc boxLM (l1LM 25) (fun _ => rfl) 119 0 74 33 11 9 1 33 16 12
-      3878635031041060762057398299694252825995365108128869665987495686739608749091618662056149695289785131955457925670242898594955273553305151382310110198872498 (BLM 119) (kronLM 74 33 25) rfl (by decide +kernel) clLM_P42 cLM_P42 (by decide +kernel)
+      3878635031041060762057398299694252825995365108128869665987495686739608749091618662056149695289785131955457925670242898594955273553305151382310110198872498 (BLM 119) (kronLM 74 33 25) rfl (by kernel_fact) clLM_P42 cLM_P42 (by kernel_fact)
   | 120, _ => center3_fullN hq hc boxLM (l1LM 25) (fun _ => rfl) 120 0 59 33 11 9 1 33 16 12
-      479325432728519233236871142122670466871334083665805180918183771263360661773429074531367074359807484883291711186179262686635349904582065953738414893380 (BLM 120) (kronLM 59 33 25) rfl (by decide +kernel) clLM_E4P cLM_E4P (by decide +kernel)
+      479325432728519233236871142122670466871334083665805180918183771263360661773429074531367074359807484883291711186179262686635349904582065953738414893380 (BLM 120) (kronLM 59 33 25) rfl (by kernel_fact) clLM_E4P cLM_E4P (by kernel_fact)
   | 121, _ => center3_fullN hq hc boxLM (l1LM 25) (fun _ => rfl) 121 0 74 33 11 9 1 33 16 12
-      3224113821881888415221672461219276794003753107213711939845985843228529390077483995507958646298982666121047845778169591042055997412278249710542987746235016 (BLM 121) (kronLM 74 33 25) rfl (by decide +kernel) clLM_PP4 cLM_PP4 (by decide +kernel)
+      3224113821881888415221672461219276794003753107213711939845985843228529390077483995507958646298982666121047845778169591042055997412278249710542987746235016 (BLM 121) (kronLM 74 33 25) rfl (by kernel_fact) clLM_PP4 cLM_PP4 (by kernel_fact)
   | 122, _ => center3_fullN hq hc boxLM (l1LM 25) (fun _ => rfl) 122 2 74 33 11 9 1 33 16 12
-      1014065134246564449874633244985437221276813422064419765059437228125571887383577916184648153377913870357554488582468857661507188658456109780767470461457570 (BLM 122) (kronLM 74 33 25) rfl (by decide +kernel) clLM_QPP4P cLM_QPP4P (by decide +kernel)
+      1014065134246564449874633244985437221276813422064419765059437228125571887383577916184648153377913870357554488582468857661507188658456109780767470461457570 (BLM 122) (kronLM 74 33 25) rfl (by kernel_fact) clLM_QPP4P cLM_QPP4P (by kernel_fact)
   | 123, _ => center3_fullN hq hc boxLM (l1LM 25) (fun _ => rfl) 123 0 74 33 11 9 1 33 16 12
-      838227730803808989592584122327951795295351844094652133275052037890082363173011125755235443191927946275433750877771446663785578429773316024550113885623458 (BLM 123) (kronLM 74 33 25) rfl (by decide +kernel) clLM_V40 cLM_V40 (by decide +kernel)
+      838227730803808989592584122327951795295351844094652133275052037890082363173011125755235443191927946275433750877771446663785578429773316024550113885623458 (BLM 123) (kronLM 74 33 25) rfl (by kernel_fact) clLM_V40 cLM_V40 (by kernel_fact)
   | 124, _ => center3_fullN hq hc boxLM (l1LM 25) (fun _ => rfl) 124 0 74 33 11 9 1 33 16 12
-      838227730803808989592584122327951795295351844094652133275052037890082363173011125755235443191927946275433750877771446663785578429773316024550113885623458 (BLM 124) (kronLM 74 33 25) rfl (by decide +kernel) clLM_V4n cLM_V4n (by decide +kernel)
+      838227730803808989592584122327951795295351844094652133275052037890082363173011125755235443191927946275433750877771446663785578429773316024550113885623458 (BLM 124) (kronLM 74 33 25) rfl (by kernel_fact) clLM_V4n cLM_V4n (by kernel_fact)
   | 125, _ => center3_fullN hq hc boxLM (l1LM 25) (fun _ => rfl) 125 0 74 33 11 9 1 33 16 12
-      853507723666809270049486107834584510023457172304576382475780439285063648211330594795069387307065193019893608578590202392240042580723190067878978445983206 (BLM 125) (kronLM 74 33 25) rfl (by decide +kernel) clLM_VV4 cLM_VV4 (by decide +kernel)
+      853507723666809270049486107834584510023457172304576382475780439285063648211330594795069387307065193019893608578590202392240042580723190067878978445983206 (BLM 125) (kronLM 74 33 25) rfl (by kernel_fact) clLM_VV4 cLM_VV4 (by kernel_fact)
   | 126, _ => center3_fullN hq hc boxLM (l1LM 25) (fun _ => rfl) 126 2 74 33 11 9 1 33 16 12
-      1012067388963366499436855283565980903209354752969998725590796697803140677525561968532239591122589149583524988022137611697186920516481428303200438660104192 (BLM 126) (kronLM 74 33 25) rfl (by decide +kernel) clLM_Bm cLM_Bm (by decide +kernel)
+      1012067388963366499436855283565980903209354752969998725590796697803140677525561968532239591122589149583524988022137611697186920516481428303200438660104192 (BLM 126) (kronLM 74 33 25) rfl (by kernel_fact) clLM_Bm cLM_Bm (by kernel_fact)
   | 127, _ => center3_fullN hq hc boxLM (l1LM 25) (fun _ => rfl) 127 0 70 33 11 9 1 33 16 12
-      52374249726338269920211035149241586435466272736689036631732661889538140742474792878132321477214466514414186946040961136147476104734166288853256441430016 (BLM 127) (kronLM 70 33 25) rfl (by decide +kernel) clLM_lamv cLM_lamv (by decide +kernel)
+      52374249726338269920211035149241586435466272736689036631732661889538140742474792878132321477214466514414186946040961136147476104734166288853256441430016 (BLM 127) (kronLM 70 33 25) rfl (by kernel_fact) clLM_lamv cLM_lamv (by kernel_fact)
   | 128, _ => center3_fullN hq hc boxLM (l1LM 25) (fun _ => rfl) 128 2 70 33 11 9 1 33 16 12
-      63254203968084280605609284472482070127530604525129661028171671339119154096881747213454195236123626391191427959770751375786237843017327219462387552747520 (BLM 128) (kronLM 70 33 25) rfl (by decide +kernel) clLM_EN cLM_EN (by decide +kernel)
+      63254203968084280605609284472482070127530604525129661028171671339119154096881747213454195236123626391191427959770751375786237843017327219462387552747520 (BLM 128) (kronLM 70 33 25) rfl (by kernel_fact) clLM_EN cLM_EN (by kernel_fact)
   | 129, _ => center3_fullN hq hc boxLM (l1LM 25) (fun _ => rfl) 129 0 74 33 11 9 1 33 16 12
-      871503241873185270039509416342375272420485613576106923864492009068772730964679189336722875767264915701286813265708697205371879841204437589896804154998784 (BLM 129) (kronLM 74 33 25) rfl (by decide +kernel) clLM_N0 cLM_N0 (by decide +kernel)
+      871503241873185270039509416342375272420485613576106923864492009068772730964679189336722875767264915701286813265708697205371879841204437589896804154998784 (BLM 129) (kronLM 74 33 25) rfl (by kernel_fact) clLM_N0 cLM_N0 (by kernel_fact)
   | 130, _ => center3_fullN hq hc boxLM (l1LM 25) (fun _ => rfl) 130 0 74 33 11 9 1 33 16 12
-      871503241873185270039509416342375272420485613576106923864492009068772730964679189336722875767264915701286813265708697205371879841204437589896804154998784 (BLM 130) (kronLM 74 33 25) rfl (by decide +kernel) clLM_Nn cLM_Nn (by decide +kernel)
+      871503241873185270039509416342375272420485613576106923864492009068772730964679189336722875767264915701286813265708697205371879841204437589896804154998784 (BLM 130) (kronLM 74 33 25) rfl (by kernel_fact) clLM_Nn cLM_Nn (by kernel_fact)
   | 131, _ => center3_fullN hq hc boxLM (l1LM 25) (fun _ => rfl) 131 0 74 33 11 9 1 33 16 12
-      838626371142487316854594017013358441638885996871244957351373301907414739541082889176505291529943674802481344985505786435307734401773237435493267078643712 (BLM 131) (kronLM 74 33 25) rfl (by decide +kernel) clLM_Fv cLM_Fv (by decide +kernel)
+      838626371142487316854594017013358441638885996871244957351373301907414739541082889176505291529943674802481344985505786435307734401773237435493267078643712 (BLM 131) (kronLM 74 33 25) rfl (by kernel_fact) clLM_Fv cLM_Fv (by kernel_fact)
   | 132, _ => center3_fullN hq hc boxLM (l1LM 25) (fun _ => rfl) 132 0 73 33 11 9 1 33 16 12
-      1749442234754121303613327427737596415018174681572605562880105394213012979753455152896318635917942054435509022074120588665265819522401787826606416171368448 (BLM 132) (kronLM 73 33 25) rfl (by decide +kernel) clLM_R7 cLM_R7 (by decide +kernel)
+      1749442234754121303613327427737596415018174681572605562880105394213012979753455152896318635917942054435509022074120588665265819522401787826606416171368448 (BLM 132) (kronLM 73 33 25) rfl (by kernel_fact) clLM_R7 cLM_R7 (by kernel_fact)
   | 133, _ => center3_fullN hq hc boxLM (l1LM 25) (fun _ => rfl) 133 0 76 33 11 9 1 33 16 12
-      18618391487803252904925478656967151539284320694980635569775994985150913505222062365799467339508544797466730421368050173455505115755024480134005541247539756 (BLM 133) (kronLM 76 33 25) rfl (by decide +kernel) clLM_P4P4u cLM_P4P4u (by decide +kernel)
+      18618391487803252904925478656967151539284320694980635569775994985150913505222062365799467339508544797466730421368050173455505115755024480134005541247539756 (BLM 133) (kronLM 76 33 25) rfl (by kernel_fact) clLM_P4P4u cLM_P4P4u (by kernel_fact)
   | 134, _ => center3_fullN hq hc boxLM (l1LM 25) (fun _ => rfl) 134 0 65 33 11 9 1 33 16 12
-      19158908142196294569843018063637713854088354120573114667243000319132520264293803356300192615319293001181648282412404233918784309992474875772924429764614 (BLM 134) (kronLM 65 33 25) rfl (by decide +kernel) clLM_E4uP cLM_E4uP (by decide +kernel)
+      19158908142196294569843018063637713854088354120573114667243000319132520264293803356300192615319293001181648282412404233918784309992474875772924429764614 (BLM 134) (kronLM 65 33 25) rfl (by kernel_fact) clLM_E4uP cLM_E4uP (by kernel_fact)
   | 135, _ => center3_fullN hq hc boxLM (l1LM 25) (fun _ => rfl) 135 0 77 33 11 9 1 33 16 12
-      27116390026361383042673773658478043463363092593207841111079125152869170294392166656884329532571630068909840441010480500648164878233382266555775425587536532 (BLM 135) (kronLM 77 33 25) rfl (by decide +kernel) clLM_dPP4 cLM_dPP4 (by decide +kernel)
+      27116390026361383042673773658478043463363092593207841111079125152869170294392166656884329532571630068909840441010480500648164878233382266555775425587536532 (BLM 135) (kronLM 77 33 25) rfl (by kernel_fact) clLM_dPP4 cLM_dPP4 (by kernel_fact)
   | 136, _ => center3_fullN hq hc boxLM (l1LM 25) (fun _ => rfl) 136 2 74 33 11 9 1 33 16 12
-      1469108035857908648371164715773733487324672481298141064275578072591293162672574704391961622605714852317806251747327791452045389278080741911798417881141358 (BLM 136) (kronLM 74 33 25) rfl (by decide +kernel) clLM_QPP4uP cLM_QPP4uP (by decide +kernel)
+      1469108035857908648371164715773733487324672481298141064275578072591293162672574704391961622605714852317806251747327791452045389278080741911798417881141358 (BLM 136) (kronLM 74 33 25) rfl (by kernel_fact) clLM_QPP4uP cLM_QPP4uP (by kernel_fact)
   | 137, _ => center3_fullN hq hc boxLM (l1LM 25) (fun _ => rfl) 137 3 71 33 11 9 1 33 16 12
-      440192951814348419676524243461579304462824467080085379337039268697223934124666072511166204901141977665647354167562825324383571361807562227107180153153860 (BLM 137) (kronLM 71 33 25) rfl (by decide +kernel) clLM_QPP4zP cLM_QPP4zP (by decide +kernel)
+      440192951814348419676524243461579304462824467080085379337039268697223934124666072511166204901141977665647354167562825324383571361807562227107180153153860 (BLM 137) (kronLM 71 33 25) rfl (by kernel_fact) clLM_QPP4zP cLM_QPP4zP (by kernel_fact)
   | 138, _ => center3_fullN hq hc boxLM (l1LM 25) (fun _ => rfl) 138 0 74 33 11 9 1 33 16 12
-      838707346213239480065178042462838815746150125409014087901508322710761113822627624443725764013007579505009010928400867732777372649387850923988014927527398 (BLM 138) (kronLM 74 33 25) rfl (by decide +kernel) clLM_V43 cLM_V43 (by decide +kernel)
+      838707346213239480065178042462838815746150125409014087901508322710761113822627624443725764013007579505009010928400867732777372649387850923988014927527398 (BLM 138) (kronLM 74 33 25) rfl (by kernel_fact) clLM_V43 cLM_V43 (by kernel_fact)
   | 139, _ => center3_fullN hq hc boxLM (l1LM 25) (fun _ => rfl) 139 0 64 33 11 9 1 33 16 12
-      9584966254498103357548219544675257889919243760458338352387317269416057876209614326034796233449793623832685418218364110330258327034033050904446972925090 (BLM 139) (kronLM 64 33 25) rfl (by decide +kernel) clLM_V4u cLM_V4u (by decide +kernel)
+      9584966254498103357548219544675257889919243760458338352387317269416057876209614326034796233449793623832685418218364110330258327034033050904446972925090 (BLM 139) (kronLM 64 33 25) rfl (by kernel_fact) clLM_V4u cLM_V4u (by kernel_fact)
   | 140, _ => center3_fullN hq hc boxLM (l1LM 25) (fun _ => rfl) 140 2 70 33 11 9 1 33 16 12
-      210896614629116437455571390416795043486809527298438767647660027519715479718531333378634351482921735783536355210817258919731938896379358672892900878443254 (BLM 140) (kronLM 70 33 25) rfl (by decide +kernel) clLM_Vu cLM_Vu (by decide +kernel)
+      210896614629116437455571390416795043486809527298438767647660027519715479718531333378634351482921735783536355210817258919731938896379358672892900878443254 (BLM 140) (kronLM 70 33 25) rfl (by kernel_fact) clLM_Vu cLM_Vu (by kernel_fact)
   | 141, _ => center3_fullN hq hc boxLM (l1LM 25) (fun _ => rfl) 141 3 70 33 11 9 1 33 16 12
-      194361104597847414484188173672945263432592604842718537126614938797250080496573191030857921135579921908457664278197673736459393416589980386645261494623400 (BLM 141) (kronLM 70 33 25) rfl (by decide +kernel) clLM_Vz cLM_Vz (by decide +kernel)
+      194361104597847414484188173672945263432592604842718537126614938797250080496573191030857921135579921908457664278197673736459393416589980386645261494623400 (BLM 141) (kronLM 70 33 25) rfl (by kernel_fact) clLM_Vz cLM_Vz (by kernel_fact)
   | 142, _ => center3_fullN hq hc boxLM (l1LM 25) (fun _ => rfl) 142 0 70 33 11 9 1 33 16 12
-      218137102298367188697432156580981073507297053741237059200244376922921265405518358120628893350042828599308653982350174445206109010489944361045760094686804 (BLM 142) (kronLM 70 33 25) rfl (by decide +kernel) clLM_D4u cLM_D4u (by decide +kernel)
+      218137102298367188697432156580981073507297053741237059200244376922921265405518358120628893350042828599308653982350174445206109010489944361045760094686804 (BLM 142) (kronLM 70 33 25) rfl (by kernel_fact) clLM_D4u cLM_D4u (by kernel_fact)
   | 143, _ => center3_fullN hq hc boxLM (l1LM 25) (fun _ => rfl) 143 3 70 33 11 9 1 33 16 12
-      194385321922306365401334642067347794829752911136778204798955246529675865460124247245825316609445688649147258671861227612721278226635170961043931908271920 (BLM 143) (kronLM 70 33 25) rfl (by decide +kernel) clLM_D4z cLM_D4z (by decide +kernel)
+      194385321922306365401334642067347794829752911136778204798955246529675865460124247245825316609445688649147258671861227612721278226635170961043931908271920 (BLM 143) (kronLM 70 33 25) rfl (by kernel_fact) clLM_D4z cLM_D4z (by kernel_fact)
   | 144, _ => center3_fullN hq hc boxLM (l1LM 25) (fun _ => rfl) 144 2 74 33 11 9 1 33 16 12
-      1243731381080292629967635440556596115099067373919614199745692599051471312474765120624748481948138828175505947305567787546596094150610506209677320518914696 (BLM 144) (kronLM 74 33 25) rfl (by decide +kernel) clLM_Bmu cLM_Bmu (by decide +kernel)
+      1243731381080292629967635440556596115099067373919614199745692599051471312474765120624748481948138828175505947305567787546596094150610506209677320518914696 (BLM 144) (kronLM 74 33 25) rfl (by kernel_fact) clLM_Bmu cLM_Bmu (by kernel_fact)
   | 145, _ => center3_fullN hq hc boxLM (l1LM 25) (fun _ => rfl) 145 1 70 33 11 9 1 33 16 12
-      222858456714013319995323281181952205449403918924022994206069116710293838232196769083737004804512980621623607634954397109742413822953958581949392956647210 (BLM 145) (kronLM 70 33 25) rfl (by decide +kernel) clLM_Bmz cLM_Bmz (by decide +kernel)
+      222858456714013319995323281181952205449403918924022994206069116710293838232196769083737004804512980621623607634954397109742413822953958581949392956647210 (BLM 145) (kronLM 70 33 25) rfl (by kernel_fact) clLM_Bmz cLM_Bmz (by kernel_fact)
   | 146, _ => center3_fullN hq hc boxLM (l1LM 25) (fun _ => rfl) 146 0 74 33 11 9 1 33 16 12
-      906343500056283166130325388074475443339086009182188930692701366169720358224355019229893854210962469532149955621494660886033141665310879664308481832255488 (BLM 146) (kronLM 74 33 25) rfl (by decide +kernel) clLM_Nsq cLM_Nsq (by decide +kernel)
+      906343500056283166130325388074475443339086009182188930692701366169720358224355019229893854210962469532149955621494660886033141665310879664308481832255488 (BLM 146) (kronLM 74 33 25) rfl (by kernel_fact) clLM_Nsq cLM_Nsq (by kernel_fact)
   | 147, _ => center3_fullN hq hc boxLM (l1LM 25) (fun _ => rfl) 147 0 69 33 11 9 1 33 16 12
-      34177752218187856299872390456901414132329178489957883671160417223777578492321425742259840881832811600715460667864679421681721619219546773147566678736896 (BLM 147) (kronLM 69 33 25) rfl (by decide +kernel) clLM_Gf cLM_Gf (by decide +kernel)
+      34177752218187856299872390456901414132329178489957883671160417223777578492321425742259840881832811600715460667864679421681721619219546773147566678736896 (BLM 147) (kronLM 69 33 25) rfl (by kernel_fact) clLM_Gf cLM_Gf (by kernel_fact)
   | 148, _ => center3_fullN hq hc boxLM (l1LM 25) (fun _ => rfl) 148 0 69 33 11 9 1 33 16 12
-      35528783101405066353775018682996604921107654824362439796006633828168986898637019504007799560440287465374311932748206019561805371162994786683600551018496 (BLM 148) (kronLM 69 33 25) rfl (by decide +kernel) clLM_NG cLM_NG (by decide +kernel)
+      35528783101405066353775018682996604921107654824362439796006633828168986898637019504007799560440287465374311932748206019561805371162994786683600551018496 (BLM 148) (kronLM 69 33 25) rfl (by kernel_fact) clLM_NG cLM_NG (by kernel_fact)
   | 149, _ => center3_fullN hq hc boxLM (l1LM 25) (fun _ => rfl) 149 2 70 33 11 9 1 33 16 12
-      77733211135960168406461542488076875110031190354326279557340642748058498212390009628647591075382962300904990321271158807218167003003086095665518141374464 (BLM 149) (kronLM 70 33 25) rfl (by decide +kernel) clLM_LBu cLM_LBu (by decide +kernel)
+      77733211135960168406461542488076875110031190354326279557340642748058498212390009628647591075382962300904990321271158807218167003003086095665518141374464 (BLM 149) (kronLM 70 33 25) rfl (by kernel_fact) clLM_LBu cLM_LBu (by kernel_fact)
   | 150, _ => center3_fullN hq hc boxLM (l1LM 25) (fun _ => rfl) 150 1 66 33 11 9 1 33 16 12
-      13928653339966069879956188412924664636980013015133749208015172821328111018233175594920026402745682916654209987714199069964411908515835607864050988482560 (BLM 150) (kronLM 66 33 25) rfl (by decide +kernel) clLM_LBz cLM_LBz (by decide +kernel)
+      13928653339966069879956188412924664636980013015133749208015172821328111018233175594920026402745682916654209987714199069964411908515835607864050988482560 (BLM 150) (kronLM 66 33 25) rfl (by kernel_fact) clLM_LBz cLM_LBz (by kernel_fact)
   | 151, _ => center3_fullN hq hc boxLM (l1LM 25) (fun _ => rfl) 151 2 64 33 11 9 1 33 16 12
-      1514288833113874166101434572260291012684932392106451747851940957009335777576333382305447602281467550302473644999715557039709336116482828329052127887360 (BLM 151) (kronLM 64 33 25) rfl (by decide +kernel) clLM_Fu cLM_Fu (by decide +kernel)
+      1514288833113874166101434572260291012684932392106451747851940957009335777576333382305447602281467550302473644999715557039709336116482828329052127887360 (BLM 151) (kronLM 64 33 25) rfl (by kernel_fact) clLM_Fu cLM_Fu (by kernel_fact)
   | 152, _ => center3_fullN hq hc boxLM (l1LM 25) (fun _ => rfl) 152 1 61 33 11 9 1 33 16 12
-      283695334389360730524548492996295144536955676214492123098501135422603228932392830199926761149247727502759259750015960831160375809177138968920231772160 (BLM 152) (kronLM 61 33 25) rfl (by decide +kernel) clLM_Fz cLM_Fz (by decide +kernel)
+      283695334389360730524548492996295144536955676214492123098501135422603228932392830199926761149247727502759259750015960831160375809177138968920231772160 (BLM 152) (kronLM 61 33 25) rfl (by kernel_fact) clLM_Fz cLM_Fz (by kernel_fact)
   | 153, _ => center3_fullN hq hc boxLM (l1LM 25) (fun _ => rfl) 153 0 70 33 11 9 1 33 16 12
-      168452268717449640708783064189979320127232755281681152189344482995413287728422117760499717548127935514067649868753940185891853485236104001143130029970056 (BLM 153) (kronLM 70 33 25) rfl (by decide +kernel) clLM_YDt cLM_YDt (by decide +kernel)
+      168452268717449640708783064189979320127232755281681152189344482995413287728422117760499717548127935514067649868753940185891853485236104001143130029970056 (BLM 153) (kronLM 70 33 25) rfl (by kernel_fact) clLM_YDt cLM_YDt (by kernel_fact)
   | 154, _ => center3_fullN hq hc boxLM (l1LM 25) (fun _ => rfl) 154 0 73 33 11 9 1 33 16 12
-      1068117363008417760605921438892754730277911451288534066140837101111976414508040309232859047936022055879160836457247019648629147279865605859145557934604288 (BLM 154) (kronLM 73 33 25) rfl (by decide +kernel) clLM_DtF cLM_DtF (by decide +kernel)
+      1068117363008417760605921438892754730277911451288534066140837101111976414508040309232859047936022055879160836457247019648629147279865605859145557934604288 (BLM 154) (kronLM 73 33 25) rfl (by kernel_fact) clLM_DtF cLM_DtF (by kernel_fact)
   | 155, _ => center3_fullN hq hc boxLM (l1LM 25) (fun _ => rfl) 155 3 71 33 11 9 1 33 16 12
-      279815968143627478128097181650617358640977244607552100386891727216711706331445340577284576186645435712262543523213749486092553746744032506655044420494070 (BLM 155) (kronLM 71 33 25) rfl (by decide +kernel) clLM_YnRt cLM_YnRt (by decide +kernel)
+      279815968143627478128097181650617358640977244607552100386891727216711706331445340577284576186645435712262543523213749486092553746744032506655044420494070 (BLM 155) (kronLM 71 33 25) rfl (by kernel_fact) clLM_YnRt cLM_YnRt (by kernel_fact)
   | 156, _ => center3_fullN hq hc boxLM (l1LM 25) (fun _ => rfl) 156 3 69 33 11 9 1 33 16 12
-      84327702969219827777061874567086952430239905821303876383712406935429296223384239870020376234648587067861723795955727642809249842584565619560518286049280 (BLM 156) (kronLM 69 33 25) rfl (by decide +kernel) clLM_nRtF cLM_nRtF (by decide +kernel)
+      84327702969219827777061874567086952430239905821303876383712406935429296223384239870020376234648587067861723795955727642809249842584565619560518286049280 (BLM 156) (kronLM 69 33 25) rfl (by kernel_fact) clLM_nRtF cLM_nRtF (by kernel_fact)
   | 157, _ => center3_fullN hq hc boxLM (l1LM 25) (fun _ => rfl) 157 2 74 33 11 9 1 33 16 12
-      2635794374391080696351457071745820891827228193375845900964563134971455658661858868856303006113134403152183237019037501326575947526480045987273954253547646 (BLM 157) (kronLM 74 33 25) rfl (by decide +kernel) clLM_YnZt cLM_YnZt (by decide +kernel)
+      2635794374391080696351457071745820891827228193375845900964563134971455658661858868856303006113134403152183237019037501326575947526480045987273954253547646 (BLM 157) (kronLM 74 33 25) rfl (by kernel_fact) clLM_YnZt cLM_YnZt (by kernel_fact)
   | 158, _ => center3_fullN hq hc boxLM (l1LM 25) (fun _ => rfl) 158 0 69 33 11 9 1 33 16 12
-      87579248402365123584497840899749507898073983643703826746195011683791649224939503715217173643827854244461080763837441415121937073365461146104532583388322 (BLM 158) (kronLM 69 33 25) rfl (by decide +kernel) clLM_nZtF cLM_nZtF (by decide +kernel)
+      87579248402365123584497840899749507898073983643703826746195011683791649224939503715217173643827854244461080763837441415121937073365461146104532583388322 (BLM 158) (kronLM 69 33 25) rfl (by kernel_fact) clLM_nZtF cLM_nZtF (by kernel_fact)
   | 159, _ => center3_fullN hq hc boxLM (l1LM 25) (fun _ => rfl) 159 0 73 33 11 9 1 33 16 12
-      1424802995489437109044297195515943733370528330898320304776104485549146482659627248995730327325299837053128721002476403619511165628160969127434860152124452 (BLM 159) (kronLM 73 33 25) rfl (by decide +kernel) clLM_YDtu cLM_YDtu (by decide +kernel)
+      1424802995489437109044297195515943733370528330898320304776104485549146482659627248995730327325299837053128721002476403619511165628160969127434860152124452 (BLM 159) (kronLM 73 33 25) rfl (by kernel_fact) clLM_YDtu cLM_YDtu (by kernel_fact)
   | 160, _ => center3_fullN hq hc boxLM (l1LM 25) (fun _ => rfl) 160 0 74 33 11 9 1 33 16 12
-      1872784170782293267215454353121167251210619627925786491250728660346625681579233843793523347504278851798283419708157824792208484978805487232552716836738210 (BLM 160) (kronLM 74 33 25) rfl (by decide +kernel) clLM_DtuF cLM_DtuF (by decide +kernel)
+      1872784170782293267215454353121167251210619627925786491250728660346625681579233843793523347504278851798283419708157824792208484978805487232552716836738210 (BLM 160) (kronLM 74 33 25) rfl (by kernel_fact) clLM_DtuF cLM_DtuF (by kernel_fact)
   | 161, _ => center3_fullN hq hc boxLM (l1LM 25) (fun _ => rfl) 161 3 73 33 11 9 1 33 16 12
-      1519050735428896776356896161121619572992974593234177077273549356909555505599536658816913937179463073295538178242550708617211930695971270764582791255723160 (BLM 161) (kronLM 73 33 25) rfl (by decide +kernel) clLM_YDtz cLM_YDtz (by decide +kernel)
+      1519050735428896776356896161121619572992974593234177077273549356909555505599536658816913937179463073295538178242550708617211930695971270764582791255723160 (BLM 161) (kronLM 73 33 25) rfl (by kernel_fact) clLM_YDtz cLM_YDtz (by kernel_fact)
   | 162, _ => center3_fullN hq hc boxLM (l1LM 25) (fun _ => rfl) 162 3 70 33 11 9 1 33 16 12
-      169495992899656473325896269904144182697909398048629151301642255712788459775252254426455405909919372730492000201612312768589755438276246665565544238486690 (BLM 162) (kronLM 70 33 25) rfl (by decide +kernel) clLM_DtzF cLM_DtzF (by decide +kernel)
+      169495992899656473325896269904144182697909398048629151301642255712788459775252254426455405909919372730492000201612312768589755438276246665565544238486690 (BLM 162) (kronLM 70 33 25) rfl (by kernel_fact) clLM_DtzF cLM_DtzF (by kernel_fact)
   | 163, _ => center3_fullN hq hc boxLM (l1LM 25) (fun _ => rfl) 163 3 74 33 11 9 1 33 16 12
-      2782917428632328208064542517165868123889907237151915950558446112890508240813305016361410065530129222651407685947406276580549718955295993827319339833262560 (BLM 163) (kronLM 74 33 25) rfl (by decide +kernel) clLM_YnRtu cLM_YnRtu (by decide +kernel)
+      2782917428632328208064542517165868123889907237151915950558446112890508240813305016361410065530129222651407685947406276580549718955295993827319339833262560 (BLM 163) (kronLM 74 33 25) rfl (by kernel_fact) clLM_YnRtu cLM_YnRtu (by kernel_fact)
   | 164, _ => center3_fullN hq hc boxLM (l1LM 25) (fun _ => rfl) 164 3 72 33 11 9 1 33 16 12
-      791978918683313360093148083001388362736498111273090718788438213001376201311046167850606578552788410402942325517853428600062014024067764352005064520449510 (BLM 164) (kronLM 72 33 25) rfl (by decide +kernel) clLM_nRtuF cLM_nRtuF (by decide +kernel)
+      791978918683313360093148083001388362736498111273090718788438213001376201311046167850606578552788410402942325517853428600062014024067764352005064520449510 (BLM 164) (kronLM 72 33 25) rfl (by kernel_fact) clLM_nRtuF cLM_nRtuF (by kernel_fact)
   | 165, _ => center3_fullN hq hc boxLM (l1LM 25) (fun _ => rfl) 165 0 74 33 11 9 1 33 16 12
-      3342218653959817485635766905658122415287827605505547334488297224768866609200624024990927651662264357321621795304845426868189329901295757256479439307410870 (BLM 165) (kronLM 74 33 25) rfl (by decide +kernel) clLM_YnRtz cLM_YnRtz (by decide +kernel)
+      3342218653959817485635766905658122415287827605505547334488297224768866609200624024990927651662264357321621795304845426868189329901295757256479439307410870 (BLM 165) (kronLM 74 33 25) rfl (by kernel_fact) clLM_YnRtz cLM_YnRtz (by kernel_fact)
   | 166, _ => center3_fullN hq hc boxLM (l1LM 25) (fun _ => rfl) 166 0 72 33 11 9 1 33 16 12
-      623811803256370408557346864911612148599981174400110663005824292434675101711378437486818122384335747169456683487797501988912806816303902448448836823306888 (BLM 166) (kronLM 72 33 25) rfl (by decide +kernel) clLM_nRtzF cLM_nRtzF (by decide +kernel)
+      623811803256370408557346864911612148599981174400110663005824292434675101711378437486818122384335747169456683487797501988912806816303902448448836823306888 (BLM 166) (kronLM 72 33 25) rfl (by kernel_fact) clLM_nRtzF cLM_nRtzF (by kernel_fact)
   | 167, _ => center3_fullN hq hc boxLM (l1LM 25) (fun _ => rfl) 167 2 76 33 11 9 1 33 16 12
-      8863836279561189234066718976870263953965061173914005033902847209814212546739704095826538307330798452974400445209729869439750990025850863812552559917242322 (BLM 167) (kronLM 76 33 25) rfl (by decide +kernel) clLM_YnZtu cLM_YnZtu (by decide +kernel)
+      8863836279561189234066718976870263953965061173914005033902847209814212546739704095826538307330798452974400445209729869439750990025850863812552559917242322 (BLM 167) (kronLM 76 33 25) rfl (by kernel_fact) clLM_YnZtu cLM_YnZtu (by kernel_fact)
   | 168, _ => center3_fullN hq hc boxLM (l1LM 25) (fun _ => rfl) 168 0 72 33 11 9 1 33 16 12
-      727743935525278416791168803418125620898198326496835714248296737050964130804418113622337286709176922294514846947309886373497164654969879176813154955735370 (BLM 168) (kronLM 72 33 25) rfl (by decide +kernel) clLM_nZtuF cLM_nZtuF (by decide +kernel)
+      727743935525278416791168803418125620898198326496835714248296737050964130804418113622337286709176922294514846947309886373497164654969879176813154955735370 (BLM 168) (kronLM 72 33 25) rfl (by kernel_fact) clLM_nZtuF cLM_nZtuF (by kernel_fact)
   | 169, _ => center3_fullN hq hc boxLM (l1LM 25) (fun _ => rfl) 169 3 74 33 11 9 1 33 16 12
-      2403512212004225335273944916572825855117890118892526476937905059955803793822731270890480427489253209810259386358420845939924699967049814194768089446232230 (BLM 169) (kronLM 74 33 25) rfl (by decide +kernel) clLM_YnZtz cLM_YnZtz (by decide +kernel)
+      2403512212004225335273944916572825855117890118892526476937905059955803793822731270890480427489253209810259386358420845939924699967049814194768089446232230 (BLM 169) (kronLM 74 33 25) rfl (by kernel_fact) clLM_YnZtz cLM_YnZtz (by kernel_fact)
   | 170, _ => center3_fullN hq hc boxLM (l1LM 25) (fun _ => rfl) 170 1 72 33 11 9 1 33 16 12
-      684458231838989308170224742256856227644217057046861879136745369396503941272352748284648068583785812170859876544233762617912339898059564011134541391316460 (BLM 170) (kronLM 72 33 25) rfl (by decide +kernel) clLM_nZtzF cLM_nZtzF (by decide +kernel)
+      684458231838989308170224742256856227644217057046861879136745369396503941272352748284648068583785812170859876544233762617912339898059564011134541391316460 (BLM 170) (kronLM 72 33 25) rfl (by kernel_fact) clLM_nZtzF cLM_nZtzF (by kernel_fact)
   | 171, _ => center3_fullN hq hc boxLM (l1LM 25) (fun _ => rfl) 171 0 62 33 11 9 1 33 16 12
-      2313603625259452379077278482737220727928518110481457531238444309960677825711733323977267820786005623383648335844916945056681019644860873400149860548608 (BLM 171) (kronLM 62 33 25) rfl (by decide +kernel) clLM_PtorF cLM_PtorF (by decide +kernel)
+      2313603625259452379077278482737220727928518110481457531238444309960677825711733323977267820786005623383648335844916945056681019644860873400149860548608 (BLM 171) (kronLM 62 33 25) rfl (by kernel_fact) clLM_PtorF cLM_PtorF (by kernel_fact)
   | 172, _ => center3_fullN hq hc boxLM (l1LM 25) (fun _ => rfl) 172 0 73 33 11 9 1 33 16 12
-      1562232687712122588816698914728969703338489633463388952971801517232389321095106369788478526950717880973161506180409090891750864575150351117461728822034432 (BLM 172) (kronLM 73 33 25) rfl (by decide +kernel) clLM_Dt3F cLM_Dt3F (by decide +kernel)
+      1562232687712122588816698914728969703338489633463388952971801517232389321095106369788478526950717880973161506180409090891750864575150351117461728822034432 (BLM 172) (kronLM 73 33 25) rfl (by kernel_fact) clLM_Dt3F cLM_Dt3F (by kernel_fact)
   | 173, _ => center3_fullN hq hc boxLM (l1LM 25) (fun _ => rfl) 173 0 60 33 11 9 1 33 16 12
-      104104659133269909299391491654831859905393354693710978190543807976821319242748847117911520690117911383147938441621905045668322855289369348686309490688 (BLM 173) (kronLM 60 33 25) rfl (by decide +kernel) clLM_FF cLM_FF (by decide +kernel)
+      104104659133269909299391491654831859905393354693710978190543807976821319242748847117911520690117911383147938441621905045668322855289369348686309490688 (BLM 173) (kronLM 60 33 25) rfl (by kernel_fact) clLM_FF cLM_FF (by kernel_fact)
   | 174, _ => center3_fullN hq hc boxLM (l1LM 25) (fun _ => rfl) 174 0 87 33 11 9 1 33 16 12
-      24009008656663461608937491707271275033956366087861260758756856930563147401634321490888878698538287305644855674345740003308182225132483091390942301893907237984 (BLM 174) (kronLM 87 33 25) rfl (by decide +kernel) clLM_qiF cLM_qiF (by decide +kernel)
+      24009008656663461608937491707271275033956366087861260758756856930563147401634321490888878698538287305644855674345740003308182225132483091390942301893907237984 (BLM 174) (kronLM 87 33 25) rfl (by kernel_fact) clLM_qiF cLM_qiF (by kernel_fact)
   | 175, _ => center3_fullN hq hc boxLM (l1LM 25) (fun _ => rfl) 175 0 76 33 11 9 1 33 16 12
-      31097110244013377090336709497178135807330652422654099879777442757383715649399354314809893669886792860245248247007276822071371317939315915481416878635874256 (BLM 175) (kronLM 76 33 25) rfl (by decide +kernel) clLM_YF cLM_YF (by decide +kernel)
+      31097110244013377090336709497178135807330652422654099879777442757383715649399354314809893669886792860245248247007276822071371317939315915481416878635874256 (BLM 175) (kronLM 76 33 25) rfl (by kernel_fact) clLM_YF cLM_YF (by kernel_fact)
   | 176, _ => center3_fullN hq hc boxLM (l1LM 25) (fun _ => rfl) 176 0 70 33 11 9 1 33 16 12
-      161606300997761623722422940030006877352302217601921491247483688533126393567989539465273581747387275157815519943656670050132788920456637134549927466106880 (BLM 176) (kronLM 70 33 25) rfl (by decide +kernel) clLM_Uo cLM_Uo (by decide +kernel)
+      161606300997761623722422940030006877352302217601921491247483688533126393567989539465273581747387275157815519943656670050132788920456637134549927466106880 (BLM 176) (kronLM 70 33 25) rfl (by kernel_fact) clLM_Uo cLM_Uo (by kernel_fact)
   | 177, _ => center3_fullN hq hc boxLM (l1LM 25) (fun _ => rfl) 177 1 70 33 11 9 1 33 16 12
-      135905572272244801944832582608577039484943206696153792628359161354110836446175527651710738997808886343012604908863230477645932610866966885467567842918400 (BLM 177) (kronLM 70 33 25) rfl (by decide +kernel) clLM_Zo cLM_Zo (by decide +kernel)
+      135905572272244801944832582608577039484943206696153792628359161354110836446175527651710738997808886343012604908863230477645932610866966885467567842918400 (BLM 177) (kronLM 70 33 25) rfl (by kernel_fact) clLM_Zo cLM_Zo (by kernel_fact)
   | 178, _ => center3_fullN hq hc boxLM (l1LM 25) (fun _ => rfl) 178 3 74 33 11 9 1 33 16 12
-      136878095245927600594934554783107061194674171788215827578187990699042101960363240470831947260331207626630096457823257550725697110533834767759686909296640 (BLM 178) (kronLM 74 33 25) rfl (by decide +kernel) clLM_Ao cLM_Ao (by decide +kernel)
+      136878095245927600594934554783107061194674171788215827578187990699042101960363240470831947260331207626630096457823257550725697110533834767759686909296640 (BLM 178) (kronLM 74 33 25) rfl (by kernel_fact) clLM_Ao cLM_Ao (by kernel_fact)
   | 179, _ => center3_fullN hq hc boxLM (l1LM 25) (fun _ => rfl) 179 0 74 33 11 9 1 33 16 12
-      135375896899075842897742386990207153129056144749946235134402620714405985457211982188714267736899849921300463923816691315774342299708676957990985662464000 (BLM 179) (kronLM 74 33 25) rfl (by decide +kernel) clLM_Bo cLM_Bo (by decide +kernel)
+      135375896899075842897742386990207153129056144749946235134402620714405985457211982188714267736899849921300463923816691315774342299708676957990985662464000 (BLM 179) (kronLM 74 33 25) rfl (by kernel_fact) clLM_Bo cLM_Bo (by kernel_fact)
   | n + 180, h => absurd h (by omega)
 
 set_option linter.unusedVariables false in
@@ -723,16 +728,16 @@ theorem vnodeLM_Vn {r : ℝ} (hr : 0 ≤ r) (hq : Real.exp r ≤ (74315 : ℕ) /
   have hn : ∀ i, i < 63 → Bd r (xLM c i) (BLM i) := fun i hi => normLM hq hc i (by omega)
   have h1 := norm3_fullN hr hq hc hWLM boxLM (l1LM 25) (fun _ => rfl) hn hE trLMN_Vm1 (1, 0, 0)
       32 24 10 74 33 11 9 1 33 16 12 15373993575267487163304351489085851695560166144216483008344504494518077965949187272122501310025013757883538041169018990449152086858390865700594177026372
-      (367 / 20000 : ℚ) (kronLM 74 33 25) (by decide +kernel)
-      (by decide +kernel) (by decide +kernel) lLM_Vm1 kLM_Vm1 (by decide +kernel)
+      (367 / 20000 : ℚ) (kronLM 74 33 25) (by kernel_fact)
+      (by kernel_fact) (by kernel_fact) lLM_Vm1 kLM_Vm1 (by kernel_fact)
   have h2 := norm3_fullN hr hq hc hWLM boxLM (l1LM 49) (fun _ => rfl) hn hE trLMN_V2m1 (2, 0, 0)
       64 48 20 146 65 21 11 1 65 32 24 25953321749672842149320021704355253375686092751386435664764852487075946792579785629614042002659024304948138571896600352445801935015443111830437069366946640834429414536413336786207762842131466122613923250684347642095759794297410860581520543399331137637590075790800698772693092841386874429460121173648174344
-      (231 / 6250 : ℚ) (kronLM 146 65 49) (by decide +kernel)
-      (by decide +kernel) (by decide +kernel) lLM_V2m1 kLM_V2m1 (by decide +kernel)
+      (231 / 6250 : ℚ) (kronLM 146 65 49) (by kernel_fact)
+      (by kernel_fact) (by kernel_fact) lLM_V2m1 kLM_V2m1 (by kernel_fact)
   have h3 := norm3_fullN hr hq hc hWLM boxLM (l1LM 73) (fun _ => rfl) hn hE trLMN_eta (3, 0, 0)
       96 72 30 211 97 31 12 1 97 48 36 497498199633140286787977728599330255527516671737362477687162940990071556097829206163185442636651284892080488875555180601778517528424362840262468631993034135363895882179889280380404111135824110428321246861814921840310063705788402230949041149952243583919380898028921351199760775649922476332699165783140901866989735428338754745275977265588369633247130365404455813191976249758240495197288230881178464098289568820015129865754132170815801154904373579656
-      (3 / 2500000 : ℚ) (kronLM 211 97 73) (by decide +kernel)
-      (by decide +kernel) (by decide +kernel) lLM_eta kLM_eta (by decide +kernel)
+      (3 / 2500000 : ℚ) (kronLM 211 97 73) (by kernel_fact)
+      (by kernel_fact) (by kernel_fact) lLM_eta kLM_eta (by kernel_fact)
   have e1 : Ex.eval (XLM c u z) (toEx trLMN_Vm1) = xLM c 62 - 1 := by
     simp only [trLMN_Vm1, toEx, Ex.eval, XLM_eq_V0 hc u z, XLM_eq_t hc u z, xLM_t (ne_zero_of_norm_one_mu hc)]
   have e2 : Ex.eval (XLM c u z) (toEx trLMN_V2m1) = xLM c 62 ^ 2 - 1 := by
@@ -750,15 +755,15 @@ theorem vnodeLM_Vn {r : ℝ} (hr : 0 ≤ r) (hq : Real.exp r ≤ (74315 : ℕ) /
   have hv := vstep (a := (((367 / 20000 : ℚ) : ℚ) : ℝ)) (n2 := (((231 / 6250 : ℚ) : ℚ) : ℝ)) (η := (((3 / 2500000 : ℚ) : ℚ) : ℝ))
     (b := (((10187 / 10 ^ 4 : ℚ) : ℚ) : ℝ)) (m := (((959 / 25000 : ℚ) : ℚ) : ℝ)) (g := (((12747 / 12500 : ℚ) : ℚ) : ℝ)) (ε := ((ELM 63 : ℚ) : ℝ))
     hr h1 h2 h3 hEb
-    (by exact_mod_cast (show (367 / 20000 : ℚ) < 1 by decide +kernel))
-    (by exact_mod_cast (show 1 / (1 - (367 / 20000 : ℚ)) ≤ (10187 / 10 ^ 4 : ℚ) by decide +kernel))
-    (by exact_mod_cast (show (10187 / 10 ^ 4 : ℚ) ^ 2 * (231 / 6250 : ℚ) ≤ (959 / 25000 : ℚ) by decide +kernel))
-    (by exact_mod_cast (show BLM 61 + ELM 61 ≤ (959 / 25000 : ℚ) by decide +kernel))
-    (by exact_mod_cast (show (959 / 25000 : ℚ) < 1 by decide +kernel))
-    (by exact_mod_cast (show (0 : ℚ) ≤ (12747 / 12500 : ℚ) by decide +kernel))
-    (by exact_mod_cast (show 1 ≤ (12747 / 12500 : ℚ) ^ 2 * (1 - (959 / 25000 : ℚ)) by decide +kernel))
-    (by exact_mod_cast (show (12747 / 12500 : ℚ) ^ 3 / 2 * (959 / 25000 : ℚ) + (367 / 20000 : ℚ) < 2 by decide +kernel))
-    (by exact_mod_cast (show (12747 / 12500 : ℚ) ^ 3 / 2 * ((10187 / 10 ^ 4 : ℚ) ^ 2 * (3 / 2500000 : ℚ)) ≤ ELM 63 by decide +kernel))
+    (by exact_mod_cast (show (367 / 20000 : ℚ) < 1 by kernel_fact))
+    (by exact_mod_cast (show 1 / (1 - (367 / 20000 : ℚ)) ≤ (10187 / 10 ^ 4 : ℚ) by kernel_fact))
+    (by exact_mod_cast (show (10187 / 10 ^ 4 : ℚ) ^ 2 * (231 / 6250 : ℚ) ≤ (959 / 25000 : ℚ) by kernel_fact))
+    (by exact_mod_cast (show BLM 61 + ELM 61 ≤ (959 / 25000 : ℚ) by kernel_fact))
+    (by exact_mod_cast (show (959 / 25000 : ℚ) < 1 by kernel_fact))
+    (by exact_mod_cast (show (0 : ℚ) ≤ (12747 / 12500 : ℚ) by kernel_fact))
+    (by exact_mod_cast (show 1 ≤ (12747 / 12500 : ℚ) ^ 2 * (1 - (959 / 25000 : ℚ)) by kernel_fact))
+    (by exact_mod_cast (show (12747 / 12500 : ℚ) ^ 3 / 2 * (959 / 25000 : ℚ) + (367 / 20000 : ℚ) < 2 by kernel_fact))
+    (by exact_mod_cast (show (12747 / 12500 : ℚ) ^ 3 / 2 * ((10187 / 10 ^ 4 : ℚ) ^ 2 * (3 / 2500000 : ℚ)) ≤ ELM 63 by kernel_fact))
   have eX : XLM c u z 63 = invSqrt ℂ 1 (algebraMap ℂ FA ((1 : ℝ) : ℂ) + XLM c u z 61) := by
     rw [XLM_old c _ _ (j := 63) rfl, XLM_old c _ _ (j := 61) rfl]
     simp only [XL, eV, PolyExprS.eval, PolyExprS.eval_ofPoly]
@@ -779,12 +784,12 @@ theorem vnodeLM_V4n {r : ℝ} (hr : 0 ≤ r) (hq : Real.exp r ≤ (74315 : ℕ) 
   have hn : ∀ i, i < 124 → Bd r (xLM c i) (BLM i) := fun i hi => normLM hq hc i (by omega)
   have h1 := norm3_fullN hr hq hc hWLM boxLM (l1LM 25) (fun _ => rfl) hn hE trLMN_V4m1 (1, 0, 0)
       32 24 10 74 33 11 9 1 33 16 12 239735182396670869207559940086412327891480307627547167329447657472111293414439705118299556496482044806759741116068485425960754026655402898010822743202
-      (2861 / 10 ^ 7 : ℚ) (kronLM 74 33 25) (by decide +kernel)
-      (by decide +kernel) (by decide +kernel) lLM_V4m1 kLM_V4m1 (by decide +kernel)
+      (2861 / 10 ^ 7 : ℚ) (kronLM 74 33 25) (by kernel_fact)
+      (by kernel_fact) (by kernel_fact) lLM_V4m1 kLM_V4m1 (by kernel_fact)
   have h3 := norm3_fullN hr hq hc hWLM boxLM (l1LM 73) (fun _ => rfl) hn hE trLMN_etaV4 (3, 0, 0)
       96 72 30 206 97 31 12 1 97 48 36 118535885599450012505809182837657935768727079813634278564248936998555128644036201005603218580863841327836892146176269826442700189764657624156113946871339993981037988171623166967132244435018134163286542101891626816691392294942088219755771294437052754432878709817732329173856283323065409654653985236468431231954009725925729510225001362361683006965501231696340045117827918116710532077581885963141898450245800115746704813183816695806997347791156799428
-      (239 / 10 ^ 8 : ℚ) (kronLM 206 97 73) (by decide +kernel)
-      (by decide +kernel) (by decide +kernel) lLM_etaV4 kLM_etaV4 (by decide +kernel)
+      (239 / 10 ^ 8 : ℚ) (kronLM 206 97 73) (by kernel_fact)
+      (by kernel_fact) (by kernel_fact) lLM_etaV4 kLM_etaV4 (by kernel_fact)
   have e1 : Ex.eval (XLM c u z) (toEx trLMN_V4m1) = xLM c 123 - 1 := by
     simp only [trLMN_V4m1, toEx, Ex.eval, XLM_eq_V40 hc u z, XLM_eq_t hc u z, xLM_t (ne_zero_of_norm_one_mu hc)]
   have e3 : Ex.eval (XLM c u z) (toEx trLMN_etaV4) = xLM c 123 ^ 2 * (1 + XLM c u z 120) - 1 := by
@@ -798,14 +803,14 @@ theorem vnodeLM_V4n {r : ℝ} (hr : 0 ≤ r) (hq : Real.exp r ≤ (74315 : ℕ) 
   have hv := vstep2 (a := (((2861 / 10 ^ 7 : ℚ) : ℚ) : ℝ)) (η := (((239 / 10 ^ 8 : ℚ) : ℚ) : ℝ))
     (b := (((100029 / 10 ^ 5 : ℚ) : ℚ) : ℝ)) (m := (((721 / 1250000 : ℚ) : ℚ) : ℝ)) (g := (((100029 / 10 ^ 5 : ℚ) : ℚ) : ℝ)) (ε := ((ELM 124 : ℚ) : ℝ))
     hr h1 h3 hEb
-    (by exact_mod_cast (show (2861 / 10 ^ 7 : ℚ) < 1 by decide +kernel))
-    (by exact_mod_cast (show 1 / (1 - (2861 / 10 ^ 7 : ℚ)) ≤ (100029 / 10 ^ 5 : ℚ) by decide +kernel))
-    (by exact_mod_cast (show BLM 120 + ELM 120 + (100029 / 10 ^ 5 : ℚ) ^ 2 * (239 / 10 ^ 8 : ℚ) ≤ (721 / 1250000 : ℚ) by decide +kernel))
-    (by exact_mod_cast (show (721 / 1250000 : ℚ) < 1 by decide +kernel))
-    (by exact_mod_cast (show (0 : ℚ) ≤ (100029 / 10 ^ 5 : ℚ) by decide +kernel))
-    (by exact_mod_cast (show 1 ≤ (100029 / 10 ^ 5 : ℚ) ^ 2 * (1 - (721 / 1250000 : ℚ)) by decide +kernel))
-    (by exact_mod_cast (show (100029 / 10 ^ 5 : ℚ) ^ 3 / 2 * (721 / 1250000 : ℚ) + (2861 / 10 ^ 7 : ℚ) < 2 by decide +kernel))
-    (by exact_mod_cast (show (100029 / 10 ^ 5 : ℚ) ^ 3 / 2 * ((100029 / 10 ^ 5 : ℚ) ^ 2 * (239 / 10 ^ 8 : ℚ)) ≤ ELM 124 by decide +kernel))
+    (by exact_mod_cast (show (2861 / 10 ^ 7 : ℚ) < 1 by kernel_fact))
+    (by exact_mod_cast (show 1 / (1 - (2861 / 10 ^ 7 : ℚ)) ≤ (100029 / 10 ^ 5 : ℚ) by kernel_fact))
+    (by exact_mod_cast (show BLM 120 + ELM 120 + (100029 / 10 ^ 5 : ℚ) ^ 2 * (239 / 10 ^ 8 : ℚ) ≤ (721 / 1250000 : ℚ) by kernel_fact))
+    (by exact_mod_cast (show (721 / 1250000 : ℚ) < 1 by kernel_fact))
+    (by exact_mod_cast (show (0 : ℚ) ≤ (100029 / 10 ^ 5 : ℚ) by kernel_fact))
+    (by exact_mod_cast (show 1 ≤ (100029 / 10 ^ 5 : ℚ) ^ 2 * (1 - (721 / 1250000 : ℚ)) by kernel_fact))
+    (by exact_mod_cast (show (100029 / 10 ^ 5 : ℚ) ^ 3 / 2 * (721 / 1250000 : ℚ) + (2861 / 10 ^ 7 : ℚ) < 2 by kernel_fact))
+    (by exact_mod_cast (show (100029 / 10 ^ 5 : ℚ) ^ 3 / 2 * ((100029 / 10 ^ 5 : ℚ) ^ 2 * (239 / 10 ^ 8 : ℚ)) ≤ ELM 124 by kernel_fact))
   have eX : XLM c u z 124 = invSqrt ℂ 1 (algebraMap ℂ FA ((1 : ℝ) : ℂ) + XLM c u z 120) := by
     rw [XLM_new c _ _ (j := 124) rfl, XLM_new c _ _ (j := 120) rfl]
     simp only [XLMnew, eV4, PolyExprS.eval, PolyExprS.eval_ofPoly]
@@ -826,12 +831,12 @@ theorem vnodeLM_Nn {r : ℝ} (hr : 0 ≤ r) (hq : Real.exp r ≤ (74315 : ℕ) /
   have hn : ∀ i, i < 130 → Bd r (xLM c i) (BLM i) := fun i hi => normLM hq hc i (by omega)
   have h1 := norm3_fullN hr hq hc hWLM boxLM (l1LM 25) (fun _ => rfl) hn hE trLMN_Nm1 (1, 0, 0)
       32 24 10 74 33 11 9 1 33 16 12 33515246251772951316132853954509889453025249789082337756769418836162479085082503286605732131833451470659822129053319027012262165457776968244701092118528
-      (1 / 25 : ℚ) (kronLM 74 33 25) (by decide +kernel)
-      (by decide +kernel) (by decide +kernel) lLM_Nm1 kLM_Nm1 (by decide +kernel)
+      (1 / 25 : ℚ) (kronLM 74 33 25) (by kernel_fact)
+      (by kernel_fact) (by kernel_fact) lLM_Nm1 kLM_Nm1 (by kernel_fact)
   have h3 := norm3_fullN hr hq hc hWLM boxLM (l1LM 73) (fun _ => rfl) hn hE trLMN_etaN (3, 0, 0)
       96 72 30 214 97 31 12 1 97 48 36 34773089899245624166520841049089814150172699247341305533476051652876979640009710276645012181703470545932063268395700104834179377667242649999119271991313942041169067429438426845063477020260517877037885306531772650988867828033659914676206011502089189253978182923321950572254005809715445029667781121896279785503073104029098005845808124135992593808152722893870915952834466147290608615192981885939999295115982079301481138169669116533811189041734474530816
-      (13 / 50000000 : ℚ) (kronLM 214 97 73) (by decide +kernel)
-      (by decide +kernel) (by decide +kernel) lLM_etaN kLM_etaN (by decide +kernel)
+      (13 / 50000000 : ℚ) (kronLM 214 97 73) (by kernel_fact)
+      (by kernel_fact) (by kernel_fact) lLM_etaN kLM_etaN (by kernel_fact)
   have e1 : Ex.eval (XLM c u z) (toEx trLMN_Nm1) = xLM c 129 - 1 := by
     simp only [trLMN_Nm1, toEx, Ex.eval, XLM_eq_N0 hc u z, XLM_eq_t hc u z, xLM_t (ne_zero_of_norm_one_mu hc)]
   have e3 : Ex.eval (XLM c u z) (toEx trLMN_etaN) = xLM c 129 ^ 2 * (1 + XLM c u z 128) - 1 := by
@@ -845,14 +850,14 @@ theorem vnodeLM_Nn {r : ℝ} (hr : 0 ≤ r) (hq : Real.exp r ≤ (74315 : ℕ) /
   have hv := vstep2 (a := (((1 / 25 : ℚ) : ℚ) : ℝ)) (η := (((13 / 50000000 : ℚ) : ℚ) : ℝ))
     (b := (((104167 / 10 ^ 5 : ℚ) : ℚ) : ℝ)) (m := (((151 / 2000 : ℚ) : ℚ) : ℝ)) (g := (((26001 / 25000 : ℚ) : ℚ) : ℝ)) (ε := ((ELM 130 : ℚ) : ℝ))
     hr h1 h3 hEb
-    (by exact_mod_cast (show (1 / 25 : ℚ) < 1 by decide +kernel))
-    (by exact_mod_cast (show 1 / (1 - (1 / 25 : ℚ)) ≤ (104167 / 10 ^ 5 : ℚ) by decide +kernel))
-    (by exact_mod_cast (show BLM 128 + ELM 128 + (104167 / 10 ^ 5 : ℚ) ^ 2 * (13 / 50000000 : ℚ) ≤ (151 / 2000 : ℚ) by decide +kernel))
-    (by exact_mod_cast (show (151 / 2000 : ℚ) < 1 by decide +kernel))
-    (by exact_mod_cast (show (0 : ℚ) ≤ (26001 / 25000 : ℚ) by decide +kernel))
-    (by exact_mod_cast (show 1 ≤ (26001 / 25000 : ℚ) ^ 2 * (1 - (151 / 2000 : ℚ)) by decide +kernel))
-    (by exact_mod_cast (show (26001 / 25000 : ℚ) ^ 3 / 2 * (151 / 2000 : ℚ) + (1 / 25 : ℚ) < 2 by decide +kernel))
-    (by exact_mod_cast (show (26001 / 25000 : ℚ) ^ 3 / 2 * ((104167 / 10 ^ 5 : ℚ) ^ 2 * (13 / 50000000 : ℚ)) ≤ ELM 130 by decide +kernel))
+    (by exact_mod_cast (show (1 / 25 : ℚ) < 1 by kernel_fact))
+    (by exact_mod_cast (show 1 / (1 - (1 / 25 : ℚ)) ≤ (104167 / 10 ^ 5 : ℚ) by kernel_fact))
+    (by exact_mod_cast (show BLM 128 + ELM 128 + (104167 / 10 ^ 5 : ℚ) ^ 2 * (13 / 50000000 : ℚ) ≤ (151 / 2000 : ℚ) by kernel_fact))
+    (by exact_mod_cast (show (151 / 2000 : ℚ) < 1 by kernel_fact))
+    (by exact_mod_cast (show (0 : ℚ) ≤ (26001 / 25000 : ℚ) by kernel_fact))
+    (by exact_mod_cast (show 1 ≤ (26001 / 25000 : ℚ) ^ 2 * (1 - (151 / 2000 : ℚ)) by kernel_fact))
+    (by exact_mod_cast (show (26001 / 25000 : ℚ) ^ 3 / 2 * (151 / 2000 : ℚ) + (1 / 25 : ℚ) < 2 by kernel_fact))
+    (by exact_mod_cast (show (26001 / 25000 : ℚ) ^ 3 / 2 * ((104167 / 10 ^ 5 : ℚ) ^ 2 * (13 / 50000000 : ℚ)) ≤ ELM 130 by kernel_fact))
   have eX : XLM c u z 130 = invSqrt ℂ 1 (algebraMap ℂ FA ((1 : ℝ) : ℂ) + XLM c u z 128) := by
     rw [XLM_new c _ _ (j := 130) rfl, XLM_new c _ _ (j := 128) rfl]
     simp only [XLMnew, eN, PolyExprS.eval]
@@ -877,7 +882,7 @@ theorem ballLM_1 {r : ℝ} (hr : 0 ≤ r) (hq : Real.exp r ≤ (74315 : ℕ) / 2
     (hA : Bd r (dTh u - xLM c 6) (ELM 6)) (hB : Bd r (dTh z - xLM c 7) (ELM 7)) :
     ∀ i, i < 1 → Bd r (XLM c u z i - xLM c i) (ELM i) :=
   chain_succ (ballLM_0 hr hq hc hU hZ hA hB)
-    (step_exact (XLM_eq_t hc u z) (by decide +kernel))
+    (step_exact (XLM_eq_t hc u z) (by kernel_fact))
 
 set_option linter.style.longLine false in
 set_option maxRecDepth 100000 in
@@ -888,7 +893,7 @@ theorem ballLM_2 {r : ℝ} (hr : 0 ≤ r) (hq : Real.exp r ≤ (74315 : ℕ) / 2
     (hA : Bd r (dTh u - xLM c 6) (ELM 6)) (hB : Bd r (dTh z - xLM c 7) (ELM 7)) :
     ∀ i, i < 2 → Bd r (XLM c u z i - xLM c i) (ELM i) :=
   chain_succ (ballLM_1 hr hq hc hU hZ hA hB)
-    (step_exact (XLM_eq_V hc u z) (by decide +kernel))
+    (step_exact (XLM_eq_V hc u z) (by kernel_fact))
 
 set_option linter.style.longLine false in
 set_option maxRecDepth 100000 in
@@ -899,7 +904,7 @@ theorem ballLM_3 {r : ℝ} (hr : 0 ≤ r) (hq : Real.exp r ≤ (74315 : ℕ) / 2
     (hA : Bd r (dTh u - xLM c 6) (ELM 6)) (hB : Bd r (dTh z - xLM c 7) (ELM 7)) :
     ∀ i, i < 3 → Bd r (XLM c u z i - xLM c i) (ELM i) :=
   chain_succ (ballLM_2 hr hq hc hU hZ hA hB)
-    (step_exact (XLM_eq_c hc u z) (by decide +kernel))
+    (step_exact (XLM_eq_c hc u z) (by kernel_fact))
 
 set_option linter.style.longLine false in
 set_option maxRecDepth 100000 in
@@ -910,7 +915,7 @@ theorem ballLM_4 {r : ℝ} (hr : 0 ≤ r) (hq : Real.exp r ≤ (74315 : ℕ) / 2
     (hA : Bd r (dTh u - xLM c 6) (ELM 6)) (hB : Bd r (dTh z - xLM c 7) (ELM 7)) :
     ∀ i, i < 4 → Bd r (XLM c u z i - xLM c i) (ELM i) :=
   chain_succ (ballLM_3 hr hq hc hU hZ hA hB)
-    (step_exact (XLM_eq_s hc u z) (by decide +kernel))
+    (step_exact (XLM_eq_s hc u z) (by kernel_fact))
 
 set_option linter.style.longLine false in
 set_option maxRecDepth 100000 in
@@ -968,8 +973,8 @@ theorem ballLM_9 {r : ℝ} (hr : 0 ≤ r) (hq : Real.exp r ≤ (74315 : ℕ) / 2
     (node3_fullN hr hq hc hWLM boxLM (l1LM 49) (fun _ => rfl)
       (fun i hi => normLM hq hc i (by omega)) (ballLM_8 hr hq hc hU hZ hA hB) trLMN_m02 1 0 2 (1 : ℤ)
       64 48 20 138 65 21 11 8 9 32 24 86418336252115475048244287498205902537730942780377304846732013536498248443507624930822440576115891320018965085932000612719487002254552222695961102023296174097317546189681271206938972180815052707420187789613898328593871601983354239691039501243085297518726773735217593304754672038825146436953125
-      (kronLM 138 65 49) (by decide +kernel) (by decide +kernel) (by decide +kernel) (by norm_num) (by decide +kernel)
-      lLM_m02 kLM_m02 (by decide +kernel) (relLM_m02 c u z))
+      (kronLM 138 65 49) (by kernel_fact) (by kernel_fact) (by kernel_fact) (by norm_num) (by kernel_fact)
+      lLM_m02 kLM_m02 (by kernel_fact) (relLM_m02 c u z))
 
 set_option linter.style.longLine false in
 set_option maxRecDepth 100000 in
@@ -983,8 +988,8 @@ theorem ballLM_10 {r : ℝ} (hr : 0 ≤ r) (hq : Real.exp r ≤ (74315 : ℕ) / 
     (node3_fullN hr hq hc hWLM boxLM (l1LM 49) (fun _ => rfl)
       (fun i hi => normLM hq hc i (by omega)) (ballLM_9 hr hq hc hU hZ hA hB) trLMN_m11 1 0 1 (1 : ℤ)
       64 48 20 138 65 21 11 8 9 32 24 67029857984915759013574684354257601203157215049288724765544146927174755490886503972929539786849253084827289162971484165043302863371368601639913869959437932280453724185963619428510727956251506537906182429517493316624889612610364484377402823726168756727869530846711587838327505299267761821562500
-      (kronLM 138 65 49) (by decide +kernel) (by decide +kernel) (by decide +kernel) (by norm_num) (by decide +kernel)
-      lLM_m11 kLM_m11 (by decide +kernel) (relLM_m11 c u z))
+      (kronLM 138 65 49) (by kernel_fact) (by kernel_fact) (by kernel_fact) (by norm_num) (by kernel_fact)
+      lLM_m11 kLM_m11 (by kernel_fact) (relLM_m11 c u z))
 
 set_option linter.style.longLine false in
 set_option maxRecDepth 100000 in
@@ -998,8 +1003,8 @@ theorem ballLM_11 {r : ℝ} (hr : 0 ≤ r) (hq : Real.exp r ≤ (74315 : ℕ) / 
     (node3_fullN hr hq hc hWLM boxLM (l1LM 49) (fun _ => rfl)
       (fun i hi => normLM hq hc i (by omega)) (ballLM_10 hr hq hc hU hZ hA hB) trLMN_m20 1 0 0 (1 : ℤ)
       64 48 20 138 65 21 11 8 9 32 24 127358951193308520321374159328043166169626276650482814280122832542733410326661648543964078711947291582552110581057932004198418430359400754826574331854961877522980068287853165777180181621007986455453502110559760581848300082155140371422455043067973856478626788626682457990684902561429063926171875
-      (kronLM 138 65 49) (by decide +kernel) (by decide +kernel) (by decide +kernel) (by norm_num) (by decide +kernel)
-      lLM_m20 kLM_m20 (by decide +kernel) (relLM_m20 c u z))
+      (kronLM 138 65 49) (by kernel_fact) (by kernel_fact) (by kernel_fact) (by norm_num) (by kernel_fact)
+      lLM_m20 kLM_m20 (by kernel_fact) (relLM_m20 c u z))
 
 set_option linter.style.longLine false in
 set_option maxRecDepth 100000 in
@@ -1013,8 +1018,8 @@ theorem ballLM_12 {r : ℝ} (hr : 0 ≤ r) (hq : Real.exp r ≤ (74315 : ℕ) / 
     (node3_fullN hr hq hc hWLM boxLM (l1LM 49) (fun _ => rfl)
       (fun i hi => normLM hq hc i (by omega)) (ballLM_11 hr hq hc hU hZ hA hB) trLMN_m03 1 0 3 (1 : ℤ)
       64 48 20 134 65 21 11 8 9 32 24 27750985391140739447612226791679381975726856400911614690962275995881557648879307594503139811111536043762738528925636995535962753429396697297913321590538239319243752352487358449945186351826416767920517317312227972594542209042214633399683901371584101329909142978852290795439700098489501095390625
-      (kronLM 134 65 49) (by decide +kernel) (by decide +kernel) (by decide +kernel) (by norm_num) (by decide +kernel)
-      lLM_m03 kLM_m03 (by decide +kernel) (relLM_m03 c u z))
+      (kronLM 134 65 49) (by kernel_fact) (by kernel_fact) (by kernel_fact) (by norm_num) (by kernel_fact)
+      lLM_m03 kLM_m03 (by kernel_fact) (relLM_m03 c u z))
 
 set_option linter.style.longLine false in
 set_option maxRecDepth 100000 in
@@ -1028,8 +1033,8 @@ theorem ballLM_13 {r : ℝ} (hr : 0 ≤ r) (hq : Real.exp r ≤ (74315 : ℕ) / 
     (node3_fullN hr hq hc hWLM boxLM (l1LM 49) (fun _ => rfl)
       (fun i hi => normLM hq hc i (by omega)) (ballLM_12 hr hq hc hU hZ hA hB) trLMN_m12 1 0 2 (1 : ℤ)
       64 48 20 134 65 21 11 8 9 32 24 20939134295902409127068816809163305817496681146703905230297937199829578653188392080228771528189394945688869315472654997328579325811886623943409084337840526498584946148544505795673251742896255297906081126326241293970240115563245054883002572475251719710975461112286537402622974243279950916953125
-      (kronLM 134 65 49) (by decide +kernel) (by decide +kernel) (by decide +kernel) (by norm_num) (by decide +kernel)
-      lLM_m12 kLM_m12 (by decide +kernel) (relLM_m12 c u z))
+      (kronLM 134 65 49) (by kernel_fact) (by kernel_fact) (by kernel_fact) (by norm_num) (by kernel_fact)
+      lLM_m12 kLM_m12 (by kernel_fact) (relLM_m12 c u z))
 
 set_option linter.style.longLine false in
 set_option maxRecDepth 100000 in
@@ -1043,8 +1048,8 @@ theorem ballLM_14 {r : ℝ} (hr : 0 ≤ r) (hq : Real.exp r ≤ (74315 : ℕ) / 
     (node3_fullN hr hq hc hWLM boxLM (l1LM 49) (fun _ => rfl)
       (fun i hi => normLM hq hc i (by omega)) (ballLM_13 hr hq hc hU hZ hA hB) trLMN_m21 1 0 1 (1 : ℤ)
       64 48 20 134 65 21 11 8 9 32 24 23904325822334567849919088303897667190458156198587145660461697277051246653993987457591007712958712767717324767212479526667417554154725852111171041792435519975970430934079548053360174541118695599343521044224985385076625665442888142904136998590729215944953054162991793329680266646858279581562500
-      (kronLM 134 65 49) (by decide +kernel) (by decide +kernel) (by decide +kernel) (by norm_num) (by decide +kernel)
-      lLM_m21 kLM_m21 (by decide +kernel) (relLM_m21 c u z))
+      (kronLM 134 65 49) (by kernel_fact) (by kernel_fact) (by kernel_fact) (by norm_num) (by kernel_fact)
+      lLM_m21 kLM_m21 (by kernel_fact) (relLM_m21 c u z))
 
 set_option linter.style.longLine false in
 set_option maxRecDepth 100000 in
@@ -1058,8 +1063,8 @@ theorem ballLM_15 {r : ℝ} (hr : 0 ≤ r) (hq : Real.exp r ≤ (74315 : ℕ) / 
     (node3_fullN hr hq hc hWLM boxLM (l1LM 49) (fun _ => rfl)
       (fun i hi => normLM hq hc i (by omega)) (ballLM_14 hr hq hc hU hZ hA hB) trLMN_m30 1 0 0 (1 : ℤ)
       64 48 20 134 65 21 11 8 9 32 24 45501672697686806910667869969375129532961361957027731701699656877492199906877103288717987380106813552534190942288415570460869313222530711803916399651901368982572543355111546232826301294368625621125851911923621386190937877041429971631335421018024076011714417234797695234544524469862383261562500
-      (kronLM 134 65 49) (by decide +kernel) (by decide +kernel) (by decide +kernel) (by norm_num) (by decide +kernel)
-      lLM_m30 kLM_m30 (by decide +kernel) (relLM_m30 c u z))
+      (kronLM 134 65 49) (by kernel_fact) (by kernel_fact) (by kernel_fact) (by norm_num) (by kernel_fact)
+      lLM_m30 kLM_m30 (by kernel_fact) (relLM_m30 c u z))
 
 set_option linter.style.longLine false in
 set_option maxRecDepth 100000 in
@@ -1073,8 +1078,8 @@ theorem ballLM_16 {r : ℝ} (hr : 0 ≤ r) (hq : Real.exp r ≤ (74315 : ℕ) / 
     (node3_fullN hr hq hc hWLM boxLM (l1LM 49) (fun _ => rfl)
       (fun i hi => normLM hq hc i (by omega)) (ballLM_15 hr hq hc hU hZ hA hB) trLMN_m13 1 0 3 (1 : ℤ)
       64 48 20 130 65 21 11 8 9 32 24 7204440965028410340524154515450864988189230584929915771606947283065260170132088031297231672873991245830315158365559429190721441141657526539164101033087114196215327199941392674762901225427811369352230879822912485367161334309056690974661906133823242657113057299142427135781504746582577575390625
-      (kronLM 130 65 49) (by decide +kernel) (by decide +kernel) (by decide +kernel) (by norm_num) (by decide +kernel)
-      lLM_m13 kLM_m13 (by decide +kernel) (relLM_m13 c u z))
+      (kronLM 130 65 49) (by kernel_fact) (by kernel_fact) (by kernel_fact) (by norm_num) (by kernel_fact)
+      lLM_m13 kLM_m13 (by kernel_fact) (relLM_m13 c u z))
 
 set_option linter.style.longLine false in
 set_option maxRecDepth 100000 in
@@ -1088,8 +1093,8 @@ theorem ballLM_17 {r : ℝ} (hr : 0 ≤ r) (hq : Real.exp r ≤ (74315 : ℕ) / 
     (node3_fullN hr hq hc hWLM boxLM (l1LM 49) (fun _ => rfl)
       (fun i hi => normLM hq hc i (by omega)) (ballLM_16 hr hq hc hU hZ hA hB) trLMN_m22 1 0 2 (1 : ℤ)
       64 48 20 130 65 21 11 8 9 32 24 7224164444978540522581072889998468318336164339747381134386903991351316745442427608187486297398806030403590418968314683792219631263871806467904539090733813657464418866645411121964749619131929951857964032981280229199827710795229668641775265781057102658283365038539636334608859651053412775390625
-      (kronLM 130 65 49) (by decide +kernel) (by decide +kernel) (by decide +kernel) (by norm_num) (by decide +kernel)
-      lLM_m22 kLM_m22 (by decide +kernel) (relLM_m22 c u z))
+      (kronLM 130 65 49) (by kernel_fact) (by kernel_fact) (by kernel_fact) (by norm_num) (by kernel_fact)
+      lLM_m22 kLM_m22 (by kernel_fact) (relLM_m22 c u z))
 
 set_option linter.style.longLine false in
 set_option maxRecDepth 100000 in
@@ -1103,8 +1108,8 @@ theorem ballLM_18 {r : ℝ} (hr : 0 ≤ r) (hq : Real.exp r ≤ (74315 : ℕ) / 
     (node3_fullN hr hq hc hWLM boxLM (l1LM 49) (fun _ => rfl)
       (fun i hi => normLM hq hc i (by omega)) (ballLM_17 hr hq hc hU hZ hA hB) trLMN_m31 1 0 1 (1 : ℤ)
       64 48 20 130 65 21 11 8 9 32 24 8825766677546837137969239863020440688607327669755040206263705124518071079851464569491369348138872933260742769443019779387505756274448489157469745086702833469908216099744372059199946527994866920959613438898123625746519077403029517350696679341605244072346017794151680004574468318753967950781250
-      (kronLM 130 65 49) (by decide +kernel) (by decide +kernel) (by decide +kernel) (by norm_num) (by decide +kernel)
-      lLM_m31 kLM_m31 (by decide +kernel) (relLM_m31 c u z))
+      (kronLM 130 65 49) (by kernel_fact) (by kernel_fact) (by kernel_fact) (by norm_num) (by kernel_fact)
+      lLM_m31 kLM_m31 (by kernel_fact) (relLM_m31 c u z))
 
 set_option linter.style.longLine false in
 set_option maxRecDepth 100000 in
@@ -1118,8 +1123,8 @@ theorem ballLM_19 {r : ℝ} (hr : 0 ≤ r) (hq : Real.exp r ≤ (74315 : ℕ) / 
     (node3_fullN hr hq hc hWLM boxLM (l1LM 49) (fun _ => rfl)
       (fun i hi => normLM hq hc i (by omega)) (ballLM_18 hr hq hc hU hZ hA hB) trLMN_m40 1 0 0 (1 : ℤ)
       64 48 20 132 65 21 11 8 9 32 24 15057824824504259164682565345979495419327588982779347644196126334996088050184736257176711455041200937779903573714324643453537228079530642496852389158803755451065029159445509999470751837735645162907046464809740364930577350278063763191266466014096260489107170777900391010917044186736645366171875
-      (kronLM 132 65 49) (by decide +kernel) (by decide +kernel) (by decide +kernel) (by norm_num) (by decide +kernel)
-      lLM_m40 kLM_m40 (by decide +kernel) (relLM_m40 c u z))
+      (kronLM 132 65 49) (by kernel_fact) (by kernel_fact) (by kernel_fact) (by norm_num) (by kernel_fact)
+      lLM_m40 kLM_m40 (by kernel_fact) (relLM_m40 c u z))
 
 set_option linter.style.longLine false in
 set_option maxRecDepth 100000 in
@@ -1133,8 +1138,8 @@ theorem ballLM_20 {r : ℝ} (hr : 0 ≤ r) (hq : Real.exp r ≤ (74315 : ℕ) / 
     (node3_fullN hr hq hc hWLM boxLM (l1LM 49) (fun _ => rfl)
       (fun i hi => normLM hq hc i (by omega)) (ballLM_19 hr hq hc hU hZ hA hB) trLMN_m41 1 0 1 (1 : ℤ)
       64 48 20 127 65 21 11 8 9 32 24 5397980453169377739288998508871507897388686514117060534589582483138358242066843116740478559133988674714000443197015604894290766511516175578640940411310673183640276764976137287719921507073762174622453856941413365426530109256047612339957158768260164762114661151352137374875577832996191655390625
-      (kronLM 127 65 49) (by decide +kernel) (by decide +kernel) (by decide +kernel) (by norm_num) (by decide +kernel)
-      lLM_m41 kLM_m41 (by decide +kernel) (relLM_m41 c u z))
+      (kronLM 127 65 49) (by kernel_fact) (by kernel_fact) (by kernel_fact) (by norm_num) (by kernel_fact)
+      lLM_m41 kLM_m41 (by kernel_fact) (relLM_m41 c u z))
 
 set_option linter.style.longLine false in
 set_option maxRecDepth 100000 in
@@ -1148,8 +1153,8 @@ theorem ballLM_21 {r : ℝ} (hr : 0 ≤ r) (hq : Real.exp r ≤ (74315 : ℕ) / 
     (node3_fullN hr hq hc hWLM boxLM (l1LM 49) (fun _ => rfl)
       (fun i hi => normLM hq hc i (by omega)) (ballLM_20 hr hq hc hU hZ hA hB) trLMN_m50 1 0 0 (1 : ℤ)
       64 48 20 128 65 21 11 8 9 32 24 7052239318812195241155680545512478509221620658659257243700103816423603339123933665923589581718528003427221614505114465242446617194079725019869535567178312198436550287463403342106099222067010999653578565861515844950187102703880351343809659256642701407513887381034974840557109760327862695390625
-      (kronLM 128 65 49) (by decide +kernel) (by decide +kernel) (by decide +kernel) (by norm_num) (by decide +kernel)
-      lLM_m50 kLM_m50 (by decide +kernel) (relLM_m50 c u z))
+      (kronLM 128 65 49) (by kernel_fact) (by kernel_fact) (by kernel_fact) (by norm_num) (by kernel_fact)
+      lLM_m50 kLM_m50 (by kernel_fact) (relLM_m50 c u z))
 
 set_option linter.style.longLine false in
 set_option maxRecDepth 100000 in
@@ -1163,8 +1168,8 @@ theorem ballLM_22 {r : ℝ} (hr : 0 ≤ r) (hq : Real.exp r ≤ (74315 : ℕ) / 
     (node3_fullN hr hq hc hWLM boxLM (l1LM 49) (fun _ => rfl)
       (fun i hi => normLM hq hc i (by omega)) (ballLM_21 hr hq hc hU hZ hA hB) trLMN_m51 1 0 1 (1 : ℤ)
       64 48 20 124 65 21 11 8 9 32 24 4496278518949434391069002290597169459755089521458020542099858491556456732383308852830783090677511973997543363583952553100488095436212545820491129159330916821219933658263589700588671723924210033963740976226996388409636771935995837893225150651800083233608569143385514886190042259786458535390625
-      (kronLM 124 65 49) (by decide +kernel) (by decide +kernel) (by decide +kernel) (by norm_num) (by decide +kernel)
-      lLM_m51 kLM_m51 (by decide +kernel) (relLM_m51 c u z))
+      (kronLM 124 65 49) (by kernel_fact) (by kernel_fact) (by kernel_fact) (by norm_num) (by kernel_fact)
+      lLM_m51 kLM_m51 (by kernel_fact) (relLM_m51 c u z))
 
 set_option linter.style.longLine false in
 set_option maxRecDepth 100000 in
@@ -1178,8 +1183,8 @@ theorem ballLM_23 {r : ℝ} (hr : 0 ≤ r) (hq : Real.exp r ≤ (74315 : ℕ) / 
     (node3_fullN hr hq hc hWLM boxLM (l1LM 49) (fun _ => rfl)
       (fun i hi => normLM hq hc i (by omega)) (ballLM_22 hr hq hc hU hZ hA hB) trLMN_m60 1 0 0 (1 : ℤ)
       64 48 20 126 65 21 11 8 9 32 24 5074188706473525138847347468136076281268848094148081666107767635522780460415722010693108667953413875842821453667228594324690966420122502225569226762058167409180675119023648004500863585946689595117546717904282160431862727972680381304401614554127375210457525585415094741867246413431729575390625
-      (kronLM 126 65 49) (by decide +kernel) (by decide +kernel) (by decide +kernel) (by norm_num) (by decide +kernel)
-      lLM_m60 kLM_m60 (by decide +kernel) (relLM_m60 c u z))
+      (kronLM 126 65 49) (by kernel_fact) (by kernel_fact) (by kernel_fact) (by norm_num) (by kernel_fact)
+      lLM_m60 kLM_m60 (by kernel_fact) (relLM_m60 c u z))
 
 set_option linter.style.longLine false in
 set_option maxRecDepth 100000 in
@@ -1193,8 +1198,8 @@ theorem ballLM_24 {r : ℝ} (hr : 0 ≤ r) (hq : Real.exp r ≤ (74315 : ℕ) / 
     (node3_fullN hr hq hc hWLM boxLM (l1LM 27) (fun _ => rfl)
       (fun i hi => normLM hq hc i (by omega)) (ballLM_23 hr hq hc hU hZ hA hB) trLMN_Dp 0 1 0 (8 : ℤ)
       32 26 10 78 33 11 9 8 5 16 13 9690557726893229284508703601751878440036260758686875414023133367678566675592781019526760822196958862355646874844050822674491501292685615435781250
-      (kronLM 78 33 27) (by decide +kernel) (by decide +kernel) (by decide +kernel) (by norm_num) (by decide +kernel)
-      lLM_Dp kLM_Dp (by decide +kernel) (relLM_Dp c u z))
+      (kronLM 78 33 27) (by kernel_fact) (by kernel_fact) (by kernel_fact) (by norm_num) (by kernel_fact)
+      lLM_Dp kLM_Dp (by kernel_fact) (relLM_Dp c u z))
 
 set_option linter.style.longLine false in
 set_option maxRecDepth 100000 in
@@ -1208,8 +1213,8 @@ theorem ballLM_25 {r : ℝ} (hr : 0 ≤ r) (hq : Real.exp r ≤ (74315 : ℕ) / 
     (node3_fullN hr hq hc hWLM boxLM (l1LM 27) (fun _ => rfl)
       (fun i hi => normLM hq hc i (by omega)) (ballLM_24 hr hq hc hU hZ hA hB) trLMN_nRp 0 1 3 (8 : ℤ)
       32 26 10 75 33 11 9 8 5 16 13 10786893678775893903787273204980532915530810119932594638026173854925124503856865687355968279072640628726392159659756432961551839577057247747265625
-      (kronLM 75 33 27) (by decide +kernel) (by decide +kernel) (by decide +kernel) (by norm_num) (by decide +kernel)
-      lLM_nRp kLM_nRp (by decide +kernel) (relLM_nRp c u z))
+      (kronLM 75 33 27) (by kernel_fact) (by kernel_fact) (by kernel_fact) (by norm_num) (by kernel_fact)
+      lLM_nRp kLM_nRp (by kernel_fact) (relLM_nRp c u z))
 
 set_option linter.style.longLine false in
 set_option maxRecDepth 100000 in
@@ -1223,8 +1228,8 @@ theorem ballLM_26 {r : ℝ} (hr : 0 ≤ r) (hq : Real.exp r ≤ (74315 : ℕ) / 
     (node3_fullN hr hq hc hWLM boxLM (l1LM 27) (fun _ => rfl)
       (fun i hi => normLM hq hc i (by omega)) (ballLM_25 hr hq hc hU hZ hA hB) trLMN_nZp 0 1 0 (16 : ℤ)
       32 26 10 76 33 11 9 8 5 16 13 22797836979862947365540107519925957313990271189647818174602893518587649301013684476330689271960025750978815891399089615227118469345940614513984375
-      (kronLM 76 33 27) (by decide +kernel) (by decide +kernel) (by decide +kernel) (by norm_num) (by decide +kernel)
-      lLM_nZp kLM_nZp (by decide +kernel) (relLM_nZp c u z))
+      (kronLM 76 33 27) (by kernel_fact) (by kernel_fact) (by kernel_fact) (by norm_num) (by kernel_fact)
+      lLM_nZp kLM_nZp (by kernel_fact) (relLM_nZp c u z))
 
 set_option linter.style.longLine false in
 set_option maxRecDepth 100000 in
@@ -1238,8 +1243,8 @@ theorem ballLM_27 {r : ℝ} (hr : 0 ≤ r) (hq : Real.exp r ≤ (74315 : ℕ) / 
     (node3_fullN hr hq hc hWLM boxLM (l1LM 27) (fun _ => rfl)
       (fun i hi => normLM hq hc i (by omega)) (ballLM_26 hr hq hc hU hZ hA hB) trLMN_DuP 0 1 0 (2 : ℤ)
       32 26 10 77 33 11 9 8 5 16 13 3669944060379363610899577215890730086464468527838835296367886811363020033159347239303093805011306881543193961231971472451522288610729268160156250
-      (kronLM 77 33 27) (by decide +kernel) (by decide +kernel) (by decide +kernel) (by norm_num) (by decide +kernel)
-      lLM_DuP kLM_DuP (by decide +kernel) (relLM_DuP c u z))
+      (kronLM 77 33 27) (by kernel_fact) (by kernel_fact) (by kernel_fact) (by norm_num) (by kernel_fact)
+      lLM_DuP kLM_DuP (by kernel_fact) (relLM_DuP c u z))
 
 set_option linter.style.longLine false in
 set_option maxRecDepth 100000 in
@@ -1253,8 +1258,8 @@ theorem ballLM_28 {r : ℝ} (hr : 0 ≤ r) (hq : Real.exp r ≤ (74315 : ℕ) / 
     (node3_fullN hr hq hc hWLM boxLM (l1LM 27) (fun _ => rfl)
       (fun i hi => normLM hq hc i (by omega)) (ballLM_27 hr hq hc hU hZ hA hB) trLMN_DzP 0 1 3 (8 : ℤ)
       32 26 10 76 33 11 9 8 5 16 13 12823318388909093823393380904309763455701505142840721178069468448442739325626177420736971374544163601835207408537497123357321375970074296177734375
-      (kronLM 76 33 27) (by decide +kernel) (by decide +kernel) (by decide +kernel) (by norm_num) (by decide +kernel)
-      lLM_DzP kLM_DzP (by decide +kernel) (relLM_DzP c u z))
+      (kronLM 76 33 27) (by kernel_fact) (by kernel_fact) (by kernel_fact) (by norm_num) (by kernel_fact)
+      lLM_DzP kLM_DzP (by kernel_fact) (relLM_DzP c u z))
 
 set_option linter.style.longLine false in
 set_option maxRecDepth 100000 in
@@ -1268,8 +1273,8 @@ theorem ballLM_29 {r : ℝ} (hr : 0 ≤ r) (hq : Real.exp r ≤ (74315 : ℕ) / 
     (node3_fullN hr hq hc hWLM boxLM (l1LM 27) (fun _ => rfl)
       (fun i hi => normLM hq hc i (by omega)) (ballLM_28 hr hq hc hU hZ hA hB) trLMN_DphP 0 1 1 (4 : ℤ)
       32 26 10 72 33 11 9 8 5 16 13 6488485746192655302033841293046930390818990114325944676214354228373091793180708083695818361305330443070141713431242604935761852932234574155781250
-      (kronLM 72 33 27) (by decide +kernel) (by decide +kernel) (by decide +kernel) (by norm_num) (by decide +kernel)
-      lLM_DphP kLM_DphP (by decide +kernel) (relLM_DphP c u z))
+      (kronLM 72 33 27) (by kernel_fact) (by kernel_fact) (by kernel_fact) (by norm_num) (by kernel_fact)
+      lLM_DphP kLM_DphP (by kernel_fact) (relLM_DphP c u z))
 
 set_option linter.style.longLine false in
 set_option maxRecDepth 100000 in
@@ -1283,8 +1288,8 @@ theorem ballLM_30 {r : ℝ} (hr : 0 ≤ r) (hq : Real.exp r ≤ (74315 : ℕ) / 
     (node3_fullN hr hq hc hWLM boxLM (l1LM 27) (fun _ => rfl)
       (fun i hi => normLM hq hc i (by omega)) (ballLM_29 hr hq hc hU hZ hA hB) trLMN_nRuP 0 1 3 (8 : ℤ)
       32 26 10 77 33 11 9 8 5 16 13 15659370026890993261324121285074022454409835230863813507416227310029750100967430939023462742796947914975955724677394665112639694403651206825156250
-      (kronLM 77 33 27) (by decide +kernel) (by decide +kernel) (by decide +kernel) (by norm_num) (by decide +kernel)
-      lLM_nRuP kLM_nRuP (by decide +kernel) (relLM_nRuP c u z))
+      (kronLM 77 33 27) (by kernel_fact) (by kernel_fact) (by kernel_fact) (by norm_num) (by kernel_fact)
+      lLM_nRuP kLM_nRuP (by kernel_fact) (relLM_nRuP c u z))
 
 set_option linter.style.longLine false in
 set_option maxRecDepth 100000 in
@@ -1298,8 +1303,8 @@ theorem ballLM_31 {r : ℝ} (hr : 0 ≤ r) (hq : Real.exp r ≤ (74315 : ℕ) / 
     (node3_fullN hr hq hc hWLM boxLM (l1LM 27) (fun _ => rfl)
       (fun i hi => normLM hq hc i (by omega)) (ballLM_30 hr hq hc hU hZ hA hB) trLMN_nRzP 0 1 0 (8 : ℤ)
       32 26 10 77 33 11 9 8 5 16 13 18560135618013287823539440609489180379406269445505872936114015110990967120127392392246079060563933640986534831007089074690460377083308042846250000
-      (kronLM 77 33 27) (by decide +kernel) (by decide +kernel) (by decide +kernel) (by norm_num) (by decide +kernel)
-      lLM_nRzP kLM_nRzP (by decide +kernel) (relLM_nRzP c u z))
+      (kronLM 77 33 27) (by kernel_fact) (by kernel_fact) (by kernel_fact) (by norm_num) (by kernel_fact)
+      lLM_nRzP kLM_nRzP (by kernel_fact) (relLM_nRzP c u z))
 
 set_option linter.style.longLine false in
 set_option maxRecDepth 100000 in
@@ -1313,8 +1318,8 @@ theorem ballLM_32 {r : ℝ} (hr : 0 ≤ r) (hq : Real.exp r ≤ (74315 : ℕ) / 
     (node3_fullN hr hq hc hWLM boxLM (l1LM 27) (fun _ => rfl)
       (fun i hi => normLM hq hc i (by omega)) (ballLM_31 hr hq hc hU hZ hA hB) trLMN_nRphP 0 1 0 (4 : ℤ)
       32 26 10 75 33 11 9 8 5 16 13 7340749257705062974032801483204505728169688867228705638284060411688621996366754704557876573946976336552344405920546374463133044704906637827265625
-      (kronLM 75 33 27) (by decide +kernel) (by decide +kernel) (by decide +kernel) (by norm_num) (by decide +kernel)
-      lLM_nRphP kLM_nRphP (by decide +kernel) (relLM_nRphP c u z))
+      (kronLM 75 33 27) (by kernel_fact) (by kernel_fact) (by kernel_fact) (by norm_num) (by kernel_fact)
+      lLM_nRphP kLM_nRphP (by kernel_fact) (relLM_nRphP c u z))
 
 set_option linter.style.longLine false in
 set_option maxRecDepth 100000 in
@@ -1328,8 +1333,8 @@ theorem ballLM_33 {r : ℝ} (hr : 0 ≤ r) (hq : Real.exp r ≤ (74315 : ℕ) / 
     (node3_fullN hr hq hc hWLM boxLM (l1LM 27) (fun _ => rfl)
       (fun i hi => normLM hq hc i (by omega)) (ballLM_32 hr hq hc hU hZ hA hB) trLMN_nZuP 0 1 0 (8 : ℤ)
       32 26 10 77 33 11 9 8 5 16 13 18028871047464425683494909408715881572463355353063170503021318214416875767390012365367450030211754714642815842335623376941946640890696619444843750
-      (kronLM 77 33 27) (by decide +kernel) (by decide +kernel) (by decide +kernel) (by norm_num) (by decide +kernel)
-      lLM_nZuP kLM_nZuP (by decide +kernel) (relLM_nZuP c u z))
+      (kronLM 77 33 27) (by kernel_fact) (by kernel_fact) (by kernel_fact) (by norm_num) (by kernel_fact)
+      lLM_nZuP kLM_nZuP (by kernel_fact) (relLM_nZuP c u z))
 
 set_option linter.style.longLine false in
 set_option maxRecDepth 100000 in
@@ -1343,8 +1348,8 @@ theorem ballLM_34 {r : ℝ} (hr : 0 ≤ r) (hq : Real.exp r ≤ (74315 : ℕ) / 
     (node3_fullN hr hq hc hWLM boxLM (l1LM 27) (fun _ => rfl)
       (fun i hi => normLM hq hc i (by omega)) (ballLM_33 hr hq hc hU hZ hA hB) trLMN_nZzP 0 1 1 (2 : ℤ)
       32 26 10 75 33 11 9 8 5 16 13 5390810307380076815983032242125565173172872900621570672184910432067105131619058363836922915314705210039782843583430378156752554792151672279531250
-      (kronLM 75 33 27) (by decide +kernel) (by decide +kernel) (by decide +kernel) (by norm_num) (by decide +kernel)
-      lLM_nZzP kLM_nZzP (by decide +kernel) (relLM_nZzP c u z))
+      (kronLM 75 33 27) (by kernel_fact) (by kernel_fact) (by kernel_fact) (by norm_num) (by kernel_fact)
+      lLM_nZzP kLM_nZzP (by kernel_fact) (relLM_nZzP c u z))
 
 set_option linter.style.longLine false in
 set_option maxRecDepth 100000 in
@@ -1358,8 +1363,8 @@ theorem ballLM_35 {r : ℝ} (hr : 0 ≤ r) (hq : Real.exp r ≤ (74315 : ℕ) / 
     (node3_fullN hr hq hc hWLM boxLM (l1LM 27) (fun _ => rfl)
       (fun i hi => normLM hq hc i (by omega)) (ballLM_34 hr hq hc hU hZ hA hB) trLMN_nZphP 0 1 3 (8 : ℤ)
       32 26 10 76 33 11 9 8 5 16 13 15999665736207153205421407015958710112923082072174638558054312286475178177019886647324378830983799066724783542355250770209075268622641429873984375
-      (kronLM 76 33 27) (by decide +kernel) (by decide +kernel) (by decide +kernel) (by norm_num) (by decide +kernel)
-      lLM_nZphP kLM_nZphP (by decide +kernel) (relLM_nZphP c u z))
+      (kronLM 76 33 27) (by kernel_fact) (by kernel_fact) (by kernel_fact) (by norm_num) (by kernel_fact)
+      lLM_nZphP kLM_nZphP (by kernel_fact) (relLM_nZphP c u z))
 
 set_option linter.style.longLine false in
 set_option maxRecDepth 100000 in
@@ -1373,8 +1378,8 @@ theorem ballLM_36 {r : ℝ} (hr : 0 ≤ r) (hq : Real.exp r ≤ (74315 : ℕ) / 
     (node3_fullN hr hq hc hWLM boxLM (l1LM 25) (fun _ => rfl)
       (fun i hi => normLM hq hc i (by omega)) (ballLM_35 hr hq hc hU hZ hA hB) trLMN_PuP 0 0 0 (1 : ℤ)
       32 24 10 74 33 11 9 8 5 16 12 0
-      (kronLM 74 33 25) (by decide +kernel) (by decide +kernel) (by decide +kernel) (by norm_num) (by decide +kernel)
-      lLM_PuP kLM_PuP (by decide +kernel) (relLM_PuP c u z))
+      (kronLM 74 33 25) (by kernel_fact) (by kernel_fact) (by kernel_fact) (by norm_num) (by kernel_fact)
+      lLM_PuP kLM_PuP (by kernel_fact) (relLM_PuP c u z))
 
 set_option linter.style.longLine false in
 set_option maxRecDepth 100000 in
@@ -1388,8 +1393,8 @@ theorem ballLM_37 {r : ℝ} (hr : 0 ≤ r) (hq : Real.exp r ≤ (74315 : ℕ) / 
     (node3_fullN hr hq hc hWLM boxLM (l1LM 25) (fun _ => rfl)
       (fun i hi => normLM hq hc i (by omega)) (ballLM_36 hr hq hc hU hZ hA hB) trLMN_PdP 0 0 0 (1 : ℤ)
       32 24 10 76 33 11 9 8 5 16 12 0
-      (kronLM 76 33 25) (by decide +kernel) (by decide +kernel) (by decide +kernel) (by norm_num) (by decide +kernel)
-      lLM_PdP kLM_PdP (by decide +kernel) (relLM_PdP c u z))
+      (kronLM 76 33 25) (by kernel_fact) (by kernel_fact) (by kernel_fact) (by norm_num) (by kernel_fact)
+      lLM_PdP kLM_PdP (by kernel_fact) (relLM_PdP c u z))
 
 set_option linter.style.longLine false in
 set_option maxRecDepth 100000 in
@@ -1403,8 +1408,8 @@ theorem ballLM_38 {r : ℝ} (hr : 0 ≤ r) (hq : Real.exp r ≤ (74315 : ℕ) / 
     (node3_fullN hr hq hc hWLM boxLM (l1LM 27) (fun _ => rfl)
       (fun i hi => normLM hq hc i (by omega)) (ballLM_37 hr hq hc hU hZ hA hB) trLMN_DuuP 0 1 0 (2 : ℤ)
       32 26 10 77 33 11 9 8 5 16 13 6982695266169617090348565199264617585482014757409115205820957359023972436285671652926387706857592872703742386881250841538808054834899310231562500
-      (kronLM 77 33 27) (by decide +kernel) (by decide +kernel) (by decide +kernel) (by norm_num) (by decide +kernel)
-      lLM_DuuP kLM_DuuP (by decide +kernel) (relLM_DuuP c u z))
+      (kronLM 77 33 27) (by kernel_fact) (by kernel_fact) (by kernel_fact) (by norm_num) (by kernel_fact)
+      lLM_DuuP kLM_DuuP (by kernel_fact) (relLM_DuuP c u z))
 
 set_option linter.style.longLine false in
 set_option maxRecDepth 100000 in
@@ -1418,8 +1423,8 @@ theorem ballLM_39 {r : ℝ} (hr : 0 ≤ r) (hq : Real.exp r ≤ (74315 : ℕ) / 
     (node3_fullN hr hq hc hWLM boxLM (l1LM 27) (fun _ => rfl)
       (fun i hi => normLM hq hc i (by omega)) (ballLM_38 hr hq hc hU hZ hA hB) trLMN_DuzP 0 1 3 (2 : ℤ)
       32 26 10 75 33 11 9 8 5 16 13 5460266185507802660651521396267563276784417304786846728208263291970435047329707935990133222348607736711147151885209049378826607902668863371875000
-      (kronLM 75 33 27) (by decide +kernel) (by decide +kernel) (by decide +kernel) (by norm_num) (by decide +kernel)
-      lLM_DuzP kLM_DuzP (by decide +kernel) (relLM_DuzP c u z))
+      (kronLM 75 33 27) (by kernel_fact) (by kernel_fact) (by kernel_fact) (by norm_num) (by kernel_fact)
+      lLM_DuzP kLM_DuzP (by kernel_fact) (relLM_DuzP c u z))
 
 set_option linter.style.longLine false in
 set_option maxRecDepth 100000 in
@@ -1433,8 +1438,8 @@ theorem ballLM_40 {r : ℝ} (hr : 0 ≤ r) (hq : Real.exp r ≤ (74315 : ℕ) / 
     (node3_fullN hr hq hc hWLM boxLM (l1LM 27) (fun _ => rfl)
       (fun i hi => normLM hq hc i (by omega)) (ballLM_39 hr hq hc hU hZ hA hB) trLMN_DzzP 0 1 0 (1 : ℤ)
       32 26 10 75 33 11 9 8 5 16 13 5112952614436629488562726812730210998260009426212187979346972046743362140382217599564425736922723381273450779460407363101155127097330360081718750
-      (kronLM 75 33 27) (by decide +kernel) (by decide +kernel) (by decide +kernel) (by norm_num) (by decide +kernel)
-      lLM_DzzP kLM_DzzP (by decide +kernel) (relLM_DzzP c u z))
+      (kronLM 75 33 27) (by kernel_fact) (by kernel_fact) (by kernel_fact) (by norm_num) (by kernel_fact)
+      lLM_DzzP kLM_DzzP (by kernel_fact) (relLM_DzzP c u z))
 
 set_option linter.style.longLine false in
 set_option maxRecDepth 100000 in
@@ -1448,8 +1453,8 @@ theorem ballLM_41 {r : ℝ} (hr : 0 ≤ r) (hq : Real.exp r ≤ (74315 : ℕ) / 
     (node3_fullN hr hq hc hWLM boxLM (l1LM 27) (fun _ => rfl)
       (fun i hi => normLM hq hc i (by omega)) (ballLM_40 hr hq hc hU hZ hA hB) trLMN_DuphP 0 1 1 (1 : ℤ)
       32 26 10 74 33 11 9 8 5 16 13 2775838856572498631510071837463810192286636415696379265937712614204423016231460329292382191428678184882711459482131846534549851654431970240156250
-      (kronLM 74 33 27) (by decide +kernel) (by decide +kernel) (by decide +kernel) (by norm_num) (by decide +kernel)
-      lLM_DuphP kLM_DuphP (by decide +kernel) (relLM_DuphP c u z))
+      (kronLM 74 33 27) (by kernel_fact) (by kernel_fact) (by kernel_fact) (by norm_num) (by kernel_fact)
+      lLM_DuphP kLM_DuphP (by kernel_fact) (relLM_DuphP c u z))
 
 set_option linter.style.longLine false in
 set_option maxRecDepth 100000 in
@@ -1463,8 +1468,8 @@ theorem ballLM_42 {r : ℝ} (hr : 0 ≤ r) (hq : Real.exp r ≤ (74315 : ℕ) / 
     (node3_fullN hr hq hc hWLM boxLM (l1LM 27) (fun _ => rfl)
       (fun i hi => normLM hq hc i (by omega)) (ballLM_41 hr hq hc hU hZ hA hB) trLMN_DzphP 0 1 0 (4 : ℤ)
       32 26 10 76 33 11 9 8 5 16 13 9439538386787975346527753490101107578701781396671769840970175031904559427481323918209025629416765250355176354968322251250564197035456276337734375
-      (kronLM 76 33 27) (by decide +kernel) (by decide +kernel) (by decide +kernel) (by norm_num) (by decide +kernel)
-      lLM_DzphP kLM_DzphP (by decide +kernel) (relLM_DzphP c u z))
+      (kronLM 76 33 27) (by kernel_fact) (by kernel_fact) (by kernel_fact) (by norm_num) (by kernel_fact)
+      lLM_DzphP kLM_DzphP (by kernel_fact) (relLM_DzphP c u z))
 
 set_option linter.style.longLine false in
 set_option maxRecDepth 100000 in
@@ -1478,8 +1483,8 @@ theorem ballLM_43 {r : ℝ} (hr : 0 ≤ r) (hq : Real.exp r ≤ (74315 : ℕ) / 
     (node3_fullN hr hq hc hWLM boxLM (l1LM 27) (fun _ => rfl)
       (fun i hi => normLM hq hc i (by omega)) (ballLM_42 hr hq hc hU hZ hA hB) trLMN_nRuuP 0 1 3 (2 : ℤ)
       32 26 10 78 33 11 9 8 5 16 13 13591215805911104103068332945232741483645083728646780159301833069380511599945938452593711223581284862348087513152178279749749235541555875040703125
-      (kronLM 78 33 27) (by decide +kernel) (by decide +kernel) (by decide +kernel) (by norm_num) (by decide +kernel)
-      lLM_nRuuP kLM_nRuuP (by decide +kernel) (relLM_nRuuP c u z))
+      (kronLM 78 33 27) (by kernel_fact) (by kernel_fact) (by kernel_fact) (by norm_num) (by kernel_fact)
+      lLM_nRuuP kLM_nRuuP (by kernel_fact) (relLM_nRuuP c u z))
 
 set_option linter.style.longLine false in
 set_option maxRecDepth 100000 in
@@ -1493,8 +1498,8 @@ theorem ballLM_44 {r : ℝ} (hr : 0 ≤ r) (hq : Real.exp r ≤ (74315 : ℕ) / 
     (node3_fullN hr hq hc hWLM boxLM (l1LM 27) (fun _ => rfl)
       (fun i hi => normLM hq hc i (by omega)) (ballLM_43 hr hq hc hU hZ hA hB) trLMN_nRuzP 0 1 0 (8 : ℤ)
       32 26 10 77 33 11 9 8 5 16 13 13773653377775019501611157793620416655594482311540680244555397510645695072267902036271690140591360154759868174828792290797919152431733140856015625
-      (kronLM 77 33 27) (by decide +kernel) (by decide +kernel) (by decide +kernel) (by norm_num) (by decide +kernel)
-      lLM_nRuzP kLM_nRuzP (by decide +kernel) (relLM_nRuzP c u z))
+      (kronLM 77 33 27) (by kernel_fact) (by kernel_fact) (by kernel_fact) (by norm_num) (by kernel_fact)
+      lLM_nRuzP kLM_nRuzP (by kernel_fact) (relLM_nRuzP c u z))
 
 set_option linter.style.longLine false in
 set_option maxRecDepth 100000 in
@@ -1508,8 +1513,8 @@ theorem ballLM_45 {r : ℝ} (hr : 0 ≤ r) (hq : Real.exp r ≤ (74315 : ℕ) / 
     (node3_fullN hr hq hc hWLM boxLM (l1LM 27) (fun _ => rfl)
       (fun i hi => normLM hq hc i (by omega)) (ballLM_44 hr hq hc hU hZ hA hB) trLMN_nRzzP 0 1 3 (1 : ℤ)
       32 26 10 75 33 11 9 8 5 16 13 4659222657361629055070390071603190146131524960839649597844279681718085194707162952337518883599064355982459440104760675461535785719723259721015625
-      (kronLM 75 33 27) (by decide +kernel) (by decide +kernel) (by decide +kernel) (by norm_num) (by decide +kernel)
-      lLM_nRzzP kLM_nRzzP (by decide +kernel) (relLM_nRzzP c u z))
+      (kronLM 75 33 27) (by kernel_fact) (by kernel_fact) (by kernel_fact) (by norm_num) (by kernel_fact)
+      lLM_nRzzP kLM_nRzzP (by kernel_fact) (relLM_nRzzP c u z))
 
 set_option linter.style.longLine false in
 set_option maxRecDepth 100000 in
@@ -1523,8 +1528,8 @@ theorem ballLM_46 {r : ℝ} (hr : 0 ≤ r) (hq : Real.exp r ≤ (74315 : ℕ) / 
     (node3_fullN hr hq hc hWLM boxLM (l1LM 27) (fun _ => rfl)
       (fun i hi => normLM hq hc i (by omega)) (ballLM_45 hr hq hc hU hZ hA hB) trLMN_nRuphP 0 1 0 (-4 : ℤ)
       32 26 10 77 33 11 9 8 5 16 13 12218162461102170233416911618057512551823217128284853798969499039326558664379979185069071258085950339711876971473029325919934267406549823145156250
-      (kronLM 77 33 27) (by decide +kernel) (by decide +kernel) (by decide +kernel) (by norm_num) (by decide +kernel)
-      lLM_nRuphP kLM_nRuphP (by decide +kernel) (relLM_nRuphP c u z))
+      (kronLM 77 33 27) (by kernel_fact) (by kernel_fact) (by kernel_fact) (by norm_num) (by kernel_fact)
+      lLM_nRuphP kLM_nRuphP (by kernel_fact) (relLM_nRuphP c u z))
 
 set_option linter.style.longLine false in
 set_option maxRecDepth 100000 in
@@ -1538,8 +1543,8 @@ theorem ballLM_47 {r : ℝ} (hr : 0 ≤ r) (hq : Real.exp r ≤ (74315 : ℕ) / 
     (node3_fullN hr hq hc hWLM boxLM (l1LM 27) (fun _ => rfl)
       (fun i hi => normLM hq hc i (by omega)) (ballLM_46 hr hq hc hU hZ hA hB) trLMN_nRzphP 0 1 3 (4 : ℤ)
       32 26 10 77 33 11 9 8 5 16 13 15341155837259712620221816143801712401364561953296366564532668908538989303359195061559458863069608944620632057531185679608084979201714524766250000
-      (kronLM 77 33 27) (by decide +kernel) (by decide +kernel) (by decide +kernel) (by norm_num) (by decide +kernel)
-      lLM_nRzphP kLM_nRzphP (by decide +kernel) (relLM_nRzphP c u z))
+      (kronLM 77 33 27) (by kernel_fact) (by kernel_fact) (by kernel_fact) (by norm_num) (by kernel_fact)
+      lLM_nRzphP kLM_nRzphP (by kernel_fact) (relLM_nRzphP c u z))
 
 set_option linter.style.longLine false in
 set_option maxRecDepth 100000 in
@@ -1553,8 +1558,8 @@ theorem ballLM_48 {r : ℝ} (hr : 0 ≤ r) (hq : Real.exp r ≤ (74315 : ℕ) / 
     (node3_fullN hr hq hc hWLM boxLM (l1LM 27) (fun _ => rfl)
       (fun i hi => normLM hq hc i (by omega)) (ballLM_47 hr hq hc hU hZ hA hB) trLMN_nZuuP 0 1 0 (8 : ℤ)
       32 26 10 78 33 11 9 8 5 16 13 59693278078268378343088490546458581600191801498895342932743186910588836014894152725552988393664181700681419395611584484445083398250624134935234375
-      (kronLM 78 33 27) (by decide +kernel) (by decide +kernel) (by decide +kernel) (by norm_num) (by decide +kernel)
-      lLM_nZuuP kLM_nZuuP (by decide +kernel) (relLM_nZuuP c u z))
+      (kronLM 78 33 27) (by kernel_fact) (by kernel_fact) (by kernel_fact) (by norm_num) (by kernel_fact)
+      lLM_nZuuP kLM_nZuuP (by kernel_fact) (relLM_nZuuP c u z))
 
 set_option linter.style.longLine false in
 set_option maxRecDepth 100000 in
@@ -1568,8 +1573,8 @@ theorem ballLM_49 {r : ℝ} (hr : 0 ≤ r) (hq : Real.exp r ≤ (74315 : ℕ) / 
     (node3_fullN hr hq hc hWLM boxLM (l1LM 27) (fun _ => rfl)
       (fun i hi => normLM hq hc i (by omega)) (ballLM_48 hr hq hc hU hZ hA hB) trLMN_nZuzP 0 1 1 (1 : ℤ)
       32 26 10 75 33 11 9 8 5 16 13 4659222657361629055070390071603190146131524960839649597844279681718085194707162952337518883599064355982459440104760675461535785719723259721015625
-      (kronLM 75 33 27) (by decide +kernel) (by decide +kernel) (by decide +kernel) (by norm_num) (by decide +kernel)
-      lLM_nZuzP kLM_nZuzP (by decide +kernel) (relLM_nZuzP c u z))
+      (kronLM 75 33 27) (by kernel_fact) (by kernel_fact) (by kernel_fact) (by norm_num) (by kernel_fact)
+      lLM_nZuzP kLM_nZuzP (by kernel_fact) (relLM_nZuzP c u z))
 
 set_option linter.style.longLine false in
 set_option maxRecDepth 100000 in
@@ -1583,8 +1588,8 @@ theorem ballLM_50 {r : ℝ} (hr : 0 ≤ r) (hq : Real.exp r ≤ (74315 : ℕ) / 
     (node3_fullN hr hq hc hWLM boxLM (l1LM 27) (fun _ => rfl)
       (fun i hi => normLM hq hc i (by omega)) (ballLM_49 hr hq hc hU hZ hA hB) trLMN_nZzzP 0 1 0 (2 : ℤ)
       32 26 10 76 33 11 9 8 5 16 13 8272242529005108640471234607412649561108832131697561168838242435195940455332776093562049337439194044257301225372835973589749539186030426819296875
-      (kronLM 76 33 27) (by decide +kernel) (by decide +kernel) (by decide +kernel) (by norm_num) (by decide +kernel)
-      lLM_nZzzP kLM_nZzzP (by decide +kernel) (relLM_nZzzP c u z))
+      (kronLM 76 33 27) (by kernel_fact) (by kernel_fact) (by kernel_fact) (by norm_num) (by kernel_fact)
+      lLM_nZzzP kLM_nZzzP (by kernel_fact) (relLM_nZzzP c u z))
 
 set_option linter.style.longLine false in
 set_option maxRecDepth 100000 in
@@ -1598,8 +1603,8 @@ theorem ballLM_51 {r : ℝ} (hr : 0 ≤ r) (hq : Real.exp r ≤ (74315 : ℕ) / 
     (node3_fullN hr hq hc hWLM boxLM (l1LM 27) (fun _ => rfl)
       (fun i hi => normLM hq hc i (by omega)) (ballLM_50 hr hq hc hU hZ hA hB) trLMN_nZuphP 0 1 3 (4 : ℤ)
       32 26 10 77 33 11 9 8 5 16 13 14550200046892293092275516985947840241071533377587762128401049312702710119669781335354516716002205389519076705921636247881329309585232156084843750
-      (kronLM 77 33 27) (by decide +kernel) (by decide +kernel) (by decide +kernel) (by norm_num) (by decide +kernel)
-      lLM_nZuphP kLM_nZuphP (by decide +kernel) (relLM_nZuphP c u z))
+      (kronLM 77 33 27) (by kernel_fact) (by kernel_fact) (by kernel_fact) (by norm_num) (by kernel_fact)
+      lLM_nZuphP kLM_nZuphP (by kernel_fact) (relLM_nZuphP c u z))
 
 set_option linter.style.longLine false in
 set_option maxRecDepth 100000 in
@@ -1613,8 +1618,8 @@ theorem ballLM_52 {r : ℝ} (hr : 0 ≤ r) (hq : Real.exp r ≤ (74315 : ℕ) / 
     (node3_fullN hr hq hc hWLM boxLM (l1LM 27) (fun _ => rfl)
       (fun i hi => normLM hq hc i (by omega)) (ballLM_51 hr hq hc hU hZ hA hB) trLMN_nZzphP 0 1 0 (1 : ℤ)
       32 26 10 75 33 11 9 8 5 16 13 4546137816690853918890429459381060466574706051365904562898098082073229579118659164461327505630423173129278220648775991433094401967435240919531250
-      (kronLM 75 33 27) (by decide +kernel) (by decide +kernel) (by decide +kernel) (by norm_num) (by decide +kernel)
-      lLM_nZzphP kLM_nZzphP (by decide +kernel) (relLM_nZzphP c u z))
+      (kronLM 75 33 27) (by kernel_fact) (by kernel_fact) (by kernel_fact) (by norm_num) (by kernel_fact)
+      lLM_nZzphP kLM_nZzphP (by kernel_fact) (relLM_nZzphP c u z))
 
 set_option linter.style.longLine false in
 set_option maxRecDepth 100000 in
@@ -1628,8 +1633,8 @@ theorem ballLM_53 {r : ℝ} (hr : 0 ≤ r) (hq : Real.exp r ≤ (74315 : ℕ) / 
     (node3_fullN hr hq hc hWLM boxLM (l1LM 49) (fun _ => rfl)
       (fun i hi => normLM hq hc i (by omega)) (ballLM_52 hr hq hc hU hZ hA hB) trLMN_RD 1 0 0 (1 : ℤ)
       64 48 20 141 65 21 11 8 9 32 24 240370043117350457899694231004664665515617661181572653366564230684993863440439325883281292287409972926964366920403074855978509117104602670296046521769918434760286155883079089796967220184165005671051729380112435868456956666074880328419640847166582505890254895416002254822952731023144082855390625
-      (kronLM 141 65 49) (by decide +kernel) (by decide +kernel) (by decide +kernel) (by norm_num) (by decide +kernel)
-      lLM_RD kLM_RD (by decide +kernel) (relLM_RD c u z))
+      (kronLM 141 65 49) (by kernel_fact) (by kernel_fact) (by kernel_fact) (by norm_num) (by kernel_fact)
+      lLM_RD kLM_RD (by kernel_fact) (relLM_RD c u z))
 
 set_option linter.style.longLine false in
 set_option maxRecDepth 100000 in
@@ -1643,8 +1648,8 @@ theorem ballLM_54 {r : ℝ} (hr : 0 ≤ r) (hq : Real.exp r ≤ (74315 : ℕ) / 
     (node3_fullN hr hq hc hWLM boxLM (l1LM 49) (fun _ => rfl)
       (fun i hi => normLM hq hc i (by omega)) (ballLM_53 hr hq hc hU hZ hA hB) trLMN_RDu 1 0 0 (1 : ℤ)
       64 48 20 142 65 21 11 8 9 32 24 174254286074932920921821537009403422287318750826360803769925886662426654064204505251206229619771123409399950596488347683701355918128035728930833540953644769041153941804928658172310605232662937158682172637510283714784101750188596042601642494894312767176871515740028733590882233992317632295468750
-      (kronLM 142 65 49) (by decide +kernel) (by decide +kernel) (by decide +kernel) (by norm_num) (by decide +kernel)
-      lLM_RDu kLM_RDu (by decide +kernel) (relLM_RDu c u z))
+      (kronLM 142 65 49) (by kernel_fact) (by kernel_fact) (by kernel_fact) (by norm_num) (by kernel_fact)
+      lLM_RDu kLM_RDu (by kernel_fact) (relLM_RDu c u z))
 
 set_option linter.style.longLine false in
 set_option maxRecDepth 100000 in
@@ -1658,8 +1663,8 @@ theorem ballLM_55 {r : ℝ} (hr : 0 ≤ r) (hq : Real.exp r ≤ (74315 : ℕ) / 
     (node3_fullN hr hq hc hWLM boxLM (l1LM 49) (fun _ => rfl)
       (fun i hi => normLM hq hc i (by omega)) (ballLM_54 hr hq hc hU hZ hA hB) trLMN_RDz 1 0 3 (1 : ℤ)
       64 48 20 138 65 21 11 8 9 32 24 105582855448907589519382925104389828185333636657607722379130325987419220089426136559747369146383784900360698409795407577944998404596417177868728634483769102217046254272051997002161036732998304058252438002477994748182795688106314269909223621748836300861043666872796327708866392881021663901562500
-      (kronLM 138 65 49) (by decide +kernel) (by decide +kernel) (by decide +kernel) (by norm_num) (by decide +kernel)
-      lLM_RDz kLM_RDz (by decide +kernel) (relLM_RDz c u z))
+      (kronLM 138 65 49) (by kernel_fact) (by kernel_fact) (by kernel_fact) (by norm_num) (by kernel_fact)
+      lLM_RDz kLM_RDz (by kernel_fact) (relLM_RDz c u z))
 
 set_option linter.style.longLine false in
 set_option maxRecDepth 100000 in
@@ -1673,8 +1678,8 @@ theorem ballLM_56 {r : ℝ} (hr : 0 ≤ r) (hq : Real.exp r ≤ (74315 : ℕ) / 
     (node3_fullN hr hq hc hWLM boxLM (l1LM 49) (fun _ => rfl)
       (fun i hi => normLM hq hc i (by omega)) (ballLM_55 hr hq hc hU hZ hA hB) trLMN_RDph 1 0 1 (1 : ℤ)
       64 48 20 135 65 21 11 8 9 32 24 32635154259083819646976528125528044061433864523699458782218365374459587969233395279294992418519300669759764824023705233234928419992805875849481856065852086444166070247169437723673621535682177814114799628325596785080824153266731585490286511497588432149585874340954935539818444188925638055390625
-      (kronLM 135 65 49) (by decide +kernel) (by decide +kernel) (by decide +kernel) (by norm_num) (by decide +kernel)
-      lLM_RDph kLM_RDph (by decide +kernel) (relLM_RDph c u z))
+      (kronLM 135 65 49) (by kernel_fact) (by kernel_fact) (by kernel_fact) (by norm_num) (by kernel_fact)
+      lLM_RDph kLM_RDph (by kernel_fact) (relLM_RDph c u z))
 
 set_option linter.style.longLine false in
 set_option maxRecDepth 100000 in
@@ -1688,8 +1693,8 @@ theorem ballLM_57 {r : ℝ} (hr : 0 ≤ r) (hq : Real.exp r ≤ (74315 : ℕ) / 
     (node3_fullN hr hq hc hWLM boxLM (l1LM 49) (fun _ => rfl)
       (fun i hi => normLM hq hc i (by omega)) (ballLM_56 hr hq hc hU hZ hA hB) trLMN_q 1 0 2 (1 : ℤ)
       64 48 20 144 65 21 11 8 9 32 24 830118283999683307556163894056120212844230634286929404177728165839904879064529404508789426363048308541802702782990129077954186672202659728538097736843134789407483632648409904252703285174647674384787753156238335371455975678339533609702616111735838888396060305945774175924205481242548523076953125
-      (kronLM 144 65 49) (by decide +kernel) (by decide +kernel) (by decide +kernel) (by norm_num) (by decide +kernel)
-      lLM_q kLM_q (by decide +kernel) (relLM_q c u z))
+      (kronLM 144 65 49) (by kernel_fact) (by kernel_fact) (by kernel_fact) (by norm_num) (by kernel_fact)
+      lLM_q kLM_q (by kernel_fact) (relLM_q c u z))
 
 set_option linter.style.longLine false in
 set_option maxRecDepth 100000 in
@@ -1703,8 +1708,8 @@ theorem ballLM_58 {r : ℝ} (hr : 0 ≤ r) (hq : Real.exp r ≤ (74315 : ℕ) / 
     (node3_fullN hr hq hc hWLM boxLM (l1LM 49) (fun _ => rfl)
       (fun i hi => normLM hq hc i (by omega)) (ballLM_57 hr hq hc hU hZ hA hB) trLMN_qR 1 0 0 (1 : ℤ)
       64 48 20 146 65 21 11 8 9 32 24 3227668165038794091124642558913476536762009649391988425021742407139514929271233618276951035776050680714362195077686599315211986549663478415775796519830937494085398890649856514596238395315099095560535670667942383145135387045696880285902101319868602373452439063415712731622442649825898969501718750
-      (kronLM 146 65 49) (by decide +kernel) (by decide +kernel) (by decide +kernel) (by norm_num) (by decide +kernel)
-      lLM_qR kLM_qR (by decide +kernel) (relLM_qR c u z))
+      (kronLM 146 65 49) (by kernel_fact) (by kernel_fact) (by kernel_fact) (by norm_num) (by kernel_fact)
+      lLM_qR kLM_qR (by kernel_fact) (relLM_qR c u z))
 
 set_option linter.style.longLine false in
 set_option maxRecDepth 100000 in
@@ -1718,8 +1723,8 @@ theorem ballLM_59 {r : ℝ} (hr : 0 ≤ r) (hq : Real.exp r ≤ (74315 : ℕ) / 
     (node3_fullN hr hq hc hWLM boxLM (l1LM 49) (fun _ => rfl)
       (fun i hi => normLM hq hc i (by omega)) (ballLM_58 hr hq hc hU hZ hA hB) trLMN_qz 1 0 3 (1 : ℤ)
       64 48 20 142 65 21 11 8 9 32 24 548504037286544953228551733650947967832501108228548026871134633657932890923677871505086318360870750296068918048645195839731602712134002633547911210409465603580792588355592848791996092239135930532526273557042772025532956649859536700424254451411979632607711731386414619417595827309710162412343750
-      (kronLM 142 65 49) (by decide +kernel) (by decide +kernel) (by decide +kernel) (by norm_num) (by decide +kernel)
-      lLM_qz kLM_qz (by decide +kernel) (relLM_qz c u z))
+      (kronLM 142 65 49) (by kernel_fact) (by kernel_fact) (by kernel_fact) (by norm_num) (by kernel_fact)
+      lLM_qz kLM_qz (by kernel_fact) (relLM_qz c u z))
 
 set_option linter.style.longLine false in
 set_option maxRecDepth 100000 in
@@ -1733,8 +1738,8 @@ theorem ballLM_60 {r : ℝ} (hr : 0 ≤ r) (hq : Real.exp r ≤ (74315 : ℕ) / 
     (node3_fullN hr hq hc hWLM boxLM (l1LM 49) (fun _ => rfl)
       (fun i hi => normLM hq hc i (by omega)) (ballLM_59 hr hq hc hU hZ hA hB) trLMN_qph 1 0 3 (1 : ℤ)
       64 48 20 140 65 21 11 8 9 32 24 232379120314022186645713371569536619427836293358997525306285024063782354640743299892865640720984468072810887735982333446296998516185082447952448908077367527900973721384889119316407819581080483022076666393925423638646647555747120719062514878084649605386031877327353156941530318336707339224687500
-      (kronLM 140 65 49) (by decide +kernel) (by decide +kernel) (by decide +kernel) (by norm_num) (by decide +kernel)
-      lLM_qph kLM_qph (by decide +kernel) (relLM_qph c u z))
+      (kronLM 140 65 49) (by kernel_fact) (by kernel_fact) (by kernel_fact) (by norm_num) (by kernel_fact)
+      lLM_qph kLM_qph (by kernel_fact) (relLM_qph c u z))
 
 set_option linter.style.longLine false in
 set_option maxRecDepth 100000 in
@@ -1748,8 +1753,8 @@ theorem ballLM_61 {r : ℝ} (hr : 0 ≤ r) (hq : Real.exp r ≤ (74315 : ℕ) / 
     (node3_fullN hr hq hc hWLM boxLM (l1LM 49) (fun _ => rfl)
       (fun i hi => normLM hq hc i (by omega)) (ballLM_60 hr hq hc hU hZ hA hB) trLMN_P2 1 0 0 (1 : ℤ)
       64 48 20 146 65 21 11 8 9 32 24 4598522835654384174411376905024764311340606770320953172639063338062656463187965788408359144224277352401593188287996802049239560013952500819559167631530238052875400329218621636715592979200337680956954934862016578615888704732979594999016521274689562049371595593506163166725325488024408273591484375
-      (kronLM 146 65 49) (by decide +kernel) (by decide +kernel) (by decide +kernel) (by norm_num) (by decide +kernel)
-      lLM_P2 kLM_P2 (by decide +kernel) (relLM_P2 c u z))
+      (kronLM 146 65 49) (by kernel_fact) (by kernel_fact) (by kernel_fact) (by norm_num) (by kernel_fact)
+      lLM_P2 kLM_P2 (by kernel_fact) (relLM_P2 c u z))
 
 set_option linter.style.longLine false in
 set_option maxRecDepth 100000 in
@@ -1763,8 +1768,8 @@ theorem ballLM_62 {r : ℝ} (hr : 0 ≤ r) (hq : Real.exp r ≤ (74315 : ℕ) / 
     (node3_fullN hr hq hc hWLM boxLM (l1LM 49) (fun _ => rfl)
       (fun i hi => normLM hq hc i (by omega)) (ballLM_61 hr hq hc hU hZ hA hB) trLMN_E 1 0 2 (1 : ℤ)
       64 48 20 145 65 21 11 8 9 32 24 6444682056821060325511487023400127392181564261768774127569801125750462964481679638247231755399758172628676048695536560797378116510594876035556644128291766270789305387032632656407547541321626558643443388290693232170596249654192609085739443120767612280516116341422643231032947395325055084762734375
-      (kronLM 145 65 49) (by decide +kernel) (by decide +kernel) (by decide +kernel) (by norm_num) (by decide +kernel)
-      lLM_E kLM_E (by decide +kernel) (relLM_E c u z))
+      (kronLM 145 65 49) (by kernel_fact) (by kernel_fact) (by kernel_fact) (by norm_num) (by kernel_fact)
+      lLM_E kLM_E (by kernel_fact) (relLM_E c u z))
 
 set_option linter.style.longLine false in
 set_option maxRecDepth 100000 in
@@ -1775,7 +1780,7 @@ theorem ballLM_63 {r : ℝ} (hr : 0 ≤ r) (hq : Real.exp r ≤ (74315 : ℕ) / 
     (hA : Bd r (dTh u - xLM c 6) (ELM 6)) (hB : Bd r (dTh z - xLM c 7) (ELM 7)) :
     ∀ i, i < 63 → Bd r (XLM c u z i - xLM c i) (ELM i) :=
   chain_succ (ballLM_62 hr hq hc hU hZ hA hB)
-    (step_exact (XLM_eq_V0 hc u z) (by decide +kernel))
+    (step_exact (XLM_eq_V0 hc u z) (by kernel_fact))
 
 set_option linter.style.longLine false in
 set_option maxRecDepth 100000 in
@@ -1800,8 +1805,8 @@ theorem ballLM_65 {r : ℝ} (hr : 0 ≤ r) (hq : Real.exp r ≤ (74315 : ℕ) / 
     (node3_fullN hr hq hc hWLM boxLM (l1LM 49) (fun _ => rfl)
       (fun i hi => normLM hq hc i (by omega)) (ballLM_64 hr hq hc hU hZ hA hB) trLMN_W 1 0 0 (1 : ℤ)
       64 48 20 146 65 21 11 8 9 32 24 998067985204149823094251778671769325589089765679002540360232776319289441591018915842747994591758446020723299559991400675289799813264398040170763121456174407377957725808211747342733073056557583306437300288726145230294298664552209146708914392421928857421705802705454721390172664027702971661093750
-      (kronLM 146 65 49) (by decide +kernel) (by decide +kernel) (by decide +kernel) (by norm_num) (by decide +kernel)
-      lLM_W kLM_W (by decide +kernel) (relLM_W c u z))
+      (kronLM 146 65 49) (by kernel_fact) (by kernel_fact) (by kernel_fact) (by norm_num) (by kernel_fact)
+      lLM_W kLM_W (by kernel_fact) (relLM_W c u z))
 
 set_option linter.style.longLine false in
 set_option maxRecDepth 100000 in
@@ -1815,8 +1820,8 @@ theorem ballLM_66 {r : ℝ} (hr : 0 ≤ r) (hq : Real.exp r ≤ (74315 : ℕ) / 
     (node3_fullN hr hq hc hWLM boxLM (l1LM 49) (fun _ => rfl)
       (fun i hi => normLM hq hc i (by omega)) (ballLM_65 hr hq hc hU hZ hA hB) trLMN_W2 1 0 0 (1 : ℤ)
       64 48 20 146 65 21 11 8 9 32 24 14420284030397736287857606368888843738836528818947759908659086580135730305869160568478461502150311966662799169282402005220594222618291344715382552964721671168382861384588774264418620597722707314157294657900507634669794208498100787185274024230530068677019505985289386171102005927984526073837656250
-      (kronLM 146 65 49) (by decide +kernel) (by decide +kernel) (by decide +kernel) (by norm_num) (by decide +kernel)
-      lLM_W2 kLM_W2 (by decide +kernel) (relLM_W2 c u z))
+      (kronLM 146 65 49) (by kernel_fact) (by kernel_fact) (by kernel_fact) (by norm_num) (by kernel_fact)
+      lLM_W2 kLM_W2 (by kernel_fact) (relLM_W2 c u z))
 
 set_option linter.style.longLine false in
 set_option maxRecDepth 100000 in
@@ -1830,8 +1835,8 @@ theorem ballLM_67 {r : ℝ} (hr : 0 ≤ r) (hq : Real.exp r ≤ (74315 : ℕ) / 
     (node3_fullN hr hq hc hWLM boxLM (l1LM 49) (fun _ => rfl)
       (fun i hi => normLM hq hc i (by omega)) (ballLM_66 hr hq hc hU hZ hA hB) trLMN_W3 1 0 0 (1 : ℤ)
       64 48 20 146 65 21 11 8 9 32 24 85276391667393886070798634234579154090346440894266689236005024999961650817478993361518866658681451083493134267341463117626795654513995018837450308081553777999396467318716488021623105046830065834964463362448870402731845967801010796480172846657870060686489457000411789213137021754103393602969609375
-      (kronLM 146 65 49) (by decide +kernel) (by decide +kernel) (by decide +kernel) (by norm_num) (by decide +kernel)
-      lLM_W3 kLM_W3 (by decide +kernel) (relLM_W3 c u z))
+      (kronLM 146 65 49) (by kernel_fact) (by kernel_fact) (by kernel_fact) (by norm_num) (by kernel_fact)
+      lLM_W3 kLM_W3 (by kernel_fact) (relLM_W3 c u z))
 
 set_option linter.style.longLine false in
 set_option maxRecDepth 100000 in
@@ -1845,8 +1850,8 @@ theorem ballLM_68 {r : ℝ} (hr : 0 ≤ r) (hq : Real.exp r ≤ (74315 : ℕ) / 
     (node3_fullN hr hq hc hWLM boxLM (l1LM 49) (fun _ => rfl)
       (fun i hi => normLM hq hc i (by omega)) (ballLM_67 hr hq hc hU hZ hA hB) trLMN_R2 1 0 0 (1 : ℤ)
       64 48 20 138 65 21 11 8 9 32 24 127358951193308520321374159328043166169626276650482814280122832542733410326661648543964078711947291582552110581057932004198418430359400754826574331854961877522980068287853165777180181621007986455453502110559760581848300082155140371422455043067973856478626788626682457990684902561429063926171875
-      (kronLM 138 65 49) (by decide +kernel) (by decide +kernel) (by decide +kernel) (by norm_num) (by decide +kernel)
-      lLM_R2 kLM_R2 (by decide +kernel) (relLM_R2 c u z))
+      (kronLM 138 65 49) (by kernel_fact) (by kernel_fact) (by kernel_fact) (by norm_num) (by kernel_fact)
+      lLM_R2 kLM_R2 (by kernel_fact) (relLM_R2 c u z))
 
 set_option linter.style.longLine false in
 set_option maxRecDepth 100000 in
@@ -1860,8 +1865,8 @@ theorem ballLM_69 {r : ℝ} (hr : 0 ≤ r) (hq : Real.exp r ≤ (74315 : ℕ) / 
     (node3_fullN hr hq hc hWLM boxLM (l1LM 49) (fun _ => rfl)
       (fun i hi => normLM hq hc i (by omega)) (ballLM_68 hr hq hc hU hZ hA hB) trLMN_R3 1 0 0 (1 : ℤ)
       64 48 20 141 65 21 11 8 9 32 24 221319397954594977813430009569331376688973570581811418841472839764181830973401824792225210150092265095350340748167881335204841649941829919509204157961896196443433641911110426956800378743147137768257525845745136110085049757193422524475287320201738065116458359047980259246341372203700343630781250
-      (kronLM 141 65 49) (by decide +kernel) (by decide +kernel) (by decide +kernel) (by norm_num) (by decide +kernel)
-      lLM_R3 kLM_R3 (by decide +kernel) (relLM_R3 c u z))
+      (kronLM 141 65 49) (by kernel_fact) (by kernel_fact) (by kernel_fact) (by norm_num) (by kernel_fact)
+      lLM_R3 kLM_R3 (by kernel_fact) (relLM_R3 c u z))
 
 set_option linter.style.longLine false in
 set_option maxRecDepth 100000 in
@@ -1875,8 +1880,8 @@ theorem ballLM_70 {r : ℝ} (hr : 0 ≤ r) (hq : Real.exp r ≤ (74315 : ℕ) / 
     (node3_fullN hr hq hc hWLM boxLM (l1LM 49) (fun _ => rfl)
       (fun i hi => normLM hq hc i (by omega)) (ballLM_69 hr hq hc hU hZ hA hB) trLMN_A1 1 0 0 (1 : ℤ)
       64 48 20 144 65 21 11 8 9 32 24 2496081432986125410066847467953166025551397433498776324661710957661415098245007568169534803310489571488936116294641436242745606502465308445409815669658023063231440682435498710458717987206000063054736096334105684646116405897936558249094059776225299613966266228192109974694517928401545616590859375
-      (kronLM 144 65 49) (by decide +kernel) (by decide +kernel) (by decide +kernel) (by norm_num) (by decide +kernel)
-      lLM_A1 kLM_A1 (by decide +kernel) (relLM_A1 c u z))
+      (kronLM 144 65 49) (by kernel_fact) (by kernel_fact) (by kernel_fact) (by norm_num) (by kernel_fact)
+      lLM_A1 kLM_A1 (by kernel_fact) (relLM_A1 c u z))
 
 set_option linter.style.longLine false in
 set_option maxRecDepth 100000 in
@@ -1890,8 +1895,8 @@ theorem ballLM_71 {r : ℝ} (hr : 0 ≤ r) (hq : Real.exp r ≤ (74315 : ℕ) / 
     (node3_fullN hr hq hc hWLM boxLM (l1LM 49) (fun _ => rfl)
       (fun i hi => normLM hq hc i (by omega)) (ballLM_70 hr hq hc hU hZ hA hB) trLMN_A2 1 0 3 (1 : ℤ)
       64 48 20 139 65 21 11 8 9 32 24 177244942878121633175914156735157008313007304227012429919329125379150326046504666608211595096298122170807383523535809137397835887982261400652862090215835527707537697746476023927556875931933442615348658380673363533955454085858530411283833192819569351076016559862812805034155699452804331372421875
-      (kronLM 139 65 49) (by decide +kernel) (by decide +kernel) (by decide +kernel) (by norm_num) (by decide +kernel)
-      lLM_A2 kLM_A2 (by decide +kernel) (relLM_A2 c u z))
+      (kronLM 139 65 49) (by kernel_fact) (by kernel_fact) (by kernel_fact) (by norm_num) (by kernel_fact)
+      lLM_A2 kLM_A2 (by kernel_fact) (relLM_A2 c u z))
 
 set_option linter.style.longLine false in
 set_option maxRecDepth 100000 in
@@ -1905,8 +1910,8 @@ theorem ballLM_72 {r : ℝ} (hr : 0 ≤ r) (hq : Real.exp r ≤ (74315 : ℕ) / 
     (node3_fullN hr hq hc hWLM boxLM (l1LM 49) (fun _ => rfl)
       (fun i hi => normLM hq hc i (by omega)) (ballLM_71 hr hq hc hU hZ hA hB) trLMN_K1 1 0 0 (1 : ℤ)
       64 48 20 144 65 21 11 8 9 32 24 891697487355022800746901212384632394599515397170323564962885876984286428659816307022521677468865536953754907744382019362154484828370226446775614825834963560582022919484340059407855078349723750579904717904293913344732939156775496185580651390598077867211232852514546788726007372000651912566406250
-      (kronLM 144 65 49) (by decide +kernel) (by decide +kernel) (by decide +kernel) (by norm_num) (by decide +kernel)
-      lLM_K1 kLM_K1 (by decide +kernel) (relLM_K1 c u z))
+      (kronLM 144 65 49) (by kernel_fact) (by kernel_fact) (by kernel_fact) (by norm_num) (by kernel_fact)
+      lLM_K1 kLM_K1 (by kernel_fact) (relLM_K1 c u z))
 
 set_option linter.style.longLine false in
 set_option maxRecDepth 100000 in
@@ -1920,8 +1925,8 @@ theorem ballLM_73 {r : ℝ} (hr : 0 ≤ r) (hq : Real.exp r ≤ (74315 : ℕ) / 
     (node3_fullN hr hq hc hWLM boxLM (l1LM 49) (fun _ => rfl)
       (fun i hi => normLM hq hc i (by omega)) (ballLM_72 hr hq hc hU hZ hA hB) trLMN_K2 1 0 3 (1 : ℤ)
       64 48 20 142 65 21 11 8 9 32 24 696628431651948655887376721868972700080450312501831412055588887851895345443047290101652237076380166557282890055915630594302364029400498300912788213039374949888956821588784619558689196816756980676833186393720009821793721029963991875663869748454227665238288284189907686919277112398622552468046875
-      (kronLM 142 65 49) (by decide +kernel) (by decide +kernel) (by decide +kernel) (by norm_num) (by decide +kernel)
-      lLM_K2 kLM_K2 (by decide +kernel) (relLM_K2 c u z))
+      (kronLM 142 65 49) (by kernel_fact) (by kernel_fact) (by kernel_fact) (by norm_num) (by kernel_fact)
+      lLM_K2 kLM_K2 (by kernel_fact) (relLM_K2 c u z))
 
 set_option linter.style.longLine false in
 set_option maxRecDepth 100000 in
@@ -1935,8 +1940,8 @@ theorem ballLM_74 {r : ℝ} (hr : 0 ≤ r) (hq : Real.exp r ≤ (74315 : ℕ) / 
     (node3_fullN hr hq hc hWLM boxLM (l1LM 49) (fun _ => rfl)
       (fun i hi => normLM hq hc i (by omega)) (ballLM_73 hr hq hc hU hZ hA hB) trLMN_K3 1 0 2 (1 : ℤ)
       64 48 20 148 65 21 11 8 9 32 24 3956676593826804150062502563275823152905058155267942124908192005396450954669222059786726479894588343602851307554551866097454511919582781432159406463659071399078203118834290905419750094126975509657780125348249431688064442888005363843540044848667356333699252949856106845889825691371746853415625000
-      (kronLM 148 65 49) (by decide +kernel) (by decide +kernel) (by decide +kernel) (by norm_num) (by decide +kernel)
-      lLM_K3 kLM_K3 (by decide +kernel) (relLM_K3 c u z))
+      (kronLM 148 65 49) (by kernel_fact) (by kernel_fact) (by kernel_fact) (by norm_num) (by kernel_fact)
+      lLM_K3 kLM_K3 (by kernel_fact) (relLM_K3 c u z))
 
 set_option linter.style.longLine false in
 set_option maxRecDepth 100000 in
@@ -1950,8 +1955,8 @@ theorem ballLM_75 {r : ℝ} (hr : 0 ≤ r) (hq : Real.exp r ≤ (74315 : ℕ) / 
     (node3_fullN hr hq hc hWLM boxLM (l1LM 49) (fun _ => rfl)
       (fun i hi => normLM hq hc i (by omega)) (ballLM_74 hr hq hc hU hZ hA hB) trLMN_KD 1 0 0 (1 : ℤ)
       64 48 20 141 65 21 11 8 9 32 24 518017618868575349346475193626043496119736032116232778370331509572978205245738371781252185178313290425869896364473794909656514632770706963332075941486372462564309595443717378948654017781395043369308711162223460115432928686457139278653505797521886331220815814099315006811646611572868735606875000
-      (kronLM 141 65 49) (by decide +kernel) (by decide +kernel) (by decide +kernel) (by norm_num) (by decide +kernel)
-      lLM_KD kLM_KD (by decide +kernel) (relLM_KD c u z))
+      (kronLM 141 65 49) (by kernel_fact) (by kernel_fact) (by kernel_fact) (by norm_num) (by kernel_fact)
+      lLM_KD kLM_KD (by kernel_fact) (relLM_KD c u z))
 
 set_option linter.style.longLine false in
 set_option maxRecDepth 100000 in
@@ -1965,8 +1970,8 @@ theorem ballLM_76 {r : ℝ} (hr : 0 ≤ r) (hq : Real.exp r ≤ (74315 : ℕ) / 
     (node3_fullN hr hq hc hWLM boxLM (l1LM 49) (fun _ => rfl)
       (fun i hi => normLM hq hc i (by omega)) (ballLM_75 hr hq hc hU hZ hA hB) trLMN_KR 1 0 3 (1 : ℤ)
       64 48 20 142 65 21 11 8 9 32 24 1100926068291546413703484856823461248138877119296161429812210151252653211733539150859973806608974413956166320764891798927827852279841270314750874617630684047213745674302664380413405247733961497591676355768772518045069979925705972530605057913801561489644934192998716970882217270033606409058750000
-      (kronLM 142 65 49) (by decide +kernel) (by decide +kernel) (by decide +kernel) (by norm_num) (by decide +kernel)
-      lLM_KR kLM_KR (by decide +kernel) (relLM_KR c u z))
+      (kronLM 142 65 49) (by kernel_fact) (by kernel_fact) (by kernel_fact) (by norm_num) (by kernel_fact)
+      lLM_KR kLM_KR (by kernel_fact) (relLM_KR c u z))
 
 set_option linter.style.longLine false in
 set_option maxRecDepth 100000 in
@@ -1980,8 +1985,8 @@ theorem ballLM_77 {r : ℝ} (hr : 0 ≤ r) (hq : Real.exp r ≤ (74315 : ℕ) / 
     (node3_fullN hr hq hc hWLM boxLM (l1LM 49) (fun _ => rfl)
       (fun i hi => normLM hq hc i (by omega)) (ballLM_76 hr hq hc hU hZ hA hB) trLMN_KZ 1 0 2 (1 : ℤ)
       64 48 20 145 65 21 11 8 9 32 24 7875299138656889710438260509028989159351272834519480433287791195269759273985593676230272129558502461854290135532719743262188079614041610381445412959881549928722767746595305158232839965055046135988895427942676557222331926997441148279420093643997809046245470503854999385565459459020866236653125000
-      (kronLM 145 65 49) (by decide +kernel) (by decide +kernel) (by decide +kernel) (by norm_num) (by decide +kernel)
-      lLM_KZ kLM_KZ (by decide +kernel) (relLM_KZ c u z))
+      (kronLM 145 65 49) (by kernel_fact) (by kernel_fact) (by kernel_fact) (by norm_num) (by kernel_fact)
+      lLM_KZ kLM_KZ (by kernel_fact) (relLM_KZ c u z))
 
 set_option linter.style.longLine false in
 set_option maxRecDepth 100000 in
@@ -1992,7 +1997,7 @@ theorem ballLM_78 {r : ℝ} (hr : 0 ≤ r) (hq : Real.exp r ≤ (74315 : ℕ) / 
     (hA : Bd r (dTh u - xLM c 6) (ELM 6)) (hB : Bd r (dTh z - xLM c 7) (ELM 7)) :
     ∀ i, i < 78 → Bd r (XLM c u z i - xLM c i) (ELM i) :=
   chain_succ (ballLM_77 hr hq hc hU hZ hA hB)
-    (step_exact (XLM_eq_Dt0 hc u z) (by decide +kernel))
+    (step_exact (XLM_eq_Dt0 hc u z) (by kernel_fact))
 
 set_option linter.style.longLine false in
 set_option maxRecDepth 100000 in
@@ -2003,7 +2008,7 @@ theorem ballLM_79 {r : ℝ} (hr : 0 ≤ r) (hq : Real.exp r ≤ (74315 : ℕ) / 
     (hA : Bd r (dTh u - xLM c 6) (ELM 6)) (hB : Bd r (dTh z - xLM c 7) (ELM 7)) :
     ∀ i, i < 79 → Bd r (XLM c u z i - xLM c i) (ELM i) :=
   chain_succ (ballLM_78 hr hq hc hU hZ hA hB)
-    (step_exact (XLM_eq_nRt0 hc u z) (by decide +kernel))
+    (step_exact (XLM_eq_nRt0 hc u z) (by kernel_fact))
 
 set_option linter.style.longLine false in
 set_option maxRecDepth 100000 in
@@ -2014,7 +2019,7 @@ theorem ballLM_80 {r : ℝ} (hr : 0 ≤ r) (hq : Real.exp r ≤ (74315 : ℕ) / 
     (hA : Bd r (dTh u - xLM c 6) (ELM 6)) (hB : Bd r (dTh z - xLM c 7) (ELM 7)) :
     ∀ i, i < 80 → Bd r (XLM c u z i - xLM c i) (ELM i) :=
   chain_succ (ballLM_79 hr hq hc hU hZ hA hB)
-    (step_exact (XLM_eq_nZt0 hc u z) (by decide +kernel))
+    (step_exact (XLM_eq_nZt0 hc u z) (by kernel_fact))
 
 set_option linter.style.longLine false in
 set_option maxRecDepth 100000 in
@@ -2028,8 +2033,8 @@ theorem ballLM_81 {r : ℝ} (hr : 0 ≤ r) (hq : Real.exp r ≤ (74315 : ℕ) / 
     (node3_fullN hr hq hc hWLM boxLM (l1LM 73) (fun _ => rfl)
       (fun i hi => normLM hq hc i (by omega)) (ballLM_80 hr hq hc hU hZ hA hB) trLMN_qRu 2 0 0 (1 : ℤ)
       96 72 30 215 97 31 12 8 13 48 36 8332832659762271056569357084214029180184741733856625449834397780862551470185788860381478752968314939158648174514819644036946611355876035117178267196273187668234315449382723190738643434382506131878190042255590444757867734440808281423790278200631578381849905402457844503745136165148287466510158242842999897100327677010221598668499516902559760642102746349451168393824246262076867080571873922461664050771436316161988570019414119497069821086586880000000
-      (kronLM 215 97 73) (by decide +kernel) (by decide +kernel) (by decide +kernel) (by norm_num) (by decide +kernel)
-      lLM_qRu kLM_qRu (by decide +kernel) (relLM_qRu c u z))
+      (kronLM 215 97 73) (by kernel_fact) (by kernel_fact) (by kernel_fact) (by norm_num) (by kernel_fact)
+      lLM_qRu kLM_qRu (by kernel_fact) (relLM_qRu c u z))
 
 set_option linter.style.longLine false in
 set_option maxRecDepth 100000 in
@@ -2043,8 +2048,8 @@ theorem ballLM_82 {r : ℝ} (hr : 0 ≤ r) (hq : Real.exp r ≤ (74315 : ℕ) / 
     (node3_fullN hr hq hc hWLM boxLM (l1LM 73) (fun _ => rfl)
       (fun i hi => normLM hq hc i (by omega)) (ballLM_81 hr hq hc hU hZ hA hB) trLMN_qRz 2 0 3 (1 : ℤ)
       96 72 30 213 97 31 12 8 13 48 36 2344678952304640632950666732313882709965906753732908352330227276571282353030664593275388531505780054823738653636724999661693125477819937239887936747305437271320560046529196020923399106911626742062033790021057672979773835476369496759825889868037764662567601571606107718307980333868157147767878689185209743679616144504902894293279833468312946748481103229238458815665552612439822531775524013003050392265054858785367200583565110472662235525560320000000
-      (kronLM 213 97 73) (by decide +kernel) (by decide +kernel) (by decide +kernel) (by norm_num) (by decide +kernel)
-      lLM_qRz kLM_qRz (by decide +kernel) (relLM_qRz c u z))
+      (kronLM 213 97 73) (by kernel_fact) (by kernel_fact) (by kernel_fact) (by norm_num) (by kernel_fact)
+      lLM_qRz kLM_qRz (by kernel_fact) (relLM_qRz c u z))
 
 set_option linter.style.longLine false in
 set_option maxRecDepth 100000 in
@@ -2058,8 +2063,8 @@ theorem ballLM_83 {r : ℝ} (hr : 0 ≤ r) (hq : Real.exp r ≤ (74315 : ℕ) / 
     (node3_fullN hr hq hc hWLM boxLM (l1LM 73) (fun _ => rfl)
       (fun i hi => normLM hq hc i (by omega)) (ballLM_82 hr hq hc hU hZ hA hB) trLMN_qzz 2 0 0 (1 : ℤ)
       96 72 30 214 97 31 12 8 13 48 36 1637587467806421906701489928255678058474069783033827547246556927472970500683352537418440771878095807710080501624209819073897442039604180373334849324377478662918298268616660391726562428431968717922226502051147750209104767302416068026312327310626329395900894260536915497596242421518255708181554486233186522252256784926308776741489592520418977852065659120699591363700655865588747744449640522228679499796953004422971618163302603091710650335549440000000
-      (kronLM 214 97 73) (by decide +kernel) (by decide +kernel) (by decide +kernel) (by norm_num) (by decide +kernel)
-      lLM_qzz kLM_qzz (by decide +kernel) (relLM_qzz c u z))
+      (kronLM 214 97 73) (by kernel_fact) (by kernel_fact) (by kernel_fact) (by norm_num) (by kernel_fact)
+      lLM_qzz kLM_qzz (by kernel_fact) (relLM_qzz c u z))
 
 set_option linter.style.longLine false in
 set_option maxRecDepth 100000 in
@@ -2073,8 +2078,8 @@ theorem ballLM_84 {r : ℝ} (hr : 0 ≤ r) (hq : Real.exp r ≤ (74315 : ℕ) / 
     (node3_fullN hr hq hc hWLM boxLM (l1LM 73) (fun _ => rfl)
       (fun i hi => normLM hq hc i (by omega)) (ballLM_83 hr hq hc hU hZ hA hB) trLMN_qzu 2 0 3 (1 : ℤ)
       96 72 30 213 97 31 12 8 13 48 36 2366864620576237182617963823676018379507251636315687588475928303848062297568050604567389187438136861647506670591700033601573494460073256947821759040380288939067968277233260915267154357950963599837444540619764979351603720405236630970579575122687013177505381635322925397699117895878820203744167689461801744752858703966031419052178747182326467788295953072589988872786603402019223035768565357220196740641661443082434733066741033496115893994782720000000
-      (kronLM 213 97 73) (by decide +kernel) (by decide +kernel) (by decide +kernel) (by norm_num) (by decide +kernel)
-      lLM_qzu kLM_qzu (by decide +kernel) (relLM_qzu c u z))
+      (kronLM 213 97 73) (by kernel_fact) (by kernel_fact) (by kernel_fact) (by norm_num) (by kernel_fact)
+      lLM_qzu kLM_qzu (by kernel_fact) (relLM_qzu c u z))
 
 set_option linter.style.longLine false in
 set_option maxRecDepth 100000 in
@@ -2088,8 +2093,8 @@ theorem ballLM_85 {r : ℝ} (hr : 0 ≤ r) (hq : Real.exp r ≤ (74315 : ℕ) / 
     (node3_fullN hr hq hc hWLM boxLM (l1LM 73) (fun _ => rfl)
       (fun i hi => normLM hq hc i (by omega)) (ballLM_84 hr hq hc hU hZ hA hB) trLMN_qphu 2 0 1 (1 : ℤ)
       96 72 30 211 97 31 12 8 13 48 36 1833387828741133672471255192587770261501895334985676192213723258832485035908008978320337478286891624047853259861373007541324555324285819641585717705974518162327224593307691305764843853771567131269156130146298355161685705431506384877262625331784442475441945837935149822457431457789569958598472253910852208959864046843310969363773820620203949733453896560519972676383043418251362475466685976148497904985449791375595001588956468414423651922401280000000
-      (kronLM 211 97 73) (by decide +kernel) (by decide +kernel) (by decide +kernel) (by norm_num) (by decide +kernel)
-      lLM_qphu kLM_qphu (by decide +kernel) (relLM_qphu c u z))
+      (kronLM 211 97 73) (by kernel_fact) (by kernel_fact) (by kernel_fact) (by norm_num) (by kernel_fact)
+      lLM_qphu kLM_qphu (by kernel_fact) (relLM_qphu c u z))
 
 set_option linter.style.longLine false in
 set_option maxRecDepth 100000 in
@@ -2103,8 +2108,8 @@ theorem ballLM_86 {r : ℝ} (hr : 0 ≤ r) (hq : Real.exp r ≤ (74315 : ℕ) / 
     (node3_fullN hr hq hc hWLM boxLM (l1LM 73) (fun _ => rfl)
       (fun i hi => normLM hq hc i (by omega)) (ballLM_85 hr hq hc hU hZ hA hB) trLMN_qphz 2 0 0 (1 : ℤ)
       96 72 30 211 97 31 12 8 13 48 36 1604875616221979681651222516700543037803016222177043578910696905561592208831771817869157660334989380531749620506221611140441716342951245151869359942366934340525094638531991705818551399693628742765859585689748746871249526988398964593343389128266905385661499525718987426411307724538907871016956649212654884256475221979677417617293914734248084673089807022796360146612942193377592248617361542506816425881153937910911005281814455074074213167247360000000
-      (kronLM 211 97 73) (by decide +kernel) (by decide +kernel) (by decide +kernel) (by norm_num) (by decide +kernel)
-      lLM_qphz kLM_qphz (by decide +kernel) (relLM_qphz c u z))
+      (kronLM 211 97 73) (by kernel_fact) (by kernel_fact) (by kernel_fact) (by norm_num) (by kernel_fact)
+      lLM_qphz kLM_qphz (by kernel_fact) (relLM_qphz c u z))
 
 set_option linter.style.longLine false in
 set_option maxRecDepth 100000 in
@@ -2118,8 +2123,8 @@ theorem ballLM_87 {r : ℝ} (hr : 0 ≤ r) (hq : Real.exp r ≤ (74315 : ℕ) / 
     (node3_fullN hr hq hc hWLM boxLM (l1LM 49) (fun _ => rfl)
       (fun i hi => normLM hq hc i (by omega)) (ballLM_86 hr hq hc hU hZ hA hB) trLMN_qu 1 0 0 (1 : ℤ)
       64 48 20 146 65 21 11 8 9 32 24 3227668165038794091124642558913476536762009649391988425021742407139514929271233618276951035776050680714362195077686599315211986549663478415775796519830937494085398890649856514596238395315099095560535670667942383145135387045696880285902101319868602373452439063415712731622442649825898969501718750
-      (kronLM 146 65 49) (by decide +kernel) (by decide +kernel) (by decide +kernel) (by norm_num) (by decide +kernel)
-      lLM_qu kLM_qu (by decide +kernel) (relLM_qu c u z))
+      (kronLM 146 65 49) (by kernel_fact) (by kernel_fact) (by kernel_fact) (by norm_num) (by kernel_fact)
+      lLM_qu kLM_qu (by kernel_fact) (relLM_qu c u z))
 
 set_option linter.style.longLine false in
 set_option maxRecDepth 100000 in
@@ -2133,8 +2138,8 @@ theorem ballLM_88 {r : ℝ} (hr : 0 ≤ r) (hq : Real.exp r ≤ (74315 : ℕ) / 
     (node3_fullN hr hq hc hWLM boxLM (l1LM 49) (fun _ => rfl)
       (fun i hi => normLM hq hc i (by omega)) (ballLM_87 hr hq hc hU hZ hA hB) trLMN_qzd 1 0 3 (1 : ℤ)
       64 48 20 142 65 21 11 8 9 32 24 548504037286544953228551733650947967832501108228548026871134633657932890923677871505086318360870750296068918048645195839731602712134002633547911210409465603580792588355592848791996092239135930532526273557042772025532956649859536700424254451411979632607711731386414619417595827309710162412343750
-      (kronLM 142 65 49) (by decide +kernel) (by decide +kernel) (by decide +kernel) (by norm_num) (by decide +kernel)
-      lLM_qzd kLM_qzd (by decide +kernel) (relLM_qzd c u z))
+      (kronLM 142 65 49) (by kernel_fact) (by kernel_fact) (by kernel_fact) (by norm_num) (by kernel_fact)
+      lLM_qzd kLM_qzd (by kernel_fact) (relLM_qzd c u z))
 
 set_option linter.style.longLine false in
 set_option maxRecDepth 100000 in
@@ -2148,8 +2153,8 @@ theorem ballLM_89 {r : ℝ} (hr : 0 ≤ r) (hq : Real.exp r ≤ (74315 : ℕ) / 
     (node3_fullN hr hq hc hWLM boxLM (l1LM 73) (fun _ => rfl)
       (fun i hi => normLM hq hc i (by omega)) (ballLM_88 hr hq hc hU hZ hA hB) trLMN_Eu 2 0 2 (1 : ℤ)
       96 72 30 219 97 31 12 8 13 48 36 2348453718714897603121029133848037087786825901283554828559053350329711229793554729634584205843124097358421964969341513685497612212123354150118562716398971790519205222407908743179510038318955645678456712313188817923561014494432997656677477227401643100978605679584732472943905798800658007731970975750400069783130907520431072372017270080087721936791763549552276230920229655307854003750657832771705001306486267101099923770846813647135361167994880000000
-      (kronLM 219 97 73) (by decide +kernel) (by decide +kernel) (by decide +kernel) (by norm_num) (by decide +kernel)
-      lLM_Eu kLM_Eu (by decide +kernel) (relLM_Eu c u z))
+      (kronLM 219 97 73) (by kernel_fact) (by kernel_fact) (by kernel_fact) (by norm_num) (by kernel_fact)
+      lLM_Eu kLM_Eu (by kernel_fact) (relLM_Eu c u z))
 
 set_option linter.style.longLine false in
 set_option maxRecDepth 100000 in
@@ -2163,8 +2168,8 @@ theorem ballLM_90 {r : ℝ} (hr : 0 ≤ r) (hq : Real.exp r ≤ (74315 : ℕ) / 
     (node3_fullN hr hq hc hWLM boxLM (l1LM 49) (fun _ => rfl)
       (fun i hi => normLM hq hc i (by omega)) (ballLM_89 hr hq hc hU hZ hA hB) trLMN_Ez 1 0 3 (1 : ℤ)
       64 48 20 143 65 21 11 8 9 32 24 1030443574902987776344661439322776832890358093898568493728689476430198068975189813188126708467195209373510658074176699725818248039410715862705312278881034990043022628799512963154334534279687520094111860616469602410088702556046718822939806005772813866636473149786134539793000519872753875294453125
-      (kronLM 143 65 49) (by decide +kernel) (by decide +kernel) (by decide +kernel) (by norm_num) (by decide +kernel)
-      lLM_Ez kLM_Ez (by decide +kernel) (relLM_Ez c u z))
+      (kronLM 143 65 49) (by kernel_fact) (by kernel_fact) (by kernel_fact) (by norm_num) (by kernel_fact)
+      lLM_Ez kLM_Ez (by kernel_fact) (relLM_Ez c u z))
 
 set_option linter.style.longLine false in
 set_option maxRecDepth 100000 in
@@ -2178,8 +2183,8 @@ theorem ballLM_91 {r : ℝ} (hr : 0 ≤ r) (hq : Real.exp r ≤ (74315 : ℕ) / 
     (node3_fullN hr hq hc hWLM boxLM (l1LM 73) (fun _ => rfl)
       (fun i hi => normLM hq hc i (by omega)) (ballLM_90 hr hq hc hU hZ hA hB) trLMN_V3 2 0 0 (1 : ℤ)
       96 72 30 218 97 31 12 8 13 48 36 1493592283596925887829510589490757236477363169133345012862027964002660180956941798096592915970016883423655475626268498719237642454561677189181769521233181222864409658488053458441925988912361918952405340017115589584087648585411275356819820808725346180239774323649963620484443334327428948798733198832452677343370593582797030116014165506854450783998882707736482460954960324034126119546921628720973384579605696218584680003664627544951097529675303671875
-      (kronLM 218 97 73) (by decide +kernel) (by decide +kernel) (by decide +kernel) (by norm_num) (by decide +kernel)
-      lLM_V3 kLM_V3 (by decide +kernel) (relLM_V3 c u z))
+      (kronLM 218 97 73) (by kernel_fact) (by kernel_fact) (by kernel_fact) (by norm_num) (by kernel_fact)
+      lLM_V3 kLM_V3 (by kernel_fact) (relLM_V3 c u z))
 
 set_option linter.style.longLine false in
 set_option maxRecDepth 100000 in
@@ -2193,8 +2198,8 @@ theorem ballLM_92 {r : ℝ} (hr : 0 ≤ r) (hq : Real.exp r ≤ (74315 : ℕ) / 
     (node3_fullN hr hq hc hWLM boxLM (l1LM 73) (fun _ => rfl)
       (fun i hi => normLM hq hc i (by omega)) (ballLM_91 hr hq hc hU hZ hA hB) trLMN_Wu 2 0 0 (2 : ℤ)
       96 72 30 215 97 31 12 8 13 48 36 68347238244608217738566872510716358477450200501147798842580476786460373392740082999213669562768601476818668900786871072037600421784274640245167648647067356036711380357483539841766838705400504613079875542422862559598955978350327361973209271381670896656545659610523986424018584099634523836309709081323319319553108729888414242388633769234634583792024745567085723312012255264461549313359440544349781386815399702024229005290046995306024439422133764609375
-      (kronLM 215 97 73) (by decide +kernel) (by decide +kernel) (by decide +kernel) (by norm_num) (by decide +kernel)
-      lLM_Wu kLM_Wu (by decide +kernel) (relLM_Wu c u z))
+      (kronLM 215 97 73) (by kernel_fact) (by kernel_fact) (by kernel_fact) (by norm_num) (by kernel_fact)
+      lLM_Wu kLM_Wu (by kernel_fact) (relLM_Wu c u z))
 
 set_option linter.style.longLine false in
 set_option maxRecDepth 100000 in
@@ -2208,8 +2213,8 @@ theorem ballLM_93 {r : ℝ} (hr : 0 ≤ r) (hq : Real.exp r ≤ (74315 : ℕ) / 
     (node3_fullN hr hq hc hWLM boxLM (l1LM 73) (fun _ => rfl)
       (fun i hi => normLM hq hc i (by omega)) (ballLM_92 hr hq hc hU hZ hA hB) trLMN_Wz 2 0 3 (-2 : ℤ)
       96 72 30 215 97 31 12 8 13 48 36 40600202900581854719961890327464614835834386167030299697080907547489591780708378099190312212170458422084478426641482510953662791441803321958042555906398705510654366351427818742987880668445550390105880206903645478717033810723707217426602948887766428222417700700747956710718601792127990908546533719885002204063800879343015748567676175917836838174455661166392194028322410929762457498450823792942204207375683301267673145361918700897131577686079263515625
-      (kronLM 215 97 73) (by decide +kernel) (by decide +kernel) (by decide +kernel) (by norm_num) (by decide +kernel)
-      lLM_Wz kLM_Wz (by decide +kernel) (relLM_Wz c u z))
+      (kronLM 215 97 73) (by kernel_fact) (by kernel_fact) (by kernel_fact) (by norm_num) (by kernel_fact)
+      lLM_Wz kLM_Wz (by kernel_fact) (relLM_Wz c u z))
 
 set_option linter.style.longLine false in
 set_option maxRecDepth 100000 in
@@ -2223,8 +2228,8 @@ theorem ballLM_94 {r : ℝ} (hr : 0 ≤ r) (hq : Real.exp r ≤ (74315 : ℕ) / 
     (node3_fullN hr hq hc hWLM boxLM (l1LM 49) (fun _ => rfl)
       (fun i hi => normLM hq hc i (by omega)) (ballLM_93 hr hq hc hU hZ hA hB) trLMN_W3u 1 0 0 (1 : ℤ)
       64 48 20 148 65 21 11 8 9 32 24 2927891799069505551336477118812688001093579349680617235146749864794509648537171727346760270306973190281099905925774597438622254838716596668348234013175586281047469953827372344122782492111151568661021535083712561247236112271144975630419195691439661123991612957262019932941111891437491163005902812500
-      (kronLM 148 65 49) (by decide +kernel) (by decide +kernel) (by decide +kernel) (by norm_num) (by decide +kernel)
-      lLM_W3u kLM_W3u (by decide +kernel) (relLM_W3u c u z))
+      (kronLM 148 65 49) (by kernel_fact) (by kernel_fact) (by kernel_fact) (by norm_num) (by kernel_fact)
+      lLM_W3u kLM_W3u (by kernel_fact) (relLM_W3u c u z))
 
 set_option linter.style.longLine false in
 set_option maxRecDepth 100000 in
@@ -2238,8 +2243,8 @@ theorem ballLM_95 {r : ℝ} (hr : 0 ≤ r) (hq : Real.exp r ≤ (74315 : ℕ) / 
     (node3_fullN hr hq hc hWLM boxLM (l1LM 49) (fun _ => rfl)
       (fun i hi => normLM hq hc i (by omega)) (ballLM_94 hr hq hc hU hZ hA hB) trLMN_W3z 1 0 3 (1 : ℤ)
       64 48 20 144 65 21 11 8 9 32 24 1116456627459051401447189560815416974028108246978065820021827494802397471499812255435262852482571264132612798503801087130633392919471920351670429538850200192026129717676930401634641535440984470425023335633937244134191293530950052349823230077191937898751227158745644407710816310816330336514495390625
-      (kronLM 144 65 49) (by decide +kernel) (by decide +kernel) (by decide +kernel) (by norm_num) (by decide +kernel)
-      lLM_W3z kLM_W3z (by decide +kernel) (relLM_W3z c u z))
+      (kronLM 144 65 49) (by kernel_fact) (by kernel_fact) (by kernel_fact) (by norm_num) (by kernel_fact)
+      lLM_W3z kLM_W3z (by kernel_fact) (relLM_W3z c u z))
 
 set_option linter.style.longLine false in
 set_option maxRecDepth 100000 in
@@ -2253,8 +2258,8 @@ theorem ballLM_96 {r : ℝ} (hr : 0 ≤ r) (hq : Real.exp r ≤ (74315 : ℕ) / 
     (node3_fullN hr hq hc hWLM boxLM (l1LM 97) (fun _ => rfl)
       (fun i hi => normLM hq hc i (by omega)) (ballLM_95 hr hq hc hU hZ hA hB) trLMN_KDu 3 0 0 (1 : ℤ)
       128 96 40 283 129 41 12 8 17 64 48 11579932131704992250534921622190088807685747352069731325516286418070289831180420392597059199549369662329787324234287025573287962536639585385585094682159446168988935242518635587481083658564904768230044161023862399401390220134974912145064575160910759587906580647596340515259035019763814320949439738989028817914220861108257879687788185100643346663097540402142618888657281045076086525609662759003189350218739857567620123272037543477611203517025005741718619928441075809581145856917207519286492672003113732001569693947836738879843849659308291229528218146694113973124601465632696475864984970984339537920000000
-      (kronLM 283 129 97) (by decide +kernel) (by decide +kernel) (by decide +kernel) (by norm_num) (by decide +kernel)
-      lLM_KDu kLM_KDu (by decide +kernel) (relLM_KDu c u z))
+      (kronLM 283 129 97) (by kernel_fact) (by kernel_fact) (by kernel_fact) (by norm_num) (by kernel_fact)
+      lLM_KDu kLM_KDu (by kernel_fact) (relLM_KDu c u z))
 
 set_option linter.style.longLine false in
 set_option maxRecDepth 100000 in
@@ -2268,8 +2273,8 @@ theorem ballLM_97 {r : ℝ} (hr : 0 ≤ r) (hq : Real.exp r ≤ (74315 : ℕ) / 
     (node3_fullN hr hq hc hWLM boxLM (l1LM 97) (fun _ => rfl)
       (fun i hi => normLM hq hc i (by omega)) (ballLM_96 hr hq hc hU hZ hA hB) trLMN_KDz 3 0 3 (1 : ℤ)
       128 96 40 280 129 41 12 8 17 64 48 5961162926285436920771351335858866650093790875394545674138888793020331432685071747925906054516168347418506240268723872495888526948563670358143022851469020114099525562717473247276796611909443948437647282476292731801314866431849802536478754617685546055199162870683514113856627488425444407493391049957748839195392855825372596028555719261711601476017095750494129177695274361561067801054514712178700339536350052576052012543686054098506056562759501318202680427620167107712201001362386760469536624520179040884285993421020757051991653040530063263280487991929280353406733941248991718788697006362926776320000000
-      (kronLM 280 129 97) (by decide +kernel) (by decide +kernel) (by decide +kernel) (by norm_num) (by decide +kernel)
-      lLM_KDz kLM_KDz (by decide +kernel) (relLM_KDz c u z))
+      (kronLM 280 129 97) (by kernel_fact) (by kernel_fact) (by kernel_fact) (by norm_num) (by kernel_fact)
+      lLM_KDz kLM_KDz (by kernel_fact) (relLM_KDz c u z))
 
 set_option linter.style.longLine false in
 set_option maxRecDepth 100000 in
@@ -2283,8 +2288,8 @@ theorem ballLM_98 {r : ℝ} (hr : 0 ≤ r) (hq : Real.exp r ≤ (74315 : ℕ) / 
     (node3_fullN hr hq hc hWLM boxLM (l1LM 97) (fun _ => rfl)
       (fun i hi => normLM hq hc i (by omega)) (ballLM_97 hr hq hc hU hZ hA hB) trLMN_KRu 3 0 3 (1 : ℤ)
       128 96 40 287 129 41 12 8 17 64 48 15336165068359131174479392806133773073527760365228513048475548111929618812934470279132363853858359981796809853447477374131473105402100233304454307168050257380831155530761412807626101038036443987376876154712840765535335637999863816870038681850029419140447106218866567370898818320046473938086739844869855993103421987439614787212254131148011358419613815234545321819181817925300945894841272895722857555617467023086213797703686874200001579830510153553790720872641871798864766882059877632496500120784838746896633407777120799051571387003998428265965643491613000006910968554282902773794102152697321881600000000
-      (kronLM 287 129 97) (by decide +kernel) (by decide +kernel) (by decide +kernel) (by norm_num) (by decide +kernel)
-      lLM_KRu kLM_KRu (by decide +kernel) (relLM_KRu c u z))
+      (kronLM 287 129 97) (by kernel_fact) (by kernel_fact) (by kernel_fact) (by norm_num) (by kernel_fact)
+      lLM_KRu kLM_KRu (by kernel_fact) (relLM_KRu c u z))
 
 set_option linter.style.longLine false in
 set_option maxRecDepth 100000 in
@@ -2298,8 +2303,8 @@ theorem ballLM_99 {r : ℝ} (hr : 0 ≤ r) (hq : Real.exp r ≤ (74315 : ℕ) / 
     (node3_fullN hr hq hc hWLM boxLM (l1LM 97) (fun _ => rfl)
       (fun i hi => normLM hq hc i (by omega)) (ballLM_98 hr hq hc hU hZ hA hB) trLMN_KRz 3 0 0 (1 : ℤ)
       128 96 40 286 129 41 12 8 17 64 48 10116562673303926113478981537922795331894665343132893707813311691197465999864965465787948714989905465012118163847586951806487313629236429293002641421198772346355546036213325159970567758854562954037396626013797614328998293524180644722016349811703972925820042069102894307377763278841968043183199614649666216943432779313455981000176887085857213246420136005218704858143441081936865240755626752918666434051937715310728640509148079867199676180626469159903494915950599976018340366404139695639620733818271220072212400464688796233425515966364964426083898857369622316441390105084775574263287238097350164480000000
-      (kronLM 286 129 97) (by decide +kernel) (by decide +kernel) (by decide +kernel) (by norm_num) (by decide +kernel)
-      lLM_KRz kLM_KRz (by decide +kernel) (relLM_KRz c u z))
+      (kronLM 286 129 97) (by kernel_fact) (by kernel_fact) (by kernel_fact) (by norm_num) (by kernel_fact)
+      lLM_KRz kLM_KRz (by kernel_fact) (relLM_KRz c u z))
 
 set_option linter.style.longLine false in
 set_option maxRecDepth 100000 in
@@ -2313,8 +2318,8 @@ theorem ballLM_100 {r : ℝ} (hr : 0 ≤ r) (hq : Real.exp r ≤ (74315 : ℕ) /
     (node3_fullN hr hq hc hWLM boxLM (l1LM 97) (fun _ => rfl)
       (fun i hi => normLM hq hc i (by omega)) (ballLM_99 hr hq hc hU hZ hA hB) trLMN_KZu 3 0 2 (1 : ℤ)
       128 96 40 291 129 41 12 8 17 64 48 67041711162084967551278111412032187070575188859296138728273463942166629209381561470000015122844045174611190344693743822407774594980819104772500007328724982614961691415758879172093419324581578852110033497977643971940635638985827645401354213501147797919583432079651439889911479341147598974658063613193689698604008685701024226586356580459147470213314930331661008765246326339158674126407484946874072687991575411737387960828481611841121879227021022084786224513565989335966071554714714663713397034489366753985485447452840331907865205191903583010131628210349303070718755165805814824404352736672727695360000000
-      (kronLM 291 129 97) (by decide +kernel) (by decide +kernel) (by decide +kernel) (by norm_num) (by decide +kernel)
-      lLM_KZu kLM_KZu (by decide +kernel) (relLM_KZu c u z))
+      (kronLM 291 129 97) (by kernel_fact) (by kernel_fact) (by kernel_fact) (by norm_num) (by kernel_fact)
+      lLM_KZu kLM_KZu (by kernel_fact) (relLM_KZu c u z))
 
 set_option linter.style.longLine false in
 set_option maxRecDepth 100000 in
@@ -2328,8 +2333,8 @@ theorem ballLM_101 {r : ℝ} (hr : 0 ≤ r) (hq : Real.exp r ≤ (74315 : ℕ) /
     (node3_fullN hr hq hc hWLM boxLM (l1LM 97) (fun _ => rfl)
       (fun i hi => normLM hq hc i (by omega)) (ballLM_100 hr hq hc hU hZ hA hB) trLMN_KZz 3 0 3 (1 : ℤ)
       128 96 40 287 129 41 12 8 17 64 48 4668977868916324192548666373872145450602310923385701063607064760904416864865170423718654291301966867697779996237001388335302968293755510317728087762983711855992948186948668504276069942974297963999787091185188311072062747562878967673070397302043544021772759221441495991128919349502428575861458872410829297724495472845966870709203713114270641141981540314188954779888916848648093813499861687545983038193568347216704392716909266956700933414551918108192728213423719676581008226655235715694689138614008578376090041086285924142560828240888214604320894872458321619129945006283338724892449211387970846720000000
-      (kronLM 287 129 97) (by decide +kernel) (by decide +kernel) (by decide +kernel) (by norm_num) (by decide +kernel)
-      lLM_KZz kLM_KZz (by decide +kernel) (relLM_KZz c u z))
+      (kronLM 287 129 97) (by kernel_fact) (by kernel_fact) (by kernel_fact) (by norm_num) (by kernel_fact)
+      lLM_KZz kLM_KZz (by kernel_fact) (relLM_KZz c u z))
 
 set_option linter.style.longLine false in
 set_option maxRecDepth 100000 in
@@ -2340,7 +2345,7 @@ theorem ballLM_102 {r : ℝ} (hr : 0 ≤ r) (hq : Real.exp r ≤ (74315 : ℕ) /
     (hA : Bd r (dTh u - xLM c 6) (ELM 6)) (hB : Bd r (dTh z - xLM c 7) (ELM 7)) :
     ∀ i, i < 102 → Bd r (XLM c u z i - xLM c i) (ELM i) :=
   chain_succ (ballLM_101 hr hq hc hU hZ hA hB)
-    (step_exact (XLM_eq_Dtu0 hc u z) (by decide +kernel))
+    (step_exact (XLM_eq_Dtu0 hc u z) (by kernel_fact))
 
 set_option linter.style.longLine false in
 set_option maxRecDepth 100000 in
@@ -2351,7 +2356,7 @@ theorem ballLM_103 {r : ℝ} (hr : 0 ≤ r) (hq : Real.exp r ≤ (74315 : ℕ) /
     (hA : Bd r (dTh u - xLM c 6) (ELM 6)) (hB : Bd r (dTh z - xLM c 7) (ELM 7)) :
     ∀ i, i < 103 → Bd r (XLM c u z i - xLM c i) (ELM i) :=
   chain_succ (ballLM_102 hr hq hc hU hZ hA hB)
-    (step_exact (XLM_eq_Dtz0 hc u z) (by decide +kernel))
+    (step_exact (XLM_eq_Dtz0 hc u z) (by kernel_fact))
 
 set_option linter.style.longLine false in
 set_option maxRecDepth 100000 in
@@ -2362,7 +2367,7 @@ theorem ballLM_104 {r : ℝ} (hr : 0 ≤ r) (hq : Real.exp r ≤ (74315 : ℕ) /
     (hA : Bd r (dTh u - xLM c 6) (ELM 6)) (hB : Bd r (dTh z - xLM c 7) (ELM 7)) :
     ∀ i, i < 104 → Bd r (XLM c u z i - xLM c i) (ELM i) :=
   chain_succ (ballLM_103 hr hq hc hU hZ hA hB)
-    (step_exact (XLM_eq_nRtu0 hc u z) (by decide +kernel))
+    (step_exact (XLM_eq_nRtu0 hc u z) (by kernel_fact))
 
 set_option linter.style.longLine false in
 set_option maxRecDepth 100000 in
@@ -2373,7 +2378,7 @@ theorem ballLM_105 {r : ℝ} (hr : 0 ≤ r) (hq : Real.exp r ≤ (74315 : ℕ) /
     (hA : Bd r (dTh u - xLM c 6) (ELM 6)) (hB : Bd r (dTh z - xLM c 7) (ELM 7)) :
     ∀ i, i < 105 → Bd r (XLM c u z i - xLM c i) (ELM i) :=
   chain_succ (ballLM_104 hr hq hc hU hZ hA hB)
-    (step_exact (XLM_eq_nRtz0 hc u z) (by decide +kernel))
+    (step_exact (XLM_eq_nRtz0 hc u z) (by kernel_fact))
 
 set_option linter.style.longLine false in
 set_option maxRecDepth 100000 in
@@ -2384,7 +2389,7 @@ theorem ballLM_106 {r : ℝ} (hr : 0 ≤ r) (hq : Real.exp r ≤ (74315 : ℕ) /
     (hA : Bd r (dTh u - xLM c 6) (ELM 6)) (hB : Bd r (dTh z - xLM c 7) (ELM 7)) :
     ∀ i, i < 106 → Bd r (XLM c u z i - xLM c i) (ELM i) :=
   chain_succ (ballLM_105 hr hq hc hU hZ hA hB)
-    (step_exact (XLM_eq_nZtu0 hc u z) (by decide +kernel))
+    (step_exact (XLM_eq_nZtu0 hc u z) (by kernel_fact))
 
 set_option linter.style.longLine false in
 set_option maxRecDepth 100000 in
@@ -2395,7 +2400,7 @@ theorem ballLM_107 {r : ℝ} (hr : 0 ≤ r) (hq : Real.exp r ≤ (74315 : ℕ) /
     (hA : Bd r (dTh u - xLM c 6) (ELM 6)) (hB : Bd r (dTh z - xLM c 7) (ELM 7)) :
     ∀ i, i < 107 → Bd r (XLM c u z i - xLM c i) (ELM i) :=
   chain_succ (ballLM_106 hr hq hc hU hZ hA hB)
-    (step_exact (XLM_eq_nZtz0 hc u z) (by decide +kernel))
+    (step_exact (XLM_eq_nZtz0 hc u z) (by kernel_fact))
 
 set_option linter.style.longLine false in
 set_option maxRecDepth 100000 in
@@ -2406,7 +2411,7 @@ theorem ballLM_108 {r : ℝ} (hr : 0 ≤ r) (hq : Real.exp r ≤ (74315 : ℕ) /
     (hA : Bd r (dTh u - xLM c 6) (ELM 6)) (hB : Bd r (dTh z - xLM c 7) (ELM 7)) :
     ∀ i, i < 108 → Bd r (XLM c u z i - xLM c i) (ELM i) :=
   chain_succ (ballLM_107 hr hq hc hU hZ hA hB)
-    (step_exact (XLM_eq_Ptor0 hc u z) (by decide +kernel))
+    (step_exact (XLM_eq_Ptor0 hc u z) (by kernel_fact))
 
 set_option linter.style.longLine false in
 set_option maxRecDepth 100000 in
@@ -2420,8 +2425,8 @@ theorem ballLM_109 {r : ℝ} (hr : 0 ≤ r) (hq : Real.exp r ≤ (74315 : ℕ) /
     (node3_fullN hr hq hc hWLM boxLM (l1LM 49) (fun _ => rfl)
       (fun i hi => normLM hq hc i (by omega)) (ballLM_108 hr hq hc hU hZ hA hB) trLMN_W0 1 0 0 (1 : ℤ)
       64 48 20 143 65 21 11 8 9 32 24 59952517868872466625773021079685958956316565824196127406048827037127943126322095069728498019875120132438472554030612289348402841888056838081431879599606115158086507402980281418760147531347117856407143630854306739004118590746464426544140895653697860629469729717345032079337259058654242215390625
-      (kronLM 143 65 49) (by decide +kernel) (by decide +kernel) (by decide +kernel) (by norm_num) (by decide +kernel)
-      lLM_W0 kLM_W0 (by decide +kernel) (relLM_W0 c u z))
+      (kronLM 143 65 49) (by kernel_fact) (by kernel_fact) (by kernel_fact) (by norm_num) (by kernel_fact)
+      lLM_W0 kLM_W0 (by kernel_fact) (relLM_W0 c u z))
 
 set_option linter.style.longLine false in
 set_option maxRecDepth 100000 in
@@ -2432,7 +2437,7 @@ theorem ballLM_110 {r : ℝ} (hr : 0 ≤ r) (hq : Real.exp r ≤ (74315 : ℕ) /
     (hA : Bd r (dTh u - xLM c 6) (ELM 6)) (hB : Bd r (dTh z - xLM c 7) (ELM 7)) :
     ∀ i, i < 110 → Bd r (XLM c u z i - xLM c i) (ELM i) :=
   chain_succ (ballLM_109 hr hq hc hU hZ hA hB)
-    (step_exact (XLM_eq_Dt30 hc u z) (by decide +kernel))
+    (step_exact (XLM_eq_Dt30 hc u z) (by kernel_fact))
 
 set_option linter.style.longLine false in
 set_option maxRecDepth 100000 in
@@ -2446,8 +2451,8 @@ theorem ballLM_111 {r : ℝ} (hr : 0 ≤ r) (hq : Real.exp r ≤ (74315 : ℕ) /
     (node3_fullN hr hq hc hWLM boxLM (l1LM 49) (fun _ => rfl)
       (fun i hi => normLM hq hc i (by omega)) (ballLM_110 hr hq hc hU hZ hA hB) trLMN_W02 1 0 0 (1 : ℤ)
       64 48 20 132 65 21 11 8 9 32 24 7532338668233089316654270511229075105400776877531710428811456613335961958451820830131599894676494440771834075379272008406794180025861134509782001612353367910775710700941177786881907427800463970830579314952367085101557997737823764646890314831661200000057904142678061089661417353456543064765625
-      (kronLM 132 65 49) (by decide +kernel) (by decide +kernel) (by decide +kernel) (by norm_num) (by decide +kernel)
-      lLM_W02 kLM_W02 (by decide +kernel) (relLM_W02 c u z))
+      (kronLM 132 65 49) (by kernel_fact) (by kernel_fact) (by kernel_fact) (by norm_num) (by kernel_fact)
+      lLM_W02 kLM_W02 (by kernel_fact) (relLM_W02 c u z))
 
 set_option linter.style.longLine false in
 set_option maxRecDepth 100000 in
@@ -2458,7 +2463,7 @@ theorem ballLM_112 {r : ℝ} (hr : 0 ≤ r) (hq : Real.exp r ≤ (74315 : ℕ) /
     (hA : Bd r (dTh u - xLM c 6) (ELM 6)) (hB : Bd r (dTh z - xLM c 7) (ELM 7)) :
     ∀ i, i < 112 → Bd r (XLM c u z i - xLM c i) (ELM i) :=
   chain_succ (ballLM_111 hr hq hc hU hZ hA hB)
-    (step_exact (XLM_eq_F0 hc u z) (by decide +kernel))
+    (step_exact (XLM_eq_F0 hc u z) (by kernel_fact))
 
 set_option linter.style.longLine false in
 set_option maxRecDepth 100000 in
@@ -2469,7 +2474,7 @@ theorem ballLM_113 {r : ℝ} (hr : 0 ≤ r) (hq : Real.exp r ≤ (74315 : ℕ) /
     (hA : Bd r (dTh u - xLM c 6) (ELM 6)) (hB : Bd r (dTh z - xLM c 7) (ELM 7)) :
     ∀ i, i < 113 → Bd r (XLM c u z i - xLM c i) (ELM i) :=
   chain_succ (ballLM_112 hr hq hc hU hZ hA hB)
-    (step_exact (XLM_eq_qi0 hc u z) (by decide +kernel))
+    (step_exact (XLM_eq_qi0 hc u z) (by kernel_fact))
 
 set_option linter.style.longLine false in
 set_option maxRecDepth 100000 in
@@ -2480,7 +2485,7 @@ theorem ballLM_114 {r : ℝ} (hr : 0 ≤ r) (hq : Real.exp r ≤ (74315 : ℕ) /
     (hA : Bd r (dTh u - xLM c 6) (ELM 6)) (hB : Bd r (dTh z - xLM c 7) (ELM 7)) :
     ∀ i, i < 114 → Bd r (XLM c u z i - xLM c i) (ELM i) :=
   chain_succ (ballLM_113 hr hq hc hU hZ hA hB)
-    (step_exact (XLM_eq_Y0 hc u z) (by decide +kernel))
+    (step_exact (XLM_eq_Y0 hc u z) (by kernel_fact))
 
 set_option linter.style.longLine false in
 set_option maxRecDepth 100000 in
@@ -2491,7 +2496,7 @@ theorem ballLM_115 {r : ℝ} (hr : 0 ≤ r) (hq : Real.exp r ≤ (74315 : ℕ) /
     (hA : Bd r (dTh u - xLM c 6) (ELM 6)) (hB : Bd r (dTh z - xLM c 7) (ELM 7)) :
     ∀ i, i < 115 → Bd r (XLM c u z i - xLM c i) (ELM i) :=
   chain_succ (ballLM_114 hr hq hc hU hZ hA hB)
-    (step_exact (XLM_eq_r hc u z) (by decide +kernel))
+    (step_exact (XLM_eq_r hc u z) (by kernel_fact))
 
 set_option linter.style.longLine false in
 set_option maxRecDepth 100000 in
@@ -2505,8 +2510,8 @@ theorem ballLM_116 {r : ℝ} (hr : 0 ≤ r) (hq : Real.exp r ≤ (74315 : ℕ) /
     (node3_fullN hr hq hc hWLM boxLM (l1LM 25) (fun _ => rfl)
       (fun i hi => normLM hq hc i (by omega)) (ballLM_115 hr hq hc hU hZ hA hB) trLMN_P4P 0 0 0 (1 : ℤ)
       32 24 10 75 33 11 9 8 5 16 12 0
-      (kronLM 75 33 25) (by decide +kernel) (by decide +kernel) (by decide +kernel) (by norm_num) (by decide +kernel)
-      lLM_P4P kLM_P4P (by decide +kernel) (relLM_P4P c u z))
+      (kronLM 75 33 25) (by kernel_fact) (by kernel_fact) (by kernel_fact) (by norm_num) (by kernel_fact)
+      lLM_P4P kLM_P4P (by kernel_fact) (relLM_P4P c u z))
 
 set_option linter.style.longLine false in
 set_option maxRecDepth 100000 in
@@ -2520,8 +2525,8 @@ theorem ballLM_117 {r : ℝ} (hr : 0 ≤ r) (hq : Real.exp r ≤ (74315 : ℕ) /
     (node3_fullN hr hq hc hWLM boxLM (l1LM 25) (fun _ => rfl)
       (fun i hi => normLM hq hc i (by omega)) (ballLM_116 hr hq hc hU hZ hA hB) trLMN_P4uP 0 0 0 (1 : ℤ)
       32 24 10 77 33 11 9 8 5 16 12 0
-      (kronLM 77 33 25) (by decide +kernel) (by decide +kernel) (by decide +kernel) (by norm_num) (by decide +kernel)
-      lLM_P4uP kLM_P4uP (by decide +kernel) (relLM_P4uP c u z))
+      (kronLM 77 33 25) (by kernel_fact) (by kernel_fact) (by kernel_fact) (by norm_num) (by kernel_fact)
+      lLM_P4uP kLM_P4uP (by kernel_fact) (relLM_P4uP c u z))
 
 set_option linter.style.longLine false in
 set_option maxRecDepth 100000 in
@@ -2535,8 +2540,8 @@ theorem ballLM_118 {r : ℝ} (hr : 0 ≤ r) (hq : Real.exp r ≤ (74315 : ℕ) /
     (node3_fullN hr hq hc hWLM boxLM (l1LM 49) (fun _ => rfl)
       (fun i hi => normLM hq hc i (by omega)) (ballLM_117 hr hq hc hU hZ hA hB) trLMN_R4 1 0 0 (1 : ℤ)
       64 48 20 144 65 21 11 8 9 32 24 398793257460055277611905978004371088274362672489774235457524613012502714314575785144219063957384405590192162382610473232023103412611384079570548821884357210497698422060257358232640112383446343254853216197897447834853930509787416448558952520860025755744301688230291226570344411626511593895390625
-      (kronLM 144 65 49) (by decide +kernel) (by decide +kernel) (by decide +kernel) (by norm_num) (by decide +kernel)
-      lLM_R4 kLM_R4 (by decide +kernel) (relLM_R4 c u z))
+      (kronLM 144 65 49) (by kernel_fact) (by kernel_fact) (by kernel_fact) (by norm_num) (by kernel_fact)
+      lLM_R4 kLM_R4 (by kernel_fact) (relLM_R4 c u z))
 
 set_option linter.style.longLine false in
 set_option maxRecDepth 100000 in
@@ -2550,8 +2555,8 @@ theorem ballLM_119 {r : ℝ} (hr : 0 ≤ r) (hq : Real.exp r ≤ (74315 : ℕ) /
     (node3_fullN hr hq hc hWLM boxLM (l1LM 49) (fun _ => rfl)
       (fun i hi => normLM hq hc i (by omega)) (ballLM_118 hr hq hc hU hZ hA hB) trLMN_R8 1 0 0 (1 : ℤ)
       64 48 20 144 65 21 11 8 9 32 24 1309600294404443936356438483934532214004170837620337490291138017361515226746993348590449772613094818600279223012775508112321842744493696470970422664743647548680577318469509871535670254215793885972403328832059763925946969133660249123368524201180623317112468746073874837943030980343984222276953125
-      (kronLM 144 65 49) (by decide +kernel) (by decide +kernel) (by decide +kernel) (by norm_num) (by decide +kernel)
-      lLM_R8 kLM_R8 (by decide +kernel) (relLM_R8 c u z))
+      (kronLM 144 65 49) (by kernel_fact) (by kernel_fact) (by kernel_fact) (by norm_num) (by kernel_fact)
+      lLM_R8 kLM_R8 (by kernel_fact) (relLM_R8 c u z))
 
 set_option linter.style.longLine false in
 set_option maxRecDepth 100000 in
@@ -2565,8 +2570,8 @@ theorem ballLM_120 {r : ℝ} (hr : 0 ≤ r) (hq : Real.exp r ≤ (74315 : ℕ) /
     (node3_fullN hr hq hc hWLM boxLM (l1LM 49) (fun _ => rfl)
       (fun i hi => normLM hq hc i (by omega)) (ballLM_119 hr hq hc hU hZ hA hB) trLMN_P42 1 0 0 (1 : ℤ)
       64 48 20 146 65 21 11 8 9 32 24 12152441659140632478287917312966362632530487766316226337330391989872455620839429140325987305074953360934416664408573435028712420299862052129956267885349037897363719395081714276119410666461867921499738795246964167990971933587745901437464119746526761867571660436580855996187715652614488633957500000
-      (kronLM 146 65 49) (by decide +kernel) (by decide +kernel) (by decide +kernel) (by norm_num) (by decide +kernel)
-      lLM_P42 kLM_P42 (by decide +kernel) (relLM_P42 c u z))
+      (kronLM 146 65 49) (by kernel_fact) (by kernel_fact) (by kernel_fact) (by norm_num) (by kernel_fact)
+      lLM_P42 kLM_P42 (by kernel_fact) (relLM_P42 c u z))
 
 set_option linter.style.longLine false in
 set_option maxRecDepth 100000 in
@@ -2580,8 +2585,8 @@ theorem ballLM_121 {r : ℝ} (hr : 0 ≤ r) (hq : Real.exp r ≤ (74315 : ℕ) /
     (node3_fullN hr hq hc hWLM boxLM (l1LM 49) (fun _ => rfl)
       (fun i hi => normLM hq hc i (by omega)) (ballLM_120 hr hq hc hU hZ hA hB) trLMN_E4P 1 0 0 (1 : ℤ)
       64 48 20 145 65 21 11 8 9 32 24 11629910760006771413168579694687429800809760605138005404419823141734985946922777138608140395131276052221470557389701647828283317455515548640423511332693592847678484159307964770650270700839726938176527487708180628134698449481763919645528721375938438276837467940979435521258139392240994182823593750
-      (kronLM 145 65 49) (by decide +kernel) (by decide +kernel) (by decide +kernel) (by norm_num) (by decide +kernel)
-      lLM_E4P kLM_E4P (by decide +kernel) (relLM_E4P c u z))
+      (kronLM 145 65 49) (by kernel_fact) (by kernel_fact) (by kernel_fact) (by norm_num) (by kernel_fact)
+      lLM_E4P kLM_E4P (by kernel_fact) (relLM_E4P c u z))
 
 set_option linter.style.longLine false in
 set_option maxRecDepth 100000 in
@@ -2595,8 +2600,8 @@ theorem ballLM_122 {r : ℝ} (hr : 0 ≤ r) (hq : Real.exp r ≤ (74315 : ℕ) /
     (node3_fullN hr hq hc hWLM boxLM (l1LM 49) (fun _ => rfl)
       (fun i hi => normLM hq hc i (by omega)) (ballLM_121 hr hq hc hU hZ hA hB) trLMN_PP4 1 0 0 (1 : ℤ)
       64 48 20 146 65 21 11 8 9 32 24 7453499927686618971514314909838376119751444052065044353377073223386466878786746306654857275917927759319266333727662042456458819366967254306972998331312849151144601640821156578977418002706999784558285305983739582880863844308038851862205626862708338972164902033976805561408188739642547783859453125
-      (kronLM 146 65 49) (by decide +kernel) (by decide +kernel) (by decide +kernel) (by norm_num) (by decide +kernel)
-      lLM_PP4 kLM_PP4 (by decide +kernel) (relLM_PP4 c u z))
+      (kronLM 146 65 49) (by kernel_fact) (by kernel_fact) (by kernel_fact) (by norm_num) (by kernel_fact)
+      lLM_PP4 kLM_PP4 (by kernel_fact) (relLM_PP4 c u z))
 
 set_option linter.style.longLine false in
 set_option maxRecDepth 100000 in
@@ -2610,8 +2615,8 @@ theorem ballLM_123 {r : ℝ} (hr : 0 ≤ r) (hq : Real.exp r ≤ (74315 : ℕ) /
     (node3_fullN hr hq hc hWLM boxLM (l1LM 49) (fun _ => rfl)
       (fun i hi => normLM hq hc i (by omega)) (ballLM_122 hr hq hc hU hZ hA hB) trLMN_QPP4P 1 0 2 (1 : ℤ)
       64 48 20 145 65 21 11 8 9 32 24 9105864024931206223578398227417772087359560986949537202538523784815321642543825417887362405425034810833537369526672981476747720471353394389971025622078553309780171001269051664268205557029970390383894567907117393709562723254146035612024799980458510521559708061714209007123491680012238562782656250
-      (kronLM 145 65 49) (by decide +kernel) (by decide +kernel) (by decide +kernel) (by norm_num) (by decide +kernel)
-      lLM_QPP4P kLM_QPP4P (by decide +kernel) (relLM_QPP4P c u z))
+      (kronLM 145 65 49) (by kernel_fact) (by kernel_fact) (by kernel_fact) (by norm_num) (by kernel_fact)
+      lLM_QPP4P kLM_QPP4P (by kernel_fact) (relLM_QPP4P c u z))
 
 set_option linter.style.longLine false in
 set_option maxRecDepth 100000 in
@@ -2622,7 +2627,7 @@ theorem ballLM_124 {r : ℝ} (hr : 0 ≤ r) (hq : Real.exp r ≤ (74315 : ℕ) /
     (hA : Bd r (dTh u - xLM c 6) (ELM 6)) (hB : Bd r (dTh z - xLM c 7) (ELM 7)) :
     ∀ i, i < 124 → Bd r (XLM c u z i - xLM c i) (ELM i) :=
   chain_succ (ballLM_123 hr hq hc hU hZ hA hB)
-    (step_exact (XLM_eq_V40 hc u z) (by decide +kernel))
+    (step_exact (XLM_eq_V40 hc u z) (by kernel_fact))
 
 set_option linter.style.longLine false in
 set_option maxRecDepth 100000 in
@@ -2647,8 +2652,8 @@ theorem ballLM_126 {r : ℝ} (hr : 0 ≤ r) (hq : Real.exp r ≤ (74315 : ℕ) /
     (node3_fullN hr hq hc hWLM boxLM (l1LM 49) (fun _ => rfl)
       (fun i hi => normLM hq hc i (by omega)) (ballLM_125 hr hq hc hU hZ hA hB) trLMN_VV4 1 0 0 (1 : ℤ)
       64 48 20 146 65 21 11 8 9 32 24 41054775922427878617466141267196496170631473101154405796761814306046327779120360405131441974073646497605698086898173857009499430450661059589607842626428984959532580555680436111642643155260897911113604670184687189295009217130968696835612111868226861949646330510346602295143582416985282907421875
-      (kronLM 146 65 49) (by decide +kernel) (by decide +kernel) (by decide +kernel) (by norm_num) (by decide +kernel)
-      lLM_VV4 kLM_VV4 (by decide +kernel) (relLM_VV4 c u z))
+      (kronLM 146 65 49) (by kernel_fact) (by kernel_fact) (by kernel_fact) (by norm_num) (by kernel_fact)
+      lLM_VV4 kLM_VV4 (by kernel_fact) (relLM_VV4 c u z))
 
 set_option linter.style.longLine false in
 set_option maxRecDepth 100000 in
@@ -2662,8 +2667,8 @@ theorem ballLM_127 {r : ℝ} (hr : 0 ≤ r) (hq : Real.exp r ≤ (74315 : ℕ) /
     (node3_fullN hr hq hc hWLM boxLM (l1LM 49) (fun _ => rfl)
       (fun i hi => normLM hq hc i (by omega)) (ballLM_126 hr hq hc hU hZ hA hB) trLMN_Bm 1 0 2 (1 : ℤ)
       64 48 20 146 65 21 11 8 9 32 24 786115627644852024346647471262539994811744665344877098008007484416573797288168847450798863787922373818456270274603929232274748177675141239729667244054258419654978807319323884211863377952198152340083931067444693702643961077655124285852948730455489058192807823125555352359060475094994050220546875
-      (kronLM 146 65 49) (by decide +kernel) (by decide +kernel) (by decide +kernel) (by norm_num) (by decide +kernel)
-      lLM_Bm kLM_Bm (by decide +kernel) (relLM_Bm c u z))
+      (kronLM 146 65 49) (by kernel_fact) (by kernel_fact) (by kernel_fact) (by norm_num) (by kernel_fact)
+      lLM_Bm kLM_Bm (by kernel_fact) (relLM_Bm c u z))
 
 set_option linter.style.longLine false in
 set_option maxRecDepth 100000 in
@@ -2677,8 +2682,8 @@ theorem ballLM_128 {r : ℝ} (hr : 0 ≤ r) (hq : Real.exp r ≤ (74315 : ℕ) /
     (node3_fullN hr hq hc hWLM boxLM (l1LM 25) (fun _ => rfl)
       (fun i hi => normLM hq hc i (by omega)) (ballLM_127 hr hq hc hU hZ hA hB) trLMN_lamv 0 0 0 (32 : ℤ)
       32 24 10 80 33 11 9 8 5 16 12 0
-      (kronLM 80 33 25) (by decide +kernel) (by decide +kernel) (by decide +kernel) (by norm_num) (by decide +kernel)
-      lLM_lamv kLM_lamv (by decide +kernel) (relLM_lamv c u z))
+      (kronLM 80 33 25) (by kernel_fact) (by kernel_fact) (by kernel_fact) (by norm_num) (by kernel_fact)
+      lLM_lamv kLM_lamv (by kernel_fact) (relLM_lamv c u z))
 
 set_option linter.style.longLine false in
 set_option maxRecDepth 100000 in
@@ -2692,8 +2697,8 @@ theorem ballLM_129 {r : ℝ} (hr : 0 ≤ r) (hq : Real.exp r ≤ (74315 : ℕ) /
     (node3_fullN hr hq hc hWLM boxLM (l1LM 49) (fun _ => rfl)
       (fun i hi => normLM hq hc i (by omega)) (ballLM_128 hr hq hc hU hZ hA hB) trLMN_EN 1 0 2 (-1 : ℤ)
       64 48 20 142 65 21 11 8 9 32 24 3163150778223101573063397679632791360853413789925412748875589677716760211024185431576114463553284640000903757446621929090110153383002471574950949153254986119705818034328794259567008700064184997783995004358170775579709875635668810876672227330594623269850795343881783716046410224874951802880000000
-      (kronLM 142 65 49) (by decide +kernel) (by decide +kernel) (by decide +kernel) (by norm_num) (by decide +kernel)
-      lLM_EN kLM_EN (by decide +kernel) (relLM_EN c u z))
+      (kronLM 142 65 49) (by kernel_fact) (by kernel_fact) (by kernel_fact) (by norm_num) (by kernel_fact)
+      lLM_EN kLM_EN (by kernel_fact) (relLM_EN c u z))
 
 set_option linter.style.longLine false in
 set_option maxRecDepth 100000 in
@@ -2704,7 +2709,7 @@ theorem ballLM_130 {r : ℝ} (hr : 0 ≤ r) (hq : Real.exp r ≤ (74315 : ℕ) /
     (hA : Bd r (dTh u - xLM c 6) (ELM 6)) (hB : Bd r (dTh z - xLM c 7) (ELM 7)) :
     ∀ i, i < 130 → Bd r (XLM c u z i - xLM c i) (ELM i) :=
   chain_succ (ballLM_129 hr hq hc hU hZ hA hB)
-    (step_exact (XLM_eq_N0 hc u z) (by decide +kernel))
+    (step_exact (XLM_eq_N0 hc u z) (by kernel_fact))
 
 set_option linter.style.longLine false in
 set_option maxRecDepth 100000 in
@@ -2729,8 +2734,8 @@ theorem ballLM_132 {r : ℝ} (hr : 0 ≤ r) (hq : Real.exp r ≤ (74315 : ℕ) /
     (node3_fullN hr hq hc hWLM boxLM (l1LM 49) (fun _ => rfl)
       (fun i hi => normLM hq hc i (by omega)) (ballLM_131 hr hq hc hU hZ hA hB) trLMN_Fv 1 0 0 (2 : ℤ)
       64 48 20 142 65 21 11 8 9 32 24 51209116761232295081790966136095013680064110373303235782188098510771713852923958766735099748735148398521672121966894998718954690044259529308348479052010157552360651653038359375686842022051041039756539470381386064776647216696019586596525169421988720254214213047717387777843355797121853866043281250
-      (kronLM 142 65 49) (by decide +kernel) (by decide +kernel) (by decide +kernel) (by norm_num) (by decide +kernel)
-      lLM_Fv kLM_Fv (by decide +kernel) (relLM_Fv c u z))
+      (kronLM 142 65 49) (by kernel_fact) (by kernel_fact) (by kernel_fact) (by norm_num) (by kernel_fact)
+      lLM_Fv kLM_Fv (by kernel_fact) (relLM_Fv c u z))
 
 set_option linter.style.longLine false in
 set_option maxRecDepth 100000 in
@@ -2744,8 +2749,8 @@ theorem ballLM_133 {r : ℝ} (hr : 0 ≤ r) (hq : Real.exp r ≤ (74315 : ℕ) /
     (node3_fullN hr hq hc hWLM boxLM (l1LM 49) (fun _ => rfl)
       (fun i hi => normLM hq hc i (by omega)) (ballLM_132 hr hq hc hU hZ hA hB) trLMN_R7 1 0 0 (1 : ℤ)
       64 48 20 144 65 21 11 8 9 32 24 979393108171535677732606367267055311917782786558079793907902173866715693588451387786680201251969952564926655542694492363355890012165084922210890038666683042585257215531753806692405740501400983195776947513643350676006095042962223077282127403859919099197853330914129569976608013503097291421562500
-      (kronLM 144 65 49) (by decide +kernel) (by decide +kernel) (by decide +kernel) (by norm_num) (by decide +kernel)
-      lLM_R7 kLM_R7 (by decide +kernel) (relLM_R7 c u z))
+      (kronLM 144 65 49) (by kernel_fact) (by kernel_fact) (by kernel_fact) (by norm_num) (by kernel_fact)
+      lLM_R7 kLM_R7 (by kernel_fact) (relLM_R7 c u z))
 
 set_option linter.style.longLine false in
 set_option maxRecDepth 100000 in
@@ -2759,8 +2764,8 @@ theorem ballLM_134 {r : ℝ} (hr : 0 ≤ r) (hq : Real.exp r ≤ (74315 : ℕ) /
     (node3_fullN hr hq hc hWLM boxLM (l1LM 49) (fun _ => rfl)
       (fun i hi => normLM hq hc i (by omega)) (ballLM_133 hr hq hc hU hZ hA hB) trLMN_P4P4u 1 0 0 (1 : ℤ)
       64 48 20 148 65 21 11 8 9 32 24 72346669925839959046671962432139872240112453400452095497672217132179964460960730710714928737745672076282284621446434677975628151785038331412457968421467978813866189386258547968059377603287443731788008582169284733597134033758642172507790061498983994772865452643928833133801528230328112187714687500
-      (kronLM 148 65 49) (by decide +kernel) (by decide +kernel) (by decide +kernel) (by norm_num) (by decide +kernel)
-      lLM_P4P4u kLM_P4P4u (by decide +kernel) (relLM_P4P4u c u z))
+      (kronLM 148 65 49) (by kernel_fact) (by kernel_fact) (by kernel_fact) (by norm_num) (by kernel_fact)
+      lLM_P4P4u kLM_P4P4u (by kernel_fact) (relLM_P4P4u c u z))
 
 set_option linter.style.longLine false in
 set_option maxRecDepth 100000 in
@@ -2774,8 +2779,8 @@ theorem ballLM_135 {r : ℝ} (hr : 0 ≤ r) (hq : Real.exp r ≤ (74315 : ℕ) /
     (node3_fullN hr hq hc hWLM boxLM (l1LM 49) (fun _ => rfl)
       (fun i hi => normLM hq hc i (by omega)) (ballLM_134 hr hq hc hU hZ hA hB) trLMN_E4uP 1 0 0 (1 : ℤ)
       64 48 20 149 65 21 11 8 9 32 24 30743665339436468290211656281162040337489314326984184266845433547350373815075466082683362025528099951610631649435941463483574240331956042712107236720152188451122327460010548396599374555319983058598011904673674309113035283070451172733126076128295234508286089895293991049819283145990795220952343750
-      (kronLM 149 65 49) (by decide +kernel) (by decide +kernel) (by decide +kernel) (by norm_num) (by decide +kernel)
-      lLM_E4uP kLM_E4uP (by decide +kernel) (relLM_E4uP c u z))
+      (kronLM 149 65 49) (by kernel_fact) (by kernel_fact) (by kernel_fact) (by norm_num) (by kernel_fact)
+      lLM_E4uP kLM_E4uP (by kernel_fact) (relLM_E4uP c u z))
 
 set_option linter.style.longLine false in
 set_option maxRecDepth 100000 in
@@ -2789,8 +2794,8 @@ theorem ballLM_136 {r : ℝ} (hr : 0 ≤ r) (hq : Real.exp r ≤ (74315 : ℕ) /
     (node3_fullN hr hq hc hWLM boxLM (l1LM 49) (fun _ => rfl)
       (fun i hi => normLM hq hc i (by omega)) (ballLM_135 hr hq hc hU hZ hA hB) trLMN_dPP4 1 0 0 (1 : ℤ)
       64 48 20 148 65 21 11 8 9 32 24 80111382412680860945022087857351781052318511397063879296567567322431281962782875761762469618078099450770452840957104431546179795960029145591269489173427147771401568149465704935441963262527905878313213618719783575640900262354950149458119840001691975243841283473355949156897822085698311263724375000
-      (kronLM 148 65 49) (by decide +kernel) (by decide +kernel) (by decide +kernel) (by norm_num) (by decide +kernel)
-      lLM_dPP4 kLM_dPP4 (by decide +kernel) (relLM_dPP4 c u z))
+      (kronLM 148 65 49) (by kernel_fact) (by kernel_fact) (by kernel_fact) (by norm_num) (by kernel_fact)
+      lLM_dPP4 kLM_dPP4 (by kernel_fact) (relLM_dPP4 c u z))
 
 set_option linter.style.longLine false in
 set_option maxRecDepth 100000 in
@@ -2804,8 +2809,8 @@ theorem ballLM_137 {r : ℝ} (hr : 0 ≤ r) (hq : Real.exp r ≤ (74315 : ℕ) /
     (node3_fullN hr hq hc hWLM boxLM (l1LM 49) (fun _ => rfl)
       (fun i hi => normLM hq hc i (by omega)) (ballLM_136 hr hq hc hU hZ hA hB) trLMN_QPP4uP 1 0 2 (1 : ℤ)
       64 48 20 149 65 21 11 8 9 32 24 33791739648445671851191859073620541866374395451442641989758185314775682524116127958701275834117848156481050849401809576500704450421570038171169523126670358425782499898142031227301900944481763488882039175723050527161579834036068791995130442031308960464998563353350837238910861578368145524416875000
-      (kronLM 149 65 49) (by decide +kernel) (by decide +kernel) (by decide +kernel) (by norm_num) (by decide +kernel)
-      lLM_QPP4uP kLM_QPP4uP (by decide +kernel) (relLM_QPP4uP c u z))
+      (kronLM 149 65 49) (by kernel_fact) (by kernel_fact) (by kernel_fact) (by norm_num) (by kernel_fact)
+      lLM_QPP4uP kLM_QPP4uP (by kernel_fact) (relLM_QPP4uP c u z))
 
 set_option linter.style.longLine false in
 set_option maxRecDepth 100000 in
@@ -2819,8 +2824,8 @@ theorem ballLM_138 {r : ℝ} (hr : 0 ≤ r) (hq : Real.exp r ≤ (74315 : ℕ) /
     (node3_fullN hr hq hc hWLM boxLM (l1LM 49) (fun _ => rfl)
       (fun i hi => normLM hq hc i (by omega)) (ballLM_137 hr hq hc hU hZ hA hB) trLMN_QPP4zP 1 0 3 (1 : ℤ)
       64 48 20 143 65 21 11 8 9 32 24 1456958309831675294312278093357645028987900708416706180655038525021614649520474215374424678048036130587746763763633980067544011147581624024550640914409482771540143571120972818019293319042124695570542126786894226367297570227207217759154219811457809783218332609450484920944299212184985067711718750
-      (kronLM 143 65 49) (by decide +kernel) (by decide +kernel) (by decide +kernel) (by norm_num) (by decide +kernel)
-      lLM_QPP4zP kLM_QPP4zP (by decide +kernel) (relLM_QPP4zP c u z))
+      (kronLM 143 65 49) (by kernel_fact) (by kernel_fact) (by kernel_fact) (by norm_num) (by kernel_fact)
+      lLM_QPP4zP kLM_QPP4zP (by kernel_fact) (relLM_QPP4zP c u z))
 
 set_option linter.style.longLine false in
 set_option maxRecDepth 100000 in
@@ -2834,8 +2839,8 @@ theorem ballLM_139 {r : ℝ} (hr : 0 ≤ r) (hq : Real.exp r ≤ (74315 : ℕ) /
     (node3_fullN hr hq hc hWLM boxLM (l1LM 73) (fun _ => rfl)
       (fun i hi => normLM hq hc i (by omega)) (ballLM_138 hr hq hc hU hZ hA hB) trLMN_V43 2 0 0 (1 : ℤ)
       96 72 30 218 97 31 12 8 13 48 36 249474769539329323471458004092476367445985518557067611706777083678591792543826477610142295911236131561411014990043845080534740410814112766012372657045351968823482284594270456719025030709092366547775870256787980198820754649708162492412035937376542432200769023750714637093420790678087229219132233966451952128353759802439398088129613345423614246564253875717281559076589713295233636247287520577237116310707286759339912351203358092230323460015977421875
-      (kronLM 218 97 73) (by decide +kernel) (by decide +kernel) (by decide +kernel) (by norm_num) (by decide +kernel)
-      lLM_V43 kLM_V43 (by decide +kernel) (relLM_V43 c u z))
+      (kronLM 218 97 73) (by kernel_fact) (by kernel_fact) (by kernel_fact) (by norm_num) (by kernel_fact)
+      lLM_V43 kLM_V43 (by kernel_fact) (relLM_V43 c u z))
 
 set_option linter.style.longLine false in
 set_option maxRecDepth 100000 in
@@ -2849,8 +2854,8 @@ theorem ballLM_140 {r : ℝ} (hr : 0 ≤ r) (hq : Real.exp r ≤ (74315 : ℕ) /
     (node3_fullN hr hq hc hWLM boxLM (l1LM 49) (fun _ => rfl)
       (fun i hi => normLM hq hc i (by omega)) (ballLM_139 hr hq hc hU hZ hA hB) trLMN_V4u 1 0 0 (-2 : ℤ)
       64 48 20 137 65 21 11 8 9 32 24 9289205849270771224446993598518069550318011349535624552432725463397951568959484495391749313759401517797328338559607999770197234637471269394764200519509756027270993501137002628891457653220444163810770095356995562622278707698281193473838336156285038234398006819681894002084198776637803310550468750
-      (kronLM 137 65 49) (by decide +kernel) (by decide +kernel) (by decide +kernel) (by norm_num) (by decide +kernel)
-      lLM_V4u kLM_V4u (by decide +kernel) (relLM_V4u c u z))
+      (kronLM 137 65 49) (by kernel_fact) (by kernel_fact) (by kernel_fact) (by norm_num) (by kernel_fact)
+      lLM_V4u kLM_V4u (by kernel_fact) (relLM_V4u c u z))
 
 set_option linter.style.longLine false in
 set_option maxRecDepth 100000 in
@@ -2864,8 +2869,8 @@ theorem ballLM_141 {r : ℝ} (hr : 0 ≤ r) (hq : Real.exp r ≤ (74315 : ℕ) /
     (node3_fullN hr hq hc hWLM boxLM (l1LM 49) (fun _ => rfl)
       (fun i hi => normLM hq hc i (by omega)) (ballLM_140 hr hq hc hU hZ hA hB) trLMN_Vu 1 0 2 (-2 : ℤ)
       64 48 20 143 65 21 11 8 9 32 24 23581209841170904288827256813731621056988951257685847157073369344550549914020024366971971990966203413612826619092131821302261625143823081942913251177942497973317494296273920834661566302251383434681490173104787228931654511656420211261551307136345621759575983937036163323453353138282056767406718750
-      (kronLM 143 65 49) (by decide +kernel) (by decide +kernel) (by decide +kernel) (by norm_num) (by decide +kernel)
-      lLM_Vu kLM_Vu (by decide +kernel) (relLM_Vu c u z))
+      (kronLM 143 65 49) (by kernel_fact) (by kernel_fact) (by kernel_fact) (by norm_num) (by kernel_fact)
+      lLM_Vu kLM_Vu (by kernel_fact) (relLM_Vu c u z))
 
 set_option linter.style.longLine false in
 set_option maxRecDepth 100000 in
@@ -2879,8 +2884,8 @@ theorem ballLM_142 {r : ℝ} (hr : 0 ≤ r) (hq : Real.exp r ≤ (74315 : ℕ) /
     (node3_fullN hr hq hc hWLM boxLM (l1LM 49) (fun _ => rfl)
       (fun i hi => normLM hq hc i (by omega)) (ballLM_141 hr hq hc hU hZ hA hB) trLMN_Vz 1 0 3 (-2 : ℤ)
       64 48 20 143 65 21 11 8 9 32 24 16575403074228191591128272516658286101772254713623300811918713115121880758184018511372243879730508732215531704382176781292075795860967591724502606065253513144933408912035429799490019093429684808227705111788148210327327154597169989361908302975713327108787083307288067070812118757431319709180781250
-      (kronLM 143 65 49) (by decide +kernel) (by decide +kernel) (by decide +kernel) (by norm_num) (by decide +kernel)
-      lLM_Vz kLM_Vz (by decide +kernel) (relLM_Vz c u z))
+      (kronLM 143 65 49) (by kernel_fact) (by kernel_fact) (by kernel_fact) (by norm_num) (by kernel_fact)
+      lLM_Vz kLM_Vz (by kernel_fact) (relLM_Vz c u z))
 
 set_option linter.style.longLine false in
 set_option maxRecDepth 100000 in
@@ -2894,8 +2899,8 @@ theorem ballLM_143 {r : ℝ} (hr : 0 ≤ r) (hq : Real.exp r ≤ (74315 : ℕ) /
     (node3_fullN hr hq hc hWLM boxLM (l1LM 49) (fun _ => rfl)
       (fun i hi => normLM hq hc i (by omega)) (ballLM_142 hr hq hc hU hZ hA hB) trLMN_D4u 1 0 0 (1 : ℤ)
       64 48 20 142 65 21 11 8 9 32 24 1214226018381266397025902674752233065419015331978260000824102091871701938509510458229638610107663044062084881603194566168766485610968756310791666696754409125992216495882957781193714621742675731962220653675287025959611015583046955090293230507466107350553039723505538703908171846726513242260390625
-      (kronLM 142 65 49) (by decide +kernel) (by decide +kernel) (by decide +kernel) (by norm_num) (by decide +kernel)
-      lLM_D4u kLM_D4u (by decide +kernel) (relLM_D4u c u z))
+      (kronLM 142 65 49) (by kernel_fact) (by kernel_fact) (by kernel_fact) (by norm_num) (by kernel_fact)
+      lLM_D4u kLM_D4u (by kernel_fact) (relLM_D4u c u z))
 
 set_option linter.style.longLine false in
 set_option maxRecDepth 100000 in
@@ -2909,8 +2914,8 @@ theorem ballLM_144 {r : ℝ} (hr : 0 ≤ r) (hq : Real.exp r ≤ (74315 : ℕ) /
     (node3_fullN hr hq hc hWLM boxLM (l1LM 49) (fun _ => rfl)
       (fun i hi => normLM hq hc i (by omega)) (ballLM_143 hr hq hc hU hZ hA hB) trLMN_D4z 1 0 3 (1 : ℤ)
       64 48 20 142 65 21 11 8 9 32 24 114352482874392662758503353013922064301416509866248145904213637866444234971267707927575061131201015845842370260832594385296401583349546930278453929237946927975074532954607948145628407651223594229116810356392548379981779534373262768222264072924053344784572584484188600529547945868895140693671875
-      (kronLM 142 65 49) (by decide +kernel) (by decide +kernel) (by decide +kernel) (by norm_num) (by decide +kernel)
-      lLM_D4z kLM_D4z (by decide +kernel) (relLM_D4z c u z))
+      (kronLM 142 65 49) (by kernel_fact) (by kernel_fact) (by kernel_fact) (by norm_num) (by kernel_fact)
+      lLM_D4z kLM_D4z (by kernel_fact) (relLM_D4z c u z))
 
 set_option linter.style.longLine false in
 set_option maxRecDepth 100000 in
@@ -2924,8 +2929,8 @@ theorem ballLM_145 {r : ℝ} (hr : 0 ≤ r) (hq : Real.exp r ≤ (74315 : ℕ) /
     (node3_fullN hr hq hc hWLM boxLM (l1LM 49) (fun _ => rfl)
       (fun i hi => normLM hq hc i (by omega)) (ballLM_144 hr hq hc hU hZ hA hB) trLMN_Bmu 1 0 2 (1 : ℤ)
       64 48 20 146 65 21 11 8 9 32 24 21705246514535472658800608188887728544306108120243953306607495424779586044339127734304503885001473721840132576372079315420693396513405250768239390377178087669216472548860856870579763741765216795417917628084587988314232111028770903214598363708665028739996841132615790303078197678630681509869062500
-      (kronLM 146 65 49) (by decide +kernel) (by decide +kernel) (by decide +kernel) (by norm_num) (by decide +kernel)
-      lLM_Bmu kLM_Bmu (by decide +kernel) (relLM_Bmu c u z))
+      (kronLM 146 65 49) (by kernel_fact) (by kernel_fact) (by kernel_fact) (by norm_num) (by kernel_fact)
+      lLM_Bmu kLM_Bmu (by kernel_fact) (relLM_Bmu c u z))
 
 set_option linter.style.longLine false in
 set_option maxRecDepth 100000 in
@@ -2939,8 +2944,8 @@ theorem ballLM_146 {r : ℝ} (hr : 0 ≤ r) (hq : Real.exp r ≤ (74315 : ℕ) /
     (node3_fullN hr hq hc hWLM boxLM (l1LM 49) (fun _ => rfl)
       (fun i hi => normLM hq hc i (by omega)) (ballLM_145 hr hq hc hU hZ hA hB) trLMN_Bmz 1 0 1 (1 : ℤ)
       64 48 20 143 65 21 11 8 9 32 24 11845407294247458823118695840374584792732368737147997861445056432107757006954077288422214140036948889434828768566207908832595528956180883235298704574720655579230102347799725161760278581275689783287987876286733067864051623521646455584966310612898846571223083980116955643139223387103958627826093750
-      (kronLM 143 65 49) (by decide +kernel) (by decide +kernel) (by decide +kernel) (by norm_num) (by decide +kernel)
-      lLM_Bmz kLM_Bmz (by decide +kernel) (relLM_Bmz c u z))
+      (kronLM 143 65 49) (by kernel_fact) (by kernel_fact) (by kernel_fact) (by norm_num) (by kernel_fact)
+      lLM_Bmz kLM_Bmz (by kernel_fact) (relLM_Bmz c u z))
 
 set_option linter.style.longLine false in
 set_option maxRecDepth 100000 in
@@ -2954,8 +2959,8 @@ theorem ballLM_147 {r : ℝ} (hr : 0 ≤ r) (hq : Real.exp r ≤ (74315 : ℕ) /
     (node3_fullN hr hq hc hWLM boxLM (l1LM 49) (fun _ => rfl)
       (fun i hi => normLM hq hc i (by omega)) (ballLM_146 hr hq hc hU hZ hA hB) trLMN_Nsq 1 0 0 (1 : ℤ)
       64 48 20 146 65 21 11 8 9 32 24 109958225732168291109484971816838659263247916133750309137821336642963639821392105160444880626822233754740549582881136677600401461434401131531659317272811874349716844947009331382327835168044655538331376269418159060355523431163760272459578630879990582473947163793319548095210957632694892902990937500
-      (kronLM 146 65 49) (by decide +kernel) (by decide +kernel) (by decide +kernel) (by norm_num) (by decide +kernel)
-      lLM_Nsq kLM_Nsq (by decide +kernel) (relLM_Nsq c u z))
+      (kronLM 146 65 49) (by kernel_fact) (by kernel_fact) (by kernel_fact) (by norm_num) (by kernel_fact)
+      lLM_Nsq kLM_Nsq (by kernel_fact) (relLM_Nsq c u z))
 
 set_option linter.style.longLine false in
 set_option maxRecDepth 100000 in
@@ -2969,8 +2974,8 @@ theorem ballLM_148 {r : ℝ} (hr : 0 ≤ r) (hq : Real.exp r ≤ (74315 : ℕ) /
     (node3_fullN hr hq hc hWLM boxLM (l1LM 49) (fun _ => rfl)
       (fun i hi => normLM hq hc i (by omega)) (ballLM_147 hr hq hc hU hZ hA hB) trLMN_Gf 1 0 0 (2 : ℤ)
       64 48 20 142 65 21 11 8 9 32 24 198406208385915941665342505329830598236985911879219615077787038073435655558094093817252488150081453392470954295132425225076512219955222305486278044337316167357235774186190699353801991673485802210071174595737268669697329484952601897611574354586669278848779975987722770632000828642880145230966562500
-      (kronLM 142 65 49) (by decide +kernel) (by decide +kernel) (by decide +kernel) (by norm_num) (by decide +kernel)
-      lLM_Gf kLM_Gf (by decide +kernel) (relLM_Gf c u z))
+      (kronLM 142 65 49) (by kernel_fact) (by kernel_fact) (by kernel_fact) (by norm_num) (by kernel_fact)
+      lLM_Gf kLM_Gf (by kernel_fact) (relLM_Gf c u z))
 
 set_option linter.style.longLine false in
 set_option maxRecDepth 100000 in
@@ -2984,8 +2989,8 @@ theorem ballLM_149 {r : ℝ} (hr : 0 ≤ r) (hq : Real.exp r ≤ (74315 : ℕ) /
     (node3_fullN hr hq hc hWLM boxLM (l1LM 49) (fun _ => rfl)
       (fun i hi => normLM hq hc i (by omega)) (ballLM_148 hr hq hc hU hZ hA hB) trLMN_NG 1 0 0 (1 : ℤ)
       64 48 20 141 65 21 11 8 9 32 24 171137327298364715328640790630534308844133408321075039503012904561993443783161796903219113604977512755096089048743506187298676423144094964677336219322813972948953083891078148612321326639283432223533972396382748455738239229295618281779383283961115093031585077463943358787419343372080857083470937500
-      (kronLM 141 65 49) (by decide +kernel) (by decide +kernel) (by decide +kernel) (by norm_num) (by decide +kernel)
-      lLM_NG kLM_NG (by decide +kernel) (relLM_NG c u z))
+      (kronLM 141 65 49) (by kernel_fact) (by kernel_fact) (by kernel_fact) (by norm_num) (by kernel_fact)
+      lLM_NG kLM_NG (by kernel_fact) (relLM_NG c u z))
 
 set_option linter.style.longLine false in
 set_option maxRecDepth 100000 in
@@ -2999,8 +3004,8 @@ theorem ballLM_150 {r : ℝ} (hr : 0 ≤ r) (hq : Real.exp r ≤ (74315 : ℕ) /
     (node3_fullN hr hq hc hWLM boxLM (l1LM 49) (fun _ => rfl)
       (fun i hi => normLM hq hc i (by omega)) (ballLM_149 hr hq hc hU hZ hA hB) trLMN_LBu 1 0 2 (1 : ℤ)
       64 48 20 142 65 21 11 8 9 32 24 8989183728371544668449967986187682407753689199324564470952132644450304175371237177178854026075550519429273421145033156531961949035398866120747004134139461744454647662680334730196257435168200327929981325559001337648231819967055877626042102639454670633365480332145044358792698202299228487680000000
-      (kronLM 142 65 49) (by decide +kernel) (by decide +kernel) (by decide +kernel) (by norm_num) (by decide +kernel)
-      lLM_LBu kLM_LBu (by decide +kernel) (relLM_LBu c u z))
+      (kronLM 142 65 49) (by kernel_fact) (by kernel_fact) (by kernel_fact) (by norm_num) (by kernel_fact)
+      lLM_LBu kLM_LBu (by kernel_fact) (relLM_LBu c u z))
 
 set_option linter.style.longLine false in
 set_option maxRecDepth 100000 in
@@ -3014,8 +3019,8 @@ theorem ballLM_151 {r : ℝ} (hr : 0 ≤ r) (hq : Real.exp r ≤ (74315 : ℕ) /
     (node3_fullN hr hq hc hWLM boxLM (l1LM 49) (fun _ => rfl)
       (fun i hi => normLM hq hc i (by omega)) (ballLM_150 hr hq hc hU hZ hA hB) trLMN_LBz 1 0 1 (1 : ℤ)
       64 48 20 138 65 21 11 8 9 32 24 5683344531052357917299744123787898251254465994404024621184247410963750908460393788965502436302384020928455441992219875004877362672740529245923846761382689975357311881773860919290879804167722793074268035116338810488820891715017083442104376601468988493568181555702998140959738280798899404800000000
-      (kronLM 138 65 49) (by decide +kernel) (by decide +kernel) (by decide +kernel) (by norm_num) (by decide +kernel)
-      lLM_LBz kLM_LBz (by decide +kernel) (relLM_LBz c u z))
+      (kronLM 138 65 49) (by kernel_fact) (by kernel_fact) (by kernel_fact) (by norm_num) (by kernel_fact)
+      lLM_LBz kLM_LBz (by kernel_fact) (relLM_LBz c u z))
 
 set_option linter.style.longLine false in
 set_option maxRecDepth 100000 in
@@ -3029,8 +3034,8 @@ theorem ballLM_152 {r : ℝ} (hr : 0 ≤ r) (hq : Real.exp r ≤ (74315 : ℕ) /
     (node3_fullN hr hq hc hWLM boxLM (l1LM 49) (fun _ => rfl)
       (fun i hi => normLM hq hc i (by omega)) (ballLM_151 hr hq hc hU hZ hA hB) trLMN_Fu 1 0 2 (2 : ℤ)
       64 48 20 137 65 21 11 8 9 32 24 252906420827598378215862179332697334969955759994708645571236903520789702264111051376340418868496643724137179482707136486749573194294879703495643808194538869476181022094263101244233333388393859394282327978948262213138418891792794334743575311326287697924769979168051031381654073134542283721406953125
-      (kronLM 137 65 49) (by decide +kernel) (by decide +kernel) (by decide +kernel) (by norm_num) (by decide +kernel)
-      lLM_Fu kLM_Fu (by decide +kernel) (relLM_Fu c u z))
+      (kronLM 137 65 49) (by kernel_fact) (by kernel_fact) (by kernel_fact) (by norm_num) (by kernel_fact)
+      lLM_Fu kLM_Fu (by kernel_fact) (relLM_Fu c u z))
 
 set_option linter.style.longLine false in
 set_option maxRecDepth 100000 in
@@ -3044,8 +3049,8 @@ theorem ballLM_153 {r : ℝ} (hr : 0 ≤ r) (hq : Real.exp r ≤ (74315 : ℕ) /
     (node3_fullN hr hq hc hWLM boxLM (l1LM 49) (fun _ => rfl)
       (fun i hi => normLM hq hc i (by omega)) (ballLM_152 hr hq hc hU hZ hA hB) trLMN_Fz 1 0 1 (2 : ℤ)
       64 48 20 133 65 21 11 8 9 32 24 53409627445495980127847394131929185916901531437127067581141549095931222817370084129788026300879452917114555551275369289536167586565568255377539301116252336461957742169839750545645856906634315847010128671084702126760909550397551595190815769517182208763407749844063506228439466260933358006949062500
-      (kronLM 133 65 49) (by decide +kernel) (by decide +kernel) (by decide +kernel) (by norm_num) (by decide +kernel)
-      lLM_Fz kLM_Fz (by decide +kernel) (relLM_Fz c u z))
+      (kronLM 133 65 49) (by kernel_fact) (by kernel_fact) (by kernel_fact) (by norm_num) (by kernel_fact)
+      lLM_Fz kLM_Fz (by kernel_fact) (relLM_Fz c u z))
 
 set_option linter.style.longLine false in
 set_option maxRecDepth 100000 in
@@ -3059,8 +3064,8 @@ theorem ballLM_154 {r : ℝ} (hr : 0 ≤ r) (hq : Real.exp r ≤ (74315 : ℕ) /
     (node3_fullN hr hq hc hWLM boxLM (l1LM 49) (fun _ => rfl)
       (fun i hi => normLM hq hc i (by omega)) (ballLM_153 hr hq hc hU hZ hA hB) trLMN_YDt 1 0 0 (1 : ℤ)
       64 48 20 142 65 21 11 8 9 32 24 5767067102967380238786599407572431199597296959724791631705445289608876584527388221230581288024597834937923166673438284715143049103827256986381227210227186846804442394510679041132119467211537388898242466742947484819870679184966379801574201706431690919734512574029775641603769786671117705946171875
-      (kronLM 142 65 49) (by decide +kernel) (by decide +kernel) (by decide +kernel) (by norm_num) (by decide +kernel)
-      lLM_YDt kLM_YDt (by decide +kernel) (relLM_YDt c u z))
+      (kronLM 142 65 49) (by kernel_fact) (by kernel_fact) (by kernel_fact) (by norm_num) (by kernel_fact)
+      lLM_YDt kLM_YDt (by kernel_fact) (relLM_YDt c u z))
 
 set_option linter.style.longLine false in
 set_option maxRecDepth 100000 in
@@ -3074,8 +3079,8 @@ theorem ballLM_155 {r : ℝ} (hr : 0 ≤ r) (hq : Real.exp r ≤ (74315 : ℕ) /
     (node3_fullN hr hq hc hWLM boxLM (l1LM 49) (fun _ => rfl)
       (fun i hi => normLM hq hc i (by omega)) (ballLM_154 hr hq hc hU hZ hA hB) trLMN_DtF 1 0 0 (512 : ℤ)
       64 48 20 144 65 21 11 8 9 32 24 2906900234267925743885735813251257568725484358960037115180871597387125856255373248617789441725638521817932334430689703993157752440963903705436906371993716942938033052538396250781563797058483434898400443706635900051856857372274008881537036915235175402822591912213444880846267784137099546584687500
-      (kronLM 144 65 49) (by decide +kernel) (by decide +kernel) (by decide +kernel) (by norm_num) (by decide +kernel)
-      lLM_DtF kLM_DtF (by decide +kernel) (relLM_DtF c u z))
+      (kronLM 144 65 49) (by kernel_fact) (by kernel_fact) (by kernel_fact) (by norm_num) (by kernel_fact)
+      lLM_DtF kLM_DtF (by kernel_fact) (relLM_DtF c u z))
 
 set_option linter.style.longLine false in
 set_option maxRecDepth 100000 in
@@ -3089,8 +3094,8 @@ theorem ballLM_156 {r : ℝ} (hr : 0 ≤ r) (hq : Real.exp r ≤ (74315 : ℕ) /
     (node3_fullN hr hq hc hWLM boxLM (l1LM 49) (fun _ => rfl)
       (fun i hi => normLM hq hc i (by omega)) (ballLM_155 hr hq hc hU hZ hA hB) trLMN_YnRt 1 0 3 (1 : ℤ)
       64 48 20 143 65 21 11 8 9 32 24 11558805142861481231541878752827404613163463714998798451190769459169728528849744617714733552860010225878489537940043720321574564575205200771524656062838915280211245784651958375422515815683692258177509805893558901833346712749399259567779233509577568088518968862889746529368312117803346241132031250
-      (kronLM 143 65 49) (by decide +kernel) (by decide +kernel) (by decide +kernel) (by norm_num) (by decide +kernel)
-      lLM_YnRt kLM_YnRt (by decide +kernel) (relLM_YnRt c u z))
+      (kronLM 143 65 49) (by kernel_fact) (by kernel_fact) (by kernel_fact) (by norm_num) (by kernel_fact)
+      lLM_YnRt kLM_YnRt (by kernel_fact) (relLM_YnRt c u z))
 
 set_option linter.style.longLine false in
 set_option maxRecDepth 100000 in
@@ -3104,8 +3109,8 @@ theorem ballLM_157 {r : ℝ} (hr : 0 ≤ r) (hq : Real.exp r ≤ (74315 : ℕ) /
     (node3_fullN hr hq hc hWLM boxLM (l1LM 49) (fun _ => rfl)
       (fun i hi => normLM hq hc i (by omega)) (ballLM_156 hr hq hc hU hZ hA hB) trLMN_nRtF 1 0 3 (512 : ℤ)
       64 48 20 143 65 21 11 8 9 32 24 3756024282070285113900425022536466538168876139341621393602060635472833888925169351314659393771311855490364306165169195517544038221610447306628905198712863966392700964608473460555579014284207408579050768179477346628463025417929592372720047725830084610804711169832843318487572189248948882067890625
-      (kronLM 143 65 49) (by decide +kernel) (by decide +kernel) (by decide +kernel) (by norm_num) (by decide +kernel)
-      lLM_nRtF kLM_nRtF (by decide +kernel) (relLM_nRtF c u z))
+      (kronLM 143 65 49) (by kernel_fact) (by kernel_fact) (by kernel_fact) (by norm_num) (by kernel_fact)
+      lLM_nRtF kLM_nRtF (by kernel_fact) (relLM_nRtF c u z))
 
 set_option linter.style.longLine false in
 set_option maxRecDepth 100000 in
@@ -3119,8 +3124,8 @@ theorem ballLM_158 {r : ℝ} (hr : 0 ≤ r) (hq : Real.exp r ≤ (74315 : ℕ) /
     (node3_fullN hr hq hc hWLM boxLM (l1LM 49) (fun _ => rfl)
       (fun i hi => normLM hq hc i (by omega)) (ballLM_157 hr hq hc hU hZ hA hB) trLMN_YnZt 1 0 2 (1 : ℤ)
       64 48 20 147 65 21 11 8 9 32 24 122802318201924611126895245110315422360739795347652857560340243361438849024946901136277237534386303780974704914413755697906951506242669239019340490284355528008215895457479018067704640058239170632463604839388307359096668707792537095522789961180933519263559729376235163102597868679924138022295000000
-      (kronLM 147 65 49) (by decide +kernel) (by decide +kernel) (by decide +kernel) (by norm_num) (by decide +kernel)
-      lLM_YnZt kLM_YnZt (by decide +kernel) (relLM_YnZt c u z))
+      (kronLM 147 65 49) (by kernel_fact) (by kernel_fact) (by kernel_fact) (by norm_num) (by kernel_fact)
+      lLM_YnZt kLM_YnZt (by kernel_fact) (relLM_YnZt c u z))
 
 set_option linter.style.longLine false in
 set_option maxRecDepth 100000 in
@@ -3134,8 +3139,8 @@ theorem ballLM_159 {r : ℝ} (hr : 0 ≤ r) (hq : Real.exp r ≤ (74315 : ℕ) /
     (node3_fullN hr hq hc hWLM boxLM (l1LM 49) (fun _ => rfl)
       (fun i hi => normLM hq hc i (by omega)) (ballLM_158 hr hq hc hU hZ hA hB) trLMN_nZtF 1 0 0 (512 : ℤ)
       64 48 20 146 65 21 11 8 9 32 24 8519243677548334400498097987567506516148916891705365354164731477500419232189680454599299053318528423129547413151757633605554847390181538287317835180837648283403381060462960288682578159736245868637302988745142799407575421122905965718327322113365089346500264675813820414062000568469140137902578125
-      (kronLM 146 65 49) (by decide +kernel) (by decide +kernel) (by decide +kernel) (by norm_num) (by decide +kernel)
-      lLM_nZtF kLM_nZtF (by decide +kernel) (relLM_nZtF c u z))
+      (kronLM 146 65 49) (by kernel_fact) (by kernel_fact) (by kernel_fact) (by norm_num) (by kernel_fact)
+      lLM_nZtF kLM_nZtF (by kernel_fact) (relLM_nZtF c u z))
 
 set_option linter.style.longLine false in
 set_option maxRecDepth 100000 in
@@ -3149,8 +3154,8 @@ theorem ballLM_160 {r : ℝ} (hr : 0 ≤ r) (hq : Real.exp r ≤ (74315 : ℕ) /
     (node3_fullN hr hq hc hWLM boxLM (l1LM 49) (fun _ => rfl)
       (fun i hi => normLM hq hc i (by omega)) (ballLM_159 hr hq hc hU hZ hA hB) trLMN_YDtu 1 0 0 (1 : ℤ)
       64 48 20 147 65 21 11 8 9 32 24 129474262095486385067499767662740808377889617200004094049809186513640474394164032582665984710959008805130936596607639881985008306207766076023760833745157364850119436144856356373107597810245142094370128967092159912958169265582532341477881221030428526082792380422189573751374552595850867648770781250
-      (kronLM 147 65 49) (by decide +kernel) (by decide +kernel) (by decide +kernel) (by norm_num) (by decide +kernel)
-      lLM_YDtu kLM_YDtu (by decide +kernel) (relLM_YDtu c u z))
+      (kronLM 147 65 49) (by kernel_fact) (by kernel_fact) (by kernel_fact) (by norm_num) (by kernel_fact)
+      lLM_YDtu kLM_YDtu (by kernel_fact) (relLM_YDtu c u z))
 
 set_option linter.style.longLine false in
 set_option maxRecDepth 100000 in
@@ -3164,8 +3169,8 @@ theorem ballLM_161 {r : ℝ} (hr : 0 ≤ r) (hq : Real.exp r ≤ (74315 : ℕ) /
     (node3_fullN hr hq hc hWLM boxLM (l1LM 49) (fun _ => rfl)
       (fun i hi => normLM hq hc i (by omega)) (ballLM_160 hr hq hc hU hZ hA hB) trLMN_DtuF 1 0 0 (512 : ℤ)
       64 48 20 146 65 21 11 8 9 32 24 6284203562099964657244593722504295368682898154665015532925468312658465839011721481180390560895755854339620398330750290674268051104380965679462444365542893421511181564703405586500854950718313810786144673224066543580589980244352639521263537009070590065097320531592933026234007262896923570129843750
-      (kronLM 146 65 49) (by decide +kernel) (by decide +kernel) (by decide +kernel) (by norm_num) (by decide +kernel)
-      lLM_DtuF kLM_DtuF (by decide +kernel) (relLM_DtuF c u z))
+      (kronLM 146 65 49) (by kernel_fact) (by kernel_fact) (by kernel_fact) (by norm_num) (by kernel_fact)
+      lLM_DtuF kLM_DtuF (by kernel_fact) (relLM_DtuF c u z))
 
 set_option linter.style.longLine false in
 set_option maxRecDepth 100000 in
@@ -3179,8 +3184,8 @@ theorem ballLM_162 {r : ℝ} (hr : 0 ≤ r) (hq : Real.exp r ≤ (74315 : ℕ) /
     (node3_fullN hr hq hc hWLM boxLM (l1LM 49) (fun _ => rfl)
       (fun i hi => normLM hq hc i (by omega)) (ballLM_161 hr hq hc hU hZ hA hB) trLMN_YDtz 1 0 3 (1 : ℤ)
       64 48 20 145 65 21 11 8 9 32 24 109187532757494560125104977514384688949962421157388165055783471595038154118724814191743636937520353814099451564392104859690922701565514152041306771508888530249962025957836072558261026716217770392947587866785847358372302979103825596515668255409084981350430582889161118989417303399698603636512812500
-      (kronLM 145 65 49) (by decide +kernel) (by decide +kernel) (by decide +kernel) (by norm_num) (by decide +kernel)
-      lLM_YDtz kLM_YDtz (by decide +kernel) (relLM_YDtz c u z))
+      (kronLM 145 65 49) (by kernel_fact) (by kernel_fact) (by kernel_fact) (by norm_num) (by kernel_fact)
+      lLM_YDtz kLM_YDtz (by kernel_fact) (relLM_YDtz c u z))
 
 set_option linter.style.longLine false in
 set_option maxRecDepth 100000 in
@@ -3194,8 +3199,8 @@ theorem ballLM_163 {r : ℝ} (hr : 0 ≤ r) (hq : Real.exp r ≤ (74315 : ℕ) /
     (node3_fullN hr hq hc hWLM boxLM (l1LM 49) (fun _ => rfl)
       (fun i hi => normLM hq hc i (by omega)) (ballLM_162 hr hq hc hU hZ hA hB) trLMN_DtzF 1 0 3 (512 : ℤ)
       64 48 20 145 65 21 11 8 9 32 24 6241934372260205862984211424573065142154795965248611535674125676597822902371174611017566605815027107608972811322193377346545315081212672599008016838973824974266082496965854296735246241441208136387624867910022967670855034409613990112628113178160310456058615401390017471080578329680010966854687500
-      (kronLM 145 65 49) (by decide +kernel) (by decide +kernel) (by decide +kernel) (by norm_num) (by decide +kernel)
-      lLM_DtzF kLM_DtzF (by decide +kernel) (relLM_DtzF c u z))
+      (kronLM 145 65 49) (by kernel_fact) (by kernel_fact) (by kernel_fact) (by norm_num) (by kernel_fact)
+      lLM_DtzF kLM_DtzF (by kernel_fact) (relLM_DtzF c u z))
 
 set_option linter.style.longLine false in
 set_option maxRecDepth 100000 in
@@ -3209,8 +3214,8 @@ theorem ballLM_164 {r : ℝ} (hr : 0 ≤ r) (hq : Real.exp r ≤ (74315 : ℕ) /
     (node3_fullN hr hq hc hWLM boxLM (l1LM 49) (fun _ => rfl)
       (fun i hi => normLM hq hc i (by omega)) (ballLM_163 hr hq hc hU hZ hA hB) trLMN_YnRtu 1 0 3 (1 : ℤ)
       64 48 20 148 65 21 11 8 9 32 24 271906170942953463913697320833881729627828321577949486803680165118304197943222734637278104821151273493619216554242730912027551673952023596508631873874454697850791703832785643952073481524922691232816727544884390284091198411520798534993844450646963288690538333681540877422932988639522875080940468750
-      (kronLM 148 65 49) (by decide +kernel) (by decide +kernel) (by decide +kernel) (by norm_num) (by decide +kernel)
-      lLM_YnRtu kLM_YnRtu (by decide +kernel) (relLM_YnRtu c u z))
+      (kronLM 148 65 49) (by kernel_fact) (by kernel_fact) (by kernel_fact) (by norm_num) (by kernel_fact)
+      lLM_YnRtu kLM_YnRtu (by kernel_fact) (relLM_YnRtu c u z))
 
 set_option linter.style.longLine false in
 set_option maxRecDepth 100000 in
@@ -3224,8 +3229,8 @@ theorem ballLM_165 {r : ℝ} (hr : 0 ≤ r) (hq : Real.exp r ≤ (74315 : ℕ) /
     (node3_fullN hr hq hc hWLM boxLM (l1LM 49) (fun _ => rfl)
       (fun i hi => normLM hq hc i (by omega)) (ballLM_164 hr hq hc hU hZ hA hB) trLMN_nRtuF 1 0 3 (512 : ℤ)
       64 48 20 146 65 21 11 8 9 32 24 7513192772455208215220222298209412493311776598386971972393364354811705797163225671276050386853140999330107648950453780679163681859661015842054111126029359695870588456272351798583606048095375214312554136122352191021007691898005858961898168204959881969868206687848370971389026144527848529947500000
-      (kronLM 146 65 49) (by decide +kernel) (by decide +kernel) (by decide +kernel) (by norm_num) (by decide +kernel)
-      lLM_nRtuF kLM_nRtuF (by decide +kernel) (relLM_nRtuF c u z))
+      (kronLM 146 65 49) (by kernel_fact) (by kernel_fact) (by kernel_fact) (by norm_num) (by kernel_fact)
+      lLM_nRtuF kLM_nRtuF (by kernel_fact) (relLM_nRtuF c u z))
 
 set_option linter.style.longLine false in
 set_option maxRecDepth 100000 in
@@ -3239,8 +3244,8 @@ theorem ballLM_166 {r : ℝ} (hr : 0 ≤ r) (hq : Real.exp r ≤ (74315 : ℕ) /
     (node3_fullN hr hq hc hWLM boxLM (l1LM 49) (fun _ => rfl)
       (fun i hi => normLM hq hc i (by omega)) (ballLM_165 hr hq hc hU hZ hA hB) trLMN_YnRtz 1 0 0 (1 : ℤ)
       64 48 20 146 65 21 11 8 9 32 24 222343609425139845954110534400634196235588362176492007341330366996975041485302452969668687692711061238653081841778836284618553714001469798251303791869636527990213242462976183020736908091780850691918617387016153862300602836658248121438948042728404180763236222675849321901446991035776339315705234375
-      (kronLM 146 65 49) (by decide +kernel) (by decide +kernel) (by decide +kernel) (by norm_num) (by decide +kernel)
-      lLM_YnRtz kLM_YnRtz (by decide +kernel) (relLM_YnRtz c u z))
+      (kronLM 146 65 49) (by kernel_fact) (by kernel_fact) (by kernel_fact) (by norm_num) (by kernel_fact)
+      lLM_YnRtz kLM_YnRtz (by kernel_fact) (relLM_YnRtz c u z))
 
 set_option linter.style.longLine false in
 set_option maxRecDepth 100000 in
@@ -3254,8 +3259,8 @@ theorem ballLM_167 {r : ℝ} (hr : 0 ≤ r) (hq : Real.exp r ≤ (74315 : ℕ) /
     (node3_fullN hr hq hc hWLM boxLM (l1LM 49) (fun _ => rfl)
       (fun i hi => normLM hq hc i (by omega)) (ballLM_166 hr hq hc hU hZ hA hB) trLMN_nRtzF 1 0 0 (512 : ℤ)
       64 48 20 146 65 21 11 8 9 32 24 9351407679296083875031381650804571899411778159740467129892519043893363294359129561662126164485382401826979773303071027749603366596276797296308407136920955820556661626048133570778149422322989961452527342135471988516231282038941619551533584781183195730279495086971876181015998690434834649782265625
-      (kronLM 146 65 49) (by decide +kernel) (by decide +kernel) (by decide +kernel) (by norm_num) (by decide +kernel)
-      lLM_nRtzF kLM_nRtzF (by decide +kernel) (relLM_nRtzF c u z))
+      (kronLM 146 65 49) (by kernel_fact) (by kernel_fact) (by kernel_fact) (by norm_num) (by kernel_fact)
+      lLM_nRtzF kLM_nRtzF (by kernel_fact) (relLM_nRtzF c u z))
 
 set_option linter.style.longLine false in
 set_option maxRecDepth 100000 in
@@ -3269,8 +3274,8 @@ theorem ballLM_168 {r : ℝ} (hr : 0 ≤ r) (hq : Real.exp r ≤ (74315 : ℕ) /
     (node3_fullN hr hq hc hWLM boxLM (l1LM 49) (fun _ => rfl)
       (fun i hi => normLM hq hc i (by omega)) (ballLM_167 hr hq hc hU hZ hA hB) trLMN_YnZtu 1 0 2 (1 : ℤ)
       64 48 20 151 65 21 11 8 9 32 24 2034794443575453518605845665843796685840981284161816651167806154162976173069860161232189262536478533000598141409162879996143195025288836867666056079439788334159984234436580572892768338046113726180873141377535543742998783593740492242976369206719464369787014474027441520504312976604711674167338828125
-      (kronLM 151 65 49) (by decide +kernel) (by decide +kernel) (by decide +kernel) (by norm_num) (by decide +kernel)
-      lLM_YnZtu kLM_YnZtu (by decide +kernel) (relLM_YnZtu c u z))
+      (kronLM 151 65 49) (by kernel_fact) (by kernel_fact) (by kernel_fact) (by norm_num) (by kernel_fact)
+      lLM_YnZtu kLM_YnZtu (by kernel_fact) (relLM_YnZtu c u z))
 
 set_option linter.style.longLine false in
 set_option maxRecDepth 100000 in
@@ -3284,8 +3289,8 @@ theorem ballLM_169 {r : ℝ} (hr : 0 ≤ r) (hq : Real.exp r ≤ (74315 : ℕ) /
     (node3_fullN hr hq hc hWLM boxLM (l1LM 49) (fun _ => rfl)
       (fun i hi => normLM hq hc i (by omega)) (ballLM_168 hr hq hc hU hZ hA hB) trLMN_nZtuF 1 0 0 (512 : ℤ)
       64 48 20 148 65 21 11 8 9 32 24 13603428821661205575474342806534085040717142162034617160626013816671933546652584715275503069696349793037527522139434603687067769665512175488219116518083120507543862379538959591392718292756795054020242509132884412079025429064944089971412661792668177578836172460656250478490787883518267324513125000
-      (kronLM 148 65 49) (by decide +kernel) (by decide +kernel) (by decide +kernel) (by norm_num) (by decide +kernel)
-      lLM_nZtuF kLM_nZtuF (by decide +kernel) (relLM_nZtuF c u z))
+      (kronLM 148 65 49) (by kernel_fact) (by kernel_fact) (by kernel_fact) (by norm_num) (by kernel_fact)
+      lLM_nZtuF kLM_nZtuF (by kernel_fact) (relLM_nZtuF c u z))
 
 set_option linter.style.longLine false in
 set_option maxRecDepth 100000 in
@@ -3299,8 +3304,8 @@ theorem ballLM_170 {r : ℝ} (hr : 0 ≤ r) (hq : Real.exp r ≤ (74315 : ℕ) /
     (node3_fullN hr hq hc hWLM boxLM (l1LM 49) (fun _ => rfl)
       (fun i hi => normLM hq hc i (by omega)) (ballLM_169 hr hq hc hU hZ hA hB) trLMN_YnZtz 1 0 3 (1 : ℤ)
       64 48 20 147 65 21 11 8 9 32 24 1192648065007392318621265337397282517725621223756828519091744949885992077067593876393391126481395807477130817947802856839242506157913076509277918269244405864677181319143533222318331981334046788227050652927821520378951150361661032206651966002220661554076442169942817087377805544966763940239195937500
-      (kronLM 147 65 49) (by decide +kernel) (by decide +kernel) (by decide +kernel) (by norm_num) (by decide +kernel)
-      lLM_YnZtz kLM_YnZtz (by decide +kernel) (relLM_YnZtz c u z))
+      (kronLM 147 65 49) (by kernel_fact) (by kernel_fact) (by kernel_fact) (by norm_num) (by kernel_fact)
+      lLM_YnZtz kLM_YnZtz (by kernel_fact) (relLM_YnZtz c u z))
 
 set_option linter.style.longLine false in
 set_option maxRecDepth 100000 in
@@ -3314,8 +3319,8 @@ theorem ballLM_171 {r : ℝ} (hr : 0 ≤ r) (hq : Real.exp r ≤ (74315 : ℕ) /
     (node3_fullN hr hq hc hWLM boxLM (l1LM 49) (fun _ => rfl)
       (fun i hi => normLM hq hc i (by omega)) (ballLM_170 hr hq hc hU hZ hA hB) trLMN_nZtzF 1 0 1 (512 : ℤ)
       64 48 20 146 65 21 11 8 9 32 24 7771428890590397082226377527030530563463864964022471259988531077218720610798068706437717730669885012898968528011215857196738316307342764772311583113364413337705787757065353632637977603489853722807022310322575585168195552593864405135454365773808664322357765628106787085754836196485151836904453125
-      (kronLM 146 65 49) (by decide +kernel) (by decide +kernel) (by decide +kernel) (by norm_num) (by decide +kernel)
-      lLM_nZtzF kLM_nZtzF (by decide +kernel) (relLM_nZtzF c u z))
+      (kronLM 146 65 49) (by kernel_fact) (by kernel_fact) (by kernel_fact) (by norm_num) (by kernel_fact)
+      lLM_nZtzF kLM_nZtzF (by kernel_fact) (relLM_nZtzF c u z))
 
 set_option linter.style.longLine false in
 set_option maxRecDepth 100000 in
@@ -3329,8 +3334,8 @@ theorem ballLM_172 {r : ℝ} (hr : 0 ≤ r) (hq : Real.exp r ≤ (74315 : ℕ) /
     (node3_fullN hr hq hc hWLM boxLM (l1LM 97) (fun _ => rfl)
       (fun i hi => normLM hq hc i (by omega)) (ballLM_171 hr hq hc hU hZ hA hB) trLMN_PtorF 3 0 0 (1 : ℤ)
       128 96 40 280 129 41 12 8 17 64 48 39538587455619550096068819963691975833052084111565267994328416867979772453260076083637008278950840200514450490079397264811264346011493848073102064342863873542398311876100744136233762838845336881382627619174269874810116659522614833233413653087007191926238782763770732242306864900254029567731118063897198820928071612922560104847819091225963001327185574213531392943156267898656292904968808414840138043982500785262142224312549426825559476016504468617783204540509574039321682051092735967415534767235690058842719749969212321701841963067441166442798532597520716821781481894600153231902756182380800000000000
-      (kronLM 280 129 97) (by decide +kernel) (by decide +kernel) (by decide +kernel) (by norm_num) (by decide +kernel)
-      lLM_PtorF kLM_PtorF (by decide +kernel) (relLM_PtorF c u z))
+      (kronLM 280 129 97) (by kernel_fact) (by kernel_fact) (by kernel_fact) (by norm_num) (by kernel_fact)
+      lLM_PtorF kLM_PtorF (by kernel_fact) (relLM_PtorF c u z))
 
 set_option linter.style.longLine false in
 set_option maxRecDepth 100000 in
@@ -3344,8 +3349,8 @@ theorem ballLM_173 {r : ℝ} (hr : 0 ≤ r) (hq : Real.exp r ≤ (74315 : ℕ) /
     (node3_fullN hr hq hc hWLM boxLM (l1LM 73) (fun _ => rfl)
       (fun i hi => normLM hq hc i (by omega)) (ballLM_172 hr hq hc hU hZ hA hB) trLMN_Dt3F 2 0 0 (1 : ℤ)
       96 72 30 215 97 31 12 8 13 48 36 920319756116338372640508260393978431973612648457311112710379680773339471728018184651013752145216137542838015382544312498170805212276828040429685098284096428184643653987298150939333227119699128025421098805943924717966752579144564284268697261595920384861391542968060011204473032988068423904575151300048324571273121777430955633237054840433804952100686301551346761764119486159065260725811683950030955428450753627707066075231658805339041688453120000000
-      (kronLM 215 97 73) (by decide +kernel) (by decide +kernel) (by decide +kernel) (by norm_num) (by decide +kernel)
-      lLM_Dt3F kLM_Dt3F (by decide +kernel) (relLM_Dt3F c u z))
+      (kronLM 215 97 73) (by kernel_fact) (by kernel_fact) (by kernel_fact) (by norm_num) (by kernel_fact)
+      lLM_Dt3F kLM_Dt3F (by kernel_fact) (relLM_Dt3F c u z))
 
 set_option linter.style.longLine false in
 set_option maxRecDepth 100000 in
@@ -3359,8 +3364,8 @@ theorem ballLM_174 {r : ℝ} (hr : 0 ≤ r) (hq : Real.exp r ≤ (74315 : ℕ) /
     (node3_fullN hr hq hc hWLM boxLM (l1LM 49) (fun _ => rfl)
       (fun i hi => normLM hq hc i (by omega)) (ballLM_173 hr hq hc hU hZ hA hB) trLMN_FF 1 0 0 (1 : ℤ)
       64 48 20 131 65 21 11 8 9 32 24 6420233823561639137941834028563465326646130593503825698625169521461402135494885397239895541397437191631159301894928517622647037762517751198867259279232962863043718824720912212223436838385988102935333415086869166693533330539164400563366965307579583816408949877978132696047774094942187520000000
-      (kronLM 131 65 49) (by decide +kernel) (by decide +kernel) (by decide +kernel) (by norm_num) (by decide +kernel)
-      lLM_FF kLM_FF (by decide +kernel) (relLM_FF c u z))
+      (kronLM 131 65 49) (by kernel_fact) (by kernel_fact) (by kernel_fact) (by norm_num) (by kernel_fact)
+      lLM_FF kLM_FF (by kernel_fact) (relLM_FF c u z))
 
 set_option linter.style.longLine false in
 set_option maxRecDepth 100000 in
@@ -3371,7 +3376,7 @@ theorem ballLM_175 {r : ℝ} (hr : 0 ≤ r) (hq : Real.exp r ≤ (74315 : ℕ) /
     (hA : Bd r (dTh u - xLM c 6) (ELM 6)) (hB : Bd r (dTh z - xLM c 7) (ELM 7)) :
     ∀ i, i < 175 → Bd r (XLM c u z i - xLM c i) (ELM i) :=
   chain_succ (ballLM_174 hr hq hc hU hZ hA hB)
-    (step_exact (XLM_eq_qiF hc u z) (by decide +kernel))
+    (step_exact (XLM_eq_qiF hc u z) (by kernel_fact))
 
 set_option linter.style.longLine false in
 set_option maxRecDepth 100000 in
@@ -3385,8 +3390,8 @@ theorem ballLM_176 {r : ℝ} (hr : 0 ≤ r) (hq : Real.exp r ≤ (74315 : ℕ) /
     (node3_fullN hr hq hc hWLM boxLM (l1LM 73) (fun _ => rfl)
       (fun i hi => normLM hq hc i (by omega)) (ballLM_175 hr hq hc hU hZ hA hB) trLMN_YF 2 0 0 (1 : ℤ)
       96 72 30 218 97 31 12 8 13 48 36 8123974476029000639499465108658273965607689660168891135421776766699524574406441885722101667619683883909254597585911879930276381098557266624602395920312084274614076221887105350489856367201753539169782359552149748012118327684451502983488705750954226561964900579512044397272952396717103928720032207990324480764842405770825632431536194148614103090893678443047588267111005032011169285575544571323094526799532483700770925586906586121165801553011553773325390625
-      (kronLM 218 97 73) (by decide +kernel) (by decide +kernel) (by decide +kernel) (by norm_num) (by decide +kernel)
-      lLM_YF kLM_YF (by decide +kernel) (relLM_YF c u z))
+      (kronLM 218 97 73) (by kernel_fact) (by kernel_fact) (by kernel_fact) (by norm_num) (by kernel_fact)
+      lLM_YF kLM_YF (by kernel_fact) (relLM_YF c u z))
 
 set_option linter.style.longLine false in
 set_option maxRecDepth 100000 in
@@ -3397,7 +3402,7 @@ theorem ballLM_177 {r : ℝ} (hr : 0 ≤ r) (hq : Real.exp r ≤ (74315 : ℕ) /
     (hA : Bd r (dTh u - xLM c 6) (ELM 6)) (hB : Bd r (dTh z - xLM c 7) (ELM 7)) :
     ∀ i, i < 177 → Bd r (XLM c u z i - xLM c i) (ELM i) :=
   chain_succ (ballLM_176 hr hq hc hU hZ hA hB)
-    (step_exact (XLM_eq_Uo hc u z) (by decide +kernel))
+    (step_exact (XLM_eq_Uo hc u z) (by kernel_fact))
 
 set_option linter.style.longLine false in
 set_option maxRecDepth 100000 in
@@ -3408,7 +3413,7 @@ theorem ballLM_178 {r : ℝ} (hr : 0 ≤ r) (hq : Real.exp r ≤ (74315 : ℕ) /
     (hA : Bd r (dTh u - xLM c 6) (ELM 6)) (hB : Bd r (dTh z - xLM c 7) (ELM 7)) :
     ∀ i, i < 178 → Bd r (XLM c u z i - xLM c i) (ELM i) :=
   chain_succ (ballLM_177 hr hq hc hU hZ hA hB)
-    (step_exact (XLM_eq_Zo hc u z) (by decide +kernel))
+    (step_exact (XLM_eq_Zo hc u z) (by kernel_fact))
 
 set_option linter.style.longLine false in
 set_option maxRecDepth 100000 in
@@ -3419,7 +3424,7 @@ theorem ballLM_179 {r : ℝ} (hr : 0 ≤ r) (hq : Real.exp r ≤ (74315 : ℕ) /
     (hA : Bd r (dTh u - xLM c 6) (ELM 6)) (hB : Bd r (dTh z - xLM c 7) (ELM 7)) :
     ∀ i, i < 179 → Bd r (XLM c u z i - xLM c i) (ELM i) :=
   chain_succ (ballLM_178 hr hq hc hU hZ hA hB)
-    (step_exact (XLM_eq_Ao hc u z) (by decide +kernel))
+    (step_exact (XLM_eq_Ao hc u z) (by kernel_fact))
 
 set_option linter.style.longLine false in
 set_option maxRecDepth 100000 in
@@ -3430,6 +3435,6 @@ theorem ballLM_180 {r : ℝ} (hr : 0 ≤ r) (hq : Real.exp r ≤ (74315 : ℕ) /
     (hA : Bd r (dTh u - xLM c 6) (ELM 6)) (hB : Bd r (dTh z - xLM c 7) (ELM 7)) :
     ∀ i, i < 180 → Bd r (XLM c u z i - xLM c i) (ELM i) :=
   chain_succ (ballLM_179 hr hq hc hU hZ hA hB)
-    (step_exact (XLM_eq_Bo hc u z) (by decide +kernel))
+    (step_exact (XLM_eq_Bo hc u z) (by kernel_fact))
 
 end PlasmaLean.Design.RationalStellaratorGC

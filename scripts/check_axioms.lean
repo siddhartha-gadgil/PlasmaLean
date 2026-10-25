@@ -132,5 +132,5 @@ run_cmd do
 #print axioms PlasmaLean.Stability.BallooningSecular.jpar_transport
 #print axioms PlasmaLean.Design.LandremanFamily2BallooningSecular.family2_stable_of_secular_cert
 #print axioms PlasmaLean.Theory.KAM.PQG.valid_of_nodesOK
-#print axioms PlasmaLean.Design.RationalStellaratorGC.ProofTerm.kHMS_qR
-#print axioms PlasmaLean.Design.RationalStellaratorGC.ProofTerm.lHM_qR
+#print axioms PlasmaLean.Design.RationalStellaratorGC.kHMS_qR
+#print axioms PlasmaLean.Design.RationalStellaratorGC.lHM_qR

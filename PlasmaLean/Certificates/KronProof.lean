@@ -43,7 +43,8 @@ the kernel does. **`kron_lt`** proves the `ℓ¹` checks `a < c` by the kernel f
 **Sanity.** `SCert.add_fixture` (accepted: `3 + (−5) = −2`), `SCert.reject_fixture` (rejected:
 `⟨false, 3⟩` has no certificate with sign `true`), `PCert.zero_fixture` (degenerate: an empty
 block), `kronProof_fixture` (the tactic on a toy image; a false bound on it is refused, by
-`fail_if_success`), `kronLt_fixture`.
+`fail_if_success`), `kronLt_fixture`. The side conditions of the bridges and chains are proved by
+`kernel_fact` (`Certificates/KernelFact`).
 -/
 
 @[expose] public section

@@ -54,9 +54,11 @@ _lc_modules() {
 # Lean modules, dependencies first (each built in its own process). Measured on the laptop for
 # [1/16, 1/8] in the old format: 31 CPU-min, peak RSS 7.8 GB (CheckH3). The low-memory format
 # (task_emit runs scripts/gc_kam/lowmem/lowmem_emit.py) brings the check modules to about 4.4 GB
-# and roughly halves their CPU time. See notes/theory/gc-kam-status.md.
+# and roughly halves their CPU time; task_emit then converts them to explicit proof terms
+# (scripts/gc_kam/proofterm/proofterm_emit.py: no decide +kernel, about 1.15-1.45x that CPU, same
+# peak). See notes/theory/gc-kam-status.md.
 TASK_MODULES="PlasmaLean.Theory.KAM.PolyExprSMajQG PlasmaLean.Certificates.KronLowMemCompute \
-PlasmaLean.Certificates.KronBallLowMem $(_lc_modules)"
+PlasmaLean.Certificates.KronBallLowMem PlasmaLean.Certificates.KronProof PlasmaLean.Certificates.KernelFact $(_lc_modules)"
 
 TASK_ENTRYPOINTS="PlasmaLean.Design.RationalStellaratorGC.Mu${LAM_TAG}.rationalStellarator_gc_mu_confined_forever \
 PlasmaLean.Design.RationalStellaratorGC.Mu${LAM_TAG}.mu_family_torus \
@@ -103,5 +105,8 @@ task_emit() {
   for T in H L; do
     "$WS_PY" -I scripts/gc_kam/lowmem/lowmem_emit.py "RationalStellaratorGCMu${LAM_TAG}" "$T" \
       --inplace --patch-chain >> "$LAM_WORK/lowmem.log" || return 1
+    # proof terms instead of decide +kernel (Certificates/KronProof; same statements downstream)
+    "$WS_PY" -I scripts/gc_kam/proofterm/proofterm_emit.py "RationalStellaratorGCMu${LAM_TAG}" "$T" \
+      --inplace >> "$LAM_WORK/proofterm.log" || return 1
   done
 }
