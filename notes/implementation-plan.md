@@ -486,3 +486,8 @@ Each cycle is a run. The targets are listed in priority order; anything left ove
 - **Fix:** sign–magnitude integers, per-row masks placed by divide and conquer, row block sums by two multiplications (`Certificates/KronLowMemCompute.lean`, `KronBallLowMem.lean`; emitter `scripts/gc_kam/lowmem/lowmem_emit.py`). The bridge lemmas re-prove the original statements, so chains and theorems are unchanged.
 - **Migrated:** Mu, Mu2, Ew1–4 and Fam families. Peak per process **8.8 → 4.3 GB** (default build and on-demand modules alike); check CPU ≈ halved (Mu H 554 → 329 s, Ew H 2596 → 1437 s). The 6 GB laptop target now holds everywhere. `energy-window.sh` and `lambda-cell.sh` emit the new format.
 - **Open:** the checks still use `decide +kernel` (one kernel evaluation per check). Proof terms with `rfl` leaves would put 12–24 MB intermediates into the oleans; `Nat.le_of_ble_eq_true rfl` doubles time and memory (elaborator evaluation). Policy decision pending.
+
+### Phase 11: third pitch cell, 25 October 2026
+
+- **Generator bug found and fixed:** `lam_emit_kam.py` substituted template literals one after another, so a new value equal to a later template literal was replaced again (Mu3: az0 = 1629/10⁴ became 1623/10⁴, a false bound in `Mu3Adm`). Now one regex pass with digit boundaries, and `scripts/gc_kam/lamcell/validate.py` checks every emitted bound and constant in exact arithmetic against the emitted Lean lists before writing. The generated Adm bound facts use `decide_cbv` (no `decide +kernel`).
+- **Done:** the cell λ ∈ [1/8, 3/16] (`Mu3.rationalStellarator_gc_mu_confined_forever`), reproduced and built on the laptop in the low-memory format (peak 4.4 GB). On-demand; a combined [0, 3/16] theorem (like `MuWide`) is still to be written.
