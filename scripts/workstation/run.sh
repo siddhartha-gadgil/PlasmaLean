@@ -72,7 +72,7 @@ while [ $# -gt 0 ]; do
     --skip-push-check) PUSH_CHECK=0 ;;
     --branch) shift; BRANCH="${1:?--branch needs a name}" ;;
     --jobs) shift; JOBS="${1:?--jobs needs a number}" ;;
-    -h|--help) sed -n '2,24p' "$0"; exit 0 ;;
+    -h|--help) sed -n '2,21p' "$0"; exit 0 ;;
     -*) die "unknown option $1" ;;
     *) TASKS="$TASKS $1" ;;
   esac
