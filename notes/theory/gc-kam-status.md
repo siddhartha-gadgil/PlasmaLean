@@ -434,3 +434,86 @@ kernel checks peak at 5–8.8 GB per process (36 of 272 above 6 GB); measured th
 `RationalStellaratorGCMuCheckH*` of §7 peak at 6.9 GB. Smaller digit-sum blocks (`FAM_LBLK=4`)
 *increase* the peak (9.8 GB); larger blocks lower it only to `≈ 6.1 GB` and destroy the residual
 precision. Everything else ≤ 3 GB. Workstation task: `scripts/workstation/tasks/energy-window.sh`.
+
+## 10. A second pitch cell `λ ∈ [1/16, 1/8]` and the range `λ ∈ [0, 1/8]` (`Design/RationalStellaratorGCMu2*`, `…MuWide`)
+
+**Result [Lean].** In the Littlejohn model, take passing guiding centres (`v_∥(0) > 0`) with
+`ρ₀ = 1/256` (3.5 MeV alphas, `B₀R₀ = 256 m v/(2e) ∈ [68.9, 69] T·m`) and **every**
+`μ ∈ [0, E/(8B₀)]`, that is `λ = μB₀/E ∈ [0, 1/8]`. Each such orbit is trapped forever inside an
+exact KAM torus (`0.03 ≤ P ≤ 0.255`) and stays passing, and such orbits exist from every interior
+point. Initial pitch angles satisfy `sin²χ ≤ |B|/(8B₀)`, which is `≈ 20.7°` near the axis (an informal
+reading).
+
+The scope is unchanged from §7: one energy and one `B₀R₀`; non-relativistic; collisionless; static
+vacuum model field, not coil-produced. The set has positive measure in pitch angle, but at that one
+energy it is still measure zero in 3-D velocity space.
+
+**Passing.** The hypothesis is honestly `μ ≤ E/(8B₀)`. `tube_subset_muRegion` needs only `λ ≤ 1/4`,
+and the proved bound `|B| ≤ 3` on `rt ≤ 0.3` gives `λ|B| ≤ 3/8 < 1`. So `v_∥ > 0` is a conclusion,
+not an assumption.
+
+Declarations:
+- `Mu2.mu_family_torus`, `Mu2.mu_family_master`, `Mu2.rationalStellarator_gc_mu_confined_forever`:
+  the cell `[1/16, 1/8]`, in namespace `PlasmaLean.Design.RationalStellaratorGC.Mu2`;
+- `rationalStellarator_gc_mu_confined_forever_wide`, `gc_mu_passing_confined_forever_SI_wide`,
+  `alpha_gc_passing_confined_forever_wide`: `[0, 1/8]`, by a case split between the two cells
+  (`wide_cells_cover`);
+- top module `PlasmaLean.Design.RationalStellaratorGCMuWide`.
+
+All of these use only the standard axioms.
+
+**Method.** This is the §7 pipeline, unchanged. The parameter `r = 64 + cos ϑ` now encodes
+`λ = (r − 61)/32 = (3 + cos ϑ)/32` (`lamF c = (3 + Re c)/32`, `param_eq_mu`), and
+`λ₁ = 1/8` in the uniform majorants (`ConstLe`). The family has Chebyshev degree 12, and the
+coefficients decay by a factor of about 50 per degree; coefficient 13 is `3.8e-24`. The torus at each
+of the 16 nodes starts from the certified torus of §7 at `λ = 1/16`.
+
+Certified constants:
+- `e₀ = 5.3e-21` (`resR 2.23e-21`, `resZ 5.28e-21`);
+- `C₂ ≤ 9.67e10`, `c_K ≤ 5350`, `c_L ≤ 18400`;
+- **smallness 0.158**;
+- distances to the low-resolution family `≈ 5e-12`;
+- profile distance `‖K(λ) − K₀‖ ≤ 3.4e-4 + …`, within the margin `1.85e-3`.
+
+The generated files differ from the §7 files only in numerals and in the cell (checked by a digit-blind
+diff).
+
+**Scripts** (`scripts/gc_kam/lamcell/`, untrusted). They run the original `lam_*.py` generators with
+asserted textual patches, never writing over existing files:
+- `lc.py`: configuration from `LAM_LO`, `LAM_HI` and `LAM_TAG`;
+- `tori.py`, `cert.py`, `maj.py`: numerics;
+- `emit.py`, `emit_kam.py`: Lean emission;
+- `install.py`: renames to `RationalStellaratorGCMu<TAG>*` and the namespace `…GC.Mu<TAG>`, and derives
+  `…Forever`/`…Confined` from the §7 modules;
+- `shim/gcmodel.py`: reads the Lean source by a path relative to the repository.
+
+The stored `μ = 0` low-resolution torus and the `rel_congr` relations are read from the certified
+§7 Lean files, so the old `/tmp` pickles are not needed. The workstation task is
+`scripts/workstation/tasks/lambda-cell.sh`, with `LAM_LO`, `LAM_HI` (default `1/16`, `1/8`) and
+`LAM_TAG`.
+
+**Cost** (laptop, each module built once with `lake build`, one at a time; peak RSS as in
+`ws_helper.py`).
+- Numerics: 16 tori at about 70 s each, 4 in parallel. The high-resolution ball pipeline takes
+  13 min and 8.6 GB; the low-resolution one takes 2 min and 0.7 GB.
+- Lean: 97 modules, **31 CPU-min** (29 min wall):
+  - `DataH1–6`: 361 s;
+  - `CheckH1–64`: 734 s;
+  - `CheckL1–8`: 253 s;
+  - `RelL`: 221 s of CPU over 35 s wall;
+  - `ChainL/H`: 142 s;
+  - the rest: under 25 s each.
+- Peak memory:
+  - `CheckH3`: **7.8 GB**; 10 check modules are above 6 GB, and 18 are above 5 GB;
+  - `CheckL`: up to 6.6 GB;
+  - everything else: 3.9 GB or less.
+- Under the same measurement, the §7 module `RationalStellaratorGCMuCheckH1`, which is in the default
+  build, peaks at **8.8 GB** (`lake env lean`, `/usr/bin/time -l`). The figure of 5.5 GB in §7
+  understates the current peak. Both cells break the 6 GB laptop rule of `Workstation.md` in the
+  same way.
+
+**Build recommendation.** The CPU cost (31 min, about 59 min for both cells) is within the 60 CPU-min
+default budget. The memory profile, however, matches the §7 cell, which is already in the default
+build and already exceeds 6 GB. `RationalStellaratorGCMuWide` is not imported by `PlasmaLean.lean`.
+Either import it, together with the `scripts/check_axioms.lean` entries, accepting the same about 8 GB
+peaks as §7, or keep it as an on-demand top module until the heavy `CheckH` kernel checks are split.
