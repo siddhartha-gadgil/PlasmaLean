@@ -174,6 +174,7 @@ public import PlasmaLean.Certificates.Kronecker2DWeighted
 public import PlasmaLean.Design.KamTorusAWeightedCheck
 public import PlasmaLean.Design.KamTorusAWeighted
 public import PlasmaLean.Certificates.KronExpr
+public import PlasmaLean.Certificates.KronProof
 public import PlasmaLean.Design.KamTorusAFrameData
 public import PlasmaLean.Design.KamTorusAFrameCheck
 public import PlasmaLean.Design.KamTorusAFrame
@@ -239,6 +240,7 @@ public import PlasmaLean.Theory.KAM.PolyExprSMajQG
 public import PlasmaLean.Design.RationalStellaratorGCNegConfined
 public import PlasmaLean.Design.RationalStellaratorGCFamily
 public import PlasmaLean.Design.RationalStellaratorGCMuFamily
+public import PlasmaLean.Design.RationalStellaratorGCMuCheckPH1
 public import PlasmaLean.Design.RationalStellaratorGCBoxConfined
 
 /-!
