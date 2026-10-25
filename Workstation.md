@@ -165,6 +165,8 @@ residual enough. The two half-width cells use different tags, so run them one af
 if push access is not yet set up (see "Push access").
 
 ```bash
+# The failed run cached tori for [3/16, 1/4] under tag 4; they must not be reused:
+rm -rf ~/plasmalean-work/lambda-cell-4
 # Pitch cell λ ∈ [3/16, 7/32] (tag Mu4)
 LAM_LO=3/16 LAM_HI=7/32 LAM_TAG=4 scripts/workstation/run.sh lambda-cell
 # Pitch cell λ ∈ [7/32, 1/4] (tag Mu5)
