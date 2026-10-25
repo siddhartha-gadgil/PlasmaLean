@@ -1,0 +1,8 @@
+{
+ "cmd": "lake env lean /home/gadgil/code/PlasmaLean/workstation/results/proofterm-migrate/20261025T171237Z/axioms.lean",
+ "status": "ok",
+ "returncode": 0,
+ "wall_min": 0.02,
+ "cpu_min": 0.02,
+ "peak_rss_gb": 3.4
+}

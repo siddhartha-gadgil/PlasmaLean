@@ -1,0 +1,8 @@
+{
+ "cmd": "bash /home/gadgil/code/PlasmaLean/scripts/workstation/run.sh __step numerics proofterm-migrate",
+ "status": "ok",
+ "returncode": 0,
+ "wall_min": 0.01,
+ "cpu_min": 0.01,
+ "peak_rss_gb": 0.03
+}
