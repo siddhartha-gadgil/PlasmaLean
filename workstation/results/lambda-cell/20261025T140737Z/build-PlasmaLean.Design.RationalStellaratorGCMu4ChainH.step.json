@@ -1,0 +1,8 @@
+{
+ "cmd": "lake build PlasmaLean.Design.RationalStellaratorGCMu4ChainH",
+ "status": "ok",
+ "returncode": 0,
+ "wall_min": 1.07,
+ "cpu_min": 1.19,
+ "peak_rss_gb": 4.08
+}

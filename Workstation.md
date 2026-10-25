@@ -204,33 +204,22 @@ laptop with a small parameter setting, then commit it to `main` before running i
 Kept up to date from the laptop after every review ("update from workstation"). Run them on the
 workstation, inside `tmux`; `run.sh` pulls `main` itself.
 
-**Status (25 October 2026, night; updated): run now.** The cell [3/16, 1/4] failed the KAM smallness
-condition (2.64 > 1; it grows with λ: 0.16 for [1/16, 1/8], 0.50 for [1/8, 3/16]), and the new
-validator stopped it before any Lean was written. Halving the cell width should shrink the
-residual enough. The two half-width cells use different tags, so run them one after the other
-(about 40 min of Python plus about 15 CPU-min of Lean each). Add `--no-push` and push by hand
-if push access is not yet set up (see "Push access").
+**Status (25 October 2026, late night): run now.** The cell [3/16, 7/32] (Mu4) passed and is
+merged. Remaining, one at a time (add `--no-push` and push by hand if needed):
 
 ```bash
-# The failed run cached tori for [3/16, 1/4] under tag 4; they must not be reused:
-rm -rf ~/plasmalean-work/lambda-cell-4
-# Pitch cell λ ∈ [3/16, 7/32] (tag Mu4)
-LAM_LO=3/16 LAM_HI=7/32 LAM_TAG=4 scripts/workstation/run.sh lambda-cell
-# Pitch cell λ ∈ [7/32, 1/4] (tag Mu5)
+# Last pitch cell λ ∈ [7/32, 1/4] (tag Mu5): about 40 min of Python plus about 25 CPU-min of Lean.
 LAM_LO=7/32 LAM_HI=1/4 LAM_TAG=5 scripts/workstation/run.sh lambda-cell
-```
 
-After the two cells, migrate the on-demand certificate families to proof terms (Phase 16; no
-`decide +kernel` left in them). The tasks only rebuild Lean, with no numerics; run them one at a time:
-
-```bash
+# Proof-term migration of the on-demand families (Phase 16; Lean only, no numerics).
 PT_FAMILIES="RationalStellaratorGCMu2" scripts/workstation/run.sh proofterm-migrate
 PT_FAMILIES="RationalStellaratorGCMu3" scripts/workstation/run.sh proofterm-migrate
+PT_FAMILIES="RationalStellaratorGCMu4" scripts/workstation/run.sh proofterm-migrate
 PT_FAMILIES="RationalStellaratorGCEw1 RationalStellaratorGCEw2 RationalStellaratorGCEw3 RationalStellaratorGCEw4" \
   scripts/workstation/run.sh proofterm-migrate
 ```
 
-If a run stops with "smallness condition fails", report the value: the next step is a higher
-Chebyshev degree rather than a narrower cell.
+If Mu5 stops with "smallness condition fails", report the value: the next step would be a
+higher Chebyshev degree.
 
 Then say "update from workstation" on the laptop.
