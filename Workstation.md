@@ -132,6 +132,47 @@ merge the branch into `main`:
 
 Then update the plan and progress reports as usual.
 
+## Sharing compiled files (oleans)
+
+Like the Mathlib cache, but by hand: compiled PlasmaLean modules built on one machine can be copied
+to the other instead of being rebuilt. This uses
+[`scripts/workstation/oleans.py`](scripts/workstation/oleans.py).
+
+On the workstation, after a run whose branch has been merged into `main` and pulled:
+
+```bash
+git checkout main && git pull
+python3 scripts/workstation/oleans.py pack ~/ew-oleans.tar.gz PlasmaLean.Design.RationalStellaratorGCEwFamily
+# or only some modules (smaller; their imports must already be built on the laptop):
+python3 scripts/workstation/oleans.py pack --only ~/mu3.tar.gz 'PlasmaLean.Design.RationalStellaratorGCMu3*'
+```
+
+Copy the archive to the laptop (Google Drive, `scp`, …), then on the laptop:
+
+```bash
+git pull
+python3 scripts/workstation/oleans.py info   ~/Downloads/ew-oleans.tar.gz   # what is inside
+python3 scripts/workstation/oleans.py unpack ~/Downloads/ew-oleans.tar.gz
+```
+
+- **What `unpack` checks before extracting:**
+  - the Lean version and commit are the same on both machines;
+  - `lake-manifest.json` is identical (same Mathlib);
+  - every packed module's source is byte-identical to this clone's.
+
+  If anything differs it refuses and names the commit to check out. After extracting, it runs
+  `lake --no-build build` on the targets to confirm that Lake accepts them without rebuilding.
+- **What is packed:** a target and all of its PlasmaLean imports, transitively; Mathlib is not
+  included. A module's files are all of `.lake/build/lib/lean/<path>.*` and
+  `.lake/build/ir/<path>.*`. For scale: Mu3 with its imports is 247 modules and 208 MB, and with
+  `--only` it is 100 modules and 67 MB.
+- **Trust:** unpacked modules are **not** re-checked by the kernel on the laptop. That is what saves
+  the time, and it means trusting the workstation's build, as with the on-demand spot-check policy.
+  Default-build modules should still be built here.
+- **Status:** tested within the laptop (pack, delete, unpack, Lake accepts). The first copy from
+  the Linux workstation to the Mac will show whether Lake accepts the files across platforms. The
+  Mathlib cache does work this way, but try it on a small `--only` archive first.
+
 ## Adding a task
 
 Copy [`scripts/workstation/tasks/TEMPLATE.sh`](scripts/workstation/tasks/TEMPLATE.sh) to
