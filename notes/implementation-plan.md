@@ -415,6 +415,7 @@ Each cycle is a run. The targets are listed in priority order; anything left ove
   - **Convention:** after each phase, update the workstation tasks (`scripts/workstation/tasks/`) if the phase added or changed heavy numerics or certificates.
   - **Workstation state (25 October 2026):** Lean, the Mathlib cache and the library build are set up by hand; `run.sh` only installs the Python packages.
   - **Tasks to register:** the energy-window (ρ, λ) family (±3 eV, then ±1%), the family-2 ballooning certificate (3-D function over surface × ℝ), wider λ cells, and the coil-KAM refinement.
+- **Phase 16, proof-term certificates (infrastructure):** replace every `decide +kernel` (≈ 28,700 uses in 813 files) by proof terms built as in `PlasmaLean/SubsetSum.lean`: inductive certificate predicates whose constructors are local steps, soundness by induction, `meta` builders, leaves that are kernel `Nat` facts (GMP) closed by `Eq.refl` built directly (no elaborator evaluation). Order: KAM-family Kronecker checks (bulk of the uses) → Maj/Adm and chain glue → coil, ballooning and trapped-orbit cells → `QPoly.checkOn` fixtures. Budget: no regression in peak memory (≤ 6 GB) and at most modest CPU growth; generators updated with each family.
 - **Later:** the integrated stellarator candidate (M6) and engineering constraints.
 
 ### Phase 11 part 1, 21 October 2026 — [report](https://github.com/siddhartha-gadgil/PlasmaLean/blob/main/progress/2026-10-21-progress-10.md)
