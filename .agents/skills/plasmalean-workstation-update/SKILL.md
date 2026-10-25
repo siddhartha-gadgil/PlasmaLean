@@ -28,7 +28,11 @@ first, classify it from its verdicts:
   Record it (§4).
 - **TOO BIG / TOO SLOW FOR LAPTOP**: do not merge. Record the peak memory and CPU, and suggest
   how to shrink the certificate (split modules, a proof-term certificate, a smaller witness).
-- **laptop ok, default build** or **laptop ok, separate top module**: re-check it here (§2).
+- **laptop ok, default build**: re-check it here in full (§2).
+- **laptop ok, separate top module** (on-demand modules, not imported by `PlasmaLean.lean`):
+  spot-check instead of a full rebuild (§2a). This is the user's decision of 25 October 2026: the
+  workstation's Lean kernel check is accepted for on-demand modules, and the full laptop build is
+  deferred until the module is needed.
 - A **smoke**-only run has nothing to merge. Record it as a pipeline check and report the
   workstation's host, CPUs and timings.
 
@@ -51,6 +55,21 @@ scripts/workstation/run.sh --verify-only <task> [<task> ...]
 budget, and re-checks the axioms. It does not touch git. Compare the laptop numbers with the
 workstation's. If it fails, or its verdict is not "laptop ok", run `git merge --abort` and record
 the run as rejected, with the laptop numbers.
+
+## 2a. Spot-check an on-demand run
+
+Same preconditions as §2. Inside the uncommitted merge:
+1. Check the workstation's numbers against the laptop limits in `summary.json`: every module's
+   peak ≤ `LAPTOP_MAX_RSS_GB` (6), and the verdict is "laptop ok". Check that the axioms step is ok.
+2. Grep the merged files: no `sorry`, `admit`, `axiom`, `native_decide`, `decide +kernel` or plain
+   `decide`.
+3. Build a sample here, one module at a time, with `lake build <module>`: the first, the last and
+   two random check modules of each family, plus each family's bridge (`LowMem*`). This builds
+   their dependencies too, which is part of the point. Compare peak memory and time with the
+   workstation's numbers.
+4. If all of this passes, continue with §3. Record "merged (separate top module, spot-checked)",
+   and note that the full laptop build is deferred. Otherwise run `git merge --abort` and record
+   the run as rejected.
 
 ## 3. Integrate a passing run
 

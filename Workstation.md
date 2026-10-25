@@ -116,6 +116,12 @@ git checkout -b review origin/workstation/<branch>
 scripts/workstation/run.sh --verify-only <task>             # builds here, with the laptop budget
 ```
 
+For **on-demand** results (verdict "separate top module", not imported by `PlasmaLean.lean`), the
+review spot-checks rather than rebuilding everything: it checks the workstation's measurements and
+axiom check, greps for forbidden tactics, and builds a sample of modules here. The full laptop
+build of such a family is deferred until it is needed. Default-build results are always rebuilt
+here in full.
+
 `--verify-only` skips the installs, numerics and emission, and touches no git state. It builds the
 task's modules on the laptop one at a time with the same measurements, re-checks the axioms and
 prints the verdict. Its records go to `$TMPDIR/plasmalean-verify`. If the verdict is "laptop ok",
