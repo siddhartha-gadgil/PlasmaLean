@@ -1,0 +1,17 @@
+✖ [3153/3153] Building PlasmaLean.Design.RationalStellaratorGCMu3Adm (5.5s)
+trace: .> LEAN_PATH=/home/gadgil/code/PlasmaLean/.lake/packages/Cli/.lake/build/lib/lean:/home/gadgil/code/PlasmaLean/.lake/packages/batteries/.lake/build/lib/lean:/home/gadgil/code/PlasmaLean/.lake/packages/Qq/.lake/build/lib/lean:/home/gadgil/code/PlasmaLean/.lake/packages/aesop/.lake/build/lib/lean:/home/gadgil/code/PlasmaLean/.lake/packages/proofwidgets/.lake/build/lib/lean:/home/gadgil/code/PlasmaLean/.lake/packages/importGraph/.lake/build/lib/lean:/home/gadgil/code/PlasmaLean/.lake/packages/LeanSearchClient/.lake/build/lib/lean:/home/gadgil/code/PlasmaLean/.lake/packages/plausible/.lake/build/lib/lean:/home/gadgil/code/PlasmaLean/.lake/packages/mathlib/.lake/build/lib/lean:/home/gadgil/code/PlasmaLean/.lake/build/lib/lean /home/gadgil/.elan/toolchains/leanprover--lean4---v4.34.1/bin/lean /home/gadgil/code/PlasmaLean/PlasmaLean/Design/RationalStellaratorGCMu3Adm.lean -o /home/gadgil/code/PlasmaLean/.lake/build/lib/lean/PlasmaLean/Design/RationalStellaratorGCMu3Adm.olean -i /home/gadgil/code/PlasmaLean/.lake/build/lib/lean/PlasmaLean/Design/RationalStellaratorGCMu3Adm.ilean -c /home/gadgil/code/PlasmaLean/.lake/build/ir/PlasmaLean/Design/RationalStellaratorGCMu3Adm.c --setup /home/gadgil/code/PlasmaLean/.lake/build/ir/PlasmaLean/Design/RationalStellaratorGCMu3Adm.setup.json --json
+error: PlasmaLean/Design/RationalStellaratorGCMu3Adm.lean:144:52: Tactic `decide` failed for proposition
+  BHM 5 + EHM 5 ≤ 1623 / 10000
+because its `Decidable` instance
+  (BHM 5 + EHM 5).instDecidableLe (1623 / 10000)
+did not reduce to `isTrue` or `isFalse`.
+
+Reduction got stuck at the `Decidable` instance
+  match (1623 / 10000).blt (BHM 5 + EHM 5), false with
+  | false, false => isTrue ⋯
+  | false, true => isFalse ⋯
+  | true, false => isFalse ⋯
+  | true, true => isTrue ⋯
+Some required targets logged failures:
+- PlasmaLean.Design.RationalStellaratorGCMu3Adm
+error: build failed
