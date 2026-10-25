@@ -22,12 +22,13 @@ if the workstation cores are faster than the laptop's.
 
 ## Requirements on the workstation
 
-- Linux or macOS, with `bash`, `git`, `curl` and `python3` ≥ 3.10 (with `venv`/`pip`).
-  On Debian/Ubuntu: `sudo apt install git curl python3-venv build-essential`.
+- Linux or macOS, with `bash`, `git` and `python3` ≥ 3.10 (with `venv`/`pip`).
+  On Debian/Ubuntu: `sudo apt install git python3-venv build-essential`.
 - Push access to the GitHub repository, via an ssh key (`ssh -T git@github.com`) or a credential helper.
-- About 10 GB of disk for the Lean toolchain, the Mathlib cache and the build.
-- Nothing else: the script installs `elan` (and through it Lean v4.34.1), fetches the Mathlib
-  cache and creates a Python venv `.venv-ws` from
+- Lean set up once by hand in the clone: `elan` (Lean v4.34.1 from `lean-toolchain`),
+  `lake exe cache get` and `lake build`. This is already done on the workstation. The script only
+  checks that `lake` is available. Later builds are incremental: each task builds only what changed.
+- The script installs the Python packages itself, into a venv `.venv-ws`, from
   [`scripts/requirements.txt`](scripts/requirements.txt).
 
 ## First time
@@ -35,9 +36,8 @@ if the workstation cores are faster than the laptop's.
 ```bash
 ssh workstation
 tmux new -s plasma            # so that a dropped connection does not stop the run
-git clone git@github.com:siddhartha-gadgil/PlasmaLean.git
-cd PlasmaLean
-scripts/workstation/run.sh --setup-only    # elan, Mathlib cache, venv, `lake build PlasmaLean`
+cd PlasmaLean && git pull
+scripts/workstation/run.sh --setup-only    # Python venv and packages
 scripts/workstation/run.sh smoke           # a few minutes: tests the whole pipeline and pushes
 ```
 
@@ -119,8 +119,8 @@ laptop with a small parameter setting, then commit it to `main` before running i
 ## Troubleshooting
 
 - **Lost connection:** always run inside `tmux` or `screen`.
-- **`lake exe cache get` fails:** rerun it. If Mathlib is still rebuilding from source, check that
-  `lean-toolchain` and `lake-manifest.json` match `main`.
+- **Mathlib or Lean version bumped on `main`:** run `lake exe cache get` (and `elan` picks up a
+  new `lean-toolchain` automatically) before the next run, or Mathlib will rebuild from source.
 - **Out of memory on the workstation:** lower `--jobs`. A task's numerics should respect `WS_JOBS`.
 - **Push rejected:** the branch name is unique per run, so this is an authentication problem.
   Check `git remote -v` and your ssh key.

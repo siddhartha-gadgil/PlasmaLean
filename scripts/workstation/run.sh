@@ -5,7 +5,7 @@
 #
 # usage: scripts/workstation/run.sh [options] TASK...
 #   --list            list the available tasks and exit
-#   --setup-only      install/check the toolchain (elan, Mathlib cache, Python venv) and exit
+#   --setup-only      check lake/python and install the Python packages (venv .venv-ws), exit
 #   --verify-only     laptop mode: skip setup installs, numerics and emission; build the task's
 #                     Lean modules with resource measurement and the laptop budget; no git
 #   --skip-numerics   run emission and the Lean build only (numerics outputs already present)
@@ -90,30 +90,22 @@ fi
 
 # ---------------------------------------------------------------- setup
 setup() {
+  # Lean (elan, lake), the Mathlib cache and the library build are prepared once by hand on the
+  # workstation (see Workstation.md); here we only check them and install the Python packages.
   command -v git >/dev/null || die "git is required"
-  command -v curl >/dev/null || die "curl is required"
   command -v python3 >/dev/null || die "python3 (>= 3.10) is required"
   python3 -c 'import sys; sys.exit(sys.version_info < (3, 10))' || die "python3 >= 3.10 required"
   if ! command -v lake >/dev/null; then
-    [ -x "$HOME/.elan/bin/lake" ] || {
-      [ "$VERIFY" = 1 ] && die "lake not found"
-      say "installing elan (Lean toolchain manager)"
-      curl -sSfL https://raw.githubusercontent.com/leanprover/elan/master/elan-init.sh \
-        | sh -s -- -y --default-toolchain none
-    }
+    [ -x "$HOME/.elan/bin/lake" ] || die "lake not found (install elan; see Workstation.md)"
     export PATH="$HOME/.elan/bin:$PATH"
   fi
   if [ "$VERIFY" = 1 ]; then return; fi
-  say "fetching the Mathlib build cache"
-  lake exe cache get
   if [ ! -x "$WS_PY" ]; then
     say "creating Python venv $VENV"
     python3 -m venv "$VENV"
   fi
   "$WS_PY" -m pip install -q --upgrade pip
   "$WS_PY" -m pip install -q -r "$REPO/scripts/requirements.txt"
-  say "building the default library (PlasmaLean)"
-  lake build PlasmaLean
   mkdir -p "$WS_WORK"
 }
 

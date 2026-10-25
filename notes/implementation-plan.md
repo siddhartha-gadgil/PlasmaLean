@@ -412,6 +412,8 @@ Each cycle is a run. The targets are listed in priority order; anything left ove
   - route A: stepped pressure across the exact KAM torus.
 - **Phase 15, workstation offload (infrastructure):** heavy numerics and first builds of large certificates run on a workstation through `scripts/workstation/run.sh` (see `Workstation.md`); results are pushed to a `workstation/*` branch, then pulled and re-checked on the laptop with `--verify-only`.
   - **Constraint:** the merged Lean must build on the laptop: ≤ 6 GB per process; ≤ 60 CPU-min for the default build, ≤ 240 CPU-min for an on-demand top module. The workstation's job is to find *smaller* certificates, not bigger proofs.
+  - **Convention:** after each phase, update the workstation tasks (`scripts/workstation/tasks/`) if the phase added or changed heavy numerics or certificates.
+  - **Workstation state (25 October 2026):** Lean, the Mathlib cache and the library build are set up by hand; `run.sh` only installs the Python packages.
   - **Tasks to register:** the energy-window (ρ, λ) family (±3 eV, then ±1%), the family-2 ballooning certificate (3-D function over surface × ℝ), wider λ cells, and the coil-KAM refinement.
 - **Later:** the integrated stellarator candidate (M6) and engineering constraints.
 
