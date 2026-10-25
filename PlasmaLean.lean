@@ -128,6 +128,7 @@ public import PlasmaLean.Sanity.BoschHaleFineInstance
 public import PlasmaLean.Design.SolovevBandHighQ
 public import PlasmaLean.Design.SolovevBandIgnited
 public import PlasmaLean.Theory.Stability.BallooningReduction
+public import PlasmaLean.Theory.Stability.BallooningSurface
 public import PlasmaLean.Design.SolovevBallooning
 public import PlasmaLean.Theory.Kinetic.BounceOrbits
 public import PlasmaLean.Design.NearAxisQATrappedBounce
@@ -183,6 +184,7 @@ public import PlasmaLean.Design.LandremanMercier
 public import PlasmaLean.Design.LandremanFamily2MercierStable
 public import PlasmaLean.Design.LandremanFamily2MercierDerived
 public import PlasmaLean.Design.LandremanFamily2Coarea
+public import PlasmaLean.Design.LandremanFamily2Ballooning
 public import PlasmaLean.Design.RationalStellaratorConfinedForever
 public import PlasmaLean.Theory.Fields.FieldLineExistence
 public import PlasmaLean.Design.RationalStellaratorFieldLines

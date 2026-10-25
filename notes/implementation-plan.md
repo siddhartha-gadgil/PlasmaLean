@@ -439,3 +439,9 @@ Each cycle is a run. The targets are listed in priority order; anything left ove
 - **`alpha_gc_confined_forever_velocity_set`:** all-time confinement for a set of initial velocities of positive Lebesgue measure in ℝ³: pitch angles λ ∈ [0, 1/16], v∥ > 0, and energies in [(1 − 2⁻⁷⁸)²K, K].
 - **Caveat:** the energy window has relative width ≈ 7×10⁻²⁴ (≈ 2×10⁻¹⁷ eV), so this is a technicality, not physical robustness.
 - **Physically meaningful widths** need a genuine 2-D (ρ, λ) Chebyshev family: ≈ 3 CPU-hours for ±3 eV, ≈ 10 CPU-hours for ±1%, plus new evaluate-and-interpolate infrastructure (`notes/theory/gc-kam-status.md` §8).
+
+### Phase 14 route B: ballooning on the family-2 band, 25 October 2026
+
+- **Done (infrastructure):** a general 3-D surface ballooning framework (`Theory/Stability/BallooningSurface.lean`: transported eikonal family, completeness over all θ_k, surface-certificate ⇒ energy ≥ 0) and its instantiation on family 2 with line data built from the actual field (`family2_stable_of_cert`: stability of every line and θ_k reduces to one pointwise inequality on surface × ℝ). Ballooning reduction supplied.
+- **Numerics (untrusted):** ballooning-stable on k = 0.70–0.90 at the physical pressure and at twice it; the limiting long-line tail goes unstable only at pressure × 2.36 (k = 0.70) to × 9.39 (k = 0.90), marginal at k ≈ 0.54, consistent with the Mercier threshold k_c ≈ 0.53.
+- **Open:** the certificate itself. Certificates linear in the secular variable fail numerically; a working one needs a 3-D function resolving the sharp tip structure of |∇ψ| and a large interval cover.

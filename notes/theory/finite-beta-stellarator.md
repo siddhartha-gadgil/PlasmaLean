@@ -303,3 +303,70 @@ paper (3.18). These are now theorems about the actual field:
 
 Still assumed: the Landreman–Jorge Mercier formula itself, and the choice of the cross-sections ζ = 0
 and χ = 0. We did not formalize that ∇·B = 0 makes the fluxes independent of the section.
+
+## 9. Ideal ballooning of the family-2 Mercier band (25 Oct 2026)
+
+**Target.** Ideal ballooning on the Mercier-stable band `k ∈ [0.7, 0.9]` of Landreman family 2
+(`ε = 1/4`, `S = 4`, `λ = 200`; `family2_mercier_stable_derived`).
+
+**Supplied reduction (not formalized).** This is the interface of `BallooningReduction`
+(Connor–Hastie–Taylor; Dewar–Glasser). A surface is ballooning stable iff, on every field line
+and for every eikonal `S` (`B·∇S = 0`), `∫(P X'² + Q X²) dt ≥ 0` for every compactly supported
+`X`, where `P = |k|²/(ℓ|B|²)`, `Q = −2ℓ(B×k·μ₀∇p)(B×k·κ)/|B|⁴` and `k = ∇S` along the line.
+The equivalence is assumed. Everything below is proved.
+
+**Verdict: numerically stable; no certificate.** Source: the untrusted
+`scripts/landreman_family2_ballooning_oracle.py`. It uses exact forward-mode AD of the Lean
+field formula. Along each line it integrates the field line, the transported eikonal and a
+Prüfer angle together, and checks the Jacobi condition.
+- Coverage: 16 × 8 starting points × 3 eikonal angles = 384 samples on each surface
+  `k = 0.70, 0.75, 0.80, 0.85, 0.90`.
+- Result: no Jacobi zero on `[−60, 60]`, at the physical pressure and at twice it.
+- Finite-length critical pressure multipliers (`T = 100`): ≈ 4.7 (k = 0.7), 7.7 (0.8), 14.8 (0.9).
+- The binding constraint is the large-σ tail, which is of Mercier type. Its flux-surface-averaged
+  condition gives γ_c = 2.36, 3.13, 4.26, 6.07, 9.39 for k = 0.70 … 0.90. It is marginal at
+  k ≈ 0.54, which matches the independent Mercier threshold k_c ≈ 0.53.
+- So ballooning adds nothing beyond Mercier here. Finite-σ modes are far more stable, because the
+  local shear is strong at the flat cross-section's tips and in its flats.
+
+**Why there is no certificate.**
+- A Riccati flux on `surface × ℝ` must contain `a σ` with `B·∇a = q₁` exactly. Numerically
+  `a = −J∥ + const`.
+- The certificates affine in σ are therefore `F = aσ + b`. They reduce to an auxiliary
+  1-D problem, `∫ ξ'²/|∇ψ|² + Q̂ ξ²`, which has a Jacobi zero every half poloidal turn
+  (oracle `affine`). That class is infeasible.
+- A working flux needs genuine σ-dependence on a 2-torus where `|∇ψ|` has `O(1/λ)` tip
+  structure. Its numerator must solve the tail's magnetic differential equation to about
+  1e-3 relative accuracy. Building it, plus a 3-D interval cover, is beyond this phase.
+
+**Proved in Lean (new files; standard axioms; zero warnings).**
+- `Theory/Stability/BallooningSurface`: general 3-D field with a flux function, no symmetry and
+  no straight-field-line coordinates.
+  - Base eikonal and local Clebsch form: `k₀ = B×∇ψ/|∇ψ|²` with `∇ψ × k₀ = B`.
+  - Local shear `shearRate = (⟪k₀,M∇ψ⟫ + ⟪Mk₀,∇ψ⟫)/|∇ψ|²`. It needs first derivatives only.
+  - `transport_identity`, `hasDerivAt_eik`: the family `k₀ − (σ−c)∇ψ` with `σ' = shearRate` is
+    transported (`k' = −Mᵀk`). This uses `tr M = 0`.
+  - `eik_complete`: every transported `k ⊥ B` equals `m k₀ − s∇ψ` with `m` constant and
+    `s' = m·shearRate`, so the family covers all θ_k.
+  - `transport_of_hessian`: a symmetric Hessian gives `D∇ψ·B = −Mᵀ∇ψ`.
+  - `ballooningP_eik`: `P = 1/|∇ψ|² + s²|∇ψ|²/|B|²`.
+  - `ballooningQ_eik`: normal plus geodesic drive.
+  - `eikLine`, `eikLine_stable_of_surfaceCert`: a pointwise transport–Riccati inequality
+    `DΦ(B, d) + Φ²/P ≤ Q` on the points of a line gives stability for every shift.
+  - `eikLine_noDrive_stable`: sanity check.
+- `Design/LandremanFamily2Ballooning`:
+  - `C^∞` of the field and ψ on 𝒰, and `isOpen_U`.
+  - `hessian_transport`.
+  - `family2_eik_transport`: the eikonal is the true covering-space gradient.
+  - `field_ne_of_shell`, `gradPsi_ne_of_shell`: `B, ∇ψ ≠ 0` on the shell.
+  - `family2Line`: the line data from the actual field, `DB`, `pressureGrad` (`family2Line_gp`)
+    and curvature `kappa2`.
+  - `family2Line_P`, `family2Line_Q`, and `eikP_surfPt` (`P` in the closed forms `gp2`, `Bsq`).
+  - `family2_stable_of_cert`: the reduction to a single surface inequality.
+
+**Status.** There is no `family2_ballooning_stable` and no `family2_ballooning_unstable`. An
+instability witness is excluded numerically.
+
+**Next step.** Prove `B·∇J∥ = −q₁` (from `∇·J = 0`, which needs `C²`, now available). Then build
+an explicit σ-dependent flux using the scaled variable `u = σ|∇ψ|²/|B|`, with the tail fixed by
+the averaged condition.
