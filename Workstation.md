@@ -157,14 +157,21 @@ laptop with a small parameter setting, then commit it to `main` before running i
 Kept up to date from the laptop after every review ("update from workstation"). Run them on the
 workstation, inside `tmux`; `run.sh` pulls `main` itself.
 
-**Status (25 October 2026, evening): run now.** The generator bug is fixed on `main` (9f20af1), and
-the cell λ ∈ [1/8, 3/16] (Mu3) was reproduced and certified on the laptop, so only the last cell
-remains. Push access must work without a password (see "Push access" above).
+**Status (25 October 2026, night): run now.** The cell [3/16, 1/4] failed the KAM smallness
+condition (2.64 > 1; it grows with λ: 0.16 for [1/16, 1/8], 0.50 for [1/8, 3/16]), and the new
+validator stopped it before any Lean was written. Halving the cell width should shrink the
+residual enough. The two half-width cells use different tags, so run them one after the other
+(about 40 min of Python plus about 15 CPU-min of Lean each). Add `--no-push` and push by hand
+if push access is not yet set up (see "Push access").
 
 ```bash
-# Pitch cell λ ∈ [3/16, 1/4] (tag Mu4): about 40 min of Python plus about 15 CPU-min of Lean
-# (low-memory format, peak about 4.4 GB per process).
-LAM_LO=3/16 LAM_HI=1/4 LAM_TAG=4 scripts/workstation/run.sh lambda-cell
+# Pitch cell λ ∈ [3/16, 7/32] (tag Mu4)
+LAM_LO=3/16 LAM_HI=7/32 LAM_TAG=4 scripts/workstation/run.sh lambda-cell
+# Pitch cell λ ∈ [7/32, 1/4] (tag Mu5)
+LAM_LO=7/32 LAM_HI=1/4 LAM_TAG=5 scripts/workstation/run.sh lambda-cell
 ```
+
+If a run stops with "smallness condition fails", report the value: the next step is a higher
+Chebyshev degree rather than a narrower cell.
 
 Then say "update from workstation" on the laptop.
