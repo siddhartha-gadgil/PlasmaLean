@@ -4,6 +4,9 @@ This is a library for Lean and AI-assisted mathematics towards design of a *stel
 
 Besides the specific goals, this project is an experiment with using the power of modern AI systems with correctly designed Lean verification to address problems that are very useful, hard and mathematical in nature. Work produced and formalized by AI can be queried and understood, and ideas at various levels can be added to guide and spur development of theory and solutions.
 
+Heavy numerics and large certificate builds can be offloaded to a workstation; see
+[Workstation.md](Workstation.md).
+
 ## Progress
 
 The latest checked results (14 October 2026) are source-free Maxwell identities for closed

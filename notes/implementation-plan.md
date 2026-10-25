@@ -410,6 +410,9 @@ Each cycle is a run. The targets are listed in priority order; anything left ove
 - **Phase 14, a stable finite-β stellarator:**
   - route B: validated search for Mercier-stable regions of the Landreman families;
   - route A: stepped pressure across the exact KAM torus.
+- **Phase 15, workstation offload (infrastructure):** heavy numerics and first builds of large certificates run on a workstation through `scripts/workstation/run.sh` (see `Workstation.md`); results are pushed to a `workstation/*` branch, then pulled and re-checked on the laptop with `--verify-only`.
+  - **Constraint:** the merged Lean must build on the laptop: ≤ 6 GB per process; ≤ 60 CPU-min for the default build, ≤ 240 CPU-min for an on-demand top module. The workstation's job is to find *smaller* certificates, not bigger proofs.
+  - **Tasks to register:** the energy-window (ρ, λ) family (±3 eV, then ±1%), the family-2 ballooning certificate (3-D function over surface × ℝ), wider λ cells, and the coil-KAM refinement.
 - **Later:** the integrated stellarator candidate (M6) and engineering constraints.
 
 ### Phase 11 part 1, 21 October 2026 — [report](https://github.com/siddhartha-gadgil/PlasmaLean/blob/main/progress/2026-10-21-progress-10.md)
@@ -445,3 +448,8 @@ Each cycle is a run. The targets are listed in priority order; anything left ove
 - **Done (infrastructure):** a general 3-D surface ballooning framework (`Theory/Stability/BallooningSurface.lean`: transported eikonal family, completeness over all θ_k, surface-certificate ⇒ energy ≥ 0) and its instantiation on family 2 with line data built from the actual field (`family2_stable_of_cert`: stability of every line and θ_k reduces to one pointwise inequality on surface × ℝ). Ballooning reduction supplied.
 - **Numerics (untrusted):** ballooning-stable on k = 0.70–0.90 at the physical pressure and at twice it; the limiting long-line tail goes unstable only at pressure × 2.36 (k = 0.70) to × 9.39 (k = 0.90), marginal at k ≈ 0.54, consistent with the Mercier threshold k_c ≈ 0.53.
 - **Open:** the certificate itself. Certificates linear in the secular variable fail numerically; a working one needs a 3-D function resolving the sharp tip structure of |∇ψ| and a large interval cover.
+
+### Phase 15: workstation pipeline, 25 October 2026
+
+- **Done:** `scripts/workstation/run.sh` (setup: elan, Mathlib cache, Python venv from `scripts/requirements.txt`, `lake build PlasmaLean`; per task: numerics → Lean emission → per-module build with wall/CPU/peak-memory measurement → axiom check → results and laptop verdict in `workstation/results/<task>/<stamp>/` → commit and push to `workstation/<tasks>-<stamp>`), a `--verify-only` laptop mode, a task template and a `smoke` task. Instructions in `Workstation.md`. Tested locally (verify mode, and the full git path in a throwaway clone).
+- **Next:** register the energy-window and family-2 ballooning tasks, and run `smoke` on the workstation.

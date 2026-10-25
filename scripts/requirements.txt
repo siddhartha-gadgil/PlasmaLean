@@ -1,0 +1,7 @@
+# Python packages used by the untrusted oracle scripts in scripts/ (workstation pipeline: see
+# Workstation.md). Versions known to work on 2026-10-25.
+numpy>=2.0
+scipy>=1.13
+gmpy2>=2.2
+sympy>=1.13
+mpmath>=1.3
