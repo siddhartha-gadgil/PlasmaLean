@@ -204,17 +204,19 @@ laptop with a small parameter setting, then commit it to `main` before running i
 Kept up to date from the laptop after every review ("update from workstation"). Run them on the
 workstation, inside `tmux`; `run.sh` pulls `main` itself.
 
-**Status (26 October 2026): run now.** Mu2, Mu3, Mu4 and Ew1–4 are migrated and merged. First
-tidy the clone (earlier runs left generated files behind on `main`; `run.sh` now stashes such
-leftovers itself), then migrate Mu5:
+**Status (26 October 2026, morning): nothing queued.** All on-demand certificate families (Mu2–Mu5,
+Ew1–4) are migrated to proof terms and merged. Optional, to test sharing compiled files (the
+laptop will need Mu2–Mu5 compiled for the combined pitch-angle theorem):
 
 ```bash
-cd PlasmaLean && git checkout main
-git status --short                       # the leftovers
-git stash push --include-untracked -m "old run leftovers"   # keeps them, just in case
-git pull
-
-PT_FAMILIES="RationalStellaratorGCMu5" scripts/workstation/run.sh proofterm-migrate
+cd PlasmaLean && git pull && lake build PlasmaLean.Design.RationalStellaratorGCMu5Confined \
+  PlasmaLean.Design.RationalStellaratorGCMu4Confined PlasmaLean.Design.RationalStellaratorGCMu3Confined \
+  PlasmaLean.Design.RationalStellaratorGCMuWide
+python3 scripts/workstation/oleans.py pack --only ~/mu-cells.tar.gz \
+  'PlasmaLean.Design.RationalStellaratorGCMu2*' 'PlasmaLean.Design.RationalStellaratorGCMu3*' \
+  'PlasmaLean.Design.RationalStellaratorGCMu4*' 'PlasmaLean.Design.RationalStellaratorGCMu5*'
 ```
+
+Copy `~/mu-cells.tar.gz` to the laptop (e.g. Google Drive) and say where it is.
 
 Then say "update from workstation" on the laptop.
