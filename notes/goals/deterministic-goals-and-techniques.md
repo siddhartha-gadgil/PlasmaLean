@@ -245,14 +245,16 @@ The first N3 deliverable is an applicability record and a conservative arithmeti
 
 The identifiers below supplement rather than renumber the existing plan. References to K3 here mean **§12 K3**, not earlier historical KAM milestones with the same label.
 
+> **Editorial note (26 October 2026).** The identifiers "§12 D0–D4", "§12 K0–K6" and "§12.10" refer to a version of the implementation plan that was not supplied; they do not exist in [the current plan](../implementation-plan.md). The nearest current equivalents are the evidence gates E0–E8 (plan §11.2), the deterministic additions N1–N3 and probabilistic items P1–P4 (plan §12), and the phases of plan §10. No mapping of individual D/K items to these is implied; the D/K labels below are kept only as written.
+
 | New note item | Existing plan destination | First reviewable deliverable |
 | --- | --- | --- |
 | N1 | §12 K0/K3; E2/E3 and E5/E6 as applicable | One exact projected error equation, produced residual/defect bounds and an observable transfer theorem. |
 | N2 | §12 K1/K4/K6, only when activated | One minimal correction with a controlled same-observable comparison. |
 | N3 | §12 K0/K3 and §12.10 | Candidate-specific evidence record, decision margin and failure classification. |
-| D1 | Existing §12 D1; T9/E2/E3 | Modified-energy pilot with one positive fixture, one neutral-mode rejection fixture and a destination-model improvement. |
-| D2 | Existing §12 D2; T3/E5/E6 | Correct driven relative-entropy identity and a useful thermal estimate. |
-| Mixing | Existing §12 D4 | A feasibility result identifying the mechanism and obstruction before a larger proof effort. |
+| D1 | §12 D1 (unsupplied plan version); T9/E2/E3 | Modified-energy pilot with one positive fixture, one neutral-mode rejection fixture and a destination-model improvement. |
+| D2 | §12 D2 (unsupplied plan version); T3/E5/E6 | Correct driven relative-entropy identity and a useful thermal estimate. |
+| Mixing | §12 D4 (unsupplied plan version) | A feasibility result identifying the mechanism and obstruction before a larger proof effort. |
 
 Suggested formal interfaces, with names treated as proposals, are `ProjectedModelDefect`, `ModifiedEnergyBound`, `ObservableErrorBound` and `DecisionMarginCertificate`. Each must be accompanied by a producer from the stated equations or a clearly labelled external assumption. Merely assuming the desired defect bound or dissipation law and proving an arithmetic consequence is not completion of N1 or D1.
 

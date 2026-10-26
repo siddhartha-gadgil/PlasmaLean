@@ -28,6 +28,9 @@ $$\sup_{x \in \overline{\Omega}} \Vert{}\mathbf{B}(x)\Vert{}^2 = \max_{x \in \pa
 Similarly, for the difference $\delta \mathbf{B} = \mathbf{B}_1 - \mathbf{B}_2$ of two vacuum fields, $\Vert{}\delta \mathbf{B}\Vert{}^2$ is subharmonic, so its volumetric $L^\infty(\Omega)$ error is bounded entirely by its surface enclosure on $\partial \Omega$.
 
 ### 2.2 Target Kernel Specification & Sanity Check
+
+> **Historical target sketch (October 2026), not the library API.** Implemented differently: `VacuumField.normSq_le_of_frontier`, `VacuumField.not_strict_local_max_normSq` and `exists_vacuum_strict_interior_min` in `PlasmaLean/Theory/Fields/Subharmonic.lean`.
+
 ```lean
 /-- Bochner identity and subharmonicity contract for smooth vector fields on Ω ⊂ ℝ³ -/
 structure IsSubharmonicScalar (Ω : Set ℝ³) (f : ℝ³ → ℝ) : Prop where
@@ -76,6 +79,8 @@ $$w(l) > 0 \quad \text{and} \quad -\frac{d}{dl}\left( P(l) \frac{dw}{dl} \right)
 **Verification Payoff:** Instead of formalizing an eigenvalue solver in Lean 4, an external oracle supplies a simple finite Fourier/polynomial witness $w(l)$, and Lean 4 certifies the two pointwise interval inequalities $w(l) > 0$ and $\mathcal{L}_{\text{ball}}[w](l) > 0$ on $[-L, L]$.
 
 ### 3.2 Target Kernel Specification & Sanity Check
+
+> **Historical target sketch (October 2026), not the library API.** Implemented differently: `BartaCertificate` and `BartaCertificate.energy_pos` in `PlasmaLean/Theory/Stability/Ballooning.lean`.
 
 ```lean
 /-- Coefficients of the 1D Sturm-Liouville ballooning operator on [-L, L] -/
@@ -135,6 +140,8 @@ Conversely, a supersolution $\overline{T}(\psi)$ with $\mathcal{N}[\overline{T}]
 
 ### 4.2 Target Kernel Specification & Sanity Check
 
+> **Historical target sketch (October 2026), not the library API.** Implemented differently: `IsStrictLowerBarrier`, `IsLowerBarrier` and the comparison theorems in `PlasmaLean/Theory/Transport/Comparison.lean`.
+
 ```lean
 /-- Stationary Lower-Barrier Certificate for 1D Radial Transport -/
 structure TransportLowerBarrierCertificate
@@ -173,6 +180,8 @@ $$p(r) := \frac{1}{2} Z_2 r^2 - (1 - Z_1) r + Y_0.$$
 **The Radii Polynomial Theorem (van den Berg–Lessard / Nakao–Plum):** If there exists $r_0 > 0$ such that $p(r_0) < 0$, then $T : \overline{B}_{r_0}(\bar{u}) \to \overline{B}_{r_0}(\bar{u})$ is a strict contraction on $\overline{B}_{r_0}(\bar{u}) \subset X$. By Banach's Fixed-Point Theorem (`Mathlib.Topology.MetricSpace.Contracting`), there exists a **unique true continuum MHD equilibrium $u^* \in \overline{B}_{r_0}(\bar{u})$** satisfying $F(u^*) = 0$ and $\Vert{}u^* - \bar{u}\Vert{}_X \le r_0$.
 
 ### 5.2 Target Kernel Specification & Sanity Check
+
+> **Historical target sketch (October 2026), not the library API.** Concrete radii-polynomial checks exist for a slab and a BVP (`radiiPoly` in `PlasmaLean/Design/ValidatedSlabEquilibrium.lean`, `PlasmaLean/Design/ValidatedBVP.lean`); the abstract structure below does not.
 
 ```lean
 /-- Abstract Radii Polynomial Certificate around an oracle candidate u_bar in a Banach space X -/
@@ -258,27 +267,9 @@ certifying that plasma perturbations cannot touch the vacuum vessel wall over lo
 
 > **Correction (2026-10-20), unchecked step:** $\mathcal{E}_2$ commutes only with $\mathcal{L}_{\mathbf{u}}$ (and $\nabla_\parallel$), and both are *tangential* to flux surfaces. So $\mathcal{E}_2$ controls tangential derivatives only, not the full $H^2(M)$ norm. The step $\mathcal{E}_2 \gtrsim \Vert{}\xi\Vert{}_{H^2}^2$ needs a separate elliptic-regularity estimate across surfaces, with its own constant and hypotheses (behaviour at the axis, at rational surfaces and at the boundary). Until that estimate is derived, treat it as an explicit interface hypothesis, not a consequence. The commutator bound in item 1 is also an unproved hypothesis.
 
-### 7.2 Target Kernel Specification & Sanity Check
+### 7.2 Target kernel specification — REFUTED, not implemented
 
-```lean
-/-- Commutator defect bound between the MHD force operator F and Lie derivative ℒ_u
-    along a quasisymmetry (or approximate symmetry) vector field u. -/
-structure QuasisymmetricCommutatorBound
-    {H2 L2 : Type*} [NormedAddCommGroup H2] [InnerProductSpace ℝ L2]
-    (F : H2 → L2) (Lie_u : H2 → H2) (Lie_u_L2 : L2 → L2) (ε_QS : ℝ) : Prop where
-  nonneg_defect : 0 ≤ ε_QS
-  comm_bound : ∀ ξ : H2, ‖F (Lie_u ξ) - Lie_u_L2 (F ξ)‖ ≤ ε_QS * ‖ξ‖
-
-/-- Klainerman-Sobolev Commuted Energy Certificate:
-    Combines H¹ coercivity of δ²W, commutator defect ε_QS, and 3D Sobolev embedding
-    to certify pointwise L∞ plasma-to-wall clearance! -/
-structure CommutedWallClearanceCertificate
-    (E2_init γ C_Sob ε_QS T_max d_wall : ℝ) : Prop where
-  coercive_pos   : 0 < γ
-  sob_pos        : 0 < C_Sob
-  clearance_safe : C_Sob * Real.sqrt (E2_init / γ) * Real.exp (ε_QS * T_max / 2) < d_wall
-
-```
+> **REFUTED / not implemented; see [implementation plan §1](implementation-plan.md).** The original block proposed `QuasisymmetricCommutatorBound` (an assumed commutator bound) and `CommutedWallClearanceCertificate`, an arithmetic inequality C_Sob·√(E2_init/γ)·exp(ε_QS·T_max/2) < d_wall between six reals, linked to no PDE solution, δ²W or Sobolev constant. Neither exists in `PlasmaLean/`; the code was removed.
 
 > **Correction (2026-10-20), vacuous contract:** `CommutedWallClearanceCertificate` is just an arithmetic inequality between six reals. Nothing links it to a PDE solution ξ, to δ²W, or to a Sobolev constant. Holding it implies nothing about wall clearance. It should not enter the library unless a theorem *produces* the clearance conclusion from it. That theorem would take a solution of ρξ̈ = Fξ, coercivity of δ²W, the commutator bound and the (still missing) transverse elliptic estimate as hypotheses, and conclude `‖ξ t‖_∞ < d_wall` on `[0, T_max]`.
 
@@ -312,6 +303,8 @@ $$P D + D^T P = B_{\text{bdry}} := \mathrm{diag}(-1, 0, \dots, 0, 1).$$
 **Why this is ideal for Lean 4:** Because $P D + D^T P = B_{\text{bdry}}$ is a finite rational/interval matrix identity, Lean 4 can verify it **automatically by computation (`norm_num` / `decide`)**, immediately yielding a machine-checked discrete energy conservation or Lyapunov stability theorem for the discretized PDE!
 
 ### 8.2 Target Kernel Specification & Sanity Check
+
+> **Historical target sketch (October 2026), not the library API.** Implemented differently in `PlasmaLean/Certificates/SBP.lean` and `PlasmaLean/Certificates/SBPGeneral.lean`.
 
 ```lean
 /-- A Summation-By-Parts (SBP) discrete derivative operator on N grid points,
@@ -348,5 +341,5 @@ theorem sbp_discrete_energy_identity
 | **Milestone C** *(Short-Term)* | Discrete Hyperbolic / Transport Stability | Numerical Relativity Summation-By-Parts (SBP) Matrices | `sbp_discrete_energy_identity` |
 | **Milestone D** *(Medium-Term)* | 1D Nonlinear Radial Transport Profiles | Nagumo Parabolic Comparison & Barrier Functions | `TransportLowerBarrierCertificate` |
 | **Milestone E** *(Medium-Term)* | 5D Trapped-Particle Microturbulence Bound | Symplectic Rearrangement & Available Energy $\widehat{\mathcal{A}}$ | `SatisfiesMaximumJ` & `AvailableEnergyFluxTube` |
-| **Milestone F** *(Long-Term)* | Pointwise $L^\infty$ Plasma Wall-Clearance Stability | Klainerman–Sobolev Commuted Energy & Elsässer Null Structure | `CommutedWallClearanceCertificate` |
+| **Milestone F** *(Long-Term)* | Pointwise $L^\infty$ Plasma Wall-Clearance Stability | Klainerman–Sobolev Commuted Energy & Elsässer Null Structure | ~~`CommutedWallClearanceCertificate`~~ (refuted, not implemented; see §7.2) |
 | **Milestone G** *(Long-Term)* | Full 3D Finite-$\beta$ MHS Equilibrium ($\mathbf{J}\times\mathbf{B}=\nabla p$) | Zernike Basis + Newton–Kantorovich Radii Polynomials on $\ell^1_\nu$ | `exists_unique_solution_of_radii_polynomial` |

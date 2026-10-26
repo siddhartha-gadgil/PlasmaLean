@@ -22,11 +22,15 @@ On 20 October an [implementation plan](notes/implementation-plan.md) was fixed. 
 between theory, certificate techniques and a ladder of successively realistic models, targeting
 both confinement and keeping the plasma hot. Ten phases are complete, and Phases 11, 14, 15 and 16 are in progress:
 
-- **one consistent plasma:** for one exact Solov'ev field satisfying force balance, 3.5 MeV alphas
-  born in the core are confined for all time, the core stays at or above 10 keV for all time, and
-  the plasma pressure stays below the equilibrium pressure. This holds on the equilibrium's own
-  flux geometry (fully derived, including the coarea step) and up to ignition (zero auxiliary heating, with
-  a larger edge-pressure offset);
+- **one field with a pressure-budget band:** one exact Solov'ev field satisfies force balance with
+  the offset pressure p_eq + 40 kPa; 3.5 MeV alphas born in the core are confined for all time (full
+  Lorentz orbits); and for *every* classical solution of the radial transport model that starts in a
+  certified band, the core stays at or above 10 keV and the plasma pressure stays within the budget
+  p ≤ p_eq + 40 kPa for all time. The existence of such a solution is assumed, not proved, and the
+  thermal pressure is bounded by the budget, not equal to the force-balance pressure. This is proved on
+  the equilibrium's own flux geometry (`solovev_one_plasma_actual`; with the coarea step derived,
+  `solovev_one_plasma_actual_coarea`), at high Q (`solovev_one_plasma_highQ_actual`) and up to
+  ignition with zero auxiliary heating and a 90 kPa offset (`solovev_one_plasma_ignited_actual`);
 - **first stellarator field:** an exact non-axisymmetric vacuum field with two field periods and
   stellarator symmetry, whose magnetic axis is linearly elliptic and whose field lines near the
   axis are **confined for all time**: a verified explicit-constant KAM theorem produces an exact
@@ -57,8 +61,8 @@ Heavy certificates are offloaded through a workstation pipeline (Phase 15) and r
 laptop before merging; on-demand results are spot-checked rather than rebuilt in full, and compiled
 modules can be copied between machines; see [Workstation.md](Workstation.md). Kernel checks now peak
 at 4.3 GB per process, within the 6 GB laptop target. Large checks are being rewritten as explicit
-proof-term certificates (Phase 16): `decide +kernel` is down from about 28,700 uses to about 5,700
-lines (about 1,400 in the default build); the polygon-coil lines still need a new design.
+proof-term certificates (Phase 16): `decide +kernel` is down from about 28,700 uses to about 2,500
+lines containing it (690 lines in the default build).
 
 The library uses standard axioms only (no project axioms). See the
 [progress slideshow](docs/slides.html) and the [latest report](progress/2026-10-26-progress-14.md).

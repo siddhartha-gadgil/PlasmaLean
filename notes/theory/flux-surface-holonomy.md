@@ -27,8 +27,22 @@ curve ψ ↦ (Φ_t, Φ_p) in the universal cover, ι = dΦ_p/dΦ_t. Equivalently
 
   β := ι_B σ on Σ, where σ is the Leray area form (dψ ∧ σ = vol, so σ = dA/|∇ψ|).
 
-β is closed because L_Bσ|_Σ = 0 (from div B = 0 and L_Bψ = 0). Its periods are (dΦ_t/dψ, dΦ_p/dψ), its kernel is B, and
-[β] ∈ H¹(Σ;ℝ) is the Schwartzman asymptotic cycle of the field-line flow. The reduction mod a lattice destroys the
+β is closed because L_Bσ|_Σ = 0 (from div B = 0 and L_Bψ = 0). Its kernel is B, and
+[β] ∈ H¹(Σ;ℝ) is the Schwartzman asymptotic cycle of the field-line flow.
+
+**Orientation conventions (fixed here and used in §3).** Use angles (θ, φ) on Σ with (ψ, θ, φ) right-handed, i.e.
+Jacobian 𝒥 = 1/(∇ψ × ∇θ · ∇φ) > 0, so that σ = 𝒥 dθ∧dφ on Σ and Σ is oriented by dθ∧dφ. Orient γ_p by increasing θ at fixed
+φ and γ_t by increasing φ at fixed θ (this orientation is the one for which γ_p ↦ 1, γ_t ↦ τ has Im τ > 0). Define the fluxes
+with the same orientations, Φ_t(ψ) = (1/2π)∫_{ψ′<ψ} B·∇φ dV and Φ_p(ψ) = (1/2π)∫_{ψ′<ψ} B·∇θ dV, so that
+Φ_t′ = (1/2π)∬ 𝒥 B^φ dθ dφ and Φ_p′ = (1/2π)∬ 𝒥 B^θ dθ dφ, where B^θ = B·∇θ, B^φ = B·∇φ and ′ = d/dψ.
+
+**Periods, with signs.** Since i_B(𝒥 dθ∧dφ) = 𝒥 (B^θ dφ − B^φ dθ),
+
+  ∮_{γ_p} β = −∮ 𝒥 B^φ dθ = −Φ_t′,  ∮_{γ_t} β = ∮ 𝒥 B^θ dφ = Φ_p′
+
+(each loop integral is independent of the other angle because β is closed, so it equals its average). With these orientations
+**ι = dΦ_p/dΦ_t = Φ_p′/Φ_t′ = −∮_{γ_t}β / ∮_{γ_p}β**, and ι = B^θ/B^φ for straight-field-line angles. Reversing the
+orientation of γ_p (or of the poloidal angle) gives periods (Φ_t′, Φ_p′) but flips the sign of Im τ. The reduction mod a lattice destroys the
 information, and the arbitrary scale k makes the reduced point physically meaningless. **Verdict on the holonomy as
 stated: not useful.**
 
@@ -39,7 +53,7 @@ Its periods are ∮_{γ_p}α = μ₀ I (toroidal current enclosed) and ∮_{γ_t
 Pointwise |α| = |B|, |β| = |B|/|∇ψ|, and α∧β = (|B|²/|∇ψ|) dA.
 
 **(P1) Riemann bilinear identity — [proved informally; reproduces a known identity].**
-∫_Σ α∧β = P_p(α)P_t(β) − P_t(α)P_p(β), which gives (up to orientation conventions)
+∫_Σ α∧β = P_p(α)P_t(β) − P_t(α)P_p(β), which gives, with the periods of §2 (P_p(β) = −Φ_t′, P_t(β) = Φ_p′),
   **V′(ψ)⟨B²⟩ = μ₀ (G Φ_t′ + I Φ_p′) = μ₀ Φ_t′ (G + ιI).**
 This is the familiar Boozer-coordinate identity V′⟨B²⟩ = 4π²(G + ιI) in the normalization ψ = Φ_t/2π with covariant
 B = I∇θ + G∇φ + …. It is a good sanity theorem, but **not new**.
@@ -47,18 +61,18 @@ B = I∇θ + G∇φ + …. It is a good sanity theorem, but **not new**.
 **(P2) Hodge period inequalities — [proved informally, sympy-checked].** In 2-D the Dirichlet energy of 1-forms is
 conformally invariant. A closed 1-form on ℂ/(ℤ+τℤ) with periods a (on 1) and b (on τ) has energy at least that of its
 harmonic (constant) representative, |b − aτ|²/Im τ. Equality holds iff the form is harmonic, and the excess is ∫|∇u|² for the
-exact part du. Applying this to β with ψ = Φ_t (periods (1, ι)) and to α:
+exact part du. Applying this to β with ψ = Φ_t (periods (−1, ι) in the orientation of §2) and to α:
 
-  ∫_Σ |B|²/|∇Φ_t|² dA ≥ |ι − τ|² / Im τ,  ∫_Σ |B|² dA ≥ μ₀² |G − τI|² / Im τ  (the latter needs J·∇ψ = 0).
+  ∫_Σ |B|²/|∇Φ_t|² dA ≥ |ι + τ|² / Im τ,  ∫_Σ |B|² dA ≥ μ₀² |G − τI|² / Im τ  (the latter needs J·∇ψ = 0).
 
-Both right-hand sides are invariant under γ_t ↦ γ_t + kγ_p, because τ ↦ τ+k and ι ↦ ι+k. Sanity check, thin circular torus
+Both right-hand sides are invariant under γ_t ↦ γ_t + kγ_p, because τ ↦ τ+k and ι ↦ ι−k (the new poloidal angle is θ − kφ). (An earlier version wrote |ι − τ|² with periods (1, ι); that matches the opposite orientation of γ_p, under which Im τ < 0. The two agree when Re τ = 0, as in the sanity check below.) Sanity check, thin circular torus
 (minor radius a, major radius R, τ ≈ iR/a) with uniform toroidal field B₀ and poloidal field ιaB₀/R: both sides equal
 R/a + ι²a/R exactly (sympy). The vacuum 1/R field with I = 0 also saturates the second inequality to leading order:
 μ₀²G²a/R.
 
 **Interpretation.** The second inequality is a conformal-geometry lower bound on the surface-integrated magnetic pressure
 for a given linking coil current and surface shape. The first says that a surface with modulus τ needs a field-line
-"energy" of at least |ι − τ|²/Im τ to carry transform ι. The defect (LHS − RHS) ≥ 0 measures how far the field-line
+"energy" of at least |ι + τ|²/Im τ to carry transform ι. The defect (LHS − RHS) ≥ 0 measures how far the field-line
 1-form is from being harmonic (straight and uniform in conformal coordinates). We have **no evidence yet** that this defect
 correlates with any confinement figure of merit.
 

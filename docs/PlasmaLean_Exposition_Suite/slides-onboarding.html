@@ -57,7 +57,7 @@
             <h3>Stellarators (3D Non-Axisymmetric)</h3>
             <ul>
               <li>External 3D twisted modular coils create rotational transform $\iota(\psi)$ without driven plasma current.</li>
-              <li><strong>Challenge:</strong> Breaking 2D symmetry destroys $P_\phi$ unless the 3D field satisfies <strong>Quasisymmetry</strong>: $|B(\psi,	heta,\phi)| = B(\psi, M	heta - N\phi)$.</li>
+              <li><strong>Challenge:</strong> Breaking 2D symmetry destroys $P_\phi$ unless the 3D field satisfies <strong>Quasisymmetry</strong>: $|B(\psi,\theta,\phi)| = B(\psi, M\theta - N\phi)$.</li>
             </ul>
           </div>
         </div>
@@ -72,9 +72,7 @@
           <div class="slide-box">
             <h3>1. Small Trusted Kernel (~120 LOC)</h3>
             <ul>
-              <li>Defines $
-abla \cdot \mathbf{B}$, $
-abla 	imes \mathbf{B}$, regular flux surfaces $\psi^{-1}(c)$, and coil-to-plasma clearance $d_{\min} > 0$.</li>
+              <li>Defines $\nabla \cdot \mathbf{B}$, $\nabla \times \mathbf{B}$, regular flux surfaces $\psi^{-1}(c)$, and coil-to-plasma clearance $d_{\min} > 0$.</li>
               <li>Zero project-specific axioms (only standard Lean 4 <code>propext</code>, <code>Classical.choice</code>, <code>Quot.sound</code>).</li>
             </ul>
           </div>
@@ -94,12 +92,12 @@ abla 	imes \mathbf{B}$, regular flux surfaces $\psi^{-1}(c)$, and coil-to-plasma
         <span class="badge">Pillar 4 · Compiled Milestone</span>
         <h2>Anatomy of a Tolerance-Aware Vacuum-Fixture Certificate</h2>
         <div class="slide-box">
-          <p><strong>Compiled Today in PlasmaLean:</strong> From smooth 3D coil curves $\gamma_i : S^1 	o \mathbb{R}^3$ to certified manufacturing margins:</p>
+          <p><strong>Compiled Today in PlasmaLean:</strong> From smooth 3D coil curves $\gamma_i : S^1 \to \mathbb{R}^3$ to certified manufacturing margins:</p>
           <ol>
             <li><strong>Clearance Enclosure:</strong> Certify $\inf_{s, x \in \Sigma} \|x - \gamma_i(s)\| \ge d_{\min} > 0$.</li>
-            <li><strong>Exact Biot–Savart Fréchet Derivatives:</strong> Machine-checked Jacobians $\partial_y K(x,y,	au)$ and $\partial_	au K(x,y,	au)$.</li>
-            <li><strong>Banach Lipschitz Perturbation Bound:</strong> For all coil warps $\|\delta\gamma_i\|_{C^1} \le arepsilon < d_{\min}/2$, bound $\|\mathbf{B}(\gamma+\delta\gamma) - \mathbf{B}(\gamma)\| \le L_{	ext{BS}}(d_{\min})\,arepsilon$.</li>
-            <li><strong>Toroidal Surface Atlas Certificate:</strong> Guarantee $|\mathbf{B}\cdot\mathbf{n}|/\|\mathbf{B}\| \le \eta_{\max}$ across all of $\Sigma_{	ext{target}}$.</li>
+            <li><strong>Exact Biot–Savart Fréchet Derivatives:</strong> Machine-checked Jacobians $\partial_y K(x,y,\tau)$ and $\partial_\tau K(x,y,\tau)$.</li>
+            <li><strong>Banach Lipschitz Perturbation Bound:</strong> For all coil warps $\|\delta\gamma_i\|_{C^1} \le \varepsilon < d_{\min}/2$, bound $\|\mathbf{B}(\gamma+\delta\gamma) - \mathbf{B}(\gamma)\| \le L_{\text{BS}}(d_{\min})\,\varepsilon$.</li>
+            <li><strong>Toroidal Surface Atlas Certificate:</strong> Guarantee $|\mathbf{B}\cdot\mathbf{n}|/\|\mathbf{B}\| \le \eta_{\max}$ across all of $\Sigma_{\text{target}}$.</li>
           </ol>
         </div>
       </section>
@@ -122,17 +120,12 @@ abla 	imes \mathbf{B}$, regular flux surfaces $\psi^{-1}(c)$, and coil-to-plasma
                 <td style="padding:0.4rem;">Compact regular level set $\Sigma_c \cong T^2$ of a first integral ($\mathcal{L}_B \psi = 0$)</td>
               </tr>
               <tr style="border-bottom:1px solid #334155;">
-                <td style="padding:0.4rem;">Vacuum field ($
-abla\cdot B=0, 
-abla	imes B=0$)</td>
-                <td style="padding:0.4rem;">Harmonic 1-form $eta \in \mathcal{H}^1(M, g)$ ($deta = 0, d^*eta = 0$)</td>
+                <td style="padding:0.4rem;">Vacuum field ($\nabla\cdot B=0, \nabla\times B=0$)</td>
+                <td style="padding:0.4rem;">Harmonic 1-form $\beta \in \mathcal{H}^1(M, g)$ ($d\beta = 0, d^*\beta = 0$)</td>
               </tr>
               <tr style="border-bottom:1px solid #334155;">
-                <td style="padding:0.4rem;">Force-free field ($
-abla 	imes B = \lambda B$)</td>
-                <td style="padding:0.4rem;">Beltrami 1-form $\star deta = \lambda eta$ (Contact structure $eta \wedge deta 
-eq 0$ when $\lambda 
-eq 0$)</td>
+                <td style="padding:0.4rem;">Force-free field ($\nabla \times B = \lambda B$)</td>
+                <td style="padding:0.4rem;">Beltrami 1-form $\star d\beta = \lambda \beta$ (Contact structure $\beta \wedge d\beta \neq 0$ when $\lambda \neq 0$)</td>
               </tr>
               <tr style="border-bottom:1px solid #334155;">
                 <td style="padding:0.4rem;">Rotational transform $\iota(\psi)$</td>
@@ -158,9 +151,7 @@ eq 0$)</td>
         <div class="slide-grid">
           <div class="slide-box">
             <h3>1. Arnold–Poincaré–Hopf Toroidal Foliation</h3>
-            <p>From $\mathbf{J} 	imes \mathbf{B} = 
-abla p 
-eq 0$, prove $(\mathbf{B}, \mathbf{J})$ trivializes $T\Sigma_c$, forcing $\chi(\Sigma_c) = 0$ and $\Sigma_c \cong T^2$.</p>
+            <p>From $\mathbf{J} \times \mathbf{B} = \nabla p \neq 0$, prove $(\mathbf{B}, \mathbf{J})$ trivializes $T\Sigma_c$, forcing $\chi(\Sigma_c) = 0$ and $\Sigma_c \cong T^2$.</p>
             <p><em>Stub:</em> <code>Challenge1_PoincareHopfTorus.lean</code></p>
           </div>
           <div class="slide-box">
@@ -183,7 +174,7 @@ eq 0$, prove $(\mathbf{B}, \mathbf{J})$ trivializes $T\Sigma_c$, forcing $\chi(\
           </div>
           <div class="slide-box">
             <h3>4. Littlejohn Symplectic Form &amp; Noether</h3>
-            <p>Prove that $(M,N)$-quasisymmetry $\mathcal{L}_u |B| = 0$ generates an exact conserved helical momentum $P_{	ext{hel}}$ under guiding-center symplectic dynamics.</p>
+            <p>Prove that $(M,N)$-quasisymmetry $\mathcal{L}_u |B| = 0$ generates an exact conserved helical momentum $P_{\text{hel}}$ under guiding-center symplectic dynamics.</p>
             <p><em>Stub:</em> <code>Challenge4_QuasisymmetryNoether.lean</code></p>
           </div>
         </div>
@@ -200,8 +191,8 @@ eq 0$, prove $(\mathbf{B}, \mathbf{J})$ trivializes $T\Sigma_c$, forcing $\chi(\
             <p><em>Stub:</em> <code>Challenge5_HarmonicUnivalence.lean</code></p>
           </div>
           <div class="slide-box">
-            <h3>6. Riemann Surface Modulus $	au(\psi) \in \mathbb{H}$</h3>
-            <p>Every flux surface $\Sigma_\psi \cong \mathbb{C}/(\mathbb{Z} + 	au(\psi)\mathbb{Z})$ carries a Hodge star $\star_g^2 = -I_2$ and period matrix determined by its conformal modulus $	au(\psi)$.</p>
+            <h3>6. Riemann Surface Modulus $\tau(\psi) \in \mathbb{H}$</h3>
+            <p>Every flux surface $\Sigma_\psi \cong \mathbb{C}/(\mathbb{Z} + \tau(\psi)\mathbb{Z})$ carries a Hodge star $\star_g^2 = -I_2$ and period matrix determined by its conformal modulus $\tau(\psi)$.</p>
             <p><em>Stub:</em> <code>Challenge6_ConformalTorusModulus.lean</code></p>
           </div>
         </div>

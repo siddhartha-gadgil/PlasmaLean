@@ -2,7 +2,7 @@
 
 **Proposed work — 24 October 2026.** This note specifies reviewable outputs for the companion [overview](plasmalean-goals-overview.md), [probabilistic goals](probabilistic-goals-and-techniques.md) and [deterministic additions](deterministic-goals-and-techniques.md). It reports no completed Lean code, new solver benchmarks or established reactor predictions.
 
-The existing G1/G2 programme remains the core. P1–P4 are local labels for the new probabilistic work, not the older formalization roadmap's P0–P9 gates. N1/N2 are deterministic modelling additions; N3 is shared decision infrastructure. References to D/K below mean the work packages in §12 of the current implementation plan.
+The existing G1/G2 programme remains the core. P1–P4 are local labels for the new probabilistic work, not the older formalization roadmap's P0–P9 gates. N1/N2 are deterministic modelling additions; N3 is shared decision infrastructure. References to D/K below mean work packages of a plan version that was not supplied; they do not exist in the current [implementation plan](../implementation-plan.md), whose nearest equivalents are the gates E0–E8 (§11.2), N1–N3 (§12) and the phases of §10.
 
 ## 1. First selection
 

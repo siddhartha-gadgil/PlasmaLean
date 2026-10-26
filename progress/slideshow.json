@@ -7,7 +7,7 @@
       "id": "where-we-are",
       "eyebrow": "Progress briefing · alphas confined in a stellarator field",
       "title": "Alpha guiding centres confined forever — for every passing pitch parameter λ ∈ [0, 1/4].",
-      "lead": "PlasmaLean is building a Lean library for stellarator design. In an exact non-axisymmetric stellarator field, passing 3.5 MeV alpha guiding centres are proved confined for all time for every pitch parameter λ ∈ [0, 1/4] (the limit of the passing argument) at one energy and B₀R₀, over a positive-measure set of velocities with |E − 3.5 MeV| ≤ 0.4 eV × λ ∈ [0, 1/16], and for a range of B₀R₀ at μ = 0; field lines are confined forever; a coil set confines field lines for 52 transits; a finite-β non-axisymmetric band is Mercier-stable (ballooning reduced, not certified); one axisymmetric plasma has proved alpha confinement, a hot core and certified local stability.",
+      "lead": "PlasmaLean is building a Lean library for stellarator design. In an exact non-axisymmetric stellarator field, passing 3.5 MeV alpha guiding centres are proved confined for all time for every pitch parameter λ ∈ [0, 1/4] (the limit of the passing argument) at one energy and B₀R₀, over a positive-measure set of velocities with |E − 3.5 MeV| ≤ 0.4 eV × λ ∈ [0, 1/16], and for a range of B₀R₀ at μ = 0; field lines are confined forever; a coil set confines field lines for 52 transits; a finite-β non-axisymmetric band is Mercier-stable (ballooning reduced, not certified); one exact axisymmetric field has proved alpha confinement, a hot core for every supplied transport solution (existence not proved) within a pressure budget, and certified local stability.",
       "metrics": [
         {
           "value": "λ ∈ [0, 1/4]",
@@ -22,7 +22,7 @@
           "label": "peak kernel-check memory per process (6 GB laptop target now met)"
         }
       ],
-      "progress": "All-time field-line and passing-alpha guiding-centre confinement in a genuine stellarator field (vacuum model); one consistent axisymmetric plasma with certified local stability; large checks rewritten as explicit proof-term certificates; heavy cells computed on a workstation and spot-checked on the laptop.",
+      "progress": "All-time field-line and passing-alpha guiding-centre confinement in a genuine stellarator field (vacuum model); one axisymmetric field with a pressure-budget band (transport solutions supplied) and certified local stability; large checks rewritten as explicit proof-term certificates; heavy cells computed on a workstation and spot-checked on the laptop.",
       "boundary": "Alpha results: one B₀R₀, and one energy for λ ∈ [0, 1/4] (positive measure in velocity space only in a ±0.4 eV band with λ ≤ 1/16) — not robust to slowing-down; Littlejohn model supplied; vacuum model field; trapped alphas open; coil-produced all-time confinement blocked; the stable finite-β band is not certified ballooning-stable; on-demand workstation modules spot-checked, not fully rebuilt; polygon-coil lines still use decide +kernel.",
       "evidence": [
         {
@@ -554,7 +554,7 @@
         },
         {
           "title": "Coils and coupling",
-          "text": "Face samples certify the coil field error in a whole volume (maximum principle + surface cover). One consistent plasma needs an upper temperature barrier — and so a T-dependent diffusivity in the kernel.",
+          "text": "Face samples certify the coil field error in a whole volume (maximum principle + surface cover). A pressure-budget band needs an upper temperature barrier — and so a T-dependent diffusivity in the kernel.",
           "status": "Lean verified; design recorded",
           "kind": "partial"
         }
@@ -578,13 +578,13 @@
     },
     {
       "id": "one-plasma",
-      "eyebrow": "14 · Phase 5: one consistent plasma",
-      "title": "Confinement and heat, proved for the same plasma.",
-      "lead": "solovev_one_plasma: one exact field satisfying J × B = ∇p; every 3.5 MeV alpha born in the core stays inside forever; every solution of the transport law starting in a certified band keeps a ≥ 10 keV core forever; and the plasma pressure never exceeds the equilibrium pressure plus an edge offset.",
+      "eyebrow": "14 · Phase 5: one field with a pressure-budget band",
+      "title": "Confinement and heat, proved for the same field, with a pressure budget.",
+      "lead": "solovev_one_plasma: one exact Solov'ev field satisfying J × B = ∇p with pressure p_eq + 40 kPa; every 3.5 MeV alpha born in the core stays inside forever (full Lorentz orbits); every classical solution of the transport model starting in a certified band (existence assumed, not proved) keeps a ≥ 10 keV core forever, with plasma pressure within the budget ≤ p_eq + 40 kPa — bounded by it, not equal to the force-balance pressure.",
       "cards": [
         {
-          "title": "One plasma",
-          "text": "Same field, same pressure, same domain s ≤ 1 for force balance, alpha confinement and the transport band. Driven (≈ 120 MW aux, Q ≈ 5.5); transport geometry via a supplied class (proved for the actual field in Phase 6).",
+          "title": "One field, pressure budget",
+          "text": "Same field, same pressure budget, same domain s ≤ 1 for force balance, alpha confinement and the transport band. Driven (≈ 120 MW aux, Q ≈ 5.5); transport geometry via a supplied class (proved for the actual field in Phase 6).",
           "status": "Lean verified (geometry supplied)",
           "kind": "partial"
         },
@@ -628,7 +628,7 @@
       "id": "actual-geometry-stellarator",
       "eyebrow": "15 · Phase 6: true geometry, ignition, stellarator field",
       "title": "No supplied geometry, no auxiliary power — and a genuine stellarator field.",
-      "lead": "The one-plasma theorem now uses flux-surface quantities computed from the equilibrium itself. With quarter-keV reactivity data it certifies a high-Q (Q ≈ 40) band and an ignited band with zero auxiliary heating. Separately, an exact rational vacuum field with two field periods and stellarator symmetry gives the library its first non-axisymmetric stellarator geometry.",
+      "lead": "The pressure-budget theorem (transport solutions supplied) now uses flux-surface quantities computed from the equilibrium itself. With quarter-keV reactivity data it certifies a high-Q (Q ≈ 40) band and an ignited band with zero auxiliary heating. Separately, an exact rational vacuum field with two field periods and stellarator symmetry gives the library its first non-axisymmetric stellarator geometry.",
       "cards": [
         {
           "title": "Actual geometry",
@@ -676,7 +676,7 @@
       "id": "stellarator-confined",
       "eyebrow": "16 · Phase 7: a confined stellarator field",
       "title": "95 toroidal transits, certified, in a genuine stellarator field.",
-      "lead": "For the exact vacuum field B = ∇φ + ¼∇h — non-axisymmetric, two field periods, stellarator-symmetric — every field line starting within ≈ 0.023 R₀ of the magnetic axis stays within ≈ 0.1 R₀ of it for at least 95 full toroidal transits. And the coarea formula closes the last stated link in the one-plasma theorem.",
+      "lead": "For the exact vacuum field B = ∇φ + ¼∇h — non-axisymmetric, two field periods, stellarator-symmetric — every field line starting within ≈ 0.023 R₀ of the magnetic axis stays within ≈ 0.1 R₀ of it for at least 95 full toroidal transits. And the coarea formula closes the last stated geometric link in the pressure-budget theorem (transport solutions are still supplied).",
       "cards": [
         {
           "title": "Stellarator confinement",
@@ -1360,7 +1360,7 @@
         },
         {
           "title": "Counts and cost",
-          "text": "decide +kernel: ≈ 28,724 uses → ≈ 5,700 lines overall, ≈ 1,400 in the default build. User decision: accept ≈ 9 GB of private oleans for fully explicit heavy certificates.",
+          "text": "decide +kernel: ≈ 28,724 uses → ≈ 2,500 lines overall (2,507), 690 lines in the default build (stage 6). User decision: accept ≈ 9 GB of private oleans for fully explicit heavy certificates.",
           "status": "Mostly converted",
           "kind": "partial"
         },

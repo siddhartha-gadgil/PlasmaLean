@@ -31,30 +31,9 @@ When analyzing 3D magnetohydrostatic (MHS) equilibria ($\mathbf{J} \times \mathb
 >
 > What survives: the flat connection $A|_{\Sigma_\psi}$ (with $\nabla\times A = \mathbf{B}$) has periods equal to the toroidal flux (poloidal cycle) and the poloidal flux up to an additive gauge constant (toroidal cycle). The rotational transform is the ratio of the periods of the closed 1-form $\iota_{\mathbf{B}}\sigma$ ($\sigma$ the Leray area form, $d\psi\wedge\sigma = \mathrm{vol}$), i.e. $\iota = d\Phi_p/d\Phi_t$. It is *not* the holonomy itself. $\tau(\psi)$ is the conformal modulus. See `notes/theory/flux-surface-holonomy.md` for the verdict and the useful replacement statement (a Hodge period inequality).
 
-### 2.2 Lean 4 Kernel Contract
-```lean
-/-- A 1-parameter family of complex tori Σ_ψ × I equipped with a Hermitian line bundle
-    curvature 2-form ω_B and modular parameter τ : I → ℍ. -/
-structure HolomorphicFluxFamily (I : Set ℝ) where
-  τ_re : ℝ → ℝ
-  τ_im : ℝ → ℝ
-  h_upper_half : ∀ ψ ∈ I, 0 < τ_im ψ
-  flux_degree  : ℤ
-  h_deg_pos    : 0 < flux_degree
+### 2.2 Lean 4 kernel contract — REFUTED, not implemented
 
-/-- Riemann-Roch / Plurigenera Deformation Invariance Sanity Check:
-    The dimension h⁰(E_ψ, L^⊗m) = m * d is strictly constant across the radial interval I
-    and invariant under smooth perturbations δτ of the complex structure! -/
-def holomorphicSectionDim (fam : HolomorphicFluxFamily I) (m : ℕ) : ℤ :=
-  (m : ℤ) * fam.flux_degree
-
-theorem holomorphicSectionDim_deformation_invariant
-    (fam₁ fam₂ : HolomorphicFluxFamily I) (m : ℕ)
-    (h_top : fam₁.flux_degree = fam₂.flux_degree) :
-    holomorphicSectionDim fam₁ m = holomorphicSectionDim fam₂ m := by
-  simp [holomorphicSectionDim, h_top]
-
-```
+> **REFUTED / not implemented; see [implementation plan §1](implementation-plan.md).** The original block proposed a structure `HolomorphicFluxFamily` with a positive `flux_degree` and a definition `holomorphicSectionDim fam m := m * flux_degree`, with a "deformation invariance" theorem true by definition. The bundle induced by ω_B on a flux surface has degree 0, so `flux_degree > 0` is false; nothing of this exists in `PlasmaLean/`. The code was removed so that it cannot be mistaken for a live contract.
 
 > **Correction (2026-10-20):** `holomorphicSectionDim` is *defined* as `m * flux_degree`, so `holomorphicSectionDim_deformation_invariant` is true by definition and checks no mathematics: no sections, Riemann–Roch or τ-dependence appear anywhere. The hypothesis `h_deg_pos : 0 < flux_degree` is also physically wrong, because the bundle induced by $\omega_B$ on a flux surface has degree 0 (see the correction above). Do not formalize this structure. Re-target it on flux-surface periods and τ (compare `Challenge6_ConformalTorusModulus`), as described in `notes/theory/flux-surface-holonomy.md`.
 
@@ -85,29 +64,9 @@ $$\mathcal{F}_{\text{MHD}}(\mathbf{u}) := \int_M \langle \mathbf{J} \times \math
 If $\mathcal{F}_{\text{MHD}}(\mathbf{u}) \neq 0$, it acts as a **rigorous cohomological obstruction** proving that no exact quasisymmetric equilibrium exists in that ansatz class (explaining the Garren–Boozer $O(r^3)$ obstruction conceptually!).
 * **Kempf–Ness & Mabuchi K-Energy Coercivity:** By the infinite-dimensional Kempf–Ness principle, finding a zero of the moment map $\boldsymbol{\mu}(\mathbf{B}, p) = 0$ is equivalent to minimizing a convex **Kempf–Ness / Kruskal–Kulsrud energy functional** $\mathcal{M}_{\text{KN}}$ along the complexified orbit. Proving strong convexity ($D^2 \mathcal{M}_{\text{KN}} \ge \gamma I > 0$) yields both existence and uniqueness of the equilibrium.
 
-### 3.2 Lean 4 Kernel Contract
+### 3.2 Lean 4 kernel contract — REFUTED as a contract, not implemented
 
-```lean
-/-- Abstract Kempf-Ness / Moment-Map Obstruction Contract (Futaki Invariant Analogue).
-    If a candidate symmetry generator u has a non-zero Futaki pairing with the
-    ansatz family, then no exact zero of the moment map μ(x) = 0 can exist! -/
-structure FutakiObstructionCertificate
-    {X V : Type*} [InnerProductSpace ℝ V]
-    (μ : X → V) (u_test : V) (F_val : ℝ) : Prop where
-  pairing_const : ∀ x : X, ⟪μ x, u_test⟫_ℝ = F_val
-  obstruction_nonzero : F_val ≠ 0
-
-theorem no_equilibrium_of_futaki_obstruction
-    {X V : Type*} [InnerProductSpace ℝ V]
-    (μ : X → V) (u_test : V) (F_val : ℝ)
-    (cert : FutakiObstructionCertificate μ u_test F_val) :
-    ¬ ∃ x : X, μ x = 0 := by
-  rintro ⟨x, hx⟩
-  have h := cert.pairing_const x
-  rw [hx, inner_zero_left] at h
-  exact cert.obstruction_nonzero h.symm
-
-```
+> **REFUTED / not implemented; see [implementation plan §1](implementation-plan.md).** The original block proposed `FutakiObstructionCertificate μ u F` (⟪μ x, u⟫ = F for every x, with F ≠ 0) and the trivial consequence `no_equilibrium_of_futaki_obstruction : ¬ ∃ x, μ x = 0`. The implication is correct but vacuous: all the content is in the hypothesis, which no theorem produces for any MHD family. Nothing of this exists in `PlasmaLean/`; the code was removed.
 
 > **Correction (2026-10-20), vacuous contract and unchecked claims:** `no_equilibrium_of_futaki_obstruction` is correct, but its whole content sits in the hypothesis `pairing_const`: ⟪μ x, u_test⟫ must equal the *same* constant for **every** x in the ansatz family. No theorem here produces that hypothesis for any MHD family. The claim that $\mathcal{F}_{\text{MHD}}$ is independent of the representative (needed for it to be an "obstruction") is unproved. So is the claim that it "explains the Garren–Boozer $O(r^3)$ obstruction", and so are the identifications in §3.1 (Grad–Shafranov as the vortex equation via $\psi=\ln|s|_h^2$, and $\mathbf{J}\times\mathbf{B}-\nabla p$ as a moment map with a Kempf–Ness functional). All of these are heuristics. The contract stays out of the library until a theorem derives `pairing_const` for a specific near-axis ansatz. The honest test is whether it reproduces the Garren–Boozer count (implementation plan, track T10).
 
@@ -131,35 +90,6 @@ When moving from 2D elliptic cross-sections to either **(a) 3D steady MHD with r
 
 
 
-### 4.2 Lean 4 Kernel Contract
+### 4.2 Lean 4 kernel contract — historical sketch, not the library API
 
-```lean
-/-- The Para-Complex (Split-Complex) characteristic decomposition for 1D/3D Alfvén waves:
-    Wick-rotating i² = -1 to j² = +1 splits kinetic (v) and magnetic (b) perturbations
-    into decoupled forward and backward Elsässer null variables z_plus = v + b, z_minus = v - b. -/
-structure ElsasserParaKahlerState (V : Type*) [AddCommGroup V] [Module ℝ V] where
-  v : V
-  b : V
-
-def zPlus  {V : Type*} [AddCommGroup V] [Module ℝ V] (s : ElsasserParaKahlerState V) : V :=
-  s.v + s.b
-
-def zMinus {V : Type*} [AddCommGroup V] [Module ℝ V] (s : ElsasserParaKahlerState V) : V :=
-  s.v - s.b
-
-/-- Para-Kähler Polarization Identity (Wick-rotated Kähler norm):
-    The total MHD energy ‖v‖² + ‖b‖² equals ½ (‖z_+‖² + ‖z_-‖²), while the
-    cross-helicity 2 ⟪v, b⟫ equals ½ (‖z_+‖² - ‖z_-‖²) (the topological degree analogue!). -/
-theorem elsasser_energy_helicity_identities
-    {V : Type*} [NormedAddCommGroup V] [InnerProductSpace ℝ V]
-    (s : ElsasserParaKahlerState V) :
-    ‖zPlus s‖ ^ 2 + ‖zMinus s‖ ^ 2 = 2 * (‖s.v‖ ^ 2 + ‖s.b‖ ^ 2) ∧
-    ‖zPlus s‖ ^ 2 - ‖zMinus s‖ ^ 2 = 4 * ⟪s.v, s.b⟫_ℝ := by
-  -- Purely algebraic consequence of the inner product parallelogram law!
-  sorry
-
-```
-
-```
-
-```
+> **Not implemented in this form.** The original block (a structure `ElsasserParaKahlerState` and an identity left as `sorry`) is superseded: the true algebraic identities ‖z₊‖² + ‖z₋‖² = 2(‖v‖² + ‖b‖²) and ‖z₊‖² − ‖z₋‖² = 4⟪v, b⟫ are proved in `PlasmaLean/Theory/Stability/Elsasser.lean` (`energy_identity`, `cross_helicity_identity`). The "topological degree analogue" reading is a heuristic. The code was removed.

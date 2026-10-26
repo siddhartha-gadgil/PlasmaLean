@@ -27,9 +27,9 @@ dated evidence. Run `node scripts/check_site.mjs` before handing off the update.
 
 [20 October 2026, Phase 4: near-quasisymmetric alphas for 0.11 s, a validated plasma equilibrium, Mercier findings](2026-10-20-progress-5.md).
 
-[20 October 2026, Phase 5: one consistent plasma, certified Mercier stability, near-QA alphas for 0.19 s](2026-10-20-progress-6.md).
+[20 October 2026, Phase 5: one field with a pressure-budget band (first called "one consistent plasma"), certified Mercier stability, near-QA alphas for 0.19 s](2026-10-20-progress-6.md).
 
-[20 October 2026, Phase 6: one plasma on the actual geometry, high-Q and ignited, ballooning, a first exact stellarator field](2026-10-20-progress-7.md).
+[20 October 2026, Phase 6: the pressure-budget band on the actual geometry, high-Q and ignited, ballooning, a first exact stellarator field](2026-10-20-progress-7.md).
 
 [20 October 2026, Phase 7 part 1: certified field-line confinement in an exact stellarator field; the coarea step formalized](2026-10-20-progress-8.md).
 

@@ -18,7 +18,9 @@ A complete microscopic particle-to-MHD derivation is outside the active and expe
 | [deterministic-goals-and-techniques.md](deterministic-goals-and-techniques.md) | N1–N3 and methods serving both the original deterministic goals and the new adequacy work. |
 | [implementation-milestones.md](implementation-milestones.md) | First deliverables, proof obligations, meaningful fixtures, dependencies and stopping criteria. |
 
-Keep these four notes together when adding them to the repository. P1–P4 are local probabilistic-goal labels, distinct from the older formalization roadmap's P0–P9 gates. The P and N identifiers below classify deliverables; they do not replace the implementation plan's established D0–D4 and K0–K6 work-package identifiers.
+Keep these four notes together when adding them to the repository. P1–P4 are local probabilistic-goal labels, distinct from the older formalization roadmap's P0–P9 gates. The P and N identifiers below classify deliverables; they do not replace the D0–D4 and K0–K6 work-package identifiers of the plan version these notes were written against.
+
+> **Editorial note (26 October 2026).** The identifiers "§12 D0–D4", "§12 K0–K6" and "§12.10" refer to a version of the implementation plan that was not supplied; they do not exist in [the current plan](../implementation-plan.md). The nearest current equivalents are the evidence gates E0–E8 (plan §11.2), the deterministic additions N1–N3 and probabilistic items P1–P4 (plan §12), and the phases of plan §10. No mapping of individual D/K items to these is implied; the D/K labels below are kept only as written.
 
 ## 2. What “probabilistic” means here
 

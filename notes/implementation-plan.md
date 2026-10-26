@@ -14,6 +14,10 @@ Sources: [domain-libraries](domain-libraries.md) (run protocol), [roadmap](forma
 
 ## 0. The two goals, and where we are
 
+> **Historical status (14 October 2026).** The table below records the status when the plan was
+> fixed and is not updated. For the current status see the phase log (§9), the phases after Phase 10
+> (§10), the continued implementation log (§13) and the dated reports in `progress/`.
+
 The project goal has two parts, and each needs its own chain of certificates:
 
 | Goal | Chain of certificates | Status on 14 Oct |
@@ -90,7 +94,7 @@ Status legend: ✅ done · ◐ partial · ○ not started.
 
 | Track | Theory targets | Technique companion | Feeds |
 | --- | --- | --- | --- |
-| **T1 Elliptic/vacuum** (Milestone A) | Bochner: Δ\|B\|² = 2\|∇B\|² for vacuum fields ✅. Weak maximum principle for C² subharmonic functions on bounded open sets in ℝ³ (elementary ε\|x\|² proof using Mathlib's `laplacian`) ✅. Boundary-to-interior bound for \|B\|² and \|B₁−B₂\|² ✅. Corrected min/max obstruction (§1.1) ✅ (no interior max; interior-min counterexample); toroidal curvature obstruction ∇⊥B = Bκ ✅ (vacuum; finite-β ○). | 2-D surface cover with proof-term checker ✅ (volume error from face samples) | Coil error fields: the volume error follows from the surface error; M5/M6 |
+| **T1 Elliptic/vacuum** (Milestone A) | Bochner: Δ\|B\|² = 2\|∇B\|² for vacuum fields ✅. Weak maximum principle for C² subharmonic functions on bounded open sets in ℝ³ (elementary ε\|x\|² proof using Mathlib's `laplacian`) ✅. Boundary-to-interior bound for \|B\|² and \|B₁−B₂\|² ✅. Corrected min/max obstruction (§1.1) ✅ (no *strict* interior local max of \|B\|² or \|B\|: `VacuumField.not_strict_local_max_normSq`, `VacuumField.not_strict_local_max_norm`; interior-min counterexample `exists_vacuum_strict_interior_min`, all in `Theory/Fields/Subharmonic.lean`); toroidal curvature obstruction ∇⊥B = Bκ ✅ (vacuum; finite-β ○). | 2-D surface cover with proof-term checker ✅ (volume error from face samples) | Coil error fields: the volume error follows from the surface error; M5/M6 |
 | **T2 Sturm–Liouville** (Milestone B) | Picone, Riccati, Jacobi ✅. Ballooning operator with weight W and Barta certificate ✅. Sturm necessity: contrapositive ✅, constant-coefficient iff ✅, conjugate point ⇒ no supersolution ✅. Mercier criterion: cylindrical ⇔ Suydam ✅, general index (supplied, Landreman–Jorge) reduces to Suydam ✅; helical equilibrium Mercier-unstable (a = 0 proved); Solov'ev exact index certified on all surfaces ✅ (validated quadrature). Newcomb uniformly in m ✅ (screw-pinch example: all integer (m,n), m ≠ 0). Infinite-line ballooning with asymptotic tails ✅ (tail ⇔ −1/4 threshold, sharp). | Polynomial interval checker ✅. Piecewise and Taylor-model checker with sqrt/exp enclosures ○ | MHD stability of M2–M5 |
 | **T3 Parabolic comparison** (Milestone D, core of G2) | Nagumo first-crossing lemma (the sanity check in PDE §4.2) ✅. Weak comparison for the quasilinear radial transport operator, with an axis condition and edge Dirichlet data ✅ (semilinear; quasilinear D(T) ○). Steady lower/upper barriers bounding T(ψ,t) for all t ✅. Time-dependent barriers ◐ (core lemma allows them); two-sided quasilinear bands ✅ (K2: D(ψ,T)). Relative-entropy dissipation: corrected identity derived (notes/theory) ◐. | Barrier checker: N[T_sub] > 0 on [0,1] via the interval checker. Rational barrier profiles produced by a solver oracle. | G2 directly: M1–M5 |
 | **T4 ODE invariants** | Invariant intervals for 0-D power balance dW/dt = P_α(T) + P_aux − P_br − W/τ_E, with thermal-stability and ignition window theorems ✅. Grönwall consequences (`Mathlib.Analysis.ODE.Gronwall`) ✅. Burn-yield lower bound (BKM §3.2, conditional) ✅. | Root isolation for the cubic-like balance curve; exact Bosch–Hale enclosures | M1 and the T3 sources |
@@ -568,7 +572,7 @@ Each cycle is a run. The targets are listed in priority order; anything left ove
   - **`hessOK` (ballooning boxes): tool written, not applied.** `Design/SolovevBallooningBoxCert.lean` adds `ballooning_box "Q:…"/"Z:…"`, which proves `Cover.leaf2/axis2` with `hessOK … = true` by `bl_cert`. Measured: 5.6 MB of olean per box, ≈ 1.2 s; 825 boxes ≈ 4.6 GB, over the remaining disk allowance. Cells still use `ballooning_cover`; a conversion script is ready (generator: `solovev_ballooning_oracle.py` line 618).
   - **Kronecker-image equalities `Kv… = famPack…` (20 in the default build): not converted.** `eval_cert` stops at a compiled `Nat.rec` inside the slice packing, and the intermediates are multi-kilobyte integers. They need their own certificate, e.g. digit-block sums as in `DCert`.
 - **Not done:** the docstring of `Certificates/EvalCert.lean` (its dependents were not rebuilt). The older bilinear `PolygonCoilCert00–05` (211 `checkChunk` lines) would need the same certificate for `lineOut` plus `checkLines`; at ≈ 7 MB per line evaluation (≈ 1,000 evaluations) that is ≈ 7 GB, over budget. `filsDL_eq` (Data; changing it rebuilds all Lines modules).
-- **Counts** (lines containing `decide +kernel`, `PlasmaLean/` tree; default = modules reachable from `PlasmaLean.lean`): default **1,407 → 690**, overall **3,224 → 2,507**. Private oleans of `Design/` now ≈ 17 GB on disk, of which ≈ 15 GB is the new explicit certificates of stages 5 and 6: the approved ceiling is reached.
+- **Counts** (lines containing `decide +kernel`, `PlasmaLean/` tree; default = modules reachable from `PlasmaLean.lean`): default **1,407 → 690**, overall **3,224 → 2,507**. These stage-6 figures are the current ones; earlier entries count differently (uses of `decide +kernel` rather than lines containing it, and different trees: before or after generated or on-demand modules were added or removed), so the series is not monotone across entries and the older numbers are kept as recorded. Private oleans of `Design/` now ≈ 17 GB on disk, of which ≈ 15 GB is the new explicit certificates of stages 5 and 6: the approved ceiling is reached.
 
 ### Phase 16: disk budget raised, 26 October 2026
 
@@ -823,7 +827,7 @@ question.
   [milestones](https://github.com/siddhartha-gadgil/PlasmaLean/blob/main/notes/goals/implementation-milestones.md).
 - **Unresolved cross-references:** the companion notes cite work packages "§12 D0–D4", "§12 K0–K6"
   and "§12.10" of a plan version that was not among the supplied files. Section 11.2 defines the
-  evidence gates E1–E7; the D/K references stay unresolved until that section is supplied or
+  evidence gates E0–E8; the D/K references stay unresolved until that section is supplied or
   reconstructed.
 
 ## 13. Implementation log (continued)
