@@ -6,6 +6,7 @@ Authors: PlasmaLean contributors
 module
 
 public import PlasmaLean.Design.RationalStellaratorGCMu4ChainH
+public import PlasmaLean.Certificates.KernelFact
 
 /-!
 # Results of the high-resolution ball chain of the guiding-centre torus family
@@ -52,8 +53,8 @@ theorem normHM_dU {r : ℝ} (hr : 0 ≤ r) (hq : Real.exp r ≤ (74315 : ℕ) / 
     Bd r (Ex.eval (XHM c) (toEx trHMN_dU)) (((2299 / 10 ^ 16 : ℚ) : ℚ) : ℝ) :=
   norm3_fullN hr hq hc hWHM boxHM (l1HM 55) (fun _ => rfl) (fun i hi => normHM hq hc i (by omega)) (ballHM_14 hr hq hc) trHMN_dU (1, 0, 0)
       72 54 24 120 73 25 11 8 10 36 27 102322047436107067246301106147574697327549360634351293110532474303139653893648572784882929018182347403521724609981715675734678986323413099277815082596041261760029828453171947612428341792591516558984028180085483923773215036054218450717173857621759817038122558698386014228562256261932844581743178969733805009900426714152960000
-      (2299 / 10 ^ 16 : ℚ) (kronHM 120 73 55) (by decide +kernel)
-      (by decide +kernel) (by decide +kernel) lHM_dU kHM_dU (by decide +kernel)
+      (2299 / 10 ^ 16 : ℚ) (kronHM 120 73 55) (by kernel_fact)
+      (by kernel_fact) (by kernel_fact) lHM_dU kHM_dU (by kernel_fact)
 
 set_option linter.style.longLine false in
 set_option maxRecDepth 100000 in
@@ -63,8 +64,8 @@ theorem normHM_dZ {r : ℝ} (hr : 0 ≤ r) (hq : Real.exp r ≤ (74315 : ℕ) / 
     Bd r (Ex.eval (XHM c) (toEx trHMN_dZ)) (((2091 / 10 ^ 16 : ℚ) : ℚ) : ℝ) :=
   norm3_fullN hr hq hc hWHM boxHM (l1HM 55) (fun _ => rfl) (fun i hi => normHM hq hc i (by omega)) (ballHM_14 hr hq hc) trHMN_dZ (1, 0, 1)
       72 54 24 120 73 25 11 8 10 36 27 93054793712093157646906932605098041677273704042384934482519652868157524078136933201718585648903446799084180517864308546693554807451147883875658760129062293223568039015717652625481517136220119537023296334013118868213399791351951943011861006257810606024411916882931503565349134918423235605198986136897803680268214725509120000
-      (2091 / 10 ^ 16 : ℚ) (kronHM 120 73 55) (by decide +kernel)
-      (by decide +kernel) (by decide +kernel) lHM_dZ kHM_dZ (by decide +kernel)
+      (2091 / 10 ^ 16 : ℚ) (kronHM 120 73 55) (by kernel_fact)
+      (by kernel_fact) (by kernel_fact) lHM_dZ kHM_dZ (by kernel_fact)
 
 set_option linter.style.longLine false in
 set_option maxRecDepth 100000 in
@@ -74,8 +75,8 @@ theorem normHM_dA {r : ℝ} (hr : 0 ≤ r) (hq : Real.exp r ≤ (74315 : ℕ) / 
     Bd r (Ex.eval (XHM c) (toEx trHMN_dA)) (((3051 / 10 ^ 16 : ℚ) : ℚ) : ℝ) :=
   norm3_fullN hr hq hc hWHM boxHM (l1HM 55) (fun _ => rfl) (fun i hi => normHM hq hc i (by omega)) (ballHM_14 hr hq hc) trHMN_dA (1, 0, 3)
       72 54 24 126 73 25 11 8 10 36 27 135772377279902731874432443037157794005184888558040524515894651259712412444515113680744271197343160906001028379461961364798640629343428084047786612735425430056461970833494465507236995619593620635661701244437604333533991565474223696652720049808728429732709502524915834305590975507868784885211716723551957472991664794501120000
-      (3051 / 10 ^ 16 : ℚ) (kronHM 126 73 55) (by decide +kernel)
-      (by decide +kernel) (by decide +kernel) lHM_dA kHM_dA (by decide +kernel)
+      (3051 / 10 ^ 16 : ℚ) (kronHM 126 73 55) (by kernel_fact)
+      (by kernel_fact) (by kernel_fact) lHM_dA kHM_dA (by kernel_fact)
 
 set_option linter.style.longLine false in
 set_option maxRecDepth 100000 in
@@ -85,8 +86,8 @@ theorem normHM_dB {r : ℝ} (hr : 0 ≤ r) (hq : Real.exp r ≤ (74315 : ℕ) / 
     Bd r (Ex.eval (XHM c) (toEx trHMN_dB)) (((587 / 2000000000000000 : ℚ) : ℚ) : ℝ) :=
   norm3_fullN hr hq hc hWHM boxHM (l1HM 55) (fun _ => rfl) (fun i hi => normHM hq hc i (by omega)) (ballHM_14 hr hq hc) trHMN_dB (1, 0, 0)
       72 54 24 126 73 25 11 8 10 36 27 130591906569458861199078344326031218635933317112987314404416734957911608242869404360257462604648252747265045435796707846812175380562124668713492040026230968580828742482242436425846302996935340358771311844296719107502002121816361406805724417543523210842694145063996211780696571517991022363535909250620559911298952016691200000
-      (587 / 2000000000000000 : ℚ) (kronHM 126 73 55) (by decide +kernel)
-      (by decide +kernel) (by decide +kernel) lHM_dB kHM_dB (by decide +kernel)
+      (587 / 2000000000000000 : ℚ) (kronHM 126 73 55) (by kernel_fact)
+      (by kernel_fact) (by kernel_fact) lHM_dB kHM_dB (by kernel_fact)
 
 set_option linter.style.longLine false in
 set_option maxRecDepth 100000 in
@@ -96,8 +97,8 @@ theorem normHM_resR {r : ℝ} (hr : 0 ≤ r) (hq : Real.exp r ≤ (74315 : ℕ) 
     Bd r (Ex.eval (XHM c) (toEx trHMN_resR)) (((173400000 : ℚ) : ℚ) : ℝ) :=
   norm3_fullN hr hq hc hWHM boxHM (l1HM 109) (fun _ => rfl) (fun i hi => normHM hq hc i (by omega)) (ballHM_96 hr hq hc) trHMN_resR (2, 0, 3)
       144 108 48 341 145 49 13 4 37 72 54 34320340367123901594870284496749149297785301411424375163209415169162154009064571308414560603709852278217097101434197713124703520369491768479682641758401955444201881515134543239535252993720389317764352756095278112409793057629670115551371969244507579261757728287798418005320518352174857736055794136909055378563333265373285202214632069152951988537336462740674771335559916196126528777923484748642790909457118662498097198816430739716010435354018937674778068135055689648828120656407804941210988332991352333931359601860095291717926612286732718313912090203380790603325098272961652249324964573928965351424964503221840239590389576757132611106383420797918621361498022327237322388428292096000
-      (173400000 : ℚ) (kronHM 341 145 109) (by decide +kernel)
-      (by decide +kernel) (by decide +kernel) lHM_resR kHM_resR (by decide +kernel)
+      (173400000 : ℚ) (kronHM 341 145 109) (by kernel_fact)
+      (by kernel_fact) (by kernel_fact) lHM_resR kHM_resR (by kernel_fact)
 
 set_option linter.style.longLine false in
 set_option maxRecDepth 100000 in
@@ -107,7 +108,7 @@ theorem normHM_resZ {r : ℝ} (hr : 0 ≤ r) (hq : Real.exp r ≤ (74315 : ℕ) 
     Bd r (Ex.eval (XHM c) (toEx trHMN_resZ)) (((222800000 : ℚ) : ℚ) : ℝ) :=
   norm3_fullN hr hq hc hWHM boxHM (l1HM 109) (fun _ => rfl) (fun i hi => normHM hq hc i (by omega)) (ballHM_96 hr hq hc) trHMN_resZ (2, 0, 0)
       144 108 48 341 145 49 13 4 37 72 54 43901588257012110358338180418497076882010373063134458814318264545803452050466763797170570088174514084224211582657901382844648793919185528987986034891746331965119443455966759647490016815941208882823148628879199460511578533139022885313059721278691219811152980418358363029710102415483615009363698092896041259456495024411307757904666192017812135851897768044555490789884709436394430291901630334382117127864934714153123135109700995020591622574819742908761992580764622470763878439994212750841794857733001358018878839184580784839270893894724245966160312592874351403650242845688173378061247329707184804429024280131459231191858102063331253279119597822643479990413756160826823055782182912000
-      (222800000 : ℚ) (kronHM 341 145 109) (by decide +kernel)
-      (by decide +kernel) (by decide +kernel) lHM_resZ kHM_resZ (by decide +kernel)
+      (222800000 : ℚ) (kronHM 341 145 109) (by kernel_fact)
+      (by kernel_fact) (by kernel_fact) lHM_resZ kHM_resZ (by kernel_fact)
 
 end PlasmaLean.Design.RationalStellaratorGC.Mu4

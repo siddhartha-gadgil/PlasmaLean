@@ -7,6 +7,7 @@ module
 
 public import PlasmaLean.Design.RationalStellaratorGCEw4KvH
 public import PlasmaLean.Certificates.KronBallChebEnv
+public import PlasmaLean.Certificates.KernelFact
 
 /-!
 # The high-resolution environment of the `μ > 0` passing guiding-centre torus family certificate
@@ -45,70 +46,70 @@ def PHE4 (i : ℕ) : P3 :=
 
 /-- The kinds are at most `6`. -/
 theorem kindHE4_le (i : ℕ) : kindHE4 i ≤ 6 :=
-  getD_prop (Pr := fun k : ℕ => k ≤ 6) (by decide +kernel) (by decide +kernel) i
+  getD_prop (Pr := fun k : ℕ => k ≤ 6) (by kernel_fact) (by kernel_fact) i
 
 set_option maxRecDepth 100000 in
 /-- The variables beyond the last have kind `5` (zero). -/
 theorem kindHE4_ge {i : ℕ} (h : 99 ≤ i) : kindHE4 i = 5 := by
   unfold kindHE4
   rw [List.getD_eq_getElem?_getD,
-    List.getElem?_eq_none ((by decide +kernel : kindHE4l.length = 99).trans_le h)]
+    List.getElem?_eq_none ((by kernel_fact : kindHE4l.length = 99).trans_le h)]
   rfl
 
 /-- Stored families are below the last variable. -/
 theorem lt_of_kindHE4 {i : ℕ} (h : kindHE4 i = 6) : i < 99 := by
   by_contra h'
   rw [kindHE4_ge (by omega)] at h
-  exact absurd h (by decide +kernel)
+  exact absurd h (by kernel_fact)
 
 set_option maxRecDepth 100000 in
 /-- The static conditions of the stored families. -/
 theorem staticHE4 : ∀ i, i < 99 → kindHE4 i = 6 →
     FamStatic NHE4 MHE4 DHE4 ddHE4 drHE4 dwHE4 (famHE4 i) := by
-  decide +kernel
+  kernel_fact
 
 set_option maxRecDepth 100000 in
 /-- The minimal widths of the fast images. -/
 theorem dynHE4 : ∀ i, i < 99 → kindHE4 i = 6 →
     FamDyn (bMinHE4 i) (wMinHE4 i) (c0HE4 i) (famHE4 i) := by
-  decide +kernel
+  kernel_fact
 
 set_option maxRecDepth 100000 in
 /-- The static `ℓ¹` bounds of the stored families. -/
 theorem l1famHE4 : ∀ i, i < 99 → kindHE4 i = 6 →
     famL1 NHE4 MHE4 (c0HE4 i : ℤ) 0 0 0 (famHE4 i) ≤ LHE4 i := by
-  decide +kernel
+  kernel_fact
 
 set_option maxRecDepth 100000 in
 /-- The degree boxes of the stored families. -/
 theorem bx6HE4 : ∀ i, i < 99 → kindHE4 i = 6 → BxHE4 i = (2 * NHE4, 2 * MHE4, 2 * DHE4) := by
-  decide +kernel
+  kernel_fact
 
 set_option maxRecDepth 100000 in
 /-- The degree box and bound of `t`. -/
 theorem bx0HE4 : ∀ i, i < 99 → kindHE4 i = 0 → BxHE4 i = (NHE4, MHE4, DHE4) ∧ 2 ^ SHE4 ≤ LHE4 i := by
-  decide +kernel
+  kernel_fact
 
 set_option maxRecDepth 100000 in
 /-- The degree box and bound of `V`. -/
 theorem bx1HE4 : ∀ i, i < 99 → kindHE4 i = 1 → BxHE4 i = (0, 1, 0) ∧ 2 ≤ LHE4 i := by
-  decide +kernel
+  kernel_fact
 
 set_option maxRecDepth 100000 in
 /-- The degree box and bound of `cos 2φ`. -/
 theorem bx2HE4 : ∀ i, i < 99 → kindHE4 i = 2 → BxHE4 i = (0, 2, 0) ∧ 2 ≤ LHE4 i := by
-  decide +kernel
+  kernel_fact
 
 set_option maxRecDepth 100000 in
 /-- The degree box and bound of `sin 2φ`. -/
 theorem bx3HE4 : ∀ i, i < 99 → kindHE4 i = 3 → BxHE4 i = (0, 2, 0) ∧ 2 ≤ LHE4 i := by
-  decide +kernel
+  kernel_fact
 
 set_option maxRecDepth 100000 in
 /-- The degree box and bound of the parameter. -/
 theorem bx4HE4 : ∀ i, i < 99 → kindHE4 i = 4 →
     BxHE4 i = (NHE4, MHE4, DHE4 + 1) ∧ 2 ^ (SHE4 + 6) + 2 * 2 ^ (SHE4 - 1) ≤ LHE4 i := by
-  decide +kernel
+  kernel_fact
 
 /-- The polynomial of `t`. -/
 theorem PHE4_k0 {i : ℕ} (h : kindHE4 i = 0) : PHE4 i = T3 SHE4 NHE4 MHE4 DHE4 := by
@@ -219,7 +220,7 @@ theorem l1HE4 (R i : ℕ) : l1 (flat R (PHE4 i)) ≤ LHE4 i := by
 
 /-- The phases are below `4`. -/
 theorem hWHE4 : ∀ i, (WtHE4 i).2.2 < 4 :=
-  getD_prop (Pr := fun w : ℕ × ℕ × ℕ => w.2.2 < 4) (by decide +kernel) (by decide +kernel)
+  getD_prop (Pr := fun w : ℕ × ℕ × ℕ => w.2.2 < 4) (by kernel_fact) (by kernel_fact)
 
 /-- **The family centres** at the parameter `w = c`. -/
 def xHE4 (c : ℂ) (i : ℕ) : FA := ctr3 SHE4 NHE4 MHE4 DHE4 c (WtHE4 i) (PHE4 i)
@@ -256,7 +257,7 @@ theorem xHE4_s (c : ℂ) : xHE4 c 3 = ctr SHE4 NHE4 MHE4 (0, 1, 0) sPoly := by
 /-- The centre of the parameter `r` is `64 + (c + c⁻¹)/2`. -/
 theorem xHE4_r {c : ℂ} (hc : c ≠ 0) : xHE4 c 71 = algebraMap ℂ FA (64 + (c + c⁻¹) / 2) := by
   rw [xHE4, show WtHE4 71 = (1, 0, 0) from rfl, show PHE4 71 = Pr3 SHE4 NHE4 MHE4 DHE4 from rfl]
-  exact ctr3_Pr3 _ _ _ _ (by decide +kernel) (by decide +kernel) hc
+  exact ctr3_Pr3 _ _ _ _ (by kernel_fact) (by kernel_fact) hc
 
 /-- The centres of the variables of kind `5` (dummies) vanish. -/
 theorem xHE4_zero (c : ℂ) {i : ℕ} (h : kindHE4 i = 5) : xHE4 c i = 0 := by

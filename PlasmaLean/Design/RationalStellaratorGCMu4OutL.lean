@@ -6,6 +6,7 @@ Authors: PlasmaLean contributors
 module
 
 public import PlasmaLean.Design.RationalStellaratorGCMu4ChainL
+public import PlasmaLean.Certificates.KernelFact
 
 /-!
 # Results of the low-resolution ball chain of the guiding-centre torus family
@@ -59,8 +60,8 @@ theorem normLM_XF {r : ℝ} (hr : 0 ≤ r) (hq : Real.exp r ≤ (74315 : ℕ) / 
     Bd r (Ex.eval (XLM c u z) (toEx trLMN_XF)) (((389 / 6250000000 : ℚ) : ℚ) : ℝ) :=
   norm3_fullN hr hq hc hWLM boxLM (l1LM 49) (fun _ => rfl) (fun i hi => normLM hq hc i (by omega)) (ballLM_175 hr hq hc hU hZ hA hB) trLMN_XF (2, 0, 0)
       64 48 20 145 65 21 11 1 65 32 24 35411113489233445618848426067434079550994088186254682353340913936411566902258872842709101134055009556403241429209146982965609989515826092561074669734415057887735807016616432649155734862589552855723098420288995364419034289556665148338640267840854792754186600006393039806782893334730663141822722736128
-      (389 / 6250000000 : ℚ) (kronLM 145 65 49) (by decide +kernel)
-      (by decide +kernel) (by decide +kernel) lLM_XF kLM_XF (by decide +kernel)
+      (389 / 6250000000 : ℚ) (kronLM 145 65 49) (by kernel_fact)
+      (by kernel_fact) (by kernel_fact) lLM_XF kLM_XF (by kernel_fact)
 
 set_option linter.style.longLine false in
 set_option maxRecDepth 100000 in
@@ -72,8 +73,8 @@ theorem normLM_DdevF {r : ℝ} (hr : 0 ≤ r) (hq : Real.exp r ≤ (74315 : ℕ)
     Bd r (Ex.eval (XLM c u z) (toEx trLMN_DdevF)) (((749100000000000 : ℚ) : ℚ) : ℝ) :=
   norm3_fullN hr hq hc hWLM boxLM (l1LM 25) (fun _ => rfl) (fun i hi => normLM hq hc i (by omega)) (ballLM_176 hr hq hc hU hZ hA hB) trLMN_DdevF (1, 0, 0)
       32 24 10 124 33 11 9 1 33 16 12 627681036248102112554738864200465067404773772988766110601123775307447651513872486610454094195112530272965880607653472577036561232486091530405645791851928053163938021376
-      (749100000000000 : ℚ) (kronLM 124 33 25) (by decide +kernel)
-      (by decide +kernel) (by decide +kernel) lLM_DdevF kLM_DdevF (by decide +kernel)
+      (749100000000000 : ℚ) (kronLM 124 33 25) (by kernel_fact)
+      (by kernel_fact) (by kernel_fact) lLM_DdevF kLM_DdevF (by kernel_fact)
 
 set_option linter.style.longLine false in
 set_option maxRecDepth 100000 in
@@ -85,8 +86,8 @@ theorem normLM_WdevF {r : ℝ} (hr : 0 ≤ r) (hq : Real.exp r ≤ (74315 : ℕ)
     Bd r (Ex.eval (XLM c u z) (toEx trLMN_WdevF)) (((2129000000000000 : ℚ) : ℚ) : ℝ) :=
   norm3_fullN hr hq hc hWLM boxLM (l1LM 25) (fun _ => rfl) (fun i hi => normLM hq hc i (by omega)) (ballLM_176 hr hq hc hU hZ hA hB) trLMN_WdevF (1, 0, 0)
       32 24 10 126 33 11 9 1 33 16 12 1783633975933448479566988552228506945037196426727975232665546991341141547186921590773852682405527621453582323956094331387078442264537227461392108678852205328594735464448
-      (2129000000000000 : ℚ) (kronLM 126 33 25) (by decide +kernel)
-      (by decide +kernel) (by decide +kernel) lLM_WdevF kLM_WdevF (by decide +kernel)
+      (2129000000000000 : ℚ) (kronLM 126 33 25) (by kernel_fact)
+      (by kernel_fact) (by kernel_fact) lLM_WdevF kLM_WdevF (by kernel_fact)
 
 set_option linter.style.longLine false in
 set_option maxRecDepth 100000 in
@@ -98,8 +99,8 @@ theorem normLM_dUo {r : ℝ} (hr : 0 ≤ r) (hq : Real.exp r ≤ (74315 : ℕ) /
     Bd r (Ex.eval (XLM c u z) (toEx trLMN_dUo)) (((31 / 25000 : ℚ) : ℚ) : ℝ) :=
   norm3_fullN hr hq hc hWLM boxLM (l1LM 25) (fun _ => rfl) (fun i hi => normLM hq hc i (by omega)) (ballLM_180 hr hq hc hU hZ hA hB) trLMN_dUo (1, 0, 0)
       32 24 10 71 33 11 9 1 33 16 12 1038611762256484211645264826454832217381292418241218158184356698088902086091612655030693561724454317657066528402343106361942749876459315448267195547648
-      (31 / 25000 : ℚ) (kronLM 71 33 25) (by decide +kernel)
-      (by decide +kernel) (by decide +kernel) lLM_dUo kLM_dUo (by decide +kernel)
+      (31 / 25000 : ℚ) (kronLM 71 33 25) (by kernel_fact)
+      (by kernel_fact) (by kernel_fact) lLM_dUo kLM_dUo (by kernel_fact)
 
 set_option linter.style.longLine false in
 set_option maxRecDepth 100000 in
@@ -111,8 +112,8 @@ theorem normLM_dZo {r : ℝ} (hr : 0 ≤ r) (hq : Real.exp r ≤ (74315 : ℕ) /
     Bd r (Ex.eval (XLM c u z) (toEx trLMN_dZo)) (((9701 / 10 ^ 7 : ℚ) : ℚ) : ℝ) :=
   norm3_fullN hr hq hc hWLM boxLM (l1LM 25) (fun _ => rfl) (fun i hi => normLM hq hc i (by omega)) (ballLM_180 hr hq hc hU hZ hA hB) trLMN_dZo (1, 0, 1)
       32 24 10 71 33 11 9 1 33 16 12 812922359333176762605179685803447190194953405038943387199925689655692252230603799664726295780499596472824101619645997713999614271275798485963259248640
-      (9701 / 10 ^ 7 : ℚ) (kronLM 71 33 25) (by decide +kernel)
-      (by decide +kernel) (by decide +kernel) lLM_dZo kLM_dZo (by decide +kernel)
+      (9701 / 10 ^ 7 : ℚ) (kronLM 71 33 25) (by kernel_fact)
+      (by kernel_fact) (by kernel_fact) lLM_dZo kLM_dZo (by kernel_fact)
 
 set_option linter.style.longLine false in
 set_option maxRecDepth 100000 in
@@ -124,8 +125,8 @@ theorem normLM_dAo {r : ℝ} (hr : 0 ≤ r) (hq : Real.exp r ≤ (74315 : ℕ) /
     Bd r (Ex.eval (XLM c u z) (toEx trLMN_dAo)) (((1049 / 10 ^ 6 : ℚ) : ℚ) : ℝ) :=
   norm3_fullN hr hq hc hWLM boxLM (l1LM 25) (fun _ => rfl) (fun i hi => normLM hq hc i (by omega)) (ballLM_180 hr hq hc hU hZ hA hB) trLMN_dAo (1, 0, 3)
       32 24 10 75 33 11 9 1 33 16 12 878925462735114848166974502208719711744750330276079812049829990749643055254595862717121141554458463126327710454026858932592603606433106626467887841280
-      (1049 / 10 ^ 6 : ℚ) (kronLM 75 33 25) (by decide +kernel)
-      (by decide +kernel) (by decide +kernel) lLM_dAo kLM_dAo (by decide +kernel)
+      (1049 / 10 ^ 6 : ℚ) (kronLM 75 33 25) (by kernel_fact)
+      (by kernel_fact) (by kernel_fact) lLM_dAo kLM_dAo (by kernel_fact)
 
 set_option linter.style.longLine false in
 set_option maxRecDepth 100000 in
@@ -137,7 +138,7 @@ theorem normLM_dBo {r : ℝ} (hr : 0 ≤ r) (hq : Real.exp r ≤ (74315 : ℕ) /
     Bd r (Ex.eval (XLM c u z) (toEx trLMN_dBo)) (((9967 / 10 ^ 7 : ℚ) : ℚ) : ℝ) :=
   norm3_fullN hr hq hc hWLM boxLM (l1LM 25) (fun _ => rfl) (fun i hi => normLM hq hc i (by omega)) (ballLM_180 hr hq hc hU hZ hA hB) trLMN_dBo (1, 0, 0)
       32 24 10 75 33 11 9 1 33 16 12 835185438851898561183976647462256393842461895565854415419263720734250378858029728959674505156048697819391895631910064864063669091327339438739575275520
-      (9967 / 10 ^ 7 : ℚ) (kronLM 75 33 25) (by decide +kernel)
-      (by decide +kernel) (by decide +kernel) lLM_dBo kLM_dBo (by decide +kernel)
+      (9967 / 10 ^ 7 : ℚ) (kronLM 75 33 25) (by kernel_fact)
+      (by kernel_fact) (by kernel_fact) lLM_dBo kLM_dBo (by kernel_fact)
 
 end PlasmaLean.Design.RationalStellaratorGC.Mu4

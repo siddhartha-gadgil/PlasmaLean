@@ -7,6 +7,7 @@ module
 
 public import PlasmaLean.Design.RationalStellaratorGCMu2KvL
 public import PlasmaLean.Certificates.KronBallChebEnv
+public import PlasmaLean.Certificates.KernelFact
 
 /-!
 # The low-resolution environment of the `μ > 0` passing guiding-centre torus family certificate
@@ -46,70 +47,70 @@ def PLM (i : ℕ) : P3 :=
 
 /-- The kinds are at most `6`. -/
 theorem kindLM_le (i : ℕ) : kindLM i ≤ 6 :=
-  getD_prop (Pr := fun k : ℕ => k ≤ 6) (by decide +kernel) (by decide +kernel) i
+  getD_prop (Pr := fun k : ℕ => k ≤ 6) (by kernel_fact) (by kernel_fact) i
 
 set_option maxRecDepth 100000 in
 /-- The variables beyond the last have kind `5` (zero). -/
 theorem kindLM_ge {i : ℕ} (h : 180 ≤ i) : kindLM i = 5 := by
   unfold kindLM
   rw [List.getD_eq_getElem?_getD,
-    List.getElem?_eq_none ((by decide +kernel : kindLMl.length = 180).trans_le h)]
+    List.getElem?_eq_none ((by kernel_fact : kindLMl.length = 180).trans_le h)]
   rfl
 
 /-- Stored families are below the last variable. -/
 theorem lt_of_kindLM {i : ℕ} (h : kindLM i = 6) : i < 180 := by
   by_contra h'
   rw [kindLM_ge (by omega)] at h
-  exact absurd h (by decide +kernel)
+  exact absurd h (by kernel_fact)
 
 set_option maxRecDepth 100000 in
 /-- The static conditions of the stored families. -/
 theorem staticLM : ∀ i, i < 180 → kindLM i = 6 →
     FamStatic NLM MLM DLM ddLM drLM dwLM (famLM i) := by
-  decide +kernel
+  kernel_fact
 
 set_option maxRecDepth 100000 in
 /-- The minimal widths of the fast images. -/
 theorem dynLM : ∀ i, i < 180 → kindLM i = 6 →
     FamDyn (bMinLM i) (wMinLM i) (c0LM i) (famLM i) := by
-  decide +kernel
+  kernel_fact
 
 set_option maxRecDepth 100000 in
 /-- The static `ℓ¹` bounds of the stored families. -/
 theorem l1famLM : ∀ i, i < 180 → kindLM i = 6 →
     famL1 NLM MLM (c0LM i : ℤ) 0 0 0 (famLM i) ≤ LLM i := by
-  decide +kernel
+  kernel_fact
 
 set_option maxRecDepth 100000 in
 /-- The degree boxes of the stored families. -/
 theorem bx6LM : ∀ i, i < 180 → kindLM i = 6 → BxLM i = (2 * NLM, 2 * MLM, 2 * DLM) := by
-  decide +kernel
+  kernel_fact
 
 set_option maxRecDepth 100000 in
 /-- The degree box and bound of `t`. -/
 theorem bx0LM : ∀ i, i < 180 → kindLM i = 0 → BxLM i = (NLM, MLM, DLM) ∧ 2 ^ SLM ≤ LLM i := by
-  decide +kernel
+  kernel_fact
 
 set_option maxRecDepth 100000 in
 /-- The degree box and bound of `V`. -/
 theorem bx1LM : ∀ i, i < 180 → kindLM i = 1 → BxLM i = (0, 1, 0) ∧ 2 ≤ LLM i := by
-  decide +kernel
+  kernel_fact
 
 set_option maxRecDepth 100000 in
 /-- The degree box and bound of `cos 2φ`. -/
 theorem bx2LM : ∀ i, i < 180 → kindLM i = 2 → BxLM i = (0, 2, 0) ∧ 2 ≤ LLM i := by
-  decide +kernel
+  kernel_fact
 
 set_option maxRecDepth 100000 in
 /-- The degree box and bound of `sin 2φ`. -/
 theorem bx3LM : ∀ i, i < 180 → kindLM i = 3 → BxLM i = (0, 2, 0) ∧ 2 ≤ LLM i := by
-  decide +kernel
+  kernel_fact
 
 set_option maxRecDepth 100000 in
 /-- The degree box and bound of the parameter. -/
 theorem bx4LM : ∀ i, i < 180 → kindLM i = 4 →
     BxLM i = (NLM, MLM, DLM + 1) ∧ 2 ^ (SLM + 6) + 2 * 2 ^ (SLM - 1) ≤ LLM i := by
-  decide +kernel
+  kernel_fact
 
 /-- The polynomial of `t`. -/
 theorem PLM_k0 {i : ℕ} (h : kindLM i = 0) : PLM i = T3 SLM NLM MLM DLM := by
@@ -220,7 +221,7 @@ theorem l1LM (R i : ℕ) : l1 (flat R (PLM i)) ≤ LLM i := by
 
 /-- The phases are below `4`. -/
 theorem hWLM : ∀ i, (WtLM i).2.2 < 4 :=
-  getD_prop (Pr := fun w : ℕ × ℕ × ℕ => w.2.2 < 4) (by decide +kernel) (by decide +kernel)
+  getD_prop (Pr := fun w : ℕ × ℕ × ℕ => w.2.2 < 4) (by kernel_fact) (by kernel_fact)
 
 /-- **The family centres** at the parameter `w = c`. -/
 def xLM (c : ℂ) (i : ℕ) : FA := ctr3 SLM NLM MLM DLM c (WtLM i) (PLM i)
@@ -257,7 +258,7 @@ theorem xLM_s (c : ℂ) : xLM c 3 = ctr SLM NLM MLM (0, 1, 0) sPoly := by
 /-- The centre of the parameter `r` is `64 + (c + c⁻¹)/2`. -/
 theorem xLM_r {c : ℂ} (hc : c ≠ 0) : xLM c 114 = algebraMap ℂ FA (64 + (c + c⁻¹) / 2) := by
   rw [xLM, show WtLM 114 = (1, 0, 0) from rfl, show PLM 114 = Pr3 SLM NLM MLM DLM from rfl]
-  exact ctr3_Pr3 _ _ _ _ (by decide +kernel) (by decide +kernel) hc
+  exact ctr3_Pr3 _ _ _ _ (by kernel_fact) (by kernel_fact) hc
 
 /-- The centres of the variables of kind `5` (dummies) vanish. -/
 theorem xLM_zero (c : ℂ) {i : ℕ} (h : kindLM i = 5) : xLM c i = 0 := by
