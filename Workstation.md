@@ -204,16 +204,17 @@ laptop with a small parameter setting, then commit it to `main` before running i
 Kept up to date from the laptop after every review ("update from workstation"). Run them on the
 workstation, inside `tmux`; `run.sh` pulls `main` itself.
 
-**Status (25 October 2026, late night; updated): run now.** All pitch cells up to λ = 1/4 are
-certified (Mu5 merged). What remains is the proof-term migration of the on-demand families
-(Phase 16; Lean only, no numerics), one at a time:
+**Status (26 October 2026): run now.** Mu2, Mu3, Mu4 and Ew1–4 are migrated and merged. First
+tidy the clone (earlier runs left generated files behind on `main`; `run.sh` now stashes such
+leftovers itself), then migrate Mu5:
 
 ```bash
-PT_FAMILIES="RationalStellaratorGCMu2" scripts/workstation/run.sh proofterm-migrate
-PT_FAMILIES="RationalStellaratorGCMu3" scripts/workstation/run.sh proofterm-migrate
-PT_FAMILIES="RationalStellaratorGCMu4 RationalStellaratorGCMu5" scripts/workstation/run.sh proofterm-migrate
-PT_FAMILIES="RationalStellaratorGCEw1 RationalStellaratorGCEw2 RationalStellaratorGCEw3 RationalStellaratorGCEw4" \
-  scripts/workstation/run.sh proofterm-migrate
+cd PlasmaLean && git checkout main
+git status --short                       # the leftovers
+git stash push --include-untracked -m "old run leftovers"   # keeps them, just in case
+git pull
+
+PT_FAMILIES="RationalStellaratorGCMu5" scripts/workstation/run.sh proofterm-migrate
 ```
 
 Then say "update from workstation" on the laptop.

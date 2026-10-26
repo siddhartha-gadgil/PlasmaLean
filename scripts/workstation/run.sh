@@ -252,6 +252,12 @@ if [ "$PUSH" = 1 ]; then
 else
   say "committed locally on $BRANCH (not pushed)"
 fi
+# Files a task generated but did not commit (intermediate modules, outputs of a failed step)
+# would otherwise follow us onto main; keep them recoverable in a stash instead.
+if [ -n "$(git status --porcelain)" ]; then
+  git stash push -q --include-untracked -m "workstation leftovers $BRANCH" \
+    && say "uncommitted leftovers stashed: git stash list (drop with git stash drop)"
+fi
 git checkout -q main
 say "back on main"
 exit "$ANY_FAIL"
