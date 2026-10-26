@@ -7,6 +7,7 @@ module
 
 public import PlasmaLean.Design.RationalStellaratorGCMuExact
 public import PlasmaLean.Certificates.KernelFact
+public import PlasmaLean.Certificates.EvalCert
 
 /-!
 # Perturbation in the gyro-length: the `μ > 0` passing fields of a two-parameter box
@@ -259,7 +260,7 @@ theorem corr_majQ :
     mDQ aTμ bU gμ eYDFQ ≤ 4997 ∧ mDQ aTμ bZ gμ eYDFQ ≤ 1620 ∧
     mDQ aTμ bU gμ eYRFQ ≤ 2623 ∧ mDQ aTμ bZ gμ eYRFQ ≤ 861 ∧
     mDQ aTμ bU gμ eYZFQ ≤ 30768 ∧ mDQ aTμ bZ gμ eYZFQ ≤ 6181 := by
-  kernel_fact
+  eval_decide
 
 end Corr
 

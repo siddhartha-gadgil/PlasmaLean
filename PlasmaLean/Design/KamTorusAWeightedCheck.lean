@@ -8,13 +8,15 @@ module
 public import PlasmaLean.Design.KamTorusACheck
 public import PlasmaLean.Certificates.Kronecker2DWeighted
 public import PlasmaLean.Certificates.EvalCert
+public import PlasmaLean.Certificates.KronProof2D
 
 /-!
 # Kernel computations for the weighted K2 certificate of torus A (KAM route, lemma K3.3)
 
 The a-priori bounds (`apriori_*`, `check_c0D`) are evaluation certificates (`eval_cert`, one node
-per integer operation of the grid sums). Each `wcheck_*` theorem is a single `decide +kernel`
-evaluation of exact big-integer arithmetic:
+per integer operation of the grid sums). Each `wcheck_*` theorem is an explicit reading
+certificate (`kron2_proof`, `Certificates/KronProof2D`: the divide-and-conquer reading of the rows
+split down to blocks of 8 rows whose weighted sums are kernel facts, and one final comparison) of
 a Kronecker image from `Design/KamTorusAForms` and its separable weighted digit sum `wl1KronP`
 (`Certificates/Kronecker2DWeighted`). The weights dominate `e^{r(|k| + |m|)}` for
 `e^r ≤ 74315 / 2^16`. In `Design/KamTorusAWeighted` this is applied with `r = 0.1257`. A mode at
@@ -88,7 +90,7 @@ theorem wcheck_RR :
     wl1KronP 656 385 9 9 (12 * M + 2 + 1) (fun i => kwtS 74315 16 192 (ndist i (6 * N)))
         (fun j => kwtS 74315 16 133 (ndist j (6 * M + 1))) (RRint 656 385) * 10 ^ 25 ≤
       5829 * (2 ^ (Q + 4) * sig ^ 6 * 2 ^ (16 * (192 + 133))) := by
-  decide +kernel
+  kron2_proof
 
 set_option maxRecDepth 100000 in
 /-- **Weighted `‖R̂_z‖_r ≤ 3.464 × 10⁻²² · 2^{Q+5} σ⁶`**. -/
@@ -96,7 +98,7 @@ theorem wcheck_RZ :
     wl1KronP 656 385 9 9 (12 * M + 2 + 1) (fun i => kwtS 74315 16 192 (ndist i (6 * N)))
         (fun j => kwtS 74315 16 133 (ndist j (6 * M + 1))) (RZint 656 385) * 10 ^ 25 ≤
       3464 * (2 ^ (Q + 5) * sig ^ 6 * 2 ^ (16 * (192 + 133))) := by
-  decide +kernel
+  kron2_proof
 
 set_option maxRecDepth 100000 in
 /-- Weighted `‖D̂ R̂_θ‖_r ≤ 0.28 · 16σ⁶` (the `ι − ι_q` correction of the `R`-residual). -/
@@ -104,7 +106,7 @@ theorem wcheck_DRth :
     wl1KronP 656 385 9 9 (12 * M + 2 + 1) (fun i => kwtS 74315 16 192 (ndist i (6 * N)))
         (fun j => kwtS 74315 16 133 (ndist j (6 * M + 1))) DRthint * 100 ≤
       28 * (16 * sig ^ 6 * 2 ^ (16 * (192 + 133))) := by
-  decide +kernel
+  kron2_proof
 
 set_option maxRecDepth 100000 in
 /-- Weighted `‖D̂ Ẑ_θ‖_r ≤ 0.29 · 16σ⁶` (the `ι − ι_q` correction of the `z`-residual). -/
@@ -112,7 +114,7 @@ theorem wcheck_DZth :
     wl1KronP 656 385 9 9 (12 * M + 2 + 1) (fun i => kwtS 74315 16 192 (ndist i (6 * N)))
         (fun j => kwtS 74315 16 133 (ndist j (6 * M + 1))) DZthint * 100 ≤
       29 * (16 * sig ^ 6 * 2 ^ (16 * (192 + 133))) := by
-  decide +kernel
+  kron2_proof
 
 set_option maxRecDepth 100000 in
 /-- Weighted `‖D̂ − c0D u^{5N} v^{5M+1}‖_r ≤ 0.483 · 16σ⁵`. -/
@@ -120,7 +122,7 @@ theorem wcheck_Dsub :
     wl1KronP 656 385 9 8 (10 * M + 2 + 1) (fun i => kwtS 74315 16 160 (ndist i (5 * N)))
         (fun j => kwtS 74315 16 111 (ndist j (5 * M + 1))) Dsubint * 1000 ≤
       483 * (16 * sig ^ 5 * 2 ^ (16 * (160 + 111))) := by
-  decide +kernel
+  kron2_proof
 
 set_option maxRecDepth 100000 in
 /-- Weighted norms of the torus grids (each scaled by `σ · 2^{16·54}`):
@@ -145,6 +147,6 @@ theorem wcheck_grid :
       wl1KronP 128 65 7 6 (2 * M + 1) (fun i => kwtS 74315 16 32 (ndist i N))
         (fun j => kwtS 74315 16 22 (ndist j M)) (packGrid 128 65 gZps (2 * M + 1)) * 1000 ≤
         63 * (sig * 2 ^ (16 * (32 + 22))) := by
-  decide +kernel
+  refine ⟨?_, ?_, ?_, ?_, ?_, ?_⟩ <;> kron2_proof
 
 end PlasmaLean.Design.KamTorusA

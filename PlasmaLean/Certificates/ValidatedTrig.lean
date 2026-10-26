@@ -6,6 +6,7 @@ Authors: PlasmaLean contributors
 module
 
 public import PlasmaLean.Certificates.ValidatedQuadrature
+public import PlasmaLean.Certificates.EvalCertFIv
 public import Mathlib.Analysis.Real.Pi.Bounds
 public import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
 
@@ -16,9 +17,10 @@ This module extends the fixed-point interval type `FIv` of
 `PlasmaLean.Certificates.ValidatedQuadrature` (endpoints `lo/2³²`, `hi/2³²`, validity flag
 `ok`) by rigorous enclosures of `π`, `arctan`, `arcsin`, `cosh` and `sinh`, plus an
 intersection `meet`. Every operation is straight-line or structurally recursive code on
-`Int` (no `Rat`, no `Float`, no well-founded recursion), so it evaluates quickly under
-`decide +kernel`. As for the base operations, an invalid enclosure (`ok = false`) contains
-every real number, so each soundness lemma `mem_*` is unconditional.
+`Int` (no `Rat`, no `Float`, no well-founded recursion), so it evaluates quickly in the kernel
+and in evaluation certificates (`fiv_decide`, `Certificates/EvalCertFIv`). As for the base
+operations, an invalid enclosure (`ok = false`) contains every real number, so each soundness
+lemma `mem_*` is unconditional.
 
 **Method.**
 * `pi`: outward rounding of Mathlib's 20-digit bounds `Real.pi_gt_d20`, `Real.pi_lt_d20`.
@@ -42,7 +44,8 @@ every real number, so each soundness lemma `mem_*` is unconditional.
 **Accuracy and cost.** On thin inputs the enclosures have width at most about ten units of
 `2⁻³²` (`≈ 2e-9`) for `arctan` (all arguments, including `10⁴` and beyond) and `arcsin`
 (`|x| ≤ 0.99`; about 20 units at `0.999`), and about three units for `cosh`, `sinh`. One
-`decide +kernel` evaluation of any of the four interval functions takes about 10–25 ms.
+kernel evaluation of any of the four interval functions takes about 10–25 ms. The fixtures are
+evaluation certificates (`fiv_decide`: one kernel leaf per interval or integer operation).
 
 Sanity fixtures: accepted fixtures `fixture_arctan_one` (enclosure of `π/4` within `1e-8`),
 `fixture_arctan_large`, `fixture_arcsin_half` (enclosure of `π/6`), `fixture_arcsin_edge`,
@@ -590,7 +593,7 @@ most `43 · 2⁻³² < 1e-8`; hence both ends lie within `1e-8` of `π/4`. -/
 theorem fixture_arctan_one : (FIv.arctan (FIv.ofInt 1)).ok = true ∧
     (FIv.arctan (FIv.ofInt 1)).hi - (FIv.arctan (FIv.ofInt 1)).lo ≤ 43 ∧
     (FIv.arctan (FIv.ofInt 1)).Mem (Real.pi / 4) := by
-  refine ⟨by decide +kernel, by decide +kernel, ?_⟩
+  refine ⟨by fiv_decide, by fiv_decide, ?_⟩
   have := FIv.mem_arctan (FIv.mem_ofInt 1)
   simpa [Real.arctan_one] using this
 
@@ -598,14 +601,14 @@ theorem fixture_arctan_one : (FIv.arctan (FIv.ofInt 1)).ok = true ∧
 tight. -/
 theorem fixture_arctan_large : (FIv.arctan (FIv.ofInt 10000)).ok = true ∧
     (FIv.arctan (FIv.ofInt 10000)).hi - (FIv.arctan (FIv.ofInt 10000)).lo ≤ 43 := by
-  decide +kernel
+  fiv_decide
 
 /-- Accepted fixture: the enclosure of `arcsin (1/2)` is valid, contains `π/6` and has width
 at most `43 · 2⁻³²`. -/
 theorem fixture_arcsin_half : (FIv.arcsin (FIv.ofFrac 1 2)).ok = true ∧
     (FIv.arcsin (FIv.ofFrac 1 2)).hi - (FIv.arcsin (FIv.ofFrac 1 2)).lo ≤ 43 ∧
     (FIv.arcsin (FIv.ofFrac 1 2)).Mem (Real.pi / 6) := by
-  refine ⟨by decide +kernel, by decide +kernel, ?_⟩
+  refine ⟨by fiv_decide, by fiv_decide, ?_⟩
   have := FIv.mem_arcsin (FIv.mem_ofFrac 1 2)
   have e : Real.arcsin 2⁻¹ = Real.pi / 6 := by
     rw [← one_div, ← Real.sin_pi_div_six, Real.arcsin_sin] <;> linarith [Real.pi_pos]
@@ -614,36 +617,36 @@ theorem fixture_arcsin_half : (FIv.arcsin (FIv.ofFrac 1 2)).ok = true ∧
 /-- Accepted fixture: `arcsin` near the edge of its domain (`x = 0.99`) is still tight. -/
 theorem fixture_arcsin_edge : (FIv.arcsin (FIv.ofFrac 99 100)).ok = true ∧
     (FIv.arcsin (FIv.ofFrac 99 100)).hi - (FIv.arcsin (FIv.ofFrac 99 100)).lo ≤ 43 := by
-  decide +kernel
+  fiv_decide
 
 /-- Accepted fixture: the enclosure of `cosh 1` is valid with width at most `5 · 2⁻³²`. -/
 theorem fixture_cosh_one : (FIv.cosh (FIv.ofInt 1)).ok = true ∧
     (FIv.cosh (FIv.ofInt 1)).hi - (FIv.cosh (FIv.ofInt 1)).lo ≤ 5 ∧
     (FIv.cosh (FIv.ofInt 1)).Mem (Real.cosh 1) := by
-  refine ⟨by decide +kernel, by decide +kernel, ?_⟩
+  refine ⟨by fiv_decide, by fiv_decide, ?_⟩
   simpa using FIv.mem_cosh (FIv.mem_ofInt 1)
 
 /-- Accepted fixture: the enclosure of `sinh 1` is valid with width at most `5 · 2⁻³²`. -/
 theorem fixture_sinh_one : (FIv.sinh (FIv.ofInt 1)).ok = true ∧
     (FIv.sinh (FIv.ofInt 1)).hi - (FIv.sinh (FIv.ofInt 1)).lo ≤ 5 ∧
     (FIv.sinh (FIv.ofInt 1)).Mem (Real.sinh 1) := by
-  refine ⟨by decide +kernel, by decide +kernel, ?_⟩
+  refine ⟨by fiv_decide, by fiv_decide, ?_⟩
   simpa using FIv.mem_sinh (FIv.mem_ofInt 1)
 
 /-- Degenerate fixture: `cosh` of an enclosure straddling `0` has lower end exactly `1`. -/
 theorem fixture_cosh_straddle :
     (FIv.cosh ⟨-fxScale / 2, fxScale / 3, true⟩).ok = true ∧
     (FIv.cosh ⟨-fxScale / 2, fxScale / 3, true⟩).lo = fxScale := by
-  decide +kernel
+  fiv_decide
 
 /-- Rejected fixture: `arcsin` of an enclosure containing `1` is invalid. -/
 theorem fixture_arcsin_rejected : (FIv.arcsin ⟨fxScale / 2, fxScale, true⟩).ok = false := by
-  decide +kernel
+  fiv_decide
 
 /-- Rejected fixture: `cosh` (and `sinh`) of `[2, 3]` (outside `[-1, 1]`) is invalid. -/
 theorem fixture_cosh_rejected : (FIv.cosh ⟨2 * fxScale, 3 * fxScale, true⟩).ok = false ∧
     (FIv.sinh ⟨2 * fxScale, 3 * fxScale, true⟩).ok = false := by
-  decide +kernel
+  fiv_decide
 
 /-- Fixture for `meet`: intersecting `[0, 1]` with `[1/2, 2]` gives `[1/2, 1]`; disjoint
 valid enclosures give an invalid result. -/
@@ -652,9 +655,9 @@ theorem fixture_meet :
     (FIv.meet ⟨0, fxScale, true⟩ ⟨fxScale / 2, 2 * fxScale, true⟩).hi = fxScale ∧
     (FIv.meet ⟨0, fxScale, true⟩ ⟨fxScale / 2, 2 * fxScale, true⟩).ok = true ∧
     (FIv.meet (FIv.ofInt 0) (FIv.ofInt 1)).ok = false := by
-  decide +kernel
+  fiv_decide
 
 /-- Fixture for `pi`: the enclosure has width one unit of `2⁻³²`. -/
-theorem fixture_pi : FIv.pi.hi - FIv.pi.lo = 1 := by decide +kernel
+theorem fixture_pi : FIv.pi.hi - FIv.pi.lo = 1 := by fiv_decide
 
 end PlasmaLean.Certificates.ValidatedQuadrature

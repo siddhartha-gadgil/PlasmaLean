@@ -6,6 +6,7 @@ Authors: PlasmaLean contributors
 module
 
 public import PlasmaLean.Design.RationalStellaratorConfined
+public import PlasmaLean.Certificates.EvalCert
 
 /-!
 # Bounds on the partial derivatives of the certified first integral
@@ -18,15 +19,16 @@ circle `C² + S² = 1`:
 * **circle reduction** (`ev_circ`): `S² = 1 - C²` splits any `p(s, z, C, S)` as
   `p₀(s, z, C) + S p₁(s, z, C)` (`circD 0 p`, `circD 1 p`, dense polynomials in `(s, z, C)`), so
   `|p| ≤ |p₀| + |p₁|` with `C ∈ [-1, 1]` an independent variable (no chart weight);
-* eight kernel-checked Taylor-shift covers (`Cover.check`, absolute mode, constant bound;
-  `gAij_check`, plans found by an untrusted search) bound `|pᵢ₀|`, `|pᵢ₁|` on the cube
-  (`circ_bound_of`), giving `pderivZ_bounds`:
+* eight Taylor-shift covers (`Cover.check`, absolute mode, constant bound; `gAij_check`, plans
+  found by an untrusted search), each an evaluation certificate (`cover_cert`: the plan
+  recursion as certificate steps, one kernel leaf per shift, truncation or leaf bound), bound
+  `|pᵢ₀|`, `|pᵢ₁|` on the cube (`circ_bound_of`), giving `pderivZ_bounds`:
   `|∂ₛP| ≤ 4.453 × 10¹¹`, `|∂_zP| ≤ 3.739 × 10¹¹`, `|∂_CP| ≤ 1.265 × 10¹⁰`,
   `|∂_SP| ≤ 7.70 × 10⁹` (physically `0.405`, `0.340`, `0.0115`, `0.0070`; the true maxima are
   about `0.307`, `0.252`, `0.0097`, `0.0051`).
 
-The literals `gAij` are checked against the kernel computation of the rescaled circle parts
-(`gAij_eq`).
+The literals `gAij` are checked against the rescaled circle parts by evaluation certificates
+(`gAij_eq`, `eval_cert`).
 -/
 
 public section
@@ -569,99 +571,123 @@ theorem circ_bound_of {p : FPoly} {par ds dz dm : ℕ} {c : ℤ} {A : D3} {pl : 
 @[expose] def gA31 : D3 :=
   []
 
+/-- **`cover_cert`**: `eval_cert` for a cover check `Cover.check …` with the polynomial operations
+of one node (`trunc3`, `shiftAx`, `lenOK`, `leafOK`) as kernel leaves: the plan recursion is
+unfolded into certificate steps, and each leaf is one Taylor shift, truncation, degree test or
+leaf bound applied to literal polynomials. -/
+local macro "cover_cert" : tactic => `(tactic| eval_cert [
+  PlasmaLean.Design.RationalStellarator.Cover.trunc3,
+  PlasmaLean.Design.RationalStellarator.Cover.shiftAx,
+  PlasmaLean.Design.RationalStellarator.Cover.lenOK,
+  PlasmaLean.Design.RationalStellarator.Cover.leafOK])
+
 set_option maxRecDepth 100000 in
-/-- The literal `gA00` is the rescaled circle part (kernel check). -/
+/-- The literal `gA00` is the rescaled circle part (evaluation certificate). -/
 theorem gA00_eq : (lenOK 0 9 (circD 0 (pderivZ Pz 0)) &&
     lenOK 1 9 (circD 0 (pderivZ Pz 0)) &&
     beq3 (scale0 10 9 (scale1 10 9 (circD 0 (pderivZ Pz 0)))) gA00) = true := by
-  decide +kernel
+  eval_cert
 
+set_option maxHeartbeats 0 in
+-- the builder evaluates each leaf (a Taylor shift of a literal polynomial) by the kernel's `whnf`
 set_option maxRecDepth 100000 in
 /-- Cover check: `|gA00| ≤ 318858372055 · 10^18` on the cube. -/
 theorem gA00_check : check true (9, 9, 5) [] (
     plan% "D14SZTSZLLLSZTLSLLLLTSZLTSLLLLSZLLLZTLLTLL")
     gA00 [[[318858372055 * 10 ^ 18]]] 0 = true := by
-  decide +kernel
+  cover_cert
 
 set_option maxRecDepth 100000 in
-/-- The literal `gA01` is the rescaled circle part (kernel check). -/
+/-- The literal `gA01` is the rescaled circle part (evaluation certificate). -/
 theorem gA01_eq : (lenOK 0 9 (circD 1 (pderivZ Pz 0)) &&
     lenOK 1 9 (circD 1 (pderivZ Pz 0)) &&
     beq3 (scale0 10 9 (scale1 10 9 (circD 1 (pderivZ Pz 0)))) gA01) = true := by
-  decide +kernel
+  eval_cert
 
+set_option maxHeartbeats 0 in
+-- the builder evaluates each leaf (a Taylor shift of a literal polynomial) by the kernel's `whnf`
 set_option maxRecDepth 100000 in
 /-- Cover check: `|gA01| ≤ 126443837194 · 10^18` on the cube. -/
 theorem gA01_check : check true (9, 9, 4) [] (
     plan% "D13SZTSZTLLLLSLLTSLLSZLTLLLZTLLTLL")
     gA01 [[[126443837194 * 10 ^ 18]]] 0 = true := by
-  decide +kernel
+  cover_cert
 
 set_option maxRecDepth 100000 in
-/-- The literal `gA10` is the rescaled circle part (kernel check). -/
+/-- The literal `gA10` is the rescaled circle part (evaluation certificate). -/
 theorem gA10_eq : (lenOK 0 9 (circD 0 (pderivZ Pz 1)) &&
     lenOK 1 9 (circD 0 (pderivZ Pz 1)) &&
     beq3 (scale0 10 9 (scale1 10 9 (circD 0 (pderivZ Pz 1)))) gA10) = true := by
-  decide +kernel
+  eval_cert
 
+set_option maxHeartbeats 0 in
+-- the builder evaluates each leaf (a Taylor shift of a literal polynomial) by the kernel's `whnf`
 set_option maxRecDepth 100000 in
 /-- Cover check: `|gA10| ≤ 241892558110 · 10^18` on the cube. -/
 theorem gA10_check : check true (9, 9, 5) [] (
     plan% "D14SZTSZTLLLZTLLLSZTLSZLLZLLLZTLLLTSZLTSZLLZLLLZLTLLSZLTLLZLTLLZTSZTSLLLLZTSZLLL
 LLSZLLLTSZLLLSZLTLSLLZLTLSZLLL")
     gA10 [[[241892558110 * 10 ^ 18]]] 0 = true := by
-  decide +kernel
+  cover_cert
 
 set_option maxRecDepth 100000 in
-/-- The literal `gA11` is the rescaled circle part (kernel check). -/
+/-- The literal `gA11` is the rescaled circle part (evaluation certificate). -/
 theorem gA11_eq : (lenOK 0 9 (circD 1 (pderivZ Pz 1)) &&
     lenOK 1 9 (circD 1 (pderivZ Pz 1)) &&
     beq3 (scale0 10 9 (scale1 10 9 (circD 1 (pderivZ Pz 1)))) gA11) = true := by
-  decide +kernel
+  eval_cert
 
+set_option maxHeartbeats 0 in
+-- the builder evaluates each leaf (a Taylor shift of a literal polynomial) by the kernel's `whnf`
 set_option maxRecDepth 100000 in
 /-- Cover check: `|gA11| ≤ 131941395333 · 10^18` on the cube. -/
 theorem gA11_check : check true (9, 9, 4) [] (
     plan% "D13SZTSZLLZLLSZLLLTSZLLLSZLLZLLZLL")
     gA11 [[[131941395333 * 10 ^ 18]]] 0 = true := by
-  decide +kernel
+  cover_cert
 
 set_option maxRecDepth 100000 in
-/-- The literal `gA20` is the rescaled circle part (kernel check). -/
+/-- The literal `gA20` is the rescaled circle part (evaluation certificate). -/
 theorem gA20_eq : (lenOK 0 10 (circD 0 (pderivZ Pz 2)) &&
     lenOK 1 10 (circD 0 (pderivZ Pz 2)) &&
     beq3 (scale0 10 10 (scale1 10 10 (circD 0 (pderivZ Pz 2)))) gA20) = true := by
-  decide +kernel
+  eval_cert
 
+set_option maxHeartbeats 0 in
+-- the builder evaluates each leaf (a Taylor shift of a literal polynomial) by the kernel's `whnf`
 set_option maxRecDepth 100000 in
 /-- Cover check: `|gA20| ≤ 11544872091 · 10^20` on the cube. -/
 theorem gA20_check : check true (10, 10, 4) [] (
     plan% "D10SD8ZD6TD5SD4ZD3TSZD2TSZLLLLLLSZLLLLLD5SD4ZLLLD6TD5SD4ZLLLD5SD4ZLD3TSZLLLSZLD2
 TLSZLLLLLD7ZD5TLD4SLLD5TD4SLLL")
     gA20 [[[11544872091 * 10 ^ 20]]] 0 = true := by
-  decide +kernel
+  cover_cert
 
 set_option maxRecDepth 100000 in
-/-- The literal `gA21` is the rescaled circle part (kernel check). -/
+/-- The literal `gA21` is the rescaled circle part (evaluation certificate). -/
 theorem gA21_eq : (lenOK 0 10 (circD 1 (pderivZ Pz 2)) &&
     lenOK 1 10 (circD 1 (pderivZ Pz 2)) &&
     beq3 (scale0 10 10 (scale1 10 10 (circD 1 (pderivZ Pz 2)))) gA21) = true := by
-  decide +kernel
+  eval_cert
 
+set_option maxHeartbeats 0 in
+-- the builder evaluates each leaf (a Taylor shift of a literal polynomial) by the kernel's `whnf`
 set_option maxRecDepth 100000 in
 /-- Cover check: `|gA21| ≤ 1099511627 · 10^20` on the cube. -/
 theorem gA21_check : check true (10, 10, 3) [] (
     plan% "D11SD10ZD7TD6SD5ZLLLD6SD5ZLLLD7TD6SD5ZLLLD6SD5ZLLLD9ZD7TLLD7TLL")
     gA21 [[[1099511627 * 10 ^ 20]]] 0 = true := by
-  decide +kernel
+  cover_cert
 
 set_option maxRecDepth 100000 in
-/-- The literal `gA30` is the rescaled circle part (kernel check). -/
+/-- The literal `gA30` is the rescaled circle part (evaluation certificate). -/
 theorem gA30_eq : (lenOK 0 10 (circD 0 (pderivZ Pz 3)) &&
     lenOK 1 10 (circD 0 (pderivZ Pz 3)) &&
     beq3 (scale0 10 10 (scale1 10 10 (circD 0 (pderivZ Pz 3)))) gA30) = true := by
-  decide +kernel
+  eval_cert
 
+set_option maxHeartbeats 0 in
+-- the builder evaluates each leaf (a Taylor shift of a literal polynomial) by the kernel's `whnf`
 set_option maxRecDepth 100000 in
 /-- Cover check: `|gA30| ≤ 6597069766 · 10^20` on the cube. -/
 theorem gA30_check : check true (10, 10, 4) [] (
@@ -669,28 +695,30 @@ theorem gA30_check : check true (10, 10, 4) [] (
 LLSD2ZLLLLZLLD4SZD3TSD2ZLLLSD2ZLLLLZLD3TLSLLD6ZD5TD4SLD3ZLLD4SLD3ZLLD5TD4SLD3ZLL
 D4SLD3ZLL")
     gA30 [[[6597069766 * 10 ^ 20]]] 0 = true := by
-  decide +kernel
+  cover_cert
 
 set_option maxRecDepth 100000 in
-/-- The literal `gA31` is the rescaled circle part (kernel check). -/
+/-- The literal `gA31` is the rescaled circle part (evaluation certificate). -/
 theorem gA31_eq : (lenOK 0 10 (circD 1 (pderivZ Pz 3)) &&
     lenOK 1 10 (circD 1 (pderivZ Pz 3)) &&
     beq3 (scale0 10 10 (scale1 10 10 (circD 1 (pderivZ Pz 3)))) gA31) = true := by
-  decide +kernel
+  eval_cert
 
+set_option maxHeartbeats 0 in
+-- the builder evaluates each leaf (a Taylor shift of a literal polynomial) by the kernel's `whnf`
 set_option maxRecDepth 100000 in
 /-- Cover check: `|gA31| ≤ 1099511627 · 10^20` on the cube. -/
 theorem gA31_check : check true (10, 10, 0) [] (
     plan% "L")
     gA31 [[[1099511627 * 10 ^ 20]]] 0 = true := by
-  decide +kernel
+  cover_cert
 
-/-- Exponent lists of the partial derivatives have length `≤ 4` (kernel check). -/
+/-- Exponent lists of the partial derivatives have length `≤ 4` (evaluation certificate). -/
 theorem len4_all : ((pderivZ Pz 0).all (fun u => decide (u.2.length ≤ 4)) &&
     (pderivZ Pz 1).all (fun u => decide (u.2.length ≤ 4)) &&
     (pderivZ Pz 2).all (fun u => decide (u.2.length ≤ 4)) &&
     (pderivZ Pz 3).all (fun u => decide (u.2.length ≤ 4))) = true := by
-  decide +kernel
+  eval_cert
 
 /-- Bound for one partial derivative from its two circle parts. -/
 theorem pderivZ_bound_of {p : FPoly} (hp : ∀ u ∈ p, u.2.length ≤ 4) {c0 c1 : ℝ}

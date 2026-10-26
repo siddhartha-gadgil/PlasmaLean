@@ -60,6 +60,9 @@ meta structure St where
   dataPos : NameMap (Array Nat) := {}
   /-- The unfolding equation of a recursive definition. -/
   eqns : NameMap (Option Name) := {}
+  /-- The positions of the arguments of a constant on which the types of later arguments or the
+  result type depend. -/
+  depPos : NameMap (Array Nat) := {}
   /-- Number of evaluated nodes per head constant (statistics for `eval_cert?`). -/
   heads : Std.HashMap Name Nat := {}
   /-- Compound terms already known to be values. -/
@@ -114,6 +117,11 @@ meta partial def isVal (e : Expr) : EvM Bool := do
     if (← get).vals.contains e then return true
     let .const c _ := e.getAppFn | return false
     if c == ``Nat.succ then return false
+    -- a quotient value `Quot.mk r a` (e.g. a `Multiset` under a `Finset.sum`)
+    if c == ``Quot.mk && e.getAppNumArgs == 3 then
+      unless ← isVal e.appArg! do return false
+      modify fun s => { s with vals := s.vals.insert e }
+      return true
     let some (.ctorInfo cv) := (← getEnv).find? c | return false
     let args := e.getAppArgs
     if args.size != cv.numParams + cv.numFields then return false
@@ -426,6 +434,8 @@ meta partial def kval (e : Expr) : EvM Expr := do
       match ← kval r.appArg! with
       | .lit (.natVal k) => return mkRawNatLit (k + 1)
       | _ => throwError "eval_cert: not a natural number{indentExpr r}"
+    if c == ``Quot.mk && r.getAppNumArgs == 3 then
+      return mkApp r.appFn! (← kval r.appArg!)
     let some (.ctorInfo cv) := (← getEnv).find? c |
       throwError "eval_cert: the term does not reduce to a value{indentExpr r}"
     let args := r.getAppArgs
@@ -470,6 +480,56 @@ meta def dataPositions (c : Name) : EvM (Array Nat) := do
   modify fun s => { s with dataPos := s.dataPos.insert c r }
   return r
 
+/-- The positions `i` of the binders of the constant `c` on which the type of a later binder or
+the result type depends (e.g. `n` in `Fin.ofNat (n : ℕ) [NeZero n] (a : ℕ) : Fin n`, `val` in
+`Fin.mk (val : ℕ) (isLt : val < n)`). Replacing such an argument by its value can make the
+abstraction `fun x => c … x …` of `ECert.arg`/`ECert.op₁` ill-typed. -/
+meta def depPositions (c : Name) : EvM (Array Nat) := do
+  if let some r := (← get).depPos.find? c then return r
+  let info ← getConstInfo c
+  let r ← forallTelescopeReducing info.type fun xs body => do
+    let mut out := #[]
+    for i in [0:xs.size] do
+      let fv := xs[i]!.fvarId!
+      let mut dep := body.containsFVar fv
+      for j in [i+1:xs.size] do
+        if dep then break
+        dep := (← inferType xs[j]!).containsFVar fv
+      if dep then out := out.push i
+    return out
+  modify fun s => { s with depPos := s.depPos.insert c r }
+  return r
+
+/-- Drop from `subs` the arguments of `e` that cannot be abstracted: those occurring in an argument
+at a dependent position of the head (`depPositions`) whose abstraction `fun x => e[x/a]` is not a
+well-typed non-dependent function. Such an argument is left unevaluated (the later unfolding or
+the kernel leaf handles it). `decide` and matchers are not filtered (the sides of `decide p h` occur in `h` as well; the discriminants are dependent only
+through the motive), nor are terms without a dependent position, so the certificates of terms
+that were already well-typed are unchanged. -/
+meta def filterDep (α e : Expr) (subs : Array Expr) : EvM (Array Expr) := do
+  if subs.isEmpty then return subs
+  let .const c _ := e.getAppFn | return subs
+  -- `decide p h`: the sides occur in `p` and in the instance `h` alike
+  if c == ``Decidable.decide then return subs
+  if (← getMatcherInfo? c).isSome then return subs
+  let dps ← depPositions c
+  if dps.isEmpty then return subs
+  let args := e.getAppArgs
+  let mut out := #[]
+  for a in subs do
+    let risky := dps.any fun i => i < args.size && (args[i]!.find? (· == a)).isSome
+    if !risky then
+      out := out.push a
+      continue
+    let β ← inferType a
+    let g := mkLambda `x .default β (absOcc #[a] e 0)
+    let ok ← try
+        Meta.check g
+        isDefEq (← inferType g) (← mkArrow β α)
+      catch _ => pure false
+    if ok then out := out.push a
+  return out
+
 /-- Unfold the instance under a projection `s.i` (the structure `s` is a class instance). -/
 meta def unfoldInst (e : Expr) : MetaM Expr := do
   match e with
@@ -487,11 +547,14 @@ meta def mkRefl (α v : Expr) : Expr := mkApp2 (mkConst ``Eq.refl [1]) α v
 /-- The certificate `p : ECert e' v` with the type hint `ECert e v` (a definitional step). -/
 meta def hint (_α _e : Expr) (r : Expr × Expr) : Expr × Expr := r
 
-/-- The distinct subterms of `xs` that are not values. -/
+/-- The distinct subterms of `xs` that are not values. Proofs (e.g. the bound `Fin.ofNat._proof_1
+n a` of a `Fin` numeral, a discriminant `h : i < n` of a `match`) are irrelevant and never
+evaluated: `ECert` is only stated over types. -/
 meta def nonVals (xs : Array Expr) : EvM (Array Expr) := do
   let mut out := #[]
   for x in xs do
-    unless (← isVal x) || out.contains x do out := out.push x
+    unless (← isVal x) || out.contains x do
+      unless ← isProof x do out := out.push x
   return out
 
 mutual
@@ -538,6 +601,8 @@ meta partial def evCore (e : Expr) : EvM (Expr × Expr) := do
     if c == ``dite && args.size == 5 then return ← diteNode α e args
     if c == ``Decidable.decide && args.size == 2 then return ← decideNode α e args[0]! args[1]!
     if (← read).prims.contains c then
+      -- a partial application of an operation (e.g. `Int.add` in `zipL Int.add`) is a value
+      if (← whnf α).isForall then return (e, mkLit α e)
       let ps ← dataPositions c
       return ← opNode α e (← nonVals (ps.filter (· < args.size) |>.map (args[·]!)))
     if let some pinfo ← getProjectionFnInfo? c then
@@ -550,6 +615,8 @@ meta partial def evCore (e : Expr) : EvM (Expr × Expr) := do
         match ← withTransparency .all (reduceMatcher? e') with
         | .reduced e'' => return hint α e' (← ev e'')
         | _ => throwError "eval_cert: stuck at a `match`{indentExpr e'}"
+    if c == ``Quot.mk && args.size == 3 then
+      return ← argChain α e (← nonVals #[args[2]!]) fun e' => return (e', mkLit α e')
     if let some (.ctorInfo cv) := (← getEnv).find? c then
       -- proof fields (e.g. those of `Rat.mk'`) are not evaluated: they are irrelevant
       let pf ← propFieldsOf c cv
@@ -576,12 +643,25 @@ meta partial def evCore (e : Expr) : EvM (Expr × Expr) := do
           return (v, mkAppN (mkConst `PlasmaLean.Certificates.EvalCert.ECert.unfold) #[α, e', rhs, v, pf, p])
       match ← withTransparency .all (unfoldDefinition? e') with
       | some e'' => return hint α e' (← ev e''.headBeta)
-      | none => throwError "eval_cert: cannot unfold{indentExpr e'}"
+      | none =>
+        -- a recursor (e.g. the cast `h ▸ v`, `Eq.rec` reduced by the K rule): one `whnfCore`
+        -- step, a definitional step
+        -- likewise `Quot.lift f h (Quot.mk r a)` reduces to `f a`
+        match (← getEnv).find? c with
+        | some (.recInfo _) | some (.quotInfo _) =>
+          let e'' ← withTransparency .all (whnfCore e')
+          if e'' != e' then return hint α e' (← ev e''.headBeta)
+        | _ => pure ()
+        -- a partial application of a recursive definition (e.g. `zipL add1`, a function passed
+        -- as data): a function is a value
+        if (← whnf α).isForall then return (e', mkLit α e')
+        throwError "eval_cert: cannot unfold{indentExpr e'}"
 
 /-- Replace the non-value arguments `subs` of `e` by their values one at a time (`ECert.arg`),
 then continue with `k`. -/
 meta partial def argChain (α e : Expr) (subs : Array Expr)
-    (k : Expr → EvM (Expr × Expr)) : EvM (Expr × Expr) := do
+    (k : Expr → EvM (Expr × Expr)) (filtered : Bool := false) : EvM (Expr × Expr) := do
+  let subs ← if filtered then pure subs else filterDep α e subs
   if subs.isEmpty then return ← k e
   let a := subs[0]!
   let β ← inferType a
@@ -589,7 +669,7 @@ meta partial def argChain (α e : Expr) (subs : Array Expr)
   let body := absOcc #[a] e 0
   let g := mkLambda `x .default β body
   let e₁ := body.instantiate1 va
-  let (v, p₁) ← argChain α e₁ subs[1:] k
+  let (v, p₁) ← argChain α e₁ subs[1:] k (filtered := true)
   return (v, mkAppN (mkConst `PlasmaLean.Certificates.EvalCert.ECert.arg) #[α, β, g, a, va, v, pa, p₁])
 
 /-- An operation node: evaluate the non-value arguments `subs`, then one kernel leaf. -/
@@ -598,6 +678,7 @@ meta partial def opNode (α e : Expr) (subs : Array Expr) : EvM (Expr × Expr) :
     let v ← kval e'
     modify fun s => { s with leaves := s.leaves + 1 }
     return (v, mkApp4 (mkConst `PlasmaLean.Certificates.EvalCert.ECert.leaf) α e' v (mkRefl α v))
+  let subs ← filterDep α e subs
   if subs.isEmpty || subs.size > 3 then return ← argChain α e subs leafOf
   let n := subs.size
   let βs ← subs.mapM fun x => inferType x
@@ -727,6 +808,34 @@ syntax (name := evalCertStxV) "eval_cert?" (" [" ident,* "]")? : tactic
     let top := (s.heads.toArray.qsort (fun a b => a.2 > b.2)).toList.take 25
     logInfo m!"eval_cert: {s.nodes} nodes, {s.leaves} kernel leaves; by head: {top}"
   g.assign (← mkExpectedTypeHint pf ty)
+  replaceMainGoal []
+
+/-- **`eval_decide [f₁, …]`**: prove a decidable closed proposition `p` (a comparison of rationals,
+a conjunction of checks, …) as `of_decide_eq_true` of the evaluation certificate of `decide p`,
+with `f₁, …` as extra kernel-leaf operations. -/
+syntax (name := evalDecideStx) "eval_decide" (" [" ident,* "]")? : tactic
+
+/-- The elaborator of `eval_decide`. -/
+@[tactic evalDecideStx] meta def evalEvalDecide : Tactic := fun stx => do
+  let o := stx[1]
+  let ids : Array Syntax :=
+    if o.getNumArgs == 3 then o[1].getSepArgs
+    else if o.getNumArgs == 1 && o[0].getNumArgs == 3 then o[0][1].getSepArgs
+    else #[]
+  let extra ← ids.mapM fun id => realizeGlobalConstNoOverloadWithInfo id
+  let g ← getMainGoal
+  let p ← instantiateMVars (← g.getType)
+  let inst ← synthInstance (mkApp (mkConst ``Decidable) p)
+  let d := mkApp2 (mkConst ``Decidable.decide) p inst
+  let prims := (defaultPrims ++ extra.toList).foldl (fun s n => s.insert n) {}
+  let run : EvM Expr := do
+    let (v, pf) ← ev d
+    unless v.isConstOf ``Bool.true do
+      throwError "eval_decide: the proposition evaluates to{indentExpr v}"
+    let snd := mkApp4 (mkConst `PlasmaLean.Certificates.EvalCert.ECert.sound) (mkConst ``Bool) d v pf
+    return mkApp3 (mkConst ``of_decide_eq_true) p inst snd
+  let (pf, _) ← (run.run { prims }).run {}
+  g.assign (← mkExpectedTypeHint pf p)
   replaceMainGoal []
 
 end PlasmaLeanMeta.EvalCert

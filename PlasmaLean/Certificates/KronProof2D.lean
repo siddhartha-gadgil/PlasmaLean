@@ -35,7 +35,8 @@ kernel and assembles the term from raw constructor applications whose leaves are
 which only the kernel evaluates. No `decide`.
 
 **Sanity.** `PCert2.zero_fixture` (degenerate: an empty block), `kron2Proof_fixture` (the tactic
-on a toy image), and a false bound on the same image refused by `fail_if_success`.
+on a toy image), `kron2Proof_scaled_fixture` (the scaled form `X * c ≤ Kb`), and a false bound
+on the same image refused by `fail_if_success`.
 -/
 
 @[expose] public section
@@ -89,6 +90,15 @@ theorem wl1KronP_le_of_cert (b W dc dr R : Nat) (wA wB : Nat → Nat) (Nv : Int)
   rw [h]
   exact Nat.le_of_ble_eq_true hK
 
+/-- **Scaled form** `wl1KronP … * c ≤ Kb` (a bound stated with a decimal scale `c = 10^k`): a
+reading certificate and the final comparison `Nat.ble (tot * c) Kb = true`. -/
+theorem wl1KronP_mul_le_of_cert (b W dc dr R : Nat) (wA wB : Nat → Nat) (Nv : Int) (tot c Kb : Nat)
+    (hP : PCert2 (b * W) (wl1Leaf b W dc wA wB) dr 0 R (wl1Img b W dr Nv) tot)
+    (hK : Nat.ble (tot * c) Kb = true) : wl1KronP b W dc dr R wA wB Nv * c ≤ Kb := by
+  have h : wl1KronP b W dc dr R wA wB Nv = tot := hP.sound
+  rw [h]
+  exact Nat.le_of_ble_eq_true hK
+
 /-! ## The `meta` builder -/
 
 open Lean Meta Elab Tactic
@@ -125,10 +135,45 @@ meta partial def mkPCert2 (bw leaf : Expr) (bwv : Nat) (leafv : Nat → Nat → 
 meta def evalNatFun (e : Expr) : MetaM (Nat → Nat) := do
   unsafe evalExpr (Nat → Nat) (← mkArrow (mkConst ``Nat) (mkConst ``Nat)) (← instantiateMVars e)
 
+/-- The value of a closed natural-number expression by the kernel's `whnf` (fallback of
+`evalNatE` when the definitions are not available to compiled evaluation, e.g. no `meta import`
+of the data module, or definitions of the current module). -/
+meta partial def kNat (e : Expr) : MetaM Nat := do
+  let e ← instantiateMVars e
+  if let some n := e.rawNatLit? then return n
+  match Kernel.whnf (← getEnv) {} e with
+  | .ok (.lit (.natVal n)) => return n
+  | .ok r =>
+    if r.isConstOf ``Nat.zero then return 0
+    if r.isAppOfArity ``Nat.succ 1 then return (← kNat r.appArg!) + 1
+    throwError "kron2_proof: not a natural number{indentExpr r}"
+  | .error _ => throwError "kron2_proof: kernel whnf failed{indentExpr e}"
+
+/-- The value of a closed integer expression by the kernel's `whnf`. -/
+meta def kInt (e : Expr) : MetaM Int := do
+  match Kernel.whnf (← getEnv) {} (← instantiateMVars e) with
+  | .ok r =>
+    match r.getAppFnArgs with
+    | (``Int.ofNat, #[n]) => return (← kNat n)
+    | (``Int.negSucc, #[n]) => return -((← kNat n : Nat) : Int) - 1
+    | _ => throwError "kron2_proof: not an integer{indentExpr r}"
+  | .error _ => throwError "kron2_proof: kernel whnf failed{indentExpr e}"
+
+/-- A closed function `ℕ → ℕ` tabulated on `[0, n)` by the kernel's `whnf` (`0` outside). -/
+meta def kNatFun (f : Expr) (n : Nat) : MetaM (Nat → Nat) := do
+  let mut arr : Array Nat := #[]
+  for i in [0:n] do
+    arr := arr.push (← kNat (mkApp f (mkRawNatLit i)).headBeta)
+  return fun i => arr.getD i 0
+
 /-- **Proof term of a two-dimensional Kronecker ball check** `X ≤ Kb`, `X` one of `nodeK`,
 `normK`, `centerK`, `wl1KronP` (blocks of `2^dB` rows). -/
 meta def kron2ProofTerm (goal : Expr) (dB : Nat) : MetaM Expr := do
   let_expr LE.le _ _ X Kb := goal | throwError "kron2_proof: expected a goal `X ≤ Kb`"
+  -- the scaled form `X * c ≤ Kb`
+  let (X, scale) := match X.getAppFnArgs with
+    | (``HMul.hMul, #[_, _, _, _, x, c]) => (x, some c)
+    | _ => (X, none)
   let mut X := X
   for _ in [0:8] do
     if X.isAppOfArity ``wl1KronP 8 then break
@@ -138,21 +183,29 @@ meta def kron2ProofTerm (goal : Expr) (dB : Nat) : MetaM Expr := do
   unless X.isAppOfArity ``wl1KronP 8 do
     throwError "kron2_proof: expected `wl1KronP`{indentExpr X}"
   let a := X.getAppArgs
-  let [b, W, dc, dr, R] ← (a.extract 0 5).toList.mapM evalNatE | throwError "kron2_proof: arity"
-  let wA ← evalNatFun a[5]!
-  let wB ← evalNatFun a[6]!
+  let natE (e : Expr) : MetaM Nat := try evalNatE e catch _ => kNat e
+  let [b, W, dc, dr, R] ← (a.extract 0 5).toList.mapM natE | throwError "kron2_proof: arity"
+  let wA ← try evalNatFun a[5]! catch _ => kNatFun a[5]! W
+  let wB ← try evalNatFun a[6]! catch _ => kNatFun a[6]! R
   let Nv := a[7]!
-  let Nvv ← evalIntE Nv
+  let Nvv ← try evalIntE Nv catch _ => kInt Nv
   let Tv := (Nvv + offs (rowOffs (2 ^ (b - 1)) b W) (b * W) dr).toNat
   let bw := mkNatMul a[0]! a[1]!
   let leaf := mkAppN (mkConst ``wl1Leaf) #[a[0]!, a[1]!, a[2]!, a[5]!, a[6]!]
   let T := mkAppN (mkConst ``wl1Img) #[a[0]!, a[1]!, a[3]!, Nv]
   let (pP, totv) ← mkPCert2 bw leaf (b * W) (wl1LeafM b W dc wA wB) dB dr 0 R T Tv
-  let Kbv ← evalNatE Kb
-  unless totv ≤ Kbv do
-    throwError "kron2_proof: the bound fails: the kernel quantity is {totv} > {Kbv}"
+  let Kbv ← natE Kb
   let tot := (← inferType pP).appArg!
-  return mkAppN (mkConst ``wl1KronP_le_of_cert) (a ++ #[tot, Kb, pP, reflBool true])
+  match scale with
+  | some c =>
+    let cv ← natE c
+    unless totv * cv ≤ Kbv do
+      throwError "kron2_proof: the bound fails: the scaled kernel quantity is {totv * cv} > {Kbv}"
+    return mkAppN (mkConst ``wl1KronP_mul_le_of_cert) (a ++ #[tot, c, Kb, pP, reflBool true])
+  | none =>
+    unless totv ≤ Kbv do
+      throwError "kron2_proof: the bound fails: the kernel quantity is {totv} > {Kbv}"
+    return mkAppN (mkConst ``wl1KronP_le_of_cert) (a ++ #[tot, Kb, pP, reflBool true])
 
 /-- **`kron2_proof`** (optionally `kron2_proof dB`): prove a two-dimensional Kronecker ball check
 `nodeK … ≤ Kb` (`normK`, `centerK`, `wl1KronP`) by an explicit certificate
@@ -176,6 +229,11 @@ syntax (name := kron2Proof) "kron2_proof" (ppSpace num)? : tactic
 digits `3` and `−5`, unit weights), split into blocks of one row. -/
 theorem kron2Proof_fixture :
     wl1KronP 8 1 0 1 2 (fun _ => 1) (fun _ => 1) (3 - 5 * 2 ^ 8) ≤ 8 := by
+  kron2_proof 0
+
+/-- **Sanity (accepted, scaled form)**: `wl1KronP … * 10 ≤ 80` on the same toy image. -/
+theorem kron2Proof_scaled_fixture :
+    wl1KronP 8 1 0 1 2 (fun _ => 1) (fun _ => 1) (3 - 5 * 2 ^ 8) * 10 ≤ 80 := by
   kron2_proof 0
 
 /-- **Sanity (rejected)**: the tactic refuses the false bound `8 ≤ 7` on the same toy image. -/

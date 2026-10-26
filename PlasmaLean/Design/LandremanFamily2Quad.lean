@@ -1794,4 +1794,26 @@ theorem cellCheck_sound {lam N1 ntip nside N2 : ℕ} {ka kb : ℚ}
     push_cast
     field_simp
 
+/-- **`oned_cert`**: the evaluation certificate (`eval_cert`, `Certificates/EvalCert`) of a
+one-dimensional quadrature check `eq6 (oneD N₁ K) D = true`. The kernel leaves are the interval
+operations of `fiv_cert`, the fast enclosures `FIv.asinFast`, `FIv.coshSmall`, the division
+`FIv.divInt`, and the cell enclosures `Ycell`, `Wcell`; the sums over the `N₁` cells, the six
+integrands and their shared subexpressions (`evc`, `evsig`, `evh`, `evtz`, `evte` at `±Y`, each
+evaluated once) are certificate steps. One check of `N₁ = 128` cells has ≈ 2·10⁴ nodes. -/
+macro "oned_cert" : tactic => `(tactic| eval_cert [
+  PlasmaLean.Certificates.ValidatedQuadrature.FIv.add,
+  PlasmaLean.Certificates.ValidatedQuadrature.FIv.sub,
+  PlasmaLean.Certificates.ValidatedQuadrature.FIv.neg,
+  PlasmaLean.Certificates.ValidatedQuadrature.FIv.mul,
+  PlasmaLean.Certificates.ValidatedQuadrature.FIv.sq,
+  PlasmaLean.Certificates.ValidatedQuadrature.FIv.inv,
+  PlasmaLean.Certificates.ValidatedQuadrature.FIv.sqrt,
+  PlasmaLean.Certificates.ValidatedQuadrature.FIv.ofInt,
+  PlasmaLean.Certificates.ValidatedQuadrature.FIv.ofFrac,
+  PlasmaLean.Certificates.ValidatedQuadrature.FIv.asinFast,
+  PlasmaLean.Certificates.ValidatedQuadrature.FIv.coshSmall,
+  PlasmaLean.Certificates.ValidatedQuadrature.FIv.divInt,
+  PlasmaLean.Design.SolovevMercierQuadrature.Ycell,
+  PlasmaLean.Design.SolovevMercierQuadrature.Wcell])
+
 end PlasmaLean.Design.LandremanFamily2Quad

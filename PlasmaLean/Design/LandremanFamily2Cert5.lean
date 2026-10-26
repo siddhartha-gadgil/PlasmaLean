@@ -16,7 +16,8 @@ Kernel-checked runs of the validated checker
 `N₁ = 128`, grids `(ntip, nside, N₂)` per cell) on the `k`-cells below. Each cell is checked in
 pieces to bound kernel memory (`cellCheck_of_pieces`): the one-dimensional quadratures
 (`oneD`), the four outer-arc surface-integral contributions (`outerArc`) and the final
-combination (`cellCheckOf`) are separate checks (`decide +kernel` for the quadratures, an
+combination (`cellCheckOf`) are separate checks (the evaluation certificate `oned_cert` for the
+one-dimensional quadratures, `decide +kernel` for the outer arcs, an
 evaluation certificate `fiv_cert` for the final combination) against literal enclosures
 (`Dc…`, `Oc…`), which were produced by `#eval` of the same functions (untrusted; the kernel
 re-checks them). Each accepted cell proves `(2π)⁶ D_Merc > 0` for both signs `s_G = ±1` on the
@@ -61,7 +62,7 @@ set_option maxRecDepth 100000
   464960226366, true⟩)
 
 /-- One-dimensional piece of cell `[129/160, 13/16]`. -/
-theorem c19_oneD : oneD 128 (Ecell (129/160) (13/16)) = Dc19 := eq6_sound (by decide +kernel)
+theorem c19_oneD : oneD 128 (Ecell (129/160) (13/16)) = Dc19 := eq6_sound (by oned_cert)
 
 /-- Outer-arc piece 0 of cell `[129/160, 13/16]`. -/
 theorem c19_arc0 : outerArc (lamC 200) (Ecell (129/160) (13/16)) (Ecell (129/160) (13/16)).sq
@@ -116,7 +117,7 @@ theorem cell19 : cellCheck 200 128 8 8 4 (129/160) (13/16) = true :=
   500347681119, true⟩)
 
 /-- One-dimensional piece of cell `[13/16, 131/160]`. -/
-theorem c20_oneD : oneD 128 (Ecell (13/16) (131/160)) = Dc20 := eq6_sound (by decide +kernel)
+theorem c20_oneD : oneD 128 (Ecell (13/16) (131/160)) = Dc20 := eq6_sound (by oned_cert)
 
 /-- Outer-arc piece 0 of cell `[13/16, 131/160]`. -/
 theorem c20_arc0 : outerArc (lamC 200) (Ecell (13/16) (131/160)) (Ecell (13/16) (131/160)).sq
@@ -171,7 +172,7 @@ theorem cell20 : cellCheck 200 128 8 8 4 (13/16) (131/160) = true :=
   541216583661, true⟩)
 
 /-- One-dimensional piece of cell `[131/160, 33/40]`. -/
-theorem c21_oneD : oneD 128 (Ecell (131/160) (33/40)) = Dc21 := eq6_sound (by decide +kernel)
+theorem c21_oneD : oneD 128 (Ecell (131/160) (33/40)) = Dc21 := eq6_sound (by oned_cert)
 
 /-- Outer-arc piece 0 of cell `[131/160, 33/40]`. -/
 theorem c21_arc0 : outerArc (lamC 200) (Ecell (131/160) (33/40)) (Ecell (131/160) (33/40)).sq
@@ -226,7 +227,7 @@ theorem cell21 : cellCheck 200 128 8 8 4 (131/160) (33/40) = true :=
   588915025628, true⟩)
 
 /-- One-dimensional piece of cell `[33/40, 133/160]`. -/
-theorem c22_oneD : oneD 128 (Ecell (33/40) (133/160)) = Dc22 := eq6_sound (by decide +kernel)
+theorem c22_oneD : oneD 128 (Ecell (33/40) (133/160)) = Dc22 := eq6_sound (by oned_cert)
 
 /-- Outer-arc piece 0 of cell `[33/40, 133/160]`. -/
 theorem c22_arc0 : outerArc (lamC 200) (Ecell (33/40) (133/160)) (Ecell (33/40) (133/160)).sq
@@ -281,7 +282,7 @@ theorem cell22 : cellCheck 200 128 8 8 4 (33/40) (133/160) = true :=
   644669681280, true⟩)
 
 /-- One-dimensional piece of cell `[133/160, 67/80]`. -/
-theorem c23_oneD : oneD 128 (Ecell (133/160) (67/80)) = Dc23 := eq6_sound (by decide +kernel)
+theorem c23_oneD : oneD 128 (Ecell (133/160) (67/80)) = Dc23 := eq6_sound (by oned_cert)
 
 /-- Outer-arc piece 0 of cell `[133/160, 67/80]`. -/
 theorem c23_arc0 : outerArc (lamC 200) (Ecell (133/160) (67/80)) (Ecell (133/160) (67/80)).sq
@@ -336,7 +337,7 @@ theorem cell23 : cellCheck 200 128 8 8 4 (133/160) (67/80) = true :=
   711959334978, true⟩)
 
 /-- One-dimensional piece of cell `[67/80, 27/32]`. -/
-theorem c24_oneD : oneD 128 (Ecell (67/80) (27/32)) = Dc24 := eq6_sound (by decide +kernel)
+theorem c24_oneD : oneD 128 (Ecell (67/80) (27/32)) = Dc24 := eq6_sound (by oned_cert)
 
 /-- Outer-arc piece 0 of cell `[67/80, 27/32]`. -/
 theorem c24_arc0 : outerArc (lamC 200) (Ecell (67/80) (27/32)) (Ecell (67/80) (27/32)).sq
@@ -391,7 +392,7 @@ theorem cell24 : cellCheck 200 128 8 8 4 (67/80) (27/32) = true :=
   794769343256, true⟩)
 
 /-- One-dimensional piece of cell `[27/32, 17/20]`. -/
-theorem c25_oneD : oneD 128 (Ecell (27/32) (17/20)) = Dc25 := eq6_sound (by decide +kernel)
+theorem c25_oneD : oneD 128 (Ecell (27/32) (17/20)) = Dc25 := eq6_sound (by oned_cert)
 
 /-- Outer-arc piece 0 of cell `[27/32, 17/20]`. -/
 theorem c25_arc0 : outerArc (lamC 200) (Ecell (27/32) (17/20)) (Ecell (27/32) (17/20)).sq
@@ -446,7 +447,7 @@ theorem cell25 : cellCheck 200 128 8 8 4 (27/32) (17/20) = true :=
   475464372875, true⟩)
 
 /-- One-dimensional piece of cell `[17/20, 137/160]`. -/
-theorem c26_oneD : oneD 128 (Ecell (17/20) (137/160)) = Dc26 := eq6_sound (by decide +kernel)
+theorem c26_oneD : oneD 128 (Ecell (17/20) (137/160)) = Dc26 := eq6_sound (by oned_cert)
 
 /-- Outer-arc piece 0 of cell `[17/20, 137/160]`. -/
 theorem c26_arc0 : outerArc (lamC 200) (Ecell (17/20) (137/160)) (Ecell (17/20) (137/160)).sq

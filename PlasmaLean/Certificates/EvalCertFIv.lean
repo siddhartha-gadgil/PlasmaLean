@@ -17,7 +17,8 @@ of `Certificates/ValidatedQuadrature` (`FIv.add`, `sub`, `neg`, `mul`, `sq`, `in
 operation applied to interval values, and everything else (cell recursions, records, `if`,
 `match`) is unfolded into `ECert` steps.
 
-**Sanity.** `fivCert_fixture` (accepted), `fivCert_reject_fixture` (rejected).
+**Sanity.** `fivCert_fixture` (accepted), `fivDecide_fixture` (`fiv_decide`),
+`fivCert_reject_fixture` (rejected).
 -/
 
 public section
@@ -50,10 +51,28 @@ macro "fiv_cert?" : tactic => `(tactic| eval_cert? [
   PlasmaLean.Certificates.ValidatedQuadrature.FIv.ofInt,
   PlasmaLean.Certificates.ValidatedQuadrature.FIv.ofFrac])
 
+/-- **`fiv_decide`**: `eval_decide` (a decidable closed proposition, by the certificate of its
+`decide`) with the `FIv` interval operations as kernel leaves. -/
+macro "fiv_decide" : tactic => `(tactic| eval_decide [
+  PlasmaLean.Certificates.ValidatedQuadrature.FIv.add,
+  PlasmaLean.Certificates.ValidatedQuadrature.FIv.sub,
+  PlasmaLean.Certificates.ValidatedQuadrature.FIv.neg,
+  PlasmaLean.Certificates.ValidatedQuadrature.FIv.mul,
+  PlasmaLean.Certificates.ValidatedQuadrature.FIv.sq,
+  PlasmaLean.Certificates.ValidatedQuadrature.FIv.inv,
+  PlasmaLean.Certificates.ValidatedQuadrature.FIv.sqrt,
+  PlasmaLean.Certificates.ValidatedQuadrature.FIv.ofInt,
+  PlasmaLean.Certificates.ValidatedQuadrature.FIv.ofFrac])
+
 /-- **Sanity** (accepted): `√2` and `1/(1/3 + 1/3)` as interval evaluations. -/
 theorem fivCert_fixture :
     ((FIv.ofInt 2).sqrt.add ((FIv.ofFrac 1 3).add (FIv.ofFrac 1 3)).inv).ok = true := by
   fiv_cert
+
+/-- **Sanity** of `fiv_decide`: a validity flag and a width bound. -/
+theorem fivDecide_fixture :
+    (FIv.ofInt 2).sqrt.ok = true ∧ (FIv.ofInt 2).sqrt.hi - (FIv.ofInt 2).sqrt.lo ≤ 4 := by
+  fiv_decide
 
 /-- **Sanity** (rejected): the inverse of an interval containing `0` is not valid. -/
 theorem fivCert_reject_fixture : True := by

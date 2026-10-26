@@ -183,4 +183,23 @@ theorem evalCert_reject_fixture : True := by
   fail_if_success (have : fixSum fixCell 4 = ⟨0, 40⟩ := by eval_cert)
   trivial
 
+/-- A table indexed by `Fin 3`, read by `Fin.cases` (whose unfolding passes through a cast
+`h ▸ v`, an `Eq.rec` reduced by the K rule). -/
+def finTab (i : Fin 3) : Int := Fin.cases (motive := fun _ => Int) 5 (fun j => 7 + (j : Int)) i
+
+/-- **Regression** (stage 9): a `Fin` numeral `Fin.ofNat n a` has a dependent explicit argument
+`n` (the instance `NeZero n` and the result type mention it) and a proof field; the builder used
+to abstract `n` into the ill-typed `fun x => Fin.ofNat x inst a` and to evaluate the proof
+`Fin.ofNat._proof_1 n a`. -/
+theorem evalCert_finOfNat_fixture : (Fin.ofNat 6 3).val = 3 := by
+  eval_cert
+
+/-- **Regression** (stage 9): a table lookup through `Fin.cases` at a `Fin` numeral. -/
+theorem evalCert_finTab_fixture : finTab 2 = 8 := by
+  eval_cert
+
+/-- **Sanity** of `eval_decide`: a decided comparison through the table. -/
+theorem evalDecide_fixture : finTab 1 < finTab 2 ∧ (fixSum fixCell 4).hi ≤ 39 := by
+  eval_decide [FixIv.add, FixIv.mul]
+
 end PlasmaLean.Certificates.EvalCert

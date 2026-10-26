@@ -12,7 +12,7 @@ public import Mathlib.Data.List.GetD
 # Fast validated `arctan`, `arcsin`, `cosh`, `sinh` on fixed-point enclosures
 
 Cheaper variants of the enclosures in `PlasmaLean.Certificates.ValidatedTrig`, intended for
-certificates that evaluate them `10⁴`–`10⁵` times under `decide +kernel`. Results are `FIv`
+certificates that evaluate them `10⁴`–`10⁵` times. Results are `FIv`
 enclosures (scale `2³²`) and every soundness lemma is unconditional (an invalid enclosure
 contains every real), but the computation itself runs on **natural numbers**: the kernel
 evaluates `Nat` literal arithmetic natively (GMP), whereas each `Int` operation costs several
@@ -30,7 +30,8 @@ constructors of the endpoints and using oddness/evenness.
   `2⁻³²`). Its soundness (`tab_spec`) is proved once: rational bounds
   `atanTabLoQ j ≤ arctan (j/8) ≤ atanTabHiQ j` (`atanTabQ_bounds`: Taylor sums `S₂₀`, `S₂₁`,
   after the exact rational reduction `arctan u = π/4 + arctan ((u-1)/(u+1))` for `j ≥ 4`,
-  with `Real.pi_gt_d20`, `Real.pi_lt_d20`), and one `decide +kernel` check `atanTabN_check`;
+  with `Real.pi_gt_d20`, `Real.pi_lt_d20`), and one evaluation certificate `atanTabN_check`
+  (`eval_cert`);
 * `S₆(r) ≤ arctan r ≤ S₇(r)` (`atanSeries_bound`), evaluated by the alternating nested
   Horner chain `altH` with one-sided rounding (`altH_spec`; all partial sums stay positive
   because `r² ≤ 1`). The gap `r¹³/13 < 2⁻⁴⁰` is negligible.
@@ -46,7 +47,7 @@ widened by one unit for the `Real.exp_bound` remainder (`|x| ≤ 1/4`, `n = 9`:
 `(1/4)⁹ · 10/(9!·9) < 2⁻³²`, `exp_sub_expPoly9`). Invalid unless the enclosure lies in
 `[-1/4, 1/4]`. `sinh` is increasing; `cosh` is even and increasing in `|x|`.
 
-**Accuracy and cost** (thin inputs, `decide +kernel`): `atanFast` width `≤ 6 · 2⁻³²`
+**Accuracy and cost** (thin inputs, one kernel evaluation): `atanFast` width `≤ 6 · 2⁻³²`
 (`≈ 1.4e-9`, typically 3 units), about `0.8 ms` per call; `asinFast` width `≤ 6 · 2⁻³²` for
 `|x| ≤ 0.95`, about `1 ms` per call; `coshSmall`, `sinhSmall` width `≤ 4 · 2⁻³²`, about
 `0.3 ms` per call.
@@ -389,7 +390,7 @@ from `atanTabLoQ`, `atanTabHiQ`; checked by `atanTabN_check`). -/
 theorem atanTabN_check : (List.range 33).all (fun j =>
     decide (((tabLo j : ℕ) : ℚ) ≤ (sN : ℚ) * atanTabLoQ j) &&
     decide ((sN : ℚ) * atanTabHiQ j ≤ ((tabHi j : ℕ) : ℚ))) = true := by
-  decide +kernel
+  fiv_decide
 
 /-- **Table soundness.** `tabLo j ≤ 2³² arctan (j/8) ≤ tabHi j` for every `j`. -/
 theorem tab_spec (j : ℕ) :
@@ -967,21 +968,21 @@ end FIv
 theorem fixture_atanFast_one : (FIv.atanFast (FIv.ofInt 1)).ok = true ∧
     (FIv.atanFast (FIv.ofInt 1)).hi - (FIv.atanFast (FIv.ofInt 1)).lo ≤ 8 ∧
     (FIv.atanFast (FIv.ofInt 1)).Mem (Real.pi / 4) := by
-  refine ⟨by decide +kernel, by decide +kernel, ?_⟩
+  refine ⟨by fiv_decide, by fiv_decide, ?_⟩
   simpa [Real.arctan_one] using FIv.mem_atanFast (FIv.mem_ofInt 1)
 
 /-- Accepted fixture: large and negative arguments are valid and tight. -/
 theorem fixture_atanFast_large : (FIv.atanFast (FIv.ofInt 10000)).ok = true ∧
     (FIv.atanFast (FIv.ofInt 10000)).hi - (FIv.atanFast (FIv.ofInt 10000)).lo ≤ 8 ∧
     (FIv.atanFast (FIv.ofInt (-37))).hi - (FIv.atanFast (FIv.ofInt (-37))).lo ≤ 8 := by
-  decide +kernel
+  fiv_decide
 
 /-- Accepted fixture: `asinFast (1/2)` is valid, has width at most `8 · 2⁻³²` and contains
 `π/6`. -/
 theorem fixture_asinFast_half : (FIv.asinFast (FIv.ofFrac 1 2)).ok = true ∧
     (FIv.asinFast (FIv.ofFrac 1 2)).hi - (FIv.asinFast (FIv.ofFrac 1 2)).lo ≤ 8 ∧
     (FIv.asinFast (FIv.ofFrac 1 2)).Mem (Real.pi / 6) := by
-  refine ⟨by decide +kernel, by decide +kernel, ?_⟩
+  refine ⟨by fiv_decide, by fiv_decide, ?_⟩
   have := FIv.mem_asinFast (FIv.mem_ofFrac 1 2)
   have e : Real.arcsin 2⁻¹ = Real.pi / 6 := by
     rw [← one_div, ← Real.sin_pi_div_six, Real.arcsin_sin] <;> linarith [Real.pi_pos]
@@ -991,14 +992,14 @@ theorem fixture_asinFast_half : (FIv.asinFast (FIv.ofFrac 1 2)).ok = true ∧
 theorem fixture_asinFast_edge : (FIv.asinFast (FIv.ofFrac 95 100)).ok = true ∧
     (FIv.asinFast (FIv.ofFrac 95 100)).hi - (FIv.asinFast (FIv.ofFrac 95 100)).lo ≤ 8 ∧
     (FIv.asinFast (FIv.ofFrac (-95) 100)).hi - (FIv.asinFast (FIv.ofFrac (-95) 100)).lo ≤ 8 := by
-  decide +kernel
+  fiv_decide
 
 /-- Accepted fixture: `coshSmall (1/4)` is valid, has width at most `5 · 2⁻³²` and contains
 `cosh (1/4)`. -/
 theorem fixture_coshSmall : (FIv.coshSmall (FIv.ofFrac 1 4)).ok = true ∧
     (FIv.coshSmall (FIv.ofFrac 1 4)).hi - (FIv.coshSmall (FIv.ofFrac 1 4)).lo ≤ 5 ∧
     (FIv.coshSmall (FIv.ofFrac 1 4)).Mem (Real.cosh (1 / 4)) := by
-  refine ⟨by decide +kernel, by decide +kernel, ?_⟩
+  refine ⟨by fiv_decide, by fiv_decide, ?_⟩
   simpa using FIv.mem_coshSmall (FIv.mem_ofFrac 1 4)
 
 /-- Accepted fixture: `sinhSmall (-1/4)` is valid, has width at most `5 · 2⁻³²` and contains
@@ -1006,7 +1007,7 @@ theorem fixture_coshSmall : (FIv.coshSmall (FIv.ofFrac 1 4)).ok = true ∧
 theorem fixture_sinhSmall : (FIv.sinhSmall (FIv.ofFrac (-1) 4)).ok = true ∧
     (FIv.sinhSmall (FIv.ofFrac (-1) 4)).hi - (FIv.sinhSmall (FIv.ofFrac (-1) 4)).lo ≤ 5 ∧
     (FIv.sinhSmall (FIv.ofFrac (-1) 4)).Mem (Real.sinh (-1 / 4)) := by
-  refine ⟨by decide +kernel, by decide +kernel, ?_⟩
+  refine ⟨by fiv_decide, by fiv_decide, ?_⟩
   simpa [neg_div] using FIv.mem_sinhSmall (FIv.mem_ofFrac (-1) 4)
 
 /-- Degenerate fixture: `coshSmall` of an enclosure straddling `0` has lower end exactly
@@ -1014,16 +1015,16 @@ theorem fixture_sinhSmall : (FIv.sinhSmall (FIv.ofFrac (-1) 4)).ok = true ∧
 theorem fixture_coshSmall_straddle :
     (FIv.coshSmall ⟨-fxScale / 5, fxScale / 6, true⟩).ok = true ∧
     (FIv.coshSmall ⟨-fxScale / 5, fxScale / 6, true⟩).lo = fxScale := by
-  decide +kernel
+  fiv_decide
 
 /-- Rejected fixture: `asinFast` of an enclosure reaching `1` is invalid. -/
 theorem fixture_asinFast_rejected : (FIv.asinFast ⟨fxScale / 2, fxScale, true⟩).ok = false := by
-  decide +kernel
+  fiv_decide
 
 /-- Rejected fixture: `coshSmall`, `sinhSmall` of `[0, 1/2]` (outside `[-1/4, 1/4]`) are
 invalid. -/
 theorem fixture_coshSmall_rejected : (FIv.coshSmall ⟨0, fxScale / 2, true⟩).ok = false ∧
     (FIv.sinhSmall ⟨0, fxScale / 2, true⟩).ok = false := by
-  decide +kernel
+  fiv_decide
 
 end PlasmaLean.Certificates.ValidatedQuadrature

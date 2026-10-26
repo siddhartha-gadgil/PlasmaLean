@@ -78,17 +78,19 @@ for x in cert:
 for x in cert:
     nm = f"gA{x['i']}{x['par']}"; i, par, ds, dz = x['i'], x['par'], x['ds'], x['dz']
     L.append(f"""set_option maxRecDepth 100000 in
-/-- The literal `{nm}` is the rescaled circle part (kernel check). -/
+/-- The literal `{nm}` is the rescaled circle part (evaluation certificate). -/
 theorem {nm}_eq : (lenOK 0 {ds} (circD {par} (pderivZ Pz {i})) &&
     lenOK 1 {dz} (circD {par} (pderivZ Pz {i})) &&
     beq3 (scale0 10 {ds} (scale1 10 {dz} (circD {par} (pderivZ Pz {i})))) {nm}) = true := by
-  decide +kernel
+  eval_cert
 
+set_option maxHeartbeats 0 in
+-- the builder evaluates each leaf (a Taylor shift of a literal polynomial) by the kernel's `whnf`
 set_option maxRecDepth 100000 in
 /-- Cover check: `|{nm}| ≤ {x['c']} · 10^{ds + dz}` on the cube. -/
 theorem {nm}_check : check true ({ds}, {dz}, {x['dm']}) [] (
     {plan_lit(x['plan'])})
     {nm} [[[{x['c']} * 10 ^ {ds + dz}]]] 0 = true := by
-  decide +kernel
+  cover_cert
 """)
 open(sys.argv[1] if len(sys.argv) > 1 else 'grad_data.lean', 'w').write('\n'.join(L))
