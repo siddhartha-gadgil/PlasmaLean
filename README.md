@@ -20,7 +20,7 @@ confinement is certified.
 
 On 20 October an [implementation plan](notes/implementation-plan.md) was fixed. It cycles
 between theory, certificate techniques and a ladder of successively realistic models, targeting
-both confinement and keeping the plasma hot. Ten phases are complete, and Phases 11, 14 and 15 are in progress:
+both confinement and keeping the plasma hot. Ten phases are complete, and Phases 11, 14, 15 and 16 are in progress:
 
 - **one consistent plasma:** for one exact Solov'ev field satisfying force balance, 3.5 MeV alphas
   born in the core are confined for all time, the core stays at or above 10 keV for all time, and
@@ -33,7 +33,8 @@ both confinement and keeping the plasma hot. Ten phases are complete, and Phases
   invariant torus around the axis, and every field line starting inside it stays inside forever
   (field lines proved to exist and be unique; vacuum model field); passing 3.5 MeV alpha guiding
   centres (μ = 0, either sign of v∥, Littlejohn model) are also confined for all time, for every
-  B₀R₀ ∈ [67.95, 69.99] T·m, and with μ > 0 for every pitch angle with λ ∈ [0, 1/8] at one energy;
+  B₀R₀ ∈ [67.95, 69.99] T·m, and with μ > 0 for every pitch parameter λ ∈ [0, 1/4] (the limit of the
+  passing argument) at one energy and one B₀R₀;
   over the energy window |E − 3.5 MeV| ≤ 0.4 eV × λ ∈ [0, 1/16] the confined initial velocities
   form a set of positive measure in 3-D velocity space, but only in a narrow energy band and at one
   B₀R₀ (these heavy certificates are on-demand top modules, outside the default build);
@@ -52,13 +53,15 @@ both confinement and keeping the plasma hot. Ten phases are complete, and Phases
 - **validation:** a slab Grad–Shafranov equilibrium with an exponential profile is validated;
 - **screw pinch:** all-mode Newcomb stability is proved.
 
-Heavy certificates are now offloaded through a workstation pipeline (Phase 15; a smoke run passed
-on a 24-CPU Linux workstation) and re-checked on the laptop before merging; see
-[Workstation.md](Workstation.md). Kernel checks currently peak at 8.8 GB per process, above the
-6 GB laptop target.
+Heavy certificates are offloaded through a workstation pipeline (Phase 15) and re-checked on the
+laptop before merging; on-demand results are spot-checked rather than rebuilt in full, and compiled
+modules can be copied between machines; see [Workstation.md](Workstation.md). Kernel checks now peak
+at 4.3 GB per process, within the 6 GB laptop target. Large checks are being rewritten as explicit
+proof-term certificates (Phase 16): `decide +kernel` is down from about 28,700 uses to about 5,700
+lines (about 1,400 in the default build); the polygon-coil lines still need a new design.
 
 The library uses standard axioms only (no project axioms). See the
-[progress slideshow](docs/slides.html) and the [latest report](progress/2026-10-25-progress-13.md).
+[progress slideshow](docs/slides.html) and the [latest report](progress/2026-10-26-progress-14.md).
 
 ## Code structure
 

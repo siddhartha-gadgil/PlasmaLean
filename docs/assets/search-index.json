@@ -1,15 +1,15 @@
 [
   {
     "title": "Progress slideshow",
-    "section": "Evidence updated 2026-10-25 · Passing 3.5 MeV alpha guiding centres confined for all time in an exact stellarator field for every pitch angle with λ ∈ [0, 1/8] at one energy, and over a positive-measure velocity set with |E − 3.5 MeV| ≤ 0.4 eV × λ ∈ [0, 1/16] (one B₀R₀; Littlejohn model; vacuum model field; heavy certificates on demand), and for μ = 0 over B₀R₀ ∈ [67.95, 69.99] T·m; a Mercier-stable finite-β non-axisymmetric band with labels derived from the field, whose ballooning stability is reduced to one pointwise certificate but not yet certified; all-time field-line confinement; 52-transit coil confinement; one consistent axisymmetric plasma with certified local stability up to ignition; a workstation pipeline for heavy certificates.",
+    "section": "Evidence updated 2026-10-26 · Passing 3.5 MeV alpha guiding centres confined for all time in an exact stellarator field for every pitch parameter λ ∈ [0, 1/4] (the limit of the passing argument) at one energy and B₀R₀, and over a positive-measure velocity set with |E − 3.5 MeV| ≤ 0.4 eV × λ ∈ [0, 1/16] (Littlejohn model; vacuum model field; heavy certificates on demand, workstation cells spot-checked), and for μ = 0 over B₀R₀ ∈ [67.95, 69.99] T·m; a Mercier-stable finite-β non-axisymmetric band with labels derived from the field, whose ballooning stability is reduced to one pointwise certificate but not yet certified; all-time field-line confinement; 52-transit coil confinement; one consistent axisymmetric plasma with certified local stability up to ignition; kernel checks under 6 GB per process; most decide +kernel calls replaced by explicit proof-term certificates; a workstation pipeline in use.",
     "url": "slides.html",
     "text": "progress slideshow presentation latest run evidence vacuum fixture"
   },
   {
-    "title": "Alpha guiding centres confined forever — over λ ∈ [0, 1/8] and a narrow energy window.",
+    "title": "Alpha guiding centres confined forever — for every passing pitch parameter λ ∈ [0, 1/4].",
     "section": "Progress slideshow",
     "url": "slides.html#where-we-are",
-    "text": "alpha guiding centres confined forever — over λ ∈ [0, 1/8] and a narrow energy window. plasmalean is building a lean library for stellarator design. in an exact non-axisymmetric stellarator field, passing 3.5 mev alpha guiding centres are proved confined for all time for every pitch angle with λ ∈ [0, 1/8] at one energy, over a positive-measure set of velocities with |e − 3.5 mev| ≤ 0.4 ev × λ ∈ [0, 1/16], and for a range of b₀r₀ at μ = 0; field lines are confined forever; a coil set confines field lines for 52 transits; a finite-β non-axisymmetric band is mercier-stable (ballooning reduced, not certified); one axisymmetric plasma has proved alpha confinement, a hot core and certified local stability. all-time field-line and passing-alpha guiding-centre confinement in a genuine stellarator field (vacuum model); one consistent axisymmetric plasma with certified local stability; heavy certificates now built on demand, with a workstation pipeline."
+    "text": "alpha guiding centres confined forever — for every passing pitch parameter λ ∈ [0, 1/4]. plasmalean is building a lean library for stellarator design. in an exact non-axisymmetric stellarator field, passing 3.5 mev alpha guiding centres are proved confined for all time for every pitch parameter λ ∈ [0, 1/4] (the limit of the passing argument) at one energy and b₀r₀, over a positive-measure set of velocities with |e − 3.5 mev| ≤ 0.4 ev × λ ∈ [0, 1/16], and for a range of b₀r₀ at μ = 0; field lines are confined forever; a coil set confines field lines for 52 transits; a finite-β non-axisymmetric band is mercier-stable (ballooning reduced, not certified); one axisymmetric plasma has proved alpha confinement, a hot core and certified local stability. all-time field-line and passing-alpha guiding-centre confinement in a genuine stellarator field (vacuum model); one consistent axisymmetric plasma with certified local stability; large checks rewritten as explicit proof-term certificates; heavy cells computed on a workstation and spot-checked on the laptop."
   },
   {
     "title": "Small assumptions. Reusable proofs. One candidate.",
@@ -192,6 +192,24 @@
     "text": "search on a big machine; re-check on the laptop. heavy numerics and first builds of large certificates run on a workstation and are pushed to workstation/* branches; the laptop re-checks them within its build budget before merging. no theorem comes from the workstation yet; merged lean must still build on the laptop."
   },
   {
+    "title": "Every pitch parameter up to λ = 1/4 — at one energy.",
+    "section": "Progress slideshow",
+    "url": "slides.html#quarter-pitch",
+    "text": "every pitch parameter up to λ = 1/4 — at one energy. five certified pitch cells, three of them computed on the workstation, combine into one theorem: passing 3.5 mev alpha guiding centres with any μ ∈ [0, e/(4b₀)] starting inside an exact torus stay inside, and stay passing, forever. λ = 1/4 is the limit of the present passing argument. the pitch range now reaches the limit of the passing argument with |b| ≤ 3b₀."
+  },
+  {
+    "title": "No decide +kernel: checks become explicit, inductive certificates.",
+    "section": "Progress slideshow",
+    "url": "slides.html#proof-terms",
+    "text": "no decide +kernel: checks become explicit, inductive certificates. large numerical checks are rebuilt in the subsetsum pattern: an inductive certificate predicate with one constructor per local step, soundness by induction, a meta builder, and small kernel nat leaves. kernel-check memory was halved first. theorem statements are unchanged; bridges re-prove the original checks."
+  },
+  {
+    "title": "Eleven workstation runs, with failures recorded as carefully as successes.",
+    "section": "Progress slideshow",
+    "url": "slides.html#workstation-in-use",
+    "text": "eleven workstation runs, with failures recorded as carefully as successes. the workstation computed two pitch cells and migrated the on-demand families to proof terms; the laptop reviewed every run and merged the ones that passed. all runs are listed in workstation/reviewed.md."
+  },
+  {
     "title": "Theory, techniques and a ladder of models — for confinement and for heat.",
     "section": "Progress slideshow",
     "url": "slides.html#implementation-plan",
@@ -201,7 +219,7 @@
     "title": "The next run must leave evidence, not just a promise.",
     "section": "Progress slideshow",
     "url": "slides.html#next-run",
-    "text": "the next run must leave evidence, not just a promise. next: wider energy windows (±3 ev, then ±1%) and a joint b₀r₀ range via the workstation; further λ cells; a family-2 ballooning certificate and kernel checker; kernel-check memory under 6 gb; trapped alphas and coil-produced all-time confinement (research). the linked run records checked declarations, assumptions and validation. this slideshow is a summary of that evidence, not a new design certificate."
+    "text": "the next run must leave evidence, not just a promise. next: wider energy windows (±3 ev, then ±1%) and a joint b₀r₀ range, now with λ up to 1/4, via the workstation; a new certificate design for the polygon-coil lines and the remaining opaque leaves; a family-2 ballooning certificate and kernel checker; beyond λ = 1/4, trapped alphas and coil-produced all-time confinement (research). the linked run records checked declarations, assumptions and validation. this slideshow is a summary of that evidence, not a new design certificate."
   },
   {
     "title": "Stellarator concepts",
@@ -763,9 +781,9 @@
   },
   {
     "title": "K3 · Approximate-invariant finite-time confinement",
-    "section": "Particles & transport · Partially implemented — 3.5 MeV alphas confined for all time in an exact Solov'ev equilibrium (full orbits); passing alpha guiding centres confined for all time in an exact stellarator field (Littlejohn model, vacuum model field): μ = 0 over B₀R₀ ∈ [67.95, 69.99] T·m, λ ∈ [0, 1/8] at one energy, and a positive-measure velocity set with |E − 3.5 MeV| ≤ 0.4 eV × λ ∈ [0, 1/16] (on-demand build); near-QA passing alphas 0.19 s; trapped alphas open.",
+    "section": "Particles & transport · Partially implemented — 3.5 MeV alphas confined for all time in an exact Solov'ev equilibrium (full orbits); passing alpha guiding centres confined for all time in an exact stellarator field (Littlejohn model, vacuum model field): μ = 0 over B₀R₀ ∈ [67.95, 69.99] T·m, every λ ∈ [0, 1/4] at one energy and B₀R₀ (five cells, on-demand; workstation cells spot-checked), and a positive-measure velocity set with |E − 3.5 MeV| ≤ 0.4 eV × λ ∈ [0, 1/16] (on-demand build); near-QA passing alphas 0.19 s; trapped alphas open.",
     "url": "particles-and-transport.html",
-    "text": "k3 approximate-invariant finite-time confinement theorem backlog partially implemented — 3.5 mev alphas confined for all time in an exact solov'ev equilibrium (full orbits); passing alpha guiding centres confined for all time in an exact stellarator field (littlejohn model, vacuum model field): μ = 0 over b₀r₀ ∈ [67.95, 69.99] t·m, λ ∈ [0, 1/8] at one energy, and a positive-measure velocity set with |e − 3.5 mev| ≤ 0.4 ev × λ ∈ [0, 1/16] (on-demand build); near-qa passing alphas 0.19 s; trapped alphas open."
+    "text": "k3 approximate-invariant finite-time confinement theorem backlog partially implemented — 3.5 mev alphas confined for all time in an exact solov'ev equilibrium (full orbits); passing alpha guiding centres confined for all time in an exact stellarator field (littlejohn model, vacuum model field): μ = 0 over b₀r₀ ∈ [67.95, 69.99] t·m, every λ ∈ [0, 1/4] at one energy and b₀r₀ (five cells, on-demand; workstation cells spot-checked), and a positive-measure velocity set with |e − 3.5 mev| ≤ 0.4 ev × λ ∈ [0, 1/16] (on-demand build); near-qa passing alphas 0.19 s; trapped alphas open."
   },
   {
     "title": "K4 · Omnigeneity/action relation in a specified class",
@@ -883,9 +901,9 @@
   },
   {
     "title": "N3 · Matrix factorization and block positivity",
-    "section": "Verified numerics · Partially implemented — exact two-block checker plus a polynomial interval checker (kernel decide) proving Riccati/Jacobi certificates; matrix factorization pending.",
+    "section": "Verified numerics · Partially implemented — exact two-block checker plus a polynomial interval checker (kernel decide) proving Riccati/Jacobi certificates; proof-term certificate predicates (Kronecker, Boolean-checker, digit-sum and term-evaluation certificates, sound by induction) now replace most decide +kernel checks; matrix factorization pending.",
     "url": "verified-numerics.html",
-    "text": "n3 matrix factorization and block positivity theorem backlog partially implemented — exact two-block checker plus a polynomial interval checker (kernel decide) proving riccati/jacobi certificates; matrix factorization pending."
+    "text": "n3 matrix factorization and block positivity theorem backlog partially implemented — exact two-block checker plus a polynomial interval checker (kernel decide) proving riccati/jacobi certificates; proof-term certificate predicates (kronecker, boolean-checker, digit-sum and term-evaluation certificates, sound by induction) now replace most decide +kernel checks; matrix factorization pending."
   },
   {
     "title": "N4 · Generic contraction/radii-polynomial soundness",
@@ -1794,6 +1812,84 @@
     "text": "phase 14 route b: ballooning certificate search, 25 october 2026 implementation plan"
   },
   {
+    "title": "Phase 11: pitch cells beyond 1/8, 25 October 2026",
+    "section": "Implementation plan",
+    "url": "implementation-plan.html#phase-11-pitch-cells-beyond-18-25-october-2026",
+    "text": "phase 11: pitch cells beyond 1/8, 25 october 2026 implementation plan"
+  },
+  {
+    "title": "Infrastructure: low-memory kernel checks, 25 October 2026",
+    "section": "Implementation plan",
+    "url": "implementation-plan.html#infrastructure-low-memory-kernel-checks-25-october-2026",
+    "text": "infrastructure: low-memory kernel checks, 25 october 2026 implementation plan"
+  },
+  {
+    "title": "Phase 11: third pitch cell, 25 October 2026",
+    "section": "Implementation plan",
+    "url": "implementation-plan.html#phase-11-third-pitch-cell-25-october-2026",
+    "text": "phase 11: third pitch cell, 25 october 2026 implementation plan"
+  },
+  {
+    "title": "Phase 16: Kronecker ball checks as proof terms (prototype), 25 October 2026",
+    "section": "Implementation plan",
+    "url": "implementation-plan.html#phase-16-kronecker-ball-checks-as-proof-terms-prototype-25-october-2026",
+    "text": "phase 16: kronecker ball checks as proof terms (prototype), 25 october 2026 implementation plan"
+  },
+  {
+    "title": "Phase 16: split between laptop and workstation, 25 October 2026",
+    "section": "Implementation plan",
+    "url": "implementation-plan.html#phase-16-split-between-laptop-and-workstation-25-october-2026",
+    "text": "phase 16: split between laptop and workstation, 25 october 2026 implementation plan"
+  },
+  {
+    "title": "Phase 11: fourth pitch cell (workstation), 25 October 2026",
+    "section": "Implementation plan",
+    "url": "implementation-plan.html#phase-11-fourth-pitch-cell-workstation-25-october-2026",
+    "text": "phase 11: fourth pitch cell (workstation), 25 october 2026 implementation plan"
+  },
+  {
+    "title": "Phase 11: fifth pitch cell (workstation), 25 October 2026",
+    "section": "Implementation plan",
+    "url": "implementation-plan.html#phase-11-fifth-pitch-cell-workstation-25-october-2026",
+    "text": "phase 11: fifth pitch cell (workstation), 25 october 2026 implementation plan"
+  },
+  {
+    "title": "Phase 16: default build, second stage, 25 October 2026",
+    "section": "Implementation plan",
+    "url": "implementation-plan.html#phase-16-default-build-second-stage-25-october-2026",
+    "text": "phase 16: default build, second stage, 25 october 2026 implementation plan"
+  },
+  {
+    "title": "Phase 16: third stage (opaque leaves, coil cells), 25 October 2026",
+    "section": "Implementation plan",
+    "url": "implementation-plan.html#phase-16-third-stage-opaque-leaves-coil-cells-25-october-2026",
+    "text": "phase 16: third stage (opaque leaves, coil cells), 25 october 2026 implementation plan"
+  },
+  {
+    "title": "Phase 16: fourth stage (evaluation certificates), 26 October 2026",
+    "section": "Implementation plan",
+    "url": "implementation-plan.html#phase-16-fourth-stage-evaluation-certificates-26-october-2026",
+    "text": "phase 16: fourth stage (evaluation certificates), 26 october 2026 implementation plan"
+  },
+  {
+    "title": "Phase 16: decision on heavy evaluation certificates, 26 October 2026",
+    "section": "Implementation plan",
+    "url": "implementation-plan.html#phase-16-decision-on-heavy-evaluation-certificates-26-october-2026",
+    "text": "phase 16: decision on heavy evaluation certificates, 26 october 2026 implementation plan"
+  },
+  {
+    "title": "Phase 16: fifth stage (heavy evaluation certificates), 26 October 2026",
+    "section": "Implementation plan",
+    "url": "implementation-plan.html#phase-16-fifth-stage-heavy-evaluation-certificates-26-october-2026",
+    "text": "phase 16: fifth stage (heavy evaluation certificates), 26 october 2026 implementation plan"
+  },
+  {
+    "title": "Phase 11: all pitch angles up to λ = 1/4, 26 October 2026",
+    "section": "Implementation plan",
+    "url": "implementation-plan.html#phase-11-all-pitch-angles-up-to-14-26-october-2026",
+    "text": "phase 11: all pitch angles up to λ = 1/4, 26 october 2026 implementation plan"
+  },
+  {
     "title": "M0 · Exact symmetric equilibria: slab, screw pinch, Solov'ev, helical",
     "section": "Implementation plan · Lean verified — exact slab, screw-pinch, Solov'ev and helical equilibria with kernel force balance, all-time field-line/orbit confinement, Suydam both ways and screw-pinch Newcomb for 1 ≤ |m| ≤ 6 (idealized symmetric models).",
     "url": "implementation-plan.html",
@@ -1945,9 +2041,9 @@
   },
   {
     "title": "Verified progress",
-    "section": "Passing 3.5 MeV alpha guiding centres confined for all time in an exact stellarator field for every pitch angle with λ ∈ [0, 1/8] at one energy, and over a positive-measure velocity set with |E − 3.5 MeV| ≤ 0.4 eV × λ ∈ [0, 1/16] (one B₀R₀; Littlejohn model; vacuum model field; heavy certificates on demand), and for μ = 0 over B₀R₀ ∈ [67.95, 69.99] T·m; a Mercier-stable finite-β non-axisymmetric band with labels derived from the field, whose ballooning stability is reduced to one pointwise certificate but not yet certified; all-time field-line confinement; 52-transit coil confinement; one consistent axisymmetric plasma with certified local stability up to ignition; a workstation pipeline for heavy certificates.",
+    "section": "Passing 3.5 MeV alpha guiding centres confined for all time in an exact stellarator field for every pitch parameter λ ∈ [0, 1/4] (the limit of the passing argument) at one energy and B₀R₀, and over a positive-measure velocity set with |E − 3.5 MeV| ≤ 0.4 eV × λ ∈ [0, 1/16] (Littlejohn model; vacuum model field; heavy certificates on demand, workstation cells spot-checked), and for μ = 0 over B₀R₀ ∈ [67.95, 69.99] T·m; a Mercier-stable finite-β non-axisymmetric band with labels derived from the field, whose ballooning stability is reduced to one pointwise certificate but not yet certified; all-time field-line confinement; 52-transit coil confinement; one consistent axisymmetric plasma with certified local stability up to ignition; kernel checks under 6 GB per process; most decide +kernel calls replaced by explicit proof-term certificates; a workstation pipeline in use.",
     "url": "progress.html",
-    "text": "verified progress passing 3.5 mev alpha guiding centres confined for all time in an exact stellarator field for every pitch angle with λ ∈ [0, 1/8] at one energy, and over a positive-measure velocity set with |e − 3.5 mev| ≤ 0.4 ev × λ ∈ [0, 1/16] (one b₀r₀; littlejohn model; vacuum model field; heavy certificates on demand), and for μ = 0 over b₀r₀ ∈ [67.95, 69.99] t·m; a mercier-stable finite-β non-axisymmetric band with labels derived from the field, whose ballooning stability is reduced to one pointwise certificate but not yet certified; all-time field-line confinement; 52-transit coil confinement; one consistent axisymmetric plasma with certified local stability up to ignition; a workstation pipeline for heavy certificates."
+    "text": "verified progress passing 3.5 mev alpha guiding centres confined for all time in an exact stellarator field for every pitch parameter λ ∈ [0, 1/4] (the limit of the passing argument) at one energy and b₀r₀, and over a positive-measure velocity set with |e − 3.5 mev| ≤ 0.4 ev × λ ∈ [0, 1/16] (littlejohn model; vacuum model field; heavy certificates on demand, workstation cells spot-checked), and for μ = 0 over b₀r₀ ∈ [67.95, 69.99] t·m; a mercier-stable finite-β non-axisymmetric band with labels derived from the field, whose ballooning stability is reduced to one pointwise certificate but not yet certified; all-time field-line confinement; 52-transit coil confinement; one consistent axisymmetric plasma with certified local stability up to ignition; kernel checks under 6 gb per process; most decide +kernel calls replaced by explicit proof-term certificates; a workstation pipeline in use."
   },
   {
     "title": "Outcome",

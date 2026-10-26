@@ -1,29 +1,29 @@
 {
-  "updated": "2026-10-25",
-  "report": "2026-10-25-progress-13.md",
+  "updated": "2026-10-26",
+  "report": "2026-10-26-progress-14.md",
   "status": "Exact symmetric equilibria with all-time orbit confinement · Local stability criteria · Not a coil-produced stellarator · Not a construction release.",
   "slides": [
     {
       "id": "where-we-are",
       "eyebrow": "Progress briefing · alphas confined in a stellarator field",
-      "title": "Alpha guiding centres confined forever — over λ ∈ [0, 1/8] and a narrow energy window.",
-      "lead": "PlasmaLean is building a Lean library for stellarator design. In an exact non-axisymmetric stellarator field, passing 3.5 MeV alpha guiding centres are proved confined for all time for every pitch angle with λ ∈ [0, 1/8] at one energy, over a positive-measure set of velocities with |E − 3.5 MeV| ≤ 0.4 eV × λ ∈ [0, 1/16], and for a range of B₀R₀ at μ = 0; field lines are confined forever; a coil set confines field lines for 52 transits; a finite-β non-axisymmetric band is Mercier-stable (ballooning reduced, not certified); one axisymmetric plasma has proved alpha confinement, a hot core and certified local stability.",
+      "title": "Alpha guiding centres confined forever — for every passing pitch parameter λ ∈ [0, 1/4].",
+      "lead": "PlasmaLean is building a Lean library for stellarator design. In an exact non-axisymmetric stellarator field, passing 3.5 MeV alpha guiding centres are proved confined for all time for every pitch parameter λ ∈ [0, 1/4] (the limit of the passing argument) at one energy and B₀R₀, over a positive-measure set of velocities with |E − 3.5 MeV| ≤ 0.4 eV × λ ∈ [0, 1/16], and for a range of B₀R₀ at μ = 0; field lines are confined forever; a coil set confines field lines for 52 transits; a finite-β non-axisymmetric band is Mercier-stable (ballooning reduced, not certified); one axisymmetric plasma has proved alpha confinement, a hot core and certified local stability.",
       "metrics": [
         {
-          "value": "λ ∈ [0, 1/8]",
-          "label": "pitch-angle range with all-time alpha guiding-centre confinement (one energy)"
+          "value": "λ ∈ [0, 1/4]",
+          "label": "whole passing pitch range with all-time alpha guiding-centre confinement (one energy, one B₀R₀)"
         },
         {
           "value": "± 0.4 eV",
           "label": "energy window at 3.5 MeV (× λ ∈ [0, 1/16]): positive measure in velocity space"
         },
         {
-          "value": "52",
-          "label": "certified transits for a coil-produced field"
+          "value": "8.8 → 4.3 GB",
+          "label": "peak kernel-check memory per process (6 GB laptop target now met)"
         }
       ],
-      "progress": "All-time field-line and passing-alpha guiding-centre confinement in a genuine stellarator field (vacuum model); one consistent axisymmetric plasma with certified local stability; heavy certificates now built on demand, with a workstation pipeline.",
-      "boundary": "Alpha results: one B₀R₀ and a narrow energy band (±0.4 eV) — not robust to slowing-down; Littlejohn model supplied; vacuum model field; trapped alphas open; coil-produced all-time confinement blocked; the stable finite-β band is low-β and not certified ballooning-stable; kernel checks peak at 8.8 GB per process.",
+      "progress": "All-time field-line and passing-alpha guiding-centre confinement in a genuine stellarator field (vacuum model); one consistent axisymmetric plasma with certified local stability; large checks rewritten as explicit proof-term certificates; heavy cells computed on a workstation and spot-checked on the laptop.",
+      "boundary": "Alpha results: one B₀R₀, and one energy for λ ∈ [0, 1/4] (positive measure in velocity space only in a ±0.4 eV band with λ ≤ 1/16) — not robust to slowing-down; Littlejohn model supplied; vacuum model field; trapped alphas open; coil-produced all-time confinement blocked; the stable finite-β band is not certified ballooning-stable; on-demand workstation modules spot-checked, not fully rebuilt; polygon-coil lines still use decide +kernel.",
       "evidence": [
         {
           "label": "Latest report",
@@ -1286,7 +1286,7 @@
         }
       ],
       "progress": "No theorem comes from the workstation yet; merged Lean must still build on the laptop.",
-      "boundary": "Laptop budget: ≤ 6 GB per process (currently exceeded by kernel checks), ≤ 60 CPU-min default, ≤ 240 CPU-min per on-demand top module.",
+      "boundary": "Laptop budget: ≤ 6 GB per process, ≤ 60 CPU-min default, ≤ 240 CPU-min per on-demand top module.",
       "evidence": [
         {
           "label": "Validation",
@@ -1299,8 +1299,132 @@
       ]
     },
     {
+      "id": "quarter-pitch",
+      "eyebrow": "31 · Phase 11: the whole passing pitch range",
+      "title": "Every pitch parameter up to λ = 1/4 — at one energy.",
+      "lead": "Five certified pitch cells, three of them computed on the workstation, combine into one theorem: passing 3.5 MeV alpha guiding centres with any μ ∈ [0, E/(4B₀)] starting inside an exact torus stay inside, and stay passing, forever. λ = 1/4 is the limit of the present passing argument.",
+      "cards": [
+        {
+          "title": "λ ∈ [0, 1/4]",
+          "text": "alpha_gc_passing_confined_forever_quarter: cells Mu [0, 1/16], Mu2, Mu3 [1/8, 3/16], Mu4 [3/16, 7/32], Mu5 [7/32, 1/4]; passing proved (λ|B| ≤ 3/4). On-demand top module RationalStellaratorGCMuQuarter, built on the laptop from workstation oleans.",
+          "status": "Lean verified (on demand)",
+          "kind": "checked"
+        },
+        {
+          "title": "Honest failures",
+          "text": "Uniform majorant impossible beyond λ ≈ 0.157 (fixed by per-node majorants); full cell [3/16, 1/4] failed KAM smallness (2.64 > 1) and was halved; a generator double substitution produced a false Mu3Adm bound, rejected by the kernel and now caught by an exact validator.",
+          "status": "Recorded and fixed",
+          "kind": "partial"
+        },
+        {
+          "title": "Scope",
+          "text": "One energy and one B₀R₀; measure zero in 3-D velocity space; Littlejohn model, collisionless, vacuum model field; Mu2–Mu5 spot-checked on the laptop, not fully rebuilt.",
+          "status": "Limits disclosed",
+          "kind": "partial"
+        }
+      ],
+      "progress": "The pitch range now reaches the limit of the passing argument with |B| ≤ 3B₀.",
+      "boundary": "Beyond λ = 1/4 needs a sharper |B| bound or a new argument; trapped alphas remain open.",
+      "evidence": [
+        {
+          "label": "New checked results",
+          "href": "progress.html#new-checked-results"
+        },
+        {
+          "label": "Quantitative certificates",
+          "href": "progress.html#quantitative-certificates"
+        },
+        {
+          "label": "Corrections",
+          "href": "progress.html#corrections-and-challenged-claims"
+        }
+      ]
+    },
+    {
+      "id": "proof-terms",
+      "eyebrow": "32 · Phase 16: certificates as proof terms",
+      "title": "No decide +kernel: checks become explicit, inductive certificates.",
+      "lead": "Large numerical checks are rebuilt in the SubsetSum pattern: an inductive certificate predicate with one constructor per local step, soundness by induction, a meta builder, and small kernel Nat leaves. Kernel-check memory was halved first.",
+      "cards": [
+        {
+          "title": "Low-memory checks",
+          "text": "Sign–magnitude integers, divide-and-conquer row masks: peak per process 8.8 → 4.3 GB in the default build and on-demand families; check CPU about halved.",
+          "status": "6 GB target met",
+          "kind": "checked"
+        },
+        {
+          "title": "Certificate tools",
+          "text": "KronProof (kron_proof), kernel_fact, KronProof2D, BoolCert (bool_cert), DigitSumCert, EvalCert (eval_cert, fiv_cert, bl_cert) with a builder compiled to native code (PlasmaLeanMeta). All KAM families converted.",
+          "status": "Lean verified",
+          "kind": "checked"
+        },
+        {
+          "title": "Counts and cost",
+          "text": "decide +kernel: ≈ 28,724 uses → ≈ 5,700 lines overall, ≈ 1,400 in the default build. User decision: accept ≈ 9 GB of private oleans for fully explicit heavy certificates.",
+          "status": "Mostly converted",
+          "kind": "partial"
+        },
+        {
+          "title": "Open",
+          "text": "Polygon-coil lines (fully explicit ≈ 280 GB: a new design is needed); a few opaque Eq.refl leaves (hessOK, Kronecker-image equalities); QPoly fixtures; ValidatedBVP/Slab.",
+          "status": "Next",
+          "kind": "next"
+        }
+      ],
+      "progress": "Theorem statements are unchanged; bridges re-prove the original checks.",
+      "boundary": "Builders are untrusted; only the kernel-checked certificates count.",
+      "evidence": [
+        {
+          "label": "Quantitative certificates",
+          "href": "progress.html#quantitative-certificates"
+        },
+        {
+          "label": "Implementation plan",
+          "href": "implementation-plan.html"
+        }
+      ]
+    },
+    {
+      "id": "workstation-in-use",
+      "eyebrow": "33 · Phase 15: the workstation pipeline in use",
+      "title": "Eleven workstation runs, with failures recorded as carefully as successes.",
+      "lead": "The workstation computed two pitch cells and migrated the on-demand families to proof terms; the laptop reviewed every run and merged the ones that passed.",
+      "cards": [
+        {
+          "title": "Pipeline",
+          "text": "run.sh (fail-fast push check, failed tasks commit their generated files, leftovers stashed), the plasmalean-workstation-update skill, and a Next Commands section kept current.",
+          "status": "In use",
+          "kind": "checked"
+        },
+        {
+          "title": "Spot-check policy",
+          "text": "User decision: on-demand results are spot-checked (measurements, axioms, grep, sample modules built on the laptop) instead of fully rebuilt; default-build results always rebuilt.",
+          "status": "Policy",
+          "kind": "partial"
+        },
+        {
+          "title": "Sharing oleans",
+          "text": "oleans.py packs compiled modules with a manifest check; Mu2–Mu5 (400 modules, 314 MB) copied Linux → Mac and accepted by Lake without rebuilding.",
+          "status": "Verified",
+          "kind": "checked"
+        }
+      ],
+      "progress": "All runs are listed in workstation/REVIEWED.md.",
+      "boundary": "Unpacked or spot-checked modules trust the workstation's kernel run.",
+      "evidence": [
+        {
+          "label": "Validation",
+          "href": "progress.html#validation"
+        },
+        {
+          "label": "Corrections",
+          "href": "progress.html#corrections-and-challenged-claims"
+        }
+      ]
+    },
+    {
       "id": "implementation-plan",
-      "eyebrow": "31 · Plan of record",
+      "eyebrow": "34 · Plan of record",
       "title": "Theory, techniques and a ladder of models — for confinement and for heat.",
       "lead": "Each cycle develops theory, turns theorems into sound certificate checkers, and applies them to the next rung of a model ladder. Every rung must prove properties of both kinds: confinement (G1) and temperature held above burn conditions (G2).",
       "cards": [
@@ -1344,9 +1468,9 @@
     },
     {
       "id": "next-run",
-      "eyebrow": "32 · Keep every step reviewable",
+      "eyebrow": "35 · Keep every step reviewable",
       "title": "The next run must leave evidence, not just a promise.",
-      "lead": "Next: wider energy windows (±3 eV, then ±1%) and a joint B₀R₀ range via the workstation; further λ cells; a family-2 ballooning certificate and kernel checker; kernel-check memory under 6 GB; trapped alphas and coil-produced all-time confinement (research).",
+      "lead": "Next: wider energy windows (±3 eV, then ±1%) and a joint B₀R₀ range, now with λ up to 1/4, via the workstation; a new certificate design for the polygon-coil lines and the remaining opaque leaves; a family-2 ballooning certificate and kernel checker; beyond λ = 1/4, trapped alphas and coil-produced all-time confinement (research).",
       "cards": [
         {
           "title": "Implement & challenge",
