@@ -203,7 +203,7 @@ laptop with a small parameter setting, then commit it to `main` before running i
 Kept up to date from the laptop after every review ("update from workstation"). Run them on the
 workstation, inside `tmux`; `run.sh` pulls `main` itself.
 
-**Status (26 October 2026, afternoon): optional rebuild.** Phase 16 stage 8 changed the Mu chain
+**Status (26 October 2026, evening): run now (optional).** Phase 16 stages 8–9 changed the Mu chain
 modules, so the on-demand families downstream of them (Mu2–Mu5, MuQuarter, Ew1–4) are stale on
 both machines (their sources are unchanged). When convenient, rebuild them on the workstation and
 send the compiled files back:
