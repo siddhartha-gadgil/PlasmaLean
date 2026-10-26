@@ -261,11 +261,13 @@ def imports_of(mod):
 
 
 def family_files(pre):
-    """The modules of a family rewritten by `--inplace` (checks, bridges, chains)."""
+    """The modules of a family rewritten by `--inplace` (checks, bridges, chains, and the
+    environment and output modules whose side conditions `patch_side` converts)."""
     out = []
     for t in tags_of(pre):
         out += ['%sCheck%s%d' % (pre, t, k) for k in check_modules(pre, t)]
-        out += [m for m in ('%sLowMem%s' % (pre, t), '%sChain%s' % (pre, t))
+        out += [m for m in ('%sLowMem%s' % (pre, t), '%sChain%s' % (pre, t),
+                            '%sEnv%s' % (pre, t), '%sOut%s' % (pre, t))
                 if os.path.exists(os.path.join(DES, m + '.lean'))]
     return ['PlasmaLean.Design.' + m for m in out]
 
