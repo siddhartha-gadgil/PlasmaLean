@@ -119,3 +119,4 @@ For PlasmaLean certificates, the predicate's constructors are the mathematical s
 3. If `fun_induction` gives awkward cases, check that the goal mentions `f` applied to variables, not to concrete data, and generalize first if needed.
 4. On a heartbeat timeout during elaboration of data, move the data into a `def` and generate it with a function.
 5. At the end: `#print axioms` for each certificate entry point, then `lake build`, then `scripts/check_axioms.lean`.
+6. **Memory: never let Lake rebuild many heavy modules at once.** `lake build Top` rebuilds every stale dependency in parallel (14 certificate modules at once nearly exhausted 24 GB of RAM plus swap). When dependencies are stale (find them with `lake build --no-build Top`), build them one at a time first, then `Top`. Check `memory_pressure` before heavy steps and wait if free memory is below 40%.
