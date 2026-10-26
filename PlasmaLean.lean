@@ -189,6 +189,7 @@ public import PlasmaLean.Design.KamTorusATwist
 public import PlasmaLean.Design.KamTorusATwistAvg
 public import PlasmaLean.Design.LandremanFamily2
 public import PlasmaLean.Theory.Stability.MercierShearless
+public import PlasmaLean.Theory.Stability.RiccatiComparison
 public import PlasmaLean.Design.LandremanMercier
 public import PlasmaLean.Design.LandremanFamily2MercierStable
 public import PlasmaLean.Design.LandremanFamily2MercierDerived
@@ -204,6 +205,9 @@ public import PlasmaLean.Design.KamFlowStep
 public import PlasmaLean.Design.KamFlowIteration
 public import PlasmaLean.Theory.Kinetic.GuidingCentreLittlejohn
 public import PlasmaLean.Theory.Fields.CurlProduct
+public import PlasmaLean.Theory.Fields.LieGradient
+public import PlasmaLean.Sanity.QuasisymmetryNotSymmetry
+public import PlasmaLean.Theory.Fields.FluxSurfaceTwoForm
 public import PlasmaLean.Theory.Kinetic.GuidingCentrePassing
 public import PlasmaLean.Theory.Kinetic.BounceShear
 public import PlasmaLean.Design.NearAxisQATrappedReanchor

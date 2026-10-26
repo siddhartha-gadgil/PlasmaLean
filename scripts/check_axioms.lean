@@ -134,3 +134,14 @@ run_cmd do
 #print axioms PlasmaLean.Theory.KAM.PQG.valid_of_nodesOK
 #print axioms PlasmaLean.Design.RationalStellaratorGC.kHMS_qR
 #print axioms PlasmaLean.Design.RationalStellaratorGC.lHM_qR
+#print axioms PlasmaLean.Fields.lieBracket_gradient
+#print axioms PlasmaLean.Fields.lieBracket_gradient_of_contDiffAt
+#print axioms PlasmaLean.Fields.lieBracket_gradient_of_killing
+#print axioms PlasmaLean.Sanity.quasisymmetry_not_pde_symmetry
+#print axioms PlasmaLean.Sanity.qs_lieBracket_X_gradP
+#print axioms PlasmaLean.Sanity.qs_strain_term
+#print axioms PlasmaLean.Stability.riccati_le_initial
+#print axioms PlasmaLean.Stability.riccati_exp_decay
+#print axioms PlasmaLean.Stability.riccati_hyp_exp
+#print axioms PlasmaLean.Fields.magneticTwoForm_flux_surface
+#print axioms PlasmaLean.Fields.magneticTwoForm_tangent_example
