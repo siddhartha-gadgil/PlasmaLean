@@ -855,3 +855,44 @@ Gate E1 (§11.2, §11.4) and the "sanity theorem or counterexample" promised in 
 - **Quasisymmetry is not a PDE symmetry** (`Sanity/QuasisymmetryNotSymmetry.lean`): for `B = e_z`, `X = (1+y) e_x`, `p = y`, `qs_scalar_error_zero` gives `div B = div X = 0`, `[X, B] = 0`, `X|B| = 0` and `X × B = ∇(−y − y²/2)` (`qs_cross_eq_gradient`); `qs_X_pressure` gives `X p = 0`. Nevertheless `qs_lieBracket_X_gradP` gives `[X, ∇p] = −e_x`. The packaged statement is `quasisymmetry_not_pde_symmetry`, and `qs_strain_term` identifies the obstruction as `(DX + DXᵀ)∇p = e_x`.
 - **Conditional Riccati comparison** (`Theory/Stability/RiccatiComparison.lean`): `riccati_le_initial` proves that `Y' ≤ −νY + CεY²` on `[0, T)` (right derivatives), `0 ≤ Y(0)` and `CεY(0) < ν` give `Y ≤ Y(0)` on `[0, T]`. `riccati_exp_decay` adds `Y ≥ 0` and `Cε ≥ 0` and gives `Y(t) ≤ Y(0) e^{−(ν − CεY(0))t}`. `riccati_hyp_exp` shows the hypotheses are satisfiable. The differential inequality is a **hypothesis** (R3) and is not proved for MHD.
 - **Magnetic 2-form on flux surfaces** (`Theory/Fields/FluxSurfaceTwoForm.lean`): `magneticTwoForm B u v = ⟪B, u × v⟫` (`= ⟪B × u, v⟫`, `magneticTwoForm_eq_cross_inner`). The identity `triple_smul_eq` gives `magneticTwoForm_eq_zero_of_orthogonal`, and from it `magneticTwoForm_flux_surface`: if `∇ψ(x) ≠ 0`, `B·∇ψ = 0` and `u, v ⟂ ∇ψ(x)`, then `ω_B(u, v) = 0`. Sanity checks: `magneticTwoForm_basis` (`ω_{e_z}(e_x, e_y) = 1`) and `magneticTwoForm_tangent_example`.
+
+### Phase 16: eighth stage (`kernel_fact` audit, family-image certificates, quadrature and box checks), 26 October 2026
+
+- **Audit of the `kernel_fact` leaves (new `scripts/audit_kernel_fact.py`).** For each module that uses `kernel_fact`, the script runs a small Lean program on the built `.olean`. The program walks the proof terms, finds the leaves `@id P pf` (`pf` = `Eq.refl`, `Nat.le_of_ble_eq_true`, `lt_of_ble_succ`, `Nat.ne_of_beq_eq_false`) and classifies each statement `P` by the PlasmaLean definitions it unfolds: their number, the longest unfolding chain, and their literal bits. The classes are: **a**, no PlasmaLean definition (literal facts); **a-data**, data definitions with no recursion (`NLM ≤ 2^ddLM`, `List.getD` of a literal list); **b**, a recursive PlasmaLean definition is reached. With `--time`, each class-b leaf is also checked on its own (`Environment.addDeclCore`) and timed. Results go to `.lake/kernel_fact_audit.jsonl`; `--report-only` prints the summary. No profiler is used.
+  - **Default build:** 7,532 source uses in 61 modules; 62,443 leaves (the forall/list expansions multiply the uses): a 9,388, a-data 46,921, **b 6,134**. Kernel time of the b leaves: < 1 ms 2,250; 1–10 ms 3,423; 10–100 ms 427; 0.1–1 s 20; ≥ 1 s 14 (≈ 56 s in total). The b leaves are mostly `nodeFin`/`normFin` of `toEx` trees (434; degree and box conditions, 1–30 ms each), `famL1` of the stored families (462), `box3`/`wt` of the trees, and the ℚ majorants of the Maj modules. **Heaviest leaves (opaque, ≥ 0.1 s):** `mu_C2Z`/`mu_C2R` (`MuMaj`, `mD2Q … ≤ C2Q`, 4.2/3.6 s); `gc_C2Z`/`gc_C2R` (`FamMaj`, `TorusMaj`, `NegTorusMaj`, ≈ 2 s each); `corr_majQ` (`BoxPert`, 6 × 1.7 s + 3 × 0.38 s); `allNodes_res`, `nodesOK_eY`, `gc_maj_E_aTQ`, `mu_maj_E/Q`, `maj_eBm_le` (0.25–0.31 s each); `box_accepted` (`SolovevBallooning`, 0.39 s) and `noProfile_rejected` (0.11 s).
+  - **Overall:** 21,180 uses in 109 modules; 249,148 leaves: a 27,920, a-data 202,674, **b 18,554**; 98 b leaves take ≥ 0.1 s, 47 take ≥ 1 s (487 s). The largest are the 48 `Kv… = famPack…` equalities of the on-demand Ew1–4 and Mu2–5 H chains (8–16 s each), not converted (those families are frozen), and the 16 of the Mu2–5 L chains (0.4–0.6 s).
+- **Family-image certificate (new `Certificates/FamPackCert.lean`), all 20 `Kv… = famPack…` equalities of the default build** (`MuChainL/H`, `FamChainL/H`; the Torus and NegTorus chains have none). Contents:
+  - `RowsEq f s n vs`: one kernel fact `rowF … sd t = v` per row. This is `rowV` of one row, a small `rpack` tree on the fields of that row.
+  - `FPCert … k l v`: one step per stored coefficient, consisting of `Nat.ble (2 M_j + 1) (2^dr)`, the rows, and the placement at `D ± k` (`placeF`). The value `v` is an expression over the row literals (`rowsVal`, a Horner sum), not a literal image.
+  - Soundness: `famPack_eq_of_cert` (via `bsplit_eq`) and `eq_famPack_of_cert`.
+  - Tactic `fampack_cert`: kernel `whnf` reads the stored coefficients and the meta code computes the row values. The remaining leaf is `lhs = v`, which compares the fast offset image `famTB − famO` with the assembled rows, as designed in stage 7.
+  - Fixtures: `RowsEq.fixture`, `famPackCert_fixture`.
+  - Measurements (before → after):
+
+    | Module | CPU (s) | Peak (GB) | Private olean (MB) |
+    | --- | --- | --- | --- |
+    | `MuChainL` | 24.9 → 29.9 (incl. lake) | 2.54 → 2.46 | not recorded before → 5.03 |
+    | `FamChainL` | 18.4 → 20.5 | 2.24 → 2.13 | 3.85 → 4.01 |
+    | `MuChainH` | 72.1 → 67.1 | 3.84 → 3.86 | 2.75 → 6.07 |
+    | `FamChainH` | 44.0 → 45.5 | 3.39 → 3.31 | 2.11 → 4.70 |
+
+    One L equality: `kernel_fact` ≈ 0.7 s → certificate ≈ 0.6 s.
+  - Rebuilt in the default build: `Fam/Mu` `OutL/H`, `Adm`, `Exact`, `Forever`, `Confined`, `Family`, and `Box*`. `kderLM_A`, `kderHM_LRx`, `kderLF_A`, `kderHF_thZe`, `alpha_gc_box_confined_forever`, `alpha_gc_confined_forever_robust` and `rationalStellarator_gc_mu_confined_forever` use only the standard axioms.
+  - Generators: `lam_emit_lean.py` and `fam_emit_lean.py` emit `fampack_cert`, and `proofterm_emit.kernel_fact_text` adds the import. The on-demand Ew*, Mu2–5 and MuQuarter modules are downstream of `MuChainL/H` and must be rebuilt when they are next built. Their sources are unchanged.
+- **`decide +kernel` → explicit evaluation certificates:**
+  - `ScrewPinchModes`: 36 `QPoly.checkOn` checks (28 lines), `eval_cert`. CPU 55 → 115 s, peak 2.94 → 4.35 GB, private olean 4.1 → 252 MB. `ScrewPinchModesHighM` rebuilt. `stable_uniform` and `stable_open_family` use only the standard axioms.
+  - `NearAxisQATrappedTimeRows`: 16 `timeBoxOk`, `fiv_cert`. CPU 37 → 57 s, 2.36 → 2.96 GB, 0.05 → 101 MB. Its 4 dependents were rebuilt. `time_grid` depends on `propext`; `reference_kick_osc` uses only the standard axioms.
+  - `SolovevMercierQuadrature`: 18 cover cells and 2 rejected fixtures (`cellCheck`, `fiv_cert`). CPU 19.7 → 26.1 s, 1.88 → 4.65 GB, 1.9 → 28.4 MB. Its 21 dependents were rebuilt, including `LandremanFamily2Cert1–7`. The oracle docstring is updated.
+  - `NearAxisQATrappedCellsRows1–3`: 24 `boxOkI` leaves, `fiv_cert`. Rows1 CPU 15.9 → 23.9 s, peak 2.28 → 2.51 GB; private oleans 7 KB → 52/53/55 MB. The 8 dependents (`…Resonance` … `…OscCover`) were rebuilt. `boxLeaf_0_8_0_16` uses no axioms. `SolovevMercierQuadrature.normalized_well_dominance`, `LandremanFamily2Cert.family2_mercier_stable` and `reference_kick_osc` use only the standard axioms. Zero warnings.
+  - None of these four modules has a generator in `scripts/`. `solovev_mercier_quadrature_oracle.py` only proposes cells; its docstring is updated.
+- **Tried, not converted:**
+  - `LandremanFamily2Cert*` `oneD`/`outerArc` quadratures: `fiv_cert` did not finish one `oneD 128` check in 10 min.
+  - `NearAxisQAAveraged` with `eval_cert`: the build failed (evaluation depth exceeded on `amp3Lit_eq`, "sides evaluate to different values" on `S3pos/neg_eq`, a `whnf` timeout on the cover) and peaked at 8.5 GB, so it was reverted. Note that the unchanged module already peaks at **6.16 GB**.
+  - `RationalStellaratorCoilsGrad`: `eval_cert` gets stuck at `Pz` and at `zipL add1`.
+  - The Maj leaves `mD2Q … ≤ C2Q` via `of_decide_eq_true (eval_cert [aTQ, mvQ])`: the builder emits an ill-typed `Fin.ofNat._proof_1` application (kernel type mismatch on `NeZero (5+1)`). This is a bug in `PlasmaLeanMeta/EvalCert` (`Fin` numerals with an instance-implicit proof argument).
+- **Counts** (lines containing `decide +kernel`): default **475 → 381**, overall **2,292 → 2,198**. `kernel_fact` source uses: default 7,532, overall 21,180, of which the default build has 6,134 opaque (class-b) leaves and 34 of ≥ 0.1 s (overall 18,554 and 98). Certificate oleans: about +0.55 GB this stage (≈ 24.8 GB of 40 GB).
+- **Open problems:**
+  1. The Maj ℚ majorants and `corr_majQ` (≈ 30 s of opaque kernel time in the default build) need the `Fin.ofNat` fix in the `eval_cert` builder, or a dedicated tree certificate for `mQ`/`mDQ`/`mD2Q`.
+  2. `nodeFin`/`famL1` leaves: thousands of small (1–30 ms) recursive evaluations. They could become `FPCert`-style per-node certificates.
+  3. The fast side `famTB − famO` is still evaluated in one leaf per equation.
+  4. The KAM `wcheck_*`, `LandremanFamily2Cert*` quadratures, `NearAxisQAAveraged` (peak over budget) and `ValidatedTrig*` remain.

@@ -7,7 +7,9 @@ eps in [e0, e1] the normalized Mercier integrals of the reactor Solov'ev equilib
 the rational parameter tau (y = 2 tau/(1+tau^2) = sin t) and tests
     Qn * IPhi < 3 * (3 Pn S5n - Qn S3n).
 This script only PROPOSES the eps-cells (greedy search); the Lean kernel re-evaluates every
-accepted cell (`decide +kernel`) and `cellCheck_sound` proves what acceptance means.
+accepted cell (an explicit evaluation certificate `fiv_cert`, one kernel leaf per interval
+operation; written in the Lean file as `.step 32 e0 e1 (1 / 2) (by fiv_cert)`) and
+`cellCheck_sound` proves what acceptance means.
 Usage: python3 scripts/solovev_mercier_quadrature_oracle.py 32 1.03
 (prints the cells and the certified margin rhs/lhs of each).
 """

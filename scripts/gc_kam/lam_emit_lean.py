@@ -1237,7 +1237,7 @@ def derived_lines(p):
 Kronecker image. -/
 theorem kder%s_%s : Kv%s %d %d %d %d = famPack %d %d %d N%s M%s D%s (if odd%s %d then -1 else 1) 0
     ((c0%s %d : ℤ) * %d) ((c0%s %d : ℤ) * %d) dd%s dr%s 0 (fam%s %d) := by
-  decide +kernel
+  fampack_cert
 
 set_option maxRecDepth 100000 in
 /-- The stored derivative `%s` is the symbol family of `%s` (equal Kronecker images). -/

@@ -31,6 +31,7 @@ public import PlasmaLean.Design.RationalStellaratorGCFamCheckH22
 public import PlasmaLean.Design.RationalStellaratorGCTorusCommon
 public import PlasmaLean.Design.RationalStellaratorGCFamLowMemH
 public import PlasmaLean.Certificates.KernelFact
+public import PlasmaLean.Certificates.FamPackCert
 
 /-!
 # The high-resolution ball chain of the guiding-centre torus family
@@ -61,7 +62,7 @@ set_option maxRecDepth 100000 in
 Kronecker image. -/
 theorem kderHF_LRx : KvHF 221 73 55 6 = famPack 221 73 55 NHF MHF DHF (if oddHF 4 then -1 else 1) 0
     ((c0HF 4 : ℤ) * 10888383889117653077957113864) ((c0HF 4 : ℤ) * 158456325028528675187087900672) ddHF drHF 0 (famHF 4) := by
-  kernel_fact
+  fampack_cert
 
 set_option maxRecDepth 100000 in
 /-- The stored derivative `LRx` is the symbol family of `U` (equal Kronecker images). -/
@@ -94,7 +95,7 @@ set_option maxRecDepth 100000 in
 Kronecker image. -/
 theorem kderHF_LZx : KvHF 221 73 55 7 = famPack 221 73 55 NHF MHF DHF (if oddHF 5 then -1 else 1) 0
     ((c0HF 5 : ℤ) * 10888383889117653077957113864) ((c0HF 5 : ℤ) * 158456325028528675187087900672) ddHF drHF 0 (famHF 5) := by
-  kernel_fact
+  fampack_cert
 
 set_option maxRecDepth 100000 in
 /-- The stored derivative `LZx` is the symbol family of `Z` (equal Kronecker images). -/
@@ -127,7 +128,7 @@ set_option maxRecDepth 100000 in
 Kronecker image. -/
 theorem kderHF_thU : KvHF 125 73 55 8 = famPack 125 73 55 NHF MHF DHF (if oddHF 4 then -1 else 1) 0
     ((c0HF 4 : ℤ) * 1) ((c0HF 4 : ℤ) * 0) ddHF drHF 0 (famHF 4) := by
-  kernel_fact
+  fampack_cert
 
 set_option maxRecDepth 100000 in
 /-- The stored derivative `thU` is the symbol family of `U` (equal Kronecker images). -/
@@ -160,7 +161,7 @@ set_option maxRecDepth 100000 in
 Kronecker image. -/
 theorem kderHF_thZ : KvHF 125 73 55 9 = famPack 125 73 55 NHF MHF DHF (if oddHF 5 then -1 else 1) 0
     ((c0HF 5 : ℤ) * 1) ((c0HF 5 : ℤ) * 0) ddHF drHF 0 (famHF 5) := by
-  kernel_fact
+  fampack_cert
 
 set_option maxRecDepth 100000 in
 /-- The stored derivative `thZ` is the symbol family of `Z` (equal Kronecker images). -/
@@ -193,7 +194,7 @@ set_option maxRecDepth 100000 in
 Kronecker image. -/
 theorem kderHF_thUe : KvHF 125 73 55 12 = famPack 125 73 55 NHF MHF DHF (if oddHF 10 then -1 else 1) 0
     ((c0HF 10 : ℤ) * 1) ((c0HF 10 : ℤ) * 0) ddHF drHF 0 (famHF 10) := by
-  kernel_fact
+  fampack_cert
 
 set_option maxRecDepth 100000 in
 /-- The stored derivative `thUe` is the symbol family of `Ue` (equal Kronecker images). -/
@@ -226,7 +227,7 @@ set_option maxRecDepth 100000 in
 Kronecker image. -/
 theorem kderHF_thZe : KvHF 125 73 55 13 = famPack 125 73 55 NHF MHF DHF (if oddHF 11 then -1 else 1) 0
     ((c0HF 11 : ℤ) * 1) ((c0HF 11 : ℤ) * 0) ddHF drHF 0 (famHF 11) := by
-  kernel_fact
+  fampack_cert
 
 set_option maxRecDepth 100000 in
 /-- The stored derivative `thZe` is the symbol family of `Ze` (equal Kronecker images). -/

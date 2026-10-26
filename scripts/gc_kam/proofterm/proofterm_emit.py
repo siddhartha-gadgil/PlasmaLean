@@ -180,9 +180,14 @@ def kernel_fact_text(src):
     `decide +kernel` becomes `kernel_fact`, the module imports `Certificates/KernelFact`, and long
     declarations get a scoped heartbeat budget. Used by the generators (`lam_emit_lean.py`,
     `fam_emit_lean.py`, ...) for the modules they write other than the check modules."""
-    if 'decide +kernel' not in src:
-        return src
-    out = src.replace('decide +kernel', 'kernel_fact')
+    out = src
+    # the family-image equations `Kv… = famPack …` (stage 8): `fampack_cert`
+    if 'fampack_cert' in out and 'import PlasmaLean.Certificates.FamPackCert' not in out:
+        last = list(re.finditer(r'^public import [^\n]*\n', out, re.M))[-1]
+        out = out[:last.end()] + 'public import PlasmaLean.Certificates.FamPackCert\n' + out[last.end():]
+    if 'decide +kernel' not in out:
+        return out
+    out = out.replace('decide +kernel', 'kernel_fact')
     if 'import PlasmaLean.Certificates.KernelFact' not in out:
         last = list(re.finditer(r'^public import [^\n]*\n', out, re.M))[-1]
         out = out[:last.end()] + 'public import PlasmaLean.Certificates.KernelFact\n' + out[last.end():]

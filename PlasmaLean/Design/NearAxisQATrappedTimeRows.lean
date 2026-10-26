@@ -6,6 +6,7 @@ Authors: PlasmaLean contributors
 module
 
 public import PlasmaLean.Design.NearAxisQATrappedTimeCells
+public import PlasmaLean.Certificates.EvalCertFIv
 
 /-!
 # Kernel checks of the bounce-time cell certificate
@@ -13,8 +14,9 @@ public import PlasmaLean.Design.NearAxisQATrappedTimeCells
 The `16` boxes `TPB j × TTB l` (`j, l < 4`) of the uniform `4 × 4` grid of the start window
 `ψ₀ ∈ [4.75, 5.875]`, `B_t ∈ [5.4, 5.5]` pass `timeBoxOk … 83 58`: on each box the bounce time is
 at most `83 μs` and the amplitude integral `J = ∫ A (2ψ/B₀) dt` at most `58`
-(`Design/NearAxisQATrappedTimeCells`). Each box is checked by `decide +kernel` on the Boolean
-checker (standard axioms only); `time_grid` assembles them.
+(`Design/NearAxisQATrappedTimeCells`). Each box is checked by an explicit evaluation certificate
+of the Boolean checker (`fiv_cert`, `Certificates/EvalCert`: one kernel leaf per interval
+operation; standard axioms only); `time_grid` assembles them.
 -/
 public section
 namespace PlasmaLean.Design.NearAxisQATrappedCells
@@ -22,67 +24,67 @@ open Set
 
 set_option maxRecDepth 100000 in
 /-- Time box `TPB 0 × TTB 0` passes with targets `83 μs`, `J ≤ 58`. -/
-theorem timeLeaf_0_0 : timeBoxOk (TPB 0) (TTB 0) 83 58 = true := by decide +kernel
+theorem timeLeaf_0_0 : timeBoxOk (TPB 0) (TTB 0) 83 58 = true := by fiv_cert
 
 set_option maxRecDepth 100000 in
 /-- Time box `TPB 0 × TTB 1` passes with targets `83 μs`, `J ≤ 58`. -/
-theorem timeLeaf_0_1 : timeBoxOk (TPB 0) (TTB 1) 83 58 = true := by decide +kernel
+theorem timeLeaf_0_1 : timeBoxOk (TPB 0) (TTB 1) 83 58 = true := by fiv_cert
 
 set_option maxRecDepth 100000 in
 /-- Time box `TPB 0 × TTB 2` passes with targets `83 μs`, `J ≤ 58`. -/
-theorem timeLeaf_0_2 : timeBoxOk (TPB 0) (TTB 2) 83 58 = true := by decide +kernel
+theorem timeLeaf_0_2 : timeBoxOk (TPB 0) (TTB 2) 83 58 = true := by fiv_cert
 
 set_option maxRecDepth 100000 in
 /-- Time box `TPB 0 × TTB 3` passes with targets `83 μs`, `J ≤ 58`. -/
-theorem timeLeaf_0_3 : timeBoxOk (TPB 0) (TTB 3) 83 58 = true := by decide +kernel
+theorem timeLeaf_0_3 : timeBoxOk (TPB 0) (TTB 3) 83 58 = true := by fiv_cert
 
 set_option maxRecDepth 100000 in
 /-- Time box `TPB 1 × TTB 0` passes with targets `83 μs`, `J ≤ 58`. -/
-theorem timeLeaf_1_0 : timeBoxOk (TPB 1) (TTB 0) 83 58 = true := by decide +kernel
+theorem timeLeaf_1_0 : timeBoxOk (TPB 1) (TTB 0) 83 58 = true := by fiv_cert
 
 set_option maxRecDepth 100000 in
 /-- Time box `TPB 1 × TTB 1` passes with targets `83 μs`, `J ≤ 58`. -/
-theorem timeLeaf_1_1 : timeBoxOk (TPB 1) (TTB 1) 83 58 = true := by decide +kernel
+theorem timeLeaf_1_1 : timeBoxOk (TPB 1) (TTB 1) 83 58 = true := by fiv_cert
 
 set_option maxRecDepth 100000 in
 /-- Time box `TPB 1 × TTB 2` passes with targets `83 μs`, `J ≤ 58`. -/
-theorem timeLeaf_1_2 : timeBoxOk (TPB 1) (TTB 2) 83 58 = true := by decide +kernel
+theorem timeLeaf_1_2 : timeBoxOk (TPB 1) (TTB 2) 83 58 = true := by fiv_cert
 
 set_option maxRecDepth 100000 in
 /-- Time box `TPB 1 × TTB 3` passes with targets `83 μs`, `J ≤ 58`. -/
-theorem timeLeaf_1_3 : timeBoxOk (TPB 1) (TTB 3) 83 58 = true := by decide +kernel
+theorem timeLeaf_1_3 : timeBoxOk (TPB 1) (TTB 3) 83 58 = true := by fiv_cert
 
 set_option maxRecDepth 100000 in
 /-- Time box `TPB 2 × TTB 0` passes with targets `83 μs`, `J ≤ 58`. -/
-theorem timeLeaf_2_0 : timeBoxOk (TPB 2) (TTB 0) 83 58 = true := by decide +kernel
+theorem timeLeaf_2_0 : timeBoxOk (TPB 2) (TTB 0) 83 58 = true := by fiv_cert
 
 set_option maxRecDepth 100000 in
 /-- Time box `TPB 2 × TTB 1` passes with targets `83 μs`, `J ≤ 58`. -/
-theorem timeLeaf_2_1 : timeBoxOk (TPB 2) (TTB 1) 83 58 = true := by decide +kernel
+theorem timeLeaf_2_1 : timeBoxOk (TPB 2) (TTB 1) 83 58 = true := by fiv_cert
 
 set_option maxRecDepth 100000 in
 /-- Time box `TPB 2 × TTB 2` passes with targets `83 μs`, `J ≤ 58`. -/
-theorem timeLeaf_2_2 : timeBoxOk (TPB 2) (TTB 2) 83 58 = true := by decide +kernel
+theorem timeLeaf_2_2 : timeBoxOk (TPB 2) (TTB 2) 83 58 = true := by fiv_cert
 
 set_option maxRecDepth 100000 in
 /-- Time box `TPB 2 × TTB 3` passes with targets `83 μs`, `J ≤ 58`. -/
-theorem timeLeaf_2_3 : timeBoxOk (TPB 2) (TTB 3) 83 58 = true := by decide +kernel
+theorem timeLeaf_2_3 : timeBoxOk (TPB 2) (TTB 3) 83 58 = true := by fiv_cert
 
 set_option maxRecDepth 100000 in
 /-- Time box `TPB 3 × TTB 0` passes with targets `83 μs`, `J ≤ 58`. -/
-theorem timeLeaf_3_0 : timeBoxOk (TPB 3) (TTB 0) 83 58 = true := by decide +kernel
+theorem timeLeaf_3_0 : timeBoxOk (TPB 3) (TTB 0) 83 58 = true := by fiv_cert
 
 set_option maxRecDepth 100000 in
 /-- Time box `TPB 3 × TTB 1` passes with targets `83 μs`, `J ≤ 58`. -/
-theorem timeLeaf_3_1 : timeBoxOk (TPB 3) (TTB 1) 83 58 = true := by decide +kernel
+theorem timeLeaf_3_1 : timeBoxOk (TPB 3) (TTB 1) 83 58 = true := by fiv_cert
 
 set_option maxRecDepth 100000 in
 /-- Time box `TPB 3 × TTB 2` passes with targets `83 μs`, `J ≤ 58`. -/
-theorem timeLeaf_3_2 : timeBoxOk (TPB 3) (TTB 2) 83 58 = true := by decide +kernel
+theorem timeLeaf_3_2 : timeBoxOk (TPB 3) (TTB 2) 83 58 = true := by fiv_cert
 
 set_option maxRecDepth 100000 in
 /-- Time box `TPB 3 × TTB 3` passes with targets `83 μs`, `J ≤ 58`. -/
-theorem timeLeaf_3_3 : timeBoxOk (TPB 3) (TTB 3) 83 58 = true := by decide +kernel
+theorem timeLeaf_3_3 : timeBoxOk (TPB 3) (TTB 3) 83 58 = true := by fiv_cert
 
 /-- **The time grid**: all `16` boxes pass. -/
 theorem time_grid : ∀ j < 4, ∀ l < 4, timeBoxOk (TPB j) (TTB l) 83 58 = true := by

@@ -17,6 +17,7 @@ public import PlasmaLean.Design.RationalStellaratorGCMuCheckL8
 public import PlasmaLean.Design.RationalStellaratorGCMuCommon
 public import PlasmaLean.Design.RationalStellaratorGCMuLowMemL
 public import PlasmaLean.Certificates.KernelFact
+public import PlasmaLean.Certificates.FamPackCert
 
 /-!
 # The low-resolution ball chain of the guiding-centre torus family
@@ -48,7 +49,7 @@ set_option maxRecDepth 100000 in
 Kronecker image. -/
 theorem kderLM_A : KvLM 74 33 25 6 = famPack 74 33 25 NLM MLM DLM (if oddLM 4 then -1 else 1) 0
     ((c0LM 4 : ℤ) * 1) ((c0LM 4 : ℤ) * 0) ddLM drLM 0 (famLM 4) := by
-  kernel_fact
+  fampack_cert
 
 set_option maxRecDepth 100000 in
 /-- The stored derivative `A` is the symbol family of `U` (equal Kronecker images). -/
@@ -81,7 +82,7 @@ set_option maxRecDepth 100000 in
 Kronecker image. -/
 theorem kderLM_B : KvLM 74 33 25 7 = famPack 74 33 25 NLM MLM DLM (if oddLM 5 then -1 else 1) 0
     ((c0LM 5 : ℤ) * 1) ((c0LM 5 : ℤ) * 0) ddLM drLM 0 (famLM 5) := by
-  kernel_fact
+  fampack_cert
 
 set_option maxRecDepth 100000 in
 /-- The stored derivative `B` is the symbol family of `Z` (equal Kronecker images). -/
@@ -114,7 +115,7 @@ set_option maxRecDepth 100000 in
 Kronecker image. -/
 theorem kderLM_Ao : KvLM 74 33 25 178 = famPack 74 33 25 NLM MLM DLM (if oddLM 176 then -1 else 1) 0
     ((c0LM 176 : ℤ) * 1) ((c0LM 176 : ℤ) * 0) ddLM drLM 0 (famLM 176) := by
-  kernel_fact
+  fampack_cert
 
 set_option maxRecDepth 100000 in
 /-- The stored derivative `Ao` is the symbol family of `Uo` (equal Kronecker images). -/
@@ -147,7 +148,7 @@ set_option maxRecDepth 100000 in
 Kronecker image. -/
 theorem kderLM_Bo : KvLM 74 33 25 179 = famPack 74 33 25 NLM MLM DLM (if oddLM 177 then -1 else 1) 0
     ((c0LM 177 : ℤ) * 1) ((c0LM 177 : ℤ) * 0) ddLM drLM 0 (famLM 177) := by
-  kernel_fact
+  fampack_cert
 
 set_option maxRecDepth 100000 in
 /-- The stored derivative `Bo` is the symbol family of `Zo` (equal Kronecker images). -/

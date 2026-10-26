@@ -8,6 +8,7 @@ module
 public import PlasmaLean.Theory.Stability.ScrewPinchModes
 public import PlasmaLean.Design.ScrewPinchExample
 public import PlasmaLean.Certificates.PolyInterval
+public import PlasmaLean.Certificates.EvalCert
 
 /-!
 # Mode-by-mode ideal-MHD stability of the screw-pinch example
@@ -31,7 +32,8 @@ This gives polynomial-rational lower bounds `fL ≤ f`, `gL ≤ g` (`coefF_lower
 `φ = D ψ` with a polynomial `ψ` found numerically outside Lean, checked through two
 exact polynomial inequalities `P1 ≥ 0` (gap) and `P2 ≥ 0` (discriminant, after dividing
 by `D²`, which is what lets `φ` vanish at irrational resonant surfaces). All checks are
-`decide +kernel` evaluations of the sound checker `PlasmaLean.Certificates.QPoly.checkOn`.
+explicit evaluation certificates (`eval_cert`, `Certificates/EvalCert`) of the sound checker
+`PlasmaLean.Certificates.QPoly.checkOn`.
 
 **Uniform families (all real `k`).**
 
@@ -698,7 +700,7 @@ theorem stable_of_same_sign {μ₀ m k : ℝ} (hμ : μ₀ ≠ 0) (hm : 4 ≤ m 
 theorem mode_1p1 {μ₀ : ℝ} (hμ : μ₀ ≠ 0) :
     ModeStable μ₀ 1 ((1 : ℤ) : ℝ) (((1 : ℤ) : ℝ) / 4) (pressure' μ₀) Bz bθ := by
   have h := stable_of_check_pos (m := 1) (k := (1 / 4 : ℚ)) (pts := ptsG1p1) hμ (by norm_num)
-    (by norm_num) (by decide +kernel)
+    (by norm_num) (by eval_cert)
   convert h using 2 <;> norm_num
 
 /-- The `(m, n) = (1, -1)` mode is stable (Picone certificate). -/
@@ -706,7 +708,7 @@ theorem mode_1n1 {μ₀ : ℝ} (hμ : μ₀ ≠ 0) :
     ModeStable μ₀ 1 ((1 : ℤ) : ℝ) (((-1 : ℤ) : ℝ) / 4) (pressure' μ₀) Bz bθ := by
   have h := stable_of_picone (m := 1) (k := (-1 / 4 : ℚ)) (ψ := psi1n1) (pts₁ := pts11n1)
     (pts₂ := pts21n1) hμ (by norm_num) (by norm_num) (by simp [psi1n1])
-    (by decide +kernel) (by decide +kernel)
+    (by eval_cert) (by eval_cert)
   convert h using 2 <;> norm_num
 
 /-- The `(m, n) = (2, -1)` mode is stable (Picone certificate). -/
@@ -714,21 +716,21 @@ theorem mode_2n1 {μ₀ : ℝ} (hμ : μ₀ ≠ 0) :
     ModeStable μ₀ 1 ((2 : ℤ) : ℝ) (((-1 : ℤ) : ℝ) / 4) (pressure' μ₀) Bz bθ := by
   have h := stable_of_picone (m := 2) (k := (-1 / 4 : ℚ)) (ψ := psi2n1) (pts₁ := pts12n1)
     (pts₂ := pts22n1) hμ (by norm_num) (by norm_num) (by simp [psi2n1])
-    (by decide +kernel) (by decide +kernel)
+    (by eval_cert) (by eval_cert)
   convert h using 2 <;> norm_num
 
 /-- The `(m, n) = (2, -2)` mode is stable (potential check). -/
 theorem mode_2n2 {μ₀ : ℝ} (hμ : μ₀ ≠ 0) :
     ModeStable μ₀ 1 ((2 : ℤ) : ℝ) (((-2 : ℤ) : ℝ) / 4) (pressure' μ₀) Bz bθ := by
   have h := stable_of_check_neg (m := 2) (k := (-1 / 2 : ℚ)) (pts := ptsG2n2) hμ (by norm_num)
-    (by norm_num) (by decide +kernel)
+    (by norm_num) (by eval_cert)
   convert h using 2 <;> norm_num
 
 /-- The `(m, n) = (3, -1)` mode is stable (potential check). -/
 theorem mode_3n1 {μ₀ : ℝ} (hμ : μ₀ ≠ 0) :
     ModeStable μ₀ 1 ((3 : ℤ) : ℝ) (((-1 : ℤ) : ℝ) / 4) (pressure' μ₀) Bz bθ := by
   have h := stable_of_check_neg (m := 3) (k := (-1 / 4 : ℚ)) (pts := ptsG3n1) hμ (by norm_num)
-    (by norm_num) (by decide +kernel)
+    (by norm_num) (by eval_cert)
   convert h using 2 <;> norm_num
 
 /-- The `(m, n) = (3, -2)` mode is stable (Picone certificate). -/
@@ -736,28 +738,28 @@ theorem mode_3n2 {μ₀ : ℝ} (hμ : μ₀ ≠ 0) :
     ModeStable μ₀ 1 ((3 : ℤ) : ℝ) (((-2 : ℤ) : ℝ) / 4) (pressure' μ₀) Bz bθ := by
   have h := stable_of_picone (m := 3) (k := (-1 / 2 : ℚ)) (ψ := psi3n2) (pts₁ := pts13n2)
     (pts₂ := pts23n2) hμ (by norm_num) (by norm_num) (by simp [psi3n2])
-    (by decide +kernel) (by decide +kernel)
+    (by eval_cert) (by eval_cert)
   convert h using 2 <;> norm_num
 
 /-- The `(m, n) = (3, -3)` mode is stable (potential check). -/
 theorem mode_3n3 {μ₀ : ℝ} (hμ : μ₀ ≠ 0) :
     ModeStable μ₀ 1 ((3 : ℤ) : ℝ) (((-3 : ℤ) : ℝ) / 4) (pressure' μ₀) Bz bθ := by
   have h := stable_of_check_neg (m := 3) (k := (-3 / 4 : ℚ)) (pts := ptsG3n3) hμ (by norm_num)
-    (by norm_num) (by decide +kernel)
+    (by norm_num) (by eval_cert)
   convert h using 2 <;> norm_num
 
 /-- The `(m, n) = (3, -4)` mode is stable (potential check). -/
 theorem mode_3n4 {μ₀ : ℝ} (hμ : μ₀ ≠ 0) :
     ModeStable μ₀ 1 ((3 : ℤ) : ℝ) (((-4 : ℤ) : ℝ) / 4) (pressure' μ₀) Bz bθ := by
   have h := stable_of_check_neg (m := 3) (k := (-1 : ℚ)) (pts := ptsG3n4) hμ (by norm_num)
-    (by norm_num) (by decide +kernel)
+    (by norm_num) (by eval_cert)
   convert h using 2 <;> norm_num
 
 /-- The `(m, n) = (4, -1)` mode is stable (potential check). -/
 theorem mode_4n1 {μ₀ : ℝ} (hμ : μ₀ ≠ 0) :
     ModeStable μ₀ 1 ((4 : ℤ) : ℝ) (((-1 : ℤ) : ℝ) / 4) (pressure' μ₀) Bz bθ := by
   have h := stable_of_check_neg (m := 4) (k := (-1 / 4 : ℚ)) (pts := ptsG4n1) hμ (by norm_num)
-    (by norm_num) (by decide +kernel)
+    (by norm_num) (by eval_cert)
   convert h using 2 <;> norm_num
 
 /-- The `(m, n) = (4, -2)` mode is stable (Picone certificate). -/
@@ -765,7 +767,7 @@ theorem mode_4n2 {μ₀ : ℝ} (hμ : μ₀ ≠ 0) :
     ModeStable μ₀ 1 ((4 : ℤ) : ℝ) (((-2 : ℤ) : ℝ) / 4) (pressure' μ₀) Bz bθ := by
   have h := stable_of_picone (m := 4) (k := (-1 / 2 : ℚ)) (ψ := psi4n2) (pts₁ := pts14n2)
     (pts₂ := pts24n2) hμ (by norm_num) (by norm_num) (by simp [psi4n2])
-    (by decide +kernel) (by decide +kernel)
+    (by eval_cert) (by eval_cert)
   convert h using 2 <;> norm_num
 
 /-- The `(m, n) = (4, -3)` mode is stable (Picone certificate). -/
@@ -773,28 +775,28 @@ theorem mode_4n3 {μ₀ : ℝ} (hμ : μ₀ ≠ 0) :
     ModeStable μ₀ 1 ((4 : ℤ) : ℝ) (((-3 : ℤ) : ℝ) / 4) (pressure' μ₀) Bz bθ := by
   have h := stable_of_picone (m := 4) (k := (-3 / 4 : ℚ)) (ψ := psi4n3) (pts₁ := pts14n3)
     (pts₂ := pts24n3) hμ (by norm_num) (by norm_num) (by simp [psi4n3])
-    (by decide +kernel) (by decide +kernel)
+    (by eval_cert) (by eval_cert)
   convert h using 2 <;> norm_num
 
 /-- The `(m, n) = (4, -4)` mode is stable (potential check). -/
 theorem mode_4n4 {μ₀ : ℝ} (hμ : μ₀ ≠ 0) :
     ModeStable μ₀ 1 ((4 : ℤ) : ℝ) (((-4 : ℤ) : ℝ) / 4) (pressure' μ₀) Bz bθ := by
   have h := stable_of_check_neg (m := 4) (k := (-1 : ℚ)) (pts := ptsG4n4) hμ (by norm_num)
-    (by norm_num) (by decide +kernel)
+    (by norm_num) (by eval_cert)
   convert h using 2 <;> norm_num
 
 /-- The `(m, n) = (4, -5)` mode is stable (potential check). -/
 theorem mode_4n5 {μ₀ : ℝ} (hμ : μ₀ ≠ 0) :
     ModeStable μ₀ 1 ((4 : ℤ) : ℝ) (((-5 : ℤ) : ℝ) / 4) (pressure' μ₀) Bz bθ := by
   have h := stable_of_check_neg (m := 4) (k := (-5 / 4 : ℚ)) (pts := ptsG4n5) hμ (by norm_num)
-    (by norm_num) (by decide +kernel)
+    (by norm_num) (by eval_cert)
   convert h using 2 <;> norm_num
 
 /-- The `(m, n) = (5, -1)` mode is stable (potential check). -/
 theorem mode_5n1 {μ₀ : ℝ} (hμ : μ₀ ≠ 0) :
     ModeStable μ₀ 1 ((5 : ℤ) : ℝ) (((-1 : ℤ) : ℝ) / 4) (pressure' μ₀) Bz bθ := by
   have h := stable_of_check_neg (m := 5) (k := (-1 / 4 : ℚ)) (pts := ptsG5n1) hμ (by norm_num)
-    (by norm_num) (by decide +kernel)
+    (by norm_num) (by eval_cert)
   convert h using 2 <;> norm_num
 
 /-- The `(m, n) = (5, -2)` mode is stable (Picone certificate). -/
@@ -802,7 +804,7 @@ theorem mode_5n2 {μ₀ : ℝ} (hμ : μ₀ ≠ 0) :
     ModeStable μ₀ 1 ((5 : ℤ) : ℝ) (((-2 : ℤ) : ℝ) / 4) (pressure' μ₀) Bz bθ := by
   have h := stable_of_picone (m := 5) (k := (-1 / 2 : ℚ)) (ψ := psi5n2) (pts₁ := pts15n2)
     (pts₂ := pts25n2) hμ (by norm_num) (by norm_num) (by simp [psi5n2])
-    (by decide +kernel) (by decide +kernel)
+    (by eval_cert) (by eval_cert)
   convert h using 2 <;> norm_num
 
 /-- The `(m, n) = (5, -3)` mode is stable (Picone certificate). -/
@@ -810,42 +812,42 @@ theorem mode_5n3 {μ₀ : ℝ} (hμ : μ₀ ≠ 0) :
     ModeStable μ₀ 1 ((5 : ℤ) : ℝ) (((-3 : ℤ) : ℝ) / 4) (pressure' μ₀) Bz bθ := by
   have h := stable_of_picone (m := 5) (k := (-3 / 4 : ℚ)) (ψ := psi5n3) (pts₁ := pts15n3)
     (pts₂ := pts25n3) hμ (by norm_num) (by norm_num) (by simp [psi5n3])
-    (by decide +kernel) (by decide +kernel)
+    (by eval_cert) (by eval_cert)
   convert h using 2 <;> norm_num
 
 /-- The `(m, n) = (5, -4)` mode is stable (potential check). -/
 theorem mode_5n4 {μ₀ : ℝ} (hμ : μ₀ ≠ 0) :
     ModeStable μ₀ 1 ((5 : ℤ) : ℝ) (((-4 : ℤ) : ℝ) / 4) (pressure' μ₀) Bz bθ := by
   have h := stable_of_check_neg (m := 5) (k := (-1 : ℚ)) (pts := ptsG5n4) hμ (by norm_num)
-    (by norm_num) (by decide +kernel)
+    (by norm_num) (by eval_cert)
   convert h using 2 <;> norm_num
 
 /-- The `(m, n) = (5, -5)` mode is stable (potential check). -/
 theorem mode_5n5 {μ₀ : ℝ} (hμ : μ₀ ≠ 0) :
     ModeStable μ₀ 1 ((5 : ℤ) : ℝ) (((-5 : ℤ) : ℝ) / 4) (pressure' μ₀) Bz bθ := by
   have h := stable_of_check_neg (m := 5) (k := (-5 / 4 : ℚ)) (pts := ptsG5n5) hμ (by norm_num)
-    (by norm_num) (by decide +kernel)
+    (by norm_num) (by eval_cert)
   convert h using 2 <;> norm_num
 
 /-- The `(m, n) = (5, -6)` mode is stable (potential check). -/
 theorem mode_5n6 {μ₀ : ℝ} (hμ : μ₀ ≠ 0) :
     ModeStable μ₀ 1 ((5 : ℤ) : ℝ) (((-6 : ℤ) : ℝ) / 4) (pressure' μ₀) Bz bθ := by
   have h := stable_of_check_neg (m := 5) (k := (-3 / 2 : ℚ)) (pts := ptsG5n6) hμ (by norm_num)
-    (by norm_num) (by decide +kernel)
+    (by norm_num) (by eval_cert)
   convert h using 2 <;> norm_num
 
 /-- The `(m, n) = (6, -1)` mode is stable (potential check). -/
 theorem mode_6n1 {μ₀ : ℝ} (hμ : μ₀ ≠ 0) :
     ModeStable μ₀ 1 ((6 : ℤ) : ℝ) (((-1 : ℤ) : ℝ) / 4) (pressure' μ₀) Bz bθ := by
   have h := stable_of_check_neg (m := 6) (k := (-1 / 4 : ℚ)) (pts := ptsG6n1) hμ (by norm_num)
-    (by norm_num) (by decide +kernel)
+    (by norm_num) (by eval_cert)
   convert h using 2 <;> norm_num
 
 /-- The `(m, n) = (6, -2)` mode is stable (potential check). -/
 theorem mode_6n2 {μ₀ : ℝ} (hμ : μ₀ ≠ 0) :
     ModeStable μ₀ 1 ((6 : ℤ) : ℝ) (((-2 : ℤ) : ℝ) / 4) (pressure' μ₀) Bz bθ := by
   have h := stable_of_check_neg (m := 6) (k := (-1 / 2 : ℚ)) (pts := ptsG6n2) hμ (by norm_num)
-    (by norm_num) (by decide +kernel)
+    (by norm_num) (by eval_cert)
   convert h using 2 <;> norm_num
 
 /-- The `(m, n) = (6, -3)` mode is stable (Picone certificate). -/
@@ -853,7 +855,7 @@ theorem mode_6n3 {μ₀ : ℝ} (hμ : μ₀ ≠ 0) :
     ModeStable μ₀ 1 ((6 : ℤ) : ℝ) (((-3 : ℤ) : ℝ) / 4) (pressure' μ₀) Bz bθ := by
   have h := stable_of_picone (m := 6) (k := (-3 / 4 : ℚ)) (ψ := psi6n3) (pts₁ := pts16n3)
     (pts₂ := pts26n3) hμ (by norm_num) (by norm_num) (by simp [psi6n3])
-    (by decide +kernel) (by decide +kernel)
+    (by eval_cert) (by eval_cert)
   convert h using 2 <;> norm_num
 
 /-- The `(m, n) = (6, -4)` mode is stable (Picone certificate). -/
@@ -861,35 +863,35 @@ theorem mode_6n4 {μ₀ : ℝ} (hμ : μ₀ ≠ 0) :
     ModeStable μ₀ 1 ((6 : ℤ) : ℝ) (((-4 : ℤ) : ℝ) / 4) (pressure' μ₀) Bz bθ := by
   have h := stable_of_picone (m := 6) (k := (-1 : ℚ)) (ψ := psi6n4) (pts₁ := pts16n4)
     (pts₂ := pts26n4) hμ (by norm_num) (by norm_num) (by simp [psi6n4])
-    (by decide +kernel) (by decide +kernel)
+    (by eval_cert) (by eval_cert)
   convert h using 2 <;> norm_num
 
 /-- The `(m, n) = (6, -5)` mode is stable (potential check). -/
 theorem mode_6n5 {μ₀ : ℝ} (hμ : μ₀ ≠ 0) :
     ModeStable μ₀ 1 ((6 : ℤ) : ℝ) (((-5 : ℤ) : ℝ) / 4) (pressure' μ₀) Bz bθ := by
   have h := stable_of_check_neg (m := 6) (k := (-5 / 4 : ℚ)) (pts := ptsG6n5) hμ (by norm_num)
-    (by norm_num) (by decide +kernel)
+    (by norm_num) (by eval_cert)
   convert h using 2 <;> norm_num
 
 /-- The `(m, n) = (6, -6)` mode is stable (potential check). -/
 theorem mode_6n6 {μ₀ : ℝ} (hμ : μ₀ ≠ 0) :
     ModeStable μ₀ 1 ((6 : ℤ) : ℝ) (((-6 : ℤ) : ℝ) / 4) (pressure' μ₀) Bz bθ := by
   have h := stable_of_check_neg (m := 6) (k := (-3 / 2 : ℚ)) (pts := ptsG6n6) hμ (by norm_num)
-    (by norm_num) (by decide +kernel)
+    (by norm_num) (by eval_cert)
   convert h using 2 <;> norm_num
 
 /-- The `(m, n) = (6, -7)` mode is stable (potential check). -/
 theorem mode_6n7 {μ₀ : ℝ} (hμ : μ₀ ≠ 0) :
     ModeStable μ₀ 1 ((6 : ℤ) : ℝ) (((-7 : ℤ) : ℝ) / 4) (pressure' μ₀) Bz bθ := by
   have h := stable_of_check_neg (m := 6) (k := (-7 / 4 : ℚ)) (pts := ptsG6n7) hμ (by norm_num)
-    (by norm_num) (by decide +kernel)
+    (by norm_num) (by eval_cert)
   convert h using 2 <;> norm_num
 
 /-- The `(m, n) = (6, -8)` mode is stable (potential check). -/
 theorem mode_6n8 {μ₀ : ℝ} (hμ : μ₀ ≠ 0) :
     ModeStable μ₀ 1 ((6 : ℤ) : ℝ) (((-8 : ℤ) : ℝ) / 4) (pressure' μ₀) Bz bθ := by
   have h := stable_of_check_neg (m := 6) (k := (-2 : ℚ)) (pts := ptsG6n8) hμ (by norm_num)
-    (by norm_num) (by decide +kernel)
+    (by norm_num) (by eval_cert)
   convert h using 2 <;> norm_num
 
 /-! ## All modes with `1 ≤ |m| ≤ 6` -/

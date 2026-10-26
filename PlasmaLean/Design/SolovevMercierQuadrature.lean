@@ -6,6 +6,7 @@ Authors: PlasmaLean contributors
 module
 
 public import PlasmaLean.Certificates.ValidatedQuadrature
+public import PlasmaLean.Certificates.EvalCertFIv
 
 /-!
 # Validated quadrature for the reactor Solov'ev Mercier integrals (normalized form)
@@ -41,8 +42,8 @@ surface parametrization (`v = 1 + ε sin t = R²/L²`):
    fed into the `Phi` quadrature.
 4. `cellCheck N e₀ e₁` checks the resulting integer inequality; `cellCheck_sound` proves it
    implies `WellDominant ε` for every real `ε ∈ [e₀, e₁] ∩ (0, 1/2]`.
-5. `wellDominant_cover`: 18 cells cover `[0, 1/2]` (each certified by its own
-   `decide +kernel` evaluation of `cellCheck` with `N = 32`; certified margins 3–6%, from
+5. `wellDominant_cover`: 18 cells cover `[0, 1/2]` (each certified by its own explicit
+   evaluation certificate of `cellCheck` with `N = 32`, `fiv_cert`; certified margins 3–6%, from
    the untrusted oracle `scripts/solovev_mercier_quadrature_oracle.py`, which mirrors the
    checker exactly and only proposes the cells).
 
@@ -801,26 +802,26 @@ theorem Covered.sound {a b : ℚ} (h : Covered a b) :
 
 set_option maxRecDepth 100000 in
 /-- **The cover**: 18 accepted cells (`N = 32` `τ`-cells each) chain from `0` to `1/2`. Each
-`decide +kernel` evaluates one `cellCheck` in the kernel. -/
+`fiv_cert` certifies one `cellCheck` evaluation (one kernel leaf per interval operation). -/
 theorem wellDominant_cover : Covered 0 (1 / 2) :=
-  .step 32 (0) (1 / 20) (1 / 2) (by decide +kernel) <|
-  .step 32 (1 / 20) (9 / 100) (1 / 2) (by decide +kernel) <|
-  .step 32 (9 / 100) (61 / 500) (1 / 2) (by decide +kernel) <|
-  .step 32 (61 / 500) (77 / 500) (1 / 2) (by decide +kernel) <|
-  .step 32 (77 / 500) (93 / 500) (1 / 2) (by decide +kernel) <|
-  .step 32 (93 / 500) (109 / 500) (1 / 2) (by decide +kernel) <|
-  .step 32 (109 / 500) (243 / 1000) (1 / 2) (by decide +kernel) <|
-  .step 32 (243 / 1000) (67 / 250) (1 / 2) (by decide +kernel) <|
-  .step 32 (67 / 250) (293 / 1000) (1 / 2) (by decide +kernel) <|
-  .step 32 (293 / 1000) (159 / 500) (1 / 2) (by decide +kernel) <|
-  .step 32 (159 / 500) (343 / 1000) (1 / 2) (by decide +kernel) <|
-  .step 32 (343 / 1000) (46 / 125) (1 / 2) (by decide +kernel) <|
-  .step 32 (46 / 125) (393 / 1000) (1 / 2) (by decide +kernel) <|
-  .step 32 (393 / 1000) (209 / 500) (1 / 2) (by decide +kernel) <|
-  .step 32 (209 / 500) (219 / 500) (1 / 2) (by decide +kernel) <|
-  .step 32 (219 / 500) (229 / 500) (1 / 2) (by decide +kernel) <|
-  .step 32 (229 / 500) (239 / 500) (1 / 2) (by decide +kernel) <|
-  .single 32 (239 / 500) (1 / 2) (by decide +kernel)
+  .step 32 (0) (1 / 20) (1 / 2) (by fiv_cert) <|
+  .step 32 (1 / 20) (9 / 100) (1 / 2) (by fiv_cert) <|
+  .step 32 (9 / 100) (61 / 500) (1 / 2) (by fiv_cert) <|
+  .step 32 (61 / 500) (77 / 500) (1 / 2) (by fiv_cert) <|
+  .step 32 (77 / 500) (93 / 500) (1 / 2) (by fiv_cert) <|
+  .step 32 (93 / 500) (109 / 500) (1 / 2) (by fiv_cert) <|
+  .step 32 (109 / 500) (243 / 1000) (1 / 2) (by fiv_cert) <|
+  .step 32 (243 / 1000) (67 / 250) (1 / 2) (by fiv_cert) <|
+  .step 32 (67 / 250) (293 / 1000) (1 / 2) (by fiv_cert) <|
+  .step 32 (293 / 1000) (159 / 500) (1 / 2) (by fiv_cert) <|
+  .step 32 (159 / 500) (343 / 1000) (1 / 2) (by fiv_cert) <|
+  .step 32 (343 / 1000) (46 / 125) (1 / 2) (by fiv_cert) <|
+  .step 32 (46 / 125) (393 / 1000) (1 / 2) (by fiv_cert) <|
+  .step 32 (393 / 1000) (209 / 500) (1 / 2) (by fiv_cert) <|
+  .step 32 (209 / 500) (219 / 500) (1 / 2) (by fiv_cert) <|
+  .step 32 (219 / 500) (229 / 500) (1 / 2) (by fiv_cert) <|
+  .step 32 (229 / 500) (239 / 500) (1 / 2) (by fiv_cert) <|
+  .single 32 (239 / 500) (1 / 2) (by fiv_cert)
 
 /-- **Main numerical theorem**: the normalized dominant-well inequality holds for every
 `ε ∈ (0, 1/2]`, i.e. on every flux surface of the reactor plasma. -/
@@ -830,11 +831,11 @@ theorem normalized_well_dominance (ε : ℝ) (hε : 0 < ε) (hε' : ε ≤ 1 / 2
 set_option maxRecDepth 100000 in
 /-- Rejected fixture: a single cell `[0, 1/2]` with only `N = 8` `τ`-cells is NOT accepted, so
 the checker does not accept everything. -/
-theorem cellCheck_rejects_wide : cellCheck 8 0 (1 / 2) = false := by decide +kernel
+theorem cellCheck_rejects_wide : cellCheck 8 0 (1 / 2) = false := by fiv_cert
 
 set_option maxRecDepth 100000 in
 /-- Rejected fixture: the near-axis cell `[0, 1/10]` (twice the accepted width) fails at
 `N = 32` — the interval widening in `ε` is real, and the cover had to be refined. -/
-theorem cellCheck_rejects_axis_wide : cellCheck 32 0 (1 / 10) = false := by decide +kernel
+theorem cellCheck_rejects_axis_wide : cellCheck 32 0 (1 / 10) = false := by fiv_cert
 
 end PlasmaLean.Design.SolovevMercierQuadrature
