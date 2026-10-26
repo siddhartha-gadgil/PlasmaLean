@@ -567,3 +567,7 @@ Each cycle is a run. The targets are listed in priority order; anything left ove
   - **Kronecker-image equalities `Kv… = famPack…` (20 in the default build): not converted.** `eval_cert` stops at a compiled `Nat.rec` inside the slice packing, and the intermediates are multi-kilobyte integers. They need their own certificate, e.g. digit-block sums as in `DCert`.
 - **Not done:** the docstring of `Certificates/EvalCert.lean` (its dependents were not rebuilt). The older bilinear `PolygonCoilCert00–05` (211 `checkChunk` lines) would need the same certificate for `lineOut` plus `checkLines`; at ≈ 7 MB per line evaluation (≈ 1,000 evaluations) that is ≈ 7 GB, over budget. `filsDL_eq` (Data; changing it rebuilds all Lines modules).
 - **Counts** (lines containing `decide +kernel`, `PlasmaLean/` tree; default = modules reachable from `PlasmaLean.lean`): default **1,407 → 690**, overall **3,224 → 2,507**. Private oleans of `Design/` now ≈ 17 GB on disk, of which ≈ 15 GB is the new explicit certificates of stages 5 and 6: the approved ceiling is reached.
+
+### Phase 16: disk budget raised, 26 October 2026
+
+- **User decision:** the budget for private certificate oleans is raised from about 15 GB to about 40 GB. Convert the ballooning `hessOK` boxes (≈ 4.6 GB) and the older bilinear polygon-coil cells (≈ 7 GB) as designed; keep looking for compact designs for the rest (the remaining ≈ 2,500 `decide +kernel` lines, the Kronecker-image equalities). Memory stays ≤ 6 GB per process.
