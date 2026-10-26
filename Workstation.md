@@ -203,7 +203,18 @@ laptop with a small parameter setting, then commit it to `main` before running i
 Kept up to date from the laptop after every review ("update from workstation"). Run them on the
 workstation, inside `tmux`; `run.sh` pulls `main` itself.
 
-**Status (26 October 2026): nothing queued.** The Mu2–Mu5 archive was unpacked on the laptop and
-Lake accepted it (copying compiled files across platforms works).
+**Status (26 October 2026, afternoon): optional rebuild.** Phase 16 stage 8 changed the Mu chain
+modules, so the on-demand families downstream of them (Mu2–Mu5, MuQuarter, Ew1–4) are stale on
+both machines (their sources are unchanged). When convenient, rebuild them on the workstation and
+send the compiled files back:
+
+```bash
+cd PlasmaLean && git pull
+lake build PlasmaLean.Design.RationalStellaratorGCMuQuarter PlasmaLean.Design.RationalStellaratorGCEwFamily
+python3 scripts/workstation/oleans.py pack ~/ondemand.tar.gz \
+  PlasmaLean.Design.RationalStellaratorGCMuQuarter PlasmaLean.Design.RationalStellaratorGCEwFamily
+```
+
+Copy `~/ondemand.tar.gz` to the laptop and say where it is.
 
 Then say "update from workstation" on the laptop.
