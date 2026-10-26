@@ -17,7 +17,8 @@ the normalized slab Grad–Shafranov problem
 
 together with the finite rational inequalities that the radii-polynomial argument of
 `PlasmaLean.Design.ValidatedSlabEquilibrium` needs. Every check is an exact computation on
-`ℚ` closed by `decide +kernel` (finite sums over integer intervals).
+`ℚ` closed by `icc_cert` (finite sums over integer intervals restated as list sums, then an
+evaluation certificate, `Certificates/IccListCert`).
 
 * `ubarq`: candidate cosine coefficients `ū_k = ū_{|k|}`, `|k| ≤ 10`, over `10¹⁴`.
 * `Pq n`: rounded Taylor terms `P_n ≈ ūⁿ/n!` (`n ≤ 16`, `|k| ≤ 16`, over `10¹⁶`);
@@ -177,33 +178,40 @@ abbrev lamq (k : ℤ) : ℚ := ValidatedBVP.lamq k
 /-! ### The finite rational checks -/
 
 /-- `P₀ = δ₀`. -/
-theorem check_P0 : ∀ k ∈ blkK, Pq 0 k = dq k 0 := by decide +kernel
+theorem check_P0 : ∀ k ∈ blkK, Pq 0 k = dq k 0 := by
+  icc_cert [blk, blkK, blk2, Cq, Dq, convPq, Fbarq, AFq]
 
 /-- `Ē = ∑_{n ≤ 16} Pₙ` on its support. -/
 theorem check_Ebar : ∀ k ∈ blkK, Ebarq k = ∑ n ∈ Finset.range 17, Pq n k := by
-  decide +kernel
+  icc_cert [blk, blkK, blk2, Cq, Dq, convPq, Fbarq, AFq]
 
 /-- One-step Taylor defects `‖ū Pₙ/(n+1) - P_{n+1}‖₁ ≤ 2·10⁻¹⁵`. -/
 theorem check_taylor : ∀ n ∈ Finset.range 16,
     ∑ k ∈ blk2, |convPq n k / ((n : ℚ) + 1) - Pq (n + 1) k| ≤ 2 / 10 ^ 15 := by
-  decide +kernel
+  icc_cert [blk, blkK, blk2, Cq, Dq, convPq, Fbarq, AFq]
 
 /-- `‖ū‖₁ ≤ 0.572`. -/
-theorem check_normU : ∑ k ∈ blk, |ubarq k| ≤ 572 / 1000 := by decide +kernel
+theorem check_normU : ∑ k ∈ blk, |ubarq k| ≤ 572 / 1000 := by
+  icc_cert [blk, blkK, blk2, Cq, Dq, convPq, Fbarq, AFq]
 
 /-- `‖Ē‖₁ ≤ 1.571`. -/
-theorem check_normE : ∑ k ∈ blkK, |Ebarq k| ≤ 1571 / 1000 := by decide +kernel
+theorem check_normE : ∑ k ∈ blkK, |Ebarq k| ≤ 1571 / 1000 := by
+  icc_cert [blk, blkK, blk2, Cq, Dq, convPq, Fbarq, AFq]
 
 /-- Residual of the rational problem: `‖A F̄‖₁ ≤ 2.5·10⁻¹²`. -/
-theorem check_Y : ∑ k ∈ blkK, |AFq k| ≤ 25 / 10 ^ 13 := by decide +kernel
+theorem check_Y : ∑ k ∈ blkK, |AFq k| ≤ 25 / 10 ^ 13 := by
+  icc_cert [blk, blkK, blk2, Cq, Dq, convPq, Fbarq, AFq]
 
 /-- Column sums of `AΛ` on the block are at most `34`. -/
-theorem check_AL : ∀ l ∈ blk, ∑ k ∈ blk, |Aq k l * lamq l| ≤ 34 := by decide +kernel
+theorem check_AL : ∀ l ∈ blk, ∑ k ∈ blk, |Aq k l * lamq l| ≤ 34 := by
+  icc_cert [blk, blkK, blk2, Cq, Dq, convPq, Fbarq, AFq]
 
 /-- `‖I - J A‖ ≤ 1/2` on the block. -/
-theorem check_inj : ∀ m ∈ blk, ∑ k ∈ blk, |Dq k m| ≤ 1 / 2 := by decide +kernel
+theorem check_inj : ∀ m ∈ blk, ∑ k ∈ blk, |Dq k m| ≤ 1 / 2 := by
+  icc_cert [blk, blkK, blk2, Cq, Dq, convPq, Fbarq, AFq]
 
 /-- Block part of `Z₀`: column sums of `I - A J` over rows `|k| ≤ 10`, columns `|m| ≤ 26`. -/
-theorem check_Zblock : ∀ m ∈ blk2, ∑ k ∈ blk, |Cq k m| ≤ 31 / 10000 := by decide +kernel
+theorem check_Zblock : ∀ m ∈ blk2, ∑ k ∈ blk, |Cq k m| ≤ 31 / 10000 := by
+  icc_cert [blk, blkK, blk2, Cq, Dq, convPq, Fbarq, AFq]
 
 end PlasmaLean.Design.ValidatedSlab

@@ -44,6 +44,7 @@ public import PlasmaLean.Certificates.Contraction
 public import PlasmaLean.Certificates.PolyInterval
 public import PlasmaLean.Certificates.EvalCert
 public import PlasmaLean.Certificates.EvalCertFIv
+public import PlasmaLean.Certificates.IccListCert
 public import PlasmaLean.Bridge.Contracts
 public import PlasmaLean.Design.ScalarRoot
 public import PlasmaLean.Design.SlabExample
@@ -168,6 +169,8 @@ public import PlasmaLean.Theory.KAM.Diophantine
 public import PlasmaLean.Theory.KAM.Cohomological
 public import PlasmaLean.Design.PolygonCoilConfined
 public import PlasmaLean.Design.PolygonCoilCubicCover
+public import PlasmaLean.Design.PolygonCoilCubicLineCert
+public import PlasmaLean.Design.SolovevBallooningBoxCert
 public import PlasmaLean.Theory.KAM.KamSequence
 public import PlasmaLean.Theory.KAM.WeightedEll1Z2
 public import PlasmaLean.Theory.KAM.Composition

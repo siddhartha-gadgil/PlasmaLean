@@ -9,6 +9,7 @@ public import PlasmaLean.Certificates.WeightedEll1
 public import PlasmaLean.Certificates.RadiiPolynomial
 public import Mathlib.Data.Int.Interval
 public import Mathlib.Tactic.FieldSimp
+public import PlasmaLean.Certificates.IccListCert
 
 /-!
 # A validated nonlinear periodic boundary-value problem (technique demonstration)
@@ -34,7 +35,8 @@ needed.
 * `A`: on the block `|k| ≤ 3` a `7×7` rational matrix (three decimals) approximating the
   inverse of the Jacobian block `δ_{lm} - 2 λ_l ū_{l-m}`; the identity for `|k| > 3`.
 
-**Bounds** (each proved by exact rational arithmetic, `decide +kernel` on `ℚ`):
+**Bounds** (each proved by exact rational arithmetic: `icc_cert`, list restatement and an
+evaluation certificate on `ℚ`):
 * `Y₀ = 7·10⁻⁵ ≥ ‖A F(ū)‖` (`F(ū)` is supported on `|k| ≤ 6`, so this is exact);
 * `Z₀ = 1/7 ≥ Z_block + 2 λ₄ ‖ū‖`, where `Z_block ≤ 7/100` bounds the column sums of
   `I - A DF(ū)` restricted to the rows `|k| ≤ 3` and columns `|m| ≤ 6`, and
@@ -124,19 +126,24 @@ open PlasmaLean.Certificates Metric
 /-! ### The finite rational checks -/
 
 /-- Block part of `Z₀`: column sums of `I - A DF(ū)` over rows `|k| ≤ 3`. -/
-theorem check_Zblock : ∀ m ∈ blk2, ∑ k ∈ blk, |Cq k m| ≤ 7 / 100 := by decide +kernel
+theorem check_Zblock : ∀ m ∈ blk2, ∑ k ∈ blk, |Cq k m| ≤ 7 / 100 := by
+  icc_cert [blk, blk2, Cq, convq, Fq, AFq, Dq, Mq, ALq]
 
 /-- The residual bound `Y₀`. -/
-theorem check_Y0 : ∑ k ∈ blk2, |AFq k| ≤ 7 / 100000 := by decide +kernel
+theorem check_Y0 : ∑ k ∈ blk2, |AFq k| ≤ 7 / 100000 := by
+  icc_cert [blk, blk2, Cq, convq, Fq, AFq, Dq, Mq, ALq]
 
 /-- `‖ū‖₁ ≤ 61/100`. -/
-theorem check_normAbar : ∑ k ∈ blk, |abarq k| ≤ 61 / 100 := by decide +kernel
+theorem check_normAbar : ∑ k ∈ blk, |abarq k| ≤ 61 / 100 := by
+  icc_cert [blk, blk2, Cq, convq, Fq, AFq, Dq, Mq, ALq]
 
 /-- Column sums of `A Λ` on the block, for `Z₂`. -/
-theorem check_AL : ∀ l ∈ blk, ∑ k ∈ blk, |ALq k l| ≤ 13 / 4 := by decide +kernel
+theorem check_AL : ∀ l ∈ blk, ∑ k ∈ blk, |ALq k l| ≤ 13 / 4 := by
+  icc_cert [blk, blk2, Cq, convq, Fq, AFq, Dq, Mq, ALq]
 
 /-- `‖I - M A‖ ≤ 1/2` on the block: the block of `A` is injective. -/
-theorem check_inj : ∀ m ∈ blk, ∑ k ∈ blk, |Dq k m| ≤ 1 / 2 := by decide +kernel
+theorem check_inj : ∀ m ∈ blk, ∑ k ∈ blk, |Dq k m| ≤ 1 / 2 := by
+  icc_cert [blk, blk2, Cq, convq, Fq, AFq, Dq, Mq, ALq]
 
 /-- Cast of a Kronecker-type indicator. -/
 theorem cast_ite_one_zero (p : Prop) [Decidable p] :

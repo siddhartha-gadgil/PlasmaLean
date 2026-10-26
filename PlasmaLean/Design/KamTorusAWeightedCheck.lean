@@ -7,11 +7,14 @@ module
 
 public import PlasmaLean.Design.KamTorusACheck
 public import PlasmaLean.Certificates.Kronecker2DWeighted
+public import PlasmaLean.Certificates.EvalCert
 
 /-!
 # Kernel computations for the weighted K2 certificate of torus A (KAM route, lemma K3.3)
 
-Each `wcheck_*` theorem is a single `decide +kernel` evaluation of exact big-integer arithmetic:
+The a-priori bounds (`apriori_*`, `check_c0D`) are evaluation certificates (`eval_cert`, one node
+per integer operation of the grid sums). Each `wcheck_*` theorem is a single `decide +kernel`
+evaluation of exact big-integer arithmetic:
 a Kronecker image from `Design/KamTorusAForms` and its separable weighted digit sum `wl1KronP`
 (`Certificates/Kronecker2DWeighted`). The weights dominate `e^{r(|k| + |m|)}` for
 `e^r ≤ 74315 / 2^16`. In `Design/KamTorusAWeighted` this is applied with `r = 0.1257`. A mode at
@@ -48,24 +51,36 @@ def Dsubint : ℤ := Dint 656 385 - (c0D : ℤ) * ((pow2 (656 * (5 * N + 385 * (
 /-- Kronecker image of `t = σ u^N v^M` for the grid parameters `b = 128`, `W = 65`. -/
 def tGrid : ℤ := ((sig * 2 ^ (128 * (N + 65 * M)) : ℕ) : ℤ)
 
+set_option maxHeartbeats 0 in
+-- evaluation certificates of 10⁴–1.5·10⁵ nodes (builder work exceeds the default budget)
 /-- A priori bound for `D̂ R̂_θ`: below `2^655`. -/
 theorem apriori_DRth : Dbd (gridL1 gR) (gridL1 gZ) sig * gridL1 gRth < 2 ^ (656 - 1) := by
-  decide +kernel
+  apply of_decide_eq_true
+  eval_cert
 
+set_option maxHeartbeats 0 in
+-- evaluation certificates of 10⁴–1.5·10⁵ nodes (builder work exceeds the default budget)
 /-- A priori bound for `D̂ Ẑ_θ`: below `2^655`. -/
 theorem apriori_DZth : Dbd (gridL1 gR) (gridL1 gZ) sig * gridL1 gZth < 2 ^ (656 - 1) := by
-  decide +kernel
+  apply of_decide_eq_true
+  eval_cert
 
+set_option maxHeartbeats 0 in
+-- evaluation certificates of 10⁴–1.5·10⁵ nodes (builder work exceeds the default budget)
 /-- A priori bounds for the torus grids: below `2^127`. -/
 theorem apriori_grid :
     gridL1 gR + sig < 2 ^ (128 - 1) ∧ gridL1 gZ < 2 ^ (128 - 1) ∧
       gridL1 gRth < 2 ^ (128 - 1) ∧ gridL1 gZth < 2 ^ (128 - 1) ∧
       gridL1 gRps < 2 ^ (128 - 1) ∧ gridL1 gZps < 2 ^ (128 - 1) := by
-  decide +kernel
+  apply of_decide_eq_true
+  eval_cert
 
+set_option maxHeartbeats 0 in
+-- evaluation certificates of 10⁴–1.5·10⁵ nodes (builder work exceeds the default budget)
 /-- The centre of `D̂`: `1 ≤ c0D / (16σ⁵) ≤ 1.007`. -/
 theorem check_c0D : 16 * sig ^ 5 ≤ c0D ∧ c0D * 1000 ≤ 1007 * (16 * sig ^ 5) := by
-  decide +kernel
+  apply of_decide_eq_true
+  eval_cert
 
 set_option maxRecDepth 100000 in
 /-- **Weighted `‖R̂_R‖_r ≤ 5.829 × 10⁻²² · 2^{Q+4} σ⁶`** (scaled by `2^{16·325}`). -/

@@ -8,6 +8,7 @@ module
 public import PlasmaLean.Design.CoilKamArith
 public import PlasmaLean.Design.CoilFieldComplex
 public import PlasmaLean.Certificates.KernelFact
+public import PlasmaLean.Certificates.EvalCert
 
 /-!
 # Exact sampled evaluation of the coil field at dyadic points
@@ -30,8 +31,8 @@ dyadic point `ỹ = Y/D` (`D = 2³² D₀`) by integer arithmetic only:
   of `tfField ỹ + polyCoilFieldC ỹ`.
 
 **Sanity.** `ptD_scale` (coil vertices are the `ptR` points), `segAP_degenerate` (a segment
-through the point is rejected) and `fieldAP_fixture` (the field at `(1,0,0)` is accepted, computed
-by the kernel at scale `2³²`).
+through the point is rejected) and `fieldAP_fixture` (the field at `(1,0,0)` is accepted, by an
+evaluation certificate at scale `2³²`).
 -/
 
 @[expose] public section
@@ -517,8 +518,11 @@ theorem fieldAP_sound {D₀ : ℕ} (hD₀ : 0 < D₀) {Y : ℤ × ℤ × ℤ} {w
 
 /-! ## Sanity -/
 
-/-- Accepted fixture: the field at `(1, 0, 0)` (scale `2³²`) passes all checks. -/
-theorem fieldAP_fixture : (fieldAP 1 (4294967296, 0, 0)).isSome = true := by kernel_fact
+set_option maxHeartbeats 0 in
+-- the evaluation certificate has ≈ 5.7·10⁴ nodes (builder work exceeds the default budget)
+/-- Accepted fixture: the field at `(1, 0, 0)` (scale `2³²`) passes all checks (evaluation
+certificate, one node per arithmetic operation). -/
+theorem fieldAP_fixture : (fieldAP 1 (4294967296, 0, 0)).isSome = true := by eval_cert
 
 /-- Rejected fixture: a segment through the evaluation point is rejected. -/
 theorem segAP_degenerate : segAP 4 1 (0, 0, 0) (4, 0, 0) (0, 0, 0) = none := by kernel_fact

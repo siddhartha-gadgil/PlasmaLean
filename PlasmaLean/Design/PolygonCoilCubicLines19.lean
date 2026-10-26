@@ -6,14 +6,16 @@ Authors: PlasmaLean contributors
 module
 
 public import PlasmaLean.Design.PolygonCoilCubicData
+public import PlasmaLean.Design.PolygonCoilCubicLineCert
 public import PlasmaLean.Design.PolygonCoilCubicLines14
 
 /-!
 # Cubic frontier certificate: grid lines, part 19
 
 For each grid line `m` of a face (with its `t`-neighbours), the literal corner records `dCF_k`
-and the kernel evaluation (`decide +kernel`) of `lineOut4` on them. (Modules are chained only to
-bound the number of concurrent kernel processes during a build.)
+and their per-segment certificate (`line_cert`, `Design/PolygonCoilCubicLineCert`: one leaf per
+vertex step, per block of three segment and remainder steps, and per corner assembly). (Modules
+are chained only to bound the number of concurrent build processes.)
 -/
 
 @[expose] public section
@@ -53,9 +55,9 @@ def dC3_141 : List CRec := [⟨true, 1290127, -557423, 20731, 1162897, 277, 0, 0
   ⟨true, 656928, 250025, -53018, -604876, 202, 0, 0⟩,
   ⟨true, 644008, 142418, -4893, -627803, 201, 0, 0⟩]
 
-/-- Kernel check of grid line 141 of face 3. -/
+/-- Certificate of grid line 141 of face 3. -/
 theorem lC3_141 : lineOut4 offsC nSC filsDL faceC3 (1080) (1100) (1120) (1140) = dC3_141 := by
-  decide +kernel
+  line_cert
 
 /-- Corner records of grid line 142 of face 3. -/
 def dC3_142 : List CRec := [⟨true, 1271317, -545573, -172743, 1134793, 277, 0, 0⟩,
@@ -90,9 +92,9 @@ def dC3_142 : List CRec := [⟨true, 1271317, -545573, -172743, 1134793, 277, 0,
   ⟨true, 648489, 244357, 50581, -598263, 202, 0, 0⟩,
   ⟨true, 670422, 128582, 101443, -649848, 200, 0, 0⟩]
 
-/-- Kernel check of grid line 142 of face 3. -/
+/-- Certificate of grid line 142 of face 3. -/
 theorem lC3_142 : lineOut4 offsC nSC filsDL faceC3 (1100) (1120) (1140) (1160) = dC3_142 := by
-  decide +kernel
+  line_cert
 
 /-- Corner records of grid line 143 of face 3. -/
 def dC3_143 : List CRec := [⟨true, 1254697, -504167, -367889, 1087974, 276, 0, 0⟩,
@@ -127,9 +129,9 @@ def dC3_143 : List CRec := [⟨true, 1254697, -504167, -367889, 1087974, 276, 0,
   ⟨true, 637770, 229636, 154336, -574304, 201, 0, 0⟩,
   ⟨true, 695650, 105989, 209985, -654393, 200, 0, 0⟩]
 
-/-- Kernel check of grid line 143 of face 3. -/
+/-- Certificate of grid line 143 of face 3. -/
 theorem lC3_143 : lineOut4 offsC nSC filsDL faceC3 (1120) (1140) (1160) (1180) = dC3_143 := by
-  decide +kernel
+  line_cert
 
 /-- Corner records of grid line 144 of face 3. -/
 def dC3_144 : List CRec := [⟨true, 1244258, -433174, -557806, 1023874, 276, 0, 0⟩,
@@ -164,9 +166,9 @@ def dC3_144 : List CRec := [⟨true, 1244258, -433174, -557806, 1023874, 276, 0,
   ⟨true, 627584, 205828, 255844, -534469, 201, 0, 0⟩,
   ⟨true, 721132, 74672, 318231, -642489, 200, 0, 0⟩]
 
-/-- Kernel check of grid line 144 of face 3. -/
+/-- Certificate of grid line 144 of face 3. -/
 theorem lC3_144 : lineOut4 offsC nSC filsDL faceC3 (1140) (1160) (1180) (1200) = dC3_144 := by
-  decide +kernel
+  line_cert
 
 /-- Corner records of grid line 145 of face 3. -/
 def dC3_145 : List CRec := [⟨true, 1243494, -333922, -735883, 944556, 275, 0, 0⟩,
@@ -201,9 +203,9 @@ def dC3_145 : List CRec := [⟨true, 1243494, -333922, -735883, 944556, 275, 0, 
   ⟨true, 621191, 173209, 352837, -480623, 201, 0, 0⟩,
   ⟨true, 748454, 34975, 423770, -615609, 199, 0, 0⟩]
 
-/-- Kernel check of grid line 145 of face 3. -/
+/-- Certificate of grid line 145 of face 3. -/
 theorem lC3_145 : lineOut4 offsC nSC filsDL faceC3 (1160) (1180) (1200) (1220) = dC3_145 := by
-  decide +kernel
+  line_cert
 
 /-- Corner records of grid line 146 of face 3. -/
 def dC3_146 : List CRec := [⟨true, 1254831, -209028, -896096, 852582, 274, 0, 0⟩,
@@ -238,9 +240,9 @@ def dC3_146 : List CRec := [⟨true, 1254831, -209028, -896096, 852582, 274, 0, 
   ⟨true, 621724, 132353, 443247, -414948, 200, 0, 0⟩,
   ⟨true, 778974, -12464, 524342, -575582, 199, 0, 0⟩]
 
-/-- Kernel check of grid line 146 of face 3. -/
+/-- Certificate of grid line 146 of face 3. -/
 theorem lC3_146 : lineOut4 offsC nSC filsDL faceC3 (1180) (1200) (1220) (1240) = dC3_146 := by
-  decide +kernel
+  line_cert
 
 /-- Corner records of grid line 147 of face 3. -/
 def dC3_147 : List CRec := [⟨true, 1279172, -62276, -1033262, 750877, 274, 0, 0⟩,
@@ -275,9 +277,9 @@ def dC3_147 : List CRec := [⟨true, 1279172, -62276, -1033262, 750877, 274, 0, 
   ⟨true, 631515, 84105, 525239, -339860, 200, 0, 0⟩,
   ⟨true, 813511, -66737, 617882, -524517, 199, 0, 0⟩]
 
-/-- Kernel check of grid line 147 of face 3. -/
+/-- Certificate of grid line 147 of face 3. -/
 theorem lC3_147 : lineOut4 offsC nSC filsDL faceC3 (1200) (1220) (1240) (1260) = dC3_147 := by
-  decide +kernel
+  line_cert
 
 /-- Corner records of grid line 148 of face 3. -/
 def dC3_148 : List CRec := [⟨true, 1315760, 101567, -1143256, 642573, 273, 0, 0⟩,
@@ -312,9 +314,9 @@ def dC3_148 : List CRec := [⟨true, 1315760, 101567, -1143256, 642573, 273, 0, 
   ⟨true, 651495, 29547, 597256, -257936, 200, 0, 0⟩,
   ⟨true, 852120, -126700, 702571, -464724, 198, 0, 0⟩]
 
-/-- Kernel check of grid line 148 of face 3. -/
+/-- Certificate of grid line 148 of face 3. -/
 theorem lC3_148 : lineOut4 offsC nSC filsDL faceC3 (1220) (1240) (1260) (1280) = dC3_148 := by
-  decide +kernel
+  line_cert
 
 /-- Corner records of grid line 149 of face 3. -/
 def dC3_149 : List CRec := [⟨true, 1362236, 276971, -1223159, 530857, 272, 0, 0⟩,
@@ -349,9 +351,9 @@ def dC3_149 : List CRec := [⟨true, 1362236, 276971, -1223159, 530857, 272, 0, 
   ⟨true, 680993, -30043, 658034, -171824, 199, 0, 0⟩,
   ⟨true, 894099, -191019, 776857, -398638, 198, 0, 0⟩]
 
-/-- Kernel check of grid line 149 of face 3. -/
+/-- Certificate of grid line 149 of face 3. -/
 theorem lC3_149 : lineOut4 offsC nSC filsDL faceC3 (1240) (1260) (1280) (1300) = dC3_149 := by
-  decide +kernel
+  line_cert
 
 /-- Corner records of grid line 150 of face 3. -/
 def dC3_150 : List CRec := [⟨true, 1415107, 457895, -1271353, 418823, 272, 0, 0⟩,
@@ -386,9 +388,9 @@ def dC3_150 : List CRec := [⟨true, 1415107, 457895, -1271353, 418823, 272, 0, 
   ⟨true, 717930, -93240, 706627, -84169, 199, 0, 0⟩,
   ⟨true, 938087, -258210, 839487, -328739, 198, 0, 0⟩]
 
-/-- Kernel check of grid line 150 of face 3. -/
+/-- Certificate of grid line 150 of face 3. -/
 theorem lC3_150 : lineOut4 offsC nSC filsDL faceC3 (1260) (1280) (1300) (1320) = dC3_150 := by
-  decide +kernel
+  line_cert
 
 /-- Corner records of grid line 151 of face 3. -/
 def dC3_151 : List CRec := [⟨true, 1470282, 638056, -1287546, 309333, 271, 0, 0⟩,
@@ -423,9 +425,9 @@ def dC3_151 : List CRec := [⟨true, 1470282, 638056, -1287546, 309333, 271, 0, 
   ⟨true, 759359, -158520, 742401, 2458, 199, 0, 0⟩,
   ⟨true, 982246, -326699, 889512, -257486, 197, 0, 0⟩]
 
-/-- Kernel check of grid line 151 of face 3. -/
+/-- Certificate of grid line 151 of face 3. -/
 theorem lC3_151 : lineOut4 offsC nSC filsDL faceC3 (1280) (1300) (1320) (1340) = dC3_151 := by
-  decide +kernel
+  line_cert
 
 /-- Corner records of grid line 152 of face 3. -/
 def dC3_152 : List CRec := [⟨true, 1523509, 811202, -1272739, 204901, 271, 0, 0⟩,
@@ -460,9 +462,9 @@ def dC3_152 : List CRec := [⟨true, 1523509, 811202, -1272739, 204901, 271, 0, 
   ⟨true, 802080, -224308, 765043, 85626, 198, 0, 0⟩,
   ⟨true, 1024481, -394863, 926298, -187243, 197, 0, 0⟩]
 
-/-- Kernel check of grid line 152 of face 3. -/
+/-- Certificate of grid line 152 of face 3. -/
 theorem lC3_152 : lineOut4 offsC nSC filsDL faceC3 (1300) (1320) (1340) (1360) = dC3_152 := by
-  decide +kernel
+  line_cert
 
 /-- Corner records of grid line 153 of face 3. -/
 def dC3_153 : List CRec := [⟨true, 1570704, 971379, -1229133, 107597, 270, 0, 0⟩,
@@ -497,9 +499,9 @@ def dC3_153 : List CRec := [⟨true, 1570704, 971379, -1229133, 107597, 270, 0, 
   ⟨true, 842913, -289032, 774536, 163102, 198, 0, 0⟩,
   ⟨true, 1062641, -461090, 949517, -120229, 197, 0, 0⟩]
 
-/-- Kernel check of grid line 153 of face 3. -/
+/-- Certificate of grid line 153 of face 3. -/
 theorem lC3_153 : lineOut4 offsC nSC filsDL faceC3 (1320) (1340) (1360) (1380) = dC3_153 := by
-  decide +kernel
+  line_cert
 
 /-- Corner records of grid line 154 of face 3. -/
 def dC3_154 : List CRec := [⟨true, 1608179, 1113170, -1159978, 18975, 269, 0, 0⟩,
@@ -534,9 +536,9 @@ def dC3_154 : List CRec := [⟨true, 1608179, 1113170, -1159978, 18975, 269, 0, 
   ⟨true, 879058, -351169, 771155, 232895, 198, 0, 0⟩,
   ⟨true, 1094680, -523821, 959140, -58459, 196, 0, 0⟩]
 
-/-- Kernel check of grid line 154 of face 3. -/
+/-- Certificate of grid line 154 of face 3. -/
 theorem lC3_154 : lineOut4 offsC nSC filsDL faceC3 (1340) (1360) (1380) (1400) = dC3_154 := by
-  decide +kernel
+  line_cert
 
 /-- Corner records of grid line 155 of face 3. -/
 def dC3_155 : List CRec := [⟨true, 1632793, 1231907, -1069394, -59961, 269, 0, 0⟩,
@@ -571,9 +573,9 @@ def dC3_155 : List CRec := [⟨true, 1632793, 1231907, -1069394, -59961, 269, 0,
   ⟨true, 908159, -409286, 755429, 293296, 197, 0, 0⟩,
   ⟨true, 1118774, -581599, 955415, -3713, 196, 0, 0⟩]
 
-/-- Kernel check of grid line 155 of face 3. -/
+/-- Certificate of grid line 155 of face 3. -/
 theorem lC3_155 : lineOut4 offsC nSC filsDL faceC3 (1360) (1380) (1400) (1420) = dC3_155 := by
-  decide +kernel
+  line_cert
 
 /-- Corner records of grid line 156 of face 3. -/
 def dC3_156 : List CRec := [⟨true, 1641984, 1323843, -962143, -128778, 268, 0, 0⟩,
@@ -608,9 +610,9 @@ def dC3_156 : List CRec := [⟨true, 1641984, 1323843, -962143, -128778, 268, 0,
   ⟨true, 928351, -462082, 728124, 342901, 197, 0, 0⟩,
   ⟨true, 1133428, -633104, 938848, 42505, 196, 0, 0⟩]
 
-/-- Kernel check of grid line 156 of face 3. -/
+/-- Certificate of grid line 156 of face 3. -/
 theorem lC3_156 : lineOut4 offsC nSC filsDL faceC3 (1380) (1400) (1420) (1440) = dC3_156 := by
-  decide +kernel
+  line_cert
 
 /-- Corner records of grid line 157 of face 3. -/
 def dC3_157 : List CRec := [⟨true, 1633866, 1386276, -843397, -187592, 267, 0, 0⟩,
@@ -645,9 +647,9 @@ def dC3_157 : List CRec := [⟨true, 1633866, 1386276, -843397, -187592, 267, 0,
   ⟨true, 938261, -508414, 690203, 380630, 197, 0, 0⟩,
   ⟨true, 1137478, -677189, 910176, 78980, 195, 0, 0⟩]
 
-/-- Kernel check of grid line 157 of face 3. -/
+/-- Certificate of grid line 157 of face 3. -/
 theorem lC3_157 : lineOut4 offsC nSC filsDL faceC3 (1400) (1420) (1440) (1460) = dC3_157 := by
-  decide +kernel
+  line_cert
 
 /-- Corner records of grid line 158 of face 3. -/
 def dC3_158 : List CRec := [⟨true, 1607259, 1417623, -718481, -237029, 267, 0, 0⟩,
@@ -682,9 +684,9 @@ def dC3_158 : List CRec := [⟨true, 1607259, 1417623, -718481, -237029, 267, 0,
   ⟨true, 937005, -547330, 642800, 405735, 196, 0, 0⟩,
   ⟨true, 1130186, -712904, 870334, 104803, 195, 0, 0⟩]
 
-/-- Kernel check of grid line 158 of face 3. -/
+/-- Certificate of grid line 158 of face 3. -/
 theorem lC3_158 : lineOut4 offsC nSC filsDL faceC3 (1420) (1440) (1460) (1480) = dC3_158 := by
-  decide +kernel
+  line_cert
 
 /-- Corner records of grid line 159 of face 3. -/
 def dC3_159 : List CRec := [⟨true, 1561709, 1417446, -592638, -278164, 266, 0, 0⟩,
@@ -719,9 +721,9 @@ def dC3_159 : List CRec := [⟨true, 1561709, 1417446, -592638, -278164, 266, 0,
   ⟨true, 924176, -578080, 587179, 417797, 196, 0, 0⟩,
   ⟨true, 1111244, -739518, 820430, 119375, 195, 0, 0⟩]
 
-/-- Kernel check of grid line 159 of face 3. -/
+/-- Certificate of grid line 159 of face 3. -/
 theorem lC3_159 : lineOut4 offsC nSC filsDL faceC3 (1440) (1460) (1480) (1500) = dC3_159 := by
-  decide +kernel
+  line_cert
 
 /-- Corner records of grid line 160 of face 3. -/
 def dC3_160 : List CRec := [⟨true, 1497517, 1386425, -470792, -312436, 265, 0, 0⟩,
@@ -756,9 +758,9 @@ def dC3_160 : List CRec := [⟨true, 1497517, 1386425, -470792, -312436, 265, 0,
   ⟨true, 899833, -600132, 524702, 416717, 195, 0, 0⟩,
   ⟨true, 1080794, -756526, 761706, 122400, 194, 0, 0⟩]
 
-/-- Kernel check of grid line 160 of face 3. -/
+/-- Certificate of grid line 160 of face 3. -/
 theorem lC3_160 : lineOut4 offsC nSC filsDL faceC3 (1460) (1480) (1500) (1520) = dC3_160 := by
-  decide +kernel
+  line_cert
 
 /-- Corner records of grid line 161 of face 3. -/
 def dC3_161 : List CRec := [⟨true, 1415778, 1326281, -357346, -341555, 265, 0, 0⟩,
@@ -793,9 +795,9 @@ def dC3_161 : List CRec := [⟨true, 1415778, 1326281, -357346, -341555, 265, 0,
   ⟨true, 864500, -613173, 456798, 402697, 195, 0, 0⟩,
   ⟨true, 1039450, -763658, 695510, 113877, 194, 0, 0⟩]
 
-/-- Kernel check of grid line 161 of face 3. -/
+/-- Certificate of grid line 161 of face 3. -/
 theorem lC3_161 : lineOut4 offsC nSC filsDL faceC3 (1480) (1500) (1520) (1540) = dC3_161 := by
-  decide +kernel
+  line_cert
 
 /-- Corner records of grid line 162 of face 3. -/
 def dC3_162 : List CRec := [⟨true, 1318436, 1239672, -256008, -367397, 264, 0, 0⟩,
@@ -830,9 +832,9 @@ def dC3_162 : List CRec := [⟨true, 1318436, 1239672, -256008, -367397, 264, 0,
   ⟨true, 819178, -617109, 384927, 376225, 195, 0, 0⟩,
   ⟨true, 988321, -760873, 623262, 94078, 193, 0, 0⟩]
 
-/-- Kernel check of grid line 162 of face 3. -/
+/-- Certificate of grid line 162 of face 3. -/
 theorem lC3_162 : lineOut4 offsC nSC filsDL faceC3 (1500) (1520) (1540) (1560) = dC3_162 := by
-  decide +kernel
+  line_cert
 
 /-- Corner records of grid line 163 of face 3. -/
 def dC3_163 : List CRec := [⟨true, 1208397, 1130035, -169660, -391898, 263, 0, 0⟩,
@@ -867,9 +869,9 @@ def dC3_163 : List CRec := [⟨true, 1208397, 1130035, -169660, -391898, 263, 0,
   ⟨true, 765374, -612057, 310551, 338037, 194, 0, 0⟩,
   ⟨true, 929058, -748353, 546423, 63531, 193, 0, 0⟩]
 
-/-- Kernel check of grid line 163 of face 3. -/
+/-- Certificate of grid line 163 of face 3. -/
 theorem lC3_163 : lineOut4 offsC nSC filsDL faceC3 (1520) (1540) (1560) (1580) = dC3_163 := by
-  decide +kernel
+  line_cert
 
 /-- Corner records of grid line 164 of face 3. -/
 def dC3_164 : List CRec := [⟨true, 1089736, 1001421, -100261, -416945, 263, 0, 0⟩,
@@ -904,9 +906,9 @@ def dC3_164 : List CRec := [⟨true, 1089736, 1001421, -100261, -416945, 263, 0,
   ⟨true, 705177, -598331, 235110, 289098, 194, 0, 0⟩,
   ⟨true, 863920, -726488, 466470, 22990, 193, 0, 0⟩]
 
-/-- Kernel check of grid line 164 of face 3. -/
+/-- Certificate of grid line 164 of face 3. -/
 theorem lC3_164 : lineOut4 offsC nSC filsDL faceC3 (1540) (1560) (1580) (1600) = dC3_164 := by
-  decide +kernel
+  line_cert
 
 /-- Corner records of grid line 165 of face 3. -/
 def dC3_165 : List CRec := [⟨true, 968060, 858301, -48810, -444277, 262, 0, 0⟩,
@@ -941,9 +943,9 @@ def dC3_165 : List CRec := [⟨true, 968060, 858301, -48810, -444277, 262, 0, 0�
   ⟨true, 641392, -576424, 159992, 230561, 194, 0, 0⟩,
   ⟨true, 795900, -695859, 384864, -26594, 192, 0, 0⟩]
 
-/-- Kernel check of grid line 165 of face 3. -/
+/-- Certificate of grid line 165 of face 3. -/
 theorem lC3_165 : lineOut4 offsC nSC filsDL faceC3 (1560) (1580) (1600) (1620) = dC3_165 := by
-  decide +kernel
+  line_cert
 
 /-- Corner records of grid line 166 of face 3. -/
 def dC3_166 : List CRec := [⟨true, 851112, 705365, -15338, -475396, 261, 0, 0⟩,
@@ -978,9 +980,9 @@ def dC3_166 : List CRec := [⟨true, 851112, 705365, -15338, -475396, 261, 0, 0�
   ⟨true, 577746, -546988, 86516, 163733, 193, 0, 0⟩,
   ⟨true, 728846, -657214, 303029, -84104, 192, 0, 0⟩]
 
-/-- Kernel check of grid line 166 of face 3. -/
+/-- Certificate of grid line 166 of face 3. -/
 theorem lC3_166 : lineOut4 offsC nSC filsDL faceC3 (1580) (1600) (1620) (1640) = dC3_166 := by
-  decide +kernel
+  line_cert
 
 /-- Corner records of grid line 167 of face 3. -/
 def dC3_167 : List CRec := [⟨true, 749489, 547331, 1044, -511487, 261, 0, 0⟩,
@@ -1015,9 +1017,9 @@ def dC3_167 : List CRec := [⟨true, 749489, 547331, 1044, -511487, 261, 0, 0⟩
   ⟨true, 519159, -510814, 15910, 90046, 193, 0, 0⟩,
   ⟨true, 667566, -611441, 222330, -148290, 192, 0, 0⟩]
 
-/-- Kernel check of grid line 167 of face 3. -/
+/-- Certificate of grid line 167 of face 3. -/
 theorem lC3_167 : lineOut4 offsC nSC filsDL faceC3 (1600) (1620) (1640) (1660) = dC3_167 := by
-  decide +kernel
+  line_cert
 
 /-- Corner records of grid line 168 of face 3. -/
 def dC3_168 : List CRec := [⟨true, 676627, 388754, 2065, -553362, 260, 0, 0⟩,
@@ -1052,9 +1054,9 @@ def dC3_168 : List CRec := [⟨true, 676627, 388754, 2065, -553362, 260, 0, 0⟩
   ⟨true, 471872, -468797, -50702, 11013, 193, 0, 0⟩,
   ⟨true, 617756, -559548, 144050, -217800, 191, 0, 0⟩]
 
-/-- Kernel check of grid line 168 of face 3. -/
+/-- Certificate of grid line 168 of face 3. -/
 theorem lC3_168 : lineOut4 offsC nSC filsDL faceC3 (1620) (1640) (1660) (1680) = dC3_168 := by
-  decide +kernel
+  line_cert
 
 /-- Corner records of grid line 169 of face 3. -/
 def dC3_169 : List CRec := [⟨true, 645683, 233855, -9822, -601411, 259, 0, 0⟩,
@@ -1089,9 +1091,9 @@ def dC3_169 : List CRec := [⟨true, 645683, 233855, -9822, -601411, 259, 0, 0�
   ⟨true, 442733, -421921, -112312, -71800, 192, 0, 0⟩,
   ⟨true, 585298, -502627, 69379, -291216, 191, 0, 0⟩]
 
-/-- Kernel check of grid line 169 of face 3. -/
+/-- Certificate of grid line 169 of face 3. -/
 theorem lC3_169 : lineOut4 offsC nSC filsDL faceC3 (1640) (1660) (1680) (1700) = dC3_169 := by
-  decide +kernel
+  line_cert
 
 /-- Corner records of grid line 170 of face 3. -/
 def dC3_170 : List CRec := [⟨true, 662295, 86375, -31583, -655584, 259, 0, 0⟩,
@@ -1126,9 +1128,9 @@ def dC3_170 : List CRec := [⟨true, 662295, 86375, -31583, -655584, 259, 0, 0�
   ⟨true, 436911, -371224, -168045, -156807, 192, 0, 0⟩,
   ⟨true, 574686, -441830, -606, -367082, 191, 0, 0⟩]
 
-/-- Kernel check of grid line 170 of face 3. -/
+/-- Certificate of grid line 170 of face 3. -/
 theorem lC3_170 : lineOut4 offsC nSC filsDL faceC3 (1660) (1680) (1700) (1720) = dC3_170 := by
-  decide +kernel
+  line_cert
 
 /-- Corner records of grid line 171 of face 3. -/
 def dC3_171 : List CRec := [⟨true, 719937, -50544, -59770, -715383, 258, 0, 0⟩,
@@ -1163,9 +1165,9 @@ def dC3_171 : List CRec := [⟨true, 719937, -50544, -59770, -715383, 258, 0, 0�
   ⟨true, 455191, -317778, -217156, -242436, 192, 0, 0⟩,
   ⟨true, 587167, -378341, -64948, -443936, 190, 0, 0⟩]
 
-/-- Kernel check of grid line 171 of face 3. -/
+/-- Certificate of grid line 171 of face 3. -/
 theorem lC3_171 : lineOut4 offsC nSC filsDL faceC3 (1680) (1700) (1720) (1740) = dC3_171 := by
-  decide +kernel
+  line_cert
 
 /-- Corner records of grid line 172 of face 3. -/
 def dC3_172 : List CRec := [⟨true, 804602, -174445, -90691, -779878, 257, 0, 0⟩,
@@ -1200,8 +1202,8 @@ def dC3_172 : List CRec := [⟨true, 804602, -174445, -90691, -779878, 257, 0, 0
   ⟨true, 493386, -262660, -259042, -327153, 191, 0, 0⟩,
   ⟨true, 619978, -313347, -122821, -520339, 190, 0, 0⟩]
 
-/-- Kernel check of grid line 172 of face 3. -/
+/-- Certificate of grid line 172 of face 3. -/
 theorem lC3_172 : lineOut4 offsC nSC filsDL faceC3 (1700) (1720) (1740) (1760) = dC3_172 := by
-  decide +kernel
+  line_cert
 
 end PlasmaLean.Design.PolygonCoil

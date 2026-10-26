@@ -9,7 +9,7 @@ usage: cubic_emit.py design.pkl spec.json
 * computes every line record with `cubic_cert.line_out4` (bit-for-bit replica of `lineOut4`),
 * checks every cell with `cell_ok_full` (replica of `cellOK4`),
 * writes `PlasmaLean/Design/PolygonCoilCubicData.lean` (coil and face data),
-  `PolygonCoilCubicLinesNN.lean` (line data and kernel checks, chained to bound the number of
+  `PolygonCoilCubicLinesNN.lean` (line data and `line_cert` certificates, chained to bound the number of
   concurrent build processes), `PolygonCoilCubicCellsF.lean` (cell checks) and
   `PolygonCoilCubicCover.lean` (assembly).
 
@@ -169,23 +169,25 @@ checked by the kernel:
         names.append(name)
         prev = c - nchains
         imp = 'public import PlasmaLean.Design.PolygonCoilCubicData'
+        imp += '\npublic import PlasmaLean.Design.PolygonCoilCubicLineCert'
         if prev >= 0:
             imp += '\npublic import PlasmaLean.Design.' + names[prev]
         T = [HDR, imp, '', '''/-!
 # Cubic frontier certificate: grid lines, part %d
 
 For each grid line `m` of a face (with its `t`-neighbours), the literal corner records `dCF_k`
-and the kernel evaluation (`decide +kernel`) of `lineOut4` on them. (Modules are chained only to
-bound the number of concurrent kernel processes during a build.)
+and their per-segment certificate (`line_cert`, `Design/PolygonCoilCubicLineCert`: one leaf per
+vertex step, per block of three segment and remainder steps, and per corner assembly). (Modules
+are chained only to bound the number of concurrent build processes.)
 -/''' % c, '', '@[expose] public section', '', 'namespace PlasmaLean.Design.PolygonCoil', '']
         for (kind, k, p, Ls) in chunk:
             T.append('/-- Corner records of grid line %d of face %d. -/' % (k, kind))
             T.append('def dC%d_%d : List CRec := [' % (kind, k) + ',\n  '.join(rec(r) for r in Ls) + ']')
             T.append('')
-            T.append('/-- Kernel check of grid line %d of face %d. -/' % (k, kind))
+            T.append('/-- Certificate of grid line %d of face %d. -/' % (k, kind))
             T.append(wrap('theorem lC%d_%d : lineOut4 offsC nSC filsDL faceC%d (%d) (%d) (%d) (%d) = dC%d_%d := by'
                           % (kind, k, kind, p[0], p[1], p[2], p[3], kind, k)))
-            T.append('  decide +kernel')
+            T.append('  line_cert')
             T.append('')
         T.append('end PlasmaLean.Design.PolygonCoil')
         open(OUT + name + '.lean', 'w').write('\n'.join(T) + '\n')

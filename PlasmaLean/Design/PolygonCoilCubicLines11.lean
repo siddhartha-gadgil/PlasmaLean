@@ -6,14 +6,16 @@ Authors: PlasmaLean contributors
 module
 
 public import PlasmaLean.Design.PolygonCoilCubicData
+public import PlasmaLean.Design.PolygonCoilCubicLineCert
 public import PlasmaLean.Design.PolygonCoilCubicLines06
 
 /-!
 # Cubic frontier certificate: grid lines, part 11
 
 For each grid line `m` of a face (with its `t`-neighbours), the literal corner records `dCF_k`
-and the kernel evaluation (`decide +kernel`) of `lineOut4` on them. (Modules are chained only to
-bound the number of concurrent kernel processes during a build.)
+and their per-segment certificate (`line_cert`, `Design/PolygonCoilCubicLineCert`: one leaf per
+vertex step, per block of three segment and remainder steps, and per corner assembly). (Modules
+are chained only to bound the number of concurrent build processes.)
 -/
 
 @[expose] public section
@@ -53,9 +55,9 @@ def dC2_56 : List CRec := [⟨true, 1237895, 573773, 483716, -983878, 291, 0, 0�
   ⟨true, 707431, -152715, 552301, -414294, 213, 0, 0⟩,
   ⟨true, 739315, -139315, 659646, -302651, 211, 0, 0⟩]
 
-/-- Kernel check of grid line 56 of face 2. -/
+/-- Certificate of grid line 56 of face 2. -/
 theorem lC2_56 : lineOut4 offsC nSC filsDL faceC2 (-620) (-600) (-580) (-560) = dC2_56 := by
-  decide +kernel
+  line_cert
 
 /-- Corner records of grid line 57 of face 2. -/
 def dC2_57 : List CRec := [⟨true, 1313663, 572766, 612929, -1010303, 291, 0, 0⟩,
@@ -90,9 +92,9 @@ def dC2_57 : List CRec := [⟨true, 1313663, 572766, 612929, -1010303, 291, 0, 0
   ⟨true, 657943, -155449, 580412, -267274, 213, 0, 0⟩,
   ⟨true, 695112, -138105, 668794, -128234, 211, 0, 0⟩]
 
-/-- Kernel check of grid line 57 of face 2. -/
+/-- Certificate of grid line 57 of face 2. -/
 theorem lC2_57 : lineOut4 offsC nSC filsDL faceC2 (-600) (-580) (-560) (-540) = dC2_57 := by
-  decide +kernel
+  line_cert
 
 /-- Corner records of grid line 58 of face 2. -/
 def dC2_58 : List CRec := [⟨true, 1373233, 549950, 743570, -1014450, 291, 0, 0⟩,
@@ -127,9 +129,9 @@ def dC2_58 : List CRec := [⟨true, 1373233, 549950, 743570, -1014450, 291, 0, 0
   ⟨true, 621412, -149989, 592155, -112517, 213, 0, 0⟩,
   ⟨true, 674506, -128702, 659812, 52001, 211, 0, 0⟩]
 
-/-- Kernel check of grid line 58 of face 2. -/
+/-- Certificate of grid line 58 of face 2. -/
 theorem lC2_58 : lineOut4 offsC nSC filsDL faceC2 (-580) (-560) (-540) (-520) = dC2_58 := by
-  decide +kernel
+  line_cert
 
 /-- Corner records of grid line 59 of face 2. -/
 def dC2_59 : List CRec := [⟨true, 1414341, 506796, 868822, -993638, 291, 0, 0⟩,
@@ -164,9 +166,9 @@ def dC2_59 : List CRec := [⟨true, 1414341, 506796, 868822, -993638, 291, 0, 0�
   ⟨true, 604973, -135911, 587493, 45383, 213, 0, 0⟩,
   ⟨true, 683834, -110844, 632980, 232983, 211, 0, 0⟩]
 
-/-- Kernel check of grid line 59 of face 2. -/
+/-- Certificate of grid line 59 of face 2. -/
 theorem lC2_59 : lineOut4 offsC nSC filsDL faceC2 (-560) (-540) (-520) (-500) = dC2_59 := by
-  decide +kernel
+  line_cert
 
 /-- Corner records of grid line 60 of face 2. -/
 def dC2_60 : List CRec := [⟨true, 1435213, 445870, 982044, -946189, 291, 0, 0⟩,
@@ -201,9 +203,9 @@ def dC2_60 : List CRec := [⟨true, 1435213, 445870, 982044, -946189, 291, 0, 0�
   ⟨true, 612582, -113214, 566914, 201712, 213, 0, 0⟩,
   ⟨true, 722809, -84687, 589140, 409575, 211, 0, 0⟩]
 
-/-- Kernel check of grid line 60 of face 2. -/
+/-- Certificate of grid line 60 of face 2. -/
 theorem lC2_60 : lineOut4 offsC nSC filsDL faceC2 (-540) (-520) (-500) (-480) = dC2_60 := by
-  decide +kernel
+  line_cert
 
 /-- Corner records of grid line 61 of face 2. -/
 def dC2_61 : List CRec := [⟨true, 1434712, 370666, 1077102, -871515, 291, 0, 0⟩,
@@ -238,9 +240,9 @@ def dC2_61 : List CRec := [⟨true, 1434712, 370666, 1077102, -871515, 291, 0, 0
   ⟨true, 642905, -82327, 531405, 351796, 213, 0, 0⟩,
   ⟨true, 785001, -50817, 529658, 576742, 211, 0, 0⟩]
 
-/-- Kernel check of grid line 61 of face 2. -/
+/-- Certificate of grid line 61 of face 2. -/
 theorem lC2_61 : lineOut4 offsC nSC filsDL faceC2 (-520) (-500) (-480) (-460) = dC2_61 := by
-  decide +kernel
+  line_cert
 
 /-- Corner records of grid line 62 of face 2. -/
 def dC2_62 : List CRec := [⟨true, 1412534, 285373, 1148665, -770152, 291, 0, 0⟩,
@@ -275,9 +277,9 @@ def dC2_62 : List CRec := [⟨true, 1412534, 285373, 1148665, -770152, 291, 0, 0
   ⟨true, 690166, -44112, 482415, 491159, 213, 0, 0⟩,
   ⟨true, 861023, -10234, 456376, 729715, 211, 0, 0⟩]
 
-/-- Kernel check of grid line 62 of face 2. -/
+/-- Certificate of grid line 62 of face 2. -/
 theorem lC2_62 : lineOut4 offsC nSC filsDL faceC2 (-500) (-480) (-460) (-440) = dC2_62 := by
-  decide +kernel
+  line_cert
 
 /-- Corner records of grid line 63 of face 2. -/
 def dC2_63 : List CRec := [⟨true, 1369436, 194623, 1192443, -643746, 291, 0, 0⟩,
@@ -312,9 +314,9 @@ def dC2_63 : List CRec := [⟨true, 1369436, 194623, 1192443, -643746, 291, 0, 0
   ⟨true, 746593, 171, 421793, 615679, 213, 0, 0⟩,
   ⟨true, 941597, 35679, 371546, 864152, 211, 0, 0⟩]
 
-/-- Kernel check of grid line 63 of face 2. -/
+/-- Certificate of grid line 63 of face 2. -/
 theorem lC2_63 : lineOut4 offsC nSC filsDL faceC2 (-480) (-460) (-440) (-420) = dC2_63 := by
-  decide +kernel
+  line_cert
 
 /-- Corner records of grid line 64 of face 2. -/
 def dC2_64 : List CRec := [⟨true, 1307517, 103202, 1205376, -494979, 291, 0, 0⟩,
@@ -349,9 +351,9 @@ def dC2_64 : List CRec := [⟨true, 1307517, 103202, 1205376, -494979, 291, 0, 0
   ⟨true, 804642, 48908, 351717, 721723, 213, 0, 0⟩,
   ⟨true, 1018865, 85207, 277753, 976279, 211, 0, 0⟩]
 
-/-- Kernel check of grid line 64 of face 2. -/
+/-- Certificate of grid line 64 of face 2. -/
 theorem lC2_64 : lineOut4 offsC nSC filsDL faceC2 (-460) (-440) (-420) (-400) = dC2_64 := by
-  decide +kernel
+  line_cert
 
 /-- Corner records of grid line 65 of face 2. -/
 def dC2_65 : List CRec := [⟨true, 1230575, 15774, 1185739, -327465, 291, 0, 0⟩,
@@ -386,9 +388,9 @@ def dC2_65 : List CRec := [⟨true, 1230575, 15774, 1185739, -327465, 291, 0, 0�
   ⟨true, 857917, 100194, 274616, 806272, 213, 0, 0⟩,
   ⟨true, 1086638, 136368, 177817, 1063010, 211, 0, 0⟩]
 
-/-- Kernel check of grid line 65 of face 2. -/
+/-- Certificate of grid line 65 of face 2. -/
 theorem lC2_65 : lineOut4 offsC nSC filsDL faceC2 (-440) (-420) (-400) (-380) = dC2_65 := by
-  decide +kernel
+  line_cert
 
 /-- Corner records of grid line 66 of face 2. -/
 def dC2_66 : List CRec := [⟨true, 1144587, -63385, 1133189, -145586, 290, 0, 0⟩,
@@ -423,9 +425,9 @@ def dC2_66 : List CRec := [⟨true, 1144587, -63385, 1133189, -145586, 290, 0, 0
   ⟨true, 901435, 151912, 193080, 867017, 213, 0, 0⟩,
   ⟨true, 1140230, 187005, 74701, 1122048, 211, 0, 0⟩]
 
-/-- Kernel check of grid line 66 of face 2. -/
+/-- Certificate of grid line 66 of face 2. -/
 theorem lC2_66 : lineOut4 offsC nSC filsDL faceC2 (-420) (-400) (-380) (-360) = dC2_66 := by
-  decide +kernel
+  line_cert
 
 /-- Corner records of grid line 67 of face 2. -/
 def dC2_67 : List CRec := [⟨true, 1058140, -130624, 1048727, 45683, 290, 0, 0⟩,
@@ -460,9 +462,9 @@ def dC2_67 : List CRec := [⟨true, 1058140, -130624, 1048727, 45683, 290, 0, 0�
   ⟨true, 931495, 201827, 109760, 902436, 213, 0, 0⟩,
   ⟨true, 1176254, 234870, -28593, 1151954, 211, 0, 0⟩]
 
-/-- Kernel check of grid line 67 of face 2. -/
+/-- Certificate of grid line 67 of face 2. -/
 theorem lC2_67 : lineOut4 offsC nSC filsDL faceC2 (-400) (-380) (-360) (-340) = dC2_67 := by
-  decide +kernel
+  line_cert
 
 /-- Corner records of grid line 68 of face 2. -/
 def dC2_68 : List CRec := [⟨true, 982776, -183100, 934605, 240984, 290, 0, 0⟩,
@@ -497,9 +499,9 @@ def dC2_68 : List CRec := [⟨true, 982776, -183100, 934605, 240984, 290, 0, 0�
   ⟨true, 945530, 247680, 27283, 911831, 212, 0, 0⟩,
   ⟨true, 1192471, 277726, -129128, 1152184, 211, 0, 0⟩]
 
-/-- Kernel check of grid line 68 of face 2. -/
+/-- Certificate of grid line 68 of face 2. -/
 theorem lC2_68 : lineOut4 offsC nSC filsDL faceC2 (-380) (-360) (-340) (-320) = dC2_68 := by
-  decide +kernel
+  line_cert
 
 /-- Corner records of grid line 69 of face 2. -/
 def dC2_69 : List CRec := [⟨true, 931929, -218913, 794171, 434793, 290, 0, 0⟩,
@@ -534,9 +536,9 @@ def dC2_69 : List CRec := [⟨true, 931929, -218913, 794171, 434793, 290, 0, 0�
   ⟨true, 942017, 287289, -51849, 895350, 212, 0, 0⟩,
   ⟨true, 1187657, 313452, -224133, 1123098, 211, 0, 0⟩]
 
-/-- Kernel check of grid line 69 of face 2. -/
+/-- Certificate of grid line 69 of face 2. -/
 theorem lC2_69 : lineOut4 offsC nSC filsDL faceC2 (-360) (-340) (-320) (-300) = dC2_69 := by
-  decide +kernel
+  line_cert
 
 /-- Corner records of grid line 70 of face 2. -/
 def dC2_70 : List CRec := [⟨true, 917891, -237181, 631664, 621630, 290, 0, 0⟩,
@@ -571,9 +573,9 @@ def dC2_70 : List CRec := [⟨true, 917891, -237181, 631664, 621630, 290, 0, 0�
   ⟨true, 920350, 318652, -125336, 853962, 212, 0, 0⟩,
   ⟨true, 1161637, 340134, -311087, 1065936, 211, 0, 0⟩]
 
-/-- Kernel check of grid line 70 of face 2. -/
+/-- Certificate of grid line 70 of face 2. -/
 theorem lC2_70 : lineOut4 offsC nSC filsDL faceC2 (-340) (-320) (-300) (-280) = dC2_70 := by
-  decide +kernel
+  line_cert
 
 /-- Corner records of grid line 71 of face 2. -/
 def dC2_71 : List CRec := [⟨true, 946493, -238038, 451987, 796271, 290, 0, 0⟩,
@@ -608,9 +610,9 @@ def dC2_71 : List CRec := [⟨true, 946493, -238038, 451987, 796271, 290, 0, 0�
   ⟨true, 880850, 340031, -191162, 789417, 212, 0, 0⟩,
   ⟨true, 1115249, 356160, -387811, 982760, 211, 0, 0⟩]
 
-/-- Kernel check of grid line 71 of face 2. -/
+/-- Certificate of grid line 71 of face 2. -/
 theorem lC2_71 : lineOut4 offsC nSC filsDL faceC2 (-320) (-300) (-280) (-260) = dC2_71 := by
-  decide +kernel
+  line_cert
 
 /-- Corner records of grid line 72 of face 2. -/
 def dC2_72 : List CRec := [⟨true, 1013996, -222589, 260454, 953930, 289, 0, 0⟩,
@@ -645,9 +647,9 @@ def dC2_72 : List CRec := [⟨true, 1013996, -222589, 260454, 953930, 289, 0, 0�
   ⟨true, 824782, 350042, -247658, 704172, 212, 0, 0⟩,
   ⟨true, 1050392, 360298, -452526, 876373, 211, 0, 0⟩]
 
-/-- Kernel check of grid line 72 of face 2. -/
+/-- Certificate of grid line 72 of face 2. -/
 theorem lC2_72 : lineOut4 offsC nSC filsDL faceC2 (-300) (-280) (-260) (-240) = dC2_72 := by
-  decide +kernel
+  line_cert
 
 /-- Corner records of grid line 73 of face 2. -/
 def dC2_73 : List CRec := [⟨true, 1109452, -192794, 62540, 1090425, 289, 0, 0⟩,
@@ -682,9 +684,9 @@ def dC2_73 : List CRec := [⟨true, 1109452, -192794, 62540, 1090425, 289, 0, 0�
   ⟨true, 754416, 347716, -293549, 601289, 212, 0, 0⟩,
   ⟨true, 970125, 351755, -503915, 750214, 211, 0, 0⟩]
 
-/-- Kernel check of grid line 73 of face 2. -/
+/-- Certificate of grid line 73 of face 2. -/
 theorem lC2_73 : lineOut4 offsC nSC filsDL faceC2 (-280) (-260) (-240) (-220) = dC2_73 := by
-  decide +kernel
+  line_cert
 
 /-- Corner records of grid line 74 of face 2. -/
 def dC2_74 : List CRec := [⟨true, 1219782, -151313, -136360, 1202299, 289, 0, 0⟩,
@@ -719,9 +721,9 @@ def dC2_74 : List CRec := [⟨true, 1219782, -151313, -136360, 1202299, 289, 0, 
   ⟨true, 673214, 332554, -327991, 484325, 212, 0, 0⟩,
   ⟨true, 878883, 330226, -541148, 608225, 210, 0, 0⟩]
 
-/-- Kernel check of grid line 74 of face 2. -/
+/-- Certificate of grid line 74 of face 2. -/
 theorem lC2_74 : lineOut4 offsC nSC filsDL faceC2 (-260) (-240) (-220) (-200) = dC2_74 := by
-  decide +kernel
+  line_cert
 
 /-- Corner records of grid line 75 of face 2. -/
 def dC2_75 : List CRec := [⟨true, 1333066, -101314, -331147, 1286918, 289, 0, 0⟩,
@@ -756,9 +758,9 @@ def dC2_75 : List CRec := [⟨true, 1333066, -101314, -331147, 1286918, 289, 0, 
   ⟨true, 586238, 304554, -350589, 357199, 212, 0, 0⟩,
   ⟨true, 782856, 295913, -563911, 454717, 210, 0, 0⟩]
 
-/-- Kernel check of grid line 75 of face 2. -/
+/-- Certificate of grid line 75 of face 2. -/
 theorem lC2_75 : lineOut4 offsC nSC filsDL faceC2 (-240) (-220) (-200) (-180) = dC2_75 := by
-  decide +kernel
+  line_cert
 
 /-- Corner records of grid line 76 of face 2. -/
 def dC2_76 : List CRec := [⟨true, 1439823, -46262, -517203, 1342522, 289, 0, 0⟩,
@@ -793,9 +795,9 @@ def dC2_76 : List CRec := [⟨true, 1439823, -46262, -517203, 1342522, 289, 0, 0
   ⟨true, 500964, 264221, -361393, 224047, 212, 0, 0⟩,
   ⟨true, 690591, 249532, -572393, 294215, 210, 0, 0⟩]
 
-/-- Kernel check of grid line 76 of face 2. -/
+/-- Certificate of grid line 76 of face 2. -/
 theorem lC2_76 : lineOut4 offsC nSC filsDL faceC2 (-220) (-200) (-180) (-160) = dC2_76 := by
-  decide +kernel
+  line_cert
 
 /-- Corner records of grid line 77 of face 2. -/
 def dC2_77 : List CRec := [⟨true, 1533037, 10300, -690531, 1368243, 289, 0, 0⟩,
@@ -830,9 +832,9 @@ def dC2_77 : List CRec := [⟨true, 1533037, 10300, -690531, 1368243, 289, 0, 0�
   ⟨true, 428517, 212556, -360888, 89083, 212, 0, 0⟩,
   ⟨true, 613496, 192292, -567275, 131306, 210, 0, 0⟩]
 
-/-- Kernel check of grid line 77 of face 2. -/
+/-- Certificate of grid line 77 of face 2. -/
 theorem lC2_77 : lineOut4 offsC nSC filsDL faceC2 (-200) (-180) (-160) (-140) = dC2_77 := by
-  decide +kernel
+  line_cert
 
 /-- Corner records of grid line 78 of face 2. -/
 def dC2_78 : List CRec := [⟨true, 1607823, 64958, -847857, 1364085, 289, 0, 0⟩,
@@ -867,9 +869,9 @@ def dC2_78 : List CRec := [⟨true, 1607823, 64958, -847857, 1364085, 289, 0, 0�
   ⟨true, 383921, 151021, -349959, -43549, 212, 0, 0⟩,
   ⟨true, 564933, 125853, -549689, -29513, 210, 0, 0⟩]
 
-/-- Kernel check of grid line 78 of face 2. -/
+/-- Certificate of grid line 78 of face 2. -/
 theorem lC2_78 : lineOut4 offsC nSC filsDL faceC2 (-180) (-160) (-140) (-120) = dC2_78 := by
-  decide +kernel
+  line_cert
 
 /-- Corner records of grid line 79 of face 2. -/
 def dC2_79 : List CRec := [⟨true, 1661108, 114621, -986681, 1330876, 289, 0, 0⟩,
@@ -904,9 +906,9 @@ def dC2_79 : List CRec := [⟨true, 1661108, 114621, -986681, 1330876, 289, 0, 0
   ⟨true, 380190, 81489, -329844, -169913, 212, 0, 0⟩,
   ⟨true, 555428, 52269, -521169, -183979, 210, 0, 0⟩]
 
-/-- Kernel check of grid line 79 of face 2. -/
+/-- Certificate of grid line 79 of face 2. -/
 theorem lC2_79 : lineOut4 offsC nSC filsDL faceC2 (-160) (-140) (-120) (-100) = dC2_79 := by
-  decide +kernel
+  line_cert
 
 /-- Corner records of grid line 80 of face 2. -/
 def dC2_80 : List CRec := [⟨true, 1691461, 156673, -1105296, 1270192, 289, 0, 0⟩,
@@ -941,9 +943,9 @@ def dC2_80 : List CRec := [⟨true, 1691461, 156673, -1105296, 1270192, 289, 0, 
   ⟨true, 416603, 6175, -302082, -286399, 212, 0, 0⟩,
   ⟨true, 585299, -26089, -483582, -328186, 210, 0, 0⟩]
 
-/-- Kernel check of grid line 80 of face 2. -/
+/-- Certificate of grid line 80 of face 2. -/
 theorem lC2_80 : lineOut4 offsC nSC filsDL faceC2 (-140) (-120) (-100) (-80) = dC2_80 := by
-  decide +kernel
+  line_cert
 
 /-- Corner records of grid line 81 of face 2. -/
 def dC2_81 : List CRec := [⟨true, 1698908, 189094, -1202756, 1184256, 289, 0, 0⟩,
@@ -978,9 +980,9 @@ def dC2_81 : List CRec := [⟨true, 1698908, 189094, -1202756, 1184256, 289, 0, 
   ⟨true, 479150, -72448, -268442, -389840, 212, 0, 0⟩,
   ⟨true, 644175, -106622, -439058, -458709, 210, 0, 0⟩]
 
-/-- Kernel check of grid line 81 of face 2. -/
+/-- Certificate of grid line 81 of face 2. -/
 theorem lC2_81 : lineOut4 offsC nSC filsDL faceC2 (-120) (-100) (-80) (-60) = dC2_81 := by
-  decide +kernel
+  line_cert
 
 /-- Corner records of grid line 82 of face 2. -/
 def dC2_82 : List CRec := [⟨true, 1684805, 210528, -1278828, 1075828, 289, 0, 0⟩,
@@ -1015,9 +1017,9 @@ def dC2_82 : List CRec := [⟨true, 1684805, 210528, -1278828, 1075828, 289, 0, 
   ⟨true, 552064, -151742, -230851, -477600, 211, 0, 0⟩,
   ⟨true, 717832, -186598, -389904, -572687, 210, 0, 0⟩]
 
-/-- Kernel check of grid line 82 of face 2. -/
+/-- Certificate of grid line 82 of face 2. -/
 theorem lC2_82 : lineOut4 offsC nSC filsDL faceC2 (-100) (-80) (-60) (-40) = dC2_82 := by
-  decide +kernel
+  line_cert
 
 /-- Corner records of grid line 83 of face 2. -/
 def dC2_83 : List CRec := [⟨true, 1651702, 220310, -1333910, 948087, 289, 0, 0⟩,
@@ -1052,9 +1054,9 @@ def dC2_83 : List CRec := [⟨true, 1651702, 220310, -1333910, 948087, 289, 0, 0
   ⟨true, 623985, -229006, -191318, -547641, 211, 0, 0⟩,
   ⟨true, 794043, -263259, -338520, -667895, 210, 0, 0⟩]
 
-/-- Kernel check of grid line 83 of face 2. -/
+/-- Certificate of grid line 83 of face 2. -/
 theorem lC2_83 : lineOut4 offsC nSC filsDL faceC2 (-80) (-60) (-40) (-20) = dC2_83 := by
-  decide +kernel
+  line_cert
 
 /-- Corner records of grid line 84 of face 2. -/
 def dC2_84 : List CRec := [⟨true, 1603209, 218447, -1368941, 804502, 289, 0, 0⟩,
@@ -1089,9 +1091,9 @@ def dC2_84 : List CRec := [⟨true, 1603209, 218447, -1368941, 804502, 289, 0, 0
   ⟨true, 687551, -301572, -151857, -598569, 211, 0, 0⟩,
   ⟨true, 863912, -333923, -287309, -742787, 210, 0, 0⟩]
 
-/-- Kernel check of grid line 84 of face 2. -/
+/-- Certificate of grid line 84 of face 2. -/
 theorem lC2_84 : lineOut4 offsC nSC filsDL faceC2 (-60) (-40) (-20) (0) = dC2_84 := by
-  decide +kernel
+  line_cert
 
 /-- Corner records of grid line 85 of face 2. -/
 def dC2_85 : List CRec := [⟨true, 1543831, 205558, -1385308, 648719, 289, 0, 0⟩,
@@ -1126,9 +1128,9 @@ def dC2_85 : List CRec := [⟨true, 1543831, 205558, -1385308, 648719, 289, 0, 0
   ⟨true, 737997, -366911, -114415, -629653, 211, 0, 0⟩,
   ⟨true, 921324, -396086, -238595, -796516, 210, 0, 0⟩]
 
-/-- Kernel check of grid line 85 of face 2. -/
+/-- Certificate of grid line 85 of face 2. -/
 theorem lC2_85 : lineOut4 offsC nSC filsDL faceC2 (-40) (-20) (0) (20) = dC2_85 := by
-  decide +kernel
+  line_cert
 
 /-- Corner records of grid line 86 of face 2. -/
 def dC2_86 : List CRec := [⟨true, 1478763, 182781, -1384742, 484440, 289, 0, 0⟩,
@@ -1163,9 +1165,9 @@ def dC2_86 : List CRec := [⟨true, 1478763, 182781, -1384742, 484440, 289, 0, 0
   ⟨true, 772241, -422722, -80795, -640826, 211, 0, 0⟩,
   ⟨true, 962205, -447511, -194543, -828927, 210, 0, 0⟩]
 
-/-- Kernel check of grid line 86 of face 2. -/
+/-- Certificate of grid line 86 of face 2. -/
 theorem lC2_86 : lineOut4 offsC nSC filsDL faceC2 (-20) (0) (20) (40) = dC2_86 := by
-  decide +kernel
+  line_cert
 
 /-- Corner records of grid line 87 of face 2. -/
 def dC2_87 : List CRec := [⟨true, 1413598, 151664, -1369239, 315324, 289, 0, 0⟩,
@@ -1200,8 +1202,8 @@ def dC2_87 : List CRec := [⟨true, 1413598, 151664, -1369239, 315324, 289, 0, 0
   ⟨true, 788420, -467022, -52603, -632652, 211, 0, 0⟩,
   ⟨true, 984009, -486316, -157085, -840525, 210, 0, 0⟩]
 
-/-- Kernel check of grid line 87 of face 2. -/
+/-- Certificate of grid line 87 of face 2. -/
 theorem lC2_87 : lineOut4 offsC nSC filsDL faceC2 (0) (20) (40) (60) = dC2_87 := by
-  decide +kernel
+  line_cert
 
 end PlasmaLean.Design.PolygonCoil
