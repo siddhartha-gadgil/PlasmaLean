@@ -1,7 +1,8 @@
 /-
 Axiom check for heavy certificates kept out of the default build (on-demand top modules).
 Build the top modules first, `lake build PlasmaLean.Design.RationalStellaratorGCEwFamily` and
-`lake build PlasmaLean.Design.RationalStellaratorGCMuWide`,
+`lake build PlasmaLean.Design.RationalStellaratorGCMuWide` and
+`lake build PlasmaLean.Design.RationalStellaratorGCMuQuarter`,
 then run `lake env lean scripts/check_axioms_heavy.lean`.
 -/
 import PlasmaLean.Design.RationalStellaratorGCEwFamily
@@ -9,6 +10,7 @@ import PlasmaLean.Design.RationalStellaratorGCMuWide
 import PlasmaLean.Design.RationalStellaratorGCMu3Confined
 import PlasmaLean.Design.RationalStellaratorGCMu4Confined
 import PlasmaLean.Design.RationalStellaratorGCMu5Confined
+import PlasmaLean.Design.RationalStellaratorGCMuQuarter
 
 #print axioms PlasmaLean.Design.RationalStellaratorGC.alpha_gc_confined_forever_energy_window
 #print axioms PlasmaLean.Design.RationalStellaratorGC.alphaEwVel_volume_pos
@@ -18,3 +20,8 @@ import PlasmaLean.Design.RationalStellaratorGCMu5Confined
 #print axioms PlasmaLean.Design.RationalStellaratorGC.Mu3.rationalStellarator_gc_mu_confined_forever
 #print axioms PlasmaLean.Design.RationalStellaratorGC.Mu4.rationalStellarator_gc_mu_confined_forever
 #print axioms PlasmaLean.Design.RationalStellaratorGC.Mu5.rationalStellarator_gc_mu_confined_forever
+#print axioms PlasmaLean.Design.RationalStellaratorGC.quarter_cells_cover
+#print axioms PlasmaLean.Design.RationalStellaratorGC.quarter_passing_margin
+#print axioms PlasmaLean.Design.RationalStellaratorGC.rationalStellarator_gc_mu_confined_forever_quarter
+#print axioms PlasmaLean.Design.RationalStellaratorGC.gc_mu_passing_confined_forever_SI_quarter
+#print axioms PlasmaLean.Design.RationalStellaratorGC.alpha_gc_passing_confined_forever_quarter
