@@ -8,6 +8,7 @@ module
 public import PlasmaLean.Design.PolygonCoilCubicData
 public import PlasmaLean.Design.PolygonCoilCubicSoundF
 public import PlasmaLean.Design.PolygonCoilSymm
+public import PlasmaLean.Certificates.BoolCert
 
 /-!
 # The cubic certificate on the whole frontier of `Ωa`, `a = 3420/32761`
@@ -59,10 +60,11 @@ theorem etaRC_le : etaRC ≤ 3221 / 1000000000 := by
 
 /-- Every filament of `filsC` is nonempty and there are at most `nSC` segments. -/
 theorem filsC_shape : (filsC.all fun f => !f.2.isEmpty) = true ∧ (allSegs filsC).length ≤ nSC :=
-  ⟨by decide +kernel, by decide +kernel⟩
+  ⟨by bool_cert, Nat.le_of_ble_eq_true (by bool_cert)⟩
 
-/-- The filaments of `filsC` pass `filOK` (one kernel evaluation). -/
-theorem filsC_ok : (filsC.all fun f => filOK offsC f.1 f.2) = true := by decide +kernel
+/-- The filaments of `filsC` pass `filOK` (explicit certificate `bool_cert`: one comparison
+leaf per segment condition). -/
+theorem filsC_ok : (filsC.all fun f => filOK offsC f.1 f.2) = true := by bool_cert
 
 /-- **Validity of the coil data of the cubic design.** -/
 theorem filsOK4C : FilsOK4 offsC nSC filsC := by

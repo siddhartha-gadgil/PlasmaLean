@@ -5,7 +5,7 @@ Authors: PlasmaLean contributors
 -/
 module
 
-public import PlasmaLean.Design.SolovevBallooningEvalCert
+public import PlasmaLean.Design.SolovevBallooningBoxCert
 
 /-!
 # Ballooning certificate: kernel-checked cells, part 3
@@ -14,8 +14,8 @@ public import PlasmaLean.Design.SolovevBallooningEvalCert
 `scripts/solovev_ballooning_oracle.py`). The corner tests `cornerOK` are shared between
 neighbouring boxes (lemmas `cn…`, evaluation certificates `bl_cert`: one kernel leaf per ball
 operation, ≈ 10⁴ nodes per corner); each box lemma `cov…` checks the second-derivative bounds
-`hessOK` of its box (by kernel evaluation when the declaration is checked) and refers to its
-corner lemmas through `Cover.leaf2`/`Cover.axis2`.
+`hessOK` of its box (evaluation certificate `ballooning_box`: one kernel leaf per ball
+operation) and refers to its corner lemmas through `Cover.leaf2`/`Cover.axis2`.
 -/
 
 public section
@@ -531,210 +531,210 @@ theorem cn03_100 : cornerOK gdata (2944) (4096)
 
 /-- Kernel-checked box `[-3328, -3200]/NT × [2048, 3072]/NS`. -/
 theorem cov155 : Cover gdata (-3328) (-3200) (2048) (3072) := by
-  ballooning_cover "Q:cn03_0,cn03_1,cn03_2,cn03_3"
+  ballooning_box "Q:cn03_0,cn03_1,cn03_2,cn03_3"
 
 /-- Kernel-checked box `[-3200, -3072]/NT × [2048, 3072]/NS`. -/
 theorem cov156 : Cover gdata (-3200) (-3072) (2048) (3072) := by
-  ballooning_cover "Q:cn03_1,cn03_4,cn03_3,cn03_5"
+  ballooning_box "Q:cn03_1,cn03_4,cn03_3,cn03_5"
 
 /-- Kernel-checked box `[-3328, -3072]/NT × [3072, 4096]/NS`. -/
 theorem cov157 : Cover gdata (-3328) (-3072) (3072) (4096) := by
-  ballooning_cover "Q:cn03_2,cn03_5,cn03_6,cn03_7"
+  ballooning_box "Q:cn03_2,cn03_5,cn03_6,cn03_7"
 
 /-- Kernel-checked box `[-3072, -2944]/NT × [2048, 3072]/NS`. -/
 theorem cov158 : Cover gdata (-3072) (-2944) (2048) (3072) := by
-  ballooning_cover "Q:cn03_4,cn03_8,cn03_5,cn03_9"
+  ballooning_box "Q:cn03_4,cn03_8,cn03_5,cn03_9"
 
 /-- Kernel-checked box `[-2944, -2816]/NT × [2048, 3072]/NS`. -/
 theorem cov159 : Cover gdata (-2944) (-2816) (2048) (3072) := by
-  ballooning_cover "Q:cn03_8,cn03_10,cn03_9,cn03_11"
+  ballooning_box "Q:cn03_8,cn03_10,cn03_9,cn03_11"
 
 /-- Kernel-checked box `[-3072, -2816]/NT × [3072, 4096]/NS`. -/
 theorem cov160 : Cover gdata (-3072) (-2816) (3072) (4096) := by
-  ballooning_cover "Q:cn03_5,cn03_11,cn03_7,cn03_12"
+  ballooning_box "Q:cn03_5,cn03_11,cn03_7,cn03_12"
 
 /-- Kernel-checked box `[-2816, -2688]/NT × [2048, 3072]/NS`. -/
 theorem cov161 : Cover gdata (-2816) (-2688) (2048) (3072) := by
-  ballooning_cover "Q:cn03_10,cn03_13,cn03_11,cn03_14"
+  ballooning_box "Q:cn03_10,cn03_13,cn03_11,cn03_14"
 
 /-- Kernel-checked box `[-2688, -2560]/NT × [2048, 3072]/NS`. -/
 theorem cov162 : Cover gdata (-2688) (-2560) (2048) (3072) := by
-  ballooning_cover "Q:cn03_13,cn03_15,cn03_14,cn03_16"
+  ballooning_box "Q:cn03_13,cn03_15,cn03_14,cn03_16"
 
 /-- Kernel-checked box `[-2816, -2560]/NT × [3072, 4096]/NS`. -/
 theorem cov163 : Cover gdata (-2816) (-2560) (3072) (4096) := by
-  ballooning_cover "Q:cn03_11,cn03_16,cn03_12,cn03_17"
+  ballooning_box "Q:cn03_11,cn03_16,cn03_12,cn03_17"
 
 /-- Kernel-checked box `[-2560, -2432]/NT × [2048, 3072]/NS`. -/
 theorem cov164 : Cover gdata (-2560) (-2432) (2048) (3072) := by
-  ballooning_cover "Q:cn03_15,cn03_18,cn03_16,cn03_19"
+  ballooning_box "Q:cn03_15,cn03_18,cn03_16,cn03_19"
 
 /-- Kernel-checked box `[-2432, -2304]/NT × [2048, 3072]/NS`. -/
 theorem cov165 : Cover gdata (-2432) (-2304) (2048) (3072) := by
-  ballooning_cover "Q:cn03_18,cn03_20,cn03_19,cn03_21"
+  ballooning_box "Q:cn03_18,cn03_20,cn03_19,cn03_21"
 
 /-- Kernel-checked box `[-2560, -2304]/NT × [3072, 4096]/NS`. -/
 theorem cov166 : Cover gdata (-2560) (-2304) (3072) (4096) := by
-  ballooning_cover "Q:cn03_16,cn03_21,cn03_17,cn03_22"
+  ballooning_box "Q:cn03_16,cn03_21,cn03_17,cn03_22"
 
 /-- Kernel-checked box `[-2304, -2176]/NT × [2048, 3072]/NS`. -/
 theorem cov167 : Cover gdata (-2304) (-2176) (2048) (3072) := by
-  ballooning_cover "Q:cn03_20,cn03_23,cn03_21,cn03_24"
+  ballooning_box "Q:cn03_20,cn03_23,cn03_21,cn03_24"
 
 /-- Kernel-checked box `[-2176, -2048]/NT × [2048, 3072]/NS`. -/
 theorem cov168 : Cover gdata (-2176) (-2048) (2048) (3072) := by
-  ballooning_cover "Q:cn03_23,cn03_25,cn03_24,cn03_26"
+  ballooning_box "Q:cn03_23,cn03_25,cn03_24,cn03_26"
 
 /-- Kernel-checked box `[-2304, -2048]/NT × [3072, 4096]/NS`. -/
 theorem cov169 : Cover gdata (-2304) (-2048) (3072) (4096) := by
-  ballooning_cover "Q:cn03_21,cn03_26,cn03_22,cn03_27"
+  ballooning_box "Q:cn03_21,cn03_26,cn03_22,cn03_27"
 
 /-- Kernel-checked box `[-2048, -1792]/NT × [2048, 3072]/NS`. -/
 theorem cov170 : Cover gdata (-2048) (-1792) (2048) (3072) := by
-  ballooning_cover "Q:cn03_25,cn03_28,cn03_26,cn03_29"
+  ballooning_box "Q:cn03_25,cn03_28,cn03_26,cn03_29"
 
 /-- Kernel-checked box `[-2048, -1792]/NT × [3072, 4096]/NS`. -/
 theorem cov171 : Cover gdata (-2048) (-1792) (3072) (4096) := by
-  ballooning_cover "Q:cn03_26,cn03_29,cn03_27,cn03_30"
+  ballooning_box "Q:cn03_26,cn03_29,cn03_27,cn03_30"
 
 /-- Kernel-checked box `[-1792, -1664]/NT × [2048, 4096]/NS`. -/
 theorem cov172 : Cover gdata (-1792) (-1664) (2048) (4096) := by
-  ballooning_cover "Q:cn03_28,cn03_31,cn03_30,cn03_32"
+  ballooning_box "Q:cn03_28,cn03_31,cn03_30,cn03_32"
 
 /-- Kernel-checked box `[-1664, -1536]/NT × [2048, 4096]/NS`. -/
 theorem cov173 : Cover gdata (-1664) (-1536) (2048) (4096) := by
-  ballooning_cover "Q:cn03_31,cn03_33,cn03_32,cn03_34"
+  ballooning_box "Q:cn03_31,cn03_33,cn03_32,cn03_34"
 
 /-- Kernel-checked box `[-1536, -1408]/NT × [2048, 4096]/NS`. -/
 theorem cov174 : Cover gdata (-1536) (-1408) (2048) (4096) := by
-  ballooning_cover "Q:cn03_33,cn03_35,cn03_34,cn03_36"
+  ballooning_box "Q:cn03_33,cn03_35,cn03_34,cn03_36"
 
 /-- Kernel-checked box `[-1408, -1280]/NT × [2048, 4096]/NS`. -/
 theorem cov175 : Cover gdata (-1408) (-1280) (2048) (4096) := by
-  ballooning_cover "Q:cn03_35,cn03_37,cn03_36,cn03_38"
+  ballooning_box "Q:cn03_35,cn03_37,cn03_36,cn03_38"
 
 /-- Kernel-checked box `[-1280, -1152]/NT × [2048, 4096]/NS`. -/
 theorem cov176 : Cover gdata (-1280) (-1152) (2048) (4096) := by
-  ballooning_cover "Q:cn03_37,cn03_39,cn03_38,cn03_40"
+  ballooning_box "Q:cn03_37,cn03_39,cn03_38,cn03_40"
 
 /-- Kernel-checked box `[-1152, -1024]/NT × [2048, 4096]/NS`. -/
 theorem cov177 : Cover gdata (-1152) (-1024) (2048) (4096) := by
-  ballooning_cover "Q:cn03_39,cn03_41,cn03_40,cn03_42"
+  ballooning_box "Q:cn03_39,cn03_41,cn03_40,cn03_42"
 
 /-- Kernel-checked box `[-1024, -896]/NT × [2048, 4096]/NS`. -/
 theorem cov178 : Cover gdata (-1024) (-896) (2048) (4096) := by
-  ballooning_cover "Q:cn03_41,cn03_43,cn03_42,cn03_44"
+  ballooning_box "Q:cn03_41,cn03_43,cn03_42,cn03_44"
 
 /-- Kernel-checked box `[-896, -768]/NT × [2048, 4096]/NS`. -/
 theorem cov179 : Cover gdata (-896) (-768) (2048) (4096) := by
-  ballooning_cover "Q:cn03_43,cn03_45,cn03_44,cn03_46"
+  ballooning_box "Q:cn03_43,cn03_45,cn03_44,cn03_46"
 
 /-- Kernel-checked box `[-768, -640]/NT × [2048, 4096]/NS`. -/
 theorem cov180 : Cover gdata (-768) (-640) (2048) (4096) := by
-  ballooning_cover "Q:cn03_45,cn03_47,cn03_46,cn03_48"
+  ballooning_box "Q:cn03_45,cn03_47,cn03_46,cn03_48"
 
 /-- Kernel-checked box `[-640, -512]/NT × [2048, 4096]/NS`. -/
 theorem cov181 : Cover gdata (-640) (-512) (2048) (4096) := by
-  ballooning_cover "Q:cn03_47,cn03_49,cn03_48,cn03_50"
+  ballooning_box "Q:cn03_47,cn03_49,cn03_48,cn03_50"
 
 /-- Kernel-checked box `[-512, -384]/NT × [2048, 4096]/NS`. -/
 theorem cov182 : Cover gdata (-512) (-384) (2048) (4096) := by
-  ballooning_cover "Q:cn03_49,cn03_51,cn03_50,cn03_52"
+  ballooning_box "Q:cn03_49,cn03_51,cn03_50,cn03_52"
 
 /-- Kernel-checked box `[-384, -256]/NT × [2048, 4096]/NS`. -/
 theorem cov183 : Cover gdata (-384) (-256) (2048) (4096) := by
-  ballooning_cover "Q:cn03_51,cn03_53,cn03_52,cn03_54"
+  ballooning_box "Q:cn03_51,cn03_53,cn03_52,cn03_54"
 
 /-- Kernel-checked box `[-256, 0]/NT × [2048, 4096]/NS`. -/
 theorem cov184 : Cover gdata (-256) (0) (2048) (4096) := by
-  ballooning_cover "Q:cn03_53,cn03_55,cn03_54,cn03_56"
+  ballooning_box "Q:cn03_53,cn03_55,cn03_54,cn03_56"
 
 /-- Kernel-checked box `[0, 256]/NT × [2048, 4096]/NS`. -/
 theorem cov185 : Cover gdata (0) (256) (2048) (4096) := by
-  ballooning_cover "Q:cn03_55,cn03_57,cn03_56,cn03_58"
+  ballooning_box "Q:cn03_55,cn03_57,cn03_56,cn03_58"
 
 /-- Kernel-checked box `[256, 384]/NT × [2048, 4096]/NS`. -/
 theorem cov186 : Cover gdata (256) (384) (2048) (4096) := by
-  ballooning_cover "Q:cn03_57,cn03_59,cn03_58,cn03_60"
+  ballooning_box "Q:cn03_57,cn03_59,cn03_58,cn03_60"
 
 /-- Kernel-checked box `[384, 512]/NT × [2048, 4096]/NS`. -/
 theorem cov187 : Cover gdata (384) (512) (2048) (4096) := by
-  ballooning_cover "Q:cn03_59,cn03_61,cn03_60,cn03_62"
+  ballooning_box "Q:cn03_59,cn03_61,cn03_60,cn03_62"
 
 /-- Kernel-checked box `[512, 640]/NT × [2048, 4096]/NS`. -/
 theorem cov188 : Cover gdata (512) (640) (2048) (4096) := by
-  ballooning_cover "Q:cn03_61,cn03_63,cn03_62,cn03_64"
+  ballooning_box "Q:cn03_61,cn03_63,cn03_62,cn03_64"
 
 /-- Kernel-checked box `[640, 768]/NT × [2048, 4096]/NS`. -/
 theorem cov189 : Cover gdata (640) (768) (2048) (4096) := by
-  ballooning_cover "Q:cn03_63,cn03_65,cn03_64,cn03_66"
+  ballooning_box "Q:cn03_63,cn03_65,cn03_64,cn03_66"
 
 /-- Kernel-checked box `[768, 896]/NT × [2048, 4096]/NS`. -/
 theorem cov190 : Cover gdata (768) (896) (2048) (4096) := by
-  ballooning_cover "Q:cn03_65,cn03_67,cn03_66,cn03_68"
+  ballooning_box "Q:cn03_65,cn03_67,cn03_66,cn03_68"
 
 /-- Kernel-checked box `[896, 1024]/NT × [2048, 4096]/NS`. -/
 theorem cov191 : Cover gdata (896) (1024) (2048) (4096) := by
-  ballooning_cover "Q:cn03_67,cn03_69,cn03_68,cn03_70"
+  ballooning_box "Q:cn03_67,cn03_69,cn03_68,cn03_70"
 
 /-- Kernel-checked box `[1024, 1152]/NT × [2048, 4096]/NS`. -/
 theorem cov192 : Cover gdata (1024) (1152) (2048) (4096) := by
-  ballooning_cover "Q:cn03_69,cn03_71,cn03_70,cn03_72"
+  ballooning_box "Q:cn03_69,cn03_71,cn03_70,cn03_72"
 
 /-- Kernel-checked box `[1152, 1280]/NT × [2048, 4096]/NS`. -/
 theorem cov193 : Cover gdata (1152) (1280) (2048) (4096) := by
-  ballooning_cover "Q:cn03_71,cn03_73,cn03_72,cn03_74"
+  ballooning_box "Q:cn03_71,cn03_73,cn03_72,cn03_74"
 
 /-- Kernel-checked box `[1280, 1408]/NT × [2048, 4096]/NS`. -/
 theorem cov194 : Cover gdata (1280) (1408) (2048) (4096) := by
-  ballooning_cover "Q:cn03_73,cn03_75,cn03_74,cn03_76"
+  ballooning_box "Q:cn03_73,cn03_75,cn03_74,cn03_76"
 
 /-- Kernel-checked box `[1408, 1536]/NT × [2048, 4096]/NS`. -/
 theorem cov195 : Cover gdata (1408) (1536) (2048) (4096) := by
-  ballooning_cover "Q:cn03_75,cn03_77,cn03_76,cn03_78"
+  ballooning_box "Q:cn03_75,cn03_77,cn03_76,cn03_78"
 
 /-- Kernel-checked box `[1536, 1664]/NT × [2048, 4096]/NS`. -/
 theorem cov196 : Cover gdata (1536) (1664) (2048) (4096) := by
-  ballooning_cover "Q:cn03_77,cn03_79,cn03_78,cn03_80"
+  ballooning_box "Q:cn03_77,cn03_79,cn03_78,cn03_80"
 
 /-- Kernel-checked box `[1664, 1792]/NT × [2048, 4096]/NS`. -/
 theorem cov197 : Cover gdata (1664) (1792) (2048) (4096) := by
-  ballooning_cover "Q:cn03_79,cn03_81,cn03_80,cn03_82"
+  ballooning_box "Q:cn03_79,cn03_81,cn03_80,cn03_82"
 
 /-- Kernel-checked box `[1792, 1920]/NT × [2048, 4096]/NS`. -/
 theorem cov198 : Cover gdata (1792) (1920) (2048) (4096) := by
-  ballooning_cover "Q:cn03_81,cn03_83,cn03_82,cn03_84"
+  ballooning_box "Q:cn03_81,cn03_83,cn03_82,cn03_84"
 
 /-- Kernel-checked box `[1920, 2048]/NT × [2048, 4096]/NS`. -/
 theorem cov199 : Cover gdata (1920) (2048) (2048) (4096) := by
-  ballooning_cover "Q:cn03_83,cn03_85,cn03_84,cn03_86"
+  ballooning_box "Q:cn03_83,cn03_85,cn03_84,cn03_86"
 
 /-- Kernel-checked box `[2048, 2176]/NT × [2048, 4096]/NS`. -/
 theorem cov200 : Cover gdata (2048) (2176) (2048) (4096) := by
-  ballooning_cover "Q:cn03_85,cn03_87,cn03_86,cn03_88"
+  ballooning_box "Q:cn03_85,cn03_87,cn03_86,cn03_88"
 
 /-- Kernel-checked box `[2176, 2304]/NT × [2048, 4096]/NS`. -/
 theorem cov201 : Cover gdata (2176) (2304) (2048) (4096) := by
-  ballooning_cover "Q:cn03_87,cn03_89,cn03_88,cn03_90"
+  ballooning_box "Q:cn03_87,cn03_89,cn03_88,cn03_90"
 
 /-- Kernel-checked box `[2304, 2432]/NT × [2048, 4096]/NS`. -/
 theorem cov202 : Cover gdata (2304) (2432) (2048) (4096) := by
-  ballooning_cover "Q:cn03_89,cn03_91,cn03_90,cn03_92"
+  ballooning_box "Q:cn03_89,cn03_91,cn03_90,cn03_92"
 
 /-- Kernel-checked box `[2432, 2560]/NT × [2048, 4096]/NS`. -/
 theorem cov203 : Cover gdata (2432) (2560) (2048) (4096) := by
-  ballooning_cover "Q:cn03_91,cn03_93,cn03_92,cn03_94"
+  ballooning_box "Q:cn03_91,cn03_93,cn03_92,cn03_94"
 
 /-- Kernel-checked box `[2560, 2688]/NT × [2048, 4096]/NS`. -/
 theorem cov204 : Cover gdata (2560) (2688) (2048) (4096) := by
-  ballooning_cover "Q:cn03_93,cn03_95,cn03_94,cn03_96"
+  ballooning_box "Q:cn03_93,cn03_95,cn03_94,cn03_96"
 
 /-- Kernel-checked box `[2688, 2816]/NT × [2048, 4096]/NS`. -/
 theorem cov205 : Cover gdata (2688) (2816) (2048) (4096) := by
-  ballooning_cover "Q:cn03_95,cn03_97,cn03_96,cn03_98"
+  ballooning_box "Q:cn03_95,cn03_97,cn03_96,cn03_98"
 
 /-- Kernel-checked box `[2816, 2944]/NT × [2048, 4096]/NS`. -/
 theorem cov206 : Cover gdata (2816) (2944) (2048) (4096) := by
-  ballooning_cover "Q:cn03_97,cn03_99,cn03_98,cn03_100"
+  ballooning_box "Q:cn03_97,cn03_99,cn03_98,cn03_100"
 
 end PlasmaLean.Design.SolovevBallooning

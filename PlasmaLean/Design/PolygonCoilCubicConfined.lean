@@ -185,8 +185,9 @@ theorem polyCoilFieldC_vacuum : VacuumField UcC polyCoilFieldC := by
   decide (6840 * 2 ^ 64 < |p.1 * p.1 + p.2.1 * p.2.1 - 2 ^ 64| * 32761) ||
     decide (3420 * 2 ^ 32 < |p.2.2| * 32761)
 
-/-- Every segment starts at a far vertex (one kernel evaluation). -/
-theorem vertFarC_all : ((allSegs filsC).all fun z => vertFarC z.2.1) = true := by decide +kernel
+/-- Every segment starts at a far vertex (explicit certificate `bool_cert`: one comparison leaf
+per vertex). -/
+theorem vertFarC_all : ((allSegs filsC).all fun z => vertFarC z.2.1) = true := by bool_cert
 
 /-- Meaning of the vertex check `vertFarC`: the vertex lies outside `Ka aF`. -/
 theorem vertFarC_sound {p : ℤ × ℤ × ℤ} (h : vertFarC p = true) :

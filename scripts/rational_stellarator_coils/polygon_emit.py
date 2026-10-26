@@ -104,7 +104,7 @@ def emit_certs(grids, nfiles, base):
     nchain = nfiles // 2
     for k in range(nfiles):
         chain, pos = k % nchain, k // nchain
-        imp = 'PlasmaLean.Design.PolygonCoilData' if pos == 0 else '%s%02d' % (base.replace('/', '.'), k - nchain)
+        imp = 'PlasmaLean.Design.PolygonCoilDataL' if pos == 0 else '%s%02d' % (base.replace('/', '.'), k - nchain)
         L = ['''/-
 Copyright (c) 2026 PlasmaLean contributors. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
@@ -117,12 +117,14 @@ public import %s
 /-!
 # Polygonal-coil frontier certificate, part %d
 
-Kernel evaluations (`decide +kernel`) of the checker `checkChunk` of
-`Design/PolygonCoilCheck` on chunks of %d consecutive line pairs of the face grids of
-`Design/PolygonCoilData` (chunk `i` of face `f` is `(gridF.drop (%d * i)).take %d`).
+Explicit certificates (`chunk_cert`, `Design/PolygonCoilChunkCert`: one leaf per vertex step,
+per block of three segment steps, per corner assembly and per cell) of the checker `checkChunk`
+of `Design/PolygonCoilCheck` on chunks of %d consecutive line pairs of the face grids of
+`Design/PolygonCoilData` (chunk `i` of face `f` is `(gridF.drop (%d * i)).take %d`), with the
+filament data read from the literal `filsDLB` (`filsDLB_eq`) and the face checks `faceChkF`.
 Each theorem certifies, through `Design/PolygonCoilSoundA`-`D`, the frontier error bound on the
 corresponding cells. (Modules are chained pairwise only to bound the number of concurrent
-kernel processes during a build.)
+build processes.)
 -/
 
 @[expose] public section
@@ -131,7 +133,7 @@ namespace PlasmaLean.Design.PolygonCoil
 ''' % (imp, k, CH, CH, CH + 1)]
         for (face, i, _) in buckets[k]:
             L.append('/-- Certificate chunk %d of face %d. -/' % (i, face))
-            L.append('theorem cert_%d_%d : checkChunk offs filsD face%d ((grid%d.drop (%d * %d)).take %d) = true := by\n  decide +kernel\n' % (face, i, face, face, CH, i, CH + 1))
+            L.append('theorem cert_%d_%d : checkChunk offs filsD face%d ((grid%d.drop (%d * %d)).take %d) = true := by\n  chunk_cert filsDLB_eq faceChk%d\n' % (face, i, face, face, CH, i, CH + 1, face))
         L.append('end PlasmaLean.Design.PolygonCoil')
         open('/Users/gadgil/code/PlasmaLean/%s%02d.lean' % (base, k), 'w').write('\n'.join(L) + '\n')
     return items

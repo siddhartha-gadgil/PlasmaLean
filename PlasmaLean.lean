@@ -170,6 +170,8 @@ public import PlasmaLean.Theory.KAM.Cohomological
 public import PlasmaLean.Design.PolygonCoilConfined
 public import PlasmaLean.Design.PolygonCoilCubicCover
 public import PlasmaLean.Design.PolygonCoilCubicLineCert
+public import PlasmaLean.Design.PolygonCoilFilsCert
+public import PlasmaLean.Design.PolygonCoilChunkCert
 public import PlasmaLean.Design.SolovevBallooningBoxCert
 public import PlasmaLean.Theory.KAM.KamSequence
 public import PlasmaLean.Theory.KAM.WeightedEll1Z2

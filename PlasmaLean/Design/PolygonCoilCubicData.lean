@@ -7,6 +7,7 @@ module
 
 public import PlasmaLean.Design.PolygonCoilCubicCheck
 public import PlasmaLean.Design.PolygonCoilData
+public import PlasmaLean.Design.PolygonCoilFilsCert
 
 /-!
 # Data of the cubic-interpolation frontier certificate
@@ -704,8 +705,10 @@ def filsDL : List Fil := [⟨[⟨25105240110, 18008524548, 19157258891, 13215806
     16979243321969700695941505004, 673112629409429604, 541794922754412300, 669748752122797176,
     107745802880965884⟩]⟩]
 
-/-- The literal copy `filsDL` is `filsDC` (one kernel evaluation). -/
-theorem filsDL_eq : filsDL = filsDC := by decide +kernel
+set_option maxRecDepth 100000 in
+/-- The literal copy `filsDL` is `filsDC` (explicit certificate `fils_cert`,
+`Design/PolygonCoilFilsCert`: one leaf per vertex image, vertex record and segment). -/
+theorem filsDL_eq : filsDL = filsDC := by fils_cert
 
 /-- Segment count bound of the cubic design. -/
 def nSC : Nat := 192

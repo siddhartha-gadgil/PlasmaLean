@@ -615,12 +615,12 @@ theorem {L['name']} : cornerOK gdata ({L['t']}) ({L['n']})
             tok=("Z:" if node['k']=='A' else "Q:")+",".join(cs)
             body.append(f'''/-- Kernel-checked box `[{t0}, {t1}]/NT × [{n0}, {n1}]/NS`. -/
 theorem {name} : Cover gdata ({t0}) ({t1}) ({n0}) ({n1}) := by
-  ballooning_cover "{tok}"
+  ballooning_box "{tok}"
 ''')
         print("module",j,"boxes",len(boxinfo),"corner lemmas",len(lemmas))
         leaves=sum(nd['n'] for _,nd in mod)
         open(f"{outdir}/{mname}.lean","w").write(HDR+f'''
-public import PlasmaLean.Design.SolovevBallooningEvalCert
+public import PlasmaLean.Design.SolovevBallooningBoxCert
 
 /-!
 # Ballooning certificate: kernel-checked cells, part {j}
@@ -629,8 +629,8 @@ public import PlasmaLean.Design.SolovevBallooningEvalCert
 `scripts/solovev_ballooning_oracle.py`). The corner tests `cornerOK` are shared between
 neighbouring boxes (lemmas `cn…`, evaluation certificates `bl_cert`: one kernel leaf per ball
 operation, ≈ 10⁴ nodes per corner); each box lemma `cov…` checks the second-derivative bounds
-`hessOK` of its box (by kernel evaluation when the declaration is checked) and refers to its
-corner lemmas through `Cover.leaf2`/`Cover.axis2`.
+`hessOK` of its box (evaluation certificate `ballooning_box`: one kernel leaf per ball
+operation) and refers to its corner lemmas through `Cover.leaf2`/`Cover.axis2`.
 -/
 
 public section

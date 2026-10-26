@@ -79,7 +79,8 @@ def main():
     print('eta', eta, eta / 2 ** 40, flush=True)
     # ---------------------------------------------------------------- data module
     L = [HDR, 'public import PlasmaLean.Design.PolygonCoilCubicCheck',
-         'public import PlasmaLean.Design.PolygonCoilData', '', '''/-!
+         'public import PlasmaLean.Design.PolygonCoilData',
+         'public import PlasmaLean.Design.PolygonCoilFilsCert', '', '''/-!
 # Data of the cubic-interpolation frontier certificate
 
 Literal data produced by the untrusted scripts `scripts/rational_stellarator_coils/
@@ -124,8 +125,10 @@ checked by the kernel:
         fl.append('⟨[' + vts + '],\n  [' + sgs + ']⟩')
     L.append(wrap('def filsDL : List Fil := [' + ',\n '.join(fl) + ']'))
     L.append('')
-    L.append('/-- The literal copy `filsDL` is `filsDC` (one kernel evaluation). -/')
-    L.append('theorem filsDL_eq : filsDL = filsDC := by decide +kernel')
+    L.append('set_option maxRecDepth 100000 in')
+    L.append('/-- The literal copy `filsDL` is `filsDC` (explicit certificate `fils_cert`,')
+    L.append('`Design/PolygonCoilFilsCert`: one leaf per vertex image, vertex record and segment). -/')
+    L.append('theorem filsDL_eq : filsDL = filsDC := by fils_cert')
     L.append('')
     L.append('/-- Segment count bound of the cubic design. -/')
     L.append('def nSC : Nat := %d' % nS)

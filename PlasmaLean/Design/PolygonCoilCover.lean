@@ -5,9 +5,12 @@ Authors: PlasmaLean contributors
 -/
 module
 
-public import PlasmaLean.Design.PolygonCoilCert03
-public import PlasmaLean.Design.PolygonCoilCert04
-public import PlasmaLean.Design.PolygonCoilCert05
+public import PlasmaLean.Design.PolygonCoilCert06
+public import PlasmaLean.Design.PolygonCoilCert07
+public import PlasmaLean.Design.PolygonCoilCert08
+public import PlasmaLean.Design.PolygonCoilCert09
+public import PlasmaLean.Design.PolygonCoilCert10
+public import PlasmaLean.Design.PolygonCoilCert11
 public import PlasmaLean.Design.PolygonCoilSoundD
 public import PlasmaLean.Certificates.KernelFact
 public import PlasmaLean.Certificates.BoolCert
@@ -15,7 +18,7 @@ public import PlasmaLean.Certificates.BoolCert
 /-!
 # The certified frontier bound on the four faces of the fundamental frontier piece
 
-Assembles the kernel certificates `cert_F_i` (`Design/PolygonCoilCert00`–`05`) through the
+Assembles the kernel certificates `cert_F_i` (`Design/PolygonCoilCert00`–`11`) through the
 soundness theorem `grid_cover` (`Design/PolygonCoilSoundD`):
 
 * `filsValid`: the integer coil data passes `filOK` (checked once by `kernel_fact`);
