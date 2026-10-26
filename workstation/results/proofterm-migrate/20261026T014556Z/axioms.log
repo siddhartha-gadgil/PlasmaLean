@@ -1,0 +1,3 @@
+'PlasmaLean.Design.RationalStellaratorGC.Mu5.rationalStellarator_gc_mu_confined_forever' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
