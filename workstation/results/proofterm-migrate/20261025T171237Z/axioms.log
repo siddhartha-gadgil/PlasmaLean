@@ -1,0 +1,3 @@
+'PlasmaLean.Design.RationalStellaratorGC.alpha_gc_confined_forever_energy_window' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]

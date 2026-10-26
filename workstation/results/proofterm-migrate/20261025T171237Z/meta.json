@@ -1,0 +1,3 @@
+{"task": "proofterm-migrate", "description": "proof-term migration (no decide +kernel) of the families: RationalStellaratorGCEw1 RationalStellaratorGCEw2 RationalStellaratorGCEw3 RationalStellaratorGCEw4", "stamp": "20261025T171237Z", "base_commit": "420c532",
+ "host": "hornbill", "os": "Linux x86_64", "cpus": 24, "jobs": 24,
+ "mode": "workstation", "target": "separate"}
