@@ -5,14 +5,15 @@ Authors: PlasmaLean contributors
 -/
 module
 
-public import PlasmaLean.Design.SolovevBallooningData
+public import PlasmaLean.Design.SolovevBallooningEvalCert
 
 /-!
 # Ballooning certificate: kernel-checked cells, part 3
 
 52 boxes of the `(τ, s)` cover (plan from the UNTRUSTED oracle
 `scripts/solovev_ballooning_oracle.py`). The corner tests `cornerOK` are shared between
-neighbouring boxes (lemmas `cn…`); each box lemma `cov…` checks the second-derivative bounds
+neighbouring boxes (lemmas `cn…`, evaluation certificates `bl_cert`: one kernel leaf per ball
+operation, ≈ 10⁴ nodes per corner); each box lemma `cov…` checks the second-derivative bounds
 `hessOK` of its box (by kernel evaluation when the declaration is checked) and refers to its
 corner lemmas through `Cover.leaf2`/`Cover.axis2`.
 -/
@@ -26,507 +27,507 @@ set_option maxRecDepth 100000
 /-- Kernel-checked corner test at `(-3328/NT, 2048/NS)`. -/
 theorem cn03_0 : cornerOK gdata (-3328) (2048)
     [50030841, 21948896, 38586125, 10062508, 11074510, 1195433, 1028511] = true := by
-  decide +kernel
+  bl_cert
 
 /-- Kernel-checked corner test at `(-3200/NT, 2048/NS)`. -/
 theorem cn03_1 : cornerOK gdata (-3200) (2048)
     [51062187, 24913534, 39193314, 11341590, 11074510, 1348299, 1028511] = true := by
-  decide +kernel
+  bl_cert
 
 /-- Kernel-checked corner test at `(-3328/NT, 3072/NS)`. -/
 theorem cn03_2 : cornerOK gdata (-3328) (3072)
     [175670111, 99675477, 137064897, 43703691, 34834993, 5404388, 2814269] = true := by
-  decide +kernel
+  bl_cert
 
 /-- Kernel-checked corner test at `(-3200/NT, 3072/NS)`. -/
 theorem cn03_3 : cornerOK gdata (-3200) (3072)
     [51062187, 24913534, 39193314, 11341590, 11074510, 1348299, 1028511] = true := by
-  decide +kernel
+  bl_cert
 
 /-- Kernel-checked corner test at `(-3072/NT, 2048/NS)`. -/
 theorem cn03_4 : cornerOK gdata (-3072) (2048)
     [51990278, 27764360, 39670694, 12547427, 11059171, 1493170, 1014248] = true := by
-  decide +kernel
+  bl_cert
 
 /-- Kernel-checked corner test at `(-3072/NT, 3072/NS)`. -/
 theorem cn03_5 : cornerOK gdata (-3072) (3072)
     [196395862, 127053888, 150845656, 55052191, 37229139, 6819240, 2922871] = true := by
-  decide +kernel
+  bl_cert
 
 /-- Kernel-checked corner test at `(-3328/NT, 4096/NS)`. -/
 theorem cn03_6 : cornerOK gdata (-3328) (4096)
     [175670111, 99675477, 137064897, 43703691, 34834993, 5404388, 2814269] = true := by
-  decide +kernel
+  bl_cert
 
 /-- Kernel-checked corner test at `(-3072/NT, 4096/NS)`. -/
 theorem cn03_7 : cornerOK gdata (-3072) (4096)
     [196395862, 127053888, 150845656, 55052191, 37229139, 6819240, 2922871] = true := by
-  decide +kernel
+  bl_cert
 
 /-- Kernel-checked corner test at `(-2944/NT, 2048/NS)`. -/
 theorem cn03_8 : cornerOK gdata (-2944) (2048)
     [52825363, 30433685, 40029411, 13650623, 10990634, 1626217, 994044] = true := by
-  decide +kernel
+  bl_cert
 
 /-- Kernel-checked corner test at `(-2944/NT, 3072/NS)`. -/
 theorem cn03_9 : cornerOK gdata (-2944) (3072)
     [52825363, 30433685, 40029411, 13650623, 10990634, 1626217, 994044] = true := by
-  decide +kernel
+  bl_cert
 
 /-- Kernel-checked corner test at `(-2816/NT, 2048/NS)`. -/
 theorem cn03_10 : cornerOK gdata (-2816) (2048)
     [53592571, 32842743, 40234223, 14618647, 10866318, 1743242, 967900] = true := by
-  decide +kernel
+  bl_cert
 
 /-- Kernel-checked corner test at `(-2816/NT, 3072/NS)`. -/
 theorem cn03_11 : cornerOK gdata (-2816) (3072)
     [217586302, 152758495, 163439068, 65581797, 39089565, 8122082, 2979295] = true := by
-  decide +kernel
+  bl_cert
 
 /-- Kernel-checked corner test at `(-2816/NT, 4096/NS)`. -/
 theorem cn03_12 : cornerOK gdata (-2816) (4096)
     [217586302, 152758495, 163439068, 65581797, 39089565, 8122082, 2979295] = true := by
-  decide +kernel
+  bl_cert
 
 /-- Kernel-checked corner test at `(-2688/NT, 2048/NS)`. -/
 theorem cn03_13 : cornerOK gdata (-2688) (2048)
     [54320735, 34905584, 40244237, 15417539, 10682287, 1839815, 935760] = true := by
-  decide +kernel
+  bl_cert
 
 /-- Kernel-checked corner test at `(-2688/NT, 3072/NS)`. -/
 theorem cn03_14 : cornerOK gdata (-2688) (3072)
     [54320735, 34905584, 40244237, 15417539, 10682287, 1839815, 935760] = true := by
-  decide +kernel
+  bl_cert
 
 /-- Kernel-checked corner test at `(-2560/NT, 2048/NS)`. -/
 theorem cn03_15 : cornerOK gdata (-2560) (2048)
     [54839342, 36554711, 40298745, 16022907, 10464188, 1911927, 897784] = true := by
-  decide +kernel
+  bl_cert
 
 /-- Kernel-checked corner test at `(-2560/NT, 3072/NS)`. -/
 theorem cn03_16 : cornerOK gdata (-2560) (3072)
     [239401179, 173939063, 175882865, 74223177, 41187434, 9153506, 2985129] = true := by
-  decide +kernel
+  bl_cert
 
 /-- Kernel-checked corner test at `(-2560/NT, 4096/NS)`. -/
 theorem cn03_17 : cornerOK gdata (-2560) (4096)
     [239401179, 173939063, 175882865, 74223177, 41187434, 9153506, 2985129] = true := by
-  decide +kernel
+  bl_cert
 
 /-- Kernel-checked corner test at `(-2432/NT, 2048/NS)`. -/
 theorem cn03_18 : cornerOK gdata (-2432) (2048)
     [55102538, 37722473, 40298745, 16434756, 10247892, 1957214, 854848] = true := by
-  decide +kernel
+  bl_cert
 
 /-- Kernel-checked corner test at `(-2432/NT, 3072/NS)`. -/
 theorem cn03_19 : cornerOK gdata (-2432) (3072)
     [55102538, 37722473, 40298745, 16434756, 10247892, 1957214, 854848] = true := by
-  decide +kernel
+  bl_cert
 
 /-- Kernel-checked corner test at `(-2304/NT, 2048/NS)`. -/
 theorem cn03_20 : cornerOK gdata (-2304) (2048)
     [55102637, 38382707, 40227789, 16657932, 9979323, 1974199, 810574] = true := by
-  decide +kernel
+  bl_cert
 
 /-- Kernel-checked corner test at `(-2304/NT, 3072/NS)`. -/
 theorem cn03_21 : cornerOK gdata (-2304) (3072)
     [256925632, 187117585, 186301514, 79757487, 42617299, 9746597, 2985129] = true := by
-  decide +kernel
+  bl_cert
 
 /-- Kernel-checked corner test at `(-2304/NT, 4096/NS)`. -/
 theorem cn03_22 : cornerOK gdata (-2304) (4096)
     [256925632, 187117585, 186301514, 79757487, 42617299, 9746597, 2985129] = true := by
-  decide +kernel
+  bl_cert
 
 /-- Kernel-checked corner test at `(-2176/NT, 2048/NS)`. -/
 theorem cn03_23 : cornerOK gdata (-2176) (2048)
     [55102637, 38431979, 39970302, 16657932, 9662010, 1974199, 762496] = true := by
-  decide +kernel
+  bl_cert
 
 /-- Kernel-checked corner test at `(-2176/NT, 3072/NS)`. -/
 theorem cn03_24 : cornerOK gdata (-2176) (3072)
     [55102637, 38431979, 39970302, 16657932, 9662010, 1974199, 762496] = true := by
-  decide +kernel
+  bl_cert
 
 /-- Kernel-checked corner test at `(-2048/NT, 2048/NS)`. -/
 theorem cn03_25 : cornerOK gdata (-2048) (2048)
     [211417110, 152431150, 154573963, 67149082, 35234589, 7989449, 2411119] = true := by
-  decide +kernel
+  bl_cert
 
 /-- Kernel-checked corner test at `(-2048/NT, 3072/NS)`. -/
 theorem cn03_26 : cornerOK gdata (-2048) (3072)
     [265524576, 188434037, 190148830, 81471613, 42617299, 9746597, 2938400] = true := by
-  decide +kernel
+  bl_cert
 
 /-- Kernel-checked corner test at `(-2048/NT, 4096/NS)`. -/
 theorem cn03_27 : cornerOK gdata (-2048) (4096)
     [265524576, 188434037, 190148830, 81471613, 42617299, 9746597, 2938400] = true := by
-  decide +kernel
+  bl_cert
 
 /-- Kernel-checked corner test at `(-1792/NT, 2048/NS)`. -/
 theorem cn03_28 : cornerOK gdata (-1792) (2048)
     [221747247, 152431150, 154573963, 67149082, 35234589, 7989449, 2411119] = true := by
-  decide +kernel
+  bl_cert
 
 /-- Kernel-checked corner test at `(-1792/NT, 3072/NS)`. -/
 theorem cn03_29 : cornerOK gdata (-1792) (3072)
     [265524576, 188434037, 190148830, 81471613, 42553983, 9700608, 2798660] = true := by
-  decide +kernel
+  bl_cert
 
 /-- Kernel-checked corner test at `(-1792/NT, 4096/NS)`. -/
 theorem cn03_30 : cornerOK gdata (-1792) (4096)
     [265524576, 188434037, 190148830, 81471613, 42553983, 9700608, 2798660] = true := by
-  decide +kernel
+  bl_cert
 
 /-- Kernel-checked corner test at `(-1664/NT, 2048/NS)`. -/
 theorem cn03_31 : cornerOK gdata (-1664) (2048)
     [221747247, 148412476, 152552624, 62336535, 34093241, 6894838, 2320901] = true := by
-  decide +kernel
+  bl_cert
 
 /-- Kernel-checked corner test at `(-1664/NT, 4096/NS)`. -/
 theorem cn03_32 : cornerOK gdata (-1664) (4096)
     [221747247, 148412476, 152552624, 62336535, 34093241, 6894838, 2320901] = true := by
-  decide +kernel
+  bl_cert
 
 /-- Kernel-checked corner test at `(-1536/NT, 2048/NS)`. -/
 theorem cn03_33 : cornerOK gdata (-1536) (2048)
     [205078757, 139407559, 139976884, 57684869, 30753953, 6316537, 2049366] = true := by
-  decide +kernel
+  bl_cert
 
 /-- Kernel-checked corner test at `(-1536/NT, 4096/NS)`. -/
 theorem cn03_34 : cornerOK gdata (-1536) (4096)
     [205078757, 139407559, 139976884, 57684869, 30753953, 6316537, 2049366] = true := by
-  decide +kernel
+  bl_cert
 
 /-- Kernel-checked corner test at `(-1408/NT, 2048/NS)`. -/
 theorem cn03_35 : cornerOK gdata (-1408) (2048)
     [187849082, 129427247, 127395293, 52659171, 27519011, 5757758, 1800791] = true := by
-  decide +kernel
+  bl_cert
 
 /-- Kernel-checked corner test at `(-1408/NT, 4096/NS)`. -/
 theorem cn03_36 : cornerOK gdata (-1408) (4096)
     [187849082, 129427247, 127395293, 52659171, 27519011, 5757758, 1800791] = true := by
-  decide +kernel
+  bl_cert
 
 /-- Kernel-checked corner test at `(-1280/NT, 2048/NS)`. -/
 theorem cn03_37 : cornerOK gdata (-1280) (2048)
     [169656800, 118564606, 114426140, 47410900, 24319382, 5182969, 1569404] = true := by
-  decide +kernel
+  bl_cert
 
 /-- Kernel-checked corner test at `(-1280/NT, 4096/NS)`. -/
 theorem cn03_38 : cornerOK gdata (-1280) (4096)
     [169656800, 118564606, 114426140, 47410900, 24319382, 5182969, 1569404] = true := by
-  decide +kernel
+  bl_cert
 
 /-- Kernel-checked corner test at `(-1152/NT, 2048/NS)`. -/
 theorem cn03_39 : cornerOK gdata (-1152) (2048)
     [150815993, 106900241, 101216516, 42034346, 21170924, 4591393, 1352574] = true := by
-  decide +kernel
+  bl_cert
 
 /-- Kernel-checked corner test at `(-1152/NT, 4096/NS)`. -/
 theorem cn03_40 : cornerOK gdata (-1152) (4096)
     [150815993, 106900241, 101216516, 42034346, 21170924, 4591393, 1352574] = true := by
-  decide +kernel
+  bl_cert
 
 /-- Kernel-checked corner test at `(-1024/NT, 2048/NS)`. -/
 theorem cn03_41 : cornerOK gdata (-1024) (2048)
     [132050072, 94828645, 88217540, 36685607, 18167718, 3999822, 1154196] = true := by
-  decide +kernel
+  bl_cert
 
 /-- Kernel-checked corner test at `(-1024/NT, 4096/NS)`. -/
 theorem cn03_42 : cornerOK gdata (-1024) (4096)
     [132050072, 94828645, 88217540, 36685607, 18167718, 3999822, 1154196] = true := by
-  decide +kernel
+  bl_cert
 
 /-- Kernel-checked corner test at `(-896/NT, 2048/NS)`. -/
 theorem cn03_43 : cornerOK gdata (-896) (2048)
     [114317283, 82636017, 75638360, 31458255, 15346022, 3418851, 973690] = true := by
-  decide +kernel
+  bl_cert
 
 /-- Kernel-checked corner test at `(-896/NT, 4096/NS)`. -/
 theorem cn03_44 : cornerOK gdata (-896) (4096)
     [114317283, 82636017, 75638360, 31458255, 15346022, 3418851, 973690] = true := by
-  decide +kernel
+  bl_cert
 
 /-- Kernel-checked corner test at `(-768/NT, 2048/NS)`. -/
 theorem cn03_45 : cornerOK gdata (-768) (2048)
     [97798980, 70657614, 63863862, 26471328, 12805467, 2860073, 812580] = true := by
-  decide +kernel
+  bl_cert
 
 /-- Kernel-checked corner test at `(-768/NT, 4096/NS)`. -/
 theorem cn03_46 : cornerOK gdata (-768) (4096)
     [97798980, 70657614, 63863862, 26471328, 12805467, 2860073, 812580] = true := by
-  decide +kernel
+  bl_cert
 
 /-- Kernel-checked corner test at `(-640/NT, 2048/NS)`. -/
 theorem cn03_47 : cornerOK gdata (-640) (2048)
     [84750724, 59033214, 53256766, 21772893, 10706665, 2330836, 670080] = true := by
-  decide +kernel
+  bl_cert
 
 /-- Kernel-checked corner test at `(-640/NT, 4096/NS)`. -/
 theorem cn03_48 : cornerOK gdata (-640) (4096)
     [84750724, 59033214, 53256766, 21772893, 10706665, 2330836, 670080] = true := by
-  decide +kernel
+  bl_cert
 
 /-- Kernel-checked corner test at `(-512/NT, 2048/NS)`. -/
 theorem cn03_49 : cornerOK gdata (-512) (2048)
     [72939250, 47995496, 44295632, 17488745, 8895679, 1838816, 554564] = true := by
-  decide +kernel
+  bl_cert
 
 /-- Kernel-checked corner test at `(-512/NT, 4096/NS)`. -/
 theorem cn03_50 : cornerOK gdata (-512) (4096)
     [72939250, 47995496, 44295632, 17488745, 8895679, 1838816, 554564] = true := by
-  decide +kernel
+  bl_cert
 
 /-- Kernel-checked corner test at `(-384/NT, 2048/NS)`. -/
 theorem cn03_51 : cornerOK gdata (-384) (2048)
     [62782771, 37756829, 36697906, 13681031, 7396933, 1394155, 458253] = true := by
-  decide +kernel
+  bl_cert
 
 /-- Kernel-checked corner test at `(-384/NT, 4096/NS)`. -/
 theorem cn03_52 : cornerOK gdata (-384) (4096)
     [62782771, 37756829, 36697906, 13681031, 7396933, 1394155, 458253] = true := by
-  decide +kernel
+  bl_cert
 
 /-- Kernel-checked corner test at `(-256/NT, 2048/NS)`. -/
 theorem cn03_53 : cornerOK gdata (-256) (2048)
     [157802996, 74480590, 96349307, 30632017, 19331469, 3373557, 1122621] = true := by
-  decide +kernel
+  bl_cert
 
 /-- Kernel-checked corner test at `(-256/NT, 4096/NS)`. -/
 theorem cn03_54 : cornerOK gdata (-256) (4096)
     [157802996, 74480590, 96349307, 30632017, 19331469, 3373557, 1122621] = true := by
-  decide +kernel
+  bl_cert
 
 /-- Kernel-checked corner test at `(0/NT, 2048/NS)`. -/
 theorem cn03_55 : cornerOK gdata (0) (2048)
     [157802996, 84659426, 98693412, 34345350, 19773759, 3724085, 1147165] = true := by
-  decide +kernel
+  bl_cert
 
 /-- Kernel-checked corner test at `(0/NT, 4096/NS)`. -/
 theorem cn03_56 : cornerOK gdata (0) (4096)
     [157802996, 84659426, 98693412, 34345350, 19773759, 3724085, 1147165] = true := by
-  decide +kernel
+  bl_cert
 
 /-- Kernel-checked corner test at `(256/NT, 2048/NS)`. -/
 theorem cn03_57 : cornerOK gdata (256) (2048)
     [157563233, 84659426, 98693412, 34345350, 19773759, 3724085, 1147165] = true := by
-  decide +kernel
+  bl_cert
 
 /-- Kernel-checked corner test at `(256/NT, 4096/NS)`. -/
 theorem cn03_58 : cornerOK gdata (256) (4096)
     [157563233, 84659426, 98693412, 34345350, 19773759, 3724085, 1147165] = true := by
-  decide +kernel
+  bl_cert
 
 /-- Kernel-checked corner test at `(384/NT, 2048/NS)`. -/
 theorem cn03_59 : cornerOK gdata (384) (2048)
     [57008038, 33310545, 33740273, 13019818, 6873448, 1374219, 399436] = true := by
-  decide +kernel
+  bl_cert
 
 /-- Kernel-checked corner test at `(384/NT, 4096/NS)`. -/
 theorem cn03_60 : cornerOK gdata (384) (4096)
     [57008038, 33310545, 33740273, 13019818, 6873448, 1374219, 399436] = true := by
-  decide +kernel
+  bl_cert
 
 /-- Kernel-checked corner test at `(512/NT, 2048/NS)`. -/
 theorem cn03_61 : cornerOK gdata (512) (2048)
     [64108316, 39918210, 39348809, 15546818, 8030115, 1700046, 491814] = true := by
-  decide +kernel
+  bl_cert
 
 /-- Kernel-checked corner test at `(512/NT, 4096/NS)`. -/
 theorem cn03_62 : cornerOK gdata (512) (4096)
     [64108316, 39918210, 39348809, 15546818, 8030115, 1700046, 491814] = true := by
-  decide +kernel
+  bl_cert
 
 /-- Kernel-checked corner test at `(640/NT, 2048/NS)`. -/
 theorem cn03_63 : cornerOK gdata (640) (2048)
     [72065501, 46434945, 45738163, 18327093, 9407066, 2089676, 599577] = true := by
-  decide +kernel
+  bl_cert
 
 /-- Kernel-checked corner test at `(640/NT, 4096/NS)`. -/
 theorem cn03_64 : cornerOK gdata (640) (4096)
     [72065501, 46434945, 45738163, 18327093, 9407066, 2089676, 599577] = true := by
-  decide +kernel
+  bl_cert
 
 /-- Kernel-checked corner test at `(768/NT, 2048/NS)`. -/
 theorem cn03_65 : cornerOK gdata (768) (2048)
     [80342638, 52694545, 52673454, 21631265, 11084596, 2491482, 721595] = true := by
-  decide +kernel
+  bl_cert
 
 /-- Kernel-checked corner test at `(768/NT, 4096/NS)`. -/
 theorem cn03_66 : cornerOK gdata (768) (4096)
     [80342638, 52694545, 52673454, 21631265, 11084596, 2491482, 721595] = true := by
-  decide +kernel
+  bl_cert
 
 /-- Kernel-checked corner test at `(896/NT, 2048/NS)`. -/
 theorem cn03_67 : cornerOK gdata (896) (2048)
     [88708466, 58991769, 60455663, 25083839, 12936792, 2898614, 862876] = true := by
-  decide +kernel
+  bl_cert
 
 /-- Kernel-checked corner test at `(896/NT, 4096/NS)`. -/
 theorem cn03_68 : cornerOK gdata (896) (4096)
     [88708466, 58991769, 60455663, 25083839, 12936792, 2898614, 862876] = true := by
-  decide +kernel
+  bl_cert
 
 /-- Kernel-checked corner test at `(1024/NT, 2048/NS)`. -/
 theorem cn03_69 : cornerOK gdata (1024) (2048)
     [97105850, 65374081, 68348468, 28544867, 14921149, 3302738, 1018380] = true := by
-  decide +kernel
+  bl_cert
 
 /-- Kernel-checked corner test at `(1024/NT, 4096/NS)`. -/
 theorem cn03_70 : cornerOK gdata (1024) (4096)
     [97105850, 65374081, 68348468, 28544867, 14921149, 3302738, 1018380] = true := by
-  decide +kernel
+  bl_cert
 
 /-- Kernel-checked corner test at `(1152/NT, 2048/NS)`. -/
 theorem cn03_71 : cornerOK gdata (1152) (2048)
     [105274843, 71366800, 76142266, 31916303, 17005001, 3693697, 1187602] = true := by
-  decide +kernel
+  bl_cert
 
 /-- Kernel-checked corner test at `(1152/NT, 4096/NS)`. -/
 theorem cn03_72 : cornerOK gdata (1152) (4096)
     [105274843, 71366800, 76142266, 31916303, 17005001, 3693697, 1187602] = true := by
-  decide +kernel
+  bl_cert
 
 /-- Kernel-checked corner test at `(1280/NT, 2048/NS)`. -/
 theorem cn03_73 : cornerOK gdata (1280) (2048)
     [113410049, 76851290, 83776952, 35116784, 19171060, 4062439, 1369340] = true := by
-  decide +kernel
+  bl_cert
 
 /-- Kernel-checked corner test at `(1280/NT, 4096/NS)`. -/
 theorem cn03_74 : cornerOK gdata (1280) (4096)
     [113410049, 76851290, 83776952, 35116784, 19171060, 4062439, 1369340] = true := by
-  decide +kernel
+  bl_cert
 
 /-- Kernel-checked corner test at `(1408/NT, 2048/NS)`. -/
 theorem cn03_75 : cornerOK gdata (1408) (2048)
     [121680055, 81855582, 91484760, 38129047, 21495634, 4407579, 1600304] = true := by
-  decide +kernel
+  bl_cert
 
 /-- Kernel-checked corner test at `(1408/NT, 4096/NS)`. -/
 theorem cn03_76 : cornerOK gdata (1408) (4096)
     [121680055, 81855582, 91484760, 38129047, 21495634, 4407579, 1600304] = true := by
-  decide +kernel
+  bl_cert
 
 /-- Kernel-checked corner test at `(1536/NT, 2048/NS)`. -/
 theorem cn03_77 : cornerOK gdata (1536) (2048)
     [129121155, 86537078, 99163892, 40838931, 23867516, 4718305, 1849051] = true := by
-  decide +kernel
+  bl_cert
 
 /-- Kernel-checked corner test at `(1536/NT, 4096/NS)`. -/
 theorem cn03_78 : cornerOK gdata (1536) (4096)
     [129121155, 86537078, 99163892, 40838931, 23867516, 4718305, 1849051] = true := by
-  decide +kernel
+  bl_cert
 
 /-- Kernel-checked corner test at `(1664/NT, 2048/NS)`. -/
 theorem cn03_79 : cornerOK gdata (1664) (2048)
     [135682988, 91607758, 107097561, 43647349, 26285267, 5065421, 2106934] = true := by
-  decide +kernel
+  bl_cert
 
 /-- Kernel-checked corner test at `(1664/NT, 4096/NS)`. -/
 theorem cn03_80 : cornerOK gdata (1664) (4096)
     [135682988, 91607758, 107097561, 43647349, 26285267, 5065421, 2106934] = true := by
-  decide +kernel
+  bl_cert
 
 /-- Kernel-checked corner test at `(1792/NT, 2048/NS)`. -/
 theorem cn03_81 : cornerOK gdata (1792) (2048)
     [141295263, 95649958, 114504114, 45957276, 28629099, 5357683, 2366641] = true := by
-  decide +kernel
+  bl_cert
 
 /-- Kernel-checked corner test at `(1792/NT, 4096/NS)`. -/
 theorem cn03_82 : cornerOK gdata (1792) (4096)
     [141295263, 95649958, 114504114, 45957276, 28629099, 5357683, 2366641] = true := by
-  decide +kernel
+  bl_cert
 
 /-- Kernel-checked corner test at `(1920/NT, 2048/NS)`. -/
 theorem cn03_83 : cornerOK gdata (1920) (2048)
     [145876895, 98333415, 121221597, 47625570, 30883300, 5571646, 2626270] = true := by
-  decide +kernel
+  bl_cert
 
 /-- Kernel-checked corner test at `(1920/NT, 4096/NS)`. -/
 theorem cn03_84 : cornerOK gdata (1920) (4096)
     [145876895, 98333415, 121221597, 47625570, 30883300, 5571646, 2626270] = true := by
-  decide +kernel
+  bl_cert
 
 /-- Kernel-checked corner test at `(2048/NT, 2048/NS)`. -/
 theorem cn03_85 : cornerOK gdata (2048) (2048)
     [149403450, 99558708, 127162012, 48585433, 32993035, 5699646, 2879189] = true := by
-  decide +kernel
+  bl_cert
 
 /-- Kernel-checked corner test at `(2048/NT, 4096/NS)`. -/
 theorem cn03_86 : cornerOK gdata (2048) (4096)
     [149403450, 99558708, 127162012, 48585433, 32993035, 5699646, 2879189] = true := by
-  decide +kernel
+  bl_cert
 
 /-- Kernel-checked corner test at `(2176/NT, 2048/NS)`. -/
 theorem cn03_87 : cornerOK gdata (2176) (2048)
     [152028957, 99558708, 132375799, 48838075, 34936717, 5741586, 3121222] = true := by
-  decide +kernel
+  bl_cert
 
 /-- Kernel-checked corner test at `(2176/NT, 4096/NS)`. -/
 theorem cn03_88 : cornerOK gdata (2176) (4096)
     [152028957, 99558708, 132375799, 48838075, 34936717, 5741586, 3121222] = true := by
-  decide +kernel
+  bl_cert
 
 /-- Kernel-checked corner test at `(2304/NT, 2048/NS)`. -/
 theorem cn03_89 : cornerOK gdata (2304) (2048)
     [153725001, 99371942, 136796692, 48838075, 36706053, 5741586, 3349836] = true := by
-  decide +kernel
+  bl_cert
 
 /-- Kernel-checked corner test at `(2304/NT, 4096/NS)`. -/
 theorem cn03_90 : cornerOK gdata (2304) (4096)
     [153725001, 99371942, 136796692, 48838075, 36706053, 5741586, 3349836] = true := by
-  decide +kernel
+  bl_cert
 
 /-- Kernel-checked corner test at `(2432/NT, 2048/NS)`. -/
 theorem cn03_91 : cornerOK gdata (2432) (2048)
     [154869606, 97819251, 140605328, 48399552, 38322646, 5700256, 3562946] = true := by
-  decide +kernel
+  bl_cert
 
 /-- Kernel-checked corner test at `(2432/NT, 4096/NS)`. -/
 theorem cn03_92 : cornerOK gdata (2432) (4096)
     [154869606, 97819251, 140605328, 48399552, 38322646, 5700256, 3562946] = true := by
-  decide +kernel
+  bl_cert
 
 /-- Kernel-checked corner test at `(2560/NT, 2048/NS)`. -/
 theorem cn03_93 : cornerOK gdata (2560) (2048)
     [155282224, 95148529, 143726183, 47360611, 39760725, 5585373, 3756788] = true := by
-  decide +kernel
+  bl_cert
 
 /-- Kernel-checked corner test at `(2560/NT, 4096/NS)`. -/
 theorem cn03_94 : cornerOK gdata (2560) (4096)
     [155282224, 95148529, 143726183, 47360611, 39760725, 5585373, 3756788] = true := by
-  decide +kernel
+  bl_cert
 
 /-- Kernel-checked corner test at `(2688/NT, 2048/NS)`. -/
 theorem cn03_95 : cornerOK gdata (2688) (2048)
     [155282224, 91348978, 146270501, 45712994, 41003664, 5396814, 3929313] = true := by
-  decide +kernel
+  bl_cert
 
 /-- Kernel-checked corner test at `(2688/NT, 4096/NS)`. -/
 theorem cn03_96 : cornerOK gdata (2688) (4096)
     [155282224, 91348978, 146270501, 45712994, 41003664, 5396814, 3929313] = true := by
-  decide +kernel
+  bl_cert
 
 /-- Kernel-checked corner test at `(2816/NT, 2048/NS)`. -/
 theorem cn03_97 : cornerOK gdata (2816) (2048)
     [155041416, 86498648, 148056893, 43503171, 42009280, 5141194, 4077805] = true := by
-  decide +kernel
+  bl_cert
 
 /-- Kernel-checked corner test at `(2816/NT, 4096/NS)`. -/
 theorem cn03_98 : cornerOK gdata (2816) (4096)
     [155041416, 86498648, 148056893, 43503171, 42009280, 5141194, 4077805] = true := by
-  decide +kernel
+  bl_cert
 
 /-- Kernel-checked corner test at `(2944/NT, 2048/NS)`. -/
 theorem cn03_99 : cornerOK gdata (2944) (2048)
     [154142774, 80735645, 148056893, 40802127, 42009280, 4826428, 4077805] = true := by
-  decide +kernel
+  bl_cert
 
 /-- Kernel-checked corner test at `(2944/NT, 4096/NS)`. -/
 theorem cn03_100 : cornerOK gdata (2944) (4096)
     [154142774, 80735645, 148056893, 40802127, 42009280, 4826428, 4077805] = true := by
-  decide +kernel
+  bl_cert
 
 /-- Kernel-checked box `[-3328, -3200]/NT × [2048, 3072]/NS`. -/
 theorem cov155 : Cover gdata (-3328) (-3200) (2048) (3072) := by

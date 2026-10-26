@@ -7,6 +7,7 @@ module
 
 public import PlasmaLean.Design.NearAxisQATrappedOscTrig
 public import PlasmaLean.Design.NearAxisQATrappedTimeCells
+public import PlasmaLean.Certificates.EvalCertFIv
 
 /-!
 # Cell certificate for the oscillatory kick integrals of trapped alphas (exact QA)
@@ -181,7 +182,7 @@ lies below `cos(3/5)`. -/
 set_option maxRecDepth 100000 in
 /-- The table agrees with the computed enclosures. -/
 theorem CTI_tab : okAll (fun k => decide ((CTL k).lo = (CTI k).lo) &&
-    decide ((CTL k).hi = (CTI k).hi) && (CTI k).ok) 24 = true := by decide +kernel
+    decide ((CTL k).hi = (CTI k).hi) && (CTI k).ok) 24 = true := by fiv_cert
 
 /-- The bottom cosine `c ∈ CTL k ∩ [cos(3/5), 1]`. -/
 @[expose] def bcI (k : ℕ) : FIv := meetHi (meetLo (CTL k) cdLo) fxScale
@@ -705,8 +706,8 @@ theorem mem_div40 {L H : ℤ} {v : ℝ} (h1 : fxVal L ≤ 40 * v) (h2 : 40 * v �
 set_option maxRecDepth 100000 in
 /-- Sanity (accepted fixture): a flank cell near the tip of the corner box is alive and valid. -/
 theorem fixture_flankO_alive : (flankCellO true (cellX 10) (PBI 0 15) (TBI 0 16)).ok = true ∧
-    (flankCellO true (cellX 10) (PBI 0 15) (TBI 0 16)).dead = false := by
-  decide +kernel
+    (flankCellO true (cellX 10) (PBI 0 15) (TBI 0 16)).dead = false :=
+  ⟨by fiv_cert, by fiv_cert⟩
 
 set_option maxRecDepth 100000 in
 /-- Sanity (degenerate case): far from the tips (`x ≈ 2.25`) the inner flank cell is dead and has
@@ -715,20 +716,20 @@ theorem fixture_flankO_dead : (flankCellO true (cellX 90) (PBI 0 15) (TBI 0 16))
     (flankCellO true (cellX 90) (PBI 0 15) (TBI 0 16)).g = zeroI := by
   have h : ((flankCellO true (cellX 90) (PBI 0 15) (TBI 0 16)).dead &&
       eqI (flankCellO true (cellX 90) (PBI 0 15) (TBI 0 16)).g zeroI) = true := by
-    decide +kernel
+    fiv_cert
   simp only [Bool.and_eq_true] at h
   exact ⟨h.1, eq_of_eqI h.2⟩
 
 set_option maxRecDepth 100000 in
 /-- Sanity (accepted fixture): a bottom cell of the corner box is valid. -/
 theorem fixture_bottomO_ok : (bcell true (PBI 0 15) (TBI 0 16) 10).ok = true := by
-  decide +kernel
+  fiv_cert
 
 set_option maxRecDepth 100000 in
 /-- Sanity (rejected fixture): a wrong thin guess `θ₀ = 1.0477…` for the tip angle of the corner
 box fails `theta0Ok`. -/
 theorem fixture_theta0_rejected :
     theta0Ok (PBI 0 15) (TBI 0 16) ⟨4500000000, 4500000000, true⟩ = false := by
-  decide +kernel
+  fiv_cert
 
 end PlasmaLean.Design.NearAxisQATrappedOsc

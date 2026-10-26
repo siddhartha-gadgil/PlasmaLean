@@ -76,7 +76,7 @@ abbrev EvM := ReaderT Cfg (StateRefT St MetaM)
 meta def defaultPrims : List Name :=
   [``HAdd.hAdd, ``HSub.hSub, ``HMul.hMul, ``HDiv.hDiv, ``HMod.hMod, ``HPow.hPow, ``Neg.neg,
     ``Max.max, ``Min.min, ``OfNat.ofNat, ``Nat.cast, ``NatCast.natCast, ``IntCast.intCast,
-    ``Int.cast, ``Int.toNat, ``Int.natAbs, ``Int.sign, ``Nat.succ, ``Nat.zero, ``Nat.pred,
+    ``Int.cast, ``Inv.inv, ``OfScientific.ofScientific, ``Int.toNat, ``Int.natAbs, ``Int.sign, ``Nat.succ, ``Nat.zero, ``Nat.pred,
     ``Int.add, ``Int.sub, ``Int.mul, ``Int.neg, ``Int.ediv, ``Int.emod,
     ``Int.fdiv, ``Int.fmod, ``Int.tdiv, ``Int.tmod, ``Int.pow, ``Int.subNatNat,
     ``Nat.add, ``Nat.sub, ``Nat.mul, ``Nat.div, ``Nat.mod, ``Nat.pow, ``Nat.gcd, ``Nat.log2,
@@ -161,6 +161,93 @@ meta def numTy? (t : Expr) : Option Bool :=
 meta def mkNumVal (isInt : Bool) (i : Int) : Expr :=
   if isInt then mkIntVal i else mkRawNatLit i.toNat
 
+/-- A rational value `Rat.mk' n d h₁ h₂` in normal form. The proof fields are small closed
+terms checked by the kernel: `Nat.succ_ne_zero (d - 1) : d ≠ 0` and `Eq.refl 1`, whose type
+`1 = 1` is the coprimality `Nat.gcd |n| d = 1` after unfolding (one `Nat.gcd` on literals). -/
+meta def mkRatVal (q : Rat) : Expr :=
+  mkApp4 (mkConst ``Rat.mk') (mkIntVal q.num) (mkRawNatLit q.den)
+    (mkApp (mkConst ``Nat.succ_ne_zero) (mkRawNatLit (q.den - 1)))
+    (mkApp2 (mkConst ``Eq.refl [1]) (mkConst ``Nat) (mkRawNatLit 1))
+
+/-- A rational value read back from its normal form `Rat.mk' n d _ _`. -/
+meta def readRat? (e : Expr) : Option Rat :=
+  match e.getAppFnArgs with
+  | (``Rat.mk', #[n, d, _, _]) =>
+    match readNum? n, readNum? d with
+    | some n, some d => if d > 0 then some (Rat.divInt n d) else none
+    | _, _ => none
+  | _ => none
+
+/-- `t` is the type `ℚ`. -/
+meta def isRatTy (t : Expr) : Bool := t.consumeMData.isConstOf ``Rat
+
+/-- **Fast untrusted evaluation of a rational leaf** (`ℚ` numerals, casts, `+ - * / ⁻¹`, `^` by a
+natural number, `max`, `min` and comparisons), by Lean's own `Rat` arithmetic; `none` outside this
+fragment. `fastQ? fastV e` uses `fastV` for the arguments. -/
+meta def fastQ? (fv : Expr → EvM (Option Expr)) (e : Expr) : EvM (Option Expr) := do
+  let c := e.getAppFn.constName?.getD .anonymous
+  let args := e.getAppArgs
+  let rat (x : Expr) : EvM (Option Rat) := do return (← fv x).bind readRat?
+  let num (x : Expr) : EvM (Option Int) := do return (← fv x).bind readNum?
+  match c, args.size with
+  | ``OfNat.ofNat, 3 =>
+    unless isRatTy args[0]! do return none
+    let .lit (.natVal n) := args[1]!.consumeMData | return none
+    return some (mkRatVal n)
+  | ``OfScientific.ofScientific, 5 =>
+    unless isRatTy args[0]! do return none
+    let some m ← num args[2]! | return none
+    let some k ← num args[4]! | return none
+    let s ← fv args[3]!
+    let p : Rat := (10 : Rat) ^ k.toNat
+    match s with
+    | some (.const ``Bool.true _) => return some (mkRatVal ((m : Rat) / p))
+    | some (.const ``Bool.false _) => return some (mkRatVal ((m : Rat) * p))
+    | _ => return none
+  | ``Nat.cast, 3 | ``NatCast.natCast, 3 | ``Int.cast, 3 | ``IntCast.intCast, 3 =>
+    unless isRatTy args[0]! do return none
+    return (← num args[2]!).map fun n => mkRatVal n
+  | ``Neg.neg, 3 =>
+    unless isRatTy args[0]! do return none
+    return (← rat args[2]!).map fun a => mkRatVal (-a)
+  | ``Inv.inv, 3 =>
+    unless isRatTy args[0]! do return none
+    return (← rat args[2]!).map fun a => mkRatVal a⁻¹
+  | ``HAdd.hAdd, 6 | ``HSub.hSub, 6 | ``HMul.hMul, 6 | ``HDiv.hDiv, 6 =>
+    unless isRatTy args[0]! && isRatTy args[1]! && isRatTy args[2]! do return none
+    let some a ← rat args[4]! | return none
+    let some b ← rat args[5]! | return none
+    return some (mkRatVal (match c with
+      | ``HAdd.hAdd => a + b | ``HSub.hSub => a - b | ``HMul.hMul => a * b | _ => a / b))
+  | ``HPow.hPow, 6 =>
+    unless isRatTy args[0]! && numTy? args[1]! == some false do return none
+    let some a ← rat args[4]! | return none
+    let some k ← num args[5]! | return none
+    return some (mkRatVal (a ^ k.toNat))
+  | ``Max.max, 4 | ``Min.min, 4 =>
+    unless isRatTy args[0]! do return none
+    let some a ← rat args[2]! | return none
+    let some b ← rat args[3]! | return none
+    return some (mkRatVal (if c == ``Max.max then max a b else min a b))
+  | ``Decidable.decide, 2 =>
+    let p := args[0]!.consumeMData
+    let pa := p.getAppArgs
+    let .const r _ := p.getAppFn | return none
+    if pa.size == 4 && (r == ``LE.le || r == ``LT.lt || r == ``GE.ge || r == ``GT.gt) then
+      unless isRatTy pa[0]! do return none
+      let some a ← rat pa[2]! | return none
+      let some b ← rat pa[3]! | return none
+      return some (toExpr (match r with
+        | ``LE.le => decide (a ≤ b) | ``LT.lt => decide (a < b)
+        | ``GE.ge => decide (a ≥ b) | _ => decide (a > b)))
+    if pa.size == 3 && (r == ``Eq || r == ``Ne) then
+      unless isRatTy pa[0]! do return none
+      let some a ← rat pa[1]! | return none
+      let some b ← rat pa[2]! | return none
+      return some (toExpr (if r == ``Eq then a == b else a != b))
+    return none
+  | _, _ => return none
+
 /-- **Fast untrusted evaluation** of a leaf (integer and natural arithmetic, Booleans,
 comparisons, `if`, records and non-recursive definitions), by Lean's own arithmetic in `meta`
 code; `none` when the term is outside this fragment (then the kernel's `whnf` is used). The
@@ -185,6 +272,7 @@ meta partial def fastV (e : Expr) : EvM (Option Expr) := do
       | some (.const ``Bool.false _) => return some false
       | _ => return none
     let mkB (b : Bool) : Expr := toExpr b
+    if let some v ← fastQ? fastV e then return some v
     match c, args.size with
     | ``Int.ofNat, 1 => return (← num args[0]!).map mkIntVal
     | ``Int.negSucc, 1 => return (← num args[0]!).map fun n => mkIntVal (-n - 1)
@@ -463,7 +551,10 @@ meta partial def evCore (e : Expr) : EvM (Expr × Expr) := do
         | .reduced e'' => return hint α e' (← ev e'')
         | _ => throwError "eval_cert: stuck at a `match`{indentExpr e'}"
     if let some (.ctorInfo cv) := (← getEnv).find? c then
-      let ps := (List.range cv.numFields).toArray.map (cv.numParams + ·)
+      -- proof fields (e.g. those of `Rat.mk'`) are not evaluated: they are irrelevant
+      let pf ← propFieldsOf c cv
+      let ps := ((List.range cv.numFields).filter (fun i => !(pf[i]?.getD false))).toArray.map
+        (cv.numParams + ·)
       return ← argChain α e (← nonVals (ps.filter (· < args.size) |>.map (args[·]!)))
         fun e' => return (e', mkLit α e')
     let ps ← dataPositions c

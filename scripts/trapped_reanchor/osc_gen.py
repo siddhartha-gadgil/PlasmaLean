@@ -86,9 +86,9 @@ Leaves {first}–{last} of the adaptive cover of the start window used by
 For each index box `[a, b] × [c, d]` (`ψ₀ ∈ PBI a b`, `B_t ∈ TBI c d`) the inner-leg check
 `legAOk`, the outer-leg check `legBOk` (with the inner leg's `I(z₁)` enclosure) and the final
 check `finalOk` are checked on the oracle enclosures (all computed by the untrusted exact
-mirror `scripts/trapped_reanchor/osc_mirror.py`): the leg checks by `decide +kernel`, the final
-check by an evaluation certificate (`fiv_cert`, `Certificates/EvalCert`: one kernel leaf per
-interval operation).
+mirror `scripts/trapped_reanchor/osc_mirror.py`), all three by evaluation certificates
+(`fiv_cert`, `Certificates/EvalCert`: one kernel leaf per interval operation; the leg checks are
+≈ 4·10⁴ leaves each, so the private `.olean` of this module is ≈ 300 MB).
 -/
 public section
 namespace PlasmaLean.Design.NearAxisQATrappedOsc
@@ -110,12 +110,12 @@ def leaf_lean(a, b, c, d, Th0, dd, Kn, Pmin, Pmax, DlS, DhS):
 set_option maxRecDepth 100000 in
 /-- Inner-leg check of the box `[{a}, {b}] × [{c}, {d}]`. -/
 theorem oscA_{n} : {A} = true := by
-  decide +kernel
+  fiv_cert
 
 set_option maxRecDepth 100000 in
 /-- Outer-leg check of the box `[{a}, {b}] × [{c}, {d}]`. -/
 theorem oscB_{n} : {B} = true := by
-  decide +kernel
+  fiv_cert
 
 set_option maxRecDepth 100000 in
 /-- Final check of the box `[{a}, {b}] × [{c}, {d}]`. -/

@@ -17,9 +17,9 @@ Leaves 56–63 of the adaptive cover of the start window used by
 For each index box `[a, b] × [c, d]` (`ψ₀ ∈ PBI a b`, `B_t ∈ TBI c d`) the inner-leg check
 `legAOk`, the outer-leg check `legBOk` (with the inner leg's `I(z₁)` enclosure) and the final
 check `finalOk` are checked on the oracle enclosures (all computed by the untrusted exact
-mirror `scripts/trapped_reanchor/osc_mirror.py`): the leg checks by `decide +kernel`, the final
-check by an evaluation certificate (`fiv_cert`, `Certificates/EvalCert`: one kernel leaf per
-interval operation).
+mirror `scripts/trapped_reanchor/osc_mirror.py`), all three by evaluation certificates
+(`fiv_cert`, `Certificates/EvalCert`: one kernel leaf per interval operation; the leg checks are
+≈ 4·10⁴ leaves each, so the private `.olean` of this module is ≈ 300 MB).
 -/
 public section
 namespace PlasmaLean.Design.NearAxisQATrappedOsc
@@ -30,7 +30,7 @@ set_option maxRecDepth 100000 in
 theorem oscA_30_45_80_88 : legAOk (PBI 30 45) (TBI 80 88) ⟨5151752177, 5244261273, true⟩
     ⟨-10905002724, 14540484451, true⟩ ⟨-31648162716, -5839333559, true⟩
     ⟨1801878708, 2167153662, true⟩ ⟨123984654035, 139966191901, true⟩ = true := by
-  decide +kernel
+  fiv_cert
 
 set_option maxRecDepth 100000 in
 /-- Outer-leg check of the box `[30, 45] × [80, 88]`. -/
@@ -38,7 +38,7 @@ theorem oscB_30_45_80_88 : legBOk (PBI 30 45) (TBI 80 88) ⟨5151752177, 5244261
     ⟨1801878708, 2167153662, true⟩ ⟨-57663767632, 20200743296, true⟩
     ⟨-53625387688, 27172998492, true⟩ ⟨3477207854, 4195029562, true⟩
     ⟨140214262420, 160495281892, true⟩ = true := by
-  decide +kernel
+  fiv_cert
 
 set_option maxRecDepth 100000 in
 /-- Final check of the box `[30, 45] × [80, 88]`. -/
@@ -59,7 +59,7 @@ set_option maxRecDepth 100000 in
 theorem oscA_30_45_88_96 : legAOk (PBI 30 45) (TBI 88 96) ⟨5210647640, 5301726409, true⟩
     ⟨-12421536643, 13761056320, true⟩ ⟨-31350606376, -3141978574, true⟩
     ⟨1763427851, 2177721933, true⟩ ⟨122378643001, 141165024439, true⟩ = true := by
-  decide +kernel
+  fiv_cert
 
 set_option maxRecDepth 100000 in
 /-- Outer-leg check of the box `[30, 45] × [88, 96]`. -/
@@ -67,7 +67,7 @@ theorem oscB_30_45_88_96 : legBOk (PBI 30 45) (TBI 88 96) ⟨5210647640, 5301726
     ⟨1763427851, 2177721933, true⟩ ⟨-59940774154, 17909230770, true⟩
     ⟨-53505404570, 29412783841, true⟩ ⟨3432455823, 4166814369, true⟩
     ⟨140673694102, 158726513196, true⟩ = true := by
-  decide +kernel
+  fiv_cert
 
 set_option maxRecDepth 100000 in
 /-- Final check of the box `[30, 45] × [88, 96]`. -/
@@ -88,7 +88,7 @@ set_option maxRecDepth 100000 in
 theorem oscA_30_45_96_104 : legAOk (PBI 30 45) (TBI 96 104) ⟨5269065418, 5358751960, true⟩
     ⟨-13195612284, 12730188200, true⟩ ⟨-30537943292, -2028532015, true⟩
     ⟨1769733084, 2183768923, true⟩ ⟨123443627610, 142140407790, true⟩ = true := by
-  decide +kernel
+  fiv_cert
 
 set_option maxRecDepth 100000 in
 /-- Outer-leg check of the box `[30, 45] × [96, 104]`. -/
@@ -96,7 +96,7 @@ theorem oscB_30_45_96_104 : legBOk (PBI 30 45) (TBI 96 104) ⟨5269065418, 53587
     ⟨1769733084, 2183768923, true⟩ ⟨-60756329291, 16950364685, true⟩
     ⟨-52645841649, 31125936059, true⟩ ⟨3432963783, 4165834807, true⟩
     ⟨141168767075, 159161029503, true⟩ = true := by
-  decide +kernel
+  fiv_cert
 
 set_option maxRecDepth 100000 in
 /-- Final check of the box `[30, 45] × [96, 104]`. -/
@@ -117,7 +117,7 @@ set_option maxRecDepth 100000 in
 theorem oscA_30_45_104_112 : legAOk (PBI 30 45) (TBI 104 112) ⟨5327024922, 5415355404, true⟩
     ⟨-13037587698, 10607764287, true⟩ ⟨-27482114597, -1172547979, true⟩
     ⟨1776441560, 2139313558, true⟩ ⟨124560138200, 140353577923, true⟩ = true := by
-  decide +kernel
+  fiv_cert
 
 set_option maxRecDepth 100000 in
 /-- Outer-leg check of the box `[30, 45] × [104, 112]`. -/
@@ -125,7 +125,7 @@ theorem oscB_30_45_104_112 : legBOk (PBI 30 45) (TBI 104 112) ⟨5327024922, 541
     ⟨1776441560, 2139313558, true⟩ ⟨-59848792276, 13829430242, true⟩
     ⟨-48979025337, 31162375669, true⟩ ⟨3434753613, 4114719043, true⟩
     ⟨141728393787, 159622944186, true⟩ = true := by
-  decide +kernel
+  fiv_cert
 
 set_option maxRecDepth 100000 in
 /-- Final check of the box `[30, 45] × [104, 112]`. -/
@@ -146,7 +146,7 @@ set_option maxRecDepth 100000 in
 theorem oscA_30_45_112_120 : legAOk (PBI 30 45) (TBI 112 120) ⟨5384544661, 5471553458, true⟩
     ⟨-14308066508, 11090584524, true⟩ ⟨-26900627108, 1775348394, true⟩
     ⟨1738843659, 2151615904, true⟩ ⟨123034067988, 141653044280, true⟩ = true := by
-  decide +kernel
+  fiv_cert
 
 set_option maxRecDepth 100000 in
 /-- Outer-leg check of the box `[30, 45] × [112, 120]`. -/
@@ -154,7 +154,7 @@ theorem oscB_30_45_112_120 : legBOk (PBI 30 45) (TBI 112 120) ⟨5384544661, 547
     ⟨1738843659, 2151615904, true⟩ ⟨-61665621485, 12932721985, true⟩
     ⟨-48377539052, 33877929597, true⟩ ⟨3392846044, 4090271234, true⟩
     ⟨142335843058, 157993649390, true⟩ = true := by
-  decide +kernel
+  fiv_cert
 
 set_option maxRecDepth 100000 in
 /-- Final check of the box `[30, 45] × [112, 120]`. -/
@@ -175,7 +175,7 @@ set_option maxRecDepth 100000 in
 theorem oscA_30_45_120_128 : legAOk (PBI 30 45) (TBI 120 128) ⟨5441642318, 5527362117, true⟩
     ⟨-14997619109, 10886420206, true⟩ ⟨-25778703839, 2896778333, true⟩
     ⟨1746657687, 2158021152, true⟩ ⟨124203841390, 142687488381, true⟩ = true := by
-  decide +kernel
+  fiv_cert
 
 set_option maxRecDepth 100000 in
 /-- Outer-leg check of the box `[30, 45] × [120, 128]`. -/
@@ -183,7 +183,7 @@ theorem oscB_30_45_120_128 : legBOk (PBI 30 45) (TBI 120 128) ⟨5441642318, 552
     ⟨1746657687, 2158021152, true⟩ ⟨-63433657685, 13554977617, true⟩
     ⟨-47671978294, 36386603366, true⟩ ⟨3370159418, 4090368262, true⟩
     ⟨141016572673, 158484224090, true⟩ = true := by
-  decide +kernel
+  fiv_cert
 
 set_option maxRecDepth 100000 in
 /-- Final check of the box `[30, 45] × [120, 128]`. -/
@@ -204,7 +204,7 @@ set_option maxRecDepth 100000 in
 theorem oscA_45_60_0_8 : legAOk (PBI 45 60) (TBI 0 8) ⟨4577122851, 4683588227, true⟩
     ⟨2001911269, 32142498935, true⟩ ⟨-32906267692, -7472746448, true⟩
     ⟨1782238225, 2185756150, true⟩ ⟨117994032292, 137034409747, true⟩ = true := by
-  decide +kernel
+  fiv_cert
 
 set_option maxRecDepth 100000 in
 /-- Outer-leg check of the box `[45, 60] × [0, 8]`. -/
@@ -212,7 +212,7 @@ theorem oscB_45_60_0_8 : legBOk (PBI 45 60) (TBI 0 8) ⟨4577122851, 4683588227,
     ⟨1782238225, 2185756150, true⟩ ⟨-45544024149, 38786290448, true⟩
     ⟨-55494262662, 25125146327, true⟩ ⟨3562565491, 4314374488, true⟩
     ⟨140345556340, 160045405906, true⟩ = true := by
-  decide +kernel
+  fiv_cert
 
 set_option maxRecDepth 100000 in
 /-- Final check of the box `[45, 60] × [0, 8]`. -/
@@ -233,7 +233,7 @@ set_option maxRecDepth 100000 in
 theorem oscA_45_60_8_16 : legAOk (PBI 45 60) (TBI 8 16) ⟨4640868904, 4745477519, true⟩
     ⟨102742814, 30675598172, true⟩ ⟨-33689171902, -8288109757, true⟩
     ⟨1784018159, 2189849314, true⟩ ⟨118738756522, 137832563431, true⟩ = true := by
-  decide +kernel
+  fiv_cert
 
 set_option maxRecDepth 100000 in
 /-- Outer-leg check of the box `[45, 60] × [8, 16]`. -/
@@ -241,7 +241,7 @@ theorem oscB_45_60_8_16 : legBOk (PBI 45 60) (TBI 8 16) ⟨4640868904, 474547751
     ⟨1784018159, 2189849314, true⟩ ⟨-47136847275, 37531998831, true⟩
     ⟨-56039871985, 24254199361, true⟩ ⟨3556711645, 4305593799, true⟩
     ⟨140668830270, 160057832949, true⟩ = true := by
-  decide +kernel
+  fiv_cert
 
 set_option maxRecDepth 100000 in
 /-- Final check of the box `[45, 60] × [8, 16]`. -/
