@@ -1,5 +1,7 @@
 # PlasmaLean implementation plan: theory → proof techniques → successively realistic models
 
+**Proposed review amendment, 24 October 2026:** section 11 adds a sourced evolution, symmetry and thermal-verification programme and contribution targets. It does not mark new mathematical work complete.
+
 Prepared 2026-10-20 against `8dcf3a2` (baseline: 14 Oct 2026 run, 53 modules, standard axioms only). Updated after each phase; see §9.
 This is a plan. Nothing listed here as a target is implemented until a progress report says so. Status marks (✅ ◐ ○) reflect the latest report.
 
@@ -28,8 +30,8 @@ The project goal has two parts, and each needs its own chain of certificates:
 Several statements in the newer notes are false or vacuous. Each correction gets a sanity theorem or a counterexample in Lean.
 
 1. **Subharmonic means no interior *maximum*, not no interior minimum.** Both [PDE §2.2](https://github.com/siddhartha-gadgil/PlasmaLean/blob/main/notes/pde-bounds-and-verification-roadmap.md) and [microturbulence §4, check 3](https://github.com/siddhartha-gadgil/PlasmaLean/blob/main/notes/microturbulence-and-available-energy.md) say that \|B\|² subharmonic rules out a strict interior local minimum of \|B\|. That is backwards: \|x\|² is subharmonic with a minimum at 0, and minimum-B mirror fields (Ioffe/baseball coils) are vacuum fields. The correct statement is that \|B\| has **no strict interior local maximum** in vacuum. The real obstruction to min-B and maximum-J in *toroidal* vacuum fields is a different theorem; find the source (e.g. Hall–McNamara, Bernardin–Moses–Tataronis) and state it precisely. Lean: `vacuum_normSq_no_strict_interior_max`, plus a counterexample showing that a vacuum field can have an interior minimum of \|B\|.
-2. **The magnetic 2-form vanishes on flux surfaces.** B is tangent to Σ_ψ, so ω_B restricted to Σ_ψ is zero. The line bundle on a flux torus is therefore **flat (degree 0)**, and `flux_degree > 0` in the [holomorphic note](https://github.com/siddhartha-gadgil/PlasmaLean/blob/main/notes/holomorphic-bundles-kym-wick-rotations.md) is physically wrong. `holomorphicSectionDim` is also true by definition, so it checks nothing. What survives is that the flat bundle's holonomy (in the Jacobian of the torus, which is the torus itself) encodes the rotational transform ι(ψ), and τ(ψ) is the conformal modulus. Re-target this module on that statement (compare `Challenge6_ConformalTorusModulus`).
-3. **2-D ideal MHD global regularity is open.** [BKM §2.2](https://github.com/siddhartha-gadgil/PlasmaLean/blob/main/notes/bkm-regularity-and-perelman-burn-bounds.md) claims that helically symmetric MHD is globally regular. That is known only with dissipation (viscosity and resistivity). The Riccati law dY/dt ≤ −νY + CεY² is a heuristic, not a theorem. Keep only the *conditional* statement: if the differential inequality holds, then Y stays bounded below the threshold. Mark the inequality itself as research (R3).
+2. **The magnetic 2-form vanishes on flux surfaces.** B is tangent to Σ_ψ, so ω_B restricted to Σ_ψ is zero. The line bundle on a flux torus is therefore **flat (degree 0)**, and `flux_degree > 0` in the [holomorphic note](https://github.com/siddhartha-gadgil/PlasmaLean/blob/main/notes/holomorphic-bundles-kym-wick-rotations.md) is physically wrong. `holomorphicSectionDim` is also true by definition, so it checks nothing. Further correction (24 October): a flat connection's periods encode fluxes; its holonomy at one surface does not determine the rotational transform. The latter requires an oriented derivative ratio of fluxes across surfaces. Fix cycle orientations before identifying those derivatives. Re-target on periods, the conformal modulus τ(ψ), and the Hodge inequality in §11.6 (compare `Challenge6_ConformalTorusModulus`).
+3. **2-D ideal MHD global regularity is open.** [BKM §2.2](https://github.com/siddhartha-gadgil/PlasmaLean/blob/main/notes/bkm-regularity-and-perelman-burn-bounds.md) claims that helically symmetric MHD is globally regular. The planar 2-D fully viscous/resistive problem has global regularity; a helical reduction needs its own theorem and hypotheses. Quasisymmetry alone is not a PDE symmetry (§11.4). The Riccati law dY/dt ≤ −νY + CεY² is a heuristic, not a theorem. Keep only the *conditional* statement: if the differential inequality holds, then Y stays bounded below the threshold. Mark the inequality itself as research (R3).
 4. **Vacuous kernel contracts.** `FutakiObstructionCertificate` is correct but needs ⟪μ x, u⟫ constant over **all** x. All the physics is in proving that hypothesis for an MHD ansatz family. `CommutedWallClearanceCertificate` is an arithmetic inequality with no link to any PDE. Each contract must come with a theorem that *produces* it from model hypotheses, or it stays out of the library.
 5. **Unchecked identities.** These need derivation and sympy checks before Lean: the relative-entropy dissipation identity (BKM §3.1), the Helander–Mackenbach Â formula (extract it exactly from MPH 2022/2023), and the Klainerman–Sobolev step H² ↪ L∞ (commuting only with u and b controls *tangential* derivatives, so an elliptic-regularity step across surfaces is required).
 
@@ -97,7 +99,7 @@ Status legend: ✅ done · ◐ partial · ○ not started.
 | **T7 Field-line Hamiltonian** (Stage 5) | First-integral barriers ✅. Approximate-first-integral confinement for the exact rational stellarator field ✅ (95 toroidal transits, certified). Pendulum island-width bound with explicit remainder ○. Chirikov non-overlap ○. A posteriori KAM ✅ (verified explicit-constant KAM theorem; exact invariant torus of the rational stellarator field; all-time field-line confinement). Converse KAM / Greene residue as an obstruction certificate ○. | Fourier coefficient enclosures for b_{m,n} | M4/M5 confinement |
 | **T8 Guiding centre and kinetics** (microturbulence note) | Guiding-centre equations; finite-time full-orbit versus guiding-centre error (R6) ✅ (crude, constant 1); Boozer GC model, gyro-Noether identity and iterated averaging lemma ✅; rigorous amplitudes for near-axis QA ✅ (passing alphas 0.19 s); trapped: single well and non-resonant bounce sums ✅, kick form ○. Bounce action J_∥ and the ∂_ψ identity (careful endpoint differentiation) ○. Min-B ⇒ max-J (sanity check 1) ✅ (for the integral expression; = ∂J/∂ψ ○). Available-energy kernel lemmas ✅ (note's opposite-sign claim refuted). Integral Â bound under precession dominance ○. Omnigeneity implies zero bounce-averaged radial drift ○. | Quadrature with remainder for bounce integrals (√ endpoint singularity) | Alpha confinement (3.5 MeV obstruction), and χ upper bounds for T3 |
 | **T9 Hyperbolic energy** (Stage 6, holomorphic §4) | Elsässer energy and cross-helicity identities ✅ (conservation under skew transport). Null-structure identity ⟨(z∓·∇)z±, z±⟩ = 0 for divergence-free tangent fields ○. Abstract commuted-energy Grönwall theorem in Hilbert space, with the commutator bound as hypothesis ○. Sobolev step stated as an explicit interface (§1.5). | none | Long-time linear bounds, M5 |
-| **T10 Exploratory geometry** (holomorphic/KYM/BKM) | Discovery only until vetted: flat-bundle holonomy ↔ ι(ψ) (§1.2); Futaki-type obstruction for a *specific* near-axis QS ansatz (an honest test: does it reproduce the Garren–Boozer O(r³) obstruction?); conditional BKM continuation. Each needs a verdict note before any Lean code. | none | Possibly T6/T7 |
+| **T10 Exploratory geometry** (holomorphic/KYM/BKM) | Discovery only until vetted: oriented flux periods and Hodge bounds (§1.2, §11.6); Futaki-type obstruction for a *specific* near-axis QS ansatz (an honest test: does it reproduce the Garren–Boozer O(r³) obstruction?); conditional BKM continuation. Each needs a verdict note before any Lean code. | none | Possibly T6/T7 |
 
 ---
 
@@ -571,3 +573,260 @@ Each cycle is a run. The targets are listed in priority order; anything left ove
 ### Phase 16: disk budget raised, 26 October 2026
 
 - **User decision:** the budget for private certificate oleans is raised from about 15 GB to about 40 GB. Convert the ballooning `hessOK` boxes (≈ 4.6 GB) and the older bilinear polygon-coil cells (≈ 7 GB) as designed; keep looking for compact designs for the rest (the remaining ≈ 2,500 `decide +kernel` lines, the Kronecker-image equalities). Memory stays ≤ 6 GB per process.
+
+## 11. Proposed extension: verified plasma evolution and geometric contribution paths
+
+**Prepared 24 October 2026 against c46501d9. Status: proposed work; no new MHD evolution theorem is claimed.**
+This extension complements the existing confinement and burn tracks. Sections 0–10 retain their
+historical status. The corrected scientific specification is
+[BKM, symmetry, thermal bounds and evolution](https://github.com/siddhartha-gadgil/PlasmaLean/blob/main/notes/bkm-regularity-and-perelman-burn-bounds.md).
+Contributor entry points and a result-card template are in
+[CONTRIBUTING](https://github.com/siddhartha-gadgil/PlasmaLean/blob/main/CONTRIBUTING.md).
+
+### 11.1 Research objective and success statement
+
+Choose a coil geometry, operating parameters, a compatible equilibrium or approximate evolution,
+and a nontrivial set of initial perturbations. Certify a stated interval on which the selected
+plasma model exists and stays within specified error, stability, thermal and geometric bounds.
+Use one candidate/witness throughout. An all-time result is a later target when the same estimates
+close globally; a finite operating interval with explicit margins is already useful.
+
+The intended chain is:
+
+1. Certify the external vacuum field and its coil realization.
+2. Construct or validate the finite-pressure state for the **total** field, with equation of
+   state, boundary data and pressure matching.
+3. Re-evaluate quasisymmetry and confinement after plasma response.
+4. Bound a full evolution residual and prove existence/continuation for a neighbourhood of
+   initial data.
+5. Prove perturbation stability, core-temperature and yield bounds as distinct conclusions.
+
+Vacuum quasisymmetry alone does not make step 2 automatic. A pointwise upper bound
+`p_thermal <= p_eq` is a pressure-budget screen, not equality in force balance.
+All-time bounds for supplied solutions do not establish their global existence.
+Positive measure in velocity space should be accompanied by a physically meaningful energy
+and pitch range, rather than used as a replacement for a robustness margin.
+
+### 11.2 Work packages and evidence gates
+
+All proposed module names below are targets, not existing implementations.
+
+| Work package | Deliverable | Acceptance evidence |
+| --- | --- | --- |
+| E0 — Repair and expose assumptions | Correct README and active BKM note; add result cards, a physical-assumption index, and an audit import manifest. Replace contradictory live formulas in the other discovery notes. | Every advertised result names its candidate, model, quantifiers, existence status and supplied reductions. Default and optional audit coverage are separate. |
+| E1 — Symmetry test | Prove the Lie-derivative/gradient commutator and the local zero-QS-error counterexample in the corrected note. State a genuine isometric-invariance theorem. | A proposed ansatz preserves equations, domain, boundary and constitutive data, or has an explicitly bounded reconstructed PDE residual. No inference from scalar QS error to zero stretching. |
+| E2 — Periodic evolution benchmark | Formalize the fixed-model energy and bilinear estimates, scalar comparison, and Pizzocchero–Tassi Proposition 4.3. | Exact solution existence and an Hs error bound follow from certified data. A comparison theorem alone is labelled as such; no desired PDE conclusion is a certificate field. |
+| E3 — Certified trajectory | Produce a small Fourier/time-polynomial benchmark and exact residual, initial-error, Hs and Hs+1 enclosures. | Include discarded nonlinear modes, interpolation error and continuous-time bounds. A deliberately omitted high-frequency mode makes the checker fail. |
+| E4 — Toroidal-domain continuation | Formalize harmonic flux sectors, boundary cancellations and Hodge coercivity; extract the Kozono–Shimizu–Yanagisawa small-data theorem with its exact hypotheses. | Identify a nonempty admissible parameter set and nondimensional constants. Do not silently transfer a flat-torus or small-background theorem to a reactor-strength field. |
+| E5 — Thermal existence and compatibility | Add local existence/continuation for the radial transport model, then a steady pressure-matched state or controlled coupled response. | Treat the degenerate axis and edge conditions. The pressure entering force balance is the thermodynamic pressure, or the actual mismatch is bounded in a suitable derivative norm. |
+| E6 — Entropy and invariant operating bounds | Formalize the corrected relative-entropy identity with all source/reference/boundary terms; retain the existing two-sided temperature barriers. | State the sign and coercivity hypotheses, exhibit failure outside them, and certify core temperature, fuel-density and reactivity ranges over the interval. |
+| E7 — Compatible numerics | Verify a constrained-transport update, an equilibrium-preserving fixture, and one admissible-state/entropy estimate. | Separate divergence preservation, positivity, entropy, helicity, and continuum error. Each claim has its own hypotheses and proof. |
+| E8 — Integrate a useful candidate | Apply the completed evolution and thermal chain to a shared candidate already used by the confinement work. | Publish explicit parameter/initial-data uncertainty, time horizon, error margins, fuel/heating assumptions, and unresolved model bridges. Only mark a gate complete after the producer theorems are discharged. |
+
+Dependencies: E0 and E1 can proceed immediately; E2 precedes E3; E4 changes the geometry/model
+and therefore requires new analytic estimates; E5 and E6 can proceed alongside E2–E4;
+E8 requires the relevant earlier gates and the coil/confinement chain. E7 provides useful
+oracles and discrete guarantees, but does not replace E2/E4's continuum analysis.
+
+### 11.3 The concrete first theorem to implement
+
+Use the flat periodic benchmark exactly as in
+[Pizzocchero–Tassi, Proposition 4.3](https://arxiv.org/html/1905.13722v1):
+divergence-free, zero-mean fields on `(R/2pi Z)^3`, smooth initial data and approximation,
+Sobolev order `s>5/2`, and the stated viscosity/resistivity coefficients.
+
+Let `epsilon_s` bound the **full** PDE residual, `delta_s` the initial discrepancy,
+and `D_s,D_(s+1)` the approximation norms. First prove a checked nonnegative control function
+satisfies
+
+$$
+R'\ge-\mu R+
+(\widehat G_sD_s+\widehat K_sD_{s+1})R+
+\widehat G_sR^2+\epsilon_s,\qquad R(0)\ge\delta_s,
+$$
+
+where `mu=min(nu,eta)` in this normalization. Then prove the PDE bridge yields existence
+and `||U-U_a||_{H^s}<=R` before the control horizon. Certify a horizon strictly greater
+than `T_burn` to cover the requested closed interval without an endpoint gap.
+
+The abstract scalar lemma is an early deliverable. The full source theorem additionally needs
+local well-posedness, continuation, bilinear estimates and norm conventions. Keep those gaps
+visible. With a smooth finite Fourier approximation, the full nonlinear residual has explicitly
+computable modes outside the truncation: no hypothetical bound on an unknown true solution's
+Fourier tail should be substituted for the residual theorem.
+
+For the bounded-domain route use
+[Kozono–Shimizu–Yanagisawa (2025)](https://doi.org/10.1007/s00208-025-03223-5).
+Their small harmonic background and small perturbation conditions are not a reactor-scale
+certificate. First derive explicit geometry-dependent constants or a validated estimate for
+a particular domain. The background flux lives in a harmonic subspace, so the magnetic
+Poincaré inequality must be stated on its complement.
+
+### 11.4 Tests for a symmetric or approximately symmetric plasma ansatz
+
+Before numerical optimization or Lean implementation, write the ansatz in the full equations
+and calculate the residual.
+
+An exact positive fixture is the standard Alfvénic class on the flat three-torus:
+`a(x,t)=a_0(x+t b_0), v=a, b=b_0+a`, with constant `b_0`, smooth periodic
+divergence-free `a_0`, and constant total pressure. Direct substitution gives a global
+smooth ideal solution and BKM integral `2T ||curl a_0||_infty`.
+For nonzero `b_0` and mean-zero `a_0` this lies outside the zero-mean magnetic-field
+hypothesis of the Pizzocchero–Tassi benchmark. Formalize it separately, with the absence of
+toroidal-vessel confinement, thermodynamic closure, and transverse perturbation stability
+explicit. It tests the ansatz mechanism without claiming a stellarator construction.
+
+- A genuine Killing generator preserving all coefficients and boundary conditions is a useful
+  benchmark. Symmetry of initial data is preserved only after the equation and uniqueness
+  hypotheses have been supplied.
+- Quasisymmetry of magnetic strength is generally a guiding-centre property. It does not make
+  the pressure gradient, Laplacian or force operator commute with its generator.
+- The local example `B=e_z, X=(1+y)e_x, p=y` has zero scalar QS error but
+  `[X,grad p]=-e_x`. Include it as a negative sanity target.
+- Approximate invariance needs norms of `L_X g`, coefficient/background derivatives, and boundary
+  mismatch or, preferably, a complete reconstructed residual. Do not posit a Riccati estimate
+  whose nonlinear coefficient is only the scalar QS error.
+- Exact 2-D, helical and axisymmetric ansätze are different reductions. A theorem inside one
+  invariant class does not prove stability against perturbations outside that class.
+- Field-line KAM confinement is an ODE statement for a static field. It does not control
+  MHD current-sheet formation, bulk instability, kinetic turbulence or a moving interface.
+
+The earlier elliptic-profile idea remains an optional field-construction test:
+study the real periodic branch of `y^2=[psi-(x-1)^2](2-x)`, then solve or obstruct the
+separate embedded Maxwell/coordinate compatibility problem. Do not assume that an elliptic
+curve or a prescribed strength function already supplies a realizable three-dimensional field.
+Recheck any earlier claimed obstruction with its exact axis, coefficients and hypotheses.
+
+### 11.5 Perelman-inspired work: a testable functional programme
+
+The target is a physically derived estimate with useful coercivity. Start with existing
+energy/relative-entropy identities rather than assuming that a Ricci-flow formula transfers.
+
+For any candidate functional:
+
+1. Specify the evolution, unknowns, domain, boundaries, forcing and reference state.
+2. Differentiate it exactly, retaining reference-profile, boundary, reaction and compression
+   terms. Record all signs and regularity assumptions.
+3. Test it against explicit solutions and thermal-runaway examples.
+4. Prove which norm or operating quantity it controls, including constants.
+5. Check scaling and whether concentration can leave the functional bounded.
+6. Only then test whether its dissipation controls a continuation criterion.
+
+Two immediate outputs are the corrected thermal entropy identity in
+`notes/theory/relative-entropy-dissipation.md` and a core-yield lower bound from verified
+temperature/fuel/reactivity bands. Total heat alone does not prevent a cold core. A generic
+entropy inequality does not bound current or vorticity suprema. Nonnegative ideal-MHD energy
+does not imply coercivity in all displacement directions: neutral/relabeling modes require a
+specified quotient or constraint.
+
+Use [Tao's 2007 discussion](https://terrytao.wordpress.com/2007/03/18/why-global-regularity-for-navier-stokes-is-hard/)
+and [Perelman's original paper](https://arxiv.org/abs/math/0211159) for the methodological
+question, not as a missing MHD theorem. The counter-propagating Alfvén-wave structure has
+already supported a GR-inspired stability theorem in
+[He–Xu–Yu](https://arxiv.org/abs/1603.08205); its spatial-separation estimates on Euclidean
+space need replacement in a bounded toroidal geometry.
+
+### 11.6 Concrete entry points for topology, differential geometry and complex geometry
+
+**Topology.** Prove the following bridge from the pointwise kernel.
+If sufficiently smooth divergence-free fields `B,J` satisfy `J×B=grad p`, then on each
+compact connected regular pressure-level component without boundary they give a tangent
+frame. Curling force balance gives `[B,J]=0`. The component is a torus.
+State compactness, regularity and connectedness componentwise; this says nothing about critical
+levels or the magnetic axis. A second target is flux/harmonic-sector bookkeeping for E4 and E7.
+
+**Differential geometry.** Prove the gradient commutator, a genuine symmetry-preservation theorem,
+and a dictionary between Euclidean fields and supplied flux coordinates. Extend current coarea
+bridges to a clearly specified family. For near-axis QS, distinguish formal compatibility from
+convergence and embedded global realization. Use negative examples as acceptance tests.
+
+**Complex analysis and geometry.** The most direct quantitative target is already identified:
+actual-coil KAM bounds in `notes/theory/coil-kam-status.md`.
+Develop anisotropic holomorphic strips, a torus-adapted complex neighbourhood, cancellation-aware
+bounds for groups of Biot–Savart segments, and certified lower bounds on the toroidal component.
+Compare the new residual bound with the exact current KAM threshold; report a failed bound as a
+failed certificate, not as nonexistence of an invariant torus. Existing modules
+`BiotSavartComplex`, `StripPaleyWiener`, `CauchyTwoVar`, `FourierSumHolo` and
+`AnalyticComposition` provide starting points.
+
+For a smaller Hodge/complex-torus task, take `Im tau>0` and a smooth real closed one-form
+on `C/(Z+tau Z)`, with periods `a,b` along the canonical cycles `1,tau`. For the flat
+metric, or any metric in its conformal class, prove:
+
+$$
+\int |\alpha|^2\,dA \ge \frac{|b-a\tau|^2}{\operatorname{Im}\tau},
+$$
+
+with equality if and only if the form is its harmonic representative. Identify physical periods only after fixing
+orientations. The current flux-holonomy note needs a sign audit:
+if `sigma=h dtheta wedge dphi`, then
+`i_B sigma=h(Btheta dphi-Bphi dtheta)`. A point of the Jacobian alone does not recover the
+rotational transform. A magnetic two-form restricted to a flux surface vanishes, so it does
+not provide a positive-degree line bundle there.
+
+**Optional new benchmark.** Audit the 21 October 2026
+[López preprint](https://arxiv.org/html/2610.29921v1) on an exact nonsymmetric vacuum field
+from a Weierstrass/algebraic construction. Its proposed nested tori and closed lines with
+constant rational transform are interesting formalization targets. This is a newly posted
+construction to check, not an established QS, coil-realization, stability or robust-confinement
+result; its computer-assisted root/embedding conditions need independent review.
+
+### 11.7 Numerical methods and a reproducible contribution workflow
+
+Use existing methods as untrusted candidate generators and formalize the properties needed.
+
+- Constrained transport/compatible elements: [Li–Zhang–Zheng](https://arxiv.org/abs/2008.09244).
+  Prove `D C=0` and its preservation by the actual update; retain flux sectors.
+- Equilibrium-preserving discretization: [Fambri et al.](https://arxiv.org/abs/2305.06497),
+  including their Solov'ev benchmark.
+- Entropy-stable resistive MHD: [Bohm et al.](https://arxiv.org/abs/1802.07341).
+  Include nonconservative and boundary terms; certify any transcendental evaluations.
+- Positivity-preserving reconstruction and flux limiting:
+  [Deppe et al.](https://arxiv.org/abs/2306.04755). Borrow the numerical invariants;
+  laboratory stellarator modelling does not require general-relativistic gravity.
+
+For each target provide a short ordinary-mathematics theorem and proof, exact Lean declaration,
+positive and negative examples, one command to check a small fixture, data/seed hashes, pinned
+numerical dependencies, regeneration instructions, and an observed resource budget.
+Separate scientific/model review from formal proof review. Publish the import/audit scope.
+A numerical observer, an analyst, and a Lean contributor can work on the same target without
+each mastering all three roles.
+
+**Stop conditions:** if physical hypotheses cannot be met, the residual bound misses the
+threshold, the symmetry reduction fails, or a functional is noncoercive, record the obstruction
+and change the target. Do not mark an implication complete by adding its conclusion as an
+assumption. No completion marks or dated scientific-progress claims are added by this plan.
+
+## 12. Proposed extension: model adequacy and probabilistic goals (G3)
+
+**Added 26 October 2026 from the AI review notes of 24 October (`notes/goals/`). Status: proposed;
+no new Lean results are claimed.** The deterministic goals G1 (confinement and stability) and G2
+(thermal performance) remain the core. A targeted programme G3, model adequacy and useful
+refinements, is added. Statistical criteria are developed only where they answer a practical design
+question.
+
+- **Probabilistic work (P1–P4):** finite-time particle loss and wall deposition under a specified birth
+  distribution; justified uncertainty in inputs (coil errors, profiles), with deterministic
+  uncertainty sets preferred when no law is justified; reliable computation of these quantities
+  (Monte Carlo with certified error bounds). A new stochastic physical equation is conditional work.
+  These labels are local and distinct from the older formalization roadmap's P0–P9 gates.
+- **Deterministic additions (N1–N3):** N1 quantifies the effect of one selected omitted term on a
+  design observable (exact projected error equation, residual bounds, observable transfer); N2 adds
+  one minimal correction only when activated; N3 is shared decision infrastructure (evidence record,
+  decision margin, failure classification). Modified energies and driven relative entropy are
+  methods that also serve G1/G2.
+- **Out of scope:** a complete microscopic particle-to-MHD derivation. A particular estimate from
+  that literature is eligible when it resolves a named problem.
+- **Details:** [overview](https://github.com/siddhartha-gadgil/PlasmaLean/blob/main/notes/goals/plasmalean-goals-overview.md),
+  [probabilistic goals](https://github.com/siddhartha-gadgil/PlasmaLean/blob/main/notes/goals/probabilistic-goals-and-techniques.md),
+  [deterministic goals](https://github.com/siddhartha-gadgil/PlasmaLean/blob/main/notes/goals/deterministic-goals-and-techniques.md),
+  [milestones](https://github.com/siddhartha-gadgil/PlasmaLean/blob/main/notes/goals/implementation-milestones.md).
+- **Unresolved cross-references:** the companion notes cite work packages "§12 D0–D4", "§12 K0–K6"
+  and "§12.10" of a plan version that was not among the supplied files. Section 11.2 defines the
+  evidence gates E1–E7; the D/K references stay unresolved until that section is supplied or
+  reconstructed.
+
+## 13. Implementation log (continued)
+
+New dated phase entries are appended here. The entries above, from 25 October 2026 on, belong to
+section 10's log and are kept in place.

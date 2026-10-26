@@ -1890,6 +1890,78 @@
     "text": "phase 11: all pitch angles up to λ = 1/4, 26 october 2026 implementation plan"
   },
   {
+    "title": "Phase 16: sixth stage (per-segment line certificates, small checks), 26 October 2026",
+    "section": "Implementation plan",
+    "url": "implementation-plan.html#phase-16-sixth-stage-per-segment-line-certificates-small-checks-26-october-2026",
+    "text": "phase 16: sixth stage (per-segment line certificates, small checks), 26 october 2026 implementation plan"
+  },
+  {
+    "title": "Phase 16: disk budget raised, 26 October 2026",
+    "section": "Implementation plan",
+    "url": "implementation-plan.html#phase-16-disk-budget-raised-26-october-2026",
+    "text": "phase 16: disk budget raised, 26 october 2026 implementation plan"
+  },
+  {
+    "title": "11. Proposed extension: verified plasma evolution and geometric contribution paths",
+    "section": "Implementation plan",
+    "url": "implementation-plan.html#11-proposed-extension-verified-plasma-evolution-and-geometric-contribution-paths",
+    "text": "11. proposed extension: verified plasma evolution and geometric contribution paths implementation plan"
+  },
+  {
+    "title": "11.1 Research objective and success statement",
+    "section": "Implementation plan",
+    "url": "implementation-plan.html#111-research-objective-and-success-statement",
+    "text": "11.1 research objective and success statement implementation plan"
+  },
+  {
+    "title": "11.2 Work packages and evidence gates",
+    "section": "Implementation plan",
+    "url": "implementation-plan.html#112-work-packages-and-evidence-gates",
+    "text": "11.2 work packages and evidence gates implementation plan"
+  },
+  {
+    "title": "11.3 The concrete first theorem to implement",
+    "section": "Implementation plan",
+    "url": "implementation-plan.html#113-the-concrete-first-theorem-to-implement",
+    "text": "11.3 the concrete first theorem to implement implementation plan"
+  },
+  {
+    "title": "11.4 Tests for a symmetric or approximately symmetric plasma ansatz",
+    "section": "Implementation plan",
+    "url": "implementation-plan.html#114-tests-for-a-symmetric-or-approximately-symmetric-plasma-ansatz",
+    "text": "11.4 tests for a symmetric or approximately symmetric plasma ansatz implementation plan"
+  },
+  {
+    "title": "11.5 Perelman-inspired work: a testable functional programme",
+    "section": "Implementation plan",
+    "url": "implementation-plan.html#115-perelman-inspired-work-a-testable-functional-programme",
+    "text": "11.5 perelman-inspired work: a testable functional programme implementation plan"
+  },
+  {
+    "title": "11.6 Concrete entry points for topology, differential geometry and complex geometry",
+    "section": "Implementation plan",
+    "url": "implementation-plan.html#116-concrete-entry-points-for-topology-differential-geometry-and-complex-geometry",
+    "text": "11.6 concrete entry points for topology, differential geometry and complex geometry implementation plan"
+  },
+  {
+    "title": "11.7 Numerical methods and a reproducible contribution workflow",
+    "section": "Implementation plan",
+    "url": "implementation-plan.html#117-numerical-methods-and-a-reproducible-contribution-workflow",
+    "text": "11.7 numerical methods and a reproducible contribution workflow implementation plan"
+  },
+  {
+    "title": "12. Proposed extension: model adequacy and probabilistic goals (G3)",
+    "section": "Implementation plan",
+    "url": "implementation-plan.html#12-proposed-extension-model-adequacy-and-probabilistic-goals-g3",
+    "text": "12. proposed extension: model adequacy and probabilistic goals (g3) implementation plan"
+  },
+  {
+    "title": "13. Implementation log (continued)",
+    "section": "Implementation plan",
+    "url": "implementation-plan.html#13-implementation-log-continued",
+    "text": "13. implementation log (continued) implementation plan"
+  },
+  {
     "title": "M0 · Exact symmetric equilibria: slab, screw pinch, Solov'ev, helical",
     "section": "Implementation plan · Lean verified — exact slab, screw-pinch, Solov'ev and helical equilibria with kernel force balance, all-time field-line/orbit confinement, Suydam both ways and screw-pinch Newcomb for 1 ≤ |m| ≤ 6 (idealized symmetric models).",
     "url": "implementation-plan.html",
