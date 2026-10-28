@@ -1,4 +1,0 @@
-interface:
-  display_name: "Advance a domain design"
-  short_description: "Take a candidate design through verified milestones with composed certificates"
-  default_prompt: "Use $domain-design to decide which verified milestone the candidate has reached and certify the next one."
