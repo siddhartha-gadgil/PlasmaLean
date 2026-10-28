@@ -91,6 +91,6 @@
    "inputRev": "v4.34.0",
    "inherited": true,
    "configFile": "lakefile.toml"}],
- "name": "PlasmaLean",
+ "name": "LeanTheory",
  "lakeDir": ".lake",
  "fixedToolchain": false}

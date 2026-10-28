@@ -1,0 +1,4 @@
+interface:
+  display_name: "Formalize sourced mathematics"
+  short_description: "Build reusable Lean theory from precise sources"
+  default_prompt: "Use $formalize-theory to formalize the next sourced theorem above the domain kernel."

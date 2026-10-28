@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
-"""Audit of the `kernel_fact` leaves (Phase 16, stage 8).
+"""Audit of the `kernel_fact` leaves.
 
-`kernel_fact` (PlasmaLean/Certificates/KernelFact.lean) proves a closed fact by an explicit proof
+`kernel_fact` (LeanTheory/Certificates/KernelFact.lean) proves a closed fact by an explicit proof
 term whose leaves are kernel facts: `Nat.le_of_ble_eq_true x y rfl`, `lt_of_ble_succ x y rfl`,
 `Nat.ne_of_beq_eq_false a c rfl`, `Rat.blt … = b` and `Eq.refl a : a = c`, each wrapped in
 `@id P pf` (`mkExpectedTypeHint`).  What the kernel evaluates at a leaf is the statement `P`.
@@ -10,18 +10,18 @@ For every module containing `kernel_fact`, this script runs a small Lean program
 built module, walks the proof terms of the module's declarations, finds the leaves, and estimates
 the size of each leaf from the definitions its statement mentions (no profiler):
 
-* the PlasmaLean definitions reachable from `P` by unfolding (transitively, through definition
+* the LeanTheory definitions reachable from `P` by unfolding (transitively, through definition
   values), their number, the longest unfolding chain (`depth`) and the bits of the literals they
   contain;
-* `rec`: whether a reachable PlasmaLean definition recurses (`*.rec`, `*.brecOn`,
+* `rec`: whether a reachable LeanTheory definition recurses (`*.rec`, `*.brecOn`,
   `WellFounded.fix`, or a core list traversal such as `List.map`, `List.foldl`, `List.range`).
 
 Classes:
-* `a`  closed facts on literals: no PlasmaLean definition reachable (`2 ≤ 3`, `x < 2^k`, the
+* `a`  closed facts on literals: no LeanTheory definition reachable (`2 ≤ 3`, `x < 2^k`, the
   length of a literal list);
 * `a-data` facts on data definitions without recursion (`NLM ≤ 2^ddLM`, `(famLM 4).length = 6`,
   a literal read by `List.getD`);
-* `b`  opaque: the leaf unfolds a recursive PlasmaLean definition into a computation (a checker,
+* `b`  opaque: the leaf unfolds a recursive LeanTheory definition into a computation (a checker,
   an image `famPack`/`famTB`, a fold over a list). Ranked by `--time` (kernel check of the leaf
   alone, `Environment.addDecl`) when given, else by the number of reachable definitions.
 
@@ -43,7 +43,7 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 LEAN_TEMPLATE = r'''
 import %(mod)s
-import PlasmaLean.Certificates.KernelFact
+import LeanTheory.Certificates.KernelFact
 open Lean Meta
 
 namespace AuditKF
@@ -70,10 +70,10 @@ where go (e : Expr) (acc : Nat) : Nat :=
   | .mdata _ b | .proj _ _ b => go b acc
   | _ => acc
 
-/-- Owned by a PlasmaLean module. -/
+/-- Owned by a LeanTheory module. -/
 def owned (env : Environment) (n : Name) : Bool :=
   match env.getModuleIdxFor? n with
-  | some idx => (`PlasmaLean).isPrefixOf env.allImportedModuleNames[idx.toNat]!
+  | some idx => (`LeanTheory).isPrefixOf env.allImportedModuleNames[idx.toNat]!
   | none => false
 
 structure CInfo where
@@ -81,7 +81,7 @@ structure CInfo where
   isRec : Bool
   uses : Array Name
 
-/-- Per-constant data of a PlasmaLean definition. -/
+/-- Per-constant data of a LeanTheory definition. -/
 def cinfo (env : Environment) (cache : IO.Ref (Std.HashMap Name CInfo)) (n : Name) :
     IO CInfo := do
   if let some c := (← cache.get)[n]? then return c
@@ -109,7 +109,7 @@ partial def visit (env : Environment) (cache : IO.Ref (Std.HashMap Name CInfo))
   memo.modify (·.insert n (d + 1))
   return d + 1
 
-/-- Closure statistics: reachable PlasmaLean definitions, depth, bits, recursion. -/
+/-- Closure statistics: reachable LeanTheory definitions, depth, bits, recursion. -/
 def closure (env : Environment) (cache : IO.Ref (Std.HashMap Name CInfo))
     (roots : Array Name) : IO (Nat × Nat × Nat × Bool) := do
   let seen ← IO.mkRef (Std.HashSet.emptyWithCapacity 64 : Std.HashSet Name)
@@ -143,7 +143,7 @@ partial def walk (visited : IO.Ref (Std.HashSet Expr)) (leaves : IO.Ref (Array (
 def leafKind (pf : Expr) : Option String :=
   match pf.getAppFn with
   | .const ``Nat.le_of_ble_eq_true _ => some "le"
-  | .const ``PlasmaLean.Certificates.KronProof.lt_of_ble_succ _ => some "lt"
+  | .const ``LeanTheory.Certificates.KronProof.lt_of_ble_succ _ => some "lt"
   | .const ``Nat.ne_of_beq_eq_false _ => some "ne"
   | .const ``Eq.refl _ => some "eq"
   | _ => none
@@ -207,7 +207,7 @@ def imports(mod):
 
 
 def default_closure():
-    seen, st = set(), ['PlasmaLean']
+    seen, st = set(), ['LeanTheory']
     while st:
         m = st.pop()
         if m in seen:
@@ -223,7 +223,7 @@ def default_closure():
 def kf_modules():
     """Modules using `kernel_fact`, with the number of source occurrences."""
     out = {}
-    for dp, _, fs in os.walk(os.path.join(ROOT, 'PlasmaLean')):
+    for dp, _, fs in os.walk(os.path.join(ROOT, 'LeanTheory')):
         for f in fs:
             if not f.endswith('.lean'):
                 continue
@@ -315,7 +315,7 @@ def report(leaves, src, dflt):
             pms[l['module']] += l['ms']
     for m in sorted(per, key=lambda m: -per[m]['b']):
         c = per[m]
-        print('%-62s %s %5d / %5d / %5d  %8.0f' % (m.replace('PlasmaLean.', ''),
+        print('%-62s %s %5d / %5d / %5d  %8.0f' % (m.replace('LeanTheory.', ''),
               'D' if m in dflt else ' ', c['a'], c['a-data'], c['b'], pms[m]))
     print('\n## opaque (class b) leaves, grouped by module and the definitions they unfold')
     grp = collections.defaultdict(list)
@@ -331,7 +331,7 @@ def report(leaves, src, dflt):
         g = grp[sig]
         ms, n = weight(g)
         print('%5d  %-50s %-3s defs<=%-4d depth<=%-3d ms %8.1f  [%s]  e.g. %s'
-              % (len(g), sig[0].replace('PlasmaLean.Design.', ''), sig[1], n,
+              % (len(g), sig[0].replace('LeanTheory.Design.', ''), sig[1], n,
                  max(l['depth'] for l in g), ms, sig[2][:120], short(g[0]['decl'])))
 
 

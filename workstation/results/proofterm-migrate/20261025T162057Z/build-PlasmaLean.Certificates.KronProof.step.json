@@ -1,8 +1,0 @@
-{
- "cmd": "lake build PlasmaLean.Certificates.KronProof",
- "status": "ok",
- "returncode": 0,
- "wall_min": 0.02,
- "cpu_min": 0.03,
- "peak_rss_gb": 0.81
-}

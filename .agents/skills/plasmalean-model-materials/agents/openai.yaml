@@ -1,4 +1,0 @@
-interface:
-  display_name: "Model stellarator materials"
-  short_description: "Model heat, stress, magnets, and irradiation"
-  default_prompt: "Use $plasmalean-model-materials to formalize a material constraint with sourced data bounds."

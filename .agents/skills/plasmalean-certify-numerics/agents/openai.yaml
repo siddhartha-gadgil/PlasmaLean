@@ -1,4 +1,0 @@
-interface:
-  display_name: "Certify plasma computations"
-  short_description: "Turn numerical candidates into checked proofs"
-  default_prompt: "Use $plasmalean-certify-numerics to certify a numerical candidate with explicit error bounds."

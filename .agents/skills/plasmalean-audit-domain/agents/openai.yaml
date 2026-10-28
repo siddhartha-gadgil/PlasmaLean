@@ -1,4 +1,0 @@
-interface:
-  display_name: "Audit PlasmaLean models"
-  short_description: "Audit models, assumptions, and theorem claims"
-  default_prompt: "Use $plasmalean-audit-domain to audit the kernel and choose the next sound theorem target."

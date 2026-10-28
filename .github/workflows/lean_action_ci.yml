@@ -5,11 +5,8 @@ on:
   pull_request:
   workflow_dispatch:
 
-# Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
 permissions:
   contents: read # Read access to repository contents
-  pages: write # Write access to GitHub Pages
-  id-token: write # Write access to ID tokens
 
 jobs:
   build:
@@ -20,6 +17,4 @@ jobs:
       - uses: leanprover/lean-action@v1
       - name: Audit logical dependencies
         run: lake env lean scripts/check_axioms.lean
-      - name: Check generated handbook and local links
-        run: node scripts/check_site.mjs
       # - uses: leanprover-community/docgen-action@v1

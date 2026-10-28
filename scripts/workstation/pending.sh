@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # List workstation result branches not yet merged into main and not yet recorded in
 # workstation/REVIEWED.md, with the verdict of every task in each run. Read-only (apart from
-# `git fetch`). Used by the plasmalean-workstation-update skill; see Workstation.md.
+# `git fetch`). Used by the workstation-update skill; see Workstation.md.
 #
 # usage: scripts/workstation/pending.sh [--all]   (--all: include branches already reviewed)
 

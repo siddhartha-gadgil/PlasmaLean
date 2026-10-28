@@ -2,7 +2,7 @@
 # pushes a results branch. Takes a few minutes after setup.
 
 TASK_DESC="pipeline smoke test (Python packages, one small Lean module, axioms, push)"
-TASK_MODULES="PlasmaLean.SubsetSum"
+TASK_MODULES="LeanTheory.SubsetSum"
 TASK_ENTRYPOINTS="ConcLean.SubsetSum.subsetSum_correct"
 TASK_OUTPUTS=""
 TASK_TARGET="default"

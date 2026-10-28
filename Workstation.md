@@ -1,8 +1,8 @@
 # Running heavy work on a workstation
 
-Some PlasmaLean steps need more memory or CPU than the development laptop has: untrusted numerical
-searches (KAM tori, Chebyshev families, ballooning oracles) and the first Lean build of large
-certificates. These run on a workstation through one script,
+Some steps of a LeanTheory project need more memory or CPU than the development laptop has:
+untrusted numerical searches (invariant tori, Chebyshev families, spectral or interval oracles) and
+the first Lean build of large certificates. These run on a workstation through one script,
 [`scripts/workstation/run.sh`](scripts/workstation/run.sh), which pushes its results to a git
 branch. The laptop then pulls the branch and re-checks it.
 
@@ -12,8 +12,8 @@ measures each Lean module and reports a laptop verdict:
 
 | Verdict | Condition (defaults) | What happens |
 | --- | --- | --- |
-| laptop ok, default build | peak ≤ 6 GB per process and Lean CPU ≤ 60 min | imported by `PlasmaLean.lean` |
-| laptop ok, separate top module | peak ≤ 6 GB and Lean CPU ≤ 240 min | on-demand `lake build PlasmaLean.Design.<Top>` |
+| laptop ok, default build | peak ≤ 6 GB per process and Lean CPU ≤ 60 min | imported by `LeanTheory.lean` |
+| laptop ok, separate top module | peak ≤ 6 GB and Lean CPU ≤ 240 min | on-demand `lake build LeanTheory.Design.<Top>` |
 | TOO BIG / TOO SLOW FOR LAPTOP | otherwise | not merged; split the certificate or find a smaller one |
 
 The limits come from `LAPTOP_MAX_RSS_GB`, `LAPTOP_DEFAULT_CPU_MIN`, `LAPTOP_MAX_CPU_MIN` and
@@ -27,8 +27,8 @@ if the workstation cores are faster than the laptop's.
 - Push access to the GitHub repository **without typing a password** (see below). `run.sh` checks
   this before starting and stops at once if a push would prompt.
 - Lean set up once by hand in the clone: `elan` (Lean v4.34.1 from `lean-toolchain`),
-  `lake exe cache get` and `lake build`. This is already done on the workstation. The script only
-  checks that `lake` is available. Later builds are incremental: each task builds only what changed.
+  `lake exe cache get` and `lake build` (or simply `scripts/setup.sh`). The script only checks
+  that `lake` is available. Later builds are incremental: each task builds only what changed.
 - The script installs the Python packages itself, into a venv `.venv-ws`, from
   [`scripts/requirements.txt`](scripts/requirements.txt).
 
@@ -39,10 +39,10 @@ so set up one of these once:
 
 - **ssh key (recommended):**
   ```bash
-  ssh-keygen -t ed25519 -C hornbill            # empty passphrase, or load it with ssh-agent
+  ssh-keygen -t ed25519 -C workstation         # empty passphrase, or load it with ssh-agent
   cat ~/.ssh/id_ed25519.pub                    # add at github.com → Settings → SSH keys
   ssh -T git@github.com                        # should greet you by user name
-  git remote set-url origin git@github.com:siddhartha-gadgil/PlasmaLean.git
+  git remote set-url origin git@github.com:<user>/<repo>.git
   ```
 - **GitHub CLI:** `gh auth login` (HTTPS), then `gh auth setup-git`.
 - **Stored token:** create a personal access token (repo scope), then
@@ -56,20 +56,20 @@ without a prompt.
 
 ```bash
 ssh workstation
-tmux new -s plasma            # so that a dropped connection does not stop the run
-cd PlasmaLean && git pull
+tmux new -s theory            # so that a dropped connection does not stop the run
+cd <repo> && git pull
 scripts/workstation/run.sh --setup-only    # Python venv and packages
 scripts/workstation/run.sh smoke           # a few minutes: tests the whole pipeline and pushes
 ```
 
-Detach with `Ctrl-b d` and reattach later with `tmux attach -t plasma`.
+Detach with `Ctrl-b d` and reattach later with `tmux attach -t theory`.
 
 ## A run
 
 ```bash
-cd PlasmaLean && git checkout main && git pull
+cd <repo> && git checkout main && git pull
 scripts/workstation/run.sh --list                 # available tasks
-scripts/workstation/run.sh energy-window          # one or more tasks
+scripts/workstation/run.sh smoke                  # one or more tasks
 ```
 
 For each task, the script:
@@ -78,7 +78,7 @@ For each task, the script:
    failed), then creates a branch `workstation/<tasks>-<UTC stamp>`. It refuses to run if tracked
    files are modified;
 2. runs the task's **numerics** (untrusted Python), with intermediate data kept in `$WS_WORK`
-   (default `~/plasmalean-work`, never committed);
+   (default `~/leantheory-work`, never committed);
 3. **emits** the Lean certificate files;
 4. **builds** each Lean module of the task separately and records its wall time, CPU time and peak
    memory;
@@ -104,7 +104,7 @@ Options:
 ## Back on the laptop
 
 In a Claude Code session here, say **"update from workstation"**: the skill
-`plasmalean-workstation-update` lists pending runs (`scripts/workstation/pending.sh`), re-checks the
+`workstation-update` lists pending runs (`scripts/workstation/pending.sh`), re-checks the
 passing ones with `--verify-only`, merges and integrates them, records every run in
 `workstation/REVIEWED.md`, pushes and reports. The manual steps are:
 
@@ -116,7 +116,7 @@ git checkout -b review origin/workstation/<branch>
 scripts/workstation/run.sh --verify-only <task>             # builds here, with the laptop budget
 ```
 
-For **on-demand** results (verdict "separate top module", not imported by `PlasmaLean.lean`), the
+For **on-demand** results (verdict "separate top module", not imported by `LeanTheory.lean`), the
 review spot-checks rather than rebuilding everything: it checks the workstation's measurements and
 axiom check, greps for forbidden tactics, and builds a sample of modules here. The full laptop
 build of such a family is deferred until it is needed. Default-build results are always rebuilt
@@ -124,17 +124,17 @@ here in full.
 
 `--verify-only` skips the installs, numerics and emission, and touches no git state. It builds the
 task's modules on the laptop one at a time with the same measurements, re-checks the axioms and
-prints the verdict. Its records go to `$TMPDIR/plasmalean-verify`. If the verdict is "laptop ok",
+prints the verdict. Its records go to `$TMPDIR/leantheory-verify`. If the verdict is "laptop ok",
 merge the branch into `main`:
-- for a default-build result, add the imports to `PlasmaLean.lean` and the entry points to
+- for a default-build result, add the imports to `LeanTheory.lean` and the entry points to
   `scripts/check_axioms.lean`;
 - for a separate top module, document its build command.
 
-Then update the plan and progress reports as usual.
+Then update the implementation plan (`notes/implementation-plan.md`) as usual.
 
 ## Sharing compiled files (oleans)
 
-Like the Mathlib cache, but by hand: compiled PlasmaLean modules built on one machine can be copied
+Like the Mathlib cache, but by hand: compiled LeanTheory modules built on one machine can be copied
 to the other instead of being rebuilt. This uses
 [`scripts/workstation/oleans.py`](scripts/workstation/oleans.py).
 
@@ -142,17 +142,17 @@ On the workstation, after a run whose branch has been merged into `main` and pul
 
 ```bash
 git checkout main && git pull
-python3 scripts/workstation/oleans.py pack ~/ew-oleans.tar.gz PlasmaLean.Design.RationalStellaratorGCEwFamily
+python3 scripts/workstation/oleans.py pack ~/fam-oleans.tar.gz LeanTheory.Design.MyFamilyTop
 # or only some modules (smaller; their imports must already be built on the laptop):
-python3 scripts/workstation/oleans.py pack --only ~/mu3.tar.gz 'PlasmaLean.Design.RationalStellaratorGCMu3*'
+python3 scripts/workstation/oleans.py pack --only ~/part.tar.gz 'LeanTheory.Design.MyFamily*'
 ```
 
 Copy the archive to the laptop (Google Drive, `scp`, …), then on the laptop:
 
 ```bash
 git pull
-python3 scripts/workstation/oleans.py info   ~/Downloads/ew-oleans.tar.gz   # what is inside
-python3 scripts/workstation/oleans.py unpack ~/Downloads/ew-oleans.tar.gz
+python3 scripts/workstation/oleans.py info   ~/Downloads/fam-oleans.tar.gz   # what is inside
+python3 scripts/workstation/oleans.py unpack ~/Downloads/fam-oleans.tar.gz
 ```
 
 - **What `unpack` checks before extracting:**
@@ -162,15 +162,15 @@ python3 scripts/workstation/oleans.py unpack ~/Downloads/ew-oleans.tar.gz
 
   If anything differs it refuses and names the commit to check out. After extracting, it runs
   `lake --no-build build` on the targets to confirm that Lake accepts them without rebuilding.
-- **What is packed:** a target and all of its PlasmaLean imports, transitively; Mathlib is not
+- **What is packed:** a target and all of its LeanTheory imports, transitively; Mathlib is not
   included. A module's files are all of `.lake/build/lib/lean/<path>.*` and
-  `.lake/build/ir/<path>.*`. For scale: Mu3 with its imports is 247 modules and 208 MB, and with
-  `--only` it is 100 modules and 67 MB.
+  `.lake/build/ir/<path>.*`. For scale: a family of a few hundred certificate modules is a few
+  hundred MB.
 - **Trust:** unpacked modules are **not** re-checked by the kernel on the laptop. That is what saves
   the time, and it means trusting the workstation's build, as with the on-demand spot-check policy.
   Default-build modules should still be built here.
-- **Status:** works across platforms. On 26 October 2026, Mu2–Mu5 (400 modules, 314 MB) were packed
-  on the Linux workstation, unpacked on the Mac laptop, and Lake accepted them without rebuilding.
+- **Portability:** archives packed on Linux unpack on macOS and vice versa (Lake accepts them
+  without rebuilding when the checks above pass).
 
 ## Adding a task
 
@@ -196,25 +196,19 @@ laptop with a small parameter setting, then commit it to `main` before running i
   Check `git remote -v` and your ssh key.
 - **Generated Lean too big for the laptop:** the verdict says so and nothing should be merged.
   Split the certificate over several modules (each ≤ 6 GB), use proof-term certificates (see
-  `.claude/skills/plasmalean-lean-proofs`), or ask the numerics for a smaller witness.
+  `.claude/skills/lean-proofs`), or ask the numerics for a smaller witness.
 
 ## Next Commands
 
 Kept up to date from the laptop after every review ("update from workstation"). Run them on the
 workstation, inside `tmux`; `run.sh` pulls `main` itself.
 
-**Status (26 October 2026, evening): run now (optional).** Phase 16 stages 8–9 changed the Mu chain
-modules, so the on-demand families downstream of them (Mu2–Mu5, MuQuarter, Ew1–4) are stale on
-both machines (their sources are unchanged). When convenient, rebuild them on the workstation and
-send the compiled files back:
+**Status: nothing pending.** To test the pipeline on a new workstation:
 
 ```bash
-cd PlasmaLean && git pull
-lake build PlasmaLean.Design.RationalStellaratorGCMuQuarter PlasmaLean.Design.RationalStellaratorGCEwFamily
-python3 scripts/workstation/oleans.py pack ~/ondemand.tar.gz \
-  PlasmaLean.Design.RationalStellaratorGCMuQuarter PlasmaLean.Design.RationalStellaratorGCEwFamily
+cd <repo> && git pull
+scripts/workstation/run.sh --setup-only
+scripts/workstation/run.sh smoke
 ```
-
-Copy `~/ondemand.tar.gz` to the laptop and say where it is.
 
 Then say "update from workstation" on the laptop.

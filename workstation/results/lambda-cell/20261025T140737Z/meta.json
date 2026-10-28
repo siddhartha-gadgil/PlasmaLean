@@ -1,3 +1,0 @@
-{"task": "lambda-cell", "description": "pitch cell lambda in [3/16, 7/32] (tag Mu4): confinement of passing alpha GCs with mu > 0", "stamp": "20261025T140737Z", "base_commit": "c8797e0",
- "host": "hornbill", "os": "Linux x86_64", "cpus": 24, "jobs": 24,
- "mode": "workstation", "target": "separate"}

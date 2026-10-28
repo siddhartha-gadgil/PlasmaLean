@@ -98,7 +98,7 @@ def summary(task_dir):
     elif lean_cpu <= default_cpu:
         verdict = f"laptop ok, default build (~{lean_cpu:.0f} CPU-min)"
     elif lean_cpu <= max_cpu:
-        verdict = (f"laptop ok, separate top module not imported by PlasmaLean.lean "
+        verdict = (f"laptop ok, separate top module not imported by LeanTheory.lean "
                    f"(~{lean_cpu:.0f} CPU-min)")
     else:
         verdict = (f"TOO SLOW FOR LAPTOP: ~{lean_cpu:.0f} CPU-min > {max_cpu}; "

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Certify numerical results"
+  short_description: "Turn numerical candidates into kernel-checked proof certificates"
+  default_prompt: "Use $certify-numerics to certify a numerical candidate with explicit error bounds."

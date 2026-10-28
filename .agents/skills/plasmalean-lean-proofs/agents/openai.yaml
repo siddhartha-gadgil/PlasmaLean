@@ -1,4 +1,0 @@
-interface:
-  display_name: "Lean proofs for PlasmaLean"
-  short_description: "Efficient Lean proofs: grind, fun_induction, bv_decide, proof-term certificates"
-  default_prompt: "Use $plasmalean-lean-proofs to write efficient Lean proofs for the next PlasmaLean module."

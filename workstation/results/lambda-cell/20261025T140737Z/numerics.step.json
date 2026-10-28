@@ -1,8 +1,0 @@
-{
- "cmd": "bash /home/gadgil/code/PlasmaLean/scripts/workstation/run.sh __step numerics lambda-cell",
- "status": "ok",
- "returncode": 0,
- "wall_min": 37.16,
- "cpu_min": 418.93,
- "peak_rss_gb": 4.11
-}

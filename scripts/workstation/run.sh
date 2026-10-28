@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# PlasmaLean workstation pipeline: heavy numerics + Lean certificate build on a big machine,
+# LeanTheory workstation pipeline: heavy numerics + Lean certificate build on a big machine,
 # results committed to a git branch and pushed, to be pulled and re-checked on the laptop.
 # See Workstation.md. Compatible with bash 3.2 (macOS) so that --verify-only runs locally.
 #
@@ -14,7 +14,7 @@
 #   --branch NAME     results branch (default workstation/<tasks>-<UTC stamp>)
 #   --jobs N          parallelism exported to tasks as WS_JOBS (default: number of CPUs)
 # environment:
-#   WS_WORK                 scratch directory for large intermediate data (default ~/plasmalean-work)
+#   WS_WORK                 scratch directory for large intermediate data (default ~/leantheory-work)
 #   LAPTOP_MAX_RSS_GB       per-process peak memory allowed on the laptop (default 6)
 #   LAPTOP_DEFAULT_CPU_MIN  Lean CPU budget for the default build (default 60)
 #   LAPTOP_MAX_CPU_MIN      Lean CPU budget for an on-demand top module (default 240)
@@ -27,7 +27,7 @@ REPO="$(cd "$SCRIPT_DIR/../.." && pwd)"
 TASK_DIR="$SCRIPT_DIR/tasks"
 HELPER="$SCRIPT_DIR/ws_helper.py"
 VENV="$REPO/.venv-ws"
-export WS_WORK="${WS_WORK:-$HOME/plasmalean-work}"
+export WS_WORK="${WS_WORK:-$HOME/leantheory-work}"
 export WS_PY="$VENV/bin/python"
 export WS_REPO="$REPO"
 
@@ -155,7 +155,7 @@ if [ "$VERIFY" = 0 ]; then
   git checkout -b "$BRANCH"
   RESULTS="$REPO/workstation/results"
 else
-  RESULTS="${TMPDIR:-/tmp}/plasmalean-verify"
+  RESULTS="${TMPDIR:-/tmp}/leantheory-verify"
 fi
 
 # ---------------------------------------------------------------- tasks

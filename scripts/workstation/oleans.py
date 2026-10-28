@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
-"""Share compiled Lean outputs (oleans) of PlasmaLean modules between machines, like the Mathlib
+"""Share compiled Lean outputs (oleans) of LeanTheory modules between machines, like the Mathlib
 cache, by hand: pack on the machine that built them, copy the archive (e.g. via Google Drive),
 unpack on the other machine. Standard library only. See Workstation.md, "Sharing compiled files".
 
   pack [--only] ARCHIVE.tar.gz TARGET...
-                                  TARGET is a module (PlasmaLean.Design.Foo) or a prefix ending in
-                                  `*` (PlasmaLean.Design.RationalStellaratorGCEw*). The archive holds
-                                  the build outputs of the targets and of all their PlasmaLean
+                                  TARGET is a module (LeanTheory.Design.Foo) or a prefix ending in
+                                  `*` (LeanTheory.Design.MyFamily*). The archive holds
+                                  the build outputs of the targets and of all their LeanTheory
                                   imports (transitively), plus a manifest. With --only, just the
                                   targets (smaller; the rest must already be built on the other
                                   machine).
@@ -16,7 +16,7 @@ unpack on the other machine. Standard library only. See Workstation.md, "Sharing
                                   that the targets are up to date.
   info ARCHIVE.tar.gz             print the manifest.
 
-Only PlasmaLean's own modules are packed. Mathlib and the other packages come from the usual
+Only LeanTheory's own modules are packed. Mathlib and the other packages come from the usual
 `lake exe cache get` and must be the same versions on both machines (checked through
 lake-manifest.json).
 
@@ -87,7 +87,7 @@ def closure(mods):
         seen.add(m)
         text = open(os.path.join(REPO, src(m))).read()
         for imp in IMPORT.findall(text):
-            if imp.startswith('PlasmaLean.') or imp == 'PlasmaLean':
+            if imp.startswith('LeanTheory.') or imp == 'LeanTheory':
                 if os.path.exists(os.path.join(REPO, src(imp))):
                     todo.append(imp)
     return sorted(seen)

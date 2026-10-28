@@ -1,7 +1,7 @@
-name = "PlasmaLean"
+name = "LeanTheory"
 version = "0.1.0"
 keywords = ["math"]
-defaultTargets = ["PlasmaLean"]
+defaultTargets = ["LeanTheory"]
 
 [leanOptions]
 pp.unicode.fun = true # pretty-prints `fun a ↦ b`
@@ -15,11 +15,11 @@ scope = "leanprover-community"
 rev = "v4.34.1"
 
 [[lean_lib]]
-name = "PlasmaLean"
+name = "LeanTheory"
 
 # `meta` code of the certificate builders, compiled to native code (`eval_cert` runs ≈ 10×
-# faster than in the interpreter). Only depends on Lean; imported by `PlasmaLean.Certificates`.
+# faster than in the interpreter). Only depends on Lean; imported by `LeanTheory.Certificates`.
 [[lean_lib]]
-name = "PlasmaLeanMeta"
-roots = ["PlasmaLeanMeta.EvalCert"]
+name = "LeanTheoryMeta"
+roots = ["LeanTheoryMeta.EvalCert"]
 precompileModules = true
