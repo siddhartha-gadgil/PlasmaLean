@@ -1,1512 +1,1556 @@
 {
-  "updated": "2026-10-26",
-  "report": "2026-10-26-progress-14.md",
-  "status": "Exact symmetric equilibria with all-time orbit confinement · Local stability criteria · Not a coil-produced stellarator · Not a construction release.",
-  "slides": [
+ "updated": "2026-10-26",
+ "report": "2026-10-26-progress-14.md",
+ "status": "Exact symmetric equilibria with all-time orbit confinement · Local stability criteria · Not a coil-produced stellarator · Not a construction release.",
+ "slides": [
+  {
+   "id": "where-we-are",
+   "eyebrow": "0 · alphas confined in a stellarator field",
+   "title": "Alpha guiding centres confined forever — for every passing pitch parameter λ ∈ [0, 1/4].",
+   "lead": "PlasmaLean is building a Lean library for stellarator design. In an exact non-axisymmetric stellarator field, passing 3.5 MeV alpha guiding centres are proved confined for all time for every pitch parameter λ ∈ [0, 1/4] (the limit of the passing argument) at one energy and B₀R₀, over a positive-measure set of velocities with |E − 3.5 MeV| ≤ 0.4 eV × λ ∈ [0, 1/16], and for a range of B₀R₀ at μ = 0; field lines are confined forever; a coil set confines field lines for 52 transits; a finite-β non-axisymmetric band is Mercier-stable (ballooning reduced, not certified); one exact axisymmetric field has proved alpha confinement, a hot core for every supplied transport solution (existence not proved) within a pressure budget, and certified local stability.",
+   "metrics": [
     {
-      "id": "where-we-are",
-      "eyebrow": "Progress briefing · alphas confined in a stellarator field",
-      "title": "Alpha guiding centres confined forever — for every passing pitch parameter λ ∈ [0, 1/4].",
-      "lead": "PlasmaLean is building a Lean library for stellarator design. In an exact non-axisymmetric stellarator field, passing 3.5 MeV alpha guiding centres are proved confined for all time for every pitch parameter λ ∈ [0, 1/4] (the limit of the passing argument) at one energy and B₀R₀, over a positive-measure set of velocities with |E − 3.5 MeV| ≤ 0.4 eV × λ ∈ [0, 1/16], and for a range of B₀R₀ at μ = 0; field lines are confined forever; a coil set confines field lines for 52 transits; a finite-β non-axisymmetric band is Mercier-stable (ballooning reduced, not certified); one exact axisymmetric field has proved alpha confinement, a hot core for every supplied transport solution (existence not proved) within a pressure budget, and certified local stability.",
-      "metrics": [
-        {
-          "value": "λ ∈ [0, 1/4]",
-          "label": "whole passing pitch range with all-time alpha guiding-centre confinement (one energy, one B₀R₀)"
-        },
-        {
-          "value": "± 0.4 eV",
-          "label": "energy window at 3.5 MeV (× λ ∈ [0, 1/16]): positive measure in velocity space"
-        },
-        {
-          "value": "8.8 → 4.3 GB",
-          "label": "peak kernel-check memory per process (6 GB laptop target now met)"
-        }
-      ],
-      "progress": "All-time field-line and passing-alpha guiding-centre confinement in a genuine stellarator field (vacuum model); one axisymmetric field with a pressure-budget band (transport solutions supplied) and certified local stability; large checks rewritten as explicit proof-term certificates; heavy cells computed on a workstation and spot-checked on the laptop.",
-      "boundary": "Alpha results: one B₀R₀, and one energy for λ ∈ [0, 1/4] (positive measure in velocity space only in a ±0.4 eV band with λ ≤ 1/16) — not robust to slowing-down; Littlejohn model supplied; vacuum model field; trapped alphas open; coil-produced all-time confinement blocked; the stable finite-β band is not certified ballooning-stable; on-demand workstation modules spot-checked, not fully rebuilt; polygon-coil lines still use decide +kernel.",
-      "evidence": [
-        {
-          "label": "Latest report",
-          "href": "progress.html"
-        },
-        {
-          "label": "Implementation plan",
-          "href": "implementation-plan.html"
-        },
-        {
-          "label": "Original motivation & graphics",
-          "href": "index.html#background"
-        }
-      ]
+     "value": "λ ∈ [0, 1/4]",
+     "label": "whole passing pitch range with all-time alpha guiding-centre confinement (one energy, one B₀R₀)"
     },
     {
-      "id": "proof-architecture",
-      "eyebrow": "01 · How the library earns a claim",
-      "title": "Small assumptions. Reusable proofs. One candidate.",
-      "lead": "Physical model laws are explicit hypotheses. Derived mathematics and candidate certificates live above that small domain kernel.",
-      "cards": [
-        {
-          "title": "Kernel + Sanity",
-          "text": "Restricted equilibrium and thermal laws, consistent examples, and counterexamples to overbroad claims.",
-          "status": "Implemented",
-          "kind": "checked"
-        },
-        {
-          "title": "Theory",
-          "text": "Geometry, fields and Maxwell identities, equilibrium, Suydam/Newcomb stability, Noether confinement and thermal consequences.",
-          "status": "Selected results",
-          "kind": "partial"
-        },
-        {
-          "title": "Certificates + Bridge",
-          "text": "Exact arithmetic, sound checkers and contracts that require the same candidate and witnesses.",
-          "status": "Building blocks",
-          "kind": "partial"
-        },
-        {
-          "title": "Design",
-          "text": "The vacuum-pair fixture, a Suydam-stable screw pinch, and exact Solov'ev and helical equilibria with confinement theorems exercise the reusable library.",
-          "status": "Examples checked",
-          "kind": "checked"
-        }
-      ],
-      "progress": "The public library separates all six layers. The last audit found only Lean/Mathlib's standard logical axioms, with no added domain axioms.",
-      "boundary": "A theorem proves a consequence of a model; it does not establish that empirical assumptions apply to a real machine.",
-      "evidence": [
-        {
-          "label": "Model contracts & architecture",
-          "href": "model-contracts.html#architecture"
-        },
-        {
-          "label": "Audit evidence",
-          "href": "progress.html#validation"
-        }
-      ]
+     "value": "± 0.4 eV",
+     "label": "energy window at 3.5 MeV (× λ ∈ [0, 1/16]): positive measure in velocity space"
     },
     {
-      "id": "mathematical-foundations",
-      "eyebrow": "02 · Reusable mathematical progress",
-      "title": "The foundations have executable proof content.",
-      "lead": "Simple models make the definitions testable before tackling three-dimensional plasma physics.",
-      "cards": [
-        {
-          "title": "Equilibrium",
-          "text": "Force balance implies field/current tangency to pressure. Uniform and nonzero-current force-free slab examples provide witnesses.",
-          "status": "Lean checked",
-          "kind": "checked"
-        },
-        {
-          "title": "Energy & stability",
-          "text": "Conditional energy conservation, coercivity and retained/tail form bounds. A neutral-mode example shows why energy need not control displacement.",
-          "status": "Abstract results",
-          "kind": "checked"
-        },
-        {
-          "title": "Geometry & fields",
-          "text": "Continuous clearance, arbitrarily placed circular coils, Biot–Savart integrals and an exact on-axis loop field.",
-          "status": "Lean checked",
-          "kind": "checked"
-        }
-      ],
-      "progress": "These are compiled elementary results and sanity checks, not just declarations of future tasks.",
-      "boundary": "Zero pressure does not imply zero current. Abstract energy bounds do not yet establish a continuum MHD stability result.",
-      "evidence": [
-        {
-          "label": "Earlier results retained",
-          "href": "progress.html#earlier-results-retained"
-        },
-        {
-          "label": "Stability scope",
-          "href": "mhd-stability.html"
-        }
-      ]
-    },
-    {
-      "id": "exact-certificates",
-      "eyebrow": "03 · Exact numerical certificates",
-      "title": "From a numerical proposal to a proved bound.",
-      "lead": "Rational interval soundness and contraction arguments give small end-to-end tests of the verification path.",
-      "cards": [
-        {
-          "title": "Nonlinear validation",
-          "text": "A scalar x² = 2 example on [1, 2] exercises the contraction framework with exact constants.",
-          "status": "Synthetic example",
-          "kind": "synthetic"
-        },
-        {
-          "title": "Thermal margin",
-          "text": "A slab boundary-value problem has a whole-input-box maximum of 44002/45 K, with 998/45 K margin below an invented 1000 K limit.",
-          "status": "Synthetic example",
-          "kind": "synthetic"
-        },
-        {
-          "title": "Sound arithmetic",
-          "text": "Exact coefficient decoding and interval/checker proofs separate candidate generation from the trusted proof path.",
-          "status": "Lean checked",
-          "kind": "checked"
-        }
-      ],
-      "progress": "Exact arithmetic is connected to mathematical soundness theorems and explicit test fixtures.",
-      "boundary": "The scalar example is not a plasma PDE solution. The thermal inputs are invented, not sourced material qualification data.",
-      "evidence": [
-        {
-          "label": "Retained examples & margins",
-          "href": "progress.html#earlier-results-retained"
-        },
-        {
-          "label": "Numerical verification chapter",
-          "href": "verified-numerics.html"
-        }
-      ]
-    },
-    {
-      "id": "vacuum-fixture",
-      "eyebrow": "04 · The vacuum calibration fixture",
-      "title": "Two circular coils. Precisely stated regions.",
-      "lead": "The first device-specific object is a calibration fixture with symbolic positive reference current I and permeability μ₀. Its field model uses ideal filaments.",
-      "diagram": "fixture",
-      "cards": [
-        {
-          "title": "Nominal geometry",
-          "text": "Each coil has radius 0.10 m, in the planes z = ±0.20 m, with the same angular orientation.",
-          "status": "Exact inputs",
-          "kind": "checked"
-        },
-        {
-          "title": "Two different regions",
-          "text": "Field/error/derivative bounds cover the 5 cm observation ball. The positive axial-field certificate covers the smaller 1 mm probe ball.",
-          "status": "Full-domain bounds",
-          "kind": "checked"
-        }
-      ],
-      "progress": "Closure, regularity, one-turn simplicity, source separation and the nominal midpoint field have proofs.",
-      "boundary": "The diagram is schematic, not a field-line simulation or a construction drawing. Neither ball is a certified confinement region.",
-      "evidence": [
-        {
-          "label": "Fixture specification & units",
-          "href": "vacuum-demonstrator.html#exact-fixture-and-checked-margins"
-        }
-      ]
-    },
-    {
-      "id": "tolerance-margins",
-      "eyebrow": "05 · What survives manufacturing uncertainty",
-      "title": "Margins for the same perturbed coils and currents.",
-      "lead": "Assume closed C¹ coils with position error ≤ 1 mm, independent tangent error ≤ 1 mm/radian, and independent current errors ≤ 1% of I.",
-      "cards": [
-        {
-          "title": "Field error",
-          "text": "Actual minus nominal field has norm at most μ₀I/4 throughout the 5 cm observation ball (SI lengths in metres).",
-          "status": "Lean checked",
-          "kind": "checked"
-        },
-        {
-          "title": "Nonzero probe field",
-          "text": "The actual axial component is at least μ₀I/4 throughout the 1 mm probe ball, for μ₀ > 0 and I > 0.",
-          "status": "Lean checked",
-          "kind": "checked"
-        },
-        {
-          "title": "Tube clearance",
-          "text": "The two 5 mm-radius envelopes around actual coil centrelines remain at least 97/250 m = 388 mm apart.",
-          "status": "Lean checked",
-          "kind": "checked"
-        }
-      ],
-      "progress": "Manufacturing and current errors compose into continuous field and clearance certificates, not just sampled checks.",
-      "boundary": "These tolerances are invented test inputs. Tube envelopes do not prove embedded winding packs or a finite-conductor electromagnetic model.",
-      "evidence": [
-        {
-          "label": "Quantitative certificate",
-          "href": "vacuum-demonstrator.html#exact-fixture-and-checked-margins"
-        },
-        {
-          "label": "Compiled entry points",
-          "href": "vacuum-demonstrator.html#reusable-proof-interfaces"
-        }
-      ]
-    },
-    {
-      "id": "maxwell-and-stability",
-      "eyebrow": "06 · Fields and local stability",
-      "title": "Maxwell identities proved; interchange stability decided both ways.",
-      "lead": "The closed-filament Biot–Savart field is divergence- and curl-free off the coil. A sharp Hardy inequality gives the Suydam criterion with both sufficiency and an explicit unstable mode.",
-      "cards": [
-        {
-          "title": "∇·B = 0, ∇×B = 0",
-          "text": "For the actual Fréchet derivative of the continuous filament integral, away from the source; curl needs a closed curve, and the open-segment curl is computed exactly.",
-          "status": "Lean checked",
-          "kind": "checked"
-        },
-        {
-          "title": "Suydam, both directions",
-          "text": "F ≥ 0, F + 4G ≥ 0 gives a coercive margin; F + 4G < 0 gives an unstable localized mode in every neighbourhood of the resonance. Hardy's constant 4 is sharp.",
-          "status": "Lean checked",
-          "kind": "checked"
-        },
-        {
-          "title": "Newcomb certificates",
-          "text": "Picone/Riccati/Jacobi certificates for variable coefficients, discharged by an exact rational polynomial checker running in the kernel.",
-          "status": "Lean checked",
-          "kind": "checked"
-        }
-      ],
-      "progress": "A realistic screw pinch (a = 1 m, R₀ = 4 m, 5 T, ⟨β⟩ = 2/75) satisfies Suydam everywhere with a 25% margin, and Newcomb-reduced δW ≥ 0 is certified for every mode with 1 ≤ |m| ≤ 6 (wall at the edge); Phase 2 extended this to every integer (m, n) with m ≠ 0 (ScrewPinchModesHighM).",
-      "boundary": "The δW reductions are cited source results, not formalized; the all-mode result is for this cylindrical screw pinch only. Suydam alone is necessary, not sufficient.",
-      "evidence": [
-        {
-          "label": "New checked results",
-          "href": "progress.html#new-checked-results"
-        },
-        {
-          "label": "Stability scope",
-          "href": "mhd-stability.html"
-        }
-      ]
-    },
-    {
-      "id": "exact-equilibria",
-      "eyebrow": "07 · Finite-pressure equilibria",
-      "title": "Two exact equilibria satisfy the kernel law J × B = ∇p.",
-      "lead": "The current is computed as curl B/μ₀ from actual derivatives and checked against the unchanged kernel ForceBalance class.",
-      "cards": [
-        {
-          "title": "Solov'ev torus",
-          "text": "Axisymmetric (tokamak-like) exact equilibrium; ITER-like instance R₀ = 6 m, B = 5 T, β_axis = 147/5000; div B = 0, flux and current tangent to surfaces.",
-          "status": "Lean checked",
-          "kind": "checked"
-        },
-        {
-          "title": "Helical equilibrium",
-          "text": "Helically symmetric, nonaxisymmetric exact equilibrium found by symbolic search; SI instance with pitch length 2 m, B = 5 T, β_axis = 4%.",
-          "status": "Lean checked",
-          "kind": "checked"
-        },
-        {
-          "title": "Model limits",
-          "text": "Straight helix (no toroidal curvature); smooth pressure formula restricted to ψ ≤ ψ_b; neither field is matched to coils.",
-          "status": "Idealized",
-          "kind": "partial"
-        }
-      ],
-      "progress": "P4 now has checked smooth instances at realistic field strength and β.",
-      "boundary": "No free-boundary or coil matching. Phase 4 added local (Mercier) findings — the helical equilibrium is Mercier-unstable, the Solov'ev q ≥ 2.02 — but there is no all-mode stability analysis of these equilibria yet.",
-      "evidence": [
-        {
-          "label": "Quantitative certificates",
-          "href": "progress.html#quantitative-certificates"
-        },
-        {
-          "label": "Corrections",
-          "href": "progress.html#corrections-and-challenged-claims"
-        }
-      ]
-    },
-    {
-      "id": "symmetric-confinement",
-      "eyebrow": "08 · Confinement for all time",
-      "title": "Symmetry plus Noether confines every slow enough orbit forever.",
-      "lead": "Canonical momentum m⟨K,v⟩ + qψ is conserved for any Killing symmetry K; with speed conservation and an intermediate-value argument, orbits stay in a flux region for all time.",
-      "cards": [
-        {
-          "title": "Solov'ev orbits",
-          "text": "Deuterons up to 400 keV starting in the inner region never leave the plasma torus.",
-          "status": "Lean checked",
-          "kind": "checked"
-        },
-        {
-          "title": "Helical orbits",
-          "text": "Deuterons ≤ 30 keV and alphas ≤ 60 keV stay at r < 0.71 m inside the 4% β plasma, for all time.",
-          "status": "Lean checked",
-          "kind": "checked"
-        },
-        {
-          "title": "Broken symmetry",
-          "text": "A symmetry defect δ gives confinement only for times ∝ 1/(δ|v|) — ballistic, far from slowing-down times. This bound does not cover 3.5 MeV alphas (see Phases 3–4).",
-          "status": "Obstruction recorded",
-          "kind": "next"
-        }
-      ],
-      "progress": "P3 has checked full-orbit instances; field lines are confined by exact first integrals.",
-      "boundary": "Orbits are supplied, not constructed. Guiding-centre averaging for near-quasisymmetric fields was formalized later (AveragedTrapping: passing alphas for 0.11 s in a supplied guiding-centre model); all-time confinement without exact symmetry is not proved.",
-      "evidence": [
-        {
-          "label": "Obstruction & numbers",
-          "href": "progress.html#quantitative-certificates"
-        },
-        {
-          "label": "Particles & transport chapter",
-          "href": "particles-and-transport.html"
-        }
-      ]
-    },
-    {
-      "id": "path-to-a-device",
-      "eyebrow": "09 · From idealized models to a stellarator",
-      "title": "The remaining device work is explicit.",
-      "lead": "The vacuum-fixture work packages remain, now joined by an equilibrium/stability track. A four-circular-coil, CNT-inspired architecture is a reference direction, not a certified design.",
-      "cards": [
-        {
-          "title": "VD1 · Freeze the candidate",
-          "text": "Version the four coil placements, frames, radii, turns/current conventions and leads against a source dataset.",
-          "status": "Reference only",
-          "kind": "next"
-        },
-        {
-          "title": "VD2 · Continuous fields",
-          "text": "Maxwell identities are proved for closed filaments; extend fixture geometry/derivative work to the candidate coil set.",
-          "status": "Partial: fixture + Maxwell",
-          "kind": "partial"
-        },
-        {
-          "title": "VD3–4 · Conductors & confinement",
-          "text": "Model embedded finite winding packs, then certify an invariant barrier or a declared finite-time orbit bundle.",
-          "status": "Not certified",
-          "kind": "next"
-        },
-        {
-          "title": "VD5 · Physical operation",
-          "text": "Source conductor, supply, thermal, mechanical, protection and metrology envelopes for that same candidate.",
-          "status": "Not qualified",
-          "kind": "next"
-        }
-      ],
-      "progress": "Reusable mathematics now spans fields, equilibria, local stability and symmetric confinement. No practical build or energization specification has been released.",
-      "boundary": "Finite-pressure equilibrium, all-mode MHD, transport and reactor engineering are separate obligations, not implied by a vacuum demonstrator; so far they are checked only in idealized symmetric models (slides 7–13).",
-      "evidence": [
-        {
-          "label": "Device work packages",
-          "href": "vacuum-demonstrator.html#work-packages-and-progress"
-        },
-        {
-          "label": "Full evidence gates P0–P9",
-          "href": "roadmap.html#milestones-and-evidence-gates"
-        }
-      ]
-    },
-    {
-      "id": "burn-temperature",
-      "eyebrow": "10 · Phase 1: hot enough, long enough",
-      "title": "A burning plasma that provably stays above 10 keV.",
-      "lead": "A reactor-scale 0-D D-T plasma (n = 10²⁰ m⁻³, 830 m³, carbon impurities with Z_eff = 1.7) stays at or above 10 keV for all t ≥ 0 once heating beats losses at 10 keV. Radial transport obeys a proved comparison principle, so a barrier profile bounds the temperature everywhere for all time.",
-      "cards": [
-        {
-          "title": "Sustained burn (M1)",
-          "text": "T ≥ 10 keV for all t ≥ 0 with P_aux ≥ 40 MW and τ_E ≥ 3.5 s whenever T ≤ 10 keV: margin +5.5 MW. Ignited variant: τ_E ≥ 5.5 s, no auxiliary power. Yield ≥ 4.8×10⁸ W × t_b.",
-          "status": "Lean verified (0-D model)",
-          "kind": "checked"
-        },
-        {
-          "title": "Runaway is real",
-          "text": "With constant τ_E, net heating is +77 MW at 30 keV. The window [10, 30] keV is proved only under a supplied confinement-degradation hypothesis (τ_E ≤ 1.8 s for T ≥ 30 keV).",
-          "status": "Obstruction recorded",
-          "kind": "partial"
-        },
-        {
-          "title": "Transport comparison (T3)",
-          "text": "First-crossing lemma and comparison theorems for the flux-surface heat equation with a no-flux axis: strict, margin and non-strict lower/upper barriers, and two-sided windows. D ≥ 0 suffices; backward diffusion is a counterexample.",
-          "status": "Lean verified",
-          "kind": "checked"
-        },
-        {
-          "title": "Vacuum maximum principle (T1)",
-          "text": "Δ|B|² = 2|∇B|² for vacuum fields; the weak maximum principle bounds the field error in the volume by its value on the surface. |B| has no interior maximum, but B = (x, y, −2z) has an interior minimum, correcting the notes.",
-          "status": "Lean verified",
-          "kind": "checked"
-        }
-      ],
-      "progress": "13 new modules, including kernel laws for fusion power, radial transport and vacuum fields, each with sanity checks. An adversarial review caught a fuel-dilution error in the first M1 version; the kernel and the margins were corrected.",
-      "boundary": "Bosch–Hale reactivity enters as supplied windows (±1%). τ_E conditions are hypotheses at the crossing temperatures, not derived from a scaling law. Transport solutions are supplied, not proved to exist.",
-      "evidence": [
-        {
-          "label": "New checked results",
-          "href": "progress.html#new-checked-results"
-        },
-        {
-          "label": "Quantitative certificates",
-          "href": "progress.html#quantitative-certificates"
-        },
-        {
-          "label": "Corrections",
-          "href": "progress.html#corrections-and-challenged-claims"
-        }
-      ]
-    },
-    {
-      "id": "core-barrier",
-      "eyebrow": "11 · Phase 2: a core that stays hot",
-      "title": "Every solution starting above the barrier keeps a 10 keV core forever.",
-      "lead": "For the flux-surface heat equation with alpha heating, bremsstrahlung and ≈70 MW of deposited heating, a certified barrier profile bounds the temperature from below for all time. A 0-D burn window now follows from the IPB98(y,2) confinement scaling instead of ad-hoc confinement-time assumptions.",
-      "cards": [
-        {
-          "title": "Core barrier (M2)",
-          "text": "For every supplied reactivity in the Bosch–Hale class and χ ≤ 0.5 m²/s: T ≥ T_sub ≥ 10 keV on the inner 30% of the flux, for all t ≥ 0. The barrier is a degree-10 polynomial with a 16-piece exact margin certificate.",
-          "status": "Lean verified (cylinder)",
-          "kind": "checked"
-        },
-        {
-          "title": "Scaling-law burn (M1)",
-          "text": "With IPB98(y,2) for an ITER-like tokamak, P_aux ∈ [50, 70] MW and H ∈ [1.25, 2], T stays in [10, 30] keV. At nominal H the flat-profile model cannot hold 10 keV (proved). The ignition point is in (12, 13) keV and is unstable.",
-          "status": "Lean verified (0-D)",
-          "kind": "checked"
-        },
-        {
-          "title": "All-mode screw pinch",
-          "text": "Newcomb stability for every integer (m, n) with m ≠ 0: stability is monotone in m², and an analytic Picone function closes the open band. Barta ballooning certificates; cylindrical Mercier ⇔ Suydam.",
-          "status": "Lean verified (reduction supplied)",
-          "kind": "checked"
-        },
-        {
-          "title": "Min-B obstruction",
-          "text": "In vacuum ∇⊥|B| = |B|κ, so no closed field line carries a transverse minimum of |B|. A straight-wire field is the witness. Coil fields are proved C^∞ off the coil.",
-          "status": "Lean verified",
-          "kind": "checked"
-        }
-      ],
-      "progress": "14 new modules. Reviews found no soundness bugs and led to guards for shearless Mercier surfaces, a non-vacuity witness for the obstruction, and clarified χ normalization and corner compatibility.",
-      "boundary": "The barrier is in a straight cylinder, not a stellarator geometry; χ and density are prescribed; solutions are supplied. The kernel's D ≥ D_min > 0 had to be bypassed at the axis; Phase 3 relaxed the kernel to D ≥ 0 with a degenerate axis, making the cylinder a direct kernel instance.",
-      "evidence": [
-        {
-          "label": "New checked results",
-          "href": "progress.html#new-checked-results"
-        },
-        {
-          "label": "Quantitative certificates",
-          "href": "progress.html#quantitative-certificates"
-        },
-        {
-          "label": "Corrections",
-          "href": "progress.html#corrections-and-challenged-claims"
-        }
-      ]
-    },
-    {
-      "id": "alpha-confinement",
-      "eyebrow": "12 · Phase 3: alphas, stellarator geometry, validation",
-      "title": "Every 3.5 MeV alpha born in the core stays in — forever.",
-      "lead": "In an exact equilibrium satisfying J × B = ∇p at 5 T and β ≈ 4.6%, every fusion alpha with energy ≤ 3.5 MeV starting in the inner quarter of the flux, with any pitch, stays inside the plasma for all time under the full Lorentz force. The margin is 1.5%: the same argument fails at 3.7 MeV.",
-      "cards": [
-        {
-          "title": "Alpha confinement",
-          "text": "Noether's canonical momentum plus a rigidity bound (m s/2e ≤ 0.2694 < 0.2734 T·m). An explicit orbit shows the hypotheses can be met. The equilibrium is axisymmetric (tokamak-like).",
-          "status": "Lean verified (full orbits)",
-          "kind": "checked"
-        },
-        {
-          "title": "Hot core, helical geometry",
-          "text": "On the exact helically symmetric equilibrium: T ≥ 10 keV on s ≤ 0.3 for all time, 63–68 MW of heating, axis pressure below the equilibrium's. The transport kernel now allows a degenerate axis (D ≥ 0). Phase 4 found this helical equilibrium Mercier-unstable, so the geometry is not MHD-stable.",
-          "status": "Lean verified (averages supplied)",
-          "kind": "checked"
-        },
-        {
-          "title": "Stellarator burn needs confinement",
-          "text": "At Stellaris scale under ISS04, T stays in [10, 22] keV if f_ren ∈ [1.55, 1.75]; at measured f_ren ≤ 1.3 the flat-profile model cannot reach 10 keV (proved).",
-          "status": "Lean verified (0-D) + obstruction",
-          "kind": "partial"
-        },
-        {
-          "title": "Validation & near-symmetry",
-          "text": "Radii polynomial on ℓ¹: a nonlinear BVP solved within 10⁻⁴. Near-axis QA: passing alphas trapped 0.8 ms, with an iterated averaging lemma and gyro-Noether identity proved as the route to slowing-down times.",
-          "status": "Lean verified; gap quantified",
-          "kind": "partial"
-        }
-      ],
-      "progress": "15 new modules and a recorded kernel change. Three review passes: pressure consistency of the barrier, a finite-time Boozer orbit structure, a kernel law excluding vacuous regular axes, and non-vacuity witnesses.",
-      "boundary": "The alpha theorem is for an axisymmetric equilibrium; near-quasisymmetric fields reached only 0.8 ms in this phase (0.11 s in Phase 4). Flux-surface averages, scaling laws, reactivity and solutions are supplied. No coil-produced configuration.",
-      "evidence": [
-        {
-          "label": "New checked results",
-          "href": "progress.html#new-checked-results"
-        },
-        {
-          "label": "Quantitative certificates",
-          "href": "progress.html#quantitative-certificates"
-        },
-        {
-          "label": "Corrections",
-          "href": "progress.html#corrections-and-challenged-claims"
-        }
-      ]
-    },
-    {
-      "id": "near-qa-validation",
-      "eyebrow": "13 · Phase 4: near-quasisymmetry, validation, stability",
-      "title": "From 0.8 ms to 0.11 s — and a plasma equilibrium validated to 10⁻¹¹.",
-      "lead": "Iterating an oscillatory averaging lemma three times, with exact Lie-derivative amplitudes and certified enclosures, extends passing-alpha confinement in a reactor-scale near-axis quasisymmetric field from 0.8 ms to 0.11 s. A slab Grad–Shafranov equilibrium with an exponential pressure profile is validated by the radii polynomial and proved to satisfy the kernel force balance.",
-      "cards": [
-        {
-          "title": "Near-QA alphas: 0.11 s",
-          "text": "Passing 3.5 MeV alphas (|v∥/v| ≥ 0.9) at a = 1.7 m, 5.7 T stay inside for 0.11 s; the same gap fails at 0.12 s. Slowing down takes ≈ 0.4 s, so a ≈ 4× gap remains.",
-          "status": "Lean verified (GC model)",
-          "kind": "checked"
-        },
-        {
-          "title": "Validated equilibrium",
-          "text": "P(ψ) ∝ e^ψ − ψ: a classical C² slab equilibrium within 10⁻¹¹ of a rational candidate, unique nearby in ℓ¹, satisfying StaticSlab and ForceBalance with positive pressure.",
-          "status": "Lean verified (1-D)",
-          "kind": "checked"
-        },
-        {
-          "title": "Stability findings",
-          "text": "The general Mercier index reduces to Suydam in a cylinder. The helical equilibrium is Mercier-unstable (proved at a = 0). For the Solov'ev reactor equilibrium the true safety factor is ≥ 2.02 everywhere.",
-          "status": "Lean verified + negative finding",
-          "kind": "partial"
-        },
-        {
-          "title": "Coils and coupling",
-          "text": "Face samples certify the coil field error in a whole volume (maximum principle + surface cover). A pressure-budget band needs an upper temperature barrier — and so a T-dependent diffusivity in the kernel.",
-          "status": "Lean verified; design recorded",
-          "kind": "partial"
-        }
-      ],
-      "progress": "12 new modules. Reviews found an oracle factor-of-2 error (corrected; conclusion unchanged) and no soundness defects in the averaged-trapping theorem; its ≈ 6 min build is scheduled for a proof-term rewrite.",
-      "boundary": "Guiding-centre model supplied; near-axis field accurate only to expansion order; passing alphas only; the validated equilibrium is a 1-D slab; the helical barrier geometry is MHD-unstable.",
-      "evidence": [
-        {
-          "label": "New checked results",
-          "href": "progress.html#new-checked-results"
-        },
-        {
-          "label": "Quantitative certificates",
-          "href": "progress.html#quantitative-certificates"
-        },
-        {
-          "label": "Corrections",
-          "href": "progress.html#corrections-and-challenged-claims"
-        }
-      ]
-    },
-    {
-      "id": "one-plasma",
-      "eyebrow": "14 · Phase 5: one field with a pressure-budget band",
-      "title": "Confinement and heat, proved for the same field, with a pressure budget.",
-      "lead": "solovev_one_plasma: one exact Solov'ev field satisfying J × B = ∇p with pressure p_eq + 40 kPa; every 3.5 MeV alpha born in the core stays inside forever (full Lorentz orbits); every classical solution of the transport model starting in a certified band (existence assumed, not proved) keeps a ≥ 10 keV core forever, with plasma pressure within the budget ≤ p_eq + 40 kPa — bounded by it, not equal to the force-balance pressure.",
-      "cards": [
-        {
-          "title": "One field, pressure budget",
-          "text": "Same field, same pressure budget, same domain s ≤ 1 for force balance, alpha confinement and the transport band. Driven (≈ 120 MW aux, Q ≈ 5.5); transport geometry via a supplied class (proved for the actual field in Phase 6).",
-          "status": "Lean verified (geometry supplied)",
-          "kind": "partial"
-        },
-        {
-          "title": "Temperature-dependent χ (K2)",
-          "text": "The kernel now allows D(ψ,T); comparison theorems extend and upper barriers are proved directly. A cylinder band keeps 10 keV ≤ T ≤ 23.5 keV in the core.",
-          "status": "Lean verified",
-          "kind": "checked"
-        },
-        {
-          "title": "Mercier stability certified",
-          "text": "The exact axisymmetric Mercier index of the reactor Solov'ev equilibrium is positive on every flux surface (validated quadrature, 3–6% margins); a genuine magnetic well is proved.",
-          "status": "Lean verified (index formula supplied)",
-          "kind": "checked"
-        },
-        {
-          "title": "Near-QA alphas: 0.19 s",
-          "text": "Proof-term certificates cut the build from 349 s to 59 s and extended passing-alpha confinement from 0.11 s to 0.19 s — about half the slowing-down time. Trapped alphas: single-well and bounce-sum lemmas.",
-          "status": "Lean verified (GC model)",
-          "kind": "checked"
-        }
-      ],
-      "progress": "8 new modules and kernel change K2. A sub-agent report that claimed non-existent geometry lemmas was caught at integration; every cited declaration is now grep-checked.",
-      "boundary": "Supplied geometry class (being proved), driven parameters, χ stand-in, axisymmetric equilibrium, supplied solutions; near-QA results rest on the guiding-centre model.",
-      "evidence": [
-        {
-          "label": "New checked results",
-          "href": "progress.html#new-checked-results"
-        },
-        {
-          "label": "Quantitative certificates",
-          "href": "progress.html#quantitative-certificates"
-        },
-        {
-          "label": "Corrections",
-          "href": "progress.html#corrections-and-challenged-claims"
-        }
-      ]
-    },
-    {
-      "id": "actual-geometry-stellarator",
-      "eyebrow": "15 · Phase 6: true geometry, ignition, stellarator field",
-      "title": "No supplied geometry, no auxiliary power — and a genuine stellarator field.",
-      "lead": "The pressure-budget theorem (transport solutions supplied) now uses flux-surface quantities computed from the equilibrium itself. With quarter-keV reactivity data it certifies a high-Q (Q ≈ 40) band and an ignited band with zero auxiliary heating. Separately, an exact rational vacuum field with two field periods and stellarator symmetry gives the library its first non-axisymmetric stellarator geometry.",
-      "cards": [
-        {
-          "title": "Actual geometry",
-          "text": "V′, ⟨|∇s|²⟩, ⟨Δs⟩ from the exact surfaces; Gauss identity and axis limits proved; enclosures with 0.26% margins. The coarea step was stated here and is proved in Phase 7.",
-          "status": "Lean verified",
-          "kind": "checked"
-        },
-        {
-          "title": "High-Q and ignited",
-          "text": "17.5 MW aux (oracle Q ≈ 39–46) with a 40 kPa edge offset; zero aux with a 90 kPa offset (≈ 20% of axis pressure, an edge pedestal) and a ±0.8% χ₀ window.",
-          "status": "Lean verified (Q oracle-only)",
-          "kind": "partial"
-        },
-        {
-          "title": "Ballooning",
-          "text": "Every field line and ballooning angle stable on four near-axis Solov'ev surfaces, via a 2-D Riccati certificate on the exact coefficients.",
-          "status": "Lean verified (reduction supplied)",
-          "kind": "partial"
-        },
-        {
-          "title": "Rational stellarator",
-          "text": "B = ∇φ + ε∇h: exact vacuum, 2 periods, stellarator-symmetric, non-axisymmetric; closed circular axis with elliptic monodromy. Certified confinement (≥ 95 transits) added in Phase 7.",
-          "status": "Lean verified (field + axis)",
-          "kind": "checked"
-        }
-      ],
-      "progress": "13 new modules; review found no bugs (fine windows and geometry bounds independently recomputed). Trapped near-QA alphas: turning points proved, non-resonance open — a real resonance exists in the band.",
-      "boundary": "Axisymmetric integrated results; ignition needs a large edge offset; supplied stability reductions; the stellarator field is not yet confined over a certified length or produced by coils.",
-      "evidence": [
-        {
-          "label": "New checked results",
-          "href": "progress.html#new-checked-results"
-        },
-        {
-          "label": "Quantitative certificates",
-          "href": "progress.html#quantitative-certificates"
-        },
-        {
-          "label": "Corrections",
-          "href": "progress.html#corrections-and-challenged-claims"
-        }
-      ]
-    },
-    {
-      "id": "stellarator-confined",
-      "eyebrow": "16 · Phase 7: a confined stellarator field",
-      "title": "95 toroidal transits, certified, in a genuine stellarator field.",
-      "lead": "For the exact vacuum field B = ∇φ + ¼∇h — non-axisymmetric, two field periods, stellarator-symmetric — every field line starting within ≈ 0.023 R₀ of the magnetic axis stays within ≈ 0.1 R₀ of it for at least 95 full toroidal transits. And the coarea formula closes the last stated geometric link in the pressure-budget theorem (transport solutions are still supplied).",
-      "cards": [
-        {
-          "title": "Stellarator confinement",
-          "text": "An order-10 approximate first integral with |DI·B| ≤ 4×10⁻⁶ on the whole tube, certified by an exact-integer Taylor-shift cover; I separates start tube from tube faces; the defect theorem converts this into ≥ 95 transits.",
-          "status": "Lean verified (finite length)",
-          "kind": "checked"
-        },
-        {
-          "title": "Coarea formalized",
-          "text": "Injective coordinates, null axis, Jacobian √2σ/R, Lebesgue volume = coordinate volume, and d/ds ∫ f = ∮ f dS/|∇s|: the flux-surface averages in the transport law are proved, not stated.",
-          "status": "Lean verified",
-          "kind": "checked"
-        },
-        {
-          "title": "Still open",
-          "text": "Coils for the stellarator field (error must stay below the defect budget); all-time confinement (KAM); trapped near-QA alphas; ballooning beyond four surfaces.",
-          "status": "In progress",
-          "kind": "next"
-        }
-      ],
-      "progress": "7 new modules; review found the certificate sound (exact margins, symmetry reduction and face coverage checked) and led to a local field-line version and fuller disclosures.",
-      "boundary": "Finite-length, vacuum-field result; no coils; the cover uses monolithic kernel checks (≈ 5 GB peak memory, accepted by review).",
-      "evidence": [
-        {
-          "label": "New checked results",
-          "href": "progress.html#new-checked-results"
-        },
-        {
-          "label": "Quantitative certificates",
-          "href": "progress.html#quantitative-certificates"
-        },
-        {
-          "label": "Corrections",
-          "href": "progress.html#corrections-and-challenged-claims"
-        }
-      ]
-    },
-    {
-      "id": "stability-coils",
-      "eyebrow": "17 · Phase 7 part 2: stability everywhere, coils",
-      "title": "Stable on every surface; from coil error to confined field lines.",
-      "lead": "Ideal ballooning is certified on every flux surface of the reactor equilibrium, axis to edge. For the exact stellarator field, a concrete closed filament reproduces the toroidal part to 2.5×10⁻⁶, and any coil set whose helical error on a bounding surface is below 6.5×10⁻⁴ (or 5.6×10⁻⁵) inherits 1 (or 10) certified transits.",
-      "cards": [
-        {
-          "title": "Ballooning everywhere",
-          "text": "One s-polynomial certificate over 825 boxes (proof-term cover, ≈ 1 min build) gives stability on all surfaces 0 < s ≤ 25 for every field line and ballooning angle; the axis is handled analytically.",
-          "status": "Lean verified (reduction supplied)",
-          "kind": "checked"
-        },
-        {
-          "title": "Coil chain",
-          "text": "Certified TF filament; maximum principle carries a frontier error into the confinement tube; certified gradient bound converts error into transits. The helical-winding frontier bound (sampled 2.4×10⁻⁴ for 120 filaments) is not yet certified.",
-          "status": "Lean verified up to one hypothesis",
-          "kind": "partial"
-        },
-        {
-          "title": "Trapped alphas",
-          "text": "Exact QA: bounce precession enclosed in [0.7, 2.6] rad — non-resonant — and the reference bounce proved periodic. No confinement time yet: the near-QA remainder is open.",
-          "status": "Partial",
-          "kind": "partial"
-        }
-      ],
-      "progress": "33 new modules (many certificate cells). The ballooning certificate was rebuilt as a proof-term cover; the trapped-alpha cell checks still await that rewrite.",
-      "boundary": "Supplied stability reductions; vacuum finite-length stellarator result; one coil hypothesis open; trapped near-QA alphas open.",
-      "evidence": [
-        {
-          "label": "New checked results",
-          "href": "progress.html#new-checked-results"
-        },
-        {
-          "label": "Quantitative certificates",
-          "href": "progress.html#quantitative-certificates"
-        },
-        {
-          "label": "Corrections",
-          "href": "progress.html#corrections-and-challenged-claims"
-        }
-      ]
-    },
-    {
-      "id": "finite-beta-torus",
-      "eyebrow": "18 · Phase 8: finite β beyond axisymmetry; one torus to go",
-      "title": "Finite pressure without axisymmetry — and all-time confinement from one torus.",
-      "lead": "Landreman's family-1 equilibrium satisfies the kernel force balance with finite pressure, is genuinely non-axisymmetric with a non-planar axis, and has all field lines closed and confined. For the exact stellarator vacuum field, any invariant torus traps every field line inside it forever.",
-      "cards": [
-        {
-          "title": "Finite-β, non-axisymmetric",
-          "text": "J × B = ∇p with the actual current; ψ a flux function; explicit closed field lines; 5 T instance with local axis β 6–8%. Zero shear (ι ≡ 2); unrefereed source; no stability claim.",
-          "status": "Lean verified (idealized)",
-          "kind": "checked"
-        },
-        {
-          "title": "One torus suffices",
-          "text": "A Grönwall barrier around {G = 0} and a radial-graph invariant torus trap field lines for all time; for the rational stellarator field this reduces all-time confinement to producing one torus.",
-          "status": "Lean verified (conditional)",
-          "kind": "partial"
-        },
-        {
-          "title": "Next",
-          "text": "A validated approximate torus (K2), an explicit-constant KAM theorem (K3, the long pole), a certified helical coil set, and Landreman family 2 with shear.",
-          "status": "In progress",
-          "kind": "next"
-        }
-      ],
-      "progress": "3 new modules and two theory notes; a discovery-note error about the family-1 axis was caught and corrected by the formalization.",
-      "boundary": "Idealized finite-β equilibrium; conditional all-time confinement; no coil-produced confined stellarator yet.",
-      "evidence": [
-        {
-          "label": "New checked results",
-          "href": "progress.html#new-checked-results"
-        },
-        {
-          "label": "Corrections",
-          "href": "progress.html#corrections-and-challenged-claims"
-        },
-        {
-          "label": "Implementation plan",
-          "href": "implementation-plan.html"
-        }
-      ]
-    },
-    {
-      "id": "kam-torus",
-      "eyebrow": "19 · Phase 9: an invariant torus to 10⁻²³",
-      "title": "A certified approximate torus and the first KAM lemmas.",
-      "lead": "Torus A — a 2-D Fourier embedding with rational coefficients — solves the field-line invariance equation of the exact stellarator field to 10⁻²³ for all angles, and is a radial graph around the magnetic axis. The Diophantine and cohomological lemmas of KAM theory are proved with explicit constants.",
-      "cards": [
-        {
-          "title": "Approximate torus (K2)",
-          "text": "Exact ℓ¹ norm of the residual's Fourier coefficients via Kronecker digit sums: ≤ 1.23×10⁻²³ (R), 6.94×10⁻²⁴ (z); 0.077 ≤ r ≤ 0.19.",
-          "status": "Lean verified",
-          "kind": "checked"
-        },
-        {
-          "title": "KAM lemmas (K3a)",
-          "text": "Diophantine γ = 0.1374 (τ = 1, essentially optimal) for the torus's transform; cohomological equation solved with Rüssmann and Cauchy estimates in weighted ℓ¹.",
-          "status": "Lean verified",
-          "kind": "checked"
-        },
-        {
-          "title": "Remaining",
-          "text": "Weighted error, frame and twist, convergence lemma, ℓ¹(ℤ²) algebra (in progress); then the Newton step and the limit torus, giving all-time confinement.",
-          "status": "In progress",
-          "kind": "next"
-        }
-      ],
-      "progress": "7 new modules. Constants budget for the KAM step is an informal estimate until the frame and twist certificates land.",
-      "boundary": "No all-time confinement yet; the torus residual is certified in the sup / unweighted norm only so far.",
-      "evidence": [
-        {
-          "label": "New checked results",
-          "href": "progress.html#new-checked-results"
-        },
-        {
-          "label": "Quantitative certificates",
-          "href": "progress.html#quantitative-certificates"
-        },
-        {
-          "label": "Implementation plan",
-          "href": "implementation-plan.html"
-        }
-      ]
-    },
-    {
-      "id": "coil-confinement",
-      "eyebrow": "20 · Phase 9: coils that confine",
-      "title": "Real coils, certified field lines.",
-      "lead": "Eight closed polygonal helical filaments plus a closed toroidal-field filament produce a field whose lines, starting near the axis, stay in the confinement tube for a full toroidal transit — proved from the exact Biot–Savart field of straight segments, a certified 6.5×10⁻⁴ frontier error and the vacuum maximum principle.",
-      "cards": [
-        {
-          "title": "Coil-produced confinement",
-          "text": "Exact segment fields; C¹ corner parametrization; coils avoid the region; certified frontier error; maximum principle; defect confinement. One transit, zero margin; existence of field lines assumed. Later raised to 52 transits with a cubic-interpolation certificate (error 3.2×10⁻⁶).",
-          "status": "Lean verified (1 → 52 transits)",
-          "kind": "checked"
-        },
-        {
-          "title": "KAM machinery",
-          "text": "Quadratic convergence with loss of analyticity, limit lemma, weighted ℓ¹(ℤ²) Banach algebra with Neumann inverses, polynomial composition and Taylor bounds for the torus equation.",
-          "status": "Lean verified",
-          "kind": "checked"
-        },
-        {
-          "title": "Next",
-          "text": "Weighted error and frame/twist certificates, the Newton step and the limit torus (all-time confinement); 10 transits for the coil field needs an ≈ 12× sharper certificate.",
-          "status": "In progress",
-          "kind": "next"
-        }
-      ],
-      "progress": "25 new modules; review found the coil chain sound (segment formula, corners, cover, symmetry, avoidance) and led to zero-margin and existence disclosures.",
-      "boundary": "One transit for the coil field; ≈ 7.5 min / 6 GB certificate build; KAM step pending.",
-      "evidence": [
-        {
-          "label": "New checked results",
-          "href": "progress.html#new-checked-results"
-        },
-        {
-          "label": "Quantitative certificates",
-          "href": "progress.html#quantitative-certificates"
-        },
-        {
-          "label": "Corrections",
-          "href": "progress.html#corrections-and-challenged-claims"
-        }
-      ]
-    },
-    {
-      "id": "kam-inputs",
-      "eyebrow": "21 · Phase 9: KAM inputs complete; sheared finite β",
-      "title": "Error, frame, twist and small divisors — all certified.",
-      "lead": "For torus A of the exact stellarator field: weighted invariance error ≤ 6×10⁻²² on a complex strip, a symplectic frame with explicit inverse bounds, twist ≥ 3/10, and Diophantine constant 0.0687. A sheared finite-β non-axisymmetric equilibrium joins the library.",
-      "cards": [
-        {
-          "title": "KAM inputs",
-          "text": "Weighted residual 5.83×10⁻²² / 3.47×10⁻²² at r = 0.1257; Ω(∂θK, N) = 1, det M ∈ [0.37, 2.86]; ⟨twist⟩ ≥ 3/10. The frame-torsion transport identity is a definition-level assumption to discharge.",
-          "status": "Lean verified",
-          "kind": "checked"
-        },
-        {
-          "title": "Sheared finite β",
-          "text": "Landreman family 2: force balance, flux function, planar elliptic axis, non-axisymmetric; ι ≤ 25/3 on an inner surface and ≥ 17/2 on an outer one (ε = 1/4, S = 4). Part 4: Mercier-unstable (family 1 proved; family 2 numerically).",
-          "status": "Lean verified (idealized)",
-          "kind": "checked"
-        },
-        {
-          "title": "Next: the Newton step",
-          "text": "Quasi-Newton step with counterterm, iteration to an exact torus, regularity, radial-graph and collar bounds, then all-time confinement via the torus-trapping theorem.",
-          "status": "In progress",
-          "kind": "next"
-        }
-      ],
-      "progress": "10 new modules completing the KAM input certificates and adding family 2.",
-      "boundary": "All-time confinement not yet proved; shear proved for a chosen parameter set, not the paper's example.",
-      "evidence": [
-        {
-          "label": "New checked results",
-          "href": "progress.html#new-checked-results"
-        },
-        {
-          "label": "Quantitative certificates",
-          "href": "progress.html#quantitative-certificates"
-        },
-        {
-          "label": "Implementation plan",
-          "href": "implementation-plan.html"
-        }
-      ]
-    },
-    {
-      "id": "confined-forever",
-      "eyebrow": "22 · Phase 10: confined forever",
-      "title": "An exact invariant torus, and field lines trapped for all time.",
-      "lead": "A verified KAM theorem turns the certified approximate torus (error 10⁻²²) into an exact real-analytic invariant torus of the stellarator field with rotational transform (75 + √5)/562. By the torus-trapping theorem, every field line starting inside it — at least 0.077 R₀ from the axis — stays inside forever.",
-      "cards": [
-        {
-          "title": "Verified KAM",
-          "text": "Strip-analytic Fourier algebra, cohomological solver, derived frame identities, flux-average lemma, quasi-Newton step with explicit constants, iteration and C^n regularity. Smallness 1.1×10⁻³ ≤ 1 (margin ≈ 900).",
-          "status": "Lean verified",
-          "kind": "checked"
-        },
-        {
-          "title": "All-time confinement",
-          "text": "∃ ρ with 0.077 ≤ ρ ≤ 0.19: every two-sided field line of the exact field starting inside stays inside for all t. Global existence and uniqueness of field lines also proved (addendum). Reviewed independently: sound.",
-          "status": "Lean verified (no remaining hypotheses)",
-          "kind": "checked"
-        },
-        {
-          "title": "Next",
-          "text": "All-time confinement for a coil-produced field; field-line existence; stepped-pressure finite β across the torus; guiding-centre particles.",
-          "status": "Planned",
-          "kind": "next"
-        }
-      ],
-      "progress": "17 new modules completing the KAM route; the frame-transport assumption from part 3 is now derived.",
-      "boundary": "Magnetic field lines in a vacuum model field; not particles, not finite β, not coil-produced.",
-      "evidence": [
-        {
-          "label": "New checked results",
-          "href": "progress.html#new-checked-results"
-        },
-        {
-          "label": "Quantitative certificates",
-          "href": "progress.html#quantitative-certificates"
-        },
-        {
-          "label": "Implementation plan",
-          "href": "implementation-plan.html"
-        }
-      ]
-    },
-    {
-      "id": "gc-torus",
-      "eyebrow": "23 · Guiding centres and coils",
-      "title": "An exact torus for alpha guiding centres; coils need new analysis.",
-      "lead": "Passing (μ = 0) guiding centres follow field lines of B + ρ_s∇×b. For 3.5 MeV alphas at B₀R₀ ≈ 69 T·m (ρ_s = 1/256) this field has an exact invariant torus, proved with a KAM theorem extended to an inverse-square-root node. The analogous result for the coil-produced field is blocked by a 39-order-of-magnitude gap.",
-      "cards": [
-        {
-          "title": "Guiding-centre torus",
-          "text": "Residual ≤ 3.7×10⁻²³, twist ≈ 0.44, node validity 0.286 < 1, smallness margin ≈ 1470; exact analytic torus 10⁻¹²-close; C² real form. Trapping and the alpha corollary were completed next.",
-          "status": "Lean verified (torus)",
-          "kind": "checked"
-        },
-        {
-          "title": "Coil KAM: blocked",
-          "text": "Cauchy formula in two variables, complex coil field, Paley–Wiener sampling certificates and a full residual pipeline — but the certified residual is ≈10⁹ against ≈10⁻³⁰ needed. Paused as research.",
-          "status": "Negative result recorded",
-          "kind": "partial"
-        },
-        {
-          "title": "Next",
-          "text": "All-time confinement of passing alpha guiding centres; sharp complex bounds for coils; finite β across the torus.",
-          "status": "In progress",
-          "kind": "next"
-        }
-      ],
-      "progress": "About 75 new modules (many certificates); the vacuous coil certificate is committed but excluded from the default build.",
-      "boundary": "Littlejohn model supplied; μ = 0 only; coil-produced all-time confinement not achieved.",
-      "evidence": [
-        {
-          "label": "New checked results",
-          "href": "progress.html#new-checked-results"
-        },
-        {
-          "label": "Corrections",
-          "href": "progress.html#corrections-and-challenged-claims"
-        },
-        {
-          "label": "Implementation plan",
-          "href": "implementation-plan.html"
-        }
-      ]
-    },
-    {
-      "id": "alpha-gc-forever",
-      "eyebrow": "24 · Alpha guiding centres confined forever",
-      "title": "Passing 3.5 MeV alpha guiding centres never leave the torus.",
-      "lead": "With the exact torus of the guiding-centre field B + (1/256)∇×b and B*∥ = |B|, every μ = 0 Littlejohn orbit of a 3.5 MeV alpha with v∥ > 0 that starts inside the torus — in the stellarator field scaled to B₀R₀ ≈ 69 T·m — stays inside for all time, and such orbits exist from every interior point.",
-      "cards": [
-        {
-          "title": "The theorem",
-          "text": "alpha_gc_confined_forever: CODATA-rounded mass and charge, B₀R₀ ∈ [68.9, 69.0] T·m, trapping region 0.03 ≤ ρ/R₀ ≤ 0.253; existence and all-time confinement. Reviewed independently: sound. Extended to v∥ < 0 (alpha_gc_confined_forever_pm, second torus with ι_B).",
-          "status": "Lean verified",
-          "kind": "checked"
-        },
-        {
-          "title": "Scope — read this",
-          "text": "Measure-zero set of alphas: μ = 0, full parallel energy, either sign of v∥ (separate tori), one exact B₀R₀; Littlejohn model supplied; non-relativistic; no collisions or E-field; vacuum model field, not coils. Not alpha confinement in general.",
-          "status": "Limits",
-          "kind": "partial"
-        },
-        {
-          "title": "Next",
-          "text": "KAM over a parameter interval in ρ_s (robust in energy and B₀R₀); v∥ < 0; μ > 0.",
-          "status": "Planned",
-          "kind": "next"
-        }
-      ],
-      "progress": "7 new modules finishing the guiding-centre route (generic FlowTorus layer, star-shapedness certificates, orbit-to-field-line reduction).",
-      "boundary": "Measure-zero alpha population; supplied guiding-centre model.",
-      "evidence": [
-        {
-          "label": "New checked results",
-          "href": "progress.html#new-checked-results"
-        },
-        {
-          "label": "Corrections",
-          "href": "progress.html#corrections-and-challenged-claims"
-        },
-        {
-          "label": "Implementation plan",
-          "href": "implementation-plan.html"
-        }
-      ]
-    },
-    {
-      "id": "robust-alpha",
-      "eyebrow": "25 · Phase 11: robust alpha confinement",
-      "title": "A family of exact tori over a range of B₀R₀.",
-      "lead": "A Chebyshev-in-ρ family of approximate tori, certified uniformly by Kronecker-ball arithmetic, gives an exact invariant torus of the guiding-centre field for every ρ_s in an interval — hence all-time confinement of passing alpha guiding centres for every B₀R₀ ∈ [67.95, 69.99] T·m. A second torus covers v∥ < 0.",
-      "cards": [
-        {
-          "title": "Robust in B₀R₀",
-          "text": "Uniform KAM constants over the cell (smallness 0.073); profile 0.03 ≤ P ≤ 0.255; ≈ 15 CPU-minutes. Reviewed independently: sound.",
-          "status": "Lean verified",
-          "kind": "checked"
-        },
-        {
-          "title": "Both signs, μ > 0 identity",
-          "text": "ι_B torus for v∥ < 0; for μ > 0 passing orbits the grad-B drift is absorbed exactly into B + ∇×(ρ_{E,μ}b) — the KAM torus for that field is next.",
-          "status": "Lean verified / pending torus",
-          "kind": "partial"
-        },
-        {
-          "title": "Trapped alphas",
-          "text": "Exact-QA all-time; near-QA 1.8×10⁻⁴ s proved; bounce period ≤ 83 μs; the re-anchored bound cannot close with absolute amplitudes — oscillatory enclosure in progress.",
-          "status": "Partial + negative",
-          "kind": "partial"
-        }
-      ],
-      "progress": "About 90 new modules (mostly certificates).",
-      "boundary": "Still μ = 0 for confinement theorems; supplied guiding-centre model.",
-      "evidence": [
-        {
-          "label": "New checked results",
-          "href": "progress.html#new-checked-results"
-        },
-        {
-          "label": "Quantitative certificates",
-          "href": "progress.html#quantitative-certificates"
-        },
-        {
-          "label": "Implementation plan",
-          "href": "implementation-plan.html"
-        }
-      ]
-    },
-    {
-      "id": "mercier-stable-band",
-      "eyebrow": "26 · Phase 14: a stable finite-β band",
-      "title": "Finite pressure, no axisymmetry — and Mercier-stable.",
-      "lead": "Landreman family 2 at λ = 200 is Mercier-stable on every flux surface k ∈ [0.7, 0.9], certified by validated quadrature with a fully proved checker. The surfaces have a magnetic hill; shear stabilizes them at low β.",
-      "cards": [
-        {
-          "title": "Stable band",
-          "text": "D_Merc > 0 on k ∈ [0.7, 0.9] for both signs and all pressure scales; force balance with positive pressure; rejection fixtures at the axis and λ = 15.",
-          "status": "Lean verified",
-          "kind": "checked"
-        },
-        {
-          "title": "Caveats",
-          "text": "Supplied Mercier formula (local interchange); flux labels and area element hand-derived from the paper (numerically checked to 7–15 digits); low β ≈ 3×10⁻⁴.",
-          "status": "Disclosed",
-          "kind": "partial"
-        },
-        {
-          "title": "Trapped alphas",
-          "text": "Certified kick bound 0.0816 (< 0.13 needed), period 59–72 μs; one-bounce remainders remain — parked as research.",
-          "status": "Partial",
-          "kind": "partial"
-        }
-      ],
-      "progress": "About 40 new modules; review found the checker sound and the label gap, now disclosed.",
-      "boundary": "Low β; change of variables unformalized; no ballooning for this band yet.",
-      "evidence": [
-        {
-          "label": "New checked results",
-          "href": "progress.html#new-checked-results"
-        },
-        {
-          "label": "Corrections",
-          "href": "progress.html#corrections-and-challenged-claims"
-        },
-        {
-          "label": "Implementation plan",
-          "href": "implementation-plan.html"
-        }
-      ]
-    },
-    {
-      "id": "mu-cell",
-      "eyebrow": "27 · Phase 11: μ > 0",
-      "title": "A cone of pitch angles, confined forever.",
-      "lead": "Passing guiding centres with μ > 0 follow field lines of B + ∇×(ρ_{E,μ}b). A Chebyshev family of exact tori in λ = μB₀/E ∈ [0, 1/16] traps every passing 3.5 MeV alpha guiding centre starting inside — and proves it stays passing.",
-      "cards": [
-        {
-          "title": "μ > 0 cell",
-          "text": "alpha_gc_passing_confined_forever: every μ ∈ [0, E/(16B₀)], v∥(0) > 0; profile 0.03 ≤ P ≤ 0.255; smallness 0.098; ≈ 28 CPU-minutes. Reviewed: sound.",
-          "status": "Lean verified",
-          "kind": "checked"
-        },
-        {
-          "title": "Scope",
-          "text": "Positive measure in pitch angle at one energy and one B₀R₀ — still measure zero in 3-D velocity space. Littlejohn model; non-relativistic; collisionless; vacuum model field. A frozen-torus perturbation gives a set of positive measure in ℝ³ velocity space, but its energy window is only ≈ 7×10⁻²⁴ relative — a technicality.",
-          "status": "Limits",
-          "kind": "partial"
-        },
-        {
-          "title": "Stable band, labels derived",
-          "text": "Family-2 flux labels, volume, fluxes, current and coarea proved from the field; ι′ > 0 and V″ > 0 certified on the Mercier-stable band.",
-          "status": "Lean verified",
-          "kind": "checked"
-        }
-      ],
-      "progress": "About 120 new modules (mostly certificates).",
-      "boundary": "One energy; λ ≤ 1/16 limited by kernel memory.",
-      "evidence": [
-        {
-          "label": "New checked results",
-          "href": "progress.html#new-checked-results"
-        },
-        {
-          "label": "Corrections",
-          "href": "progress.html#corrections-and-challenged-claims"
-        },
-        {
-          "label": "Implementation plan",
-          "href": "implementation-plan.html"
-        }
-      ]
-    },
-    {
-      "id": "energy-window",
-      "eyebrow": "28 · Phase 11: an energy window and λ ∈ [0, 1/8]",
-      "title": "Positive measure in velocity space — in a narrow energy band.",
-      "lead": "Tori certified at four energies are interpolated with a proved analytic remainder. Every passing alpha guiding centre with |E − 3.5 MeV| ≤ 0.4 eV and λ ∈ [0, 1/16] starting inside an exact torus stays inside, and stays passing, forever. A second pitch cell extends the one-energy result to λ ∈ [0, 1/8].",
-      "cards": [
-        {
-          "title": "Energy window",
-          "text": "alpha_gc_confined_forever_energy_window; alphaEwVel_volume_pos: the velocity set has positive Lebesgue measure; relative width ±1.2×10⁻⁷, ≈ 3×10¹⁶ times the earlier box; smallness ≈ 0.26. On-demand top module RationalStellaratorGCEwFamily: 343 modules, ≈ 70 CPU-min.",
-          "status": "Lean verified (on demand)",
-          "kind": "checked"
-        },
-        {
-          "title": "λ ∈ [0, 1/8]",
-          "text": "alpha_gc_passing_confined_forever_wide: second cell λ ∈ [1/16, 1/8], Chebyshev degree 12, e₀ = 5.3×10⁻²¹, smallness 0.158; passing proved (λ|B| ≤ 3/8). On-demand top module RationalStellaratorGCMuWide: 97 modules, 31 CPU-min.",
-          "status": "Lean verified (on demand)",
-          "kind": "checked"
-        },
-        {
-          "title": "Scope and memory",
-          "text": "One B₀R₀; ±3 eV not reached; Littlejohn model, collisionless, vacuum model field. Correction: the default-build cell peaks at 8.8 GB per process, not 5.5 GB; both new families peak at 7.8–8.8 GB.",
-          "status": "Limits disclosed",
-          "kind": "partial"
-        }
-      ],
-      "progress": "About 440 new files, nearly all certificate modules outside the default build.",
-      "boundary": "A narrow energy band at one B₀R₀ is not robustness to slowing-down or to field changes.",
-      "evidence": [
-        {
-          "label": "New checked results",
-          "href": "progress.html#new-checked-results"
-        },
-        {
-          "label": "Quantitative certificates",
-          "href": "progress.html#quantitative-certificates"
-        },
-        {
-          "label": "Corrections",
-          "href": "progress.html#corrections-and-challenged-claims"
-        }
-      ]
-    },
-    {
-      "id": "ballooning-reduction",
-      "eyebrow": "29 · Phase 14B: ballooning for the stable band",
-      "title": "Reduced exactly to one inequality — but not yet certified.",
-      "lead": "A general 3-D surface ballooning framework reduces stability of every field line and every θ_k on a family-2 surface to one pointwise inequality on surface × ℝ. The secular part of that inequality is now solved exactly in Lean. Numerically the band is stable, but no certificate has been found.",
-      "cards": [
-        {
-          "title": "Framework and secular identity",
-          "text": "eik_complete, eikLine_stable_of_surfaceCert; jpar_transport: B·∇J∥ = 2μ⟪B×∇ψ, κ⟫/|B|²; family2_stable_of_secular_cert. Ballooning reduction supplied.",
-          "status": "Lean verified",
-          "kind": "checked"
-        },
-        {
-          "title": "Numerical evidence",
-          "text": "Untrusted: stable on k ∈ [0.7, 0.9] at the physical pressure and twice it; the long-line tail goes unstable only at pressure × 2.36 (k = 0.70) to × 9.39 (k = 0.90).",
-          "status": "Untrusted numerics",
-          "kind": "partial"
-        },
-        {
-          "title": "Certificate",
-          "text": "Affine-in-s certificates are infeasible; a B-spline × rational-in-s SOCP search fails the dense check at k = 0.9; the kernel checker is unwritten (≈ 2–11 CPU-h per surface).",
-          "status": "Open — negative so far",
-          "kind": "next"
-        }
-      ],
-      "progress": "Five modules join the default build.",
-      "boundary": "The family-2 band is not certified ballooning-stable.",
-      "evidence": [
-        {
-          "label": "New checked results",
-          "href": "progress.html#new-checked-results"
-        },
-        {
-          "label": "Quantitative certificates",
-          "href": "progress.html#quantitative-certificates"
-        },
-        {
-          "label": "Corrections",
-          "href": "progress.html#corrections-and-challenged-claims"
-        }
-      ]
-    },
-    {
-      "id": "workstation",
-      "eyebrow": "30 · Phase 15: a workstation for heavy certificates",
-      "title": "Search on a big machine; re-check on the laptop.",
-      "lead": "Heavy numerics and first builds of large certificates run on a workstation and are pushed to workstation/* branches; the laptop re-checks them within its build budget before merging.",
-      "cards": [
-        {
-          "title": "Pipeline",
-          "text": "scripts/workstation/run.sh (numerics → Lean emission → per-module build with CPU and memory measurement → axiom check → verdict), --verify-only on the laptop, and the skill plasmalean-workstation-update.",
-          "status": "Infrastructure",
-          "kind": "checked"
-        },
-        {
-          "title": "Smoke run",
-          "text": "Passed on hornbill (Linux, 24 CPUs): Python packages, Lean build, axioms, push.",
-          "status": "Pipeline ok",
-          "kind": "checked"
-        },
-        {
-          "title": "Tasks",
-          "text": "energy-window (wider windows), lambda-cell (further λ cells), family2-ballooning (search and data only until a checker exists).",
-          "status": "Registered",
-          "kind": "next"
-        }
-      ],
-      "progress": "No theorem comes from the workstation yet; merged Lean must still build on the laptop.",
-      "boundary": "Laptop budget: ≤ 6 GB per process, ≤ 60 CPU-min default, ≤ 240 CPU-min per on-demand top module.",
-      "evidence": [
-        {
-          "label": "Validation",
-          "href": "progress.html#validation"
-        },
-        {
-          "label": "Implementation plan",
-          "href": "implementation-plan.html"
-        }
-      ]
-    },
-    {
-      "id": "quarter-pitch",
-      "eyebrow": "31 · Phase 11: the whole passing pitch range",
-      "title": "Every pitch parameter up to λ = 1/4 — at one energy.",
-      "lead": "Five certified pitch cells, three of them computed on the workstation, combine into one theorem: passing 3.5 MeV alpha guiding centres with any μ ∈ [0, E/(4B₀)] starting inside an exact torus stay inside, and stay passing, forever. λ = 1/4 is the limit of the present passing argument.",
-      "cards": [
-        {
-          "title": "λ ∈ [0, 1/4]",
-          "text": "alpha_gc_passing_confined_forever_quarter: cells Mu [0, 1/16], Mu2, Mu3 [1/8, 3/16], Mu4 [3/16, 7/32], Mu5 [7/32, 1/4]; passing proved (λ|B| ≤ 3/4). On-demand top module RationalStellaratorGCMuQuarter, built on the laptop from workstation oleans.",
-          "status": "Lean verified (on demand)",
-          "kind": "checked"
-        },
-        {
-          "title": "Honest failures",
-          "text": "Uniform majorant impossible beyond λ ≈ 0.157 (fixed by per-node majorants); full cell [3/16, 1/4] failed KAM smallness (2.64 > 1) and was halved; a generator double substitution produced a false Mu3Adm bound, rejected by the kernel and now caught by an exact validator.",
-          "status": "Recorded and fixed",
-          "kind": "partial"
-        },
-        {
-          "title": "Scope",
-          "text": "One energy and one B₀R₀; measure zero in 3-D velocity space; Littlejohn model, collisionless, vacuum model field; Mu2–Mu5 spot-checked on the laptop, not fully rebuilt.",
-          "status": "Limits disclosed",
-          "kind": "partial"
-        }
-      ],
-      "progress": "The pitch range now reaches the limit of the passing argument with |B| ≤ 3B₀.",
-      "boundary": "Beyond λ = 1/4 needs a sharper |B| bound or a new argument; trapped alphas remain open.",
-      "evidence": [
-        {
-          "label": "New checked results",
-          "href": "progress.html#new-checked-results"
-        },
-        {
-          "label": "Quantitative certificates",
-          "href": "progress.html#quantitative-certificates"
-        },
-        {
-          "label": "Corrections",
-          "href": "progress.html#corrections-and-challenged-claims"
-        }
-      ]
-    },
-    {
-      "id": "proof-terms",
-      "eyebrow": "32 · Phase 16: certificates as proof terms",
-      "title": "No decide +kernel: checks become explicit, inductive certificates.",
-      "lead": "Large numerical checks are rebuilt in the SubsetSum pattern: an inductive certificate predicate with one constructor per local step, soundness by induction, a meta builder, and small kernel Nat leaves. Kernel-check memory was halved first.",
-      "cards": [
-        {
-          "title": "Low-memory checks",
-          "text": "Sign–magnitude integers, divide-and-conquer row masks: peak per process 8.8 → 4.3 GB in the default build and on-demand families; check CPU about halved.",
-          "status": "6 GB target met",
-          "kind": "checked"
-        },
-        {
-          "title": "Certificate tools",
-          "text": "KronProof (kron_proof), kernel_fact, KronProof2D, BoolCert (bool_cert), DigitSumCert, EvalCert (eval_cert, fiv_cert, bl_cert) with a builder compiled to native code (PlasmaLeanMeta). All KAM families converted.",
-          "status": "Lean verified",
-          "kind": "checked"
-        },
-        {
-          "title": "Counts and cost",
-          "text": "decide +kernel: ≈ 28,724 uses → ≈ 2,500 lines overall (2,507), 690 lines in the default build (stage 6). User decision: accept ≈ 9 GB of private oleans for fully explicit heavy certificates.",
-          "status": "Mostly converted",
-          "kind": "partial"
-        },
-        {
-          "title": "Open",
-          "text": "Polygon-coil lines (fully explicit ≈ 280 GB: a new design is needed); a few opaque Eq.refl leaves (hessOK, Kronecker-image equalities); QPoly fixtures; ValidatedBVP/Slab.",
-          "status": "Next",
-          "kind": "next"
-        }
-      ],
-      "progress": "Theorem statements are unchanged; bridges re-prove the original checks.",
-      "boundary": "Builders are untrusted; only the kernel-checked certificates count.",
-      "evidence": [
-        {
-          "label": "Quantitative certificates",
-          "href": "progress.html#quantitative-certificates"
-        },
-        {
-          "label": "Implementation plan",
-          "href": "implementation-plan.html"
-        }
-      ]
-    },
-    {
-      "id": "workstation-in-use",
-      "eyebrow": "33 · Phase 15: the workstation pipeline in use",
-      "title": "Eleven workstation runs, with failures recorded as carefully as successes.",
-      "lead": "The workstation computed two pitch cells and migrated the on-demand families to proof terms; the laptop reviewed every run and merged the ones that passed.",
-      "cards": [
-        {
-          "title": "Pipeline",
-          "text": "run.sh (fail-fast push check, failed tasks commit their generated files, leftovers stashed), the plasmalean-workstation-update skill, and a Next Commands section kept current.",
-          "status": "In use",
-          "kind": "checked"
-        },
-        {
-          "title": "Spot-check policy",
-          "text": "User decision: on-demand results are spot-checked (measurements, axioms, grep, sample modules built on the laptop) instead of fully rebuilt; default-build results always rebuilt.",
-          "status": "Policy",
-          "kind": "partial"
-        },
-        {
-          "title": "Sharing oleans",
-          "text": "oleans.py packs compiled modules with a manifest check; Mu2–Mu5 (400 modules, 314 MB) copied Linux → Mac and accepted by Lake without rebuilding.",
-          "status": "Verified",
-          "kind": "checked"
-        }
-      ],
-      "progress": "All runs are listed in workstation/REVIEWED.md.",
-      "boundary": "Unpacked or spot-checked modules trust the workstation's kernel run.",
-      "evidence": [
-        {
-          "label": "Validation",
-          "href": "progress.html#validation"
-        },
-        {
-          "label": "Corrections",
-          "href": "progress.html#corrections-and-challenged-claims"
-        }
-      ]
-    },
-    {
-      "id": "implementation-plan",
-      "eyebrow": "34 · Plan of record",
-      "title": "Theory, techniques and a ladder of models — for confinement and for heat.",
-      "lead": "Each cycle develops theory, turns theorems into sound certificate checkers, and applies them to the next rung of a model ladder. Every rung must prove properties of both kinds: confinement (G1) and temperature held above burn conditions (G2).",
-      "cards": [
-        {
-          "title": "Theory tracks",
-          "text": "Done in Lean: vacuum maximum principle (T1); Sturm/ballooning/Mercier (T2); parabolic comparison and barriers (T3, semilinear); 0-D power balance (T4); SBP discrete energy (T5); radii-polynomial validation, 1-D (T6); guiding centre and averaging (T8). Open: quasilinear D(T), 2-D validation, island widths/KAM (T7), bounce action J_∥, commuted energy (T9).",
-          "status": "Most tracks partly done",
-          "kind": "partial"
-        },
-        {
-          "title": "Model ladder",
-          "text": "M0 exact symmetric equilibria (done) → M1 0-D burning plasma → M2 radial transport on the exact geometries → M3 validated toroidal equilibrium → M4 near-axis quasisymmetry → M5 coil-produced 3-D field → M6 integrated candidate.",
-          "status": "M0–M2 checked (idealized); M3 (slab) and M4 (0.11 s) in progress",
-          "kind": "partial"
-        },
-        {
-          "title": "Corrections first",
-          "text": "Four corrections to recent notes. Vacuum |B| has no interior maximum (minima are possible). The flux-surface line bundle is flat. 2-D ideal-MHD regularity is open. Contracts no theorem produces are vacuous.",
-          "status": "Applied to the notes",
-          "kind": "checked"
-        },
-        {
-          "title": "Proof engineering",
-          "text": "A new skill: grind and fun_induction for short proofs, bv_decide only when no native axiom results, and large certificates built as explicit proof terms (the SubsetSum pattern).",
-          "status": "Skill added; 6 min rewrite pending",
-          "kind": "partial"
-        }
-      ],
-      "progress": "Phases 1–4 met their acceptance criteria in idealized models. The plan's status marks and progress log are updated after each phase.",
-      "boundary": "Nothing in the plan counts as evidence until a dated report records compiled Lean results.",
-      "evidence": [
-        {
-          "label": "Implementation plan",
-          "href": "implementation-plan.html"
-        },
-        {
-          "label": "20 October report",
-          "href": "progress.html"
-        }
-      ]
-    },
-    {
-      "id": "next-run",
-      "eyebrow": "35 · Keep every step reviewable",
-      "title": "The next run must leave evidence, not just a promise.",
-      "lead": "Next: wider energy windows (±3 eV, then ±1%) and a joint B₀R₀ range, now with λ up to 1/4, via the workstation; a new certificate design for the polygon-coil lines and the remaining opaque leaves; a family-2 ballooning certificate and kernel checker; beyond λ = 1/4, trapped alphas and coil-produced all-time confinement (research).",
-      "cards": [
-        {
-          "title": "Implement & challenge",
-          "text": "Choose a scoped theorem or candidate milestone, retain explicit assumptions, and test limiting cases and counterexamples.",
-          "status": "Next loop",
-          "kind": "next"
-        },
-        {
-          "title": "Compile & audit",
-          "text": "Build the Lean library and run the axiom audit. Record actual results and remaining physical/model gaps.",
-          "status": "Required evidence",
-          "kind": "next"
-        },
-        {
-          "title": "Report & refresh",
-          "text": "Update the dated report, task status, this slideshow and the brief README summary after every run, including stalled runs.",
-          "status": "Recurring handoff",
-          "kind": "next"
-        }
-      ],
-      "progress": "The linked run records checked declarations, assumptions and validation. This slideshow is a summary of that evidence, not a new design certificate.",
-      "boundary": "A practical claim needs composed certificates for one candidate plus evidence that the physical models and supplied data apply.",
-      "evidence": [
-        {
-          "label": "Read the full progress report",
-          "href": "progress.html"
-        },
-        {
-          "label": "Run & loop instructions",
-          "href": "domain-library.html#agent-runs-and-loops"
-        },
-        {
-          "label": "Explore the handbook",
-          "href": "handbook.html"
-        }
-      ]
+     "value": "8.8 → 4.3 GB",
+     "label": "peak kernel-check memory per process (6 GB laptop target now met)"
     }
-  ]
+   ],
+   "progress": "All-time field-line and passing-alpha guiding-centre confinement in a genuine stellarator field (vacuum model); one axisymmetric field with a pressure-budget band (transport solutions supplied) and certified local stability; large checks rewritten as explicit proof-term certificates; heavy cells computed on a workstation and spot-checked on the laptop.",
+   "boundary": "Alpha results: one B₀R₀, and one energy for λ ∈ [0, 1/4] (positive measure in velocity space only in a ±0.4 eV band with λ ≤ 1/16) — not robust to slowing-down; Littlejohn model supplied; vacuum model field; trapped alphas open; coil-produced all-time confinement blocked; the stable finite-β band is not certified ballooning-stable; on-demand workstation modules spot-checked, not fully rebuilt; polygon-coil lines still use decide +kernel.",
+   "evidence": [
+    {
+     "label": "Latest report",
+     "href": "progress.html"
+    },
+    {
+     "label": "Implementation plan",
+     "href": "implementation-plan.html"
+    },
+    {
+     "label": "Original motivation & graphics",
+     "href": "index.html#background"
+    }
+   ]
+  },
+  {
+   "id": "proof-architecture",
+   "eyebrow": "1 · How the library earns a claim",
+   "title": "Small assumptions. Reusable proofs. One candidate.",
+   "lead": "Physical model laws are explicit hypotheses. Derived mathematics and candidate certificates live above that small domain kernel.",
+   "cards": [
+    {
+     "title": "Kernel + Sanity",
+     "text": "Restricted equilibrium and thermal laws, consistent examples, and counterexamples to overbroad claims.",
+     "status": "Implemented",
+     "kind": "checked"
+    },
+    {
+     "title": "Theory",
+     "text": "Geometry, fields and Maxwell identities, equilibrium, Suydam/Newcomb stability, Noether confinement and thermal consequences.",
+     "status": "Selected results",
+     "kind": "partial"
+    },
+    {
+     "title": "Certificates + Bridge",
+     "text": "Exact arithmetic, sound checkers and contracts that require the same candidate and witnesses.",
+     "status": "Building blocks",
+     "kind": "partial"
+    },
+    {
+     "title": "Design",
+     "text": "The vacuum-pair fixture, a Suydam-stable screw pinch, and exact Solov'ev and helical equilibria with confinement theorems exercise the reusable library.",
+     "status": "Examples checked",
+     "kind": "checked"
+    }
+   ],
+   "progress": "The public library separates all six layers. The last audit found only Lean/Mathlib's standard logical axioms, with no added domain axioms.",
+   "boundary": "A theorem proves a consequence of a model; it does not establish that empirical assumptions apply to a real machine.",
+   "evidence": [
+    {
+     "label": "Model contracts & architecture",
+     "href": "model-contracts.html#architecture"
+    },
+    {
+     "label": "Audit evidence",
+     "href": "progress.html#validation"
+    }
+   ]
+  },
+  {
+   "id": "mathematical-foundations",
+   "eyebrow": "2 · Reusable mathematical progress",
+   "title": "The foundations have executable proof content.",
+   "lead": "Simple models make the definitions testable before tackling three-dimensional plasma physics.",
+   "cards": [
+    {
+     "title": "Equilibrium",
+     "text": "Force balance implies field/current tangency to pressure. Uniform and nonzero-current force-free slab examples provide witnesses.",
+     "status": "Lean checked",
+     "kind": "checked"
+    },
+    {
+     "title": "Energy & stability",
+     "text": "Conditional energy conservation, coercivity and retained/tail form bounds. A neutral-mode example shows why energy need not control displacement.",
+     "status": "Abstract results",
+     "kind": "checked"
+    },
+    {
+     "title": "Geometry & fields",
+     "text": "Continuous clearance, arbitrarily placed circular coils, Biot–Savart integrals and an exact on-axis loop field.",
+     "status": "Lean checked",
+     "kind": "checked"
+    }
+   ],
+   "progress": "These are compiled elementary results and sanity checks, not just declarations of future tasks.",
+   "boundary": "Zero pressure does not imply zero current. Abstract energy bounds do not yet establish a continuum MHD stability result.",
+   "evidence": [
+    {
+     "label": "Earlier results retained",
+     "href": "progress.html#earlier-results-retained"
+    },
+    {
+     "label": "Stability scope",
+     "href": "mhd-stability.html"
+    }
+   ]
+  },
+  {
+   "id": "exact-certificates",
+   "eyebrow": "3 · Exact numerical certificates",
+   "title": "From a numerical proposal to a proved bound.",
+   "lead": "Rational interval soundness and contraction arguments give small end-to-end tests of the verification path.",
+   "cards": [
+    {
+     "title": "Nonlinear validation",
+     "text": "A scalar x² = 2 example on [1, 2] exercises the contraction framework with exact constants.",
+     "status": "Synthetic example",
+     "kind": "synthetic"
+    },
+    {
+     "title": "Thermal margin",
+     "text": "A slab boundary-value problem has a whole-input-box maximum of 44002/45 K, with 998/45 K margin below an invented 1000 K limit.",
+     "status": "Synthetic example",
+     "kind": "synthetic"
+    },
+    {
+     "title": "Sound arithmetic",
+     "text": "Exact coefficient decoding and interval/checker proofs separate candidate generation from the trusted proof path.",
+     "status": "Lean checked",
+     "kind": "checked"
+    }
+   ],
+   "progress": "Exact arithmetic is connected to mathematical soundness theorems and explicit test fixtures.",
+   "boundary": "The scalar example is not a plasma PDE solution. The thermal inputs are invented, not sourced material qualification data.",
+   "evidence": [
+    {
+     "label": "Retained examples & margins",
+     "href": "progress.html#earlier-results-retained"
+    },
+    {
+     "label": "Numerical verification chapter",
+     "href": "verified-numerics.html"
+    }
+   ]
+  },
+  {
+   "id": "vacuum-fixture",
+   "eyebrow": "4 · The vacuum calibration fixture",
+   "title": "Two circular coils. Precisely stated regions.",
+   "lead": "The first device-specific object is a calibration fixture with symbolic positive reference current I and permeability μ₀. Its field model uses ideal filaments.",
+   "diagram": "fixture",
+   "cards": [
+    {
+     "title": "Nominal geometry",
+     "text": "Each coil has radius 0.10 m, in the planes z = ±0.20 m, with the same angular orientation.",
+     "status": "Exact inputs",
+     "kind": "checked"
+    },
+    {
+     "title": "Two different regions",
+     "text": "Field/error/derivative bounds cover the 5 cm observation ball. The positive axial-field certificate covers the smaller 1 mm probe ball.",
+     "status": "Full-domain bounds",
+     "kind": "checked"
+    }
+   ],
+   "progress": "Closure, regularity, one-turn simplicity, source separation and the nominal midpoint field have proofs.",
+   "boundary": "The diagram is schematic, not a field-line simulation or a construction drawing. Neither ball is a certified confinement region.",
+   "evidence": [
+    {
+     "label": "Fixture specification & units",
+     "href": "vacuum-demonstrator.html#exact-fixture-and-checked-margins"
+    }
+   ]
+  },
+  {
+   "id": "tolerance-margins",
+   "eyebrow": "5 · What survives manufacturing uncertainty",
+   "title": "Margins for the same perturbed coils and currents.",
+   "lead": "Assume closed C¹ coils with position error ≤ 1 mm, independent tangent error ≤ 1 mm/radian, and independent current errors ≤ 1% of I.",
+   "cards": [
+    {
+     "title": "Field error",
+     "text": "Actual minus nominal field has norm at most μ₀I/4 throughout the 5 cm observation ball (SI lengths in metres).",
+     "status": "Lean checked",
+     "kind": "checked"
+    },
+    {
+     "title": "Nonzero probe field",
+     "text": "The actual axial component is at least μ₀I/4 throughout the 1 mm probe ball, for μ₀ > 0 and I > 0.",
+     "status": "Lean checked",
+     "kind": "checked"
+    },
+    {
+     "title": "Tube clearance",
+     "text": "The two 5 mm-radius envelopes around actual coil centrelines remain at least 97/250 m = 388 mm apart.",
+     "status": "Lean checked",
+     "kind": "checked"
+    }
+   ],
+   "progress": "Manufacturing and current errors compose into continuous field and clearance certificates, not just sampled checks.",
+   "boundary": "These tolerances are invented test inputs. Tube envelopes do not prove embedded winding packs or a finite-conductor electromagnetic model.",
+   "evidence": [
+    {
+     "label": "Quantitative certificate",
+     "href": "vacuum-demonstrator.html#exact-fixture-and-checked-margins"
+    },
+    {
+     "label": "Compiled entry points",
+     "href": "vacuum-demonstrator.html#reusable-proof-interfaces"
+    }
+   ]
+  },
+  {
+   "id": "maxwell-and-stability",
+   "eyebrow": "6 · Fields and local stability",
+   "title": "Maxwell identities proved; interchange stability decided both ways.",
+   "lead": "The closed-filament Biot–Savart field is divergence- and curl-free off the coil. A sharp Hardy inequality gives the Suydam criterion with both sufficiency and an explicit unstable mode.",
+   "cards": [
+    {
+     "title": "∇·B = 0, ∇×B = 0",
+     "text": "For the actual Fréchet derivative of the continuous filament integral, away from the source; curl needs a closed curve, and the open-segment curl is computed exactly.",
+     "status": "Lean checked",
+     "kind": "checked"
+    },
+    {
+     "title": "Suydam, both directions",
+     "text": "F ≥ 0, F + 4G ≥ 0 gives a coercive margin; F + 4G < 0 gives an unstable localized mode in every neighbourhood of the resonance. Hardy's constant 4 is sharp.",
+     "status": "Lean checked",
+     "kind": "checked"
+    },
+    {
+     "title": "Newcomb certificates",
+     "text": "Picone/Riccati/Jacobi certificates for variable coefficients, discharged by an exact rational polynomial checker running in the kernel.",
+     "status": "Lean checked",
+     "kind": "checked"
+    }
+   ],
+   "progress": "A realistic screw pinch (a = 1 m, R₀ = 4 m, 5 T, ⟨β⟩ = 2/75) satisfies Suydam everywhere with a 25% margin, and Newcomb-reduced δW ≥ 0 is certified for every mode with 1 ≤ |m| ≤ 6 (wall at the edge); Phase 2 extended this to every integer (m, n) with m ≠ 0 (ScrewPinchModesHighM).",
+   "boundary": "The δW reductions are cited source results, not formalized; the all-mode result is for this cylindrical screw pinch only. Suydam alone is necessary, not sufficient.",
+   "evidence": [
+    {
+     "label": "New checked results",
+     "href": "progress.html#new-checked-results"
+    },
+    {
+     "label": "Stability scope",
+     "href": "mhd-stability.html"
+    }
+   ]
+  },
+  {
+   "id": "exact-equilibria",
+   "eyebrow": "7 · Finite-pressure equilibria",
+   "title": "Two exact equilibria satisfy the kernel law J × B = ∇p.",
+   "lead": "The current is computed as curl B/μ₀ from actual derivatives and checked against the unchanged kernel ForceBalance class.",
+   "cards": [
+    {
+     "title": "Solov'ev torus",
+     "text": "Axisymmetric (tokamak-like) exact equilibrium; ITER-like instance R₀ = 6 m, B = 5 T, β_axis = 147/5000; div B = 0, flux and current tangent to surfaces.",
+     "status": "Lean checked",
+     "kind": "checked"
+    },
+    {
+     "title": "Helical equilibrium",
+     "text": "Helically symmetric, nonaxisymmetric exact equilibrium found by symbolic search; SI instance with pitch length 2 m, B = 5 T, β_axis = 4%.",
+     "status": "Lean checked",
+     "kind": "checked"
+    },
+    {
+     "title": "Model limits",
+     "text": "Straight helix (no toroidal curvature); smooth pressure formula restricted to ψ ≤ ψ_b; neither field is matched to coils.",
+     "status": "Idealized",
+     "kind": "partial"
+    }
+   ],
+   "progress": "P4 now has checked smooth instances at realistic field strength and β.",
+   "boundary": "No free-boundary or coil matching. Phase 4 added local (Mercier) findings — the helical equilibrium is Mercier-unstable, the Solov'ev q ≥ 2.02 — but there is no all-mode stability analysis of these equilibria yet.",
+   "evidence": [
+    {
+     "label": "Quantitative certificates",
+     "href": "progress.html#quantitative-certificates"
+    },
+    {
+     "label": "Corrections",
+     "href": "progress.html#corrections-and-challenged-claims"
+    }
+   ]
+  },
+  {
+   "id": "symmetric-confinement",
+   "eyebrow": "8 · Confinement for all time",
+   "title": "Symmetry plus Noether confines every slow enough orbit forever.",
+   "lead": "Canonical momentum m⟨K,v⟩ + qψ is conserved for any Killing symmetry K; with speed conservation and an intermediate-value argument, orbits stay in a flux region for all time.",
+   "cards": [
+    {
+     "title": "Solov'ev orbits",
+     "text": "Deuterons up to 400 keV starting in the inner region never leave the plasma torus.",
+     "status": "Lean checked",
+     "kind": "checked"
+    },
+    {
+     "title": "Helical orbits",
+     "text": "Deuterons ≤ 30 keV and alphas ≤ 60 keV stay at r < 0.71 m inside the 4% β plasma, for all time.",
+     "status": "Lean checked",
+     "kind": "checked"
+    },
+    {
+     "title": "Broken symmetry",
+     "text": "A symmetry defect δ gives confinement only for times ∝ 1/(δ|v|) — ballistic, far from slowing-down times. This bound does not cover 3.5 MeV alphas (see Phases 3–4).",
+     "status": "Obstruction recorded",
+     "kind": "next"
+    }
+   ],
+   "progress": "P3 has checked full-orbit instances; field lines are confined by exact first integrals.",
+   "boundary": "Orbits are supplied, not constructed. Guiding-centre averaging for near-quasisymmetric fields was formalized later (AveragedTrapping: passing alphas for 0.11 s in a supplied guiding-centre model); all-time confinement without exact symmetry is not proved.",
+   "evidence": [
+    {
+     "label": "Obstruction & numbers",
+     "href": "progress.html#quantitative-certificates"
+    },
+    {
+     "label": "Particles & transport chapter",
+     "href": "particles-and-transport.html"
+    }
+   ]
+  },
+  {
+   "id": "path-to-a-device",
+   "eyebrow": "9 · From idealized models to a stellarator",
+   "title": "The remaining device work is explicit.",
+   "lead": "The vacuum-fixture work packages remain, now joined by an equilibrium/stability track. A four-circular-coil, CNT-inspired architecture is a reference direction, not a certified design.",
+   "cards": [
+    {
+     "title": "VD1 · Freeze the candidate",
+     "text": "Version the four coil placements, frames, radii, turns/current conventions and leads against a source dataset.",
+     "status": "Reference only",
+     "kind": "next"
+    },
+    {
+     "title": "VD2 · Continuous fields",
+     "text": "Maxwell identities are proved for closed filaments; extend fixture geometry/derivative work to the candidate coil set.",
+     "status": "Partial: fixture + Maxwell",
+     "kind": "partial"
+    },
+    {
+     "title": "VD3–4 · Conductors & confinement",
+     "text": "Model embedded finite winding packs, then certify an invariant barrier or a declared finite-time orbit bundle.",
+     "status": "Not certified",
+     "kind": "next"
+    },
+    {
+     "title": "VD5 · Physical operation",
+     "text": "Source conductor, supply, thermal, mechanical, protection and metrology envelopes for that same candidate.",
+     "status": "Not qualified",
+     "kind": "next"
+    }
+   ],
+   "progress": "Reusable mathematics now spans fields, equilibria, local stability and symmetric confinement. No practical build or energization specification has been released.",
+   "boundary": "Finite-pressure equilibrium, all-mode MHD, transport and reactor engineering are separate obligations, not implied by a vacuum demonstrator; so far they are checked only in idealized symmetric models (slides 7–13).",
+   "evidence": [
+    {
+     "label": "Device work packages",
+     "href": "vacuum-demonstrator.html#work-packages-and-progress"
+    },
+    {
+     "label": "Full evidence gates P0–P9",
+     "href": "roadmap.html#milestones-and-evidence-gates"
+    }
+   ]
+  },
+  {
+   "id": "burn-temperature",
+   "eyebrow": "10 · Phase 1: hot enough, long enough",
+   "title": "A burning plasma that provably stays above 10 keV.",
+   "lead": "A reactor-scale 0-D D-T plasma (n = 10²⁰ m⁻³, 830 m³, carbon impurities with Z_eff = 1.7) stays at or above 10 keV for all t ≥ 0 once heating beats losses at 10 keV. Radial transport obeys a proved comparison principle, so a barrier profile bounds the temperature everywhere for all time.",
+   "cards": [
+    {
+     "title": "Sustained burn (M1)",
+     "text": "T ≥ 10 keV for all t ≥ 0 with P_aux ≥ 40 MW and τ_E ≥ 3.5 s whenever T ≤ 10 keV: margin +5.5 MW. Ignited variant: τ_E ≥ 5.5 s, no auxiliary power. Yield ≥ 4.8×10⁸ W × t_b.",
+     "status": "Lean verified (0-D model)",
+     "kind": "checked"
+    },
+    {
+     "title": "Runaway is real",
+     "text": "With constant τ_E, net heating is +77 MW at 30 keV. The window [10, 30] keV is proved only under a supplied confinement-degradation hypothesis (τ_E ≤ 1.8 s for T ≥ 30 keV).",
+     "status": "Obstruction recorded",
+     "kind": "partial"
+    },
+    {
+     "title": "Transport comparison (T3)",
+     "text": "First-crossing lemma and comparison theorems for the flux-surface heat equation with a no-flux axis: strict, margin and non-strict lower/upper barriers, and two-sided windows. D ≥ 0 suffices; backward diffusion is a counterexample.",
+     "status": "Lean verified",
+     "kind": "checked"
+    },
+    {
+     "title": "Vacuum maximum principle (T1)",
+     "text": "Δ|B|² = 2|∇B|² for vacuum fields; the weak maximum principle bounds the field error in the volume by its value on the surface. |B| has no interior maximum, but B = (x, y, −2z) has an interior minimum, correcting the notes.",
+     "status": "Lean verified",
+     "kind": "checked"
+    }
+   ],
+   "progress": "13 new modules, including kernel laws for fusion power, radial transport and vacuum fields, each with sanity checks. An adversarial review caught a fuel-dilution error in the first M1 version; the kernel and the margins were corrected.",
+   "boundary": "Bosch–Hale reactivity enters as supplied windows (±1%). τ_E conditions are hypotheses at the crossing temperatures, not derived from a scaling law. Transport solutions are supplied, not proved to exist.",
+   "evidence": [
+    {
+     "label": "New checked results",
+     "href": "progress.html#new-checked-results"
+    },
+    {
+     "label": "Quantitative certificates",
+     "href": "progress.html#quantitative-certificates"
+    },
+    {
+     "label": "Corrections",
+     "href": "progress.html#corrections-and-challenged-claims"
+    }
+   ]
+  },
+  {
+   "id": "core-barrier",
+   "eyebrow": "11 · Phase 2: a core that stays hot",
+   "title": "Every solution starting above the barrier keeps a 10 keV core forever.",
+   "lead": "For the flux-surface heat equation with alpha heating, bremsstrahlung and ≈70 MW of deposited heating, a certified barrier profile bounds the temperature from below for all time. A 0-D burn window now follows from the IPB98(y,2) confinement scaling instead of ad-hoc confinement-time assumptions.",
+   "cards": [
+    {
+     "title": "Core barrier (M2)",
+     "text": "For every supplied reactivity in the Bosch–Hale class and χ ≤ 0.5 m²/s: T ≥ T_sub ≥ 10 keV on the inner 30% of the flux, for all t ≥ 0. The barrier is a degree-10 polynomial with a 16-piece exact margin certificate.",
+     "status": "Lean verified (cylinder)",
+     "kind": "checked"
+    },
+    {
+     "title": "Scaling-law burn (M1)",
+     "text": "With IPB98(y,2) for an ITER-like tokamak, P_aux ∈ [50, 70] MW and H ∈ [1.25, 2], T stays in [10, 30] keV. At nominal H the flat-profile model cannot hold 10 keV (proved). The ignition point is in (12, 13) keV and is unstable.",
+     "status": "Lean verified (0-D)",
+     "kind": "checked"
+    },
+    {
+     "title": "All-mode screw pinch",
+     "text": "Newcomb stability for every integer (m, n) with m ≠ 0: stability is monotone in m², and an analytic Picone function closes the open band. Barta ballooning certificates; cylindrical Mercier ⇔ Suydam.",
+     "status": "Lean verified (reduction supplied)",
+     "kind": "checked"
+    },
+    {
+     "title": "Min-B obstruction",
+     "text": "In vacuum ∇⊥|B| = |B|κ, so no closed field line carries a transverse minimum of |B|. A straight-wire field is the witness. Coil fields are proved C^∞ off the coil.",
+     "status": "Lean verified",
+     "kind": "checked"
+    }
+   ],
+   "progress": "14 new modules. Reviews found no soundness bugs and led to guards for shearless Mercier surfaces, a non-vacuity witness for the obstruction, and clarified χ normalization and corner compatibility.",
+   "boundary": "The barrier is in a straight cylinder, not a stellarator geometry; χ and density are prescribed; solutions are supplied. The kernel's D ≥ D_min > 0 had to be bypassed at the axis; Phase 3 relaxed the kernel to D ≥ 0 with a degenerate axis, making the cylinder a direct kernel instance.",
+   "evidence": [
+    {
+     "label": "New checked results",
+     "href": "progress.html#new-checked-results"
+    },
+    {
+     "label": "Quantitative certificates",
+     "href": "progress.html#quantitative-certificates"
+    },
+    {
+     "label": "Corrections",
+     "href": "progress.html#corrections-and-challenged-claims"
+    }
+   ]
+  },
+  {
+   "id": "alpha-confinement",
+   "eyebrow": "12 · Phase 3: alphas, stellarator geometry, validation",
+   "title": "Every 3.5 MeV alpha born in the core stays in — forever.",
+   "lead": "In an exact equilibrium satisfying J × B = ∇p at 5 T and β ≈ 4.6%, every fusion alpha with energy ≤ 3.5 MeV starting in the inner quarter of the flux, with any pitch, stays inside the plasma for all time under the full Lorentz force. The margin is 1.5%: the same argument fails at 3.7 MeV.",
+   "cards": [
+    {
+     "title": "Alpha confinement",
+     "text": "Noether's canonical momentum plus a rigidity bound (m s/2e ≤ 0.2694 < 0.2734 T·m). An explicit orbit shows the hypotheses can be met. The equilibrium is axisymmetric (tokamak-like).",
+     "status": "Lean verified (full orbits)",
+     "kind": "checked"
+    },
+    {
+     "title": "Hot core, helical geometry",
+     "text": "On the exact helically symmetric equilibrium: T ≥ 10 keV on s ≤ 0.3 for all time, 63–68 MW of heating, axis pressure below the equilibrium's. The transport kernel now allows a degenerate axis (D ≥ 0). Phase 4 found this helical equilibrium Mercier-unstable, so the geometry is not MHD-stable.",
+     "status": "Lean verified (averages supplied)",
+     "kind": "checked"
+    },
+    {
+     "title": "Stellarator burn needs confinement",
+     "text": "At Stellaris scale under ISS04, T stays in [10, 22] keV if f_ren ∈ [1.55, 1.75]; at measured f_ren ≤ 1.3 the flat-profile model cannot reach 10 keV (proved).",
+     "status": "Lean verified (0-D) + obstruction",
+     "kind": "partial"
+    },
+    {
+     "title": "Validation & near-symmetry",
+     "text": "Radii polynomial on ℓ¹: a nonlinear BVP solved within 10⁻⁴. Near-axis QA: passing alphas trapped 0.8 ms, with an iterated averaging lemma and gyro-Noether identity proved as the route to slowing-down times.",
+     "status": "Lean verified; gap quantified",
+     "kind": "partial"
+    }
+   ],
+   "progress": "15 new modules and a recorded kernel change. Three review passes: pressure consistency of the barrier, a finite-time Boozer orbit structure, a kernel law excluding vacuous regular axes, and non-vacuity witnesses.",
+   "boundary": "The alpha theorem is for an axisymmetric equilibrium; near-quasisymmetric fields reached only 0.8 ms in this phase (0.11 s in Phase 4). Flux-surface averages, scaling laws, reactivity and solutions are supplied. No coil-produced configuration.",
+   "evidence": [
+    {
+     "label": "New checked results",
+     "href": "progress.html#new-checked-results"
+    },
+    {
+     "label": "Quantitative certificates",
+     "href": "progress.html#quantitative-certificates"
+    },
+    {
+     "label": "Corrections",
+     "href": "progress.html#corrections-and-challenged-claims"
+    }
+   ]
+  },
+  {
+   "id": "near-qa-validation",
+   "eyebrow": "13 · Phase 4: near-quasisymmetry, validation, stability",
+   "title": "From 0.8 ms to 0.11 s — and a plasma equilibrium validated to 10⁻¹¹.",
+   "lead": "Iterating an oscillatory averaging lemma three times, with exact Lie-derivative amplitudes and certified enclosures, extends passing-alpha confinement in a reactor-scale near-axis quasisymmetric field from 0.8 ms to 0.11 s. A slab Grad–Shafranov equilibrium with an exponential pressure profile is validated by the radii polynomial and proved to satisfy the kernel force balance.",
+   "cards": [
+    {
+     "title": "Near-QA alphas: 0.11 s",
+     "text": "Passing 3.5 MeV alphas (|v∥/v| ≥ 0.9) at a = 1.7 m, 5.7 T stay inside for 0.11 s; the same gap fails at 0.12 s. Slowing down takes ≈ 0.4 s, so a ≈ 4× gap remains.",
+     "status": "Lean verified (GC model)",
+     "kind": "checked"
+    },
+    {
+     "title": "Validated equilibrium",
+     "text": "P(ψ) ∝ e^ψ − ψ: a classical C² slab equilibrium within 10⁻¹¹ of a rational candidate, unique nearby in ℓ¹, satisfying StaticSlab and ForceBalance with positive pressure.",
+     "status": "Lean verified (1-D)",
+     "kind": "checked"
+    },
+    {
+     "title": "Stability findings",
+     "text": "The general Mercier index reduces to Suydam in a cylinder. The helical equilibrium is Mercier-unstable (proved at a = 0). For the Solov'ev reactor equilibrium the true safety factor is ≥ 2.02 everywhere.",
+     "status": "Lean verified + negative finding",
+     "kind": "partial"
+    },
+    {
+     "title": "Coils and coupling",
+     "text": "Face samples certify the coil field error in a whole volume (maximum principle + surface cover). A pressure-budget band needs an upper temperature barrier — and so a T-dependent diffusivity in the kernel.",
+     "status": "Lean verified; design recorded",
+     "kind": "partial"
+    }
+   ],
+   "progress": "12 new modules. Reviews found an oracle factor-of-2 error (corrected; conclusion unchanged) and no soundness defects in the averaged-trapping theorem; its ≈ 6 min build is scheduled for a proof-term rewrite.",
+   "boundary": "Guiding-centre model supplied; near-axis field accurate only to expansion order; passing alphas only; the validated equilibrium is a 1-D slab; the helical barrier geometry is MHD-unstable.",
+   "evidence": [
+    {
+     "label": "New checked results",
+     "href": "progress.html#new-checked-results"
+    },
+    {
+     "label": "Quantitative certificates",
+     "href": "progress.html#quantitative-certificates"
+    },
+    {
+     "label": "Corrections",
+     "href": "progress.html#corrections-and-challenged-claims"
+    }
+   ]
+  },
+  {
+   "id": "one-plasma",
+   "eyebrow": "14 · Phase 5: one field with a pressure-budget band",
+   "title": "Confinement and heat, proved for the same field, with a pressure budget.",
+   "lead": "solovev_one_plasma: one exact Solov'ev field satisfying J × B = ∇p with pressure p_eq + 40 kPa; every 3.5 MeV alpha born in the core stays inside forever (full Lorentz orbits); every classical solution of the transport model starting in a certified band (existence assumed, not proved) keeps a ≥ 10 keV core forever, with plasma pressure within the budget ≤ p_eq + 40 kPa — bounded by it, not equal to the force-balance pressure.",
+   "cards": [
+    {
+     "title": "One field, pressure budget",
+     "text": "Same field, same pressure budget, same domain s ≤ 1 for force balance, alpha confinement and the transport band. Driven (≈ 120 MW aux, Q ≈ 5.5); transport geometry via a supplied class (proved for the actual field in Phase 6).",
+     "status": "Lean verified (geometry supplied)",
+     "kind": "partial"
+    },
+    {
+     "title": "Temperature-dependent χ (K2)",
+     "text": "The kernel now allows D(ψ,T); comparison theorems extend and upper barriers are proved directly. A cylinder band keeps 10 keV ≤ T ≤ 23.5 keV in the core.",
+     "status": "Lean verified",
+     "kind": "checked"
+    },
+    {
+     "title": "Mercier stability certified",
+     "text": "The exact axisymmetric Mercier index of the reactor Solov'ev equilibrium is positive on every flux surface (validated quadrature, 3–6% margins); a genuine magnetic well is proved.",
+     "status": "Lean verified (index formula supplied)",
+     "kind": "checked"
+    },
+    {
+     "title": "Near-QA alphas: 0.19 s",
+     "text": "Proof-term certificates cut the build from 349 s to 59 s and extended passing-alpha confinement from 0.11 s to 0.19 s — about half the slowing-down time. Trapped alphas: single-well and bounce-sum lemmas.",
+     "status": "Lean verified (GC model)",
+     "kind": "checked"
+    }
+   ],
+   "progress": "8 new modules and kernel change K2. A sub-agent report that claimed non-existent geometry lemmas was caught at integration; every cited declaration is now grep-checked.",
+   "boundary": "Supplied geometry class (being proved), driven parameters, χ stand-in, axisymmetric equilibrium, supplied solutions; near-QA results rest on the guiding-centre model.",
+   "evidence": [
+    {
+     "label": "New checked results",
+     "href": "progress.html#new-checked-results"
+    },
+    {
+     "label": "Quantitative certificates",
+     "href": "progress.html#quantitative-certificates"
+    },
+    {
+     "label": "Corrections",
+     "href": "progress.html#corrections-and-challenged-claims"
+    }
+   ]
+  },
+  {
+   "id": "actual-geometry-stellarator",
+   "eyebrow": "15 · Phase 6: true geometry, ignition, stellarator field",
+   "title": "No supplied geometry, no auxiliary power — and a genuine stellarator field.",
+   "lead": "The pressure-budget theorem (transport solutions supplied) now uses flux-surface quantities computed from the equilibrium itself. With quarter-keV reactivity data it certifies a high-Q (Q ≈ 40) band and an ignited band with zero auxiliary heating. Separately, an exact rational vacuum field with two field periods and stellarator symmetry gives the library its first non-axisymmetric stellarator geometry.",
+   "cards": [
+    {
+     "title": "Actual geometry",
+     "text": "V′, ⟨|∇s|²⟩, ⟨Δs⟩ from the exact surfaces; Gauss identity and axis limits proved; enclosures with 0.26% margins. The coarea step was stated here and is proved in Phase 7.",
+     "status": "Lean verified",
+     "kind": "checked"
+    },
+    {
+     "title": "High-Q and ignited",
+     "text": "17.5 MW aux (oracle Q ≈ 39–46) with a 40 kPa edge offset; zero aux with a 90 kPa offset (≈ 20% of axis pressure, an edge pedestal) and a ±0.8% χ₀ window.",
+     "status": "Lean verified (Q oracle-only)",
+     "kind": "partial"
+    },
+    {
+     "title": "Ballooning",
+     "text": "Every field line and ballooning angle stable on four near-axis Solov'ev surfaces, via a 2-D Riccati certificate on the exact coefficients.",
+     "status": "Lean verified (reduction supplied)",
+     "kind": "partial"
+    },
+    {
+     "title": "Rational stellarator",
+     "text": "B = ∇φ + ε∇h: exact vacuum, 2 periods, stellarator-symmetric, non-axisymmetric; closed circular axis with elliptic monodromy. Certified confinement (≥ 95 transits) added in Phase 7.",
+     "status": "Lean verified (field + axis)",
+     "kind": "checked"
+    }
+   ],
+   "progress": "13 new modules; review found no bugs (fine windows and geometry bounds independently recomputed). Trapped near-QA alphas: turning points proved, non-resonance open — a real resonance exists in the band.",
+   "boundary": "Axisymmetric integrated results; ignition needs a large edge offset; supplied stability reductions; the stellarator field is not yet confined over a certified length or produced by coils.",
+   "evidence": [
+    {
+     "label": "New checked results",
+     "href": "progress.html#new-checked-results"
+    },
+    {
+     "label": "Quantitative certificates",
+     "href": "progress.html#quantitative-certificates"
+    },
+    {
+     "label": "Corrections",
+     "href": "progress.html#corrections-and-challenged-claims"
+    }
+   ]
+  },
+  {
+   "id": "stellarator-confined",
+   "eyebrow": "16 · Phase 7: a confined stellarator field",
+   "title": "95 toroidal transits, certified, in a genuine stellarator field.",
+   "lead": "For the exact vacuum field B = ∇φ + ¼∇h — non-axisymmetric, two field periods, stellarator-symmetric — every field line starting within ≈ 0.023 R₀ of the magnetic axis stays within ≈ 0.1 R₀ of it for at least 95 full toroidal transits. And the coarea formula closes the last stated geometric link in the pressure-budget theorem (transport solutions are still supplied).",
+   "cards": [
+    {
+     "title": "Stellarator confinement",
+     "text": "An order-10 approximate first integral with |DI·B| ≤ 4×10⁻⁶ on the whole tube, certified by an exact-integer Taylor-shift cover; I separates start tube from tube faces; the defect theorem converts this into ≥ 95 transits.",
+     "status": "Lean verified (finite length)",
+     "kind": "checked"
+    },
+    {
+     "title": "Coarea formalized",
+     "text": "Injective coordinates, null axis, Jacobian √2σ/R, Lebesgue volume = coordinate volume, and d/ds ∫ f = ∮ f dS/|∇s|: the flux-surface averages in the transport law are proved, not stated.",
+     "status": "Lean verified",
+     "kind": "checked"
+    },
+    {
+     "title": "Still open",
+     "text": "Coils for the stellarator field (error must stay below the defect budget); all-time confinement (KAM); trapped near-QA alphas; ballooning beyond four surfaces.",
+     "status": "In progress",
+     "kind": "next"
+    }
+   ],
+   "progress": "7 new modules; review found the certificate sound (exact margins, symmetry reduction and face coverage checked) and led to a local field-line version and fuller disclosures.",
+   "boundary": "Finite-length, vacuum-field result; no coils; the cover uses monolithic kernel checks (≈ 5 GB peak memory, accepted by review).",
+   "evidence": [
+    {
+     "label": "New checked results",
+     "href": "progress.html#new-checked-results"
+    },
+    {
+     "label": "Quantitative certificates",
+     "href": "progress.html#quantitative-certificates"
+    },
+    {
+     "label": "Corrections",
+     "href": "progress.html#corrections-and-challenged-claims"
+    }
+   ]
+  },
+  {
+   "id": "stability-coils",
+   "eyebrow": "17 · Phase 7 part 2: stability everywhere, coils",
+   "title": "Stable on every surface; from coil error to confined field lines.",
+   "lead": "Ideal ballooning is certified on every flux surface of the reactor equilibrium, axis to edge. For the exact stellarator field, a concrete closed filament reproduces the toroidal part to 2.5×10⁻⁶, and any coil set whose helical error on a bounding surface is below 6.5×10⁻⁴ (or 5.6×10⁻⁵) inherits 1 (or 10) certified transits.",
+   "cards": [
+    {
+     "title": "Ballooning everywhere",
+     "text": "One s-polynomial certificate over 825 boxes (proof-term cover, ≈ 1 min build) gives stability on all surfaces 0 < s ≤ 25 for every field line and ballooning angle; the axis is handled analytically.",
+     "status": "Lean verified (reduction supplied)",
+     "kind": "checked"
+    },
+    {
+     "title": "Coil chain",
+     "text": "Certified TF filament; maximum principle carries a frontier error into the confinement tube; certified gradient bound converts error into transits. The helical-winding frontier bound (sampled 2.4×10⁻⁴ for 120 filaments) is not yet certified.",
+     "status": "Lean verified up to one hypothesis",
+     "kind": "partial"
+    },
+    {
+     "title": "Trapped alphas",
+     "text": "Exact QA: bounce precession enclosed in [0.7, 2.6] rad — non-resonant — and the reference bounce proved periodic. No confinement time yet: the near-QA remainder is open.",
+     "status": "Partial",
+     "kind": "partial"
+    }
+   ],
+   "progress": "33 new modules (many certificate cells). The ballooning certificate was rebuilt as a proof-term cover; the trapped-alpha cell checks still await that rewrite.",
+   "boundary": "Supplied stability reductions; vacuum finite-length stellarator result; one coil hypothesis open; trapped near-QA alphas open.",
+   "evidence": [
+    {
+     "label": "New checked results",
+     "href": "progress.html#new-checked-results"
+    },
+    {
+     "label": "Quantitative certificates",
+     "href": "progress.html#quantitative-certificates"
+    },
+    {
+     "label": "Corrections",
+     "href": "progress.html#corrections-and-challenged-claims"
+    }
+   ]
+  },
+  {
+   "id": "finite-beta-torus",
+   "eyebrow": "18 · Phase 8: finite β beyond axisymmetry; one torus to go",
+   "title": "Finite pressure without axisymmetry — and all-time confinement from one torus.",
+   "lead": "Landreman's family-1 equilibrium satisfies the kernel force balance with finite pressure, is genuinely non-axisymmetric with a non-planar axis, and has all field lines closed and confined. For the exact stellarator vacuum field, any invariant torus traps every field line inside it forever.",
+   "cards": [
+    {
+     "title": "Finite-β, non-axisymmetric",
+     "text": "J × B = ∇p with the actual current; ψ a flux function; explicit closed field lines; 5 T instance with local axis β 6–8%. Zero shear (ι ≡ 2); unrefereed source; no stability claim.",
+     "status": "Lean verified (idealized)",
+     "kind": "checked"
+    },
+    {
+     "title": "One torus suffices",
+     "text": "A Grönwall barrier around {G = 0} and a radial-graph invariant torus trap field lines for all time; for the rational stellarator field this reduces all-time confinement to producing one torus.",
+     "status": "Lean verified (conditional)",
+     "kind": "partial"
+    },
+    {
+     "title": "Next",
+     "text": "A validated approximate torus (K2), an explicit-constant KAM theorem (K3, the long pole), a certified helical coil set, and Landreman family 2 with shear.",
+     "status": "In progress",
+     "kind": "next"
+    }
+   ],
+   "progress": "3 new modules and two theory notes; a discovery-note error about the family-1 axis was caught and corrected by the formalization.",
+   "boundary": "Idealized finite-β equilibrium; conditional all-time confinement; no coil-produced confined stellarator yet.",
+   "evidence": [
+    {
+     "label": "New checked results",
+     "href": "progress.html#new-checked-results"
+    },
+    {
+     "label": "Corrections",
+     "href": "progress.html#corrections-and-challenged-claims"
+    },
+    {
+     "label": "Implementation plan",
+     "href": "implementation-plan.html"
+    }
+   ]
+  },
+  {
+   "id": "kam-torus",
+   "eyebrow": "19 · Phase 9: an invariant torus to 10⁻²³",
+   "title": "A certified approximate torus and the first KAM lemmas.",
+   "lead": "Torus A — a 2-D Fourier embedding with rational coefficients — solves the field-line invariance equation of the exact stellarator field to 10⁻²³ for all angles, and is a radial graph around the magnetic axis. The Diophantine and cohomological lemmas of KAM theory are proved with explicit constants.",
+   "cards": [
+    {
+     "title": "Approximate torus (K2)",
+     "text": "Exact ℓ¹ norm of the residual's Fourier coefficients via Kronecker digit sums: ≤ 1.23×10⁻²³ (R), 6.94×10⁻²⁴ (z); 0.077 ≤ r ≤ 0.19.",
+     "status": "Lean verified",
+     "kind": "checked"
+    },
+    {
+     "title": "KAM lemmas (K3a)",
+     "text": "Diophantine γ = 0.1374 (τ = 1, essentially optimal) for the torus's transform; cohomological equation solved with Rüssmann and Cauchy estimates in weighted ℓ¹.",
+     "status": "Lean verified",
+     "kind": "checked"
+    },
+    {
+     "title": "Remaining",
+     "text": "Weighted error, frame and twist, convergence lemma, ℓ¹(ℤ²) algebra (in progress); then the Newton step and the limit torus, giving all-time confinement.",
+     "status": "In progress",
+     "kind": "next"
+    }
+   ],
+   "progress": "7 new modules. Constants budget for the KAM step is an informal estimate until the frame and twist certificates land.",
+   "boundary": "No all-time confinement yet; the torus residual is certified in the sup / unweighted norm only so far.",
+   "evidence": [
+    {
+     "label": "New checked results",
+     "href": "progress.html#new-checked-results"
+    },
+    {
+     "label": "Quantitative certificates",
+     "href": "progress.html#quantitative-certificates"
+    },
+    {
+     "label": "Implementation plan",
+     "href": "implementation-plan.html"
+    }
+   ]
+  },
+  {
+   "id": "coil-confinement",
+   "eyebrow": "20 · Phase 9: coils that confine",
+   "title": "Real coils, certified field lines.",
+   "lead": "Eight closed polygonal helical filaments plus a closed toroidal-field filament produce a field whose lines, starting near the axis, stay in the confinement tube for a full toroidal transit — proved from the exact Biot–Savart field of straight segments, a certified 6.5×10⁻⁴ frontier error and the vacuum maximum principle.",
+   "cards": [
+    {
+     "title": "Coil-produced confinement",
+     "text": "Exact segment fields; C¹ corner parametrization; coils avoid the region; certified frontier error; maximum principle; defect confinement. One transit, zero margin; existence of field lines assumed. Later raised to 52 transits with a cubic-interpolation certificate (error 3.2×10⁻⁶).",
+     "status": "Lean verified (1 → 52 transits)",
+     "kind": "checked"
+    },
+    {
+     "title": "KAM machinery",
+     "text": "Quadratic convergence with loss of analyticity, limit lemma, weighted ℓ¹(ℤ²) Banach algebra with Neumann inverses, polynomial composition and Taylor bounds for the torus equation.",
+     "status": "Lean verified",
+     "kind": "checked"
+    },
+    {
+     "title": "Next",
+     "text": "Weighted error and frame/twist certificates, the Newton step and the limit torus (all-time confinement); 10 transits for the coil field needs an ≈ 12× sharper certificate.",
+     "status": "In progress",
+     "kind": "next"
+    }
+   ],
+   "progress": "25 new modules; review found the coil chain sound (segment formula, corners, cover, symmetry, avoidance) and led to zero-margin and existence disclosures.",
+   "boundary": "One transit for the coil field; ≈ 7.5 min / 6 GB certificate build; KAM step pending.",
+   "evidence": [
+    {
+     "label": "New checked results",
+     "href": "progress.html#new-checked-results"
+    },
+    {
+     "label": "Quantitative certificates",
+     "href": "progress.html#quantitative-certificates"
+    },
+    {
+     "label": "Corrections",
+     "href": "progress.html#corrections-and-challenged-claims"
+    }
+   ]
+  },
+  {
+   "id": "kam-inputs",
+   "eyebrow": "21 · Phase 9: KAM inputs complete; sheared finite β",
+   "title": "Error, frame, twist and small divisors — all certified.",
+   "lead": "For torus A of the exact stellarator field: weighted invariance error ≤ 6×10⁻²² on a complex strip, a symplectic frame with explicit inverse bounds, twist ≥ 3/10, and Diophantine constant 0.0687. A sheared finite-β non-axisymmetric equilibrium joins the library.",
+   "cards": [
+    {
+     "title": "KAM inputs",
+     "text": "Weighted residual 5.83×10⁻²² / 3.47×10⁻²² at r = 0.1257; Ω(∂θK, N) = 1, det M ∈ [0.37, 2.86]; ⟨twist⟩ ≥ 3/10. The frame-torsion transport identity is a definition-level assumption to discharge.",
+     "status": "Lean verified",
+     "kind": "checked"
+    },
+    {
+     "title": "Sheared finite β",
+     "text": "Landreman family 2: force balance, flux function, planar elliptic axis, non-axisymmetric; ι ≤ 25/3 on an inner surface and ≥ 17/2 on an outer one (ε = 1/4, S = 4). Part 4: Mercier-unstable (family 1 proved; family 2 numerically).",
+     "status": "Lean verified (idealized)",
+     "kind": "checked"
+    },
+    {
+     "title": "Next: the Newton step",
+     "text": "Quasi-Newton step with counterterm, iteration to an exact torus, regularity, radial-graph and collar bounds, then all-time confinement via the torus-trapping theorem.",
+     "status": "In progress",
+     "kind": "next"
+    }
+   ],
+   "progress": "10 new modules completing the KAM input certificates and adding family 2.",
+   "boundary": "All-time confinement not yet proved; shear proved for a chosen parameter set, not the paper's example.",
+   "evidence": [
+    {
+     "label": "New checked results",
+     "href": "progress.html#new-checked-results"
+    },
+    {
+     "label": "Quantitative certificates",
+     "href": "progress.html#quantitative-certificates"
+    },
+    {
+     "label": "Implementation plan",
+     "href": "implementation-plan.html"
+    }
+   ]
+  },
+  {
+   "id": "confined-forever",
+   "eyebrow": "22 · Phase 10: confined forever",
+   "title": "An exact invariant torus, and field lines trapped for all time.",
+   "lead": "A verified KAM theorem turns the certified approximate torus (error 10⁻²²) into an exact real-analytic invariant torus of the stellarator field with rotational transform (75 + √5)/562. By the torus-trapping theorem, every field line starting inside it — at least 0.077 R₀ from the axis — stays inside forever.",
+   "cards": [
+    {
+     "title": "Verified KAM",
+     "text": "Strip-analytic Fourier algebra, cohomological solver, derived frame identities, flux-average lemma, quasi-Newton step with explicit constants, iteration and C^n regularity. Smallness 1.1×10⁻³ ≤ 1 (margin ≈ 900).",
+     "status": "Lean verified",
+     "kind": "checked"
+    },
+    {
+     "title": "All-time confinement",
+     "text": "∃ ρ with 0.077 ≤ ρ ≤ 0.19: every two-sided field line of the exact field starting inside stays inside for all t. Global existence and uniqueness of field lines also proved (addendum). Reviewed independently: sound.",
+     "status": "Lean verified (no remaining hypotheses)",
+     "kind": "checked"
+    },
+    {
+     "title": "Next",
+     "text": "All-time confinement for a coil-produced field; field-line existence; stepped-pressure finite β across the torus; guiding-centre particles.",
+     "status": "Planned",
+     "kind": "next"
+    }
+   ],
+   "progress": "17 new modules completing the KAM route; the frame-transport assumption from part 3 is now derived.",
+   "boundary": "Magnetic field lines in a vacuum model field; not particles, not finite β, not coil-produced.",
+   "evidence": [
+    {
+     "label": "New checked results",
+     "href": "progress.html#new-checked-results"
+    },
+    {
+     "label": "Quantitative certificates",
+     "href": "progress.html#quantitative-certificates"
+    },
+    {
+     "label": "Implementation plan",
+     "href": "implementation-plan.html"
+    }
+   ]
+  },
+  {
+   "id": "gc-torus",
+   "eyebrow": "23 · Guiding centres and coils",
+   "title": "An exact torus for alpha guiding centres; coils need new analysis.",
+   "lead": "Passing (μ = 0) guiding centres follow field lines of B + ρ_s∇×b. For 3.5 MeV alphas at B₀R₀ ≈ 69 T·m (ρ_s = 1/256) this field has an exact invariant torus, proved with a KAM theorem extended to an inverse-square-root node. The analogous result for the coil-produced field is blocked by a 39-order-of-magnitude gap.",
+   "cards": [
+    {
+     "title": "Guiding-centre torus",
+     "text": "Residual ≤ 3.7×10⁻²³, twist ≈ 0.44, node validity 0.286 < 1, smallness margin ≈ 1470; exact analytic torus 10⁻¹²-close; C² real form. Trapping and the alpha corollary were completed next.",
+     "status": "Lean verified (torus)",
+     "kind": "checked"
+    },
+    {
+     "title": "Coil KAM: blocked",
+     "text": "Cauchy formula in two variables, complex coil field, Paley–Wiener sampling certificates and a full residual pipeline — but the certified residual is ≈10⁹ against ≈10⁻³⁰ needed. Paused as research.",
+     "status": "Negative result recorded",
+     "kind": "partial"
+    },
+    {
+     "title": "Next",
+     "text": "All-time confinement of passing alpha guiding centres; sharp complex bounds for coils; finite β across the torus.",
+     "status": "In progress",
+     "kind": "next"
+    }
+   ],
+   "progress": "About 75 new modules (many certificates); the vacuous coil certificate is committed but excluded from the default build.",
+   "boundary": "Littlejohn model supplied; μ = 0 only; coil-produced all-time confinement not achieved.",
+   "evidence": [
+    {
+     "label": "New checked results",
+     "href": "progress.html#new-checked-results"
+    },
+    {
+     "label": "Corrections",
+     "href": "progress.html#corrections-and-challenged-claims"
+    },
+    {
+     "label": "Implementation plan",
+     "href": "implementation-plan.html"
+    }
+   ]
+  },
+  {
+   "id": "alpha-gc-forever",
+   "eyebrow": "24 · Alpha guiding centres confined forever",
+   "title": "Passing 3.5 MeV alpha guiding centres never leave the torus.",
+   "lead": "With the exact torus of the guiding-centre field B + (1/256)∇×b and B*∥ = |B|, every μ = 0 Littlejohn orbit of a 3.5 MeV alpha with v∥ > 0 that starts inside the torus — in the stellarator field scaled to B₀R₀ ≈ 69 T·m — stays inside for all time, and such orbits exist from every interior point.",
+   "cards": [
+    {
+     "title": "The theorem",
+     "text": "alpha_gc_confined_forever: CODATA-rounded mass and charge, B₀R₀ ∈ [68.9, 69.0] T·m, trapping region 0.03 ≤ ρ/R₀ ≤ 0.253; existence and all-time confinement. Reviewed independently: sound. Extended to v∥ < 0 (alpha_gc_confined_forever_pm, second torus with ι_B).",
+     "status": "Lean verified",
+     "kind": "checked"
+    },
+    {
+     "title": "Scope — read this",
+     "text": "Measure-zero set of alphas: μ = 0, full parallel energy, either sign of v∥ (separate tori), one exact B₀R₀; Littlejohn model supplied; non-relativistic; no collisions or E-field; vacuum model field, not coils. Not alpha confinement in general.",
+     "status": "Limits",
+     "kind": "partial"
+    },
+    {
+     "title": "Next",
+     "text": "KAM over a parameter interval in ρ_s (robust in energy and B₀R₀); v∥ < 0; μ > 0.",
+     "status": "Planned",
+     "kind": "next"
+    }
+   ],
+   "progress": "7 new modules finishing the guiding-centre route (generic FlowTorus layer, star-shapedness certificates, orbit-to-field-line reduction).",
+   "boundary": "Measure-zero alpha population; supplied guiding-centre model.",
+   "evidence": [
+    {
+     "label": "New checked results",
+     "href": "progress.html#new-checked-results"
+    },
+    {
+     "label": "Corrections",
+     "href": "progress.html#corrections-and-challenged-claims"
+    },
+    {
+     "label": "Implementation plan",
+     "href": "implementation-plan.html"
+    }
+   ]
+  },
+  {
+   "id": "robust-alpha",
+   "eyebrow": "25 · Phase 11: robust alpha confinement",
+   "title": "A family of exact tori over a range of B₀R₀.",
+   "lead": "A Chebyshev-in-ρ family of approximate tori, certified uniformly by Kronecker-ball arithmetic, gives an exact invariant torus of the guiding-centre field for every ρ_s in an interval — hence all-time confinement of passing alpha guiding centres for every B₀R₀ ∈ [67.95, 69.99] T·m. A second torus covers v∥ < 0.",
+   "cards": [
+    {
+     "title": "Robust in B₀R₀",
+     "text": "Uniform KAM constants over the cell (smallness 0.073); profile 0.03 ≤ P ≤ 0.255; ≈ 15 CPU-minutes. Reviewed independently: sound.",
+     "status": "Lean verified",
+     "kind": "checked"
+    },
+    {
+     "title": "Both signs, μ > 0 identity",
+     "text": "ι_B torus for v∥ < 0; for μ > 0 passing orbits the grad-B drift is absorbed exactly into B + ∇×(ρ_{E,μ}b) — the KAM torus for that field is next.",
+     "status": "Lean verified / pending torus",
+     "kind": "partial"
+    },
+    {
+     "title": "Trapped alphas",
+     "text": "Exact-QA all-time; near-QA 1.8×10⁻⁴ s proved; bounce period ≤ 83 μs; the re-anchored bound cannot close with absolute amplitudes — oscillatory enclosure in progress.",
+     "status": "Partial + negative",
+     "kind": "partial"
+    }
+   ],
+   "progress": "About 90 new modules (mostly certificates).",
+   "boundary": "Still μ = 0 for confinement theorems; supplied guiding-centre model.",
+   "evidence": [
+    {
+     "label": "New checked results",
+     "href": "progress.html#new-checked-results"
+    },
+    {
+     "label": "Quantitative certificates",
+     "href": "progress.html#quantitative-certificates"
+    },
+    {
+     "label": "Implementation plan",
+     "href": "implementation-plan.html"
+    }
+   ]
+  },
+  {
+   "id": "mercier-stable-band",
+   "eyebrow": "26 · Phase 14: a stable finite-β band",
+   "title": "Finite pressure, no axisymmetry — and Mercier-stable.",
+   "lead": "Landreman family 2 at λ = 200 is Mercier-stable on every flux surface k ∈ [0.7, 0.9], certified by validated quadrature with a fully proved checker. The surfaces have a magnetic hill; shear stabilizes them at low β.",
+   "cards": [
+    {
+     "title": "Stable band",
+     "text": "D_Merc > 0 on k ∈ [0.7, 0.9] for both signs and all pressure scales; force balance with positive pressure; rejection fixtures at the axis and λ = 15.",
+     "status": "Lean verified",
+     "kind": "checked"
+    },
+    {
+     "title": "Caveats",
+     "text": "Supplied Mercier formula (local interchange); flux labels and area element hand-derived from the paper (numerically checked to 7–15 digits); low β ≈ 3×10⁻⁴.",
+     "status": "Disclosed",
+     "kind": "partial"
+    },
+    {
+     "title": "Trapped alphas",
+     "text": "Certified kick bound 0.0816 (< 0.13 needed), period 59–72 μs; one-bounce remainders remain — parked as research.",
+     "status": "Partial",
+     "kind": "partial"
+    }
+   ],
+   "progress": "About 40 new modules; review found the checker sound and the label gap, now disclosed.",
+   "boundary": "Low β; change of variables unformalized; no ballooning for this band yet.",
+   "evidence": [
+    {
+     "label": "New checked results",
+     "href": "progress.html#new-checked-results"
+    },
+    {
+     "label": "Corrections",
+     "href": "progress.html#corrections-and-challenged-claims"
+    },
+    {
+     "label": "Implementation plan",
+     "href": "implementation-plan.html"
+    }
+   ]
+  },
+  {
+   "id": "mu-cell",
+   "eyebrow": "27 · Phase 11: μ > 0",
+   "title": "A cone of pitch angles, confined forever.",
+   "lead": "Passing guiding centres with μ > 0 follow field lines of B + ∇×(ρ_{E,μ}b). A Chebyshev family of exact tori in λ = μB₀/E ∈ [0, 1/16] traps every passing 3.5 MeV alpha guiding centre starting inside — and proves it stays passing.",
+   "cards": [
+    {
+     "title": "μ > 0 cell",
+     "text": "alpha_gc_passing_confined_forever: every μ ∈ [0, E/(16B₀)], v∥(0) > 0; profile 0.03 ≤ P ≤ 0.255; smallness 0.098; ≈ 28 CPU-minutes. Reviewed: sound.",
+     "status": "Lean verified",
+     "kind": "checked"
+    },
+    {
+     "title": "Scope",
+     "text": "Positive measure in pitch angle at one energy and one B₀R₀ — still measure zero in 3-D velocity space. Littlejohn model; non-relativistic; collisionless; vacuum model field. A frozen-torus perturbation gives a set of positive measure in ℝ³ velocity space, but its energy window is only ≈ 7×10⁻²⁴ relative — a technicality.",
+     "status": "Limits",
+     "kind": "partial"
+    },
+    {
+     "title": "Stable band, labels derived",
+     "text": "Family-2 flux labels, volume, fluxes, current and coarea proved from the field; ι′ > 0 and V″ > 0 certified on the Mercier-stable band.",
+     "status": "Lean verified",
+     "kind": "checked"
+    }
+   ],
+   "progress": "About 120 new modules (mostly certificates).",
+   "boundary": "One energy; λ ≤ 1/16 limited by kernel memory.",
+   "evidence": [
+    {
+     "label": "New checked results",
+     "href": "progress.html#new-checked-results"
+    },
+    {
+     "label": "Corrections",
+     "href": "progress.html#corrections-and-challenged-claims"
+    },
+    {
+     "label": "Implementation plan",
+     "href": "implementation-plan.html"
+    }
+   ]
+  },
+  {
+   "id": "energy-window",
+   "eyebrow": "28 · Phase 11: an energy window and λ ∈ [0, 1/8]",
+   "title": "Positive measure in velocity space — in a narrow energy band.",
+   "lead": "Tori certified at four energies are interpolated with a proved analytic remainder. Every passing alpha guiding centre with |E − 3.5 MeV| ≤ 0.4 eV and λ ∈ [0, 1/16] starting inside an exact torus stays inside, and stays passing, forever. A second pitch cell extends the one-energy result to λ ∈ [0, 1/8].",
+   "cards": [
+    {
+     "title": "Energy window",
+     "text": "alpha_gc_confined_forever_energy_window; alphaEwVel_volume_pos: the velocity set has positive Lebesgue measure; relative width ±1.2×10⁻⁷, ≈ 3×10¹⁶ times the earlier box; smallness ≈ 0.26. On-demand top module RationalStellaratorGCEwFamily: 343 modules, ≈ 70 CPU-min.",
+     "status": "Lean verified (on demand)",
+     "kind": "checked"
+    },
+    {
+     "title": "λ ∈ [0, 1/8]",
+     "text": "alpha_gc_passing_confined_forever_wide: second cell λ ∈ [1/16, 1/8], Chebyshev degree 12, e₀ = 5.3×10⁻²¹, smallness 0.158; passing proved (λ|B| ≤ 3/8). On-demand top module RationalStellaratorGCMuWide: 97 modules, 31 CPU-min.",
+     "status": "Lean verified (on demand)",
+     "kind": "checked"
+    },
+    {
+     "title": "Scope and memory",
+     "text": "One B₀R₀; ±3 eV not reached; Littlejohn model, collisionless, vacuum model field. Correction: the default-build cell peaks at 8.8 GB per process, not 5.5 GB; both new families peak at 7.8–8.8 GB.",
+     "status": "Limits disclosed",
+     "kind": "partial"
+    }
+   ],
+   "progress": "About 440 new files, nearly all certificate modules outside the default build.",
+   "boundary": "A narrow energy band at one B₀R₀ is not robustness to slowing-down or to field changes.",
+   "evidence": [
+    {
+     "label": "New checked results",
+     "href": "progress.html#new-checked-results"
+    },
+    {
+     "label": "Quantitative certificates",
+     "href": "progress.html#quantitative-certificates"
+    },
+    {
+     "label": "Corrections",
+     "href": "progress.html#corrections-and-challenged-claims"
+    }
+   ]
+  },
+  {
+   "id": "ballooning-reduction",
+   "eyebrow": "29 · Phase 14B: ballooning for the stable band",
+   "title": "Reduced exactly to one inequality — but not yet certified.",
+   "lead": "A general 3-D surface ballooning framework reduces stability of every field line and every θ_k on a family-2 surface to one pointwise inequality on surface × ℝ. The secular part of that inequality is now solved exactly in Lean. Numerically the band is stable, but no certificate has been found.",
+   "cards": [
+    {
+     "title": "Framework and secular identity",
+     "text": "eik_complete, eikLine_stable_of_surfaceCert; jpar_transport: B·∇J∥ = 2μ⟪B×∇ψ, κ⟫/|B|²; family2_stable_of_secular_cert. Ballooning reduction supplied.",
+     "status": "Lean verified",
+     "kind": "checked"
+    },
+    {
+     "title": "Numerical evidence",
+     "text": "Untrusted: stable on k ∈ [0.7, 0.9] at the physical pressure and twice it; the long-line tail goes unstable only at pressure × 2.36 (k = 0.70) to × 9.39 (k = 0.90).",
+     "status": "Untrusted numerics",
+     "kind": "partial"
+    },
+    {
+     "title": "Certificate",
+     "text": "Affine-in-s certificates are infeasible; a B-spline × rational-in-s SOCP search fails the dense check at k = 0.9; the kernel checker is unwritten (≈ 2–11 CPU-h per surface).",
+     "status": "Open — negative so far",
+     "kind": "next"
+    }
+   ],
+   "progress": "Five modules join the default build.",
+   "boundary": "The family-2 band is not certified ballooning-stable.",
+   "evidence": [
+    {
+     "label": "New checked results",
+     "href": "progress.html#new-checked-results"
+    },
+    {
+     "label": "Quantitative certificates",
+     "href": "progress.html#quantitative-certificates"
+    },
+    {
+     "label": "Corrections",
+     "href": "progress.html#corrections-and-challenged-claims"
+    }
+   ]
+  },
+  {
+   "id": "workstation",
+   "eyebrow": "30 · Phase 15: a workstation for heavy certificates",
+   "title": "Search on a big machine; re-check on the laptop.",
+   "lead": "Heavy numerics and first builds of large certificates run on a workstation and are pushed to workstation/* branches; the laptop re-checks them within its build budget before merging.",
+   "cards": [
+    {
+     "title": "Pipeline",
+     "text": "scripts/workstation/run.sh (numerics → Lean emission → per-module build with CPU and memory measurement → axiom check → verdict), --verify-only on the laptop, and the skill plasmalean-workstation-update.",
+     "status": "Infrastructure",
+     "kind": "checked"
+    },
+    {
+     "title": "Smoke run",
+     "text": "Passed on hornbill (Linux, 24 CPUs): Python packages, Lean build, axioms, push.",
+     "status": "Pipeline ok",
+     "kind": "checked"
+    },
+    {
+     "title": "Tasks",
+     "text": "energy-window (wider windows), lambda-cell (further λ cells), family2-ballooning (search and data only until a checker exists).",
+     "status": "Registered",
+     "kind": "next"
+    }
+   ],
+   "progress": "No theorem comes from the workstation yet; merged Lean must still build on the laptop.",
+   "boundary": "Laptop budget: ≤ 6 GB per process, ≤ 60 CPU-min default, ≤ 240 CPU-min per on-demand top module.",
+   "evidence": [
+    {
+     "label": "Validation",
+     "href": "progress.html#validation"
+    },
+    {
+     "label": "Implementation plan",
+     "href": "implementation-plan.html"
+    }
+   ]
+  },
+  {
+   "id": "quarter-pitch",
+   "eyebrow": "31 · Phase 11: the whole passing pitch range",
+   "title": "Every pitch parameter up to λ = 1/4 — at one energy.",
+   "lead": "Five certified pitch cells, three of them computed on the workstation, combine into one theorem: passing 3.5 MeV alpha guiding centres with any μ ∈ [0, E/(4B₀)] starting inside an exact torus stay inside, and stay passing, forever. λ = 1/4 is the limit of the present passing argument.",
+   "cards": [
+    {
+     "title": "λ ∈ [0, 1/4]",
+     "text": "alpha_gc_passing_confined_forever_quarter: cells Mu [0, 1/16], Mu2, Mu3 [1/8, 3/16], Mu4 [3/16, 7/32], Mu5 [7/32, 1/4]; passing proved (λ|B| ≤ 3/4). On-demand top module RationalStellaratorGCMuQuarter, built on the laptop from workstation oleans.",
+     "status": "Lean verified (on demand)",
+     "kind": "checked"
+    },
+    {
+     "title": "Honest failures",
+     "text": "Uniform majorant impossible beyond λ ≈ 0.157 (fixed by per-node majorants); full cell [3/16, 1/4] failed KAM smallness (2.64 > 1) and was halved; a generator double substitution produced a false Mu3Adm bound, rejected by the kernel and now caught by an exact validator.",
+     "status": "Recorded and fixed",
+     "kind": "partial"
+    },
+    {
+     "title": "Scope",
+     "text": "One energy and one B₀R₀; measure zero in 3-D velocity space; Littlejohn model, collisionless, vacuum model field; Mu2–Mu5 spot-checked on the laptop, not fully rebuilt.",
+     "status": "Limits disclosed",
+     "kind": "partial"
+    }
+   ],
+   "progress": "The pitch range now reaches the limit of the passing argument with |B| ≤ 3B₀.",
+   "boundary": "Beyond λ = 1/4 needs a sharper |B| bound or a new argument; trapped alphas remain open.",
+   "evidence": [
+    {
+     "label": "New checked results",
+     "href": "progress.html#new-checked-results"
+    },
+    {
+     "label": "Quantitative certificates",
+     "href": "progress.html#quantitative-certificates"
+    },
+    {
+     "label": "Corrections",
+     "href": "progress.html#corrections-and-challenged-claims"
+    }
+   ]
+  },
+  {
+   "id": "proof-terms",
+   "eyebrow": "32 · Phase 16: certificates as proof terms",
+   "title": "No decide +kernel: checks become explicit, inductive certificates.",
+   "lead": "Large numerical checks are rebuilt in the SubsetSum pattern: an inductive certificate predicate with one constructor per local step, soundness by induction, a meta builder, and small kernel Nat leaves. Kernel-check memory was halved first.",
+   "cards": [
+    {
+     "title": "Low-memory checks",
+     "text": "Sign–magnitude integers, divide-and-conquer row masks: peak per process 8.8 → 4.3 GB in the default build and on-demand families; check CPU about halved.",
+     "status": "6 GB target met",
+     "kind": "checked"
+    },
+    {
+     "title": "Certificate tools",
+     "text": "KronProof (kron_proof), kernel_fact, KronProof2D, BoolCert (bool_cert), DigitSumCert, EvalCert (eval_cert, fiv_cert, bl_cert) with a builder compiled to native code (PlasmaLeanMeta). All KAM families converted.",
+     "status": "Lean verified",
+     "kind": "checked"
+    },
+    {
+     "title": "Counts and cost",
+     "text": "decide +kernel: ≈ 28,724 uses → ≈ 2,500 lines overall (2,507), 690 lines in the default build (stage 6). User decision: accept ≈ 9 GB of private oleans for fully explicit heavy certificates.",
+     "status": "Mostly converted",
+     "kind": "partial"
+    },
+    {
+     "title": "Open",
+     "text": "Polygon-coil lines (fully explicit ≈ 280 GB: a new design is needed); a few opaque Eq.refl leaves (hessOK, Kronecker-image equalities); QPoly fixtures; ValidatedBVP/Slab.",
+     "status": "Next",
+     "kind": "next"
+    }
+   ],
+   "progress": "Theorem statements are unchanged; bridges re-prove the original checks.",
+   "boundary": "Builders are untrusted; only the kernel-checked certificates count.",
+   "evidence": [
+    {
+     "label": "Quantitative certificates",
+     "href": "progress.html#quantitative-certificates"
+    },
+    {
+     "label": "Implementation plan",
+     "href": "implementation-plan.html"
+    }
+   ]
+  },
+  {
+   "id": "workstation-in-use",
+   "eyebrow": "33 · Phase 15: the workstation pipeline in use",
+   "title": "Eleven workstation runs, with failures recorded as carefully as successes.",
+   "lead": "The workstation computed two pitch cells and migrated the on-demand families to proof terms; the laptop reviewed every run and merged the ones that passed.",
+   "cards": [
+    {
+     "title": "Pipeline",
+     "text": "run.sh (fail-fast push check, failed tasks commit their generated files, leftovers stashed), the plasmalean-workstation-update skill, and a Next Commands section kept current.",
+     "status": "In use",
+     "kind": "checked"
+    },
+    {
+     "title": "Spot-check policy",
+     "text": "User decision: on-demand results are spot-checked (measurements, axioms, grep, sample modules built on the laptop) instead of fully rebuilt; default-build results always rebuilt.",
+     "status": "Policy",
+     "kind": "partial"
+    },
+    {
+     "title": "Sharing oleans",
+     "text": "oleans.py packs compiled modules with a manifest check; Mu2–Mu5 (400 modules, 314 MB) copied Linux → Mac and accepted by Lake without rebuilding.",
+     "status": "Verified",
+     "kind": "checked"
+    }
+   ],
+   "progress": "All runs are listed in workstation/REVIEWED.md.",
+   "boundary": "Unpacked or spot-checked modules trust the workstation's kernel run.",
+   "evidence": [
+    {
+     "label": "Validation",
+     "href": "progress.html#validation"
+    },
+    {
+     "label": "Corrections",
+     "href": "progress.html#corrections-and-challenged-claims"
+    }
+   ]
+  },
+  {
+   "id": "working-with-agents",
+   "eyebrow": "34 · Working with agents",
+   "title": "Working with the agents: start, status, work on, keep working.",
+   "lead": "Theory is built as well as formalized while designing stellarators. Work is a research graph of goals (G-*), questions (Q-*) and notes (N-*); Lean is the validity gate, so a result is established only when its named declaration compiles.",
+   "cards": [
+    {
+     "title": "start",
+     "text": "Strict audit of the kernel and of changes since the last audited commit (builds and axiom check), then status and ready choices.",
+     "status": "First strict audit pending",
+     "kind": "next"
+    },
+    {
+     "title": "status and work on",
+     "text": "status summarizes goals, questions, the verified frontier and ready choices without builds. work on <item> runs one work unit: discovery, formalization, certificate, audit or design.",
+     "status": "In use",
+     "kind": "checked"
+    },
+    {
+     "title": "keep working",
+     "text": "Autonomous mode (also keep going / keep running): pick the highest-value ready item, finish it, update notes and slides, commit and push, and continue until a user decision is needed.",
+     "status": "In use",
+     "kind": "checked"
+    },
+    {
+     "title": "update from workstation",
+     "text": "Fetch workstation runs, re-check or spot-check them, merge, record and push; refresh the next workstation commands.",
+     "status": "In use",
+     "kind": "checked"
+    }
+   ],
+   "progress": "The plasmalean-develop-theory skill and the research-graph registries are in place; after every stage of progress the agents update notes and slides, regenerate the site, commit and push.",
+   "evidence": [
+    {
+     "label": "Command reference",
+     "href": "index.html#agent-commands"
+    },
+    {
+     "label": "Implementation plan",
+     "href": "implementation-plan.html"
+    }
+   ],
+   "boundary": "These are working conventions for the agents, not results. The first strict audit of the kernel under the new protocol has not yet been run."
+  },
+  {
+   "id": "implementation-plan",
+   "eyebrow": "35 · Plan of record",
+   "title": "Theory, techniques and a ladder of models — for confinement and for heat.",
+   "lead": "Each cycle develops theory, turns theorems into sound certificate checkers, and applies them to the next rung of a model ladder. Every rung must prove properties of both kinds: confinement (G1) and temperature held above burn conditions (G2).",
+   "cards": [
+    {
+     "title": "Theory tracks",
+     "text": "Done in Lean: vacuum maximum principle (T1); Sturm/ballooning/Mercier (T2); parabolic comparison and barriers (T3, semilinear); 0-D power balance (T4); SBP discrete energy (T5); radii-polynomial validation, 1-D (T6); guiding centre and averaging (T8). Open: quasilinear D(T), 2-D validation, island widths/KAM (T7), bounce action J_∥, commuted energy (T9).",
+     "status": "Most tracks partly done",
+     "kind": "partial"
+    },
+    {
+     "title": "Model ladder",
+     "text": "M0 exact symmetric equilibria (done) → M1 0-D burning plasma → M2 radial transport on the exact geometries → M3 validated toroidal equilibrium → M4 near-axis quasisymmetry → M5 coil-produced 3-D field → M6 integrated candidate.",
+     "status": "M0–M2 checked (idealized); M3 (slab) and M4 (0.11 s) in progress",
+     "kind": "partial"
+    },
+    {
+     "title": "Corrections first",
+     "text": "Four corrections to recent notes. Vacuum |B| has no interior maximum (minima are possible). The flux-surface line bundle is flat. 2-D ideal-MHD regularity is open. Contracts no theorem produces are vacuous.",
+     "status": "Applied to the notes",
+     "kind": "checked"
+    },
+    {
+     "title": "Proof engineering",
+     "text": "A new skill: grind and fun_induction for short proofs, bv_decide only when no native axiom results, and large certificates built as explicit proof terms (the SubsetSum pattern).",
+     "status": "Skill added; 6 min rewrite pending",
+     "kind": "partial"
+    }
+   ],
+   "progress": "Phases 1–4 met their acceptance criteria in idealized models. The plan's status marks and progress log are updated after each phase.",
+   "boundary": "Nothing in the plan counts as evidence until a dated report records compiled Lean results.",
+   "evidence": [
+    {
+     "label": "Implementation plan",
+     "href": "implementation-plan.html"
+    },
+    {
+     "label": "20 October report",
+     "href": "progress.html"
+    }
+   ]
+  },
+  {
+   "id": "next-run",
+   "eyebrow": "36 · Keep every step reviewable",
+   "title": "The next run must leave evidence, not just a promise.",
+   "lead": "Next: wider energy windows (±3 eV, then ±1%) and a joint B₀R₀ range, now with λ up to 1/4, via the workstation; a new certificate design for the polygon-coil lines and the remaining opaque leaves; a family-2 ballooning certificate and kernel checker; beyond λ = 1/4, trapped alphas and coil-produced all-time confinement (research).",
+   "cards": [
+    {
+     "title": "Implement & challenge",
+     "text": "Choose a scoped theorem or candidate milestone, retain explicit assumptions, and test limiting cases and counterexamples.",
+     "status": "Next loop",
+     "kind": "next"
+    },
+    {
+     "title": "Compile & audit",
+     "text": "Build the Lean library and run the axiom audit. Record actual results and remaining physical/model gaps.",
+     "status": "Required evidence",
+     "kind": "next"
+    },
+    {
+     "title": "Report & refresh",
+     "text": "Update the dated report, task status, this slideshow and the brief README summary after every run, including stalled runs.",
+     "status": "Recurring handoff",
+     "kind": "next"
+    }
+   ],
+   "progress": "The linked run records checked declarations, assumptions and validation. This slideshow is a summary of that evidence, not a new design certificate.",
+   "boundary": "A practical claim needs composed certificates for one candidate plus evidence that the physical models and supplied data apply.",
+   "evidence": [
+    {
+     "label": "Read the full progress report",
+     "href": "progress.html"
+    },
+    {
+     "label": "Run & loop instructions",
+     "href": "domain-library.html#agent-runs-and-loops"
+    },
+    {
+     "label": "Explore the handbook",
+     "href": "handbook.html"
+    }
+   ]
+  }
+ ]
 }

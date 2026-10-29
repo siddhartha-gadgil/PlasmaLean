@@ -210,6 +210,12 @@
     "text": "eleven workstation runs, with failures recorded as carefully as successes. the workstation computed two pitch cells and migrated the on-demand families to proof terms; the laptop reviewed every run and merged the ones that passed. all runs are listed in workstation/reviewed.md."
   },
   {
+    "title": "Working with the agents: start, status, work on, keep working.",
+    "section": "Progress slideshow",
+    "url": "slides.html#working-with-agents",
+    "text": "working with the agents: start, status, work on, keep working. theory is built as well as formalized while designing stellarators. work is a research graph of goals (g-*), questions (q-*) and notes (n-*); lean is the validity gate, so a result is established only when its named declaration compiles. the plasmalean-develop-theory skill and the research-graph registries are in place; after every stage of progress the agents update notes and slides, regenerate the site, commit and push."
+  },
+  {
     "title": "Theory, techniques and a ladder of models — for confinement and for heat.",
     "section": "Progress slideshow",
     "url": "slides.html#implementation-plan",

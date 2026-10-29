@@ -43,3 +43,11 @@ Distinguish `∀ parameter, ∃ nearby equilibrium` from one state valid for eve
 Provide the candidate coefficients and provenance, compiled declaration names, quantitative margins, remaining physical-law assumptions, missing certificates, model-validity evidence, and the next experiment or theoretical target. For a reactor-scale design also account for blanket/tritium, neutron damage, cryogenics, quench, power balance, and maintenance. Name the achieved gate accurately; a vacuum-field demonstration is a useful first gate.
 
 A milestone is done when its certificates compile with zero warnings, no `sorry`/axiom/`decide` and only standard axioms (`scripts/check_axioms.lean`, or `scripts/check_axioms_heavy.lean` for on-demand modules); accepted and rejected fixtures exist; an assumption ledger and scope statement exist (`plasmalean-audit-domain`); and the affected `G-*`/`Q-*`/`N-*` entries and a dated §13 entry in `notes/implementation-plan.md` record the gate reached, declaration names, margins, build cost, missing certificates and the next target. Update the plan also when the attempt fails.
+
+## Finish the stage
+
+After each completed stage of progress (including a recorded failure or barrier), follow the reporting
+protocol in `notes/domain-libraries.md`: update the notes and plan registries, refresh
+`progress/slideshow.json` (and the progress report when substantive), regenerate and check the site
+(`node scripts/generate_handbook.mjs`, `node scripts/check_site.mjs`), then commit with explicitly
+staged paths and `git push`.

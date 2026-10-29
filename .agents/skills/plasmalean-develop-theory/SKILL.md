@@ -138,6 +138,11 @@ arithmetic before writing Lean.
    entry in §13), including newly ready dependants, and do this also after a failure. After a
    run, follow the reporting protocol of `notes/domain-libraries.md` (progress report, slideshow,
    README summary, `node scripts/generate_handbook.mjs`, `node scripts/check_site.mjs`).
+6. **Update the slides and commit and push after every stage of progress**: refresh
+   `progress/slideshow.json` (and the progress report when the stage is substantive), regenerate
+   and check the site, then commit with explicitly staged paths and `git push`. In `keep working`
+   mode do this at each completed stage, not only at the end of the session. Workstation results
+   are merged and pushed by `plasmalean-workstation-update`.
 
 Re-run the relevant strict audit after any change to the kernel, a foundational definition, a law
 instance, a certificate soundness theorem or a top-level claim. Existing code is in scope.

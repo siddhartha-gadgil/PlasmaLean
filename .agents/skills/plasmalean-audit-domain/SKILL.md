@@ -169,3 +169,11 @@ assumptions before proving further consequences.
 
 Record unresolved physical assumptions explicitly. Never label the real device stable or confined
 solely because a conditional formal theorem compiles.
+
+## Finish the stage
+
+After each completed stage of progress (including a recorded failure or barrier), follow the reporting
+protocol in `notes/domain-libraries.md`: update the notes and plan registries, refresh
+`progress/slideshow.json` (and the progress report when substantive), regenerate and check the site
+(`node scripts/generate_handbook.mjs`, `node scripts/check_site.mjs`), then commit with explicitly
+staged paths and `git push`.

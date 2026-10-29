@@ -33,3 +33,9 @@ Prove unit consistency, nonnegative dissipation, zero-source behavior, material-
 ## Integrate with the design
 
 Connect certified plasma/particle heat and neutron sources to thermal bounds, thermal and electromagnetic loads to stress/strain, strain and field to magnet margin, and degradation to lifetime. State exactly which couplings are proved and which remain supplied envelopes. Deliver declarations, data provenance, margins, model-validity conditions, and the next higher-fidelity target.
+
+## Finish the stage
+
+After each completed stage of progress, follow the reporting protocol in `notes/domain-libraries.md`:
+update the notes and plan, refresh `progress/slideshow.json`, regenerate and check the site, then commit
+with explicitly staged paths and `git push`.

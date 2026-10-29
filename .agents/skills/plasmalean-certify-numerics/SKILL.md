@@ -42,3 +42,11 @@ Test valid and invalid certificate fixtures, including missing coverage, zero de
 Report certified quantities and margins, the assumptions supplied by other theorems or law instances, arithmetic/truncation uncertainty, physical-data uncertainty, and remaining model discrepancy. Attach the candidate's identity to the result so a later coil or profile change cannot reuse its certificate accidentally.
 
 **Update the note graph and the plan after every work unit, including failures.** Record declaration names, verification status (default build or on-demand), margins, build cost, remaining barriers and newly ready notes in the originating note and in the registries of `notes/implementation-plan.md`, with a dated §13 entry. A certificate that does not close is an open item with its measured obstruction (resolution, memory, olean size), not evidence that the property fails.
+
+## Finish the stage
+
+After each completed stage of progress (including a recorded failure or barrier), follow the reporting
+protocol in `notes/domain-libraries.md`: update the notes and plan registries, refresh
+`progress/slideshow.json` (and the progress report when substantive), regenerate and check the site
+(`node scripts/generate_handbook.mjs`, `node scripts/check_site.mjs`), then commit with explicitly
+staged paths and `git push`.

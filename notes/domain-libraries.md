@@ -18,6 +18,8 @@ After **every run**, including a run that stagnates or is blocked, refresh the w
 
 Regenerate the website and slideshow with `node scripts/generate_handbook.mjs`, then run `node scripts/check_site.mjs`. Fix stale output, broken evidence links or failed checks before finishing the run. Edit the source JSON and Markdown rather than generated HTML. Preserve the original landing-page motivations and graphics, and keep the slideshow reachable from it.
 
+Finally, **commit and push** the completed stage: stage paths explicitly (never `git add -A` while other agents or runs may have files in progress), write a message that names the stage and its main result, end it with the attribution line, and `git push`. A stage is not finished until it is pushed. This applies after every completed work unit or phase stage, including a stage that ends in a recorded barrier or failure.
+
 ## Kernel
 
 This is the layer that models the domain with definitions and empirically (or more generally externally) known facts. It should be kept as small as reasonable while being a complete model. By complete we mean all relevant facts should be consequences and all queries we wish to answer should be answerable in terms of functions that can be built from the kernel.

@@ -43,3 +43,11 @@ Recheck the original informal statement against the final Lean declaration. Veri
 Deliver the source locator, declaration names, assumptions, compiled checks, useful sanity theorems, remaining dependencies, and the next target. Label sketches and unformalized source results separately from verified library code.
 
 **Update the note graph and the plan after every work unit, including failures.** Record in the originating note and in the registries of `notes/implementation-plan.md` the declaration names, assumptions, build status (default or on-demand), compiled checks, barriers and newly ready notes, with a dated §13 entry for plan-relevant results. A failed formalization goes back to the note as information: a missing hypothesis, a false statement, an unsuitable definition or a library gap.
+
+## Finish the stage
+
+After each completed stage of progress (including a recorded failure or barrier), follow the reporting
+protocol in `notes/domain-libraries.md`: update the notes and plan registries, refresh
+`progress/slideshow.json` (and the progress report when substantive), regenerate and check the site
+(`node scripts/generate_handbook.mjs`, `node scripts/check_site.mjs`), then commit with explicitly
+staged paths and `git push`.

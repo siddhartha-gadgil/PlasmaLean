@@ -38,3 +38,11 @@ Keep the theorem's actual scope when coercivity fails. Explore nonnegative energ
 Update the note (new notes follow `notes/note-template.md`) with the final claim, proof or obstruction, exact hypotheses, literature comparison, counterexample attempts, difficulty, barriers, Lean readiness, design implication and next dependencies. Create new `N-*` or `Q-*` entries for substantial branches.
 
 **Update the note graph and the plan after every work unit, including failures.** Record the outcome in the note and in the registries of `notes/implementation-plan.md` (status, readiness, next action, newly ready dependants) and add a dated §13 entry when the result matters to the plan. A refuted conjecture or a failed approach is recorded as a barrier, so it is not retried blindly (re-planning trigger, plan §6). Do not inflate a restricted mathematical improvement into a verified result or a proof of full reactor feasibility.
+
+## Finish the stage
+
+After each completed stage of progress (including a recorded failure or barrier), follow the reporting
+protocol in `notes/domain-libraries.md`: update the notes and plan registries, refresh
+`progress/slideshow.json` (and the progress report when substantive), regenerate and check the site
+(`node scripts/generate_handbook.mjs`, `node scripts/check_site.mjs`), then commit with explicitly
+staged paths and `git push`.
