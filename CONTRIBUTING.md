@@ -10,6 +10,24 @@ Choose one concrete target and identify the model and theorem it advances. The
 [progress ledger](progress/README.md) records subsequent results. Older discovery notes retain
 their history, so compare proposed targets with the current source before starting.
 
+## Working with agents
+
+Much of the work is done with coding agents using the project skills (`.agents/skills/`, entry
+point `plasmalean-develop-theory`). Open a checkout and say **`start`**: the agent strictly audits
+the existing code (every kernel declaration first), records the audited commit and findings, and
+offers ready choices. Then use **`status`**, **`work on G-…`/`Q-…`/`N-…`** (or a topic) for one
+work unit, or **`keep working`** for autonomous mode.
+
+Goals, questions and research notes form the **research graph** in the
+[implementation plan](notes/implementation-plan.md); new notes follow the
+[note template](notes/note-template.md). **Lean is the validity gate**: only a compiled declaration
+(standard axioms) is an established dependency; everything else stays conditional. The process
+exists to prevent **research drift** (losing the question, repeating abandoned approaches,
+silently changing definitions) and **validity drift** (treating a plausible argument, sampled
+computation or cited result as checked). Human contributions enter the same graph: a theorem with a
+paper proof, a counterexample or a source can be recorded as a note or question and picked up by
+an agent or a person.
+
 ## Three reading paths
 
 ### 1. Understand what a verified statement means
@@ -138,7 +156,7 @@ Use the Lean version in [lean-toolchain](lean-toolchain) and the pinned dependen
 [lake-manifest.json](lake-manifest.json). From the repository root, build a small target first:
 
 ```sh
-lake exe cache get
+scripts/setup.sh --no-build        # elan if missing, the pinned toolchain, the Mathlib cache
 lake build PlasmaLean.Kernel.Equilibrium PlasmaLean.Sanity.Equilibrium
 ```
 

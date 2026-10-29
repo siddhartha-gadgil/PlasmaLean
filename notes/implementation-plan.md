@@ -12,6 +12,145 @@ Sources: [domain-libraries](domain-libraries.md) (run protocol), [roadmap](forma
 
 ---
 
+## Research graph (added 29 October 2026)
+
+This part adopts the LeanTheory theory-development workflow (skill `plasmalean-develop-theory`):
+PlasmaLean builds theory and formalizes it while designing stellarators. It indexes goals (`G-*`),
+questions (`Q-*`) and research notes (`N-*`) with stable identifiers; the sections §0–§13 below
+are kept unchanged as the history and the dated logs. Statuses here are mapped from the logs of
+§9, §10 and §13 and the dated reports in `progress/`; nothing is upgraded by this mapping.
+A dependency is **established** only when its required output is a named compiled Lean declaration
+(standard axioms only). Results in on-demand top modules (not imported by `PlasmaLean.lean`) are
+marked *on-demand*: they were built and axiom-checked on the workstation and spot-checked on the
+laptop (policy of 25 October 2026, `workstation/REVIEWED.md`). New notes follow
+`notes/note-template.md`. `N-*` note IDs are distinct from the §12 work packages N1–N3, and the
+gates P0–P9 (roadmap), E0–E8 (§11.2), P1–P4 (§12) and the rungs M0–M6 (§5) keep their names.
+
+### RG.1 Goal registry
+
+| Goal | Goal and success criterion | Supports / supported by | Status | Evidence so far (declarations) / needed |
+| --- | --- | --- | --- | --- |
+| `G-1` | **Confinement and stability** (legacy G1): field lines and particles stay inside and the equilibrium is MHD stable, for one candidate, with every reduction named | supported by G-4, G-5, G-6; supports G-8 | active | Exact symmetric equilibria; `rationalStellarator_confined_forever_exists` (all-time field lines, exact vacuum stellarator field); `alpha_gc_passing_confined_forever`, `alpha_gc_confined_forever_robust`, `alpha_gc_confined_forever_pm` (passing alpha guiding centres, Littlejohn model supplied); `reactor_ballooning_all`, `reactor_mercier_stable` (Solov'ev, reductions supplied); `stable_uniform` (screw pinch). Needed: a non-symmetric candidate with confinement and stability together |
+| `G-2` | **Thermal performance** (legacy G2): core temperature above a burn threshold over the operating interval and below wall limits, with stated transport and reactivity assumptions | supports G-8; supported by Q-10, Q-15 | active | `m1_burn_window` (0-D), Stellaris ISS04 window (`Design/BurnWindowStellarator`), `solovev_one_plasma_actual` (two-sided band for every supplied transport solution, pressure budget). Needed: barriers on stellarator geometry, existence of the transport solution |
+| `G-3` | **Model adequacy and probabilistic goals** (§12): quantify one omitted effect on a design observable (N1), activation rules (N2), decision infrastructure (N3); probabilistic loss and uncertainty (P1–P4) | supports G-1, G-2, G-8 | proposed | none in Lean; specifications in `notes/goals/` |
+| `G-4` | **A stable finite-β stellarator equilibrium** (Phase 14): an exact or validated non-axisymmetric finite-pressure equilibrium with certified local and ballooning stability | supports G-1 | active | Landreman family 1 force balance and `family1_mercier_unstable` (negative); family 2 `family2_mercier_stable_derived` (band k ∈ [0.7, 0.9], λ = 200, Mercier index supplied); ballooning reduced to one certificate (`family2_stable_of_cert`, `family2_stable_of_secular_cert`). Needed: Q-3, or route A (Q-14) |
+| `G-5` | **Coil-produced confinement** (Phase 13): field lines of the field of a concrete coil set confined for all time (or a long certified horizon) | supports G-1, G-8 | active (all-time: blocked, research) | `coil_stellarator_confined_concrete_N` (52 transits, field-line existence assumed). Needed: Q-2 |
+| `G-6` | **Robust alpha confinement** (Phases 11–12): all-time confinement of 3.5 MeV alphas on physically meaningful energy, pitch and B₀R₀ ranges, passing and trapped | supports G-1 | active | `alpha_gc_passing_confined_forever_quarter` (on-demand; λ ∈ [0, 1/4], one energy and B₀R₀), `alpha_gc_confined_forever_energy_window` (on-demand; ±0.4 eV × λ ∈ [0, 1/16]), `alpha_trapped_reactorQA_averaged` (passing, near-axis QA, 0.19 s). Needed: Q-1, Q-4, Q-5 |
+| `G-7` | **Verified plasma evolution** (§11): for one candidate, a certified interval on which the selected plasma model exists and stays within error, stability, thermal and geometric bounds | supports G-8; supported by Q-7–Q-11 | proposed (E1 done) | E1: `lieBracket_gradient_of_contDiffAt`, `quasisymmetry_not_pde_symmetry`; conditional `riccati_le_initial`. Needed: gates E2–E8 |
+| `G-8` | **Integrated candidate** (M6, §11.1): coils, equilibrium, stability, transport and engineering margins on one decoded candidate with common witnesses | supported by G-1, G-2, G-4–G-7 | open | `Bridge/Contracts` (common-witness composition) only |
+| `G-9` | **Auditable certificates within the laptop budget** (Phases 15–16, auxiliary): every concrete check an explicit certificate, ≤ 6 GB per Lean process, no `decide` of any kind | supports all | active | Certificate tactics in `PlasmaLean/Certificates/`; workstation pipeline. Needed: Q-6, Q-12 |
+
+### RG.2 Question registry
+
+| Question | Statement | Needed by | Status | Current best answer / barrier |
+| --- | --- | --- | --- | --- |
+| `Q-1` | All-time (or slowing-down-time) confinement of **trapped** 3.5 MeV alphas in near-QA: can the per-bounce remainder (phase shear) be bounded? | G-6, N-17 | open (research, parked) | Compiled: `reference_kick_osc` (kick amplitude ≤ 0.0816 T m²), `exactQA_kick_osc`. Barrier: one-bounce remainders (Lipschitz–Grönwall hopeless, `e^{KP} ≈ e^{29000}`), shears, validated bounce-time enclosure, existence of re-anchored references (`trapped-alpha-status.md` §3); re-anchoring with absolute amplitudes cannot close (Phase 11 part 1) |
+| `Q-2` | **Coil-produced all-time confinement**: can a KAM torus refitted to `tfField + polyCoilFieldC` meet the smallness budget? | G-5, N-16 | blocked (research) | On-demand `CoilKamCert` proves only a vacuous residual bound (≈ 10⁹ against ≈ 10⁻³⁰ needed). Barrier: sharp cancellation-aware complex sup bound, torus-adapted neighbourhood, anisotropic strips, high-precision refit (≈ 4 CPU-days estimated) |
+| `Q-3` | **Family-2 ballooning certificate**: one pointwise inequality on surface × ℝ for Landreman family 2 on the Mercier-stable band | G-4 | open | Reduction compiled (`family2_stable_of_cert`, `family2_stable_of_secular_cert`); numerics stable (tail margin ×2.36–×9.39); linear-in-s certificates fail, the B-spline × rational basis fails the dense check at k = 0.9; checker not written (≈ 8,000 boxes per surface, 100–200 CPU-h for the band search) |
+| `Q-4` | **Wider energy window** (±3 eV, then ±1 %) and a joint B₀R₀ range, with λ up to 1/4 | G-6, N-14 | open (workstation route) | Compiled (on-demand): ±0.4 eV × λ ∈ [0, 1/16]. Barrier: the torus family moves ≈ 30·Δρ; needs re-certified low-resolution chains with larger admissibility balls, ≈ 3 / ≈ 10 CPU-h (`energy-window.sh`) |
+| `Q-5` | Passing confinement **beyond λ = 1/4** | G-6 | open | λ = 1/4 is the limit of the passing argument with ‖B‖ ≤ 3B₀ (`quarter_passing_margin`); needs a sharper ‖B‖ bound or another argument |
+| `Q-6` | **Landreman `outerArc` certificates**: explicit certificates for the ≈ 135 `outerArc` lines of `LandremanFamily2Cert1–7` | G-9, G-4 | open | `oned_cert` closed the `oneD` quadratures; one arc did not finish in 10 min (some inner cell definition is unfolded); next: profile one `tipCell` with `eval_cert?` (§13 stage 9) |
+| `Q-7` | **E2–E3**: Pizzocchero–Tassi Proposition 4.3 on the periodic benchmark, then a certified trajectory with full residual enclosures | G-7, N-19 | open | not started in Lean (§11.3 is the first target) |
+| `Q-8` | **E4**: toroidal-domain continuation (harmonic flux sectors, Hodge coercivity, Kozono–Shimizu–Yanagisawa small data) with a nonempty admissible set | G-7, N-19 | open | not started |
+| `Q-9` | **Helical MHD regularity** (§1.3): a theorem, with hypotheses, for the helically symmetric reduction; the Riccati inequality dY/dt ≤ −νY + CεY² for MHD (R3) | G-7, N-19 | open (research) | Only the conditional comparison is compiled (`riccati_le_initial`, `riccati_exp_decay`); the inequality is a hypothesis |
+| `Q-10` | **E5–E6**: existence/continuation for the radial transport model; a steady pressure-matched state (pressure equality, not a budget); the corrected relative-entropy identity with all terms | G-2, G-7, N-2, N-6 | open | Transport solutions are supplied in `solovev_one_plasma_*`; the relative-entropy identity is proved informally (N-2), not in Lean |
+| `Q-11` | **E7–E8**: compatible numerics (constrained transport, admissible states) and integration on a shared candidate | G-7, G-8 | open | not started; E8 needs the earlier gates |
+| `Q-12` | **Phase 16 remaining opaque leaves**: replace the remaining `decide +kernel` and opaque `kernel_fact` leaves within ≤ 6 GB and the olean budget | G-9 | active | §13 stage 9: 297 default / 2,114 overall lines with `decide +kernel`; 6,098 class-b `kernel_fact` leaves in the default build (0 of ≥ 0.1 s); `decide_cbv` in on-demand Mu3–Mu5 Adm; open: `NearAxisQAAveraged` parts, the fast side `famTB − famO`, `nodeFin`/`famL1` leaves, `KamTorusACheck`/`SurrogateCheck`/`FrameCheck` |
+| `Q-13` | Is the 0-D / 1-D burn obstruction at nominal confinement removable by profile peaking on stellarator geometry (ISS04 needs f_ren above measured values)? | G-2, N-5 | open | Proved obstructions: `stellaris_measured_fren_no_access_steady`, `stellaris_measured_fren_no_access_loss`; the 1-D route on stellarator geometry is Q-15 |
+| `Q-14` | **Stepped pressure across the exact KAM torus** (Phase 14 route A): a finite-β equilibrium glued across the certified torus of the rational field | G-4, N-12, N-13 | open (lead) | plan only (`after-kam.md` §3, `finite-beta-stellarator.md`) |
+| `Q-15` | Transport barriers (T ≥ 10 keV in the core) on a **non-axisymmetric** validated geometry, with χ bounds from Â or neoclassical theory stated as supplied scalings | G-2 | open | Barriers exist on the cylinder, helical and Solov'ev geometries only |
+
+### RG.3 Note registry and dependency graph
+
+Status values: exploratory / stated / proof-ready / lean-ready / verified / blocked / refuted /
+superseded; mixed notes list the status of their parts. "Lean" names compiled evidence.
+
+| Note | File and title | Addresses | Depends on | Difficulty | Status / Lean readiness | Next action |
+| --- | --- | --- | --- | --- | --- | --- |
+| `N-1` | `notes/theory/toroidal-min-b-obstruction.md`: min-B / max-J restrictions | G-1 | §1.1 correction | moderate | core verified (`VacuumField.not_strict_local_max_normSq`, `exists_vacuum_strict_interior_min`, `Theory/Fields/CurvatureObstruction`); G conjectured; Hall–McNamara lead | finite-β curvature obstruction (T1 ○) |
+| `N-2` | `notes/theory/relative-entropy-dissipation.md`: corrected identity | G-2, G-7, Q-10 | §1.5 | moderate | proved informally (sympy); BKM version refuted; lean-ready (1-D pointwise identity) | formalize the 1-D identity (E6) |
+| `N-3` | `notes/theory/flux-surface-holonomy.md`: periods, τ, Hodge bounds | G-7 (T10) | §1.2 | moderate | holonomy ↔ ι refuted; periods and τ proved informally; 2-form vanishing verified (`magneticTwoForm_flux_surface`) | constant-metric τ/energy identity |
+| `N-4` | `notes/theory/near-axis-quasisymmetry.md`: Garren–Boozer construction, Boozer GC model | G-1, G-6 | sources | hard | construction formal asymptotic; GC identity verified (`boozerGC_trapped_until`, `boozerGC_trapped`) | none pending; feeds N-8, N-17 |
+| `N-5` | `notes/theory/stellarator-burn-parameters.md`: ISS04, reactor studies | G-2, Q-13 | Bosch–Hale, ISS04 (supplied) | routine | verified window and obstructions (`Design/BurnWindowStellarator`); parameters published | Q-15 |
+| `N-6` | `notes/theory/transport-mhd-coupling.md`: one field for G-1 and G-2 | G-1, G-2, Q-10 | K2 kernel | moderate | verified in budget form (`solovev_one_plasma_actual`, `…_highQ_actual`, `…_ignited_actual`); solution existence and pressure equality open | Q-10 |
+| `N-7` | `notes/theory/near-qa-trapped-particles.md`: banana-alpha mechanisms | G-6, Q-1 | N-4 | research | mechanisms published; single well proved; superseded for status by N-17 | see N-17 |
+| `N-8` | `notes/theory/guiding-centre-averaging.md`: averaging, exact-symmetry alphas | G-1, G-6 | N-4 | hard | verified (`reactor_alpha_confined`, `alpha_trapped_reactorQA_averaged`: passing, 0.19 s) | none; longer near-QA times would need new averaging |
+| `N-9` | `notes/theory/first-stellarator-rung.md`: exact rational vacuum field | G-1, G-5 | — | moderate | verified (`Design/RationalStellarator`, `rationalStellarator_confined`: 95 transits) | superseded by N-10 for all-time |
+| `N-10` | `notes/theory/kam-route.md`: KAM route to all-time confinement | G-1 | N-9 | research | verified (`rationalStellarator_confined_forever_exists`) | none |
+| `N-11` | `notes/theory/kam-k3-plan.md`: explicit KAM theorem plan | G-1 | N-10 | research | superseded (K3 done, Phase 10) | none |
+| `N-12` | `notes/theory/finite-beta-stellarator.md`: routes to finite β | G-4, Q-14 | sources (preprints) | research | family 1 verified with `family1_mercier_unstable`; family 2 `family2_mercier_stable_derived`; stepped-pressure route lead | Q-3, Q-14 |
+| `N-13` | `notes/theory/after-kam.md`: coil KAM, stepped pressure, GC KAM | G-5, G-6, Q-2, Q-14 | N-10 | research | target 3 verified (N-14); target 1 blocked (Q-2); target 2 lead (Q-14) | — |
+| `N-14` | `notes/theory/gc-kam-status.md`: guiding-centre KAM | G-6, Q-4 | N-10, Littlejohn model (supplied) | hard | verified (`alpha_gc_passing_confined_forever`; on-demand `alpha_gc_confined_forever_energy_window`, `alpha_gc_passing_confined_forever_wide`) | Q-4 |
+| `N-15` | `notes/theory/robust-alpha-confinement.md`: intervals of ρ, v∥ < 0, μ > 0 | G-6 | N-14 | hard | verified (`alpha_gc_confined_forever_robust`, `alpha_gc_confined_forever_pm`, on-demand `alpha_gc_passing_confined_forever_quarter`) | Q-4, Q-5 |
+| `N-16` | `notes/theory/coil-kam-status.md`: coil-field KAM stages | G-5, Q-2 | N-10, N-13 | research | stage-1 tools verified (default build); stage-2 certificate vacuous (on-demand `CoilKamCert`); blocked | stage-1 sharpening (complex sup bound) |
+| `N-17` | `notes/theory/trapped-alpha-status.md`: trapped alphas, Phase 12 | G-6, Q-1 | N-4, N-7 | research | partly verified (`reference_kick_osc`, `exactQA_kick_osc`); blocked on the per-bounce remainder | conserved-quantity comparison (route a) |
+| `N-18` | `notes/pde-bounds-and-verification-roadmap.md`: Stages 1–7, Milestones A–G | G-1, G-2, G-7 | — | research | Milestone A verified (T1); others stated | link stages to Q-7–Q-11 |
+| `N-19` | `notes/bkm-regularity-and-perelman-burn-bounds.md`: corrected evolution specification (§11) | G-7, Q-7–Q-10 | §1.3, §11 | research | E1 verified (`quasisymmetry_not_pde_symmetry`, `lieBracket_gradient_of_contDiffAt`); conditional Riccati verified; rest stated | Q-7 (first theorem, §11.3) |
+| `N-20` | `notes/microturbulence-and-available-energy.md`: available energy, Â | G-2, Q-15 | sources | research | kernel lemmas verified (`Theory/Kinetic/AvailableEnergy`); opposite-sign claim refuted; Â bound stated | extract the Helander–Mackenbach Â formula (§1.5) |
+| `N-21` | `notes/holomorphic-bundles-kym-wick-rotations.md`: exploratory geometry (T10) | G-7 | §1.2, §1.4 | research | exploratory; flux degree corrected to 0; refuted contract sketches fenced | verdict note before any Lean (T10 rule) |
+| `N-22` | `notes/goals/` (overview, probabilistic, deterministic, milestones) | G-3 | §12 | research | stated (proposals); D/K cross-references unresolved | choose one N1 observable |
+| `N-23` | `notes/design/vacuum-demonstrator.md`: tolerance-aware vacuum fixture | G-5, G-8 | — | routine | verified fixture (`Design/VacuumPair`, `Design/VacuumTolerance`) | none |
+| `N-24` | `notes/formalization/00`–`09`: model contracts and topic specifications | all | — | — | active specifications (00 contracts is normative) | add contracts as kernels change |
+| `N-25` | `notes/Stellerator.md`: original design basis | G-8 | — | — | historical (illustrative distances are not universal limits) | none |
+
+Main dependency edges: N-9 → N-10 → N-14 → N-15 → (Q-4, Q-5); N-10 → N-13 → (N-16 → Q-2, Q-14);
+N-4 → (N-8, N-7 → N-17 → Q-1); N-12 → (Q-3, Q-14) → G-4; N-2, N-6 → Q-10 → G-2, G-7;
+N-19 → Q-7 → Q-8 → Q-11 → G-8.
+
+### RG.4 Strict audit status
+
+The canonical first command is `start` (skill `plasmalean-audit-domain`). Previous code is in scope.
+
+| Audit | Value |
+| --- | --- |
+| Audited commit | **not yet audited** (step 2 deferred). The review of 26 October 2026 (commit `4df1bb7`) corrected wording, notes and the plan; it was not a strict kernel audit |
+| Scope | the first strict audit must be a full startup audit |
+| Kernel coverage | none under the strict protocol (6 kernel modules: `Equilibrium`, `Slab`, `ThermalSlab`, `Transport`, `Vacuum`, `Fusion`) |
+| Commands run | none for this record (documentation step only, laptop reserved) |
+| Open findings (known) | see below |
+| Missing sanity checks | not yet inventoried (risk-specific adversarial checks per kernel law are part of step 2) |
+
+Known open findings, carried from the logs (severity provisional):
+
+1. **Resource** (medium): in the full stage-9 rebuild (26 October) the highest peak was 6.17 GB in
+   `LandremanFamily2MercierStable` (unchanged module), above the 6 GB target; split it.
+   `NearAxisQAAveraged` (6.16 GB before stage 9) is now split into four modules, all of which
+   built in that rebuild; its conversion to explicit certificates is still open.
+2. **Build state** (resolved): the ~204 modules left stale after stage 9 were rebuilt one at a
+   time and in bounded parallel on 26 October (191 modules, no failures, no warnings); the full
+   default build passed and `scripts/check_axioms.lean` (122 entry points) showed standard axioms
+   only, before commit `2d620d2`.
+3. **On-demand trust** (medium): the on-demand families (Ew1–4, Mu2–Mu5, MuQuarter, CoilKam*) are
+   spot-checked, not rebuilt on the laptop, and are stale after stages 8–9 (Workstation.md, Next
+   Commands).
+4. **Legacy proof policy** (medium): `decide +kernel` lines (297 default, 2,114 overall) remain against the
+   no-`decide +kernel` policy (Q-12). (`decide_cbv`, a kernel-checked proof-producing evaluation,
+   is permitted for medium checks; see the lean-proofs skill.)
+5. **Documentation** (low): the module docstring of `Certificates/EvalCert.lean` still says the leg
+   checks are left to `decide +kernel`; `family2_mercier_stable` keeps the caveat of hand-derived
+   flux labels, superseded by `family2_mercier_stable_derived` (claims should cite the latter).
+6. **Notes** (low): the §12 cross-references D0–D4, K0–K6 and §12.10 remain unresolved.
+7. **Scope, recorded** (not defects): supplied hypotheses in headline results: transport solutions
+   (`solovev_one_plasma_*`), the Littlejohn guiding-centre model, ballooning reductions, the
+   Landreman–Jorge Mercier index, field-line existence for the coil results, vacuum model field.
+
+### RG.5 Work selection
+
+- **Interactive** (default): after each work unit, report compiled results, unformalized arguments,
+  conjectures and barriers, then offer a few ready items from RG.1–RG.3 plus free discussion
+  (`work on G-…`, `Q-…`, `N-…` or a topic).
+- **Autonomous** (`keep working`): choose the highest-value ready item whose established
+  prerequisites are compiled, preferring work that unblocks several items, closes a validity gap
+  (RG.4 findings first), tests a risky conjecture cheaply, or yields reusable theory; keep G-1 and
+  G-2 both moving. Continue without waiting; stop for a user decision, missing authorization, a
+  resource budget question, or when nothing useful is ready.
+
+Current ready choices (provisional): the startup strict audit (RG.4, step 2); Q-6 (profile one
+`tipCell`); N-2 → formalize the 1-D relative-entropy identity; Q-7 (Pizzocchero–Tassi
+Proposition 4.3); Q-4 on the workstation.
+
+---
+
 ## 0. The two goals, and where we are
 
 > **Historical status (14 October 2026).** The table below records the status when the plan was
@@ -82,6 +221,8 @@ Each cycle has five lanes. Lanes A–D run as **parallel sub-agents** using the 
 | **D Models** | `plasmalean-design-stellarator` (and `-model-materials` for walls/coils) | Instantiations on the current ladder rung with realistic SI parameters |
 | **E Review** (fresh agent) | `plasmalean-audit-domain` | Adversarial pass on new statements: vacuity, hypotheses that cannot be satisfied, wrong quantifiers, physically meaningless parameters. Each finding is fixed or recorded. |
 
+> **Historical.** Lane C's "`decide +kernel`" predates the Phase 16 policy; new code now uses no `decide` of any kind (explicit certificates, skill `plasmalean-lean-proofs`). Lanes map onto the skills routed by `plasmalean-develop-theory`.
+
 Sequencing inside a cycle: A and C start at once. B takes A's outputs from the previous cycle, plus any sourced theorems. D uses whatever B and C have merged. E runs last. The cycle closes with a progress report, `status.json`, slideshow, `README.md`, site regeneration and `check_site.mjs`.
 
 Recommended size: 4–6 sub-agents per cycle (within the workflow guideline of fewer than 10).
@@ -91,6 +232,8 @@ Recommended size: 4–6 sub-agents per cycle (within the workflow guideline of f
 ## 4. Theory tracks (with technique companions)
 
 Status legend: ✅ done · ◐ partial · ○ not started.
+
+> **Historical status.** The marks below were last updated in the October phases and are not maintained; the current status of open items is in the Research graph (RG.1–RG.4) and the logs (§9, §10, §13).
 
 | Track | Theory targets | Technique companion | Feeds |
 | --- | --- | --- | --- |
@@ -406,6 +549,8 @@ Each cycle is a run. The targets are listed in priority order; anything left ove
 - **In progress:** a Chebyshev-in-ρ family certificate for an interval of B₀R₀.
 
 ## 10. Phases after Phase 10 (plan of record, 21 October 2026)
+
+> **Historical plan of record.** Kept as written on 21 October 2026; the open problems it lists are now tracked as goals and questions in the Research graph (G-4–G-6, G-9, Q-1–Q-6, Q-12).
 
 - **Phase 11, robust alpha confinement (in progress):**
   - a Chebyshev-in-ρ torus family over an interval of B₀R₀, then over all energies 0–3.5 MeV;

@@ -1530,6 +1530,42 @@
     "text": "implementation plan cyclic plan: theory tracks, certificate techniques, and a ladder of successively realistic models for confinement and burn temperature."
   },
   {
+    "title": "Research graph (added 29 October 2026)",
+    "section": "Implementation plan",
+    "url": "implementation-plan.html#research-graph-added-29-october-2026",
+    "text": "research graph (added 29 october 2026) implementation plan"
+  },
+  {
+    "title": "RG.1 Goal registry",
+    "section": "Implementation plan",
+    "url": "implementation-plan.html#rg1-goal-registry",
+    "text": "rg.1 goal registry implementation plan"
+  },
+  {
+    "title": "RG.2 Question registry",
+    "section": "Implementation plan",
+    "url": "implementation-plan.html#rg2-question-registry",
+    "text": "rg.2 question registry implementation plan"
+  },
+  {
+    "title": "RG.3 Note registry and dependency graph",
+    "section": "Implementation plan",
+    "url": "implementation-plan.html#rg3-note-registry-and-dependency-graph",
+    "text": "rg.3 note registry and dependency graph implementation plan"
+  },
+  {
+    "title": "RG.4 Strict audit status",
+    "section": "Implementation plan",
+    "url": "implementation-plan.html#rg4-strict-audit-status",
+    "text": "rg.4 strict audit status implementation plan"
+  },
+  {
+    "title": "RG.5 Work selection",
+    "section": "Implementation plan",
+    "url": "implementation-plan.html#rg5-work-selection",
+    "text": "rg.5 work selection implementation plan"
+  },
+  {
     "title": "0. The two goals, and where we are",
     "section": "Implementation plan",
     "url": "implementation-plan.html#0-the-two-goals-and-where-we-are",
@@ -1960,6 +1996,30 @@
     "section": "Implementation plan",
     "url": "implementation-plan.html#13-implementation-log-continued",
     "text": "13. implementation log (continued) implementation plan"
+  },
+  {
+    "title": "Phase 16: seventh stage (ballooning boxes, bilinear polygon-coil chunks, literal filament data), 26 October 2026",
+    "section": "Implementation plan",
+    "url": "implementation-plan.html#phase-16-seventh-stage-ballooning-boxes-bilinear-polygon-coil-chunks-literal-filament-data-26-october-2026",
+    "text": "phase 16: seventh stage (ballooning boxes, bilinear polygon-coil chunks, literal filament data), 26 october 2026 implementation plan"
+  },
+  {
+    "title": "E1 and §1 sanity theorems, 26 October 2026",
+    "section": "Implementation plan",
+    "url": "implementation-plan.html#e1-and-1-sanity-theorems-26-october-2026",
+    "text": "e1 and §1 sanity theorems, 26 october 2026 implementation plan"
+  },
+  {
+    "title": "Phase 16: eighth stage (`kernel_fact` audit, family-image certificates, quadrature and box checks), 26 October 2026",
+    "section": "Implementation plan",
+    "url": "implementation-plan.html#phase-16-eighth-stage-kernelfact-audit-family-image-certificates-quadrature-and-box-checks-26-october-2026",
+    "text": "phase 16: eighth stage (`kernel_fact` audit, family-image certificates, quadrature and box checks), 26 october 2026 implementation plan"
+  },
+  {
+    "title": "Phase 16: ninth stage (`eval_cert` builder fixes, Maj majorants, weighted K2 readings, quadratures), 26 October 2026",
+    "section": "Implementation plan",
+    "url": "implementation-plan.html#phase-16-ninth-stage-evalcert-builder-fixes-maj-majorants-weighted-k2-readings-quadratures-26-october-2026",
+    "text": "phase 16: ninth stage (`eval_cert` builder fixes, maj majorants, weighted k2 readings, quadratures), 26 october 2026 implementation plan"
   },
   {
     "title": "M0 · Exact symmetric equilibria: slab, screw pinch, Solov'ev, helical",

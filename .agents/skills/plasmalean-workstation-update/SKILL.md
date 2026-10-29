@@ -6,7 +6,11 @@ description: Fetch PlasmaLean workstation runs (git branches workstation/*), re-
 # Update from the workstation
 
 Heavy numerics and first builds of large certificates run on a workstation via
-`scripts/workstation/run.sh` (see `Workstation.md`). Each run pushes a branch
+`scripts/workstation/run.sh` (see `Workstation.md`). Tasks are scripts in
+`scripts/workstation/tasks/`: `smoke.sh` (a pipeline check), `TEMPLATE.sh` (copy it to define a
+new task: numerics, emission of generated Lean files, the list of modules to build) and the
+project tasks (`energy-window.sh`, `lambda-cell.sh`, `family2-ballooning.sh`,
+`proofterm-migrate.sh`). Each run pushes a branch
 `workstation/<tasks>-<UTC stamp>` containing `workstation/results/<task>/<stamp>/` (step records,
 truncated logs, `summary.json` with a laptop verdict) and, on success, generated files. This skill
 brings those runs back here. The user's request authorizes the whole procedure below, including
@@ -61,8 +65,8 @@ the run as rejected, with the laptop numbers.
 Same preconditions as §2. Inside the uncommitted merge:
 1. Check the workstation's numbers against the laptop limits in `summary.json`: every module's
    peak ≤ `LAPTOP_MAX_RSS_GB` (6), and the verdict is "laptop ok". Check that the axioms step is ok.
-2. Grep the merged files: no `sorry`, `admit`, `axiom`, `native_decide`, `decide +kernel` or plain
-   `decide`.
+2. Grep the merged files: no `sorry`, `admit`, `axiom`, `native_decide` or `decide` of any kind
+   (`decide +kernel`, `decide_cbv`, plain `decide`).
 3. Build a sample here, one module at a time, with `lake build <module>`: the first, the last and
    two random check modules of each family, plus each family's bridge (`LowMem*`). This builds
    their dependencies too, which is part of the point. Compare peak memory and time with the
@@ -80,11 +84,12 @@ Still inside the uncommitted merge:
    **Separate top module:** do neither. Make sure the build command
    (`lake build PlasmaLean.Design.<Top>`) is documented in the module docstring and in the plan.
 2. Check the reported declarations: grep each entry point in the merged files. Also check that the
-   generated files contain no `sorry`, `axiom`, `native_decide` or plain `decide`.
+   generated files contain no `sorry`, `axiom`, `native_decide` or `decide` of any kind.
 3. `lake build PlasmaLean` (one process; with zero warnings), then
    `lake env lean scripts/check_axioms.lean`.
 4. Update `notes/implementation-plan.md` with a dated log entry under the relevant phase (what was
-   certified, the window or parameters, the cost on both machines). If the result is substantive,
+   certified, the window or parameters, the cost on both machines) and update the affected `Q-*`/`N-*`
+   rows of its research graph (status, evidence, next action). If the result is substantive,
    also update the progress report, slides and docs via the usual pipeline
    (`node scripts/generate_handbook.mjs`, `node scripts/check_site.mjs`).
 5. Record the run in `workstation/REVIEWED.md` (§4).

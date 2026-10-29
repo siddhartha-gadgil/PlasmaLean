@@ -1,11 +1,11 @@
 ---
 name: plasmalean-lean-proofs
-description: Write and repair Lean 4 proofs in PlasmaLean efficiently. Use whenever writing or editing Lean code, choosing tactics, proving concrete numerical/finite facts, or building certificate checkers — covers grind/fun_induction automation, decide_cbv for medium concrete checks, and how to build large proofs as explicit proof terms (the SubsetSum pattern) instead of decide.
+description: Write and repair Lean 4 proofs in PlasmaLean efficiently. Use whenever writing or editing Lean code, choosing tactics, proving concrete numerical/finite facts, or building certificate checkers; covers grind/fun_induction automation, the certificate tactics kernel_fact/bool_cert/eval_cert/fiv_cert and the Kronecker certificates for concrete checks, building large proofs as explicit proof terms (the SubsetSum pattern), and the laptop memory rules. No decide of any kind in new code.
 ---
 
 # Lean proofs in PlasmaLean
 
-Toolchain: Lean `v4.34.1`, Mathlib `v4.34.1` (see `lean-toolchain`, `lakefile.toml`). Check a file with `lake env lean <path>` and the library with `lake build`. Before finishing, run `lake env lean scripts/check_axioms.lean`. It **fails** on any axiom other than `propext`, `Classical.choice` and `Quot.sound`, so `sorry`, `native_decide`, `Lean.ofReduceBool` and native `bv_decide` proofs are all rejected.
+Toolchain: Lean `v4.34.1`, Mathlib `v4.34.1` (see `lean-toolchain`, `lakefile.toml`). Check a file with `lake env lean <path>` and the library with `lake build`. Before finishing, run `lake env lean scripts/check_axioms.lean`. It **fails** on any axiom other than `propext`, `Classical.choice` and `Quot.sound`, so `sorry`, `native_decide`, `Lean.ofReduceBool` and native `bv_decide` proofs are all rejected. Builds must have zero warnings. On-demand top modules (not imported by `PlasmaLean.lean`) are audited by `scripts/check_axioms_heavy.lean`.
 
 ## 1. Prefer automation that gives short, clean proofs
 
@@ -27,44 +27,43 @@ theorem subsetSum_correct (l : List Int) (indices : List Nat) :
 
 ## 2. Concrete computations: choose by size
 
-| Size of the check | Use | Do not use |
-| --- | --- | --- |
-| A few closed numeric facts (`(37:ℚ)/5 < 8`, an explicit polynomial value) | `norm_num`, `simp`, `rfl` | `decide`, `decide +kernel` |
-| Medium concrete checks: a Boolean checker on ℚ/ℕ/lists with up to a few hundred evaluation steps (a `QPoly.checkOn` fixture on 32 pieces, a 100–400 element list, a finite case split) | **`decide_cbv`** | plain `decide` |
-| Large certificates (many pieces, long lists, high-degree polynomial interval checks, many modes) | an explicit proof term built step by step: **the SubsetSum pattern (§3)**, with `Nat` leaves checked by the kernel | one monolithic `decide_cbv`; `decide +kernel` (forbidden) |
+**Policy: no plain `decide`, no `decide +kernel`, no `native_decide` in new code** (25 October 2026). Every concrete check is a short tactic proof, a `decide_cbv` proof for medium checks (kernel-checked, proof-producing evaluation), or an explicit proof term whose leaves only the kernel evaluates; for large checks prefer the certificate tactics below. `scripts/audit_kernel_fact.py` audits the remaining kernel-evaluated leaves (class **b** = a recursive PlasmaLean definition is unfolded; leaves of ≥ 0.1 s should become explicit certificates).
 
-**Plain `decide` is inefficient.** It evaluates the `Decidable` instance in the elaborator, and on ℚ arithmetic it typically just fails ("did not reduce to `isTrue`"). Do not use it for anything nontrivial.
+| Size of the check | Use |
+| --- | --- |
+| A few closed numeric facts (`(37:ℚ)/5 < 8`, an explicit polynomial value, `B 5 + E 5 ≤ 1623/10000` by `norm_num [B, Bl, E, El]`) | `norm_num [defs]`, `simp`, `rfl` |
+| Closed side conditions and finite quantifiers: conjunctions, `∀ x ∈ l`, `∀ i ≤ n`, `∀ i < n`, `∀ i : Fin n` over rational/natural comparisons | **`kernel_fact`** (`Certificates/KernelFact`) |
+| A Boolean checker `check data = true` recursing over cells/rows with `&&`, `\|\|`, `if` and comparison leaves | **`bool_cert`** (`Certificates/BoolCert`; `bool_cert?` reports collapsed leaves) |
+| A closed evaluation of ball, interval, rational or polynomial terms (records, structural recursion, `QPoly.checkOn`) | **`eval_cert [f₁, …]`** (`Certificates/EvalCert`, builder natively compiled in `PlasmaLeanMeta/EvalCert.lean`); **`fiv_cert`** (`Certificates/EvalCertFIv`) for fixed-point interval checkers; `eval_decide` / `fiv_decide` for a decidable closed proposition; domain macros such as `bl_cert` (`Design/SolovevBallooningEvalCert`) and `oned_cert` (`Design/LandremanFamily2Quad`) add heavy operations as leaves |
+| Sums and bounded quantifiers over `Finset.Icc` / `range` | **`icc_cert [defs]`** (`Certificates/IccListCert`) |
+| KAM-family checks, digit/mask extractions, Kronecker or Chebyshev ball chains | the existing certificate predicates: `kron_proof` / `kron_lt` (`KronProof`), `kron2_proof` (`KronProof2D`), `l1kron_cert` (`DigitSumCert`), `fampack_cert` (`FamPackCert`) |
+| A new kind of large certificate (many pieces, long lists, high-degree interval checks, many modes, coil lines) | a new inductive certificate predicate with a `meta` proof builder: **the SubsetSum pattern (§3)**, with `Nat`/`ℚ` leaves checked by the kernel (example: `Design/PolygonCoilCubicLineCert.lean`, one leaf per vertex and per block of three segments) |
 
-**`decide_cbv`** (core Lean, `Lean.Meta.Tactic.Cbv`, no import needed) applies `of_decide_eq_true` and then reduces `decide p` by proof-producing call-by-value simplification: it rewrites with equation/unfold lemmas and matcher reductions, and the result is an `Eq` proof chain checked by the kernel. Its relatives are `cbv` / `cbv at h` (non-terminal) and `conv => cbv`. Properties measured on this toolchain:
-- **Axioms:** only `propext`, `Classical.choice`, `Quot.sound` (often just `propext`). No `Lean.ofReduceBool`, no code-generator trust, so it passes `check_axioms.lean`.
-- **It works where `decide +kernel` gets stuck.** Because it unfolds through equation lemmas, it evaluates functions defined by **well-founded recursion** (`termination_by`) and **`partial_fixpoint`**. A merge sort on 10 elements took 50 ms, while `decide +kernel` failed with "did not reduce".
-- **Error messages are clear:** "the proposition evaluates to `false`", or "got stuck at: …" with the stuck subterm.
-- **Cost:** on structurally recursive ℚ checkers it is slower than `decide +kernel` and builds a large proof term. Measured times: `tightQuartic_check` 5 s vs 0.4 s; `dipQuadratic_reject` 2 s vs 0.06 s; `allGeB (1/3)` on 400 rationals 5.6 s vs 0.35 s. The 64-piece Ballooning residual check took 58 s vs 2.5 s and needed `maxHeartbeats 0`. That is past "medium": use §3.
-- **Limits:** long lists and deep recursion hit `maxRecDepth` (raise it, e.g. `set_option maxRecDepth 100000 in`), and large checks hit `cbv.maxSteps` (default 100 000). If you need both raised, the check belongs in §3. Use `@[cbv_opaque]` to stop it unfolding a definition and `@[cbv_eval]` to give it a rewrite rule instead. It does not enter binders.
+Why not `decide`: plain `decide` evaluates the `Decidable` instance in the elaborator and typically fails on ℚ arithmetic ("did not reduce to `isTrue`"); kernel and native variants leave a whole evaluation opaque (or add trust), and are slow and memory-hungry at scale. Explicit certificates are checked step by step, give precise failure locations, and split across declarations.
 
-**No `decide +kernel`, anywhere** (policy of 25 October 2026). Large certificates are proof terms built as in `PlasmaLean/SubsetSum.lean`; nothing is left to an opaque Boolean evaluation. The ~28,700 existing uses (KAM-family checks, coil and ballooning cells, `QPoly.checkOn` fixtures, Maj modules) are legacy and are being migrated (implementation plan, Phase 16). Use:
-- `norm_num` / `rfl` for a few closed facts, including single bound checks such as `B 5 + E 5 ≤ 1623/10000` (`norm_num [B, Bl, E, El]`);
-- `decide_cbv` for medium checks;
-- the SubsetSum pattern (§3) for large certificates.
+**Size trade-off.** An evaluation certificate has one node per operation (≈ 300–400 bytes per node in the private `.olean`). The heavy groups (near-axis leg checks, Solov'ev ballooning cells, coil lines) were converted anyway by user decision (26 October 2026), within a private-olean budget of about 40 GB; when a certificate would exceed it or 6 GB per process, design a coarser dedicated predicate whose leaves follow the checker's own recursion rather than splitting more finely.
+
+**Legacy.** About 2,100 lines still contain `decide +kernel` (≈ 300 in the default build; plan §13 has the current counts). These are migrated under Phase 16; do not add new ones and do not copy them as templates. `decide_cbv` (in the on-demand `RationalStellaratorGCMu3Adm`–`Mu5Adm`) is allowed. (`decide_cbv` reduces `decide p` by proof-producing call-by-value rewriting; it handles well-founded recursion but builds large terms and hits `maxRecDepth`/`cbv.maxSteps` on large checks.)
 
 **Building on kernel `Nat`.** The kernel evaluates `Nat` literals with GMP (`Nat.add`, `sub`, `mul`, `div`, `mod`, `gcd`, `beq`, `ble`, `land`, `lor`, `xor`, `shiftLeft`, `shiftRight`, `pow`, `log2`). So the leaves of a large proof should be `Nat` facts such as `a * b + c = d`, `Nat.ble x y = true` or `x >>> k &&& m = y` on literals or on `def`s that unfold to them. The `meta` builder creates each leaf proof directly as `Eq.refl _` with `mkApp`/`mkExpectedTypeHint`: it is checked by the kernel alone, while the elaborator never evaluates it, which is what made `Nat.le_of_ble_eq_true rfl` written in source twice as slow. Each constructor of the certificate predicate is one local step, for example "row block i sums to s", "mask m extracts digit d" or "piece k satisfies the bound". Its soundness theorem is proved once by induction. Keep big intermediates out of the term where possible: refer to them through `def`s computed in the kernel, not `toExpr` literals. Split very large certificates over several declarations, since the kernel's caches are per declaration. This also bounds peak memory.
 
-**Generators must validate every emitted bound with exact rational arithmetic before writing it** (round outward, recompute in `Fraction`, assert), so that a wrong constant fails in Python, not in a Lean build hours later.
+**Generators must validate every emitted bound with exact rational arithmetic before writing it** (round outward, recompute in `Fraction`, assert; `scripts/gc_kam/lamcell/validate.py`), so that a wrong constant fails in Python, not in a Lean build hours later.
 
 **`bv_decide` (niche):** use it only for genuine SAT problems over `Bool` / `BitVec n` / fixed-width integers. It does not compute with `ℚ`, `ℝ` or lists. When the SAT solver is actually used, the proof depends on a native axiom such as `foo._native.bv_decide.ax_1_5`, which `check_axioms.lean` rejects. Always run `#print axioms`, and never leave such a proof in the library.
 
 ## 3. Large proofs: build the proof term (SubsetSum pattern)
 
-Reference: `PlasmaLean/SubsetSum.lean`. The idea is to keep computation outside the trusted proof. An untrusted search (Python, a solver oracle, or a `meta` function) finds a **witness**, and a `meta` function turns it into an explicit proof term. The kernel then checks only small local steps.
+Reference: `PlasmaLean/SubsetSum.lean`. The idea is to keep computation outside the trusted proof. An untrusted search (Python, a solver oracle, or a `meta` function) finds a **witness**, and a `meta` function turns it into an explicit proof term. The kernel then checks only small local steps. `kernel_fact`, `bool_cert`, `eval_cert` and the Kronecker certificates are instances of this pattern.
 
 Ingredients:
 
 1. **Inductive certificate predicate.** There is one constructor per kind of local step, and its arguments are **explicit** so that `mkAppM` can supply them (`HasSubsetSum.skip (x : Int) (xs : List Int) (s : Int)`).
-2. **Computable function and characterization theorems.** A plain `def` computes the same thing as the predicate. Prove that they agree with `fun_induction` and `grind` (`subsetSum_correct`, `exists_indices_for_subset_sum`). Also prove the **semantic soundness** theorem that design code uses, e.g. "certificate ⇒ the bound holds for every real x ∈ [a,b]".
+2. **Computable function and characterization theorems.** A plain `def` computes the same thing as the predicate. Prove that they agree with `fun_induction` and `grind` (`subsetSum_correct`, `exists_indices_for_subset_sum`). Also prove the **semantic soundness** theorem that downstream code uses, e.g. "certificate ⇒ the bound holds for every real x ∈ [a,b]".
 3. **`meta def` proof builder.** It recurses over the witness and applies the constructors with `mkAppM ``Pred.ctor #[toExpr a, …, subproof]`. Tail data are computed by a `meta` copy of the function (`computeSubsetSum`).
 4. **Local side conditions become goals**, not hidden computations. Create them with `mkFreshExprMVar q(...)` and return them through `replaceMainGoal`, then close them with `all_goals norm_num` (or `linarith`, `positivity`). Do **not** run tactics inside a fresh `TermElabM` in the builder: that leaks free variables into the term.
 5. **Tactic or command front end.** An `elab` matches the goal with `let_expr`, evaluates the data (`unsafe evalExpr`), calls the builder and assigns the goal. Use `mkExpectedTypeHint pf goalType` so that the generated `toExpr` data are checked against the stated data by one definitional-equality check.
 6. **Keep large data in `def`s** generated by functions or by an oracle. Large literal lists of rationals elaborate very slowly.
+7. **Heavy builders** can live in `PlasmaLeanMeta` (precompiled to native code, see `lakefile.toml`); the builder is untrusted either way.
 
 Tested template (≈400 local steps in about 4 s, standard axioms only):
 
@@ -103,14 +102,14 @@ theorem big : AllGe (1/3) bigList := by
   all_goals norm_num
 ```
 
-For PlasmaLean certificates, the predicate's constructors are the mathematical steps: "on piece [xᵢ, xᵢ₊₁] the lower bound holds" (polynomial interval checks), "mode (m,n) has a Picone witness" (Newcomb/ballooning), "box Bᵢ satisfies the barrier inequality" (transport barriers), "the radii-polynomial bounds Y₀, Z₁, Z₂ hold on this block". The soundness theorem is proved once by induction on the predicate. Each instance then only requires small `norm_num` facts.
+For PlasmaLean certificates, the predicate's constructors are the mathematical steps: "on piece [xᵢ, xᵢ₊₁] the lower bound holds" (polynomial interval checks), "mode (m,n) has a Picone witness" (Newcomb/ballooning), "box Bᵢ satisfies the barrier inequality" (transport barriers), "the radii-polynomial bounds Y₀, Z₁, Z₂ hold on this block". The soundness theorem is proved once by induction on the predicate. Each instance then only requires small kernel or `norm_num` facts.
 
 ## 4. Module system and hygiene
 
 - Files start with `module`. Mark the API with `public section` and `@[expose]` where downstream proofs must unfold a definition. Imports used only by `meta` code are `public meta import Lean` / `public meta import Qq`.
 - `meta def` code is not part of the trusted proof. Never let a theorem's truth depend on it except through the term it produces, which the kernel checks.
-- Every definition and theorem needs a docstring, and every module needs a module docstring (see `notes/domain-libraries.md`). Every new definition or certificate format needs sanity theorems: a degenerate case, a special case, an accepted fixture and a rejected fixture.
-- Forbidden in the library: `sorry`, `admit`, `axiom`, `native_decide`, `unsafe` proofs, and `bv_decide` results that depend on a `_native` axiom.
+- Every definition and theorem needs a docstring, and every module needs a module docstring (see `notes/domain-libraries.md`). Every new definition or certificate format needs sanity theorems: a degenerate case, a concrete instance, an accepted fixture and a rejected fixture.
+- Forbidden in the library: `sorry`, `admit`, `axiom`, `native_decide`, `unsafe` proofs, and `bv_decide` results that depend on a `_native` axiom. Forbidden in new code: any `decide` variant (legacy uses: §2).
 
 ## 5. Debugging checklist
 
@@ -118,5 +117,6 @@ For PlasmaLean certificates, the predicate's constructors are the mathematical s
 2. If `grind` fails, add the definition or lemma names as hints, or `simp only [f] at *` first. Use `grind?`/`simp?` to get a stable call.
 3. If `fun_induction` gives awkward cases, check that the goal mentions `f` applied to variables, not to concrete data, and generalize first if needed.
 4. On a heartbeat timeout during elaboration of data, move the data into a `def` and generate it with a function.
-5. At the end: `#print axioms` for each certificate entry point, then `lake build`, then `scripts/check_axioms.lean`.
-6. **Memory: never let Lake rebuild many heavy modules at once.** `lake build Top` rebuilds every stale dependency in parallel (14 certificate modules at once nearly exhausted 24 GB of RAM plus swap). When dependencies are stale (find them with `lake build --no-build Top`), build them one at a time first, then `Top`. Check `memory_pressure` before heavy steps and wait if free memory is below 40%.
+5. If a certificate tactic refuses a goal, use its diagnostic variant (`bool_cert?`, `fiv_cert?`, `eval_cert?`) or reduce the goal to a smaller fixture; a stuck leaf usually means a definition needs `@[expose]` or a heavy operation must be named as a leaf (`eval_cert [f]`).
+6. At the end: `#print axioms` for each certificate entry point, then `lake build`, then `scripts/check_axioms.lean` (and `scripts/check_axioms_heavy.lean` for on-demand modules).
+7. **Memory: never let Lake rebuild many heavy modules at once.** `lake build Top` rebuilds every stale dependency in parallel (14 certificate modules at once nearly exhausted 24 GB of RAM plus swap). Keep each Lean process within 6 GB. When dependencies are stale (find them with `lake build --no-build Top`), build them one at a time first, then `Top`. Check `memory_pressure` before heavy steps and wait if free memory is below 40%. Very heavy first builds belong on the workstation (`plasmalean-workstation-update`, `Workstation.md`).

@@ -7,6 +7,9 @@ Status tags: **published** (located in the source, with locator) · **formal asy
 **proved informally** (complete elementary proof, symbolically checked where possible) · **conjectured** · **refuted** · **lead**
 (source suggested, statement not located).
 
+New notes use [the note template](https://github.com/siddhartha-gadgil/PlasmaLean/blob/main/notes/note-template.md) and get an `N-*` ID in the
+research graph of `notes/implementation-plan.md`; the notes below are retrofitted with its metadata as they are touched.
+
 | Note | Track | Main content | Status |
 | --- | --- | --- | --- |
 | [toroidal-min-b-obstruction.md](toroidal-min-b-obstruction.md) | T1, T8 (§1.1) | Subharmonic ⇒ no interior *max*, with min-B counterexamples (B = (x,y,−2z), Ioffe–Pritchard). Curvature identity ∇⊥B = Bκ (vacuum, or ∇p = 0) ⇒ a min of \|B\| forces κ = 0 ⇒ no min-B around a closed axis. Max-J needs κ = 0 at B_min (Helander 2014 §3.7). QS cannot be max-J (Rodríguez–Helander–Goodman 2024). Exact omnigenity ⇒ QS/nonanalytic (Cary–Shasharina 1997) | identity and corollaries: **proved informally** (Helander 2014 Eq. 24, §3.3); D–F: **published / formal asymptotic**; G: **conjectured**; Hall–McNamara: **lead** |

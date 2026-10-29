@@ -5,7 +5,9 @@ description: Develop new mathematical theory for PlasmaLean using conjecture, pr
 
 # Discover useful plasma mathematics
 
-Read the actual kernel, `notes/formalization/00-model-contracts.md`, the relevant topic note, and `08-roadmap.md`. Preserve the project's preference for theoretical advances; use numerical experiments to discover structure and produce counterexamples or candidate certificates.
+Read the selected research note (`notes/theory/`), its goal/question and dependencies in the research graph of `notes/implementation-plan.md`, the actual kernel, `notes/formalization/00-model-contracts.md`, the relevant topic note, `08-roadmap.md` and, for model-adequacy questions, `notes/goals/`. Preserve the project's preference for theoretical advances; use numerical experiments to discover structure and produce counterexamples or candidate certificates. Heavy numerics go to the workstation (`Workstation.md`).
+
+**Dependency gating.** Only compiled Lean declarations count as established. Do not assume an upstream note, a sourced theorem or a numerical observation is true unless its required declaration compiles (default build, or an on-demand module under the workstation policy). Otherwise keep the dependency explicit and every downstream claim conditional and unverified.
 
 ## Choose a precise gap
 
@@ -21,7 +23,7 @@ Useful targets include completing squares in the MHD energy, identifying the cor
 4. Independently seek counterexamples: zero modes, resonances, vanishing field, near-axis singularities, boundary displacement, large gradients, omitted Fourier modes, degraded materials, and adversarial uncertainty corners.
 5. Check an experimental counterexample against the exact definitions. A floating-point failure is evidence to investigate; an exact witness refutes the statement.
 6. If refuted, repair the claim by a physically interpretable hypothesis or narrower conclusion. Record why the change is necessary.
-7. Prove the repaired theorem, formalize it, and test its useful special cases. Repeat until a meaningful theorem or a clearly stated obstruction remains.
+7. Prove the repaired theorem and test its useful special cases. Formalize it with `plasmalean-formalize-theory` when the argument and prerequisites are ready; otherwise create the next research note or record a clearly stated obstruction. Repeat until a meaningful theorem or obstruction remains.
 
 Keep conjectures, exact counterexamples, proof sketches, compiled Lean theorems, and numerical observations separate. Never add a conjecture as an axiom, claim novelty from Lean acceptance, or hide an unresolved estimate inside a typeclass instance.
 
@@ -33,4 +35,6 @@ Keep the theorem's actual scope when coercivity fails. Explore nonnegative energ
 
 ## Finish with an actionable record
 
-Write the final claim, proof or obstruction, exact hypotheses, literature comparison, counterexample attempts, Lean status, design implication, and next dependency. Update the theory and roadmap after successful formalization. Do not inflate a restricted mathematical improvement into a proof of full reactor feasibility.
+Update the note (new notes follow `notes/note-template.md`) with the final claim, proof or obstruction, exact hypotheses, literature comparison, counterexample attempts, difficulty, barriers, Lean readiness, design implication and next dependencies. Create new `N-*` or `Q-*` entries for substantial branches.
+
+**Update the note graph and the plan after every work unit, including failures.** Record the outcome in the note and in the registries of `notes/implementation-plan.md` (status, readiness, next action, newly ready dependants) and add a dated §13 entry when the result matters to the plan. A refuted conjecture or a failed approach is recorded as a barrier, so it is not retried blindly (re-planning trigger, plan §6). Do not inflate a restricted mathematical improvement into a verified result or a proof of full reactor feasibility.

@@ -5,7 +5,9 @@ description: Build and check numerical proof certificates for PlasmaLean using e
 
 # Certify a numerical candidate
 
-Read `notes/formalization/05-verified-numerics.md`, the topic note, the kernel definitions, and the existing checker implementation. Check actual interval-library compatibility before importing a package. Do not assume that a package mentioned in a planning note is installed or sound for the required operations.
+Read `notes/formalization/05-verified-numerics.md`, the originating research note and its dependency requirements (research graph in `notes/implementation-plan.md`), the topic note, the kernel definitions, and the existing certificate modules in `PlasmaLean/Certificates/` (index: `PlasmaLean/Certificates/README.md`) before writing a new checker. Reuse what is there. Check actual interval-library compatibility before importing a package. Do not assume that a package mentioned in a planning note is installed or sound for the required operations.
+
+**Dependency gating.** The analytic theorem that turns a certificate into a continuum statement must itself be compiled. If it is only sourced or sketched, the certificate proves a finite statement only; keep the continuum claim explicitly conditional until the bridge theorem compiles.
 
 ## Define the certificate boundary
 
@@ -26,8 +28,17 @@ Use the inequalities and soundness targets in `05-verified-numerics.md`. Failure
 
 ## Build a small sound checker
 
-Define certificate data independently of the search algorithm. Prove a theorem of the form `check c = true → ClaimedProperty (decode c)` using exact, kernel-checkable reasoning. Keep noncomputable analytic definitions behind soundness theorems and the decidable checker in the computational layer. Do not import native execution, GPU output, Python assertions, or an SMT success flag as an unchecked theorem. For large certificates, prefer an inductive certificate predicate whose proof term is built step by step from the witness (the SubsetSum pattern) over one monolithic `decide +kernel` run; follow `plasmalean-lean-proofs`.
+Define certificate data independently of the search algorithm. Prove a theorem of the form `check c = true → ClaimedProperty (decode c)` using exact, kernel-checkable reasoning. Keep noncomputable analytic definitions behind soundness theorems and the decidable checker in the computational layer. Do not import native execution, GPU output, Python assertions, or an SMT success flag as an unchecked theorem. Close concrete instances without any `decide` (follow `plasmalean-lean-proofs` §2):
 
-Test valid and invalid certificate fixtures, including missing coverage, zero denominators, altered coefficients, omitted tail bounds, and contradictory intervals. Run the affected Lean build and inspect axioms of the public soundness theorem.
+- `kernel_fact` for closed side conditions and finite quantifiers over lists and ranges;
+- `bool_cert` for Boolean checkers; `eval_cert`/`fiv_cert` (and `eval_decide`/`fiv_decide`) for ball, interval, rational and polynomial evaluations; `icc_cert` for sums and quantifiers over integer intervals;
+- the Kronecker and family certificates (`kron_proof`, `kron2_proof`, `kron_lt`, `l1kron_cert`, `fampack_cert`) for KAM-family checks;
+- a new inductive certificate predicate with a `meta` builder (the SubsetSum pattern, `PlasmaLean/SubsetSum.lean`) for a new large format, as `Design/PolygonCoilCubicLineCert.lean` does for coil lines.
+
+Generators validate every emitted bound with exact rational arithmetic before writing Lean (round outward, recompute, assert; see `scripts/gc_kam/lamcell/validate.py`).
+
+Test valid and invalid certificate fixtures, including missing coverage, zero denominators, altered coefficients, omitted tail bounds, and contradictory intervals. Build the affected modules one at a time (≤ 6 GB per process; record CPU, peak memory and private olean size) and inspect axioms of the public soundness theorem. Heavy searches and first builds go to the workstation (`Workstation.md`, `plasmalean-workstation-update`); the workstation's job is a smaller certificate, not a bigger proof.
 
 Report certified quantities and margins, the assumptions supplied by other theorems or law instances, arithmetic/truncation uncertainty, physical-data uncertainty, and remaining model discrepancy. Attach the candidate's identity to the result so a later coil or profile change cannot reuse its certificate accidentally.
+
+**Update the note graph and the plan after every work unit, including failures.** Record declaration names, verification status (default build or on-demand), margins, build cost, remaining barriers and newly ready notes in the originating note and in the registries of `notes/implementation-plan.md`, with a dated §13 entry. A certificate that does not close is an open item with its measured obstruction (resolution, memory, olean size), not evidence that the property fails.

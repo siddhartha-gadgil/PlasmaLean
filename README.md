@@ -81,8 +81,49 @@ PlasmaLean/
 notes/                     Design basis and formalization plans
 progress/                  Dated evidence, task status and slideshow content
 docs/                      Static website, illustrated landing page and slides
-scripts/                   Axiom audit, website generation and regression checks
+scripts/                   Setup, axiom audit, website generation, oracles and workstation pipeline
 ```
+
+## Getting started
+
+On Linux or macOS, the idempotent setup script installs `elan` if needed (the Lean version is the
+one pinned in `lean-toolchain`), fetches the Mathlib cache and builds the default library:
+
+```sh
+scripts/setup.sh --check-axioms     # also run the axiom audit
+scripts/setup.sh --no-build         # only elan and the Mathlib cache
+scripts/setup.sh --python --no-build && source .venv-ws/bin/activate   # Python for oracle scripts
+```
+
+The default build is large (several hundred certificate modules); keep each Lean process within
+about 6 GB and build stale heavy modules one at a time (see
+[scripts/README.md](scripts/README.md) and [Workstation.md](Workstation.md)).
+
+## Working with agents
+
+PlasmaLean develops theory as well as formalizing it while designing stellarators. The agent
+skills (`.agents/skills/`, entry point `plasmalean-develop-theory`) understand a few conventions:
+
+- **`start`**: the first command in a new or unfamiliar checkout. The agent strictly audits the
+  existing code, especially every kernel declaration, records the audited commit and findings, and
+  then summarizes the status and offers ready choices. No new theory is built on an unaudited
+  foundation.
+- **`status`**: goals, questions, the verified frontier, active and blocked notes, ready choices.
+- **`work on G-…`, `Q-…`, `N-…`** or a topic: one coherent work unit on that item (literature,
+  discovery, counterexample search, numerics, proof or Lean formalization), followed by an update of
+  the notes and the plan.
+- **`keep working`**: autonomous mode; the agent repeatedly picks the most valuable ready item and
+  continues until a user decision is needed or nothing useful is ready.
+
+The **research graph** lives in [notes/implementation-plan.md](notes/implementation-plan.md): goals
+(`G-*`), questions (`Q-*`) and research notes (`N-*`, written with
+[notes/note-template.md](notes/note-template.md)) with their dependencies, status and barriers.
+**Lean is the validity gate**: a result counts as established only when a named Lean declaration
+compiles with the standard axioms; sketches, sourced theorems and numerics stay explicitly
+conditional. The workflow guards against two failure modes: **research drift** (long runs that
+lose the motivating question, repeat abandoned approaches or silently change definitions) and
+**validity drift** (a plausible argument, sampled computation or cited result treated as if it
+had been checked under the exact hypotheses needed downstream).
 
 ## Build and audit
 
