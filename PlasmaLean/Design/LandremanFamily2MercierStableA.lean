@@ -5,8 +5,7 @@ Authors: PlasmaLean contributors
 -/
 module
 
-public import PlasmaLean.Design.LandremanFamily2Quad
-public import PlasmaLean.Certificates.EvalCertFIv
+public import PlasmaLean.Design.LandremanFamily2ArcCert
 
 /-!
 # Rejected fixture of the family-2 Mercier checker: the near-axis cell (`λ = 200`)
@@ -17,9 +16,9 @@ the near-axis cell `k ∈ [1/10, 11/100]` at `λ = 200`
 pieces, each a separate declaration so that kernel memory stays bounded (one declaration for
 the whole run peaked at ≈ 6.9 GB): the one-dimensional quadratures (`oned_cert`), the four
 outer-arc surface-integral contributions (evaluation certificates `eval_cert`, see
-`f2_arc_cert`) and the final combination (`fiv_cert`), against literal enclosures produced by
-`#eval` of the same functions (untrusted; the kernel re-checks them). Re-exported by
-`PlasmaLean.Design.LandremanFamily2MercierStable`.
+`f2_arc_cert` in `PlasmaLean.Design.LandremanFamily2ArcCert`) and the final combination
+(`fiv_cert`), against literal enclosures produced by `#eval` of the same functions (untrusted;
+the kernel re-checks them). Re-exported by `PlasmaLean.Design.LandremanFamily2MercierStable`.
 -/
 
 public section
@@ -50,31 +49,6 @@ theorem cellCheck_eq_of_pieces {lam N1 ntip nside N2 : ℕ} {ka kb : ℚ}
   unfold cellCheck outerSum
   simp only [hD]
   rw [h0, h1, h2, h3]
-
-/-- **`f2_arc_cert`**: the evaluation certificate of one outer-arc contribution
-`outerArc … a = O`. The `let`s of `tipCell`, `sideCell` and `arcSC` and the arc selection are
-first unfolded by `simp` (so that every shared subterm is evaluated once by the builder), then
-`eq3 (outerArc …) O = true` is certified by `eval_cert` with the interval operations and the
-fast enclosures of `oned_cert` (plus `FIv.atanFast`, `FIv.sinhSmall`) as kernel leaves. -/
-macro "f2_arc_cert" : tactic => `(tactic| (
-  simp only [outerArc, innerSum, tipCell, sideCell, arcSC, Fin.isValue, Fin.reduceEq,
-    ↓reduceIte]
-  apply eq3_sound
-  eval_cert [
-    PlasmaLean.Certificates.ValidatedQuadrature.FIv.add,
-    PlasmaLean.Certificates.ValidatedQuadrature.FIv.sub,
-    PlasmaLean.Certificates.ValidatedQuadrature.FIv.neg,
-    PlasmaLean.Certificates.ValidatedQuadrature.FIv.mul,
-    PlasmaLean.Certificates.ValidatedQuadrature.FIv.sq,
-    PlasmaLean.Certificates.ValidatedQuadrature.FIv.inv,
-    PlasmaLean.Certificates.ValidatedQuadrature.FIv.sqrt,
-    PlasmaLean.Certificates.ValidatedQuadrature.FIv.ofInt,
-    PlasmaLean.Certificates.ValidatedQuadrature.FIv.ofFrac,
-    PlasmaLean.Certificates.ValidatedQuadrature.FIv.asinFast,
-    PlasmaLean.Certificates.ValidatedQuadrature.FIv.atanFast,
-    PlasmaLean.Certificates.ValidatedQuadrature.FIv.coshSmall,
-    PlasmaLean.Certificates.ValidatedQuadrature.FIv.sinhSmall,
-    PlasmaLean.Certificates.ValidatedQuadrature.FIv.divInt]))
 
 /-- One-dimensional enclosures `F₁, F₁', Z, Z', E, E'` of the near-axis cell. -/
 @[expose] def Dax : FIv × FIv × FIv × FIv × FIv × FIv :=

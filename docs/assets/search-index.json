@@ -1,15 +1,21 @@
 [
   {
     "title": "Progress slideshow",
-    "section": "Evidence updated 2026-10-26 · Passing 3.5 MeV alpha guiding centres confined for all time in an exact stellarator field for every pitch parameter λ ∈ [0, 1/4] (the limit of the passing argument) at one energy and B₀R₀, and over a positive-measure velocity set with |E − 3.5 MeV| ≤ 0.4 eV × λ ∈ [0, 1/16] (Littlejohn model; vacuum model field; heavy certificates on demand, workstation cells spot-checked), and for μ = 0 over B₀R₀ ∈ [67.95, 69.99] T·m; a Mercier-stable finite-β non-axisymmetric band with labels derived from the field, whose ballooning stability is reduced to one pointwise certificate but not yet certified; all-time field-line confinement; 52-transit coil confinement; one exact axisymmetric field with alpha confinement and a hot-core, pressure-budget band for every supplied transport solution (existence not proved), with certified local stability, up to ignition; kernel checks under 6 GB per process; most decide +kernel calls replaced by explicit proof-term certificates; a workstation pipeline in use.",
+    "section": "Evidence updated 2026-10-30 · Organized by the stellarator contract (C1 current-free rotational transform, C2 omnigeneity for thermal ions and electrons, C3 finite-β stability, C4 existence, C5 thermal performance on the same candidate); non-axisymmetry is a consequence, not a goal. Status: C1 and C4 only in vacuum (an exact non-axisymmetric vacuum field with a KAM-certified torus, ι ≈ 0.137, confining field lines for all time); C2 essentially open for thermal particles (weak quasisymmetry defined, Landreman families proved not weakly quasisymmetric; passing 3.5 MeV alphas confined for all time in the vacuum field, Littlejohn model, one species); C3 only on test beds that fail C1 (Landreman family 2 carries positive net toroidal current) and on a Solov'ev tokamak model; C5 only on that tokamak model (one field with a pressure-budget band, transport solutions supplied) and in 0-D. First strict audit done; orbits proved to exist; Landreman family 1 proved a Grad counterexample (infrastructure); every module with a recorded peak is within the 6 GB laptop target after the split of the one 6.7 GB module.",
     "url": "slides.html",
     "text": "progress slideshow presentation latest run evidence vacuum fixture"
   },
   {
-    "title": "Alpha guiding centres confined forever — for every passing pitch parameter λ ∈ [0, 1/4].",
+    "title": "The stellarator contract: C1 and C4 hold only in vacuum; C2 and C5 on a stellarator candidate are essentially open.",
     "section": "Progress slideshow",
     "url": "slides.html#where-we-are",
-    "text": "alpha guiding centres confined forever — for every passing pitch parameter λ ∈ [0, 1/4]. plasmalean is building a lean library for stellarator design. in an exact non-axisymmetric stellarator field, passing 3.5 mev alpha guiding centres are proved confined for all time for every pitch parameter λ ∈ [0, 1/4] (the limit of the passing argument) at one energy and b₀r₀, over a positive-measure set of velocities with |e − 3.5 mev| ≤ 0.4 ev × λ ∈ [0, 1/16], and for a range of b₀r₀ at μ = 0; field lines are confined forever; a coil set confines field lines for 52 transits; a finite-β non-axisymmetric band is mercier-stable (ballooning reduced, not certified); one exact axisymmetric field has proved alpha confinement, a hot core for every supplied transport solution (existence not proved) within a pressure budget, and certified local stability. all-time field-line and passing-alpha guiding-centre confinement in a genuine stellarator field (vacuum model); one axisymmetric field with a pressure-budget band (transport solutions supplied) and certified local stability; large checks rewritten as explicit proof-term certificates; heavy cells computed on a workstation and spot-checked on the laptop."
+    "text": "the stellarator contract: c1 and c4 hold only in vacuum; c2 and c5 on a stellarator candidate are essentially open. plasmalean is building a lean library for stellarator design, now organized by the stellarator contract: c1 current-free rotational transform, c2 omnigeneity for thermal ions and electrons, c3 finite-β mhd stability, c4 existence, c5 thermal performance, all on one candidate. an exact non-axisymmetric vacuum field has a kam-certified torus (ι ≈ 0.137) confining field lines and passing 3.5 mev alpha guiding centres for all time (c1 and c4 in vacuum; alphas are one species, so part of c2 at most). stability (c3) is certified only on test beds that fail c1: landreman family 2 carries positive net toroidal current, and the solov'ev field is a tokamak model. c5 is shown only on that tokamak model: one field with a pressure-budget band, for every supplied transport solution. strict audit done (30 october); orbits proved to exist; weak quasisymmetry defined and the landreman families proved not weakly quasisymmetric; landreman family 1 proved a grad counterexample (infrastructure); 1-d relative-entropy identity and torus hodge identity; large checks rewritten as explicit proof-term certificates; heavy cells computed on a workstation and spot-checked on the laptop."
+  },
+  {
+    "title": "The aim: one candidate satisfying C1–C5 with common witnesses — not merely a non-axisymmetric field.",
+    "section": "Progress slideshow",
+    "url": "slides.html#stellarator-contract",
+    "text": "the aim: one candidate satisfying c1–c5 with common witnesses — not merely a non-axisymmetric field. tokamaks confine plasma with a large toroidal plasma current, which brings current-driven instabilities, disruptions and the need for current drive. an axisymmetric current-free field has ι = 0, so it confines nothing; a stellarator gets its rotational transform from 3-d shaping. non-axisymmetry therefore follows from c1; it is not the target. every result card in this deck is labelled with the clause it serves. plan restructured around the contract on 30 october (user-approved): goals restated, new questions q-18–q-22 on net current, drift and ε_eff, current-free finite β, definitions and thermal neoclassical bounds."
   },
   {
     "title": "Small assumptions. Reusable proofs. One candidate.",
@@ -216,22 +222,28 @@
     "text": "first strict audit: kernel, models and claims checked; overclaims corrected. audited commit cda8bd0 (30 october 2026): every kernel declaration, the twelve model definitions behind the headline results, repository scans and a trace of every headline claim to its lean statement. no critical findings and no false proof. the foundation is now audited under the strict protocol; findings and fixes are recorded in the plan and in notes/audit/."
   },
   {
+    "title": "A Grad counterexample, a quasisymmetry barrier, and a current finding — infrastructure under the contract.",
+    "section": "Progress slideshow",
+    "url": "slides.html#infrastructure-and-barriers",
+    "text": "a grad counterexample, a quasisymmetry barrier, and a current finding — infrastructure under the contract. new theory since the strict audit. under the contract these are mathematical infrastructure or barriers, not design progress: they establish non-symmetry or rule out a route, while c1 and c2 need current-free, omnigenous candidates. all in the default build with standard axioms only. next under the contract: a dommaschk qa vacuum fit (c1 by construction), drift and ε_eff diagnostics on the rational field, and lean definitions for c1 and c2."
+  },
+  {
     "title": "Working with the agents: start, work status, work on, keep working.",
     "section": "Progress slideshow",
     "url": "slides.html#working-with-agents",
     "text": "working with the agents: start, work status, work on, keep working. theory is built as well as formalized while designing stellarators. work is a research graph of goals (g-*), questions (q-*) and notes (n-*); lean is the validity gate, so a result is established only when its named declaration compiles. the plasmalean-develop-theory skill and the research-graph registries are in place; after every stage of progress the agents update notes and slides, regenerate the site, commit and push."
   },
   {
-    "title": "Theory, techniques and a ladder of models — for confinement and for heat.",
+    "title": "Plan of record: the stellarator contract and a research graph of goals, questions and notes.",
     "section": "Progress slideshow",
     "url": "slides.html#implementation-plan",
-    "text": "theory, techniques and a ladder of models — for confinement and for heat. each cycle develops theory, turns theorems into sound certificate checkers, and applies them to the next rung of a model ladder. every rung must prove properties of both kinds: confinement (g1) and temperature held above burn conditions (g2). phases 1–4 met their acceptance criteria in idealized models. the plan's status marks and progress log are updated after each phase."
+    "text": "plan of record: the stellarator contract and a research graph of goals, questions and notes. since 30 october the plan is organized by the contract c1–c5 and a research graph (goals g-*, questions q-*, notes n-*). current-free and omnigenous candidates come first, ahead of further non-axisymmetry results; lean remains the validity gate. phases 1–16 and the model ladder m0–m5 are kept as history in the plan; the research graph maps their results to goals g-1–g-11 and records the strict-audit findings."
   },
   {
     "title": "The next run must leave evidence, not just a promise.",
     "section": "Progress slideshow",
     "url": "slides.html#next-run",
-    "text": "the next run must leave evidence, not just a promise. next: wider energy windows (±3 ev, then ±1%) and a joint b₀r₀ range, now with λ up to 1/4, via the workstation; a new certificate design for the polygon-coil lines and the remaining opaque leaves; a family-2 ballooning certificate and kernel checker; beyond λ = 1/4, trapped alphas and coil-produced all-time confinement (research). the linked run records checked declarations, assumptions and validation. this slideshow is a summary of that evidence, not a new design certificate."
+    "text": "the next run must leave evidence, not just a promise. next, in the contract's priority order: a dommaschk qa vacuum fit with certified tori and ι ≥ ι_min; drift and ε_eff diagnostics on the exact rational field; the net current of the landreman families; lean definitions for c1 and c2 with the sanity triad; then a current-free finite-β equilibrium and thermal neoclassical bounds for c5. the linked run records checked declarations, assumptions and validation. this slideshow is a summary of that evidence, not a new design certificate."
   },
   {
     "title": "Stellarator concepts",
@@ -487,9 +499,9 @@
   },
   {
     "title": "G5 · Regular compact pressure component is a torus",
-    "section": "Geometry & fields · Planning only — no Lean code written",
+    "section": "Geometry & fields · Partially implemented — one example, not the general theorem: for Landreman family 1 every level set ψ = c ∈ (0, δ] is homeomorphic to Circle × Circle (torusMap, inside family1_grad_counterexample).",
     "url": "geometry-and-fields.html",
-    "text": "g5 regular compact pressure component is a torus theorem backlog planning only — no lean code written"
+    "text": "g5 regular compact pressure component is a torus theorem backlog partially implemented — one example, not the general theorem: for landreman family 1 every level set ψ = c ∈ (0, δ] is homeomorphic to circle × circle (torusmap, inside family1_grad_counterexample)."
   },
   {
     "title": "G6 · Field-line flow/return map preserves flux measure",
@@ -499,9 +511,9 @@
   },
   {
     "title": "G7 · Quasisymmetry Fourier characterization",
-    "section": "Geometry & fields · Planning only — no Lean code written",
+    "section": "Geometry & fields · Partially implemented — a different characterization: weak quasisymmetry (WeakQS, qsDefect, qsDefect_eq_zero_iff, axis lemma); the Landreman families are proved not weakly quasisymmetric. The Fourier characterization and omnigeneity (C2) remain open.",
     "url": "geometry-and-fields.html",
-    "text": "g7 quasisymmetry fourier characterization theorem backlog planning only — no lean code written"
+    "text": "g7 quasisymmetry fourier characterization theorem backlog partially implemented — a different characterization: weak quasisymmetry (weakqs, qsdefect, qsdefect_eq_zero_iff, axis lemma); the landreman families are proved not weakly quasisymmetric. the fourier characterization and omnigeneity (c2) remain open."
   },
   {
     "title": "G8 · Near-axis recursion with remainder bounds",
@@ -577,9 +589,9 @@
   },
   {
     "title": "E1 · Force balance implies tangency; force-free/vacuum distinction",
-    "section": "Models & equilibrium · Lean verified — exact Solov'ev, helical, validated slab, and Landreman families 1 (zero shear) and 2 (proved shear) finite-β non-axisymmetric equilibria satisfying the kernel ForceBalance law with actual Ampère current.",
+    "section": "Models & equilibrium · Lean verified — exact Solov'ev (a tokamak model), helical, validated slab, and Landreman families 1 (zero shear) and 2 (proved shear) finite-β non-axisymmetric equilibria satisfy the kernel ForceBalance law with actual Ampère current and a real pressure gradient (Design/ForceBalanceGradient); family 1 is a Grad counterexample (family1_grad_counterexample, infrastructure). Under the contract both Landreman families carry net toroidal current, so they fail C1.",
     "url": "plasma-models-and-equilibrium.html",
-    "text": "e1 force balance implies tangency; force-free/vacuum distinction theorem backlog lean verified — exact solov'ev, helical, validated slab, and landreman families 1 (zero shear) and 2 (proved shear) finite-β non-axisymmetric equilibria satisfying the kernel forcebalance law with actual ampère current."
+    "text": "e1 force balance implies tangency; force-free/vacuum distinction theorem backlog lean verified — exact solov'ev (a tokamak model), helical, validated slab, and landreman families 1 (zero shear) and 2 (proved shear) finite-β non-axisymmetric equilibria satisfy the kernel forcebalance law with actual ampère current and a real pressure gradient (design/forcebalancegradient); family 1 is a grad counterexample (family1_grad_counterexample, infrastructure). under the contract both landreman families carry net toroidal current, so they fail c1."
   },
   {
     "title": "E2 · MHD conservation identities on smooth closed domains",
@@ -607,9 +619,9 @@
   },
   {
     "title": "E6 · Formalize a sourced piecewise smooth nonaxisymmetric existence theorem",
-    "section": "Models & equilibrium · Planning only — no Lean code written",
+    "section": "Models & equilibrium · Partially implemented — no piecewise-smooth existence theorem; the sourced smooth explicit Landreman families are formalized, and family1_grad_counterexample proves nested toroidal level sets, non-constant pressure and no continuous Euclidean symmetry (C4 test bed; carries net current).",
     "url": "plasma-models-and-equilibrium.html",
-    "text": "e6 formalize a sourced piecewise smooth nonaxisymmetric existence theorem theorem backlog planning only — no lean code written"
+    "text": "e6 formalize a sourced piecewise smooth nonaxisymmetric existence theorem theorem backlog partially implemented — no piecewise-smooth existence theorem; the sourced smooth explicit landreman families are formalized, and family1_grad_counterexample proves nested toroidal level sets, non-constant pressure and no continuous euclidean symmetry (c4 test bed; carries net current)."
   },
   {
     "title": "E7 · Certified finite-pressure free-boundary equilibrium for external coils",
@@ -721,15 +733,15 @@
   },
   {
     "title": "S6 · Source-specific local stability criteria",
-    "section": "MHD stability · Partially implemented — Suydam both ways; Mercier certified for the reactor Solov'ev equilibrium and on a band k ∈ [0.7, 0.9] of Landreman family 2 at λ = 200 (finite-β non-axisymmetric, low β; flux labels derived from the field; Mercier formula supplied); helical equilibrium and family 1 proved Mercier-unstable.",
+    "section": "MHD stability · Partially implemented — Suydam both ways; Mercier certified for the reactor Solov'ev equilibrium (tokamak model) and on a band k ∈ [0.7, 0.9] of Landreman family 2 at λ = 200 (family2_mercier_stable_derived; Mercier formula supplied); helical equilibrium and family 1 proved Mercier-unstable. C3 status: family 2 carries net toroidal current (fails C1), so nothing yet for a current-free candidate.",
     "url": "mhd-stability.html",
-    "text": "s6 source-specific local stability criteria theorem backlog partially implemented — suydam both ways; mercier certified for the reactor solov'ev equilibrium and on a band k ∈ [0.7, 0.9] of landreman family 2 at λ = 200 (finite-β non-axisymmetric, low β; flux labels derived from the field; mercier formula supplied); helical equilibrium and family 1 proved mercier-unstable."
+    "text": "s6 source-specific local stability criteria theorem backlog partially implemented — suydam both ways; mercier certified for the reactor solov'ev equilibrium (tokamak model) and on a band k ∈ [0.7, 0.9] of landreman family 2 at λ = 200 (family2_mercier_stable_derived; mercier formula supplied); helical equilibrium and family 1 proved mercier-unstable. c3 status: family 2 carries net toroidal current (fails c1), so nothing yet for a current-free candidate."
   },
   {
     "title": "S7 · All-mode certified bound for a restricted useful configuration",
-    "section": "MHD stability · Partially implemented — screw-pinch Newcomb all modes m ≠ 0; ideal ballooning of the reactor Solov'ev equilibrium on every flux surface for every field line and θ_k (reduction supplied); a general 3-D surface ballooning framework with exact secular part, reducing family-2 ballooning to one pointwise certificate (numerically stable, not certified); certified Mercier; no 3-D all-mode certificate.",
+    "section": "MHD stability · Partially implemented — screw-pinch Newcomb stability for every mode m ≠ 0 (Newcomb's reduced form supplied; with radial balance, stable_all_modes_equilibrium); ideal ballooning of the reactor Solov'ev equilibrium (tokamak model) on every flux surface (reduction supplied); family-2 ballooning reduced to one pointwise certificate (numerically stable, not certified); no 3-D all-mode certificate.",
     "url": "mhd-stability.html",
-    "text": "s7 all-mode certified bound for a restricted useful configuration theorem backlog partially implemented — screw-pinch newcomb all modes m ≠ 0; ideal ballooning of the reactor solov'ev equilibrium on every flux surface for every field line and θ_k (reduction supplied); a general 3-d surface ballooning framework with exact secular part, reducing family-2 ballooning to one pointwise certificate (numerically stable, not certified); certified mercier; no 3-d all-mode certificate."
+    "text": "s7 all-mode certified bound for a restricted useful configuration theorem backlog partially implemented — screw-pinch newcomb stability for every mode m ≠ 0 (newcomb's reduced form supplied; with radial balance, stable_all_modes_equilibrium); ideal ballooning of the reactor solov'ev equilibrium (tokamak model) on every flux surface (reduction supplied); family-2 ballooning reduced to one pointwise certificate (numerically stable, not certified); no 3-d all-mode certificate."
   },
   {
     "title": "S8 · Free-boundary certificate with coils/vacuum/wall",
@@ -817,21 +829,21 @@
   },
   {
     "title": "K3 · Approximate-invariant finite-time confinement",
-    "section": "Particles & transport · Partially implemented — 3.5 MeV alphas confined for all time in an exact Solov'ev equilibrium (full orbits); passing alpha guiding centres confined for all time in an exact stellarator field (Littlejohn model, vacuum model field): μ = 0 over B₀R₀ ∈ [67.95, 69.99] T·m, every λ ∈ [0, 1/4] at one energy and B₀R₀ (five cells, on-demand; workstation cells spot-checked), and a positive-measure velocity set with |E − 3.5 MeV| ≤ 0.4 eV × λ ∈ [0, 1/16] (on-demand build); near-QA passing alphas 0.19 s; trapped alphas open.",
+    "section": "Particles & transport · Partially implemented — 3.5 MeV alpha orbits in an exact Solov'ev field (a tokamak model) exist and are all confined for all time (reactor_alpha_born_confined); passing alpha guiding centres confined for all time in an exact vacuum stellarator field (Littlejohn model): μ = 0 over B₀R₀ ∈ [67.95, 69.99] T·m, every λ ∈ [0, 1/4] at one energy and B₀R₀ (on-demand), a ±0.4 eV × λ ∈ [0, 1/16] window (on-demand); near-QA passing alphas 0.19 s for orbits off the axis, with existence on the full horizon only for a band of births. One species, mostly passing: part of C2 at most; trapped alphas open.",
     "url": "particles-and-transport.html",
-    "text": "k3 approximate-invariant finite-time confinement theorem backlog partially implemented — 3.5 mev alphas confined for all time in an exact solov'ev equilibrium (full orbits); passing alpha guiding centres confined for all time in an exact stellarator field (littlejohn model, vacuum model field): μ = 0 over b₀r₀ ∈ [67.95, 69.99] t·m, every λ ∈ [0, 1/4] at one energy and b₀r₀ (five cells, on-demand; workstation cells spot-checked), and a positive-measure velocity set with |e − 3.5 mev| ≤ 0.4 ev × λ ∈ [0, 1/16] (on-demand build); near-qa passing alphas 0.19 s; trapped alphas open."
+    "text": "k3 approximate-invariant finite-time confinement theorem backlog partially implemented — 3.5 mev alpha orbits in an exact solov'ev field (a tokamak model) exist and are all confined for all time (reactor_alpha_born_confined); passing alpha guiding centres confined for all time in an exact vacuum stellarator field (littlejohn model): μ = 0 over b₀r₀ ∈ [67.95, 69.99] t·m, every λ ∈ [0, 1/4] at one energy and b₀r₀ (on-demand), a ±0.4 ev × λ ∈ [0, 1/16] window (on-demand); near-qa passing alphas 0.19 s for orbits off the axis, with existence on the full horizon only for a band of births. one species, mostly passing: part of c2 at most; trapped alphas open."
   },
   {
     "title": "K4 · Omnigeneity/action relation in a specified class",
-    "section": "Particles & transport · Planning only — no Lean code written",
+    "section": "Particles & transport · Planning only — no Lean code written; this is now the C2 priority (omnigeneity, bounce-averaged drift, ε_eff for thermal ions and electrons; specified in the model contracts, Q-21). Adjacent compiled: WeakQS, boozerGC_trapped.",
     "url": "particles-and-transport.html",
-    "text": "k4 omnigeneity/action relation in a specified class theorem backlog planning only — no lean code written"
+    "text": "k4 omnigeneity/action relation in a specified class theorem backlog planning only — no lean code written; this is now the c2 priority (omnigeneity, bounce-averaged drift, ε_eff for thermal ions and electrons; specified in the model contracts, q-21). adjacent compiled: weakqs, boozergc_trapped."
   },
   {
     "title": "K5 · Certified finite-time orbit bundle",
-    "section": "Particles & transport · Planning only — no Lean code written",
+    "section": "Particles & transport · Partially implemented — finite-horizon certified results exist: field lines for 95 transits (rational field) and 52 transits (coil field, existence assumed), near-QA passing alphas for 0.19 s; no certified orbit bundle with reduction error.",
     "url": "particles-and-transport.html",
-    "text": "k5 certified finite-time orbit bundle theorem backlog planning only — no lean code written"
+    "text": "k5 certified finite-time orbit bundle theorem backlog partially implemented — finite-horizon certified results exist: field lines for 95 transits (rational field) and 52 transits (coil field, existence assumed), near-qa passing alphas for 0.19 s; no certified orbit bundle with reduction error."
   },
   {
     "title": "K6 · Drift-kinetic conservation, solvability, and flux bounds",
@@ -967,9 +979,9 @@
   },
   {
     "title": "N8 · Invariant-torus and finite-time orbit certificates",
-    "section": "Verified numerics · Planning only — no Lean code written",
+    "section": "Verified numerics · Lean verified (vacuum model field) — KAM invariant-torus certificates (torusA_exact, rationalStellarator_confined_forever_exists) and guiding-centre tori are compiled; finite-time field-line certificates (95 and 52 transits); the coil-field torus is blocked (Q-2).",
     "url": "verified-numerics.html",
-    "text": "n8 invariant-torus and finite-time orbit certificates theorem backlog planning only — no lean code written"
+    "text": "n8 invariant-torus and finite-time orbit certificates theorem backlog lean verified (vacuum model field) — kam invariant-torus certificates (torusa_exact, rationalstellarator_confined_forever_exists) and guiding-centre tori are compiled; finite-time field-line certificates (95 and 52 transits); the coil-field torus is blocked (q-2)."
   },
   {
     "title": "N9 · Certificate composition over correlated uncertainty",
@@ -1057,9 +1069,9 @@
   },
   {
     "title": "D5 · Coil perturbation bounds in C^k norms",
-    "section": "Coils & design · Partially implemented — full-parameter position/tangent errors imply a C⁰ filament-field error; independent current errors compose with the same actual coils. Rigid-pose errors supply C¹ curve budgets; Cᵏ field-error bounds for k≥1 remain pending.",
+    "section": "Coils & design · Partially implemented — full-parameter position/tangent errors imply a C⁰ filament-field error; current errors compose with the same coils; a concrete polygonal coil set confines field lines for 52 transits (coil_stellarator_confined_concrete_N, field-line existence assumed); the coil-field KAM certificate is vacuous (Q-2); Cᵏ field-error bounds for k ≥ 1 pending.",
     "url": "coils-and-design.html",
-    "text": "d5 coil perturbation bounds in c^k norms theorem backlog partially implemented — full-parameter position/tangent errors imply a c⁰ filament-field error; independent current errors compose with the same actual coils. rigid-pose errors supply c¹ curve budgets; cᵏ field-error bounds for k≥1 remain pending."
+    "text": "d5 coil perturbation bounds in c^k norms theorem backlog partially implemented — full-parameter position/tangent errors imply a c⁰ filament-field error; current errors compose with the same coils; a concrete polygonal coil set confines field lines for 52 transits (coil_stellarator_confined_concrete_n, field-line existence assumed); the coil-field kam certificate is vacuous (q-2); cᵏ field-error bounds for k ≥ 1 pending."
   },
   {
     "title": "D6 · Certified inverse field reconstruction",
@@ -1153,9 +1165,9 @@
   },
   {
     "title": "VD4 · Establish the declared confinement property",
-    "section": "Vacuum demonstrator · Partially implemented — residence bound for the probe; all-time field-line and particle confinement proved in analytic symmetric equilibria, but not for a coil-produced field.",
+    "section": "Vacuum demonstrator · Partially implemented — residence bound for the probe; all-time field-line confinement in the exact non-axisymmetric rational vacuum field (verified KAM; the C1 witness in vacuum, ι ≈ 0.137); 52 transits for a coil-produced field; coil-produced all-time confinement blocked (Q-2).",
     "url": "vacuum-demonstrator.html",
-    "text": "vd4 establish the declared confinement property work packages and progress partially implemented — residence bound for the probe; all-time field-line and particle confinement proved in analytic symmetric equilibria, but not for a coil-produced field."
+    "text": "vd4 establish the declared confinement property work packages and progress partially implemented — residence bound for the probe; all-time field-line confinement in the exact non-axisymmetric rational vacuum field (verified kam; the c1 witness in vacuum, ι ≈ 0.137); 52 transits for a coil-produced field; coil-produced all-time confinement blocked (q-2)."
   },
   {
     "title": "VD5 · Qualify physical operation",
@@ -1417,27 +1429,27 @@
   },
   {
     "title": "P2: continuous vacuum candidate · V",
-    "section": "Roadmap · Partially implemented — two-loop fixture with derivatives, error budgets, clearance and proved Maxwell identities; finite-conductor and nonaxisymmetric coil confinement certificates remain pending.",
+    "section": "Roadmap · Partially implemented — two-loop fixture with derivatives, error budgets, clearance and Maxwell identities; an exact non-axisymmetric vacuum field with all-time field-line confinement; a polygonal coil set with 52 certified transits; finite conductors pending.",
     "url": "roadmap.html",
-    "text": "p2: continuous vacuum candidate v milestones and evidence gates partially implemented — two-loop fixture with derivatives, error budgets, clearance and proved maxwell identities; finite-conductor and nonaxisymmetric coil confinement certificates remain pending."
+    "text": "p2: continuous vacuum candidate v milestones and evidence gates partially implemented — two-loop fixture with derivatives, error budgets, clearance and maxwell identities; an exact non-axisymmetric vacuum field with all-time field-line confinement; a polygonal coil set with 52 certified transits; finite conductors pending."
   },
   {
     "title": "P3: confined reduced orbits · F/V/R",
-    "section": "Roadmap · Partially implemented — all-time full-orbit confinement of 3.5 MeV alphas in an exact, realistically scaled Solov'ev equilibrium; helical symmetric confinement; near-axis QA guiding-centre trapping for 0.8 ms. Not for a coil-produced stellarator.",
+    "section": "Roadmap · Partially implemented — passing 3.5 MeV alpha guiding centres confined for all time in the exact vacuum stellarator field (Littlejohn model); full-orbit alphas in a Solov'ev tokamak model (orbits proved to exist); near-QA passing alphas 0.19 s off the axis. Contract: this gate feeds C2, which needs thermal ions and electrons (open).",
     "url": "roadmap.html",
-    "text": "p3: confined reduced orbits f/v/r milestones and evidence gates partially implemented — all-time full-orbit confinement of 3.5 mev alphas in an exact, realistically scaled solov'ev equilibrium; helical symmetric confinement; near-axis qa guiding-centre trapping for 0.8 ms. not for a coil-produced stellarator."
+    "text": "p3: confined reduced orbits f/v/r milestones and evidence gates partially implemented — passing 3.5 mev alpha guiding centres confined for all time in the exact vacuum stellarator field (littlejohn model); full-orbit alphas in a solov'ev tokamak model (orbits proved to exist); near-qa passing alphas 0.19 s off the axis. contract: this gate feeds c2, which needs thermal ions and electrons (open)."
   },
   {
     "title": "P4: finite-pressure equilibrium · F/V/R",
-    "section": "Roadmap · Partially implemented — exact smooth Solov'ev (toroidal, axisymmetric) and helical (straight, nonaxisymmetric) equilibria satisfy the kernel law at realistic 5 T / few-percent β; no coil or free-boundary matching.",
+    "section": "Roadmap · Partially implemented — exact Solov'ev (tokamak model), helical and Landreman families 1 and 2 (finite β, non-axisymmetric, net toroidal current) satisfy the kernel law; contract C4 at finite β for a current-free equilibrium is open (Q-20).",
     "url": "roadmap.html",
-    "text": "p4: finite-pressure equilibrium f/v/r milestones and evidence gates partially implemented — exact smooth solov'ev (toroidal, axisymmetric) and helical (straight, nonaxisymmetric) equilibria satisfy the kernel law at realistic 5 t / few-percent β; no coil or free-boundary matching."
+    "text": "p4: finite-pressure equilibrium f/v/r milestones and evidence gates partially implemented — exact solov'ev (tokamak model), helical and landreman families 1 and 2 (finite β, non-axisymmetric, net toroidal current) satisfy the kernel law; contract c4 at finite β for a current-free equilibrium is open (q-20)."
   },
   {
     "title": "P5: all-mode MHD result · F/V/R",
-    "section": "Roadmap · Partially implemented — Suydam both directions; screw-pinch Newcomb δW ≥ 0 for all modes with 1 ≤ |m| ≤ 6 (reduction supplied, wall at edge); no all-mode result for a 3-D equilibrium.",
+    "section": "Roadmap · Partially implemented — Suydam both directions; screw-pinch Newcomb δW ≥ 0 for every mode m ≠ 0 (reduced form supplied, wall at edge); Mercier and ballooning (reductions supplied) only on C1-failing test beds; no all-mode 3-D result (C3).",
     "url": "roadmap.html",
-    "text": "p5: all-mode mhd result f/v/r milestones and evidence gates partially implemented — suydam both directions; screw-pinch newcomb δw ≥ 0 for all modes with 1 ≤ |m| ≤ 6 (reduction supplied, wall at edge); no all-mode result for a 3-d equilibrium."
+    "text": "p5: all-mode mhd result f/v/r milestones and evidence gates partially implemented — suydam both directions; screw-pinch newcomb δw ≥ 0 for every mode m ≠ 0 (reduced form supplied, wall at edge); mercier and ballooning (reductions supplied) only on c1-failing test beds; no all-mode 3-d result (c3)."
   },
   {
     "title": "P6: kinetic and exhaust closure · F/V/R",
@@ -1513,9 +1525,9 @@
   },
   {
     "title": "R1 · R1. Constructive three-dimensional finite-pressure equilibrium",
-    "section": "Roadmap · Planning only — no Lean code written",
+    "section": "Roadmap · Partially implemented — explicit smooth finite-β non-axisymmetric Landreman families (not constructive in a design class; they carry net toroidal current, so not current-free).",
     "url": "roadmap.html",
-    "text": "r1 r1. constructive three-dimensional finite-pressure equilibrium r1. constructive three-dimensional finite-pressure equilibrium planning only — no lean code written"
+    "text": "r1 r1. constructive three-dimensional finite-pressure equilibrium r1. constructive three-dimensional finite-pressure equilibrium partially implemented — explicit smooth finite-β non-axisymmetric landreman families (not constructive in a design class; they carry net toroidal current, so not current-free)."
   },
   {
     "title": "R2 · R2. All-mode stability in a nonaxisymmetric practical class",
@@ -1531,9 +1543,9 @@
   },
   {
     "title": "R4 · R4. Quantitative imperfect-symmetry confinement and transport",
-    "section": "Roadmap · Planning only — no Lean code written",
+    "section": "Roadmap · Partially implemented — near-QA passing alphas confined for 0.19 s (Boozer GC model, off the axis); weak-QS defect defined; no transport bound from imperfect symmetry.",
     "url": "roadmap.html",
-    "text": "r4 r4. quantitative imperfect-symmetry confinement and transport r4. quantitative imperfect-symmetry confinement and transport planning only — no lean code written"
+    "text": "r4 r4. quantitative imperfect-symmetry confinement and transport r4. quantitative imperfect-symmetry confinement and transport partially implemented — near-qa passing alphas confined for 0.19 s (boozer gc model, off the axis); weak-qs defect defined; no transport bound from imperfect symmetry."
   },
   {
     "title": "R5 · R5. Geometry-based kinetic stability and heat-flux bounds",
@@ -1555,9 +1567,9 @@
   },
   {
     "title": "R8 · R8. Scalable proof certificates for practical resolution",
-    "section": "Roadmap · Planning only — no Lean code written",
+    "section": "Roadmap · Partially implemented — proof-term certificate tools (Kronecker, Boolean, digit-sum, evaluation certificates) replace most decide +kernel checks; every module with a recorded peak is within 6 GB per process.",
     "url": "roadmap.html",
-    "text": "r8 r8. scalable proof certificates for practical resolution r8. scalable proof certificates for practical resolution planning only — no lean code written"
+    "text": "r8 r8. scalable proof certificates for practical resolution r8. scalable proof certificates for practical resolution partially implemented — proof-term certificate tools (kronecker, boolean, digit-sum, evaluation certificates) replace most decide +kernel checks; every module with a recorded peak is within 6 gb per process."
   },
   {
     "title": "Implementation plan",
@@ -2101,9 +2113,9 @@
   },
   {
     "title": "M0 · Exact symmetric equilibria: slab, screw pinch, Solov'ev, helical",
-    "section": "Implementation plan · Lean verified — exact slab, screw-pinch, Solov'ev and helical equilibria with kernel force balance, all-time field-line/orbit confinement, Suydam both ways and screw-pinch Newcomb for 1 ≤ |m| ≤ 6 (idealized symmetric models).",
+    "section": "Implementation plan · Lean verified — exact slab, screw-pinch, Solov'ev and helical equilibria with kernel force balance, all-time field-line/orbit confinement, Suydam both ways and screw-pinch Newcomb stability for every m ≠ 0 (reduced form supplied; idealized symmetric models).",
     "url": "implementation-plan.html",
-    "text": "m0 exact symmetric equilibria: slab, screw pinch, solov'ev, helical 5. model ladder (each rung proves characteristics under both g1 and g2) lean verified — exact slab, screw-pinch, solov'ev and helical equilibria with kernel force balance, all-time field-line/orbit confinement, suydam both ways and screw-pinch newcomb for 1 ≤ |m| ≤ 6 (idealized symmetric models)."
+    "text": "m0 exact symmetric equilibria: slab, screw pinch, solov'ev, helical 5. model ladder (each rung proves characteristics under both g1 and g2) lean verified — exact slab, screw-pinch, solov'ev and helical equilibria with kernel force balance, all-time field-line/orbit confinement, suydam both ways and screw-pinch newcomb stability for every m ≠ 0 (reduced form supplied; idealized symmetric models)."
   },
   {
     "title": "M1 · 0-D burning D-T plasma at reactor scale (n ≈ 10²⁰ m⁻³, B = 5 T, V ≈ 1000 m³)",
@@ -2113,9 +2125,9 @@
   },
   {
     "title": "M2 · 1-D radial transport on the exact Solov'ev and helical geometries (V′(ψ) taken from the M0 fields), with χ ∈ [χ_min, χ_max] supplied",
-    "section": "Implementation plan · Lean verified (idealized) — one field with a pressure-budget band on the actual Solov'ev flux geometry (coarea step derived in the _coarea variant): driven, high-Q (Q≈40) and ignited versions; for every supplied classical transport solution (existence not proved) two-sided bands and pressure ≤ p_eq + offset (a budget, not equality); earlier cylinder/helical barriers.",
+    "section": "Implementation plan · Lean verified (idealized, tokamak model) — one field with a pressure-budget band on the actual Solov'ev flux geometry: driven, high-Q (Q≈40) and ignited versions; for every supplied classical transport solution (existence not proved) two-sided bands and pressure ≤ p_eq + offset (a budget, not equality). Contract C5 only on a tokamak model.",
     "url": "implementation-plan.html",
-    "text": "m2 1-d radial transport on the exact solov'ev and helical geometries (v′(ψ) taken from the m0 fields), with χ ∈ [χ_min, χ_max] supplied 5. model ladder (each rung proves characteristics under both g1 and g2) lean verified (idealized) — one field with a pressure-budget band on the actual solov'ev flux geometry (coarea step derived in the _coarea variant): driven, high-q (q≈40) and ignited versions; for every supplied classical transport solution (existence not proved) two-sided bands and pressure ≤ p_eq + offset (a budget, not equality); earlier cylinder/helical barriers."
+    "text": "m2 1-d radial transport on the exact solov'ev and helical geometries (v′(ψ) taken from the m0 fields), with χ ∈ [χ_min, χ_max] supplied 5. model ladder (each rung proves characteristics under both g1 and g2) lean verified (idealized, tokamak model) — one field with a pressure-budget band on the actual solov'ev flux geometry: driven, high-q (q≈40) and ignited versions; for every supplied classical transport solution (existence not proved) two-sided bands and pressure ≤ p_eq + offset (a budget, not equality). contract c5 only on a tokamak model."
   },
   {
     "title": "M3 · Validated (radii-polynomial) toroidal Grad–Shafranov equilibrium with realistic non-polynomial profiles; Newcomb for all m",
@@ -2125,9 +2137,9 @@
   },
   {
     "title": "M4 · Near-axis quasisymmetric stellarator (Garren–Boozer to 2nd order, explicit ε_QS)",
-    "section": "Implementation plan · Partially implemented — passing 3.5 MeV alphas in reactor-scale near-axis QA stay inside for 0.19 s (≈ half the slowing-down time; Boozer GC model); trapped alphas: single well and non-resonant bounce-sum lemmas, kick form assumed.",
+    "section": "Implementation plan · Partially implemented — passing 3.5 MeV alphas in reactor-scale near-axis QA stay inside for 0.19 s (Boozer GC model, orbits off the axis); such orbits exist on the full horizon for a band of births (0.05 s) and on ≈ 1.5 μs near the axis; trapped alphas open.",
     "url": "implementation-plan.html",
-    "text": "m4 near-axis quasisymmetric stellarator (garren–boozer to 2nd order, explicit ε_qs) 5. model ladder (each rung proves characteristics under both g1 and g2) partially implemented — passing 3.5 mev alphas in reactor-scale near-axis qa stay inside for 0.19 s (≈ half the slowing-down time; boozer gc model); trapped alphas: single well and non-resonant bounce-sum lemmas, kick form assumed."
+    "text": "m4 near-axis quasisymmetric stellarator (garren–boozer to 2nd order, explicit ε_qs) 5. model ladder (each rung proves characteristics under both g1 and g2) partially implemented — passing 3.5 mev alphas in reactor-scale near-axis qa stay inside for 0.19 s (boozer gc model, orbits off the axis); such orbits exist on the full horizon for a band of births (0.05 s) and on ≈ 1.5 μs near the axis; trapped alphas open."
   },
   {
     "title": "M5 · Coil-produced 3-D field (filament Biot–Savart, existing) plus a DESC-validated finite-β equilibrium",
@@ -2166,6 +2178,24 @@
     "text": "geometry, equilibrium, and symmetry literature"
   },
   {
+    "title": "Grad conjecture counterexamples and quasisymmetry (2026 sources)",
+    "section": "Literature",
+    "url": "literature.html#grad-conjecture-counterexamples-and-quasisymmetry-2026-sources",
+    "text": "grad conjecture counterexamples and quasisymmetry (2026 sources) literature"
+  },
+  {
+    "title": "Omnigeneity and thermal-particle transport (contract clause C2)",
+    "section": "Literature",
+    "url": "literature.html#omnigeneity-and-thermal-particle-transport-contract-clause-c2",
+    "text": "omnigeneity and thermal-particle transport (contract clause c2) literature"
+  },
+  {
+    "title": "Evolution, regularity, and turbulence proxies",
+    "section": "Literature",
+    "url": "literature.html#evolution-regularity-and-turbulence-proxies",
+    "text": "evolution, regularity, and turbulence proxies literature"
+  },
+  {
     "title": "Stability and kinetic theory",
     "section": "Literature",
     "url": "literature.html#stability-and-kinetic-theory",
@@ -2197,15 +2227,15 @@
   },
   {
     "title": "Force-balance tangency and a vacuum/force-free distinction · Freidberg14; [02](02-plasma-models-and-equilibrium.md)",
-    "section": "Literature · Planning only — no Lean code written",
+    "section": "Literature · Lean verified — kernel ForceBalance and VacuumField with tangency and consistent slab, Solov'ev, helical and Landreman instances (see model-contracts I1–I2 and E1).",
     "url": "literature.html",
-    "text": "force-balance tangency and a vacuum/force-free distinction freidberg14; [02](02-plasma-models-and-equilibrium.md) reading order and theorem targets planning only — no lean code written"
+    "text": "force-balance tangency and a vacuum/force-free distinction freidberg14; [02](02-plasma-models-and-equilibrium.md) reading order and theorem targets lean verified — kernel forcebalance and vacuumfield with tangency and consistent slab, solov'ev, helical and landreman instances (see model-contracts i1–i2 and e1)."
   },
   {
     "title": "Static fixed-boundary quadratic energy · BFKK58; Freidberg14; [03](03-mhd-stability.md)",
-    "section": "Literature · Planning only — no Lean code written",
+    "section": "Literature · Partially implemented — abstract energy conservation and coercivity for symmetric forms (S1); no MHD boundary terms or operator domain.",
     "url": "literature.html",
-    "text": "static fixed-boundary quadratic energy bfkk58; freidberg14; [03](03-mhd-stability.md) reading order and theorem targets planning only — no lean code written"
+    "text": "static fixed-boundary quadratic energy bfkk58; freidberg14; [03](03-mhd-stability.md) reading order and theorem targets partially implemented — abstract energy conservation and coercivity for symmetric forms (s1); no mhd boundary terms or operator domain."
   },
   {
     "title": "Boozer/near-axis coefficient identities · Boozer81; GB91-field; GB91-existence; LS19 Appendix A",
@@ -2215,21 +2245,21 @@
   },
   {
     "title": "Invariant barrier or approximate-invariant loss time · BKM20; Littlejohn83; Helander14; [04](04-particles-and-transport.md)",
-    "section": "Literature · Planning only — no Lean code written",
+    "section": "Literature · Lean verified — invariant barriers from the KAM torus (field lines and passing alpha guiding centres, Littlejohn model) and finite-horizon near-QA bounds (0.19 s); trapped particles open.",
     "url": "literature.html",
-    "text": "invariant barrier or approximate-invariant loss time bkm20; littlejohn83; helander14; [04](04-particles-and-transport.md) reading order and theorem targets planning only — no lean code written"
+    "text": "invariant barrier or approximate-invariant loss time bkm20; littlejohn83; helander14; [04](04-particles-and-transport.md) reading order and theorem targets lean verified — invariant barriers from the kam torus (field lines and passing alpha guiding centres, littlejohn model) and finite-horizon near-qa bounds (0.19 s); trapped particles open."
   },
   {
     "title": "Exact retained-mode / continuous-clearance checker · Rump10; [05](05-verified-numerics.md)",
-    "section": "Literature · Planning only — no Lean code written",
+    "section": "Literature · Partially implemented — exact interval and polynomial checkers and continuous Lipschitz-cover clearance; infinite tails pending.",
     "url": "literature.html",
-    "text": "exact retained-mode / continuous-clearance checker rump10; [05](05-verified-numerics.md) reading order and theorem targets planning only — no lean code written"
+    "text": "exact retained-mode / continuous-clearance checker rump10; [05](05-verified-numerics.md) reading order and theorem targets partially implemented — exact interval and polynomial checkers and continuous lipschitz-cover clearance; infinite tails pending."
   },
   {
     "title": "Validated equilibrium or invariant torus · ELPS; Parameterization16; NPW19",
-    "section": "Literature · Planning only — no Lean code written",
+    "section": "Literature · Lean verified — validated slab equilibrium and an exact KAM invariant torus (rationalStellarator_confined_forever_exists, vacuum model field); toroidal validated equilibrium pending.",
     "url": "literature.html",
-    "text": "validated equilibrium or invariant torus elps; parameterization16; npw19 reading order and theorem targets planning only — no lean code written"
+    "text": "validated equilibrium or invariant torus elps; parameterization16; npw19 reading order and theorem targets lean verified — validated slab equilibrium and an exact kam invariant torus (rationalstellarator_confined_forever_exists, vacuum model field); toroidal validated equilibrium pending."
   },
   {
     "title": "Coils producing the intended field · REGCOIL17; Coils22; DESC23; [06](06-coils-and-design.md)",
@@ -2239,9 +2269,9 @@
   },
   {
     "title": "Slab heat, ribbon strain, and dump-energy margins · DEMO18; REBCO25; Ciarlet88; [07](07-materials-and-engineering.md)",
-    "section": "Literature · Planning only — no Lean code written",
+    "section": "Literature · Partially implemented — exact slab heat bound with the synthetic 998/45 K margin; ribbon strain and dump energy pending.",
     "url": "literature.html",
-    "text": "slab heat, ribbon strain, and dump-energy margins demo18; rebco25; ciarlet88; [07](07-materials-and-engineering.md) reading order and theorem targets planning only — no lean code written"
+    "text": "slab heat, ribbon strain, and dump-energy margins demo18; rebco25; ciarlet88; [07](07-materials-and-engineering.md) reading order and theorem targets partially implemented — exact slab heat bound with the synthetic 998/45 k margin; ribbon strain and dump energy pending."
   },
   {
     "title": "Fuel, shielding, lifetime, and practical integration · BH92-reactivity; FENDL-data; KMM16; HELIAS13",
@@ -2251,9 +2281,9 @@
   },
   {
     "title": "Verified progress",
-    "section": "Passing 3.5 MeV alpha guiding centres confined for all time in an exact stellarator field for every pitch parameter λ ∈ [0, 1/4] (the limit of the passing argument) at one energy and B₀R₀, and over a positive-measure velocity set with |E − 3.5 MeV| ≤ 0.4 eV × λ ∈ [0, 1/16] (Littlejohn model; vacuum model field; heavy certificates on demand, workstation cells spot-checked), and for μ = 0 over B₀R₀ ∈ [67.95, 69.99] T·m; a Mercier-stable finite-β non-axisymmetric band with labels derived from the field, whose ballooning stability is reduced to one pointwise certificate but not yet certified; all-time field-line confinement; 52-transit coil confinement; one exact axisymmetric field with alpha confinement and a hot-core, pressure-budget band for every supplied transport solution (existence not proved), with certified local stability, up to ignition; kernel checks under 6 GB per process; most decide +kernel calls replaced by explicit proof-term certificates; a workstation pipeline in use.",
+    "section": "Organized by the stellarator contract (C1 current-free rotational transform, C2 omnigeneity for thermal ions and electrons, C3 finite-β stability, C4 existence, C5 thermal performance on the same candidate); non-axisymmetry is a consequence, not a goal. Status: C1 and C4 only in vacuum (an exact non-axisymmetric vacuum field with a KAM-certified torus, ι ≈ 0.137, confining field lines for all time); C2 essentially open for thermal particles (weak quasisymmetry defined, Landreman families proved not weakly quasisymmetric; passing 3.5 MeV alphas confined for all time in the vacuum field, Littlejohn model, one species); C3 only on test beds that fail C1 (Landreman family 2 carries positive net toroidal current) and on a Solov'ev tokamak model; C5 only on that tokamak model (one field with a pressure-budget band, transport solutions supplied) and in 0-D. First strict audit done; orbits proved to exist; Landreman family 1 proved a Grad counterexample (infrastructure); every module with a recorded peak is within the 6 GB laptop target after the split of the one 6.7 GB module.",
     "url": "progress.html",
-    "text": "verified progress passing 3.5 mev alpha guiding centres confined for all time in an exact stellarator field for every pitch parameter λ ∈ [0, 1/4] (the limit of the passing argument) at one energy and b₀r₀, and over a positive-measure velocity set with |e − 3.5 mev| ≤ 0.4 ev × λ ∈ [0, 1/16] (littlejohn model; vacuum model field; heavy certificates on demand, workstation cells spot-checked), and for μ = 0 over b₀r₀ ∈ [67.95, 69.99] t·m; a mercier-stable finite-β non-axisymmetric band with labels derived from the field, whose ballooning stability is reduced to one pointwise certificate but not yet certified; all-time field-line confinement; 52-transit coil confinement; one exact axisymmetric field with alpha confinement and a hot-core, pressure-budget band for every supplied transport solution (existence not proved), with certified local stability, up to ignition; kernel checks under 6 gb per process; most decide +kernel calls replaced by explicit proof-term certificates; a workstation pipeline in use."
+    "text": "verified progress organized by the stellarator contract (c1 current-free rotational transform, c2 omnigeneity for thermal ions and electrons, c3 finite-β stability, c4 existence, c5 thermal performance on the same candidate); non-axisymmetry is a consequence, not a goal. status: c1 and c4 only in vacuum (an exact non-axisymmetric vacuum field with a kam-certified torus, ι ≈ 0.137, confining field lines for all time); c2 essentially open for thermal particles (weak quasisymmetry defined, landreman families proved not weakly quasisymmetric; passing 3.5 mev alphas confined for all time in the vacuum field, littlejohn model, one species); c3 only on test beds that fail c1 (landreman family 2 carries positive net toroidal current) and on a solov'ev tokamak model; c5 only on that tokamak model (one field with a pressure-budget band, transport solutions supplied) and in 0-d. first strict audit done; orbits proved to exist; landreman family 1 proved a grad counterexample (infrastructure); every module with a recorded peak is within the 6 gb laptop target after the split of the one 6.7 gb module."
   },
   {
     "title": "Outcome",

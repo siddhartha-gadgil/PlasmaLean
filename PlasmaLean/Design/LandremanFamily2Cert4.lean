@@ -5,8 +5,7 @@ Authors: PlasmaLean contributors
 -/
 module
 
-public import PlasmaLean.Design.LandremanFamily2Quad
-public import PlasmaLean.Certificates.EvalCertFIv
+public import PlasmaLean.Design.LandremanFamily2ArcCert
 
 /-!
 # Mercier certificate for Landreman's family 2, `λ = 200`: cell group 4
@@ -17,8 +16,9 @@ Kernel-checked runs of the validated checker
 pieces to bound kernel memory (`cellCheck_of_pieces`): the one-dimensional quadratures
 (`oneD`), the four outer-arc surface-integral contributions (`outerArc`) and the final
 combination (`cellCheckOf`) are separate checks (the evaluation certificate `oned_cert` for the
-one-dimensional quadratures, `decide +kernel` for the outer arcs, an
-evaluation certificate `fiv_cert` for the final combination) against literal enclosures
+one-dimensional quadratures, the evaluation certificate `f2_arc_cert`
+(`PlasmaLean.Design.LandremanFamily2ArcCert`) for the outer arcs, an evaluation certificate
+`fiv_cert` for the final combination) against literal enclosures
 (`Dc…`, `Oc…`), which were produced by `#eval` of the same functions (untrusted; the kernel
 re-checks them). Each accepted cell proves `(2π)⁶ D_Merc > 0` for both signs `s_G = ±1` on the
 whole cell (`cellCheck_sound`).
@@ -64,21 +64,33 @@ set_option maxRecDepth 100000
 /-- One-dimensional piece of cell `[123/160, 31/40]`. -/
 theorem c13_oneD : oneD 128 (Ecell (123/160) (31/40)) = Dc13 := eq6_sound (by oned_cert)
 
+set_option maxHeartbeats 10000000 in
+-- the `eval_cert` builder evaluates ≈ 7·10⁴ interval operations in `meta` code
 /-- Outer-arc piece 0 of cell `[123/160, 31/40]`. -/
 theorem c13_arc0 : outerArc (lamC 200) (Ecell (123/160) (31/40)) (Ecell (123/160) (31/40)).sq
-    (dIof 200 Dc13.1 Dc13.2.2.2.2.1) 12 12 6 0 = Oc13_0 := eq3_sound (by decide +kernel)
+    (dIof 200 Dc13.1 Dc13.2.2.2.2.1) 12 12 6 0 = Oc13_0 := by
+  f2_arc_cert
 
+set_option maxHeartbeats 10000000 in
+-- the `eval_cert` builder evaluates ≈ 7·10⁴ interval operations in `meta` code
 /-- Outer-arc piece 1 of cell `[123/160, 31/40]`. -/
 theorem c13_arc1 : outerArc (lamC 200) (Ecell (123/160) (31/40)) (Ecell (123/160) (31/40)).sq
-    (dIof 200 Dc13.1 Dc13.2.2.2.2.1) 12 12 6 1 = Oc13_1 := eq3_sound (by decide +kernel)
+    (dIof 200 Dc13.1 Dc13.2.2.2.2.1) 12 12 6 1 = Oc13_1 := by
+  f2_arc_cert
 
+set_option maxHeartbeats 10000000 in
+-- the `eval_cert` builder evaluates ≈ 7·10⁴ interval operations in `meta` code
 /-- Outer-arc piece 2 of cell `[123/160, 31/40]`. -/
 theorem c13_arc2 : outerArc (lamC 200) (Ecell (123/160) (31/40)) (Ecell (123/160) (31/40)).sq
-    (dIof 200 Dc13.1 Dc13.2.2.2.2.1) 12 12 6 2 = Oc13_2 := eq3_sound (by decide +kernel)
+    (dIof 200 Dc13.1 Dc13.2.2.2.2.1) 12 12 6 2 = Oc13_2 := by
+  f2_arc_cert
 
+set_option maxHeartbeats 10000000 in
+-- the `eval_cert` builder evaluates ≈ 7·10⁴ interval operations in `meta` code
 /-- Outer-arc piece 3 of cell `[123/160, 31/40]`. -/
 theorem c13_arc3 : outerArc (lamC 200) (Ecell (123/160) (31/40)) (Ecell (123/160) (31/40)).sq
-    (dIof 200 Dc13.1 Dc13.2.2.2.2.1) 12 12 6 3 = Oc13_3 := eq3_sound (by decide +kernel)
+    (dIof 200 Dc13.1 Dc13.2.2.2.2.1) 12 12 6 3 = Oc13_3 := by
+  f2_arc_cert
 
 /-- Final combination of cell `[123/160, 31/40]`. -/
 theorem c13_final : cellCheckOf 200 128 12 12 6 (123/160) (31/40) Dc13
@@ -119,21 +131,33 @@ theorem cell13 : cellCheck 200 128 12 12 6 (123/160) (31/40) = true :=
 /-- One-dimensional piece of cell `[31/40, 25/32]`. -/
 theorem c14_oneD : oneD 128 (Ecell (31/40) (25/32)) = Dc14 := eq6_sound (by oned_cert)
 
+set_option maxHeartbeats 10000000 in
+-- the `eval_cert` builder evaluates ≈ 7·10⁴ interval operations in `meta` code
 /-- Outer-arc piece 0 of cell `[31/40, 25/32]`. -/
 theorem c14_arc0 : outerArc (lamC 200) (Ecell (31/40) (25/32)) (Ecell (31/40) (25/32)).sq
-    (dIof 200 Dc14.1 Dc14.2.2.2.2.1) 12 12 6 0 = Oc14_0 := eq3_sound (by decide +kernel)
+    (dIof 200 Dc14.1 Dc14.2.2.2.2.1) 12 12 6 0 = Oc14_0 := by
+  f2_arc_cert
 
+set_option maxHeartbeats 10000000 in
+-- the `eval_cert` builder evaluates ≈ 7·10⁴ interval operations in `meta` code
 /-- Outer-arc piece 1 of cell `[31/40, 25/32]`. -/
 theorem c14_arc1 : outerArc (lamC 200) (Ecell (31/40) (25/32)) (Ecell (31/40) (25/32)).sq
-    (dIof 200 Dc14.1 Dc14.2.2.2.2.1) 12 12 6 1 = Oc14_1 := eq3_sound (by decide +kernel)
+    (dIof 200 Dc14.1 Dc14.2.2.2.2.1) 12 12 6 1 = Oc14_1 := by
+  f2_arc_cert
 
+set_option maxHeartbeats 10000000 in
+-- the `eval_cert` builder evaluates ≈ 7·10⁴ interval operations in `meta` code
 /-- Outer-arc piece 2 of cell `[31/40, 25/32]`. -/
 theorem c14_arc2 : outerArc (lamC 200) (Ecell (31/40) (25/32)) (Ecell (31/40) (25/32)).sq
-    (dIof 200 Dc14.1 Dc14.2.2.2.2.1) 12 12 6 2 = Oc14_2 := eq3_sound (by decide +kernel)
+    (dIof 200 Dc14.1 Dc14.2.2.2.2.1) 12 12 6 2 = Oc14_2 := by
+  f2_arc_cert
 
+set_option maxHeartbeats 10000000 in
+-- the `eval_cert` builder evaluates ≈ 7·10⁴ interval operations in `meta` code
 /-- Outer-arc piece 3 of cell `[31/40, 25/32]`. -/
 theorem c14_arc3 : outerArc (lamC 200) (Ecell (31/40) (25/32)) (Ecell (31/40) (25/32)).sq
-    (dIof 200 Dc14.1 Dc14.2.2.2.2.1) 12 12 6 3 = Oc14_3 := eq3_sound (by decide +kernel)
+    (dIof 200 Dc14.1 Dc14.2.2.2.2.1) 12 12 6 3 = Oc14_3 := by
+  f2_arc_cert
 
 /-- Final combination of cell `[31/40, 25/32]`. -/
 theorem c14_final : cellCheckOf 200 128 12 12 6 (31/40) (25/32) Dc14
@@ -174,21 +198,33 @@ theorem cell14 : cellCheck 200 128 12 12 6 (31/40) (25/32) = true :=
 /-- One-dimensional piece of cell `[25/32, 63/80]`. -/
 theorem c15_oneD : oneD 128 (Ecell (25/32) (63/80)) = Dc15 := eq6_sound (by oned_cert)
 
+set_option maxHeartbeats 4000000 in
+-- the `eval_cert` builder evaluates ≈ 2.8·10⁴ interval operations in `meta` code
 /-- Outer-arc piece 0 of cell `[25/32, 63/80]`. -/
 theorem c15_arc0 : outerArc (lamC 200) (Ecell (25/32) (63/80)) (Ecell (25/32) (63/80)).sq
-    (dIof 200 Dc15.1 Dc15.2.2.2.2.1) 8 8 4 0 = Oc15_0 := eq3_sound (by decide +kernel)
+    (dIof 200 Dc15.1 Dc15.2.2.2.2.1) 8 8 4 0 = Oc15_0 := by
+  f2_arc_cert
 
+set_option maxHeartbeats 4000000 in
+-- the `eval_cert` builder evaluates ≈ 2.8·10⁴ interval operations in `meta` code
 /-- Outer-arc piece 1 of cell `[25/32, 63/80]`. -/
 theorem c15_arc1 : outerArc (lamC 200) (Ecell (25/32) (63/80)) (Ecell (25/32) (63/80)).sq
-    (dIof 200 Dc15.1 Dc15.2.2.2.2.1) 8 8 4 1 = Oc15_1 := eq3_sound (by decide +kernel)
+    (dIof 200 Dc15.1 Dc15.2.2.2.2.1) 8 8 4 1 = Oc15_1 := by
+  f2_arc_cert
 
+set_option maxHeartbeats 4000000 in
+-- the `eval_cert` builder evaluates ≈ 2.8·10⁴ interval operations in `meta` code
 /-- Outer-arc piece 2 of cell `[25/32, 63/80]`. -/
 theorem c15_arc2 : outerArc (lamC 200) (Ecell (25/32) (63/80)) (Ecell (25/32) (63/80)).sq
-    (dIof 200 Dc15.1 Dc15.2.2.2.2.1) 8 8 4 2 = Oc15_2 := eq3_sound (by decide +kernel)
+    (dIof 200 Dc15.1 Dc15.2.2.2.2.1) 8 8 4 2 = Oc15_2 := by
+  f2_arc_cert
 
+set_option maxHeartbeats 4000000 in
+-- the `eval_cert` builder evaluates ≈ 2.8·10⁴ interval operations in `meta` code
 /-- Outer-arc piece 3 of cell `[25/32, 63/80]`. -/
 theorem c15_arc3 : outerArc (lamC 200) (Ecell (25/32) (63/80)) (Ecell (25/32) (63/80)).sq
-    (dIof 200 Dc15.1 Dc15.2.2.2.2.1) 8 8 4 3 = Oc15_3 := eq3_sound (by decide +kernel)
+    (dIof 200 Dc15.1 Dc15.2.2.2.2.1) 8 8 4 3 = Oc15_3 := by
+  f2_arc_cert
 
 /-- Final combination of cell `[25/32, 63/80]`. -/
 theorem c15_final : cellCheckOf 200 128 8 8 4 (25/32) (63/80) Dc15
@@ -229,21 +265,33 @@ theorem cell15 : cellCheck 200 128 8 8 4 (25/32) (63/80) = true :=
 /-- One-dimensional piece of cell `[63/80, 127/160]`. -/
 theorem c16_oneD : oneD 128 (Ecell (63/80) (127/160)) = Dc16 := eq6_sound (by oned_cert)
 
+set_option maxHeartbeats 4000000 in
+-- the `eval_cert` builder evaluates ≈ 2.8·10⁴ interval operations in `meta` code
 /-- Outer-arc piece 0 of cell `[63/80, 127/160]`. -/
 theorem c16_arc0 : outerArc (lamC 200) (Ecell (63/80) (127/160)) (Ecell (63/80) (127/160)).sq
-    (dIof 200 Dc16.1 Dc16.2.2.2.2.1) 8 8 4 0 = Oc16_0 := eq3_sound (by decide +kernel)
+    (dIof 200 Dc16.1 Dc16.2.2.2.2.1) 8 8 4 0 = Oc16_0 := by
+  f2_arc_cert
 
+set_option maxHeartbeats 4000000 in
+-- the `eval_cert` builder evaluates ≈ 2.8·10⁴ interval operations in `meta` code
 /-- Outer-arc piece 1 of cell `[63/80, 127/160]`. -/
 theorem c16_arc1 : outerArc (lamC 200) (Ecell (63/80) (127/160)) (Ecell (63/80) (127/160)).sq
-    (dIof 200 Dc16.1 Dc16.2.2.2.2.1) 8 8 4 1 = Oc16_1 := eq3_sound (by decide +kernel)
+    (dIof 200 Dc16.1 Dc16.2.2.2.2.1) 8 8 4 1 = Oc16_1 := by
+  f2_arc_cert
 
+set_option maxHeartbeats 4000000 in
+-- the `eval_cert` builder evaluates ≈ 2.8·10⁴ interval operations in `meta` code
 /-- Outer-arc piece 2 of cell `[63/80, 127/160]`. -/
 theorem c16_arc2 : outerArc (lamC 200) (Ecell (63/80) (127/160)) (Ecell (63/80) (127/160)).sq
-    (dIof 200 Dc16.1 Dc16.2.2.2.2.1) 8 8 4 2 = Oc16_2 := eq3_sound (by decide +kernel)
+    (dIof 200 Dc16.1 Dc16.2.2.2.2.1) 8 8 4 2 = Oc16_2 := by
+  f2_arc_cert
 
+set_option maxHeartbeats 4000000 in
+-- the `eval_cert` builder evaluates ≈ 2.8·10⁴ interval operations in `meta` code
 /-- Outer-arc piece 3 of cell `[63/80, 127/160]`. -/
 theorem c16_arc3 : outerArc (lamC 200) (Ecell (63/80) (127/160)) (Ecell (63/80) (127/160)).sq
-    (dIof 200 Dc16.1 Dc16.2.2.2.2.1) 8 8 4 3 = Oc16_3 := eq3_sound (by decide +kernel)
+    (dIof 200 Dc16.1 Dc16.2.2.2.2.1) 8 8 4 3 = Oc16_3 := by
+  f2_arc_cert
 
 /-- Final combination of cell `[63/80, 127/160]`. -/
 theorem c16_final : cellCheckOf 200 128 8 8 4 (63/80) (127/160) Dc16
@@ -284,21 +332,33 @@ theorem cell16 : cellCheck 200 128 8 8 4 (63/80) (127/160) = true :=
 /-- One-dimensional piece of cell `[127/160, 4/5]`. -/
 theorem c17_oneD : oneD 128 (Ecell (127/160) (4/5)) = Dc17 := eq6_sound (by oned_cert)
 
+set_option maxHeartbeats 4000000 in
+-- the `eval_cert` builder evaluates ≈ 2.8·10⁴ interval operations in `meta` code
 /-- Outer-arc piece 0 of cell `[127/160, 4/5]`. -/
 theorem c17_arc0 : outerArc (lamC 200) (Ecell (127/160) (4/5)) (Ecell (127/160) (4/5)).sq
-    (dIof 200 Dc17.1 Dc17.2.2.2.2.1) 8 8 4 0 = Oc17_0 := eq3_sound (by decide +kernel)
+    (dIof 200 Dc17.1 Dc17.2.2.2.2.1) 8 8 4 0 = Oc17_0 := by
+  f2_arc_cert
 
+set_option maxHeartbeats 4000000 in
+-- the `eval_cert` builder evaluates ≈ 2.8·10⁴ interval operations in `meta` code
 /-- Outer-arc piece 1 of cell `[127/160, 4/5]`. -/
 theorem c17_arc1 : outerArc (lamC 200) (Ecell (127/160) (4/5)) (Ecell (127/160) (4/5)).sq
-    (dIof 200 Dc17.1 Dc17.2.2.2.2.1) 8 8 4 1 = Oc17_1 := eq3_sound (by decide +kernel)
+    (dIof 200 Dc17.1 Dc17.2.2.2.2.1) 8 8 4 1 = Oc17_1 := by
+  f2_arc_cert
 
+set_option maxHeartbeats 4000000 in
+-- the `eval_cert` builder evaluates ≈ 2.8·10⁴ interval operations in `meta` code
 /-- Outer-arc piece 2 of cell `[127/160, 4/5]`. -/
 theorem c17_arc2 : outerArc (lamC 200) (Ecell (127/160) (4/5)) (Ecell (127/160) (4/5)).sq
-    (dIof 200 Dc17.1 Dc17.2.2.2.2.1) 8 8 4 2 = Oc17_2 := eq3_sound (by decide +kernel)
+    (dIof 200 Dc17.1 Dc17.2.2.2.2.1) 8 8 4 2 = Oc17_2 := by
+  f2_arc_cert
 
+set_option maxHeartbeats 4000000 in
+-- the `eval_cert` builder evaluates ≈ 2.8·10⁴ interval operations in `meta` code
 /-- Outer-arc piece 3 of cell `[127/160, 4/5]`. -/
 theorem c17_arc3 : outerArc (lamC 200) (Ecell (127/160) (4/5)) (Ecell (127/160) (4/5)).sq
-    (dIof 200 Dc17.1 Dc17.2.2.2.2.1) 8 8 4 3 = Oc17_3 := eq3_sound (by decide +kernel)
+    (dIof 200 Dc17.1 Dc17.2.2.2.2.1) 8 8 4 3 = Oc17_3 := by
+  f2_arc_cert
 
 /-- Final combination of cell `[127/160, 4/5]`. -/
 theorem c17_final : cellCheckOf 200 128 8 8 4 (127/160) (4/5) Dc17
@@ -339,21 +399,33 @@ theorem cell17 : cellCheck 200 128 8 8 4 (127/160) (4/5) = true :=
 /-- One-dimensional piece of cell `[4/5, 129/160]`. -/
 theorem c18_oneD : oneD 128 (Ecell (4/5) (129/160)) = Dc18 := eq6_sound (by oned_cert)
 
+set_option maxHeartbeats 4000000 in
+-- the `eval_cert` builder evaluates ≈ 2.8·10⁴ interval operations in `meta` code
 /-- Outer-arc piece 0 of cell `[4/5, 129/160]`. -/
 theorem c18_arc0 : outerArc (lamC 200) (Ecell (4/5) (129/160)) (Ecell (4/5) (129/160)).sq
-    (dIof 200 Dc18.1 Dc18.2.2.2.2.1) 8 8 4 0 = Oc18_0 := eq3_sound (by decide +kernel)
+    (dIof 200 Dc18.1 Dc18.2.2.2.2.1) 8 8 4 0 = Oc18_0 := by
+  f2_arc_cert
 
+set_option maxHeartbeats 4000000 in
+-- the `eval_cert` builder evaluates ≈ 2.8·10⁴ interval operations in `meta` code
 /-- Outer-arc piece 1 of cell `[4/5, 129/160]`. -/
 theorem c18_arc1 : outerArc (lamC 200) (Ecell (4/5) (129/160)) (Ecell (4/5) (129/160)).sq
-    (dIof 200 Dc18.1 Dc18.2.2.2.2.1) 8 8 4 1 = Oc18_1 := eq3_sound (by decide +kernel)
+    (dIof 200 Dc18.1 Dc18.2.2.2.2.1) 8 8 4 1 = Oc18_1 := by
+  f2_arc_cert
 
+set_option maxHeartbeats 4000000 in
+-- the `eval_cert` builder evaluates ≈ 2.8·10⁴ interval operations in `meta` code
 /-- Outer-arc piece 2 of cell `[4/5, 129/160]`. -/
 theorem c18_arc2 : outerArc (lamC 200) (Ecell (4/5) (129/160)) (Ecell (4/5) (129/160)).sq
-    (dIof 200 Dc18.1 Dc18.2.2.2.2.1) 8 8 4 2 = Oc18_2 := eq3_sound (by decide +kernel)
+    (dIof 200 Dc18.1 Dc18.2.2.2.2.1) 8 8 4 2 = Oc18_2 := by
+  f2_arc_cert
 
+set_option maxHeartbeats 4000000 in
+-- the `eval_cert` builder evaluates ≈ 2.8·10⁴ interval operations in `meta` code
 /-- Outer-arc piece 3 of cell `[4/5, 129/160]`. -/
 theorem c18_arc3 : outerArc (lamC 200) (Ecell (4/5) (129/160)) (Ecell (4/5) (129/160)).sq
-    (dIof 200 Dc18.1 Dc18.2.2.2.2.1) 8 8 4 3 = Oc18_3 := eq3_sound (by decide +kernel)
+    (dIof 200 Dc18.1 Dc18.2.2.2.2.1) 8 8 4 3 = Oc18_3 := by
+  f2_arc_cert
 
 /-- Final combination of cell `[4/5, 129/160]`. -/
 theorem c18_final : cellCheckOf 200 128 8 8 4 (4/5) (129/160) Dc18
