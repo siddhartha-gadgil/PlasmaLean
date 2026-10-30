@@ -43,3 +43,4 @@ Phase 8 (kam-route.md, finite-beta-stellarator.md):
 - Finite β: `Design/LandremanStretched` (`force_balance`, `field_transport`, `fieldLine_closed`,
   `fieldLine_confined`; ≈ 1–2 agent-days). Stepped pressure on the rational field only after K3.
 - [`orbit-existence.md`](orbit-existence.md) (N-26): existence of Lorentz and Boozer guiding-centre orbits; Lorentz part verified, Boozer part local.
+- [`quasisymmetric-solution.md`](quasisymmetric-solution.md) (N-27): routes to a quasisymmetric solution (Q-16); exact QS in a volume is open; exact families obstructed; validated explicit vacuum field recommended.
