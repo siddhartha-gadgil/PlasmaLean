@@ -1423,8 +1423,42 @@
    ]
   },
   {
+   "id": "strict-audit",
+   "eyebrow": "34 · Strict audit",
+   "title": "First strict audit: kernel, models and claims checked; overclaims corrected.",
+   "lead": "Audited commit cda8bd0 (30 October 2026): every kernel declaration, the twelve model definitions behind the headline results, repository scans and a trace of every headline claim to its Lean statement. No critical findings and no false proof.",
+   "cards": [
+    {
+     "title": "Kernel and models",
+     "text": "52 kernel declarations and 12 model definitions (Littlejohn, Lorentz, Boozer orbits; Mercier, ballooning, Newcomb; Bosch-Hale, confinement scaling, flux geometry) re-derived against their sources; 112 new sanity and regression theorems in the default build.",
+     "status": "Lean verified",
+     "kind": "checked"
+    },
+    {
+     "title": "Fixed",
+     "text": "PhysicalPlasma now requires a quasineutral composition (no numeric result changed); force-balance users restated with an explicit pressure gradient; README and slide overclaims corrected (v∥ < 0 only at the design B₀R₀, screw pinch for m ≠ 0, 6.17 GB peak).",
+     "status": "Done",
+     "kind": "checked"
+    },
+    {
+     "title": "Open",
+     "text": "Existence of the orbits the confinement theorems quantify over (Lorentz orbits, off-axis near-QA orbits); one module at 6.17 GB; about 2,060 legacy decide +kernel lines.",
+     "status": "Next: orbit existence",
+     "kind": "next"
+    }
+   ],
+   "progress": "The foundation is now audited under the strict protocol; findings and fixes are recorded in the plan and in notes/audit/.",
+   "evidence": [
+    {
+     "label": "Implementation plan (audit status)",
+     "href": "implementation-plan.html"
+    }
+   ],
+   "boundary": "An audit checks that statements say what is claimed; it does not validate the physical models themselves, which remain supplied hypotheses where stated."
+  },
+  {
    "id": "working-with-agents",
-   "eyebrow": "34 · Working with agents",
+   "eyebrow": "35 · Working with agents",
    "title": "Working with the agents: start, status, work on, keep working.",
    "lead": "Theory is built as well as formalized while designing stellarators. Work is a research graph of goals (G-*), questions (Q-*) and notes (N-*); Lean is the validity gate, so a result is established only when its named declaration compiles.",
    "cards": [
@@ -1468,7 +1502,7 @@
   },
   {
    "id": "implementation-plan",
-   "eyebrow": "35 · Plan of record",
+   "eyebrow": "36 · Plan of record",
    "title": "Theory, techniques and a ladder of models — for confinement and for heat.",
    "lead": "Each cycle develops theory, turns theorems into sound certificate checkers, and applies them to the next rung of a model ladder. Every rung must prove properties of both kinds: confinement (G1) and temperature held above burn conditions (G2).",
    "cards": [
@@ -1512,7 +1546,7 @@
   },
   {
    "id": "next-run",
-   "eyebrow": "36 · Keep every step reviewable",
+   "eyebrow": "37 · Keep every step reviewable",
    "title": "The next run must leave evidence, not just a promise.",
    "lead": "Next: wider energy windows (±3 eV, then ±1%) and a joint B₀R₀ range, now with λ up to 1/4, via the workstation; a new certificate design for the polygon-coil lines and the remaining opaque leaves; a family-2 ballooning certificate and kernel checker; beyond λ = 1/4, trapped alphas and coil-produced all-time confinement (research).",
    "cards": [
