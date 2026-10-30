@@ -2046,6 +2046,12 @@
     "text": "relative-entropy identity, 1-d (n-2), 30 october 2026 implementation plan"
   },
   {
+    "title": "Near-QA orbits on longer horizons (MA-M1, N-26), 30 October 2026",
+    "section": "Implementation plan",
+    "url": "implementation-plan.html#near-qa-orbits-on-longer-horizons-ma-m1-n-26-30-october-2026",
+    "text": "near-qa orbits on longer horizons (ma-m1, n-26), 30 october 2026 implementation plan"
+  },
+  {
     "title": "M0 · Exact symmetric equilibria: slab, screw pinch, Solov'ev, helical",
     "section": "Implementation plan · Lean verified — exact slab, screw-pinch, Solov'ev and helical equilibria with kernel force balance, all-time field-line/orbit confinement, Suydam both ways and screw-pinch Newcomb for 1 ≤ |m| ≤ 6 (idealized symmetric models).",
     "url": "implementation-plan.html",
