@@ -72,6 +72,9 @@ public import PlasmaLean.Sanity.AuditThermalSlab
 public import PlasmaLean.Sanity.AuditVacuum
 public import PlasmaLean.Sanity.AuditTransport
 public import PlasmaLean.Sanity.AuditFusion
+public import PlasmaLean.Sanity.AuditModelGuidingCentre
+public import PlasmaLean.Sanity.AuditModelStability
+public import PlasmaLean.Sanity.AuditModelTransport
 public import PlasmaLean.Sanity.Vacuum
 public import PlasmaLean.Theory.Transport.PowerBalance
 public import PlasmaLean.Theory.Transport.Comparison

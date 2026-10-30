@@ -155,3 +155,8 @@ run_cmd do
 #print axioms PlasmaLean.Sanity.Audit.powerBalance_zero_density
 #print axioms PlasmaLean.Sanity.Audit.bremsCoeff_matches_NRL
 #print axioms PlasmaLean.Sanity.Audit.boschHaleWindows_cover
+#print axioms PlasmaLean.Sanity.AuditModel.gradB_drift_orbit
+#print axioms PlasmaLean.Sanity.AuditModel.LittlejohnOrbit.charge_conj
+#print axioms PlasmaLean.Sanity.AuditModel.mercierIndex_reverseField
+#print axioms PlasmaLean.Sanity.AuditModel.fine_chain_check
+#print axioms PlasmaLean.Sanity.AuditModel.g_nonneg_of_h_nonneg

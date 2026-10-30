@@ -23,8 +23,9 @@ between theory, certificate techniques and a ladder of successively realistic mo
 both confinement and keeping the plasma hot. Ten phases are complete, and Phases 11, 14, 15 and 16 are in progress:
 
 - **one field with a pressure-budget band:** one exact Solov'ev field satisfies force balance with
-  the offset pressure p_eq + 40 kPa; 3.5 MeV alphas born in the core are confined for all time (full
-  Lorentz orbits); and for *every* classical solution of the radial transport model that starts in a
+  the offset pressure p_eq + 40 kPa; every 3.5 MeV alpha orbit born in the core stays confined for all time
+  (full Lorentz orbits; the theorem quantifies over all such orbits, whose existence is not
+  constructed in Lean); and for *every* classical solution of the radial transport model that starts in a
   certified band, the core stays at or above 10 keV and the plasma pressure stays within the budget
   p ≤ p_eq + 40 kPa for all time. The existence of such a solution is assumed, not proved, and the
   thermal pressure is bounded by the budget, not equal to the force-balance pressure. This is proved on
