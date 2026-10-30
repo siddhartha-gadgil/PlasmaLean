@@ -174,3 +174,17 @@ run_cmd do
 #print axioms PlasmaLean.Design.ForceBalanceGradient.landreman1_force_balance_SI_gradient
 #print axioms PlasmaLean.Design.ForceBalanceGradient.landreman2_force_balance_SI_gradient
 #print axioms PlasmaLean.Design.ForceBalanceGradient.family2_lam200_force_balance_gradient
+#print axioms PlasmaLean.Fields.ODEGlobal.exists_global_of_apriori
+#print axioms PlasmaLean.Kinetic.lorentzOrbit_exists
+#print axioms PlasmaLean.Kinetic.lorentzOrbit_exists_of_apriori
+#print axioms PlasmaLean.Kinetic.orbit_trapped_Icc
+#print axioms PlasmaLean.Design.SolovevAlpha.solovev_orbit_exists
+#print axioms PlasmaLean.Design.SolovevAlpha.reactor_alpha_orbit_exists
+#print axioms PlasmaLean.Design.SolovevAlpha.reactor_alpha_born_confined
+#print axioms PlasmaLean.Design.SolovevAlpha.reactor_alpha_confined_nonvacuous_35MeV
+#print axioms PlasmaLean.Kinetic.Boozer.boozerGCOrbitOn_exists_local
+#print axioms PlasmaLean.Kinetic.Boozer.boozerGCOrbitOn_exists_of_apriori
+#print axioms PlasmaLean.Kinetic.Boozer.boozerGCOrbit_exists_of_apriori
+#print axioms PlasmaLean.Design.NearAxisQAExistence.reactorQA_orbit_exists_local
+#print axioms PlasmaLean.Design.NearAxisQAExistence.alpha_trapped_reactorQA_averaged_nonvacuous
+#print axioms PlasmaLean.Design.SolovevAlpha.reactor_alpha_orbit_exists_label

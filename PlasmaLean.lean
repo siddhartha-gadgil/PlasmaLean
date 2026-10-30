@@ -261,6 +261,11 @@ public import PlasmaLean.Design.RationalStellaratorGCNegConfined
 public import PlasmaLean.Design.RationalStellaratorGCFamily
 public import PlasmaLean.Design.RationalStellaratorGCMuFamily
 public import PlasmaLean.Design.RationalStellaratorGCBoxConfined
+public import PlasmaLean.Theory.Fields.ODEContinuation
+public import PlasmaLean.Theory.Kinetic.LorentzExistence
+public import PlasmaLean.Design.SolovevAlphaExistence
+public import PlasmaLean.Theory.Kinetic.BoozerGCExistence
+public import PlasmaLean.Design.NearAxisQAExistence
 
 /-!
 # PlasmaLean public library

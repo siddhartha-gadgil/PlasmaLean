@@ -512,7 +512,7 @@
     }
    ],
    "progress": "15 new modules and a recorded kernel change. Three review passes: pressure consistency of the barrier, a finite-time Boozer orbit structure, a kernel law excluding vacuous regular axes, and non-vacuity witnesses.",
-   "boundary": "The alpha theorem is for an axisymmetric equilibrium; near-quasisymmetric fields reached only 0.8 ms in this phase (0.11 s in Phase 4). Flux-surface averages, scaling laws, reactivity and solutions are supplied. No coil-produced configuration. Near-QA (Boozer) guiding-centre results assume the orbit stays off the magnetic axis (ψ > 0) on the time interval; existence of such orbits for the reactor field is not shown in Lean.",
+   "boundary": "The alpha theorem is for an axisymmetric equilibrium; near-quasisymmetric fields reached only 0.8 ms in this phase (0.11 s in Phase 4). Flux-surface averages, scaling laws, reactivity and solutions are supplied. No coil-produced configuration. Near-QA (Boozer) guiding-centre results assume the orbit stays off the magnetic axis (ψ > 0) on the time interval; such orbits are proved to exist only on some short interval (boozerGCOrbitOn_exists_local).",
    "evidence": [
     {
      "label": "New checked results",
@@ -1076,7 +1076,7 @@
     }
    ],
    "progress": "About 90 new modules (mostly certificates).",
-   "boundary": "Still μ = 0 for confinement theorems; supplied guiding-centre model. Near-QA (Boozer) guiding-centre results assume the orbit stays off the magnetic axis (ψ > 0) on the time interval; existence of such orbits for the reactor field is not shown in Lean.",
+   "boundary": "Still μ = 0 for confinement theorems; supplied guiding-centre model. Near-QA (Boozer) guiding-centre results assume the orbit stays off the magnetic axis (ψ > 0) on the time interval; such orbits are proved to exist only on some short interval (boozerGCOrbitOn_exists_local).",
    "evidence": [
     {
      "label": "New checked results",
@@ -1441,9 +1441,15 @@
      "kind": "checked"
     },
     {
+     "title": "Orbits exist",
+     "text": "Global existence of Lorentz orbits (lorentzOrbit_exists) and of 3.5 MeV alpha orbits born in the reactor core, all confined forever (reactor_alpha_born_confined, explicit witness reactor_alpha_confined_nonvacuous_35MeV). Near-QA Boozer orbits: local existence.",
+     "status": "Lean verified",
+     "kind": "checked"
+    },
+    {
      "title": "Open",
-     "text": "Existence of the orbits the confinement theorems quantify over (Lorentz orbits, off-axis near-QA orbits); one module at 6.17 GB; about 2,060 legacy decide +kernel lines.",
-     "status": "Next: orbit existence",
+     "text": "Near-QA guiding-centre orbits exist only on some short interval (full horizon open); one module at 6.17 GB; about 2,060 legacy decide +kernel lines.",
+     "status": "Next: off-axis bound, Phase 16",
      "kind": "next"
     }
    ],

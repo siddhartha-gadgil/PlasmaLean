@@ -42,3 +42,4 @@ Phase 8 (kam-route.md, finite-beta-stellarator.md):
   Run the untrusted multiprecision FHL check (K2′) before starting the KAM theorem (K3, 4–8 weeks).
 - Finite β: `Design/LandremanStretched` (`force_balance`, `field_transport`, `fieldLine_closed`,
   `fieldLine_confined`; ≈ 1–2 agent-days). Stepped pressure on the rational field only after K3.
+- [`orbit-existence.md`](orbit-existence.md) (N-26): existence of Lorentz and Boozer guiding-centre orbits; Lorentz part verified, Boozer part local.
