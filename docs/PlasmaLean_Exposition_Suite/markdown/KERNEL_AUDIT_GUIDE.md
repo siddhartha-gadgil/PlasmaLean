@@ -1,144 +1,274 @@
-# Audit the PlasmaLean Small Kernel in 10 Minutes
+# Audit the PlasmaLean kernel in 10 minutes
 
-## Why a Small Kernel + Sanity Checks?
+The PlasmaLean domain kernel is `PlasmaLean/Kernel/`: six modules, about 900 lines (`Equilibrium` 47, `Slab` 38, `ThermalSlab` 31, `Vacuum` 99, `Transport` 304, `Fusion` 381). It is a *domain* kernel, not an extension of Lean's logical kernel: its laws are `Prop`-valued classes and structures taken as hypotheses, never axioms. `#print axioms` on any theorem therefore shows only `[propext, Classical.choice, Quot.sound]`; whether the laws describe the physics is a separate question, answered by audit.
 
-In formalizing applied physics and stellarator engineering, the primary epistemic risk is **specification drift**: proving a 5,000-line theorem about a definition that subtly misstates the physics (for instance, allowing $\mathbf{B} \equiv 0$, dividing by zero via `x / 0 = 0`, or taking a supremum over an empty set). 
+The first strict audit (30 October 2026, commit `cda8bd0`) reviewed all 52 kernel declarations. Full record: [notes/audit/2026-10-30-kernel-audit.md](https://github.com/siddhartha-gadgil/PlasmaLean/blob/main/notes/audit/2026-10-30-kernel-audit.md).
 
-**PlasmaLean** solves this via the **Small-Kernel & Sanity-Check Pattern**:
-
-1. **Tiny Trusted Specification (~120 lines):** All top-level physical contracts live in a concise, human-readable kernel.
-
-2. **Non-Vacuity Sanity Checks:** Every kernel definition is paired with compiled witness theorems proving that trivial/degenerate solutions are rejected and analytical benchmarks satisfy the contract.
-
-3. **Zero Project Axioms:** `#print axioms` on any top-level certificate shows only `[propext, Classical.choice, Quot.sound]`.
+This guide quotes the real kernel declarations (abridged where marked `...`) and the real sanity theorems.
 
 ---
 
-## 1. Ambient 3-Space & Differential Operators (Minutes 0–2)
+## 1. Kernel/Equilibrium: algebraic force balance (Minutes 0–1)
 
 ```lean
--- PlasmaLean/Kernel/BasicOperators.lean
-import Mathlib.Analysis.Calculus.FDeriv.Basic
-import Mathlib.Analysis.InnerProductSpace.PiL2
+-- PlasmaLean/Kernel/Equilibrium.lean (47 lines)
+namespace PlasmaLean
 
-abbrev ℝ³ := EuclideanSpace ℝ (Fin 3)
-abbrev VectorField := ℝ³ → ℝ³
-abbrev ScalarField := ℝ³ → ℝ
+/-- Cartesian three-component real data. -/
+abbrev Vec3 := Fin 3 → ℝ
 
-/-- Divergence ∇ · B via trace of the Fréchet derivative matrix -/
-noncomputable def divergence (B : VectorField) (x : ℝ³) : ℝ :=
-  ∑ i : Fin 3, (fderiv ℝ B x (EuclideanSpace.single i 1)) i
+/-- Pointwise static isotropic force balance, with SI magnetic/current/gradient data. -/
+class ForceBalance (B J g : Vec3) : Prop where
+  balance : J ⨯₃ B = g
 
-/-- Curl ∇ × B in standard right-handed Euclidean coordinates -/
-noncomputable def curl (B : VectorField) (x : ℝ³) : ℝ³ :=
-  let D := fun i j => (fderiv ℝ B x (EuclideanSpace.single j 1)) i
-  ![D 2 1 - D 1 2, D 0 2 - D 2 0, D 1 0 - D 0 1]
+theorem field_tangency (B J g : Vec3) [ForceBalance B J g] : B ⬝ᵥ g = 0
+theorem current_tangency (B J g : Vec3) [ForceBalance B J g] : J ⬝ᵥ g = 0
+theorem gradient_zero_iff_force_free (B J g : Vec3) [ForceBalance B J g] :
+    g = 0 ↔ J ⨯₃ B = 0
 ```
 
-- **Physical & Mathematical Role:** Every downstream statement about magnetic fields rests on `divergence` and `curl`. By defining them directly via Mathlib's `fderiv ℝ` on `EuclideanSpace ℝ (Fin 3)` rather than introducing axiomatic differential operators, any proof using them inherits Mathlib's chain rule and linearity theorems automatically.
-
-- **Specification Bug Prevented:** Prevents 'dummy operator' bugs where `divergence` is declared as an uninterpreted function `VectorField → ScalarField` with ad-hoc axioms that might be inconsistent with standard calculus.
-
-- **Compiled Sanity Check:**
-```lean
--- Sanity Check 1: Divergence of identity field x ↦ x is 3
-theorem divergence_id (x : ℝ³) : divergence id x = 3 := by
-  simp [divergence, fderiv_id]
-  norm_num
-```
-
-## 2. Flux Surface & Magnetic Tangent Contract (Minutes 2–5)
+**Sanity checks.**
 
 ```lean
--- PlasmaLean/Kernel/FluxSurfaceContract.lean
-structure IsRegularLevelSurface (ψ : ScalarField) (c : ℝ) : Prop where
-  nonempty : (ψ ⁻¹' {c}).Nonempty
-  compact  : IsCompact (ψ ⁻¹' {c})
-  regular  : ∀ x ∈ ψ ⁻¹' {c}, grad ψ x ≠ 0
-
-/-- A magnetic field B is confined to the level surface ψ(x) = c -/
-structure HasFluxSurface (B : VectorField) (ψ : ScalarField) (c : ℝ) : Prop
-    extends IsRegularLevelSurface ψ c where
-  b_nonvanishing : ∀ x ∈ ψ ⁻¹' {c}, B x ≠ 0
-  tangent_to_surface : ∀ x ∈ ψ ⁻¹' {c}, ⟪B x, grad ψ x⟫_ℝ = 0
+-- PlasmaLean/Sanity/Equilibrium.lean
+theorem zeroBalance : ForceBalance 0 0 0
+theorem parallelBalance (B : Vec3) : ForceBalance B B 0
+-- PlasmaLean/Sanity/AuditEquilibrium.lean (namespace PlasmaLean.Sanity.Audit)
+forceBalance_rejects_perp       -- counterexample
+pinch_force_inward              -- orientation
+forceBalance_rejects_reversed   -- orientation
+forceBalance_of_cross           -- E-1: ForceBalance B J (J ⨯₃ B) for every B, J
+forceBalance_smul_field, forceBalance_smul_current  -- scaling
 ```
 
-- **Physical & Mathematical Role:** In stellarator optimization, a surface $\Sigma_c = \psi^{-1}(c)$ is only a valid magnetic flux surface if: (1) it is actually non-empty and compact, (2) $\nabla\psi \neq 0$ everywhere on it (so it is a smooth 2-manifold without singular X-points), and (3) $\mathbf{B} \cdot \nabla\psi = 0$ with $\mathbf{B} \neq 0$.
+**Why it is stated this way.** `ForceBalance` is a *supplied law*: a `Prop`-valued class taken as a hypothesis, not an axiom. The vector `g` is free data; the kernel does not say that it is the gradient of a pressure, and it has no Ampère law and no $\mu_0$. That link is made downstream.
 
-- **Specification Bug Prevented:** Without `nonempty`, `regular`, and `b_nonvanishing`, an AI agent or optimizer can trivially 'prove' perfect confinement by choosing a constant function $\psi(x) = c_0 \neq c$ (empty level set!) or $\mathbf{B} \equiv 0$ (zero field trivially satisfies $\mathbf{B}\cdot\nabla\psi = 0$).
+**Audit findings.** **E-1 (low, resolved downstream).** `forceBalance_of_cross` shows that `ForceBalance B J (J ⨯₃ B)` holds for every $B, J$, so the law alone constrains nothing. All 14 design users tie $g$ to an actual pressure gradient and use $J = \mu_0^{-1}\nabla\times B$; the module `Design/ForceBalanceGradient` restates them with Mathlib's `gradient p` (e.g. `solovev_force_balance_gradient`). A claim that cites `ForceBalance` must also cite the gradient theorem.
 
-- **Compiled Sanity Check:**
-```lean
--- Sanity Check 2: Trivial zero field B ≡ 0 CANNOT satisfy HasFluxSurface
-theorem zero_field_not_flux_surface (ψ : ScalarField) (c : ℝ) :
-    ¬ HasFluxSurface (fun _ => 0) ψ c := by
-  intro h
-  rcases h.nonempty with ⟨x, hx⟩
-  exact h.b_nonvanishing x hx rfl
-```
+---
 
-## 3. Vacuum Field & Biot–Savart Clearance Contract (Minutes 5–8)
+## 2. Kernel/Slab: one-coordinate static MHD (Minutes 1–2)
 
 ```lean
--- PlasmaLean/Kernel/VacuumContract.lean
-structure IsVacuumMagneticField (U : Set ℝ³) (B : VectorField) : Prop where
-  is_open  : IsOpen U
-  smooth   : ContDiffOn ℝ 2 B U
-  div_zero : ∀ x ∈ U, divergence B x = 0
-  curl_zero : ∀ x ∈ U, curl B x = 0
+-- PlasmaLean/Kernel/Slab.lean (38 lines), namespace PlasmaLean.Equilibrium
+def slabCurl (B : ℝ → Vec3) (z : ℝ) : Vec3 :=
+  ![-deriv (fun t => B t 1) z, deriv (fun t => B t 0) z, 0]
 
-/-- Minimum Euclidean distance between a 3D coil curve γ and target domain U -/
-def HasClearanceMargin (γ : ℝ → ℝ³) (U : Set ℝ³) (d_min : ℝ) : Prop :=
-  d_min > 0 ∧ ∀ s : ℝ, ∀ x ∈ U, ‖x - γ s‖ ≥ d_min
+class StaticSlab (B J : ℝ → Vec3) (p : ℝ → ℝ) (μ₀ : ℝ) : Prop where
+  permeability_pos : 0 < μ₀
+  field_differentiable : ∀ i, Differentiable ℝ (fun z => B z i)
+  pressure_differentiable : Differentiable ℝ p
+  balance : ∀ z, J z ⨯₃ B z = ![0, 0, deriv p z]
+  divergence : ∀ z, deriv (fun t => B t 2) z = 0
+  ampere : ∀ z, slabCurl B z = μ₀ • J z
 ```
 
-- **Physical & Mathematical Role:** The Biot–Savart integral $B(x) = \frac{\mu_0 I}{4\pi}\oint \frac{\gamma'(s) \times (x - \gamma(s))}{|x - \gamma(s)|^3} ds$ has a $1/r^2$ singularity along the coil filament $\gamma$. Requiring `HasClearanceMargin γ U d_min` in the kernel contract guarantees that $B$ is real-analytic and harmonic throughout $U$.
-
-- **Specification Bug Prevented:** Prevents division-by-zero traps in Lean's real division (`x / 0 = 0` in Lean/Mathlib!). Without an explicit `d_min > 0` clearance hypothesis, an expression dividing by `‖x - γ s‖^3` evaluates to `0` on the coil rather than raising a type error.
-
-- **Compiled Sanity Check:**
-```lean
--- Sanity Check 3: Clearance margin strictly excludes coil points from plasma domain
-theorem coil_disjoint_from_plasma (γ : ℝ → ℝ³) (U : Set ℝ³) (d : ℝ)
-    (h : HasClearanceMargin γ U d) (s : ℝ) : γ s ∉ U := by
-  intro hx
-  have hdist := h.2 s (γ s) hx
-  simp only [sub_self, norm_zero] at hdist
-  linarith [h.1]
-```
-
-## 4. Tolerance-Aware Vacuum Fixture Certificate (Minutes 8–10)
+**Sanity checks.**
 
 ```lean
--- PlasmaLean/Kernel/FixtureCertificate.lean
-/-- C¹ perturbation bound modeling ±ε manufacturing & assembly tolerances -/
-def AdmissiblePerturbation (δγ : ℝ → ℝ³) (ε : ℝ) : Prop :=
-  ∀ s : ℝ, ‖δγ s‖ ≤ ε ∧ ‖deriv δγ s‖ ≤ ε
-
-/-- Top-level Kernel Certificate for a Stellarator Vacuum Demonstrator -/
-structure CertifiedVacuumFixture
-    (fixture : CoilSystem N) (Σ_target : Set ℝ³) (n_unit : ℝ³ → ℝ³)
-    (d_min ε B_min η_max : ℝ) : Prop where
-  tolerance_margin : 0 < ε ∧ 2 * ε < d_min
-  clearance : ∀ i, HasClearanceMargin (fixture.curves i) Σ_target d_min
-  field_strength_ok : ∀ (δ : Fin N → ℝ → ℝ³),
-    (∀ i, AdmissiblePerturbation (δ i) ε) →
-    ∀ x ∈ Σ_target, ‖evalBiotSavart (fixture.perturb δ) x‖ ≥ B_min
-  normal_error_ok : ∀ (δ : Fin N → ℝ → ℝ³),
-    (∀ i, AdmissiblePerturbation (δ i) ε) →
-    ∀ x ∈ Σ_target,
-      |⟪evalBiotSavart (fixture.perturb δ) x, n_unit x⟫_ℝ| /
-        ‖evalBiotSavart (fixture.perturb δ) x‖ ≤ η_max
+-- PlasmaLean/Theory/Equilibrium/Slab.lean
+uniform_slab, helicalSlab_equilibrium        -- instances
+-- PlasmaLean/Sanity/AuditEquilibrium.lean
+slab_rejects_compressive                     -- counterexample
+slab_total_pressure_deriv                    -- p + |B⊥|²/2μ₀ is conserved
+slab_negative_pressure                       -- S-1: negative pressure admitted
 ```
 
-- **Physical & Mathematical Role:** This 20-line structure is the entire top-level specification for the Vacuum Demonstrator! A physicist or engineer does not need to read 15,000 lines of interval-arithmetic tactics or Fréchet derivative lemmas: if Lean 4's kernel accepts a term of type `CertifiedVacuumFixture`, then for *every* manufacturing perturbation within $\pm\varepsilon$, the magnetic field on $\Sigma_{\text{target}}$ is guaranteed to stay above $B_{\min}$ and keep normalized normal error $|\mathbf{B}\cdot\mathbf{n}|/|\mathbf{B}| \le \eta_{\max}$.
+**Why it is stated this way.** Here the derivatives are real derivatives (`deriv`), and the slab law includes Ampère's law and $\nabla\cdot B = 0$. Because `deriv` is totalized (it returns $0$ where a function is not differentiable), the law requires differentiability explicitly.
 
-- **Specification Bug Prevented:** Eliminates 'single-point optimization illusions' where a coil set works at nominal floating-point precision but loses confinement under sub-millimeter assembly errors.
+**Audit findings.** **S-1 (low, recorded).** `StaticSlab` does not require $p \ge 0$: `slab_negative_pressure` exhibits $B = (0,z,0)$, $J = (-1,0,0)$, $\mu_0 = 1$, $p = -z^2/2$. The only design user, `Design/ValidatedSlabEquilibrium`, imposes $p > 0$ itself.
 
-- **Compiled Sanity Check:**
+---
+
+## 3. Kernel/ThermalSlab: steady slab heat conduction (Minutes 2–3)
+
 ```lean
--- Kernel Audit Verification Command:
-#print axioms CertifiedVacuumFixture
--- Output: 'CertifiedVacuumFixture' depends only on standard Lean 4 axioms:
--- [propext, Classical.choice, Quot.sound]
+-- PlasmaLean/Kernel/ThermalSlab.lean (31 lines), namespace PlasmaLean.Engineering
+class SteadySlab (T dT : ℝ → ℝ) (Tc q Q h k hc : ℝ) : Prop where
+  thickness_nonneg : 0 ≤ h
+  conductivity_pos : 0 < k
+  cooling_pos : 0 < hc
+  temperature_derivative : ∀ x ∈ Set.Icc 0 h, HasDerivAt T (dT x) x
+  flux_derivative : ∀ x ∈ Set.Icc 0 h, HasDerivAt dT (-Q / k) x
+  hot_flux : k * dT h = q
+  cold_flux : k * dT 0 = hc * (T 0 - Tc)
 ```
+
+**Sanity checks.**
+
+```lean
+-- PlasmaLean/Theory/Engineering/SlabHeat.lean
+slab_solution                    -- explicit solution (and uniqueness)
+-- PlasmaLean/Sanity/AuditThermalSlab.lean
+steadySlab_unloaded              -- degenerate case
+steadySlab_rejects_isothermal    -- counterexample
+steadySlab_energy_balance        -- hc (T(0) − Tc) = q + Q h
+steadySlab_cold_face_ge          -- sign
+steadySlab_zero_thickness        -- T-1
+```
+
+**Why it is stated this way.** Signs and units were checked in the audit: $-kT'' = Q$, the loaded face at $x = h$ receives $q$, the cooled face at $x = 0$ removes $h_c(T(0) - T_c)$. The global energy balance `steadySlab_energy_balance` confirms the orientation.
+
+**Audit findings.** **T-1 (low, recorded).** `thickness_nonneg : 0 ≤ h` admits $h = 0$, where the law reduces to $h_c(T(0) - T_c) = q$ (`steadySlab_zero_thickness`). Not contradictory, but a degenerate witness; the design user uses $h > 0$.
+
+---
+
+## 4. Kernel/Vacuum: current-free magnetostatics (Minutes 3–5)
+
+```lean
+-- PlasmaLean/Kernel/Vacuum.lean (99 lines), namespace PlasmaLean.Vacuum
+abbrev Euclid3 := EuclideanSpace ℝ (Fin 3)
+abbrev coordVec (i : Fin 3) : Euclid3 := EuclideanSpace.single i (1 : ℝ)
+
+def divOp (L : Euclid3 →L[ℝ] Euclid3) : ℝ := ∑ i : Fin 3, L (coordVec i) i
+def curlOp (L : Euclid3 →L[ℝ] Euclid3) : Euclid3 := ...
+def fieldDiv (B : Euclid3 → Euclid3) (x : Euclid3) : ℝ := divOp (fderiv ℝ B x)
+def fieldCurl (B : Euclid3 → Euclid3) (x : Euclid3) : Euclid3 :=
+  curlOp (fderiv ℝ B x)
+
+structure VacuumField (Ω : Set Euclid3) (B : Euclid3 → Euclid3) : Prop where
+  isOpen : IsOpen Ω
+  contDiffOn : ContDiffOn ℝ 2 B Ω
+  div_eq_zero : ∀ x ∈ Ω, fieldDiv B x = 0
+  curl_eq_zero : ∀ x ∈ Ω, fieldCurl B x = 0
+```
+
+**Sanity checks.**
+
+```lean
+-- PlasmaLean/Sanity/Vacuum.lean (namespace PlasmaLean.Sanity)
+zero_vacuum, const_vacuum              -- degenerate cases
+hyperbolic_gradient_vacuum             -- instance
+filamentField_vacuumField              -- closed C¹ filaments away from the coil
+rotationField_not_vacuum               -- counterexample
+-- PlasmaLean/Sanity/AuditVacuum.lean (namespace PlasmaLean.Sanity.Audit)
+id_not_vacuum, fieldCurl_id, fieldDiv_rotationField  -- the two laws are independent
+absField_not_vacuum                    -- the open-set and C² laws are load-bearing
+vacuumField_empty                      -- V-1
+```
+
+**Why it is stated this way.** Divergence and curl are defined from Mathlib's Fréchet derivative, and their agreement with the theory-layer operators is proved in `Sanity/Vacuum` (`divOp_eq_divergence`, `curlOp_eq_curl`). Since `fderiv` is $0$ where $B$ is not differentiable, the law asks for $C^2$ on an open set; `absField_not_vacuum` shows these conditions matter.
+
+**Audit findings.** **V-1 (low, recorded).** `VacuumField ∅ B` holds for every $B$ (`vacuumField_empty`). This is expected for a region-based law, but a theorem whose conclusion does not mention a point of $\Omega$ can be vacuous. Downstream statements (rational stellarator, polygon coils, the vacuum-pair volume error) must exhibit a nonempty region.
+
+---
+
+## 5. Kernel/Transport: radial heat transport (Minutes 5–7)
+
+```lean
+-- PlasmaLean/Kernel/Transport.lean (304 lines), namespace PlasmaLean.Transport
+-- ∂ₜT = D T'' + (∂ψD + ∂TD T' + D V''/V') T' + R  on ψ ∈ [0,1]
+class TransportLaws (c : RadialCoefficients) : Prop where
+  Vp_pos : ∀ ψ ∈ Icc (0 : ℝ) 1, 0 < c.Vp ψ
+  D_nonneg : ∀ ψ ∈ Icc (0 : ℝ) 1, ∀ T : ℝ, 0 ≤ c.D ψ T
+  D_axis : c.axis = .degenerate → ∀ T : ℝ, c.D 0 T = 0
+  ...  -- derivative laws, regular axis, Tdom open, R continuous
+
+class ClassicalRadialSolution (c : RadialCoefficients) (Tedge : ℝ → ℝ) (τ : ℝ)
+    (u : RadialField) : Prop where
+  tau_nonneg : 0 ≤ τ
+  regular : u.Regular τ
+  pde : ∀ ψ ∈ Icc (0 : ℝ) 1, ∀ t ∈ Icc 0 τ,
+    u.Tt ψ t = c.op ψ (u.T ψ t) (u.Tψ ψ t) (u.Tψψ ψ t)
+  axis : c.axis = .regular → ∀ t ∈ Icc 0 τ, u.Tψ 0 t = 0
+  edge : ∀ t ∈ Icc 0 τ, u.T 1 t = Tedge t
+```
+
+**Sanity checks.**
+
+```lean
+-- PlasmaLean/Sanity/Transport.lean
+constField_solution, cosMode_radialHeatTransport   -- instances
+-- PlasmaLean/Sanity/AuditTransport.lean
+mislabelled_not_transportLaws, constField_rejects_source,
+cosMode_rejects_edge, slopeField_rejects_axis      -- counterexamples
+fakeField_zero_duration, fakeField_not_solution    -- R-1
+solution_outside_Tdom                              -- R-2
+noDiffusion_frozen                                 -- R-3
+```
+
+**Why it is stated this way.** This is the 1-D (flux-surface averaged) transport model used by the Solov'ev temperature-band theorems. Solutions are *supplied*: there is no existence theorem in the kernel, and the headline results quantify over every supplied solution. At a degenerate axis no boundary condition is posed (a Fichera outflow boundary); the edge carries Dirichlet data.
+
+**Audit findings.** **R-1, R-2, R-3 (low, recorded).** R-1: with $\tau = 0$ every value is a time derivative within $\{0\}$, so a false rate is admitted (`fakeField_zero_duration`). R-2: a solution need not stay in the source domain `Tdom` (`solution_outside_Tdom`). R-3: $D \equiv 0$ is allowed, which freezes profiles (`noDiffusion_frozen`). The headline results assume a solution for every $\tau \ge 0$ and barriers inside `Tdom`, so they are unaffected.
+
+---
+
+## 6. Kernel/Fusion: 0-D D-T burn (Minutes 7–9)
+
+```lean
+-- PlasmaLean/Kernel/Fusion.lean (381 lines), namespace PlasmaLean.Fusion
+def QuasineutralComposition (p : DTPlasma) : Prop :=
+  ∃ (k : ℕ) (Z c : Fin k → ℝ), (∀ i, 1 ≤ Z i) ∧ (∀ i, 0 ≤ c i) ∧
+    p.fuelFraction + ∑ i, Z i * c i = 1 ∧
+    p.fuelFraction + ∑ i, Z i ^ 2 * c i = p.Zeff ∧
+    p.ionRatio = p.fuelFraction + ∑ i, c i
+
+class PhysicalPlasma (p : DTPlasma) : Prop where
+  n_pos : 0 < p.n
+  V_pos : 0 < p.V
+  fuel_pos : 0 < p.fuelFraction
+  composition : QuasineutralComposition p
+
+class PowerBalance (p : DTPlasma) (sv Paux τE T : ℝ → ℝ) : Prop where
+  tauE_pos : ∀ t : ℝ, 0 ≤ t → 0 < τE t
+  balance : ∀ t : ℝ, 0 ≤ t →
+    HasDerivWithinAt (fun s => p.thermalEnergy (T s))
+      (p.netHeating sv (Paux t) (τE t) (T t)) (Set.Ici 0) t
+-- also: keV, alphaEnergy, bremsCoeff, boschHaleWindows (61 windows), BoschHaleDT
+```
+
+**Sanity checks.**
+
+```lean
+-- PlasmaLean/Sanity/BoschHaleInstance.lean: instance bhSv_boschHaleDT
+-- PlasmaLean/Sanity/Fusion.lean: steady_state_iff, impurity_physical
+-- PlasmaLean/Sanity/AuditFusion.lean
+keV_eq, neutron_energy, bremsCoeff_matches_NRL   -- constants
+boschHaleWindows_contiguous, boschHaleWindows_cover
+purePlasma_physical, carbonHeliumPlasma_physical -- instances
+inconsistentPlasma_not_physical                   -- F-1 regression
+Zeff_ge_of_composition, carbon_values_Zeff_ge
+powerBalance_zero_density                         -- F-2
+lossPower_zero_tau, bremsPower_of_nonpos          -- F-3
+```
+
+**Why it is stated this way.** The constants are exact SI values or cited empirical fits (Bosch–Hale 1992, checked externally to 1 % over 61 windows). `PhysicalPlasma` now derives $Z_{\rm eff} \ge 1$ and the fuel and ion-ratio bounds from an explicit quasineutral species list instead of stating them separately.
+
+**Audit findings.** **F-1 (medium, fixed 30 October).** The old `PhysicalPlasma` accepted fuel fraction 1 with $Z_{\rm eff} = 2$, overstating alpha heating; it now carries `composition : QuasineutralComposition p`, and the old counterexample is `inconsistentPlasma_not_physical`. No numeric result changed. **F-2, F-3 (low, recorded):** `PowerBalance` alone is satisfied by every trajectory when $n = 0$; `lossPower p 0 T = 0` (totalized division) outside `PowerBalance`.
+
+---
+
+## 7. The 30 October strict audit in one page (Minutes 9–10)
+
+```lean
+-- notes/audit/2026-10-30-kernel-audit.md (audited commit cda8bd0)
+Scope       : PlasmaLean/Kernel/{Equilibrium, Slab, ThermalSlab,
+              Transport, Vacuum, Fusion}.lean  (900 lines)
+Inventory   : 52 declarations = 28 data definitions, 11 laws (48 fields),
+              3 Prop predicates, 10 theorems. Nothing sampled.
+Findings    : critical 0, high 0, medium 1 (F-1), low 9, informational 3
+New sanity  : PlasmaLean/Sanity/Audit{Equilibrium, ThermalSlab, Vacuum,
+              Transport, Fusion}.lean, standard axioms only, no sorry,
+              no decide
+
+Status after the 30 October follow-up
+  F-1  medium  fixed (QuasineutralComposition in PhysicalPlasma)
+  E-1  low     checked: all 14 design users prove g = ∇p
+  S-1, T-1, V-1, R-1, R-2, R-3, F-2, F-3   low   recorded, regression theorems
+  R-4  low     fixed (plain decide removed)
+Model audit (repository finding H-1): definitions behind the headline
+  claims re-derived against their sources; MA-M1, MA-M2 resolved
+```
+
+**Sanity checks.**
+
+```lean
+-- Axiom check over the whole library (after the follow-up):
+lake env lean scripts/check_axioms.lean
+-- "Axiom audit passed for 47015 PlasmaLean declarations"
+-- every declaration depends only on [propext, Classical.choice, Quot.sound]
+```
+
+**Why it is stated this way.** The kernel is about 900 lines in six modules. Its laws are hypotheses (`Prop` classes and structures), not axioms, so `#print axioms` on a theorem shows only Lean's standard axioms; what it does *not* show is whether the supplied laws describe the physics. That is what the audit checks: each law is compared with its source, given an instance, a counterexample and risk-specific checks, and each defect gets a regression theorem. Read the full record: [notes/audit/2026-10-30-kernel-audit.md](https://github.com/siddhartha-gadgil/PlasmaLean/blob/main/notes/audit/2026-10-30-kernel-audit.md).
+
+**Audit findings.** **H-1 (high, repository audit; resolved by the model audit).** The model definitions behind the headline claims (`LittlejohnOrbit`, `BoozerField`, `mercierIndex`, `IsFieldLine` and others) were outside the kernel; they were re-derived against Littlejohn, Boozer, Landreman–Jorge and the other sources and match. **MA-M1** (guiding-centre orbits must stay off the magnetic axis) is resolved as far as the ψ > 0 chart allows: orbits exist on the full horizon for a band of births (`alpha_band_orbit_exists_005`) and proved limits show the rest needs coordinates through the axis. **MA-M2** is resolved: 3.5 MeV alpha orbits are constructed (`reactor_alpha_born_confined`, `reactor_alpha_confined_nonvacuous_35MeV`).

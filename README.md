@@ -121,13 +121,15 @@ The results by topic, with their role under the contract:
 Heavy certificates are offloaded through a workstation pipeline (Phase 15) and re-checked on the
 laptop before merging; on-demand results are spot-checked rather than rebuilt in full, and compiled
 modules can be copied between machines; see [Workstation.md](Workstation.md). The KAM certificate checks
-now peak at 4.3 GB per process; in the last full rebuild one module peaked at 6.17 GB
-(`LandremanFamily2MercierStable`, to be split), slightly over the 6 GB laptop target. Large checks are being rewritten as explicit
-proof-term certificates (Phase 16): `decide +kernel` is down from about 28,700 uses to about 2,500
-lines containing it (690 lines in the default build).
+peak at 4.3 GB per process; the one module that exceeded the 6 GB laptop target
+(`LandremanFamily2MercierStable`, 6.17–6.74 GB) is now split into parts peaking at most 2.74 GB, so every
+module with a recorded peak is within the target (the four `NearAxisQAAveraged` parts have no
+recorded individual peaks). Large checks are being rewritten as explicit
+proof-term certificates (Phase 16): `decide +kernel` is down from about 28,700 uses to 1,971
+lines containing it (130 lines in the default build, after the Landreman outer arcs were converted).
 
 The library uses standard axioms only (no project axioms). See the
-[progress slideshow](docs/slides.html) and the [latest report](progress/2026-10-26-progress-14.md).
+[progress slideshow](docs/slides.html) and the [latest report](progress/2026-10-30-progress-15.md).
 
 ## Code structure
 

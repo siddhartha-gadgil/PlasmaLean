@@ -64,3 +64,5 @@ dated evidence. Run `node scripts/check_site.mjs` before handing off the update.
 [25 October 2026, Phase 11 part 3, Phase 14B, Phase 15: an energy window and λ ∈ [0, 1/8] for alpha guiding centres; family-2 ballooning reduced (not certified); a workstation pipeline](2026-10-25-progress-13.md).
 
 [26 October 2026, Phase 11 part 4, Phase 16: passing alphas confined forever for every λ ∈ [0, 1/4]; low-memory kernel checks; proof-term certificates instead of decide +kernel; the workstation pipeline in use](2026-10-26-progress-14.md).
+
+[30 October 2026: strict audit, orbit existence, weak quasisymmetry, a Grad counterexample in Lean, and the stellarator contract (C1–C5)](2026-10-30-progress-15.md).

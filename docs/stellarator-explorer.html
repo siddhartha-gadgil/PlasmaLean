@@ -304,6 +304,15 @@
       color: var(--accent-cyan);
       margin-bottom: 0.5rem;
     }
+    .toy-model-banner {
+      background: rgba(120, 53, 15, 0.92);
+      color: #fef3c7;
+      border-bottom: 2px solid #fbbf24;
+      padding: 0.6rem 1.2rem;
+      font-size: 0.85rem;
+      font-weight: 600;
+      text-align: center;
+    }
     .status-banner {
       padding: 0.85rem 1.1rem;
       border-radius: 10px;
@@ -319,15 +328,20 @@
 </head>
 <body>
 
+  <div class="toy-model-banner" role="note">
+    Illustrative toy model: the formulas on this page are schematic JavaScript, not computed or certified by PlasmaLean.
+    The presets, the Max-J check, the threshold &eta;<sub>crit</sub> &asymp; 1.25, the available-energy meter and the regime banner are qualitative sketches, not physics codes or Lean results.
+  </div>
+
   <nav class="site-nav">
     <div class="brand">
       <span class="lambda-badge">∀</span>
       <span>Plasma<span style="color:var(--accent-cyan)">Lean</span> · 3D Stellarator, Torus Knot &amp; Microturbulence Lab</span>
     </div>
     <div class="preset-bar">
-      <span style="font-size:0.8rem; color:var(--text-muted); margin-right:0.3rem;">Load Preset:</span>
-      <button class="btn active" id="pre-qi" onclick="loadPreset('W7X_MAXJ', this)">✓ Optimized W7-X (Max-J / Low Turbulence)</button>
-      <button class="btn" id="pre-qhs" onclick="loadPreset('QHS_HELIX', this)">Quasi-Helical (HSX Toroidal Helix)</button>
+      <span style="font-size:0.8rem; color:var(--text-muted); margin-right:0.3rem;">Load Preset (schematic, loosely inspired by real devices):</span>
+      <button class="btn active" id="pre-qi" onclick="loadPreset('W7X_MAXJ', this)">✓ W7-X-like (schematic Max-J preset)</button>
+      <button class="btn" id="pre-qhs" onclick="loadPreset('QHS_HELIX', this)">Quasi-Helical (HSX-like, schematic)</button>
       <button class="btn" id="pre-knot" onclick="loadPreset('RESONANT_KNOT', this)">(3,5) Torus-Knot Field Line</button>
       <button class="btn btn-danger" id="pre-bad" onclick="loadPreset('BAD_ITG_TEM', this)">⚠️ Unoptimized Bad-Curvature (ITG/TEM Blowup)</button>
     </div>
@@ -488,7 +502,7 @@
           <div class="canvas-box" style="height: 210px;">
             <div class="canvas-header">
               <span class="canvas-tag">Field Line $|B(l)|$, Trapped Wells &amp; Bad-Curvature Drive</span>
-              <span class="canvas-tag" id="maxj-tag">Max-J Check</span>
+              <span class="canvas-tag" id="maxj-tag">Max-J Check (toy)</span>
             </div>
             <canvas id="canvasWell" width="460" height="210" style="width:100%; height:100%;"></canvas>
           </div>
@@ -512,19 +526,19 @@
         <div class="metric-card">
           <div class="metric-label">Bounce Action $\partial_\psi \mathcal{J}_\parallel$ (TEM)</div>
           <div class="metric-value" id="m-maxj" style="color:var(--accent-emerald);">--</div>
-          <div class="metric-sub" id="m-maxj-sub">Maximum-$J$ Criterion</div>
+          <div class="metric-sub" id="m-maxj-sub">Maximum-$J$ Criterion (toy formula)</div>
         </div>
 
         <div class="metric-card">
           <div class="metric-label">ITG Parameter $\eta_i = L_n / L_{T_i}$</div>
           <div class="metric-value" id="m-itg" style="color:var(--accent-amber);">--</div>
-          <div class="metric-sub" id="m-itg-sub">Critical Threshold $\eta_{\text{crit}} \approx 1.25$</div>
+          <div class="metric-sub" id="m-itg-sub">Schematic threshold $\eta_{\text{crit}} \approx 1.25$ (toy value)</div>
         </div>
 
         <div class="metric-card">
-          <div class="metric-label">Available Energy $\widehat{\mathcal{A}}$ (Æ)</div>
+          <div class="metric-label">Available Energy $\widehat{\mathcal{A}}$ (Æ, toy proxy)</div>
           <div class="metric-value" id="m-ae" style="color:var(--accent-rose);">--</div>
-          <div class="metric-sub" id="m-ae-sub">Helander–Mackenbach Bound</div>
+          <div class="metric-sub" id="m-ae-sub">Schematic stand-in for Helander–Mackenbach Æ (a proxy, not a transport bound)</div>
         </div>
       </div>
 
@@ -552,7 +566,7 @@
             $$R(\theta,\phi) = R_{0,0} + \Delta R_{\text{axis}}(\phi) + a\big(1 + \bar{\eta}\cos(\theta - N_{\text{fp}}\phi) + R_{2,1}\cos(2\theta - N_{\text{fp}}\phi)\big)\cos\theta$$
           </div>
           <p style="font-size:0.82rem; color:var(--text-muted);">
-            Positive bean/triangularity $R_{2,1} > 0$ indents the cross-section on the inboard side, creating a stabilizing magnetic well ($\partial_\psi B > 0$) and preserving $\det(D\Phi) > 0$.
+            <em>In this toy model,</em> positive bean/triangularity $R_{2,1} > 0$ indents the cross-section on the inboard side and is drawn as deepening a magnetic well ($\partial_\psi B > 0$) while keeping $\det(D\Phi) > 0$ for moderate amplitudes. This is schematic: whether shaping produces a well, and whether the map stays univalent, depends on the full configuration and is not computed here.
           </p>
         </div>
 
@@ -800,7 +814,7 @@
         banner.style.background = 'rgba(16, 185, 129, 0.14)';
         banner.style.border = '1px solid #10b981';
         banner.style.color = '#34d399';
-        banner.innerHTML = `<span>✓ CERTIFIED LOW-TURBULENCE REGIME: Maximum-J holds (∂_ψ J_∥ < 0), ITG stability criterion η_i ≤ η_crit is satisfied, and irrational rotational transform preserves nested KAM tori.</span>`;
+        banner.innerHTML = `<span>✓ TOY-MODEL INDICATOR (schematic, not certified): the toy formulas give ∂_ψ J_∥ < 0 (Max-J), η_i ≤ η_crit and a non-low-order-rational ι.</span>`;
       } else {
         banner.style.background = 'rgba(244, 63, 94, 0.15)';
         banner.style.border = '1px solid #f43f5e';
@@ -809,7 +823,7 @@
         if (parseFloat(dJ_dpsi) >= 0) reasons.push('Violation of Maximum-J (∂_ψ J_∥ ≥ 0 drives TEM)');
         if (eta_i > eta_crit) reasons.push(`Steep Ion Temp Gradient η_i = ${eta_i.toFixed(1)} > η_crit (ITG Streamers)`);
         if (isResonant) reasons.push(`Low-order rational torus knot ι ≈ ${rat.p}/${rat.q} (Magnetic Islands)`);
-        banner.innerHTML = `<span>⚠️ MICROTURBULENCE / CONFINEMENT WARNING: ${reasons.join(' · ')}</span>`;
+        banner.innerHTML = `<span>⚠️ TOY-MODEL WARNING (schematic): ${reasons.join(' · ')}</span>`;
       }
 
       state = { N, iota, axis, elong, tri, lti, ln, well, fnAxis, fnIota, fnBmod, eta_i, eta_crit, dJ_dpsi: parseFloat(dJ_dpsi), aeVal: parseFloat(aeVal) };

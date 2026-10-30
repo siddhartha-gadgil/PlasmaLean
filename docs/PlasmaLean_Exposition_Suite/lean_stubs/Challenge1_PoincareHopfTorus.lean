@@ -1,4 +1,14 @@
 /-
+  Status note (30 October 2026): what the PlasmaLean library already has.
+  * Part (a), algebraic tangency: `PlasmaLean.field_tangency` and
+    `PlasmaLean.current_tangency` in PlasmaLean/Kernel/Equilibrium.lean prove
+    B ⬝ᵥ g = 0 and J ⬝ᵥ g = 0 under `ForceBalance B J g` (for Vec3 = Fin 3 → ℝ).
+  * The torus conclusion for one concrete family: `fluxSurface_homeo_torus` in
+    PlasmaLean/Design/LandremanGradCounterexample.lean shows each level set of
+    Landreman family 1 is homeomorphic to S¹ × S¹ via the explicit map `torusMap`.
+  The general statement (any compact regular level set) is still open.
+-/
+/-
   PlasmaLean Pure Math Bounty #1 (Topology & Foliations)
   File: lean_stubs/Challenge1_PoincareHopfTorus.lean
   Zero plasma physics background required!

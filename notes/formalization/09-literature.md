@@ -8,6 +8,9 @@ The guide was assembled on 2026-10-10. Publication metadata and primary entry po
 
 - [Source extraction protocol](#source-extraction-protocol)
 - [Geometry, equilibrium, and symmetry](#geometry-equilibrium-and-symmetry)
+- [Grad conjecture counterexamples and quasisymmetry (2026 sources)](#grad-conjecture-counterexamples-and-quasisymmetry-2026-sources)
+- [Omnigeneity and thermal-particle transport (contract clause C2)](#omnigeneity-and-thermal-particle-transport-contract-clause-c2)
+- [Evolution, regularity, and turbulence proxies](#evolution-regularity-and-turbulence-proxies)
 - [Stability and kinetic theory](#stability-and-kinetic-theory)
 - [Validated computation and analysis](#validated-computation-and-analysis)
 - [Design algorithms and software](#design-algorithms-and-software)
@@ -38,17 +41,51 @@ For data, additionally record material grade, experimental conditions, processin
 
 - **LS19.** M. Landreman and W. Sengupta (2019), *Constructing stellarators with quasisymmetry to high order*. [arXiv:1908.10253](https://arxiv.org/abs/1908.10253); [publisher full text](https://www.cambridge.org/core/journals/journal-of-plasma-physics/article/constructing-stellarators-with-quasisymmetry-to-high-order/A7D61D398C54B95EB3881F499457D4B7). Use the explicit near-axis construction and **Appendix A**, which identifies corrections and convention changes relative to the original Garren–Boozer formulas. Prove coefficient identities first; convergence and remainder bounds are separate targets.
 
-- **BKM20.** J. W. Burby, N. Kallinikos, and R. S. MacKay (2020), *Some mathematics for quasi-symmetry*. [arXiv:1912.06468](https://arxiv.org/abs/1912.06468). Useful for geometric definitions, reduced dynamics, and conservation laws. Extract which notion of quasisymmetry and which guiding-centre approximation each theorem uses.
+- **BKM20.** J. W. Burby, N. Kallinikos, and R. S. MacKay (2020), *Some mathematics for quasi-symmetry*, Journal of Mathematical Physics 61, 093503. [arXiv:1912.06468](https://arxiv.org/abs/1912.06468). Useful for geometric definitions, reduced dynamics, and conservation laws. Extract which notion of quasisymmetry and which guiding-centre approximation each theorem uses. Frames quasisymmetry as an integrability property; the Garren–Boozer conjecture is neither proved nor disproved there.
 
 - **ELPS.** A. Enciso, A. Luque, and D. Peralta-Salas, *MHD equilibria with nonconstant pressure in nondegenerate toroidal domains*, Journal of the European Mathematical Society 27 (2025), 2251–2291. [DOI: 10.4171/JEMS/1410](https://doi.org/10.4171/JEMS/1410); [arXiv:2104.08149](https://arxiv.org/abs/2104.08149). A rigorous existence reference involving piecewise-smooth equilibria and invariant structures. Preserve the interface regularity and nondegeneracy assumptions instead of claiming a global smooth nested equilibrium.
 
-- **CDG21.** P. Constantin, T. D. Drivas, and D. Ginsberg (2021), *On quasisymmetric plasma equilibria sustained by small force*, Journal of Plasma Physics 87, 905870111. [Publisher record](https://www.cambridge.org/core/journals/journal-of-plasma-physics/article/abs/on-quasisymmetric-plasma-equilibria-sustained-by-small-force/AAB0DCC82FDBD028AE1F26841E583CA1). The additional force is part of the result. Quantifying or removing it requires another argument.
+- **CDG21.** P. Constantin, T. D. Drivas, and D. Ginsberg (2021), *On quasisymmetric plasma equilibria sustained by small force*, Journal of Plasma Physics 87, 905870111. [Publisher record](https://www.cambridge.org/core/journals/journal-of-plasma-physics/article/abs/on-quasisymmetric-plasma-equilibria-sustained-by-small-force/AAB0DCC82FDBD028AE1F26841E583CA1); [arXiv:2009.08860](https://arxiv.org/abs/2009.08860). The additional force is part of the result. Quantifying or removing it requires another argument. Theorems 1.1–1.2 and eq. (1.24) give the small-force near-quasisymmetric equilibria; the weak-quasisymmetry definition used in PlasmaLean (`WeakQS`) follows its Definition 1. The paper states (p. 7) that it is unknown whether quasisymmetry can be achieved in a volume.
 
 - **MRxMHD12.** S. R. Hudson et al. (2012), *Computation of multi-region relaxed magnetohydrodynamic equilibria*, Physics of Plasmas 19, 112502. [DOI: 10.1063/1.4765691](https://doi.org/10.1063/1.4765691); [arXiv:1211.3072](https://arxiv.org/abs/1211.3072). Defines a useful stepped-pressure/relaxed model and SPEC computation. Formalize interface conditions and distinguish this model from smooth ideal MHD.
 
 - **LP22.** M. Landreman and E. Paul (2022), *Magnetic fields with precise quasisymmetry for plasma confinement*, Physical Review Letters 128, 035001. [DOI: 10.1103/PhysRevLett.128.035001](https://doi.org/10.1103/PhysRevLett.128.035001); [arXiv:2108.03711](https://arxiv.org/abs/2108.03711). Numerical candidates and useful quantitative targets; numerical precision does not establish exact quasisymmetry or an all-orbit confinement theorem.
 
 - **EPS-relaxation.** A. Enciso and D. Peralta-Salas, *Obstructions to Topological Relaxation for Generic Magnetic Fields*. [arXiv:2308.15383](https://arxiv.org/abs/2308.15383); [DOI: 10.1007/s00205-024-02078-5](https://doi.org/10.1007/s00205-024-02078-5). Read the precise genericity, topology, and relaxation class before assuming arbitrary magnetic data can be relaxed to the desired equilibrium.
+
+## Grad conjecture counterexamples and quasisymmetry (2026 sources)
+
+Collected from [grad-conjecture.md](https://github.com/siddhartha-gadgil/PlasmaLean/blob/main/notes/theory/grad-conjecture.md) and [quasisymmetric-solution.md](https://github.com/siddhartha-gadgil/PlasmaLean/blob/main/notes/theory/quasisymmetric-solution.md) (30 October 2026). Under the stellarator contract (see the [implementation plan](implementation-plan.md)), Grad counterexamples are mathematical infrastructure: non-axisymmetry is a consequence of a current-free rotational transform, not a design goal. Exact quasisymmetry on a volume remains open (CDG21, BKM20).
+
+- **Landreman26.** M. Landreman, *Analytic toroidal 3D MHD equilibria and steady Euler flows with invariant surfaces*. [arXiv:2609.26742](https://arxiv.org/abs/2609.26742) (v1 22 September, v2 28 September 2026); code at [landreman/analytic_3d_equilibria](https://github.com/landreman/analytic_3d_equilibria). Explicit elementary closed-form non-axisymmetric MHS equilibria with exact nested flux surfaces (family 1 with ι = 2 and a non-planar axis, family 2 with sheared ι); states that it refutes Grad's conjecture as formulated in Conjecture 2.5 of Cardona et al. (2025). In PlasmaLean: `LandremanEquilibrium.family1`, `LandremanGradCounterexample.family1_grad_counterexample`, and family-2 force balance and Mercier results. Both families carry net toroidal current (plan Q-18), so they are not stellarator candidates under contract clause C1.
+
+- **GLT26.** J. Gómez-Serrano, L. Liehr, and M. A. Taylor, *Counterexamples to Grad's conjecture*. [arXiv:2609.24739](https://arxiv.org/abs/2609.24739) (21 September 2026). Smooth MHS solutions in an embedded solid torus with nested toroidal pressure levels, symmetry group exactly the cyclic group C_N, the field vanishing on a circular axis; Nash–Moser construction. Includes a Lean 4 formalization of the main theorem at [lukasliehr/Grad-Conjecture](https://github.com/lukasliehr/Grad-Conjecture) (pins Lean v4.33.1).
+
+- **ICLT26.** O. Issan, J. Citrin, M. Landreman, and B. Tracey, *Analytic non-axisymmetric 3D MHD equilibria without stellarator symmetry*. [arXiv:2610.07304](https://arxiv.org/abs/2610.07304) (5 October 2026). Adds a parameter τ to both Landreman families that breaks stellarator symmetry while keeping the equilibria exact (τ = 0 recovers Landreman26). Not yet checked in PlasmaLean.
+
+- **ELPS** (listed above). Enciso–Luque–Peralta-Salas: piecewise-smooth (stepped-pressure) MHS equilibria far from symmetry, counterexamples to Grad in the stepped-pressure setting, not smooth.
+
+- **RJB25.** Ruth, Jorge, and Bindel, Journal of Plasma Physics 91 (2025) E73. [arXiv:2411.04352](https://arxiv.org/abs/2411.04352). The vacuum near-axis expansion is ill-posed (Theorem 3.10 in the arXiv HTML version); a regularized expansion converges (Theorem 3.13, Corollary 3.15). Check the theorem numbering against the pinned version. Reason the plan does not pursue a near-axis remainder route to quasisymmetry.
+
+- **Dommaschk86.** W. Dommaschk, *Representations for vacuum potentials in stellarators*, Computer Physics Communications 40 (1986) 203. Basis of explicit harmonic (vacuum) potentials, polynomial in (R, z, ln R); the proposed route (ii) to a quasisymmetric vacuum field fits a finite Dommaschk sum to a QA target.
+
+## Omnigeneity and thermal-particle transport (contract clause C2)
+
+Sources for the definitions specified in [00-model-contracts.md](00-model-contracts.md) (`BounceAveragedDrift`, `Omnigenous`, `EffectiveRippleBound`; not yet in Lean).
+
+- **Helander14** and **CS97** (listed under Stability and kinetic theory) are the entry points for omnigeneity and its relation to quasisymmetry.
+
+- **NKKH99.** Nemov, Kasilov, Kernbichler, and Heyn (1999), Physics of Plasmas 6, 4622. Definition of the effective ripple ε_eff. Copy the definition exactly, including the field-line length and the normalization (reference field B₀, major radius R₀). The link from ε_eff to a 1/ν-regime diffusivity (χ ∝ ε_eff^{3/2}) is a supplied model law.
+
+- To be added: a primary source for the general omnigeneity condition (bounce-averaged radial drift zero for all trapped particles) and for quasi-isodynamic fields, with exact locators. No bibliographic details are recorded in the repository notes yet.
+
+## Evolution, regularity, and turbulence proxies
+
+- **PT19.** Pizzocchero and Tassi (2019), *On approximate solutions of the equations of incompressible magnetohydrodynamics*. [arXiv:1905.13722](https://arxiv.org/abs/1905.13722). Proposition 4.3 is the a posteriori bridge from an approximate solution to an exact one used for the periodic evolution benchmark (plan gate E2, question Q-7). Not started in Lean.
+
+- **KSY25.** Kozono, Shimizu, and Yanagisawa (2025), *Stability of harmonic vector fields as an equilibrium of the 3D MHD equations in bounded domains with arbitrary geometry*, Mathematische Annalen 393. [DOI: 10.1007/s00208-025-03223-5](https://doi.org/10.1007/s00208-025-03223-5). Small-data stability around harmonic fields on toroidal domains (plan gate E4, question Q-8). Extract the exact hypotheses; do not transfer a small-background theorem to a reactor-strength field.
+
+- **MPH22.** Mackenbach, Proll, and Helander (2022), Physical Review Letters 128, 175001. [arXiv:2109.01042](https://arxiv.org/abs/2109.01042); erratum Physical Review Letters 130, 239901 (2023); follow-up Journal of Plasma Physics 89, 905890513 (2023). Available energy Â of trapped particles. Â bounds the energy available for release under constrained rearrangements; it is a proxy correlated with turbulent transport, not a transport bound. The formula quoted in the project notes is unchecked against these papers; extract it with equation numbers before any Lean statement depends on it (plan N-20).
 
 ## Stability and kinetic theory
 

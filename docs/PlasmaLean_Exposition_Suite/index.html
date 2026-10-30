@@ -40,51 +40,51 @@
     <section class="hero">
       <div class="pill-row">
         <span class="pill pill-cyan">Lean 4 Formal Verification</span>
-        <span class="pill pill-indigo">Small-Kernel Architecture</span>
+        <span class="pill pill-indigo">Small Audited Domain Kernel</span>
         <span class="pill pill-emerald">Differential &amp; Complex Geometry</span>
-        <span class="pill pill-violet">3D Stellarator Confinement</span>
+        <span class="pill pill-violet">Stellarator Contract C1–C5</span>
       </div>
       <h1>PlasmaLean Mathematical Exposition &amp; Contributor Suite</h1>
       <p style="font-size: 1.1rem; max-width: 920px;">
-        <strong>PlasmaLean</strong> is an attempt to design a practical stellarator using Lean 4 verification to guarantee physical, geometric, and engineering correctness. By isolating core physical contracts and sanity checks into a <strong>small, human-auditable verification kernel</strong>, both human mathematicians and AI theorem-proving agents can build machine-checked stability and coil-tolerance certificates without specification drift.
+        <strong>PlasmaLean</strong> is a Lean 4 library working toward a verified stellarator design. Its theorems about fields, equilibria, particle orbits, stability and burn rest on a <strong>small, audited domain kernel</strong> (six modules, about 900 lines, strictly audited on 30 October 2026) and on supplied models that every statement names explicitly. The target is the <strong>stellarator contract</strong>: C1 current-free rotational transform, C2 omnigeneity for thermal ions and electrons, C3 finite-β MHD stability, C4 existence (nested surfaces, force balance), C5 thermal performance, all on one candidate. Honest status: C1 and C4 hold only for a vacuum field inside one certified torus; C3 only for current-carrying test beds; C2 and C5 on a stellarator candidate are essentially open (see the <a href="https://github.com/siddhartha-gadgil/PlasmaLean/blob/main/notes/implementation-plan.md" target="_blank" rel="noopener">implementation plan</a>).
       </p>
       <div style="margin-top: 1.5rem; display: flex; flex-wrap: wrap; gap: 0.75rem;">
         <a href="rosetta-stone.html" class="btn active">Explore the Rosetta Stone →</a>
         <a href="kernel-audit.html" class="btn">Audit the Kernel in 10 Minutes →</a>
-        <a href="math-challenges.html" class="btn">View Pure Math Bounties (Lean 4) →</a>
+        <a href="math-challenges.html" class="btn">View the Pure-Math Invitations (Lean 4) →</a>
         <a href="slides-onboarding.html" class="btn">Launch Interactive Slide Deck →</a>
       </div>
     </section>
 
     <h2>The Four Pillar Expositions</h2>
-    <p>Designed for drop-in integration with <code>siddhartha-gadgil.github.io/PlasmaLean/</code>, this suite bridges plasma physicists, Lean 4 formalizers, and pure mathematicians in topology, differential geometry, and complex geometry.</p>
+    <p>This hand-written suite is part of <code>siddhartha-gadgil.github.io/PlasmaLean/</code>. It bridges plasma physicists, Lean 4 formalizers and pure mathematicians in topology, differential geometry and complex geometry. The site generator does not refresh it; it was last checked against the source on 30 October 2026, and every Lean declaration it presents as real was checked to exist.</p>
 
     <div class="grid-2" style="margin-top: 1.5rem;">
       <div class="card">
         <div class="pill-row"><span class="pill pill-cyan">Pillar 1 · Terminology Bridge</span></div>
         <h3><a href="rosetta-stone.html">1. Physics ↔ Geometry ↔ Lean 4 Rosetta Stone</a></h3>
-        <p>A searchable, filterable 3-way dictionary mapping 16 foundational stellarator physics concepts (flux surfaces, rotational transform $\iota$, Boozer coordinates, quasisymmetry, Bernstein $\delta^2 W$, Biot-Savart) into coordinate-free differential/complex geometry and exact Lean 4 kernel types.</p>
+        <p>A searchable, filterable three-way dictionary of 14 stellarator concepts (flux surfaces, rotational transform $\iota$, Boozer coordinates, quasisymmetry, MHD stability, Biot–Savart, ...) in coordinate-free geometry, with the real PlasmaLean declarations where they exist (5 in the library, 8 partly) and a labelled sketch where they do not (1). Each entry links to one of the 13 handbook guides.</p>
         <p><a href="rosetta-stone.html">Open Interactive Rosetta Stone →</a> · <a href="markdown/ROSETTA_STONE.md">Markdown Source</a></p>
       </div>
 
       <div class="card">
         <div class="pill-row"><span class="pill pill-indigo">Pillar 2 · Architecture &amp; Status</span></div>
-        <h3><a href="blueprint-dag.html">2. Interactive Blueprint Dependency DAG</a></h3>
-        <p>An interactive directed acyclic graph spanning all 12 handbook workstreams. Inspect every node to see its mathematical formulation, Lean 4 declaration signature, assumption ledger dependencies, and compilation status (Kernel Contract, Sanity Check, Compiled Proof, or Open Target).</p>
-        <p><a href="blueprint-dag.html">Open Interactive Blueprint DAG →</a></p>
+        <h3><a href="blueprint-dag.html">2. Interactive Research Graph</a></h3>
+        <p>A selection from the plan's research graph: four kernel laws, compiled results (with their real declaration names), open questions Q-* and the goals G-* of the stellarator contract. Each node shows its statement, the Lean declarations it rests on, and its status (kernel law, compiled, partial, open).</p>
+        <p><a href="blueprint-dag.html">Open the research graph →</a></p>
       </div>
 
       <div class="card">
         <div class="pill-row"><span class="pill pill-emerald">Pillar 3 · De Bruijn Criterion</span></div>
-        <h3><a href="kernel-audit.html">3. Audit the Small Kernel in 10 Minutes</a></h3>
-        <p>Why do we trust AI-generated or complex formal proofs of plasma stability? Because they target a tiny, self-contained kernel. Walk line-by-line through the core definitions and the <strong>non-vacuity sanity checks</strong> that prevent subtle specification bugs.</p>
+        <h3><a href="kernel-audit.html">3. Audit the Kernel in 10 Minutes</a></h3>
+        <p>Lean checks the proofs; readers must check the statements and the supplied laws. Walk through the six kernel modules (<code>Equilibrium</code>, <code>Slab</code>, <code>ThermalSlab</code>, <code>Vacuum</code>, <code>Transport</code>, <code>Fusion</code>), their real sanity theorems, and the findings of the strict audit of 30 October 2026 (52 declarations; F-1 fixed, nine low findings recorded).</p>
         <p><a href="kernel-audit.html">Start the 10-Minute Kernel Audit →</a> · <a href="markdown/KERNEL_AUDIT_GUIDE.md">Markdown Source</a></p>
       </div>
 
       <div class="card">
         <div class="pill-row"><span class="pill pill-amber">Pillar 4 · End-to-End Verification</span></div>
-        <h3><a href="certificate-anatomy.html">4. Anatomy of a Vacuum-Fixture Certificate</a></h3>
-        <p>Follow a compiled physical guarantee from start to finish: from 3D modular coil curves $\gamma_i : S^1 \to \mathbb{R}^3$, through Fréchet derivatives of the Biot-Savart operator, to a verified interval certificate under $\epsilon$-manufacturing tolerances.</p>
+        <h3><a href="certificate-anatomy.html">4. Anatomy of a Field-Error and Clearance Certificate</a></h3>
+        <p>Follow a compiled guarantee for the two-loop <strong>calibration fixture</strong> (<code>Design/VacuumPair</code>, <code>Design/VacuumTolerance</code>): coil clearance, Biot–Savart bounds and derivatives, a field-error budget for every manufactured coil pair within a $C^1$ tolerance envelope, and tube clearance. The fixture is axisymmetric and makes no confinement claim.</p>
         <p><a href="certificate-anatomy.html">Inspect the Certificate Walkthrough →</a> · <a href="markdown/CERTIFICATE_WALKTHROUGH.md">Markdown Source</a></p>
       </div>
     </div>
@@ -93,73 +93,73 @@
     <div class="grid-3" style="margin-top: 1.25rem;">
       <div class="card">
         <span class="pill pill-violet">Topology &amp; Dynamical Systems</span>
-        <h3>Foliations, Linking &amp; Converse KAM</h3>
-        <p>Magnetohydrostatic equilibria foliate 3-manifolds by nested 2-tori $T^2$. Contribute proofs on Poincaré-Hopf toroidal regularity, Gauss linking integrals for modular coils, and MacKay Converse KAM non-existence criteria for chaotic field regions.</p>
+        <h3>Flux Surfaces, Linking &amp; Converse KAM</h3>
+        <p>A compact regular level set of the pressure with $\nabla p \neq 0$ is a 2-torus, but nothing forces a general equilibrium to have nested flux surfaces (Grad's question; the library proves that Landreman family 1 has nested tori and no continuous symmetry). Contribute proofs on Poincaré–Hopf toroidal level sets, Gauss linking integrals for coils, and converse KAM criteria for chaotic field regions.</p>
         <a href="math-challenges.html#topology">View Topology Challenges →</a>
       </div>
 
       <div class="card">
         <span class="pill pill-cyan">Differential &amp; Symplectic Geometry</span>
         <h3>Hodge Theory, Beltrami Fields &amp; Curves</h3>
-        <p>Vacuum fields are harmonic 1-forms ($d\beta=0, d^*\beta=0$); force-free states are Beltrami contact forms ($\star d\beta = \lambda \beta$). Contribute proofs on Bishop frames for near-axis quasisymmetry, tubular reach bounds, and Littlejohn's guiding-center symplectic 2-form.</p>
+        <p>Vacuum fields are harmonic 1-forms ($d\beta=0, d^*\beta=0$); force-free fields with constant $\lambda$ are Beltrami fields ($\star d\beta = \lambda \beta$, a contact form when $\lambda \neq 0$). Contribute proofs on Bishop frames for near-axis expansions, tubular reach bounds, and Littlejohn's guiding-centre symplectic 2-form.</p>
         <a href="math-challenges.html#diff-geom">View Differential Geometry Challenges →</a>
       </div>
 
       <div class="card">
         <span class="pill pill-emerald">Complex Geometry &amp; Harmonic Analysis</span>
         <h3>Riemann Surfaces &amp; Univalent Foliations</h3>
-        <p>Each flux surface $\Sigma_\psi \cong \mathbb{C}/(\mathbb{Z} + \tau(\psi)\mathbb{Z})$ carries a complex modulus $\tau(\psi) \in \mathbb{H}$. Contribute proofs on Radó-Kneser-Choquet univalence for non-degenerate flux coordinate Jacobians and Hardy-space Fourier decay bounds.</p>
+        <p>With its induced metric, each toroidal flux surface is conformally $\mathbb{C}/(\mathbb{Z} + \tau(\psi)\mathbb{Z})$ with modulus $\tau(\psi) \in \mathbb{H}$; the constant-metric case of the Hodge period bound is in the library (<code>Theory/Geometry/TorusHodge</code>). Contribute proofs on Radó–Kneser–Choquet univalence for flux-coordinate Jacobians and Hardy-space Fourier decay bounds.</p>
         <a href="math-challenges.html#complex-geom">View Complex Geometry Challenges →</a>
       </div>
     </div>
 
-    <h2>Repository Integration Map</h2>
+    <h2>Contents of This Suite</h2>
     <div class="table-wrap" style="margin-top: 1rem;">
       <table>
         <thead>
           <tr>
             <th>File in Suite</th>
             <th>Format</th>
-            <th>Role in <code>PlasmaLean</code> Website / Repo</th>
+            <th>Related main-site pages</th>
           </tr>
         </thead>
         <tbody>
           <tr>
             <td><code>rosetta-stone.html</code> / <code>markdown/ROSETTA_STONE.md</code></td>
             <td>Interactive HTML + Markdown</td>
-            <td>Links from <code>index.html</code> &amp; <code>handbook.html</code> as the terminology bridge.</td>
+            <td>Terminology bridge for the 13 guides of <a href="https://siddhartha-gadgil.github.io/PlasmaLean/handbook.html">handbook.html</a>.</td>
           </tr>
           <tr>
             <td><code>blueprint-dag.html</code></td>
-            <td>Interactive SVG DAG + Inspector</td>
-            <td>Embeds into or complements <code>progress.html</code> and <code>roadmap.html</code>.</td>
+            <td>Interactive SVG graph + inspector</td>
+            <td>A picture of part of the research graph in <a href="https://siddhartha-gadgil.github.io/PlasmaLean/implementation-plan.html">implementation-plan.html</a>; the plan is the authority.</td>
           </tr>
           <tr>
             <td><code>kernel-audit.html</code> / <code>markdown/KERNEL_AUDIT_GUIDE.md</code></td>
-            <td>Split-Pane Audit + Markdown</td>
-            <td>Complements <code>model-contracts.html</code> and <code>domain-library.html</code>.</td>
+            <td>Split-pane guide + Markdown</td>
+            <td>Complements <a href="https://siddhartha-gadgil.github.io/PlasmaLean/model-contracts.html">model-contracts.html</a>; full record: <a href="https://github.com/siddhartha-gadgil/PlasmaLean/blob/main/notes/audit/2026-10-30-kernel-audit.md">kernel audit, 30 October 2026</a>.</td>
           </tr>
           <tr>
             <td><code>certificate-anatomy.html</code> / <code>markdown/CERTIFICATE_WALKTHROUGH.md</code></td>
-            <td>5-Stage Walkthrough + Calculator</td>
-            <td>Directly illustrates <code>vacuum-demonstrator.html</code> &amp; <code>verified-numerics.html</code>.</td>
+            <td>5-stage walkthrough + bound evaluator</td>
+            <td>Illustrates <a href="https://siddhartha-gadgil.github.io/PlasmaLean/vacuum-demonstrator.html">vacuum-demonstrator.html</a>.</td>
           </tr>
           <tr>
             <td><code>math-challenges.html</code> + <code>lean_stubs/*.lean</code></td>
-            <td>Challenge Portal + 6 Lean 4 Files</td>
-            <td>Self-contained onboarding tasks for geometers &amp; topologists.</td>
+            <td>6 invitations + 6 Lean 4 stub files</td>
+            <td>Self-contained onboarding tasks for geometers and topologists (Challenge 6 partly done in the library, Challenge 1 overlaps it).</td>
           </tr>
           <tr>
             <td><code>slides-onboarding.html</code></td>
-            <td>Reveal.js Interactive Presentation</td>
-            <td>Colloquium &amp; contributor slide deck alongside <code>slides.html</code>.</td>
+            <td>Reveal.js presentation (10 slides)</td>
+            <td>Short contributor deck; the main deck is <a href="https://siddhartha-gadgil.github.io/PlasmaLean/slides.html">slides.html</a>.</td>
           </tr>
         </tbody>
       </table>
     </div>
   </main>
   <footer class="footer">
-    PlasmaLean Exposition &amp; Onboarding Suite · Built for <a href="https://siddhartha-gadgil.github.io/PlasmaLean/">siddhartha-gadgil.github.io/PlasmaLean</a>
+    PlasmaLean Exposition &amp; Onboarding Suite · part of <a href="https://siddhartha-gadgil.github.io/PlasmaLean/">siddhartha-gadgil.github.io/PlasmaLean</a> · hand-written, last checked 30 October 2026
   </footer>
   <script>document.getElementById('nav-home').classList.add('active');</script>
 </body>

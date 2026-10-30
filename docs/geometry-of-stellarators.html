@@ -132,6 +132,23 @@
       color: #080c14;
       border-color: var(--cyan);
     }
+    .schematic-banner {
+      position: fixed;
+      top: 12px;
+      left: 50%;
+      transform: translateX(-50%);
+      max-width: 52%;
+      z-index: 10000;
+      background: rgba(120, 53, 15, 0.92);
+      color: #fef3c7;
+      border: 1px solid var(--amber);
+      border-radius: 6px;
+      padding: 0.3rem 0.7rem;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.7rem;
+      font-weight: 600;
+      text-align: center;
+    }
     .top-nav-overlay {
       position: fixed;
       top: 12px;
@@ -174,6 +191,10 @@
 </head>
 <body>
 
+  <div class="schematic-banner" role="note">
+    Illustrative background: the canvases, formulas and numbers on these slides are schematic. They are not computed or certified by PlasmaLean.
+  </div>
+
   <div class="top-nav-overlay">
     <a href="index.html">← PlasmaLean Hub</a>
     <a href="stellarator-explorer.html">Launch Interactive 3D Explorer ↗</a>
@@ -188,6 +209,9 @@
         <h1>The Geometry of Stellarators</h1>
         <p style="font-size:0.95rem; color:#94a3b8; max-width:820px; margin:0 auto 1rem;">
           From the Lorentz Force &amp; Toroidal Foliations to Torus Knots, Quasisymmetry, and the Perils of Classical &amp; Microturbulent Transport
+        </p>
+        <p style="font-size:0.75rem; color:var(--amber); max-width:820px; margin:0 auto 0.6rem;">
+          <strong>Illustrative / schematic:</strong> the animations and formulas here are teaching sketches, not outputs of PlasmaLean. For what is actually proved in Lean, see the <a href="https://github.com/siddhartha-gadgil/PlasmaLean/blob/main/notes/implementation-plan.md" style="color:var(--cyan);">implementation plan</a> and the stellarator contract slide below.
         </p>
         <div class="slide-grid-3" style="margin-top:1.2rem;">
           <div class="card-box">
@@ -213,7 +237,7 @@
           <div class="card-box">
             <h3>Lorentz Force &amp; Guiding-Center Drift</h3>
             <p>A particle of mass $m$, charge $q$ in a magnetic field $\mathbf{B}$ obeys $m\dot{\mathbf{v}} = q(\mathbf{E} + \mathbf{v} \times \mathbf{B})$. To lowest order, it gyrates around a field line at cyclotron frequency $\Omega = qB/m$ with Larmor radius $\rho = v_\perp / \Omega$, conserving magnetic moment $\mu = \frac{m v_\perp^2}{2B}$.</p>
-            <p>By the Hairy Ball / Poincaré–Hopf theorem, a nowhere-vanishing tangent field requires a torus $T^2$. But bending a solenoid into a torus of major radius $R$ forces $B \propto 1/R$ (by Ampère's Law $\oint \mathbf{B}\cdot d\mathbf{l} = \mu_0 I_{\text{tf}}$). This gradient &amp; curvature drive a cross-field drift:</p>
+            <p>By the Poincaré–Hopf theorem, a closed orientable surface carrying a nowhere-vanishing tangent field has Euler characteristic $0$, so it is a torus $T^2$ (a sphere is excluded by the hairy ball theorem). But bending a solenoid into a torus of major radius $R$ forces $B \propto 1/R$ (by Ampère's Law $\oint \mathbf{B}\cdot d\mathbf{l} = \mu_0 I_{\text{tf}}$). This gradient &amp; curvature drive a cross-field drift:</p>
             <div class="eq-highlight">
               $$\mathbf{v}_d = \frac{m}{q B^3}\left(v_\parallel^2 + \frac{1}{2}v_\perp^2\right) \mathbf{B} \times \nabla B$$
             </div>
@@ -252,8 +276,9 @@
               $$\mathbf{B} \cdot \nabla p = 0 \quad \text{and} \quad \mathbf{J} \cdot \nabla p = 0$$
             </div>
             <ul>
-              <li><strong>Arnold–Poincaré–Hopf Theorem:</strong> At every regular value where $\nabla p \neq 0$, the compact level surface $\Sigma_p = p^{-1}(c)$ supports two linearly independent tangent vector fields $(\mathbf{B}, \mathbf{J})$.</li>
-              <li>Therefore, the tangent bundle $T\Sigma_p$ is trivial ($\chi(\Sigma_p) = 0$), forcing every regular flux surface $\Sigma_\psi$ to be diffeomorphic to a <strong>2-torus $T^2$</strong>!</li>
+              <li><strong>Arnold-type topological argument:</strong> At a regular value where $\nabla p \neq 0$, the level set $\Sigma_p = p^{-1}(c)$ is a smooth surface to which $\mathbf{B}$ is tangent.</li>
+              <li><em>If</em> a component of $\Sigma_p$ is compact, connected and orientable, and carries a nowhere-vanishing tangent field (e.g. $\mathbf{B} \neq 0$ on it), then $\chi = 0$ by Poincaré–Hopf and that component is diffeomorphic to a <strong>2-torus $T^2$</strong>. These hypotheses are needed; they do not come for free.</li>
+              <li><strong>Caveat:</strong> this is a statement about one regular level set. It says nothing about the <em>existence</em> of non-symmetric equilibria with a <em>global nested</em> family of such tori (Grad's conjecture; explicit counterexamples appeared in 2026, Landreman arXiv:2609.26742 and Gómez-Serrano–Liehr–Taylor arXiv:2609.24739).</li>
             </ul>
           </div>
 
@@ -272,6 +297,30 @@
         </div>
       </section>
 
+      <!-- SLIDE 3b: THE STELLARATOR CONTRACT -->
+      <section>
+        <span class="pill pill-emerald">Slide 3b · What a Stellarator Must Deliver</span>
+        <h2>The Stellarator Contract (C1–C5)</h2>
+        <div class="slide-grid-2">
+          <div class="card-box">
+            <h3>Why not just a tokamak?</h3>
+            <p>An axisymmetric <em>current-free</em> field has $\iota = 0$: its field lines do not rotate poloidally, so it confines nothing. A tokamak therefore needs a large toroidal plasma current, which brings kinks, tearing, disruptions and continuous current drive. A stellarator obtains $\iota$ from 3-D shaping of the external field instead.</p>
+            <p><strong>Non-axisymmetry is a consequence, not a goal:</strong> a current-free field with $\iota > 0$ cannot be axisymmetric. What matters is the extra properties below, on <em>one</em> candidate with common witnesses.</p>
+            <p style="font-size:0.72rem;">Full statement: <a href="https://github.com/siddhartha-gadgil/PlasmaLean/blob/main/notes/implementation-plan.md" style="color:var(--cyan);">implementation plan, "The stellarator contract"</a>.</p>
+          </div>
+          <div class="card-box">
+            <ul>
+              <li><strong>C1. Current-free rotational transform:</strong> net toroidal plasma current zero or bootstrap-level ($|I_{\text{tor}}| \le I_{\max}$; vacuum is the limiting case) and $\iota \ge \iota_{\min} > 0$ on the confining surfaces, supplied by the external field.</li>
+              <li><strong>C2. Omnigeneity for thermal ions and electrons:</strong> zero (or bounded) bounce-averaged radial drift of trapped particles, or a bounded effective ripple $\epsilon_{\text{eff}}$. Quasisymmetric and quasi-isodynamic fields are special cases.</li>
+              <li><strong>C3. MHD stability at finite $\beta$:</strong> Mercier, ballooning and, where available, global ideal modes.</li>
+              <li><strong>C4. Existence:</strong> nested flux surfaces and force balance $\mathbf{J}\times\mathbf{B} = \nabla p$.</li>
+              <li><strong>C5. Thermal performance on the same candidate:</strong> core temperature above a burn threshold and below wall limits, from power balance with neoclassical losses from C2 and a stated anomalous-transport scaling.</li>
+            </ul>
+            <p style="font-size:0.72rem; color:#94a3b8;">PlasmaLean status (30 October 2026): C1 + C4 only in vacuum, on one KAM-certified torus of an exact rational field (<code>RationalStellarator.field_vacuum</code>, <code>rationalStellarator_confined_forever_exists</code>); C2 is not yet defined in Lean.</p>
+          </div>
+        </div>
+      </section>
+
       <!-- SLIDE 4: IS A STELLARATOR A HELIX OR A TORUS KNOT? -->
       <section>
         <span class="pill pill-violet">Slide 4 · Curves, Helices &amp; Knot Theory</span>
@@ -282,7 +331,7 @@
             <ul>
               <li>An infinite straight helix has constant curvature $\kappa_0$ and constant torsion $\tau_0$, enjoying exact continuous screw symmetry in $\mathbb{R}^3$.</li>
               <li><strong>Closing the Helix into a Torus:</strong> Bending the helix into a closed loop $\gamma_0 : S^1 \to \mathbb{R}^3$ breaks Euclidean symmetry! Curvature $\kappa(s)$ and torsion $\tau(s)$ become periodic functions of arc length $s$.</li>
-              <li>By the <strong>Garren–Boozer Theorem</strong>, exact quasisymmetry cannot hold to all orders in distance $r = \sqrt{\psi}$ from a closed curve (it becomes overdetermined at $O(r^3)$), turning stellarator design into a deep geometric optimization problem.</li>
+              <li><strong>Garren–Boozer count:</strong> in the near-axis expansion in $r = \sqrt{\psi}$ about a closed curve, the quasisymmetry conditions outnumber the free functions at third order ($O(r^3)$): a formal overdetermination count for the expansion, not a non-existence theorem. Whether exact quasisymmetry can hold on a volume is <strong>open</strong> (Constantin–Drivas–Ginsberg, arXiv:2009.08860; Burby–Kallinikos–MacKay, arXiv:1912.06468). In practice, design becomes an approximate geometric optimization problem.</li>
             </ul>
           </div>
 
@@ -336,7 +385,7 @@
       <section>
         <span class="pill">Slide 6 · Parameterizing the Design Space</span>
         <h2>What Parameters Determine a Stellarator's Shape?</h2>
-        <p style="margin-bottom:0.6rem;">In both numerical optimizers and <strong>PlasmaLean</strong>, a stellarator's 3D geometry is completely specified in three dual ways:</p>
+        <p style="margin-bottom:0.6rem;">In numerical optimizers, a stellarator's 3D geometry is commonly specified in three complementary ways (schematic summary):</p>
         <div class="slide-grid-3">
           <div class="card-box">
             <h3>1. Near-Axis Curve Parameters</h3>
@@ -359,7 +408,7 @@
               <li><strong>$R_{0,0}, R_{1,0}$:</strong> Major &amp; minor radius.</li>
               <li><strong>$R_{0,1}, Z_{0,1}$:</strong> 3D helical axis excursion.</li>
               <li><strong>$R_{1,1}, Z_{1,1}$:</strong> Rotating ellipse twist.</li>
-              <li><strong>$R_{2,1}, Z_{2,1}$:</strong> "Bean" / triangularity indentation (creates magnetic well!).</li>
+              <li><strong>$R_{2,1}, Z_{2,1}$:</strong> "Bean" / triangularity indentation (can help create a magnetic well, depending on the configuration).</li>
             </ul>
           </div>
 
@@ -403,7 +452,7 @@
               $$|B(\psi, \theta_B, \phi_B)| = B(\psi, M\theta_B - N\phi_B)$$
             </div>
             <p>By Noether's theorem on guiding-center symplectic phase space, this hidden symmetry restores an exact conserved helical momentum $P_{\text{hel}}$, completely eliminating $1/\nu$ losses!</p>
-            <p><strong>2. Omnigeneity (Quasi-Isodynamicity / W7-X):</strong> A broader class where the bounce-averaged radial drift of all trapped particles vanishes ($\partial_\alpha \mathcal{J}_\parallel = 0$) because $|B|$ contours close poloidally.</p>
+            <p><strong>2. Omnigeneity (the general condition):</strong> the bounce-averaged radial drift of every trapped particle vanishes, $\langle \dot{\psi} \rangle_{\text{bounce}} = 0$ (equivalently $\partial_\alpha \mathcal{J}_\parallel = 0$ for the second adiabatic invariant). Quasisymmetry is one special case; <strong>quasi-isodynamic</strong> fields (the W7-X line), in which the $|B|$ contours close poloidally, are another. An axisymmetric field is automatically omnigenous; a generic 3-D field is not.</p>
           </div>
         </div>
       </section>
@@ -452,7 +501,7 @@
               $$\frac{\partial \mathcal{J}_\parallel}{\partial \psi} = -\frac{mv\lambda}{2}\int_{l_-}^{l_+} \left(\frac{\partial B}{\partial \psi}\right)_{\alpha,l} \frac{dl}{\sqrt{1-\lambda B}}$$
             </div>
             <ul>
-              <li>When bean shaping ($R_{2,1} > 0$) and finite $\beta$ create a <strong>magnetic well</strong> ($\partial_\psi B > 0$), we get $\partial_\psi \mathcal{J}_\parallel < 0$ (<strong>Maximum-$J$</strong>).</li>
+              <li>When shaping and finite $\beta$ create a <strong>magnetic well</strong> ($\partial_\psi B > 0$), we get $\partial_\psi \mathcal{J}_\parallel < 0$ (<strong>Maximum-$J$</strong>).</li>
               <li><strong>Result:</strong> Trapped electrons precess <em>backwards</em> relative to drift waves, breaking the TEM resonance!</li>
             </ul>
           </div>
@@ -465,7 +514,7 @@
             </div>
             <ul>
               <li>Here $\hat{\omega}_* = \omega_n + (z - \tfrac{3}{2})\omega_T$ is the diamagnetic gradient drive and $\hat{\omega}_\alpha \propto -\partial_\psi \mathcal{J}_\parallel$ is the bounce precession.</li>
-              <li><strong>Why This Is Revolutionary for Formal Verification:</strong> $\widehat{\mathcal{A}}$ is a closed-form 2D geometric integral on each flux surface that rigorously upper-bounds turbulent energy without solving a 5D nonlinear PDE!</li>
+              <li><strong>Why it is attractive for formal verification:</strong> $\widehat{\mathcal{A}}$ is a 2D geometric integral on each flux surface that bounds the <em>available energy</em> of the trapped-particle population. It is a <strong>proxy</strong> correlated with turbulent transport, not a bound on turbulent transport itself; using it in a heat-flux estimate requires a separately stated, supplied scaling.</li>
             </ul>
           </div>
         </div>
@@ -509,6 +558,7 @@
         <div class="slide-grid-2">
           <div class="card-box">
             <h3>What Each Slider &amp; Input Controls</h3>
+            <p style="font-size:0.72rem; color:var(--amber);">The explorer is an illustrative toy model: its formulas are schematic JavaScript, not computed or certified by PlasmaLean.</p>
             <ul>
               <li><strong>Field Periods $N_{\text{fp}}$ &amp; Rotational Transform $\iota_0$:</strong> Set the discrete dihedral symmetry and field-line twist. Watch the <em>Field-Line Topology</em> card switch between <strong>Irrational KAM Surfaces</strong> and <strong>Closed $(q,p)$-Torus Knots</strong>!</li>
               <li><strong>Helical Axis Excursion $R_{0,1}$:</strong> Bends the central magnetic axis $\gamma_0$ into a 3D toroidal helix, increasing Călugăreanu writhe $\mathrm{Wr}(\gamma_0)$.</li>
@@ -545,7 +595,7 @@
         <div class="slide-grid-3" style="margin-top:1.8rem;">
           <div class="card-box">
             <h3><a href="PlasmaLean_Exposition_Suite/rosetta-stone.html" style="color:var(--cyan);">1. Rosetta Stone →</a></h3>
-            <p>16-row dictionary mapping Stellarator Physics $\leftrightarrow$ Pure Geometry $\leftrightarrow$ Lean 4 Kernel Contracts.</p>
+            <p>Dictionary mapping Stellarator Physics $\leftrightarrow$ Pure Geometry $\leftrightarrow$ Lean 4 Kernel Contracts.</p>
           </div>
           <div class="card-box">
             <h3><a href="PlasmaLean_Exposition_Suite/kernel-audit.html" style="color:var(--emerald);">2. 10-Min Kernel Audit →</a></h3>

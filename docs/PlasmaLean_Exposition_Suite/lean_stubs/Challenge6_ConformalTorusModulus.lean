@@ -1,4 +1,12 @@
 /-
+  Status note (30 October 2026): what the PlasmaLean library already has.
+  Constant-metric case in PlasmaLean/Theory/Geometry/TorusHodge.lean
+  (namespace PlasmaLean.Geometry.TorusHodge): `ConstMetric.tau`, `tau_im_pos`
+  (τ in the upper half-plane), `latticeMetric_tau`, `periodBound_eq`,
+  `energy_ge`, `energy_eq_iff`. Library convention: τ = (F + i√(EG − F²))/E.
+  Still open: ⋆² = -1 in the matrix form below, and non-constant metrics.
+-/
+/-
   PlasmaLean Pure Math Bounty #6 (Riemann Surfaces & Hodge Theory on 2-Tori)
   File: lean_stubs/Challenge6_ConformalTorusModulus.lean
 -/

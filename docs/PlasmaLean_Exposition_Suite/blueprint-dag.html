@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>2. Interactive Dependency DAG · Blueprint Graph | PlasmaLean</title>
+  <title>2. Research Graph (Dependency DAG) | PlasmaLean</title>
   
 <link rel="stylesheet" href="style.css">
 <script>
@@ -38,25 +38,25 @@
   <main class="container">
     <section class="hero">
       <div class="pill-row">
-        <span class="pill pill-indigo">Pillar 2 · Blueprint Graph</span>
+        <span class="pill pill-indigo">Pillar 2 · Research Graph</span>
         <span class="pill pill-cyan">Interactive Dependency DAG</span>
-        <span class="pill pill-emerald">Assumption Ledger Tracking</span>
+        <span class="pill pill-emerald">Stellarator Contract C1–C5</span>
       </div>
-      <h1>PlasmaLean Formalization Blueprint &amp; Dependency DAG</h1>
+      <h1>PlasmaLean Research Graph: Kernel, Results, Questions, Goals</h1>
       <p style="max-width: 900px;">
-        Click any node in the directed acyclic graph below to inspect its mathematical statement, exact Lean 4 declaration signature, handbook chapter, and status in the <strong>Assumption Ledger</strong>. Notice how the entire formalization rests on 3 small <strong>Kernel Contracts</strong> at the top, validated immediately by <strong>Sanity Checks</strong> and compiled into the <strong>Vacuum-Fixture Certificate</strong>.
+        A hand-drawn selection from the research graph of the <a href="https://github.com/siddhartha-gadgil/PlasmaLean/blob/main/notes/implementation-plan.md" target="_blank" rel="noopener">implementation plan</a> (RG.1 goals G-*, RG.2 questions Q-*, contract edges of 30 October 2026), rebuilt on 30 October 2026. The top row shows four of the six kernel modules (<code>Kernel/{Equilibrium, Vacuum, Transport, Fusion}</code>; <code>Slab</code> and <code>ThermalSlab</code> are omitted) and Q-21, the planned kernel-level definitions for the contract; the second row shows compiled results, with the real declaration names; the lower rows show open questions and the goals of the stellarator contract. Click a node to see its statement, the Lean declarations it rests on (checked against the source; module paths are relative to <code>PlasmaLean/</code>) and its status. The plan is the authority; this picture is not regenerated automatically and may lag behind it.
       </p>
       <div style="display:flex; flex-wrap:wrap; gap:1rem; margin-top:1rem; font-size:0.88rem;">
-        <span><strong style="color:#38bdf8;">■ Cyan:</strong> Small Kernel Contract</span>
-        <span><strong style="color:#c084fc;">■ Violet:</strong> Non-Vacuity Sanity Check</span>
-        <span><strong style="color:#34d399;">■ Emerald:</strong> Compiled Lean 4 Proof</span>
-        <span><strong style="color:#fbbf24;">■ Amber:</strong> Open Pure-Math Target</span>
+        <span><strong style="color:#38bdf8;">■ Cyan:</strong> Kernel law (supplied model, audited)</span>
+        <span><strong style="color:#34d399;">■ Emerald:</strong> Compiled result</span>
+        <span><strong style="color:#c084fc;">■ Violet:</strong> Partial</span>
+        <span><strong style="color:#fbbf24;">■ Amber:</strong> Open</span>
       </div>
     </section>
 
     <div class="split-pane">
       <div class="card" style="padding: 1rem; overflow-x: auto;">
-        <svg id="dag-svg" viewBox="0 0 960 580" style="width:100%; height:auto; min-width:680px; background:#090d16; border-radius:10px; border:1px solid var(--border-color);">
+        <svg id="dag-svg" viewBox="0 0 960 770" style="width:100%; height:auto; min-width:680px; background:#090d16; border-radius:10px; border:1px solid var(--border-color);">
           <defs>
             <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
               <path d="M 0 1 L 10 5 L 0 9 z" fill="#64748b" />
@@ -69,36 +69,36 @@
 
       <div class="card sticky-panel" id="node-inspector">
         <div class="pill-row">
-          <span class="pill pill-cyan" id="insp-status">Kernel Contract</span>
-          <span class="pill pill-indigo" id="insp-id">Node K1</span>
+          <span class="pill pill-cyan" id="insp-status">Kernel law</span>
+          <span class="pill pill-indigo" id="insp-id">Node K-VAC</span>
         </div>
         <h2 id="insp-title" style="margin-top:0.5rem; font-size:1.35rem;">Select a node in the graph</h2>
         <p style="font-size:0.88rem; margin-bottom:0.75rem;">
-          Handbook Chapter: <a href="#" id="insp-link" target="_blank">geometry-and-fields.html ↗</a>
+          Source: <a href="#" id="insp-link" target="_blank" rel="noopener">source ↗</a>
         </p>
         <h3>Mathematical Formulation</h3>
         <p id="insp-math" style="color:var(--text-primary); font-size:0.95rem;"></p>
-        <h3>Lean 4 Signature</h3>
+        <h3>Lean declarations (real, unless marked)</h3>
         <pre><code id="insp-lean"></code></pre>
-        <h3>Assumption Ledger &amp; Verification Status</h3>
+        <h3>Status and scope</h3>
         <p id="insp-assumptions" style="font-size:0.9rem; color:var(--accent-emerald);"></p>
       </div>
     </div>
   </main>
 
   <footer class="footer">
-    PlasmaLean Exposition Suite · Pillar 2: Interactive Formalization Blueprint DAG
+    PlasmaLean Exposition Suite · Pillar 2: Research graph (selection, 30 October 2026)
   </footer>
 
   <script>
-    const nodes = [{"id": "K1", "title": "Euclidean 3-Space & Toroidal Charts", "layer": 0, "x": 130, "y": 70, "status": "Kernel Contract", "workstream": "geometry-and-fields.html", "math": "Riemannian metric on ℝ³ and smooth toroidal coordinate embeddings Φ : D² × S¹ → ℝ³ with explicit Jacobian determinant J = ∇ψ · (∇θ × ∇φ).", "lean": "structure ToroidalChart where\n  toFun : PolarToroidal → ℝ³\n  smooth : ContDiff ℝ ⊤ toFun\n  jac_pos : ∀ x ∈ interiorDomain, jacobianDet toFun x > 0", "assumptions": "Zero project axioms; rests purely on Mathlib Analysis.Calculus.FDeriv."}, {"id": "K2", "title": "Solenoidal & Vacuum Field Contracts", "layer": 0, "x": 460, "y": 70, "status": "Kernel Contract", "workstream": "model-contracts.html", "math": "Divergence-free vector fields (dω_B = 0) and curl-free harmonic vacuum fields (dβ = 0, d*β = 0) on open domains U ⊂ ℝ³ \\ Coils.", "lean": "structure VacuumFieldContract (U : Set ℝ³) (B : ℝ³ → ℝ³) : Prop where\n  div_free : ∀ x ∈ U, divergence B x = 0\n  curl_free : ∀ x ∈ U, curl B x = 0", "assumptions": "Zero project axioms; verified against standard harmonic 1-form identities."}, {"id": "K3", "title": "3D Filamentary Coil & Clearance Spec", "layer": 0, "x": 790, "y": 70, "status": "Kernel Contract", "workstream": "coils-and-design.html", "math": "Closed C² space curves γ_i : S¹ → ℝ³ carrying currents I_i, parameterized with explicit coil-to-plasma clearance d_min > 0 and curvature bound κ_max.", "lean": "structure CoilSystem (N : ℕ) where\n  curves : Fin N → ℝ → ℝ³\n  currents : Fin N → ℝ\n  periodic : ∀ i, Function.Periodic (curves i) (2 * Real.pi)", "assumptions": "Models superconducting coils in the filamentary Biot-Savart regime."}, {"id": "S1", "title": "Sanity Check: Non-Vacuity of Toroidal Flux", "layer": 1, "x": 130, "y": 210, "status": "Sanity Check", "workstream": "model-contracts.html", "math": "Explicit analytical witness (circular axisymmetric vacuum field B = B₀ R₀ ∇φ) proving that VacuumFieldContract and IsFluxSurface are simultaneously satisfiable and non-vacuous.", "lean": "theorem vacuum_contract_nonvacuous (R0 B0 : ℝ) (hR : R0 > 0) (hB : B0 ≠ 0) :\n  ∃ B ψ, VacuumFieldContract (torusDomain R0) B ∧ IsFluxSurface B ψ (R0/2)", "assumptions": "Compiled witness theorem; eliminates risk of contradictory kernel predicates."}, {"id": "C1", "title": "Biot–Savart Kernel & Fréchet Derivatives", "layer": 1, "x": 460, "y": 210, "status": "Compiled Proof", "workstream": "geometry-and-fields.html", "math": "Exact first and second spatial and coil-perturbation derivatives of the Biot-Savart kernel K(x, y, τ) = (τ × (x-y))/|x-y|³ on clearance-separated domains |x - y| ≥ d_min > 0.", "lean": "theorem hasFDerivAt_biotSavartKernel (hx : x ≠ y) :\n  HasFDerivAt (biotSavartKernelAt y τ) (biotSavartDerivMatrix x y τ) x", "assumptions": "Fully compiled in Lean 4 without sorry."}, {"id": "C2", "title": "Lipschitz Perturbation & Interval Bounds", "layer": 1, "x": 790, "y": 210, "status": "Compiled Proof", "workstream": "verified-numerics.html", "math": "Given manufacturing perturbation ‖δγ_i‖_C¹ ≤ ε < d_min/2, bounds magnetic field error ‖B(γ + δγ) - B(γ)‖ ≤ L(d_min, I) · ε via rigorous Taylor-interval arithmetic.", "lean": "theorem biotSavart_tolerance_bound (h_clear : clearance γ x ≥ d_min)\n    (h_pert : C1Norm δγ ≤ ε) (hε : ε < d_min / 2) :\n  ‖B_field (γ + δγ) x - B_field γ x‖ ≤ lipschitzConst d_min I_max * ε", "assumptions": "Fully compiled; forms the engine of the vacuum-fixture certificate."}, {"id": "C3", "title": "Tolerance-Aware Vacuum-Fixture Certificate", "layer": 2, "x": 630, "y": 350, "status": "Compiled Proof", "workstream": "vacuum-demonstrator.html", "math": "End-to-end machine-checked certificate that a concrete 3D coil fixture maintains target field strength |B| ≥ B_min, normal field error |B · n| / |B| ≤ η_max on the target surface, and mechanical clearance under ±ε tolerance.", "lean": "structure VacuumFixtureCertificate (fixture : CoilSystem N) (ε : ℝ) : Prop where\n  clearance_ok : minClearance fixture - 2 * ε ≥ d_safe\n  field_error_certified : ∀ δγ, PerturbationBound δγ ε →\n    normalFieldError (fixture.perturb δγ) targetSurface ≤ η_max", "assumptions": "Compiled milestone highlighted on the PlasmaLean portal."}, {"id": "T1", "title": "Boozer Coordinates & Quasisymmetry PDE", "layer": 2, "x": 180, "y": 350, "status": "Open Math Target", "workstream": "particles-and-transport.html", "math": "Existence of Boozer coordinate charts on regular flux surfaces and equivalence of two-term quasisymmetry |B| = B(ψ, Mθ - Nφ) with the triple-product invariance (∇ψ × ∇B) · ∇(B · ∇B) = 0.", "lean": "theorem quasisymmetry_triple_product_iff (bc : BoozerChart U) :\n  IsQuasisymmetric bc B M N ↔ ∀ x ∈ U, qsTripleProduct ψ B x = 0", "assumptions": "Open target for differential geometers (see Challenge #3)."}, {"id": "T2", "title": "Fourier Univalence & Positive Jacobian", "layer": 3, "x": 130, "y": 490, "status": "Open Math Target", "workstream": "geometry-and-fields.html", "math": "Complex-analytic Radó–Kneser–Choquet & Nehari criteria certifying that double Fourier series surfaces (R_{m,n}, Z_{m,n}) define an injective foliation with det(DΦ) > 0 everywhere inside the torus.", "lean": "theorem fourier_foliation_univalent (coeffs : FourierSurfaceSpec)\n    (h_decay : HardyNormBound coeffs) : ValidFluxCoordinateMap (evalFourier coeffs)", "assumptions": "Open target for complex geometers & harmonic analysts (see Challenge #5)."}, {"id": "T3", "title": "Littlejohn Guiding-Center & Converse KAM", "layer": 3, "x": 460, "y": 490, "status": "Open Math Target", "workstream": "particles-and-transport.html", "math": "Symplectic formulation of guiding-center motion Ω_GC = e dA + m d(v_∥ b^♭) and Noether conservation of canonical helical momentum P_u under quasisymmetry.", "lean": "theorem quasisymmetry_conserves_helical_momentum\n    (h_qs : IsQuasisymmetric bc B M N) :\n  PoissonBracket Ω_GC H_GC (helicalMomentum bc M N) = 0", "assumptions": "Open target for symplectic geometers & dynamical systems researchers (Challenge #4)."}, {"id": "T4", "title": "Bernstein δ²W Coercivity & MHD Stability", "layer": 3, "x": 790, "y": 490, "status": "Open Math Target", "workstream": "mhd-stability.html", "math": "Self-adjointness of the ideal MHD force operator F(ξ) on L²(M) and spectral lower bounds certifying δ²W(ξ, ξ) ≥ λ_min ‖ξ‖² > 0 against interchange and ballooning modes.", "lean": "theorem mhd_force_operator_selfAdjoint (eq : MHSEquilibrium) :\n  ∀ ξ η : SmoothDisplacement M, ⟪ξ, mhdForceOp eq η⟫_L2 = ⟪mhdForceOp eq ξ, η⟫_L2", "assumptions": "Open target for spectral geometers & PDE analysts."}];
-    const edges = [["K1", "S1"], ["K2", "S1"], ["K2", "C1"], ["K3", "C1"], ["C1", "C2"], ["K3", "C2"], ["C2", "C3"], ["S1", "C3"], ["K1", "T1"], ["K2", "T1"], ["K1", "T2"], ["T1", "T2"], ["T1", "T3"], ["T1", "T4"], ["C3", "T4"]];
+    const nodes = [{"id": "K-EQ", "title": "ForceBalance (Kernel/Equilibrium)", "status": "Kernel law", "x": 100, "y": 60, "link": "https://github.com/siddhartha-gadgil/PlasmaLean/blob/main/PlasmaLean/Kernel/Equilibrium.lean", "math": "Pointwise static force balance J × B = g, with g supplied gradient data. Consequences: B · g = 0, J · g = 0.", "lean": "class ForceBalance (B J g : Vec3) : Prop where\n  balance : J ⨯₃ B = g\ntheorem field_tangency (B J g : Vec3) [ForceBalance B J g] : B ⬝ᵥ g = 0\ntheorem current_tangency ...", "assumptions": "Kernel law (supplied). Audit E-1: holds for any B, J with g = J × B, so every claim must also prove g = ∇p and J = (∇ × B)/μ₀; all 14 design users do (Design/ForceBalanceGradient)."}, {"id": "K-VAC", "title": "VacuumField (Kernel/Vacuum)", "status": "Kernel law", "x": 290, "y": 60, "link": "https://github.com/siddhartha-gadgil/PlasmaLean/blob/main/PlasmaLean/Kernel/Vacuum.lean", "math": "Ω open, B of class C² on Ω, ∇ · B = 0 and ∇ × B = 0 on Ω (divergence and curl via Fréchet derivatives).", "lean": "structure VacuumField (Ω : Set Euclid3) (B : Euclid3 → Euclid3) : Prop where\n  isOpen : IsOpen Ω\n  contDiffOn : ContDiffOn ℝ 2 B Ω\n  div_eq_zero : ∀ x ∈ Ω, fieldDiv B x = 0\n  curl_eq_zero : ∀ x ∈ Ω, fieldCurl B x = 0", "assumptions": "Kernel law. Audit V-1: VacuumField ∅ B holds for every B, so downstream statements must exhibit a point of Ω."}, {"id": "K-TR", "title": "Radial transport (Kernel/Transport)", "status": "Kernel law", "x": 480, "y": 60, "link": "https://github.com/siddhartha-gadgil/PlasmaLean/blob/main/PlasmaLean/Kernel/Transport.lean", "math": "Flux-surface-averaged heat equation ∂ₜT = (1/V')(V' D(ψ,T) T')' + R on ψ ∈ [0,1], with a regular (Neumann) or degenerate axis and Dirichlet data at the edge.", "lean": "class TransportLaws (c : RadialCoefficients) : Prop\nclass ClassicalRadialSolution (c : RadialCoefficients) (Tedge : ℝ → ℝ) (τ : ℝ)\n    (u : RadialField) : Prop\nclass RadialHeatTransport ... extends TransportLaws c, ClassicalRadialSolution c Tedge τ u", "assumptions": "Kernel law; solutions are supplied, not constructed. Audit R-1 (zero duration), R-2 (solution may leave Tdom), R-3 (D ≡ 0 allowed): recorded, each with a regression theorem."}, {"id": "K-FUS", "title": "0-D D-T burn (Kernel/Fusion)", "status": "Kernel law", "x": 670, "y": 60, "link": "https://github.com/siddhartha-gadgil/PlasmaLean/blob/main/PlasmaLean/Kernel/Fusion.lean", "math": "Power balance dW/dt = P_α + P_aux − P_br − W/τ_E with Bosch–Hale reactivity windows and a quasineutral plasma composition.", "lean": "class PhysicalPlasma (p : DTPlasma) : Prop where\n  n_pos : 0 < p.n\n  V_pos : 0 < p.V\n  fuel_pos : 0 < p.fuelFraction\n  composition : QuasineutralComposition p\nclass PowerBalance (p : DTPlasma) (sv Paux τE T : ℝ → ℝ) : Prop\nclass BoschHaleDT (sv : ℝ → ℝ) : Prop", "assumptions": "Kernel law. Audit F-1 (inconsistent composition) fixed 30 October by the composition field; F-2 (n = 0) and F-3 (totalized division) recorded."}, {"id": "R-PAIR", "title": "Two-loop calibration fixture", "status": "Compiled result", "x": 100, "y": 190, "link": "https://github.com/siddhartha-gadgil/PlasmaLean/blob/main/PlasmaLean/Design/VacuumTolerance.lean", "math": "Two coaxial circular filaments (radius 0.1 m, z = ±0.2 m): field bounds on a 5 cm ball, a combined manufacturing and current error ≤ μ₀I/4, a nonvanishing field in a 1 mm probe ball, 388 mm tube clearance.", "lean": "-- Design/VacuumPair.lean, Design/VacuumTolerance.lean\ntheorem field_bound ...\ntheorem combined_field_error ...\ntheorem robust_probe_field ...\ntheorem manufactured_tube_clearance ...\n-- Design/VacuumPairVolumeError.lean: combined_volume_error", "assumptions": "Compiled. An axisymmetric calibration fixture: no rotational transform, no confinement claim. See the Certificate Anatomy page."}, {"id": "R-RAT", "title": "Rational stellarator (C1 + C4, vacuum)", "status": "Compiled result", "x": 290, "y": 190, "link": "https://github.com/siddhartha-gadgil/PlasmaLean/blob/main/PlasmaLean/Design/RationalStellaratorFieldLines.lean", "math": "An exact vacuum field (J = 0) with a KAM-certified invariant torus with Diophantine rotation number (ι ≈ 0.137); every field line starting inside exists and stays inside for all time.", "lean": "-- Design/RationalStellarator.lean\ntheorem field_vacuum (ε : ℝ) : VacuumField domain (field ε)\n-- Design/KamTorusAExact.lean\ntheorem torusA_exact : ...\n-- Design/RationalStellaratorFieldLines.lean\ntheorem rationalStellarator_confined_forever_exists : ...", "assumptions": "Compiled. C1 (vacuum, so no plasma current) and C4 on the region inside one torus. Not yet stated: ι ≥ ι_min on a nested family; nothing at finite β; C2 unknown (Q-19)."}, {"id": "R-QS", "title": "Weak QS defined; Landreman families not QS", "status": "Compiled result", "x": 480, "y": 190, "link": "https://github.com/siddhartha-gadgil/PlasmaLean/blob/main/PlasmaLean/Theory/Fields/WeakQuasisymmetry.lean", "math": "Weak quasisymmetry (Constantin–Drivas–Ginsberg) and a scalar defect sup |ξ · ∇|B||. Landreman families 1 and 2 admit no weak-QS generator (a barrier for route (iii) of N-27).", "lean": "-- Theory/Fields/WeakQuasisymmetry.lean\nstructure WeakQS (B ξ : Space → Space) (ψ : Space → ℝ) (T : Set Space) : Prop\ndef qsDefect (B ξ : Space → Space) (T : Set Space) : ℝ≥0∞\n-- Design/LandremanNotQS.lean\ntheorem family1_not_weakQS ...\ntheorem family2_not_weakQS ...", "assumptions": "Compiled. A negative result; no omnigeneity or ε_eff is defined yet (Q-21)."}, {"id": "R-F2", "title": "Landreman family 2: Mercier band", "status": "Compiled result", "x": 670, "y": 190, "link": "https://github.com/siddhartha-gadgil/PlasmaLean/blob/main/PlasmaLean/Design/LandremanFamily2MercierDerived.lean", "math": "Finite-pressure equilibrium with force balance and a certified Mercier-stable band (k ∈ [0.7, 0.9], λ = 200); ballooning reduced to one certificate (Q-3).", "lean": "-- Design/LandremanFamily2MercierDerived.lean\ntheorem family2_mercier_stable_derived ...\n-- Theory/Stability/MercierGeneral.lean\ndef mercierIndex (d : MercierSurfaceData) : ℝ\ndef MercierStable (d : MercierSurfaceData) : Prop", "assumptions": "Compiled; the Mercier index is supplied (Landreman–Jorge). Family 2 carries a net toroidal current (torCurrent_eq), so it fails C1: a C3 technique result on a tokamak-like test bed."}, {"id": "R-SOL", "title": "Solov'ev: core ≥ 10 keV (tokamak model)", "status": "Compiled result", "x": 860, "y": 190, "link": "https://github.com/siddhartha-gadgil/PlasmaLean/blob/main/PlasmaLean/Design/SolovevFluxGeometry.lean", "math": "On the axisymmetric, current-carrying Solov'ev field, every supplied solution of the radial transport model starting in a certified band keeps the core at or above 10 keV for all time.", "lean": "-- Design/SolovevFluxGeometry.lean\ntheorem solovev_one_plasma_actual ...", "assumptions": "Compiled, with the transport solution supplied and the pressure bounded by a budget. This is C5 for a tokamak model, not for a stellarator candidate."}, {"id": "Q-21", "title": "Q-21: definitions for C1 and C2", "status": "Open", "x": 860, "y": 60, "link": "https://github.com/siddhartha-gadgil/PlasmaLean/blob/main/notes/implementation-plan.md", "math": "Kernel-level definitions of net toroidal current, ι of a field on a family of invariant tori, bounce-averaged radial drift, omnigeneity and ε_eff, each with the sanity triad.", "lean": "-- Not in the library. Normative specifications only:\n-- notes/formalization/00-model-contracts.md\n--   CurrentFreeTransform, BounceAveragedDrift, Omnigenous,\n--   EffectiveRippleBound, ThermalPerformance", "assumptions": "Open (G-11)."}, {"id": "Q-19", "title": "Q-19: ε_eff of the rational field", "status": "Open", "x": 150, "y": 320, "link": "https://github.com/siddhartha-gadgil/PlasmaLean/blob/main/notes/implementation-plan.md", "math": "Bounce-averaged radial drift and ε_eff of trapped particles on the certified surfaces of RationalStellarator.field (1/4): numerics first (as an untrusted oracle), then decide whether a certified bound is reachable.", "lean": "-- Nothing yet.", "assumptions": "Open (contract clause C2)."}, {"id": "Q-16", "title": "Q-16: a quasisymmetric solution", "status": "Open", "x": 370, "y": 320, "link": "https://github.com/siddhartha-gadgil/PlasmaLean/blob/main/notes/implementation-plan.md", "math": "A current-free field with ι ≥ ι_min > 0 (C1) that is omnigenous in the quasisymmetric form (C2). First route: a Dommaschk QA fit (current-free by construction) with torus, ι and Boozer/ε_QS diagnostics.", "lean": "-- Adjacent: WeakQS, qsDefect (Theory/Fields/WeakQuasisymmetry),\n-- nearAxis_epsQS (Design/NearAxisQA, a near-axis model only).", "assumptions": "Open (research)."}, {"id": "Q-18", "title": "Q-18: net current of the Landreman families", "status": "Partial", "x": 590, "y": 320, "link": "https://github.com/siddhartha-gadgil/PlasmaLean/blob/main/notes/implementation-plan.md", "math": "Compute I_tor(ψ) for families 1 and 2 and compare with the field-producing current and a bootstrap-level bound.", "lean": "-- Design/LandremanFamily2*: torCurrent_eq (μ₀ I_tor(k₀)/2π = curK),\n-- F1_pos, Eint_pos (so I_tor > 0 for k₀ > 0; corollary not yet named)", "assumptions": "Family 2 essentially answered: tokamak-like under C1 unless the current is shown to be bootstrap-level."}, {"id": "Q-20", "title": "Q-20: finite-β current-free equilibrium", "status": "Open", "x": 810, "y": 320, "link": "https://github.com/siddhartha-gadgil/PlasmaLean/blob/main/notes/implementation-plan.md", "math": "Stepped pressure across the certified torus of the rational field (Q-14, the lead route), or a finite-β equilibrium near a Dommaschk QA field, with ‖I_tor‖ ≤ I_max proved.", "lean": "-- Nothing yet (plan only).", "assumptions": "Open (research)."}, {"id": "G-1", "title": "G-1: current-free confinement (C1 + C4)", "status": "Partial", "x": 230, "y": 450, "link": "https://github.com/siddhartha-gadgil/PlasmaLean/blob/main/notes/implementation-plan.md", "math": "For one candidate: net toroidal current ≤ I_max (vacuum as the limit), nested certified invariant tori, ι ≥ ι_min > 0 from the field; field lines (and guiding centres, reduction named) stay inside.", "lean": "-- Partial, vacuum only:\n-- RationalStellarator.field_vacuum, rationalStellarator_confined_forever_exists", "assumptions": "Active (partial, vacuum, one torus)."}, {"id": "G-10", "title": "G-10: omnigeneity for thermal particles (C2)", "status": "Open", "x": 480, "y": 450, "link": "https://github.com/siddhartha-gadgil/PlasmaLean/blob/main/notes/implementation-plan.md", "math": "On the surfaces of a current-free candidate, the bounce-averaged radial drift of trapped thermal ions and electrons vanishes or is bounded, or ε_eff ≤ ε_max. QS and QI are special cases.", "lean": "-- Definitions not in Lean (Q-21). Adjacent: WeakQS, qsDefect,\n-- family1_not_weakQS, family2_not_weakQS, boozerGC_trapped.", "assumptions": "Open; essentially nothing for thermal particles yet."}, {"id": "G-4", "title": "G-4: finite-β stable current-free (C1+C3+C4)", "status": "Open", "x": 730, "y": 450, "link": "https://github.com/siddhartha-gadgil/PlasmaLean/blob/main/notes/implementation-plan.md", "math": "An exact or validated finite-pressure equilibrium with net toroidal current ≤ I_max and ι ≥ ι_min from the field, with certified Mercier, ballooning and interchange stability at a stated β > 0.", "lean": "-- No current-free candidate. Technique results on family 2:\n-- family2_mercier_stable_derived, family2_stable_of_cert", "assumptions": "Active (no current-free candidate)."}, {"id": "G-2", "title": "G-2: thermal performance (C5)", "status": "Partial", "x": 360, "y": 580, "link": "https://github.com/siddhartha-gadgil/PlasmaLean/blob/main/notes/implementation-plan.md", "math": "On the same candidate as C1–C4: core temperature above a burn threshold (e.g. 10 keV) over the operating interval and below wall limits, from power balance; neoclassical losses from C2 (Q-22), anomalous transport a stated supplied scaling.", "lean": "-- Tokamak model and 0-D only:\n-- solovev_one_plasma_actual, m1_burn_window,\n-- Design/BurnWindowStellarator (Stellaris ISS04 window),\n-- stellaris_measured_fren_no_access_steady (an obstruction, Q-13)", "assumptions": "Active, but shown only for a tokamak model; nothing on a C1–C4 candidate."}, {"id": "G-8", "title": "G-8: integrated candidate (C1–C5)", "status": "Open", "x": 600, "y": 710, "link": "https://github.com/siddhartha-gadgil/PlasmaLean/blob/main/notes/implementation-plan.md", "math": "One decoded candidate satisfying C1–C5 with common witnesses, then coils and engineering margins.", "lean": "-- Only the common-witness composition infrastructure (Bridge/Contracts).", "assumptions": "Open."}];
+    const edges = [["K-VAC", "R-PAIR"], ["K-VAC", "R-RAT"], ["K-EQ", "R-QS"], ["K-EQ", "R-F2"], ["K-EQ", "R-SOL"], ["K-TR", "R-SOL"], ["K-FUS", "R-SOL"], ["R-RAT", "Q-19"], ["Q-21", "Q-19"], ["Q-21", "Q-16"], ["R-QS", "Q-16"], ["Q-21", "Q-18"], ["R-F2", "Q-18"], ["R-RAT", "Q-20"], ["R-RAT", "G-1"], ["Q-16", "G-1"], ["Q-18", "G-1"], ["Q-19", "G-10"], ["Q-16", "G-10"], ["Q-20", "G-4"], ["R-F2", "G-4"], ["G-10", "G-2"], ["R-SOL", "G-2"], ["G-1", "G-8"], ["G-4", "G-8"], ["G-10", "G-8"], ["G-2", "G-8"]];
 
     const statusColors = {
-      "Kernel Contract": { fill: "#0c2d48", stroke: "#06b6d4", badge: "pill-cyan" },
-      "Sanity Check": { fill: "#2e1065", stroke: "#a855f7", badge: "pill-violet" },
-      "Compiled Proof": { fill: "#064e3b", stroke: "#10b981", badge: "pill-emerald" },
-      "Open Math Target": { fill: "#451a03", stroke: "#f59e0b", badge: "pill-amber" }
+      "Kernel law": { fill: "#0c2d48", stroke: "#06b6d4", badge: "pill-cyan" },
+      "Partial": { fill: "#2e1065", stroke: "#a855f7", badge: "pill-violet" },
+      "Compiled result": { fill: "#064e3b", stroke: "#10b981", badge: "pill-emerald" },
+      "Open": { fill: "#451a03", stroke: "#f59e0b", badge: "pill-amber" }
     };
 
     const nodeMap = {};
@@ -112,9 +112,9 @@
       const nv = nodeMap[v];
       const line = document.createElementNS("http://www.w3.org/2000/svg", "path");
       const startX = nu.x;
-      const startY = nu.y + 36;
+      const startY = nu.y + 30;
       const endX = nv.x;
-      const endY = nv.y - 38;
+      const endY = nv.y - 32;
       const midY = (startY + endY) / 2;
       line.setAttribute("d", `M ${startX} ${startY} C ${startX} ${midY}, ${endX} ${midY}, ${endX} ${endY}`);
       line.setAttribute("fill", "none");
@@ -131,8 +131,8 @@
       statusEl.className = 'pill ' + statusColors[node.status].badge;
       document.getElementById('insp-title').textContent = node.title;
       const linkEl = document.getElementById('insp-link');
-      linkEl.textContent = node.workstream + ' ↗';
-      linkEl.href = 'https://siddhartha-gadgil.github.io/PlasmaLean/' + node.workstream;
+      linkEl.textContent = node.link.replace('https://github.com/siddhartha-gadgil/PlasmaLean/blob/main/', '') + ' ↗';
+      linkEl.href = node.link;
       document.getElementById('insp-math').textContent = node.math;
       document.getElementById('insp-lean').textContent = node.lean;
       document.getElementById('insp-assumptions').textContent = node.assumptions;
@@ -148,10 +148,10 @@
       g.addEventListener("click", () => selectNode(node));
 
       const rect = document.createElementNS("http://www.w3.org/2000/svg", "rect");
-      rect.setAttribute("x", node.x - 115);
-      rect.setAttribute("y", node.y - 34);
-      rect.setAttribute("width", "230");
-      rect.setAttribute("height", "68");
+      rect.setAttribute("x", node.x - 88);
+      rect.setAttribute("y", node.y - 28);
+      rect.setAttribute("width", "176");
+      rect.setAttribute("height", "56");
       rect.setAttribute("rx", "10");
       rect.setAttribute("fill", statusColors[node.status].fill);
       rect.setAttribute("stroke", statusColors[node.status].stroke);
@@ -162,10 +162,10 @@
 
       const badge = document.createElementNS("http://www.w3.org/2000/svg", "text");
       badge.setAttribute("x", node.x);
-      badge.setAttribute("y", node.y - 12);
+      badge.setAttribute("y", node.y - 9);
       badge.setAttribute("text-anchor", "middle");
       badge.setAttribute("fill", statusColors[node.status].stroke);
-      badge.setAttribute("font-size", "10.5");
+      badge.setAttribute("font-size", "9.5");
       badge.setAttribute("font-weight", "bold");
       badge.setAttribute("font-family", "Inter, sans-serif");
       badge.textContent = `[${node.id}] ${node.status.toUpperCase()}`;
@@ -173,19 +173,22 @@
 
       const title = document.createElementNS("http://www.w3.org/2000/svg", "text");
       title.setAttribute("x", node.x);
-      title.setAttribute("y", node.y + 11);
+      title.setAttribute("y", node.y + 12);
       title.setAttribute("text-anchor", "middle");
       title.setAttribute("fill", "#f8fafc");
-      title.setAttribute("font-size", "12");
+      title.setAttribute("font-size", "10.5");
       title.setAttribute("font-weight", "600");
       title.setAttribute("font-family", "Inter, sans-serif");
-      title.textContent = node.title.length > 30 ? node.title.slice(0, 29) + '…' : node.title;
+      title.textContent = node.title.length > 28 ? node.title.slice(0, 27) + '…' : node.title;
+      const tip = document.createElementNS("http://www.w3.org/2000/svg", "title");
+      tip.textContent = node.title;
+      g.appendChild(tip);
       g.appendChild(title);
 
       nodesGroup.appendChild(g);
     });
 
-    selectNode(nodes[6]); // Default to C3: Tolerance-Aware Vacuum-Fixture Certificate
+    selectNode(nodeMap['G-1']); // Default: G-1, current-free confinement
   </script>
 </body>
 </html>

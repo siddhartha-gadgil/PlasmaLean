@@ -36,30 +36,75 @@
         <p>Bridging Small-Kernel Formal Verification, Differential &amp; Complex Geometry, and 3D Fusion Engineering</p>
         <div class="slide-box" style="margin-top:1.5rem;">
           <p><strong>Portal:</strong> <code>siddhartha-gadgil.github.io/PlasmaLean/</code></p>
-          <p><strong>Core Philosophy:</strong> Isolate physical model contracts into a tiny, human-auditable Lean 4 kernel backed by non-vacuity sanity checks—enabling AI agents and mathematicians to collaborate with zero specification drift.</p>
+          <p><strong>Core philosophy:</strong> keep the basic physical laws in a small, human-auditable domain kernel (six modules, about 900 lines), test each law with sanity checks (an instance, a counterexample, risk-specific checks), audit it against its sources, and state every other supplied model explicitly, so that humans and AI agents prove theorems about the intended physics.</p>
         </div>
       </section>
 
       <!-- Slide 2 -->
       <section>
         <span class="badge">The Core Physics Problem</span>
-        <h2>Why Stellarators Are a Pure Geometry Optimization Problem</h2>
+        <h2>Why Stellarators: Rotational Transform Without Plasma Current</h2>
         <div class="slide-grid">
           <div class="slide-box">
-            <h3>Tokamaks (2D Axisymmetric)</h3>
+            <h3>Tokamaks (axisymmetric)</h3>
             <ul>
-              <li>Continuous rotational symmetry $\partial_\phi \mathbf{B} = 0$.</li>
-              <li>Noether's theorem automatically conserves canonical toroidal momentum $P_\phi$, confining particle orbits.</li>
-              <li><strong>Fatal flaw:</strong> Requires megiamperes of inductive plasma current $\implies$ violent disruptions &amp; pulsed operation.</li>
+              <li>An axisymmetric field with no plasma current has rotational transform $\iota = 0$: its field lines do not rotate poloidally, so it confines nothing.</li>
+              <li>A tokamak gets $\iota$ from a large toroidal plasma current (megaamperes), driven inductively or by current drive.</li>
+              <li>That current brings current-driven instabilities (kinks, tearing), disruptions, and pulsed operation or continuous current drive.</li>
             </ul>
           </div>
           <div class="slide-box">
-            <h3>Stellarators (3D Non-Axisymmetric)</h3>
+            <h3>Stellarators (rotational transform from the external field)</h3>
             <ul>
-              <li>External 3D twisted modular coils create rotational transform $\iota(\psi)$ without driven plasma current.</li>
-              <li><strong>Challenge:</strong> Breaking 2D symmetry destroys $P_\phi$ unless the 3D field satisfies <strong>Quasisymmetry</strong>: $|B(\psi,\theta,\phi)| = B(\psi, M\theta - N\phi)$.</li>
+              <li>Shaped external coils give $\iota \ge \iota_{\min} &gt; 0$ with little or no plasma current. Such a field cannot be axisymmetric, so non-axisymmetry is a <em>consequence</em> of this requirement, not a goal.</li>
+              <li><strong>The price:</strong> a generic 3-D field confines trapped particles poorly. Thermal ions and electrons need <strong>omnigeneity</strong> (vanishing bounce-averaged radial drift) or a small effective ripple $\epsilon_{\rm eff}$. Quasisymmetry and quasi-isodynamic fields are special cases.</li>
             </ul>
           </div>
+        </div>
+      </section>
+
+      <!-- Slide 2b -->
+      <section>
+        <span class="badge">Project Target (30 October 2026)</span>
+        <h2>The Stellarator Contract C1–C5</h2>
+        <div class="slide-box" style="font-size:0.8rem;">
+          <table style="width:100%; font-size:0.66rem; border-collapse:collapse;">
+            <thead>
+              <tr style="border-bottom:1px solid #475569; color:#38bdf8;">
+                <th style="padding:0.3rem;">Clause</th>
+                <th style="padding:0.3rem;">Requirement (one candidate, common witnesses)</th>
+                <th style="padding:0.3rem;">Status in Lean</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr style="border-bottom:1px solid #334155;">
+                <td style="padding:0.3rem;"><strong>C1</strong> current-free rotational transform</td>
+                <td style="padding:0.3rem;">Net toroidal current small (vacuum as the limit); $\iota \ge \iota_{\min} &gt; 0$ from the external field. Excludes tokamaks.</td>
+                <td style="padding:0.3rem;">Partial, vacuum only: exact rational vacuum field with one KAM-certified torus ($\iota \approx 0.137$).</td>
+              </tr>
+              <tr style="border-bottom:1px solid #334155;">
+                <td style="padding:0.3rem;"><strong>C2</strong> omnigeneity</td>
+                <td style="padding:0.3rem;">Bounded bounce-averaged radial drift or $\epsilon_{\rm eff}$ for thermal ions <em>and</em> electrons (QS, QI as special cases).</td>
+                <td style="padding:0.3rem;">Essentially open. Weak QS defined; Landreman families proved not weakly QS.</td>
+              </tr>
+              <tr style="border-bottom:1px solid #334155;">
+                <td style="padding:0.3rem;"><strong>C3</strong> finite-β MHD stability</td>
+                <td style="padding:0.3rem;">Mercier, ballooning and global modes at a stated $\beta &gt; 0$.</td>
+                <td style="padding:0.3rem;">Mercier band for Landreman family 2, which carries net current (fails C1). Nothing for a current-free candidate.</td>
+              </tr>
+              <tr style="border-bottom:1px solid #334155;">
+                <td style="padding:0.3rem;"><strong>C4</strong> existence</td>
+                <td style="padding:0.3rem;">Nested flux surfaces and force balance $J \times B = \nabla p$ (vacuum: $J = 0$).</td>
+                <td style="padding:0.3rem;">Vacuum rational field inside one torus; finite β only for current-carrying or symmetric models.</td>
+              </tr>
+              <tr>
+                <td style="padding:0.3rem;"><strong>C5</strong> thermal performance</td>
+                <td style="padding:0.3rem;">On the <em>same</em> candidate: core $T \ge 10$ keV over the operating interval, from power balance; neoclassical losses from C2.</td>
+                <td style="padding:0.3rem;">Essentially open for stellarators: shown only on the Solov'ev field, which is a <em>tokamak</em> model, plus 0-D windows.</td>
+              </tr>
+            </tbody>
+          </table>
+          <p style="margin-top:0.5rem;">Sources: the contract section of <a href="https://github.com/siddhartha-gadgil/PlasmaLean/blob/main/notes/implementation-plan.md">notes/implementation-plan.md</a>. Non-axisymmetric results with no other content (Grad counterexamples) are mathematical infrastructure, not design progress.</p>
         </div>
       </section>
 
@@ -67,21 +112,21 @@
       <section>
         <span class="badge">Pillar 3 · Architectural Trust</span>
         <h2>The Small-Kernel &amp; Sanity-Check Pattern</h2>
-        <p>Why do numerical stellarator optimizers hit "false optima", and how do formalizations avoid proving vacuous theorems?</p>
+        <p>Lean checks the proofs; a reader must check the statements and the supplied laws. How do we keep those honest and non-vacuous?</p>
         <div class="slide-grid">
           <div class="slide-box">
-            <h3>1. Small Trusted Kernel (~120 LOC)</h3>
+            <h3>1. Small domain kernel (about 900 lines, six modules)</h3>
             <ul>
-              <li>Defines $\nabla \cdot \mathbf{B}$, $\nabla \times \mathbf{B}$, regular flux surfaces $\psi^{-1}(c)$, and coil-to-plasma clearance $d_{\min} > 0$.</li>
-              <li>Zero project-specific axioms (only standard Lean 4 <code>propext</code>, <code>Classical.choice</code>, <code>Quot.sound</code>).</li>
+              <li><code>Kernel/{Equilibrium, Slab, ThermalSlab, Vacuum, Transport, Fusion}</code>: force balance <code>ForceBalance</code>, vacuum fields <code>VacuumField</code> (divergence and curl via Fréchet derivatives), slab MHD and heat laws, radial transport, 0-D D-T burn.</li>
+              <li>Laws are <code>Prop</code> classes and structures (hypotheses), not axioms: the axiom check passes with only <code>propext</code>, <code>Classical.choice</code>, <code>Quot.sound</code>.</li>
             </ul>
           </div>
           <div class="slide-box">
-            <h3>2. Non-Vacuity Sanity Checks</h3>
+            <h3>2. Sanity checks and the strict audit (30 October 2026)</h3>
             <ul>
-              <li>Proves $\mathbf{B} \equiv 0$ is rejected by <code>HasFluxSurface</code>.</li>
-              <li>Proves $d_{\min} > 0$ prevents Lean's real division trap <code>x / 0 = 0</code> in Biot–Savart integrals.</li>
-              <li>Constructs analytical circular torus witnesses satisfying the full contract.</li>
+              <li>Each law has an instance and a counterexample, e.g. <code>rotationField_not_vacuum</code>, <code>slab_rejects_compressive</code>.</li>
+              <li>Risk checks expose weak spots: <code>forceBalance_of_cross</code> (force balance means nothing until $g = \nabla p$ is proved, E-1), <code>vacuumField_empty</code> (empty regions, V-1).</li>
+              <li>All 52 kernel declarations reviewed: 1 medium finding (F-1, fixed), 9 low (recorded with regression theorems).</li>
             </ul>
           </div>
         </div>
@@ -90,14 +135,14 @@
       <!-- Slide 4 -->
       <section>
         <span class="badge">Pillar 4 · Compiled Milestone</span>
-        <h2>Anatomy of a Tolerance-Aware Vacuum-Fixture Certificate</h2>
+        <h2>A Field-Error and Clearance Certificate for a Calibration Fixture</h2>
         <div class="slide-box">
-          <p><strong>Compiled Today in PlasmaLean:</strong> From smooth 3D coil curves $\gamma_i : S^1 \to \mathbb{R}^3$ to certified manufacturing margins:</p>
+          <p><strong>Compiled in PlasmaLean</strong> (<code>Design/VacuumPair</code>, <code>Design/VacuumTolerance</code>): two coaxial circular filament loops, an axisymmetric calibration fixture (no rotational transform, no confinement claim).</p>
           <ol>
-            <li><strong>Clearance Enclosure:</strong> Certify $\inf_{s, x \in \Sigma} \|x - \gamma_i(s)\| \ge d_{\min} > 0$.</li>
-            <li><strong>Exact Biot–Savart Fréchet Derivatives:</strong> Machine-checked Jacobians $\partial_y K(x,y,\tau)$ and $\partial_\tau K(x,y,\tau)$.</li>
-            <li><strong>Banach Lipschitz Perturbation Bound:</strong> For all coil warps $\|\delta\gamma_i\|_{C^1} \le \varepsilon < d_{\min}/2$, bound $\|\mathbf{B}(\gamma+\delta\gamma) - \mathbf{B}(\gamma)\| \le L_{\text{BS}}(d_{\min})\,\varepsilon$.</li>
-            <li><strong>Toroidal Surface Atlas Certificate:</strong> Guarantee $|\mathbf{B}\cdot\mathbf{n}|/\|\mathbf{B}\| \le \eta_{\max}$ across all of $\Sigma_{\text{target}}$.</li>
+            <li><strong>Clearance:</strong> every point of the 5 cm observation ball is at least 0.15 m from both filaments (<code>source_clearance</code>).</li>
+            <li><strong>Biot–Savart bounds and derivatives:</strong> $\|B\|$ bounded on the whole ball (<code>field_bound</code>); Fréchet derivative and its bound (<code>manufactured_field_derivative</code>).</li>
+            <li><strong>Manufacturing budget:</strong> for every pair of $C^1$ coils within 1 mm (position) and 1 mm per radian (tangent), and currents within 1 %, $\|B_{\rm actual} - B_{\rm nominal}\| \le \mu_0 I/4$ on the ball (<code>combined_field_error</code>); boundary-to-volume transfer on a cube (<code>combined_volume_error</code>).</li>
+            <li><strong>Assembled:</strong> a nonzero field in a 1 mm probe ball (<code>robust_probe_field</code>) and 388 mm clearance between 5 mm tube envelopes (<code>manufactured_tube_clearance</code>).</li>
           </ol>
         </div>
       </section>
@@ -150,8 +195,8 @@
         <h2>Open Targets for Topologists</h2>
         <div class="slide-grid">
           <div class="slide-box">
-            <h3>1. Arnold–Poincaré–Hopf Toroidal Foliation</h3>
-            <p>From $\mathbf{J} \times \mathbf{B} = \nabla p \neq 0$, prove $(\mathbf{B}, \mathbf{J})$ trivializes $T\Sigma_c$, forcing $\chi(\Sigma_c) = 0$ and $\Sigma_c \cong T^2$.</p>
+            <h3>1. Arnold–Poincaré–Hopf Toroidal Level Sets</h3>
+            <p>From $\mathbf{J} \times \mathbf{B} = \nabla p \neq 0$, prove $(\mathbf{B}, \mathbf{J})$ trivializes $T\Sigma_c$ on a compact regular level set, forcing $\chi(\Sigma_c) = 0$ and $\Sigma_c \cong T^2$. <em>Already in the library:</em> the tangency (<code>field_tangency</code>, <code>current_tangency</code>), and tori for Landreman family 1 via <code>torusMap</code>.</p>
             <p><em>Stub:</em> <code>Challenge1_PoincareHopfTorus.lean</code></p>
           </div>
           <div class="slide-box">
@@ -192,7 +237,7 @@
           </div>
           <div class="slide-box">
             <h3>6. Riemann Surface Modulus $\tau(\psi) \in \mathbb{H}$</h3>
-            <p>Every flux surface $\Sigma_\psi \cong \mathbb{C}/(\mathbb{Z} + \tau(\psi)\mathbb{Z})$ carries a Hodge star $\star_g^2 = -I_2$ and period matrix determined by its conformal modulus $\tau(\psi)$.</p>
+            <p>Every toroidal flux surface $\Sigma_\psi \cong \mathbb{C}/(\mathbb{Z} + \tau(\psi)\mathbb{Z})$ carries a Hodge star $\star_g^2 = -I_2$ and period matrix determined by its conformal modulus $\tau(\psi)$. <em>Partly done</em> for constant metrics: <code>periodBound_eq</code>, <code>energy_ge</code> (<code>Theory/Geometry/TorusHodge</code>).</p>
             <p><em>Stub:</em> <code>Challenge6_ConformalTorusModulus.lean</code></p>
           </div>
         </div>
@@ -204,7 +249,7 @@
         <h2>How to Contribute in 15 Minutes</h2>
         <div class="slide-box">
           <ol>
-            <li><strong>Browse the Rosetta Stone &amp; 10-Min Kernel Audit</strong> to see the exact Lean 4 types.</li>
+            <li><strong>Browse the Rosetta Stone &amp; 10-Min Kernel Audit</strong> to see the real Lean 4 declarations and what is not yet in the library.</li>
             <li><strong>Pick a Self-Contained Lean 4 Bounty Stub</strong> from <code>lean_stubs/Challenge1..6.lean</code> (each file imports only <code>Mathlib</code>—no physics solver setup needed!).</li>
             <li><strong>Replace <code>sorry</code> with a Lean 4 Proof</strong> (using human insight, <code>grind</code>, or AI theorem-proving assistants) and open a PR to <code>siddhartha-gadgil/PlasmaLean</code>.</li>
           </ol>

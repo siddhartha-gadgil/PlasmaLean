@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>4. Anatomy of a Vacuum-Fixture Certificate | PlasmaLean</title>
+  <title>4. Field-Error and Clearance Certificate (Calibration Fixture) | PlasmaLean</title>
   
 <link rel="stylesheet" href="style.css">
 <script>
@@ -39,12 +39,12 @@
     <section class="hero">
       <div class="pill-row">
         <span class="pill pill-amber">Pillar 4 · End-to-End Verification</span>
-        <span class="pill pill-emerald">Compiled Vacuum Demonstrator</span>
-        <span class="pill pill-cyan">Biot–Savart Fréchet Bounds</span>
+        <span class="pill pill-emerald">Compiled: Design/VacuumPair, Design/VacuumTolerance</span>
+        <span class="pill pill-cyan">Calibration fixture, not a confinement design</span>
       </div>
-      <h1>Anatomy of a Tolerance-Aware Vacuum-Fixture Certificate</h1>
+      <h1>Anatomy of a Field-Error and Clearance Certificate: the Two-Loop Calibration Fixture</h1>
       <p style="max-width: 900px;">
-        Step through the 5-stage pipeline showing how PlasmaLean turns 3D coil curves $\gamma_i : S^1 \to \mathbb{R}^3$ and rigorous Biot–Savart Fréchet derivative bounds into a machine-checked certificate of magnetic confinement quality under $\pm\varepsilon$ manufacturing tolerances. Below the walkthrough, experiment with the interactive <strong>Certificate Margin Calculator</strong>.
+        Step through the five stages by which PlasmaLean proves, for a small <strong>two-loop calibration fixture</strong>, that the magnetic field stays within a stated error budget, and that the coils keep a stated clearance, for <em>every</em> pair of manufactured coils within a $C^1$ tolerance envelope and every current within $1\,\%$ of nominal. All declarations shown are real (abridged where marked <code>...</code>); they live in <a href="https://github.com/siddhartha-gadgil/PlasmaLean/blob/main/PlasmaLean/Design/VacuumPair.lean" target="_blank" rel="noopener">Design/VacuumPair</a>, <a href="https://github.com/siddhartha-gadgil/PlasmaLean/blob/main/PlasmaLean/Design/VacuumTolerance.lean" target="_blank" rel="noopener">Design/VacuumTolerance</a>, <a href="https://github.com/siddhartha-gadgil/PlasmaLean/blob/main/PlasmaLean/Design/VacuumDerivative.lean" target="_blank" rel="noopener">Design/VacuumDerivative</a> and <a href="https://github.com/siddhartha-gadgil/PlasmaLean/blob/main/PlasmaLean/Design/VacuumPairVolumeError.lean" target="_blank" rel="noopener">Design/VacuumPairVolumeError</a>. The fixture is axisymmetric: it has no rotational transform and makes no confinement claim.
       </p>
       <div style="margin-top: 1rem;">
         <a href="markdown/CERTIFICATE_WALKTHROUGH.md" class="btn" download>⬇ Download CERTIFICATE_WALKTHROUGH.md</a>
@@ -59,81 +59,59 @@
       <p id="c-math" style="color:var(--text-primary); font-size:1.02rem; margin-top:0.75rem;"></p>
       <pre><code id="c-lean"></code></pre>
       <div style="background:rgba(6, 182, 212, 0.12); border-left: 4px solid var(--accent-cyan); padding: 0.9rem 1.1rem; border-radius: 6px; margin-top: 1rem;">
-        <strong style="color:var(--accent-cyan);">Verification Takeaway:</strong>
+        <strong style="color:var(--accent-cyan);">Verification takeaway:</strong>
         <span id="c-takeaway" style="color:var(--text-primary);"></span>
       </div>
     </div>
 
-    <h2>Interactive Vacuum-Fixture Tolerance Margin Sandbox</h2>
-    <p>Adjust the coil-to-plasma clearance $d_{\min}$, manufacturing tolerance $\varepsilon$, and nominal field strength $B_{\text{nom}}$ to see how the Lipschitz Fréchet bound certifies the worst-case normal magnetic field error $\eta_{\text{cert}}$.</p>
+    <h2>Evaluate the proved bounds</h2>
+    <p>The theorems are stated for symbolic $\mu_0$ and $I$, with a fixed budget: $1$ mm position error, $1$ mm per radian tangent error, $1\,\%$ current error, $5$ mm tube radius. Choose a nominal current to see what the proved inequalities give in tesla (with $\mu_0 = 4\pi \times 10^{-7}$ H/m). A different budget would need new proofs; this calculator only evaluates the existing ones.</p>
 
     <div class="grid-2">
       <div class="card">
-        <h3>Engineering &amp; Geometric Parameters</h3>
+        <h3>Nominal current</h3>
         <div style="margin: 1rem 0;">
           <label style="display:flex; justify-content:space-between; font-weight:600;">
-            <span>Coil-to-Plasma Clearance $d_{\min}$ (m):</span>
-            <span id="val-dmin" style="color:var(--accent-cyan);">0.15 m</span>
+            <span>Current $I$ in each loop (kA):</span>
+            <span id="val-current" style="color:var(--accent-cyan);">10.0 kA</span>
           </label>
-          <input type="range" id="sl-dmin" min="0.08" max="0.30" step="0.01" value="0.15" style="width:100%; margin-top:0.4rem;" oninput="updateCertCalc()">
+          <input type="range" id="sl-current" min="0.5" max="50" step="0.5" value="10" style="width:100%; margin-top:0.4rem;" oninput="updateCertCalc()">
         </div>
-
-        <div style="margin: 1rem 0;">
-          <label style="display:flex; justify-content:space-between; font-weight:600;">
-            <span>Manufacturing Tolerance $\varepsilon$ (mm):</span>
-            <span id="val-eps" style="color:var(--accent-cyan);">1.2 mm</span>
-          </label>
-          <input type="range" id="sl-eps" min="0.2" max="5.0" step="0.1" value="1.2" style="width:100%; margin-top:0.4rem;" oninput="updateCertCalc()">
-        </div>
-
-        <div style="margin: 1rem 0;">
-          <label style="display:flex; justify-content:space-between; font-weight:600;">
-            <span>Nominal Field Magnitude $B_{\text{nom}}$ (T):</span>
-            <span id="val-bnom" style="color:var(--accent-cyan);">1.00 T</span>
-          </label>
-          <input type="range" id="sl-bnom" min="0.50" max="2.50" step="0.05" value="1.00" style="width:100%; margin-top:0.4rem;" oninput="updateCertCalc()">
-        </div>
-
-        <div style="margin: 1rem 0;">
-          <label style="display:flex; justify-content:space-between; font-weight:600;">
-            <span>Target Max Normal Error $\eta_{\max}$:</span>
-            <span id="val-etamax" style="color:var(--accent-cyan);">1.50 %</span>
-          </label>
-          <input type="range" id="sl-etamax" min="0.50" max="3.00" step="0.10" value="1.50" style="width:100%; margin-top:0.4rem;" oninput="updateCertCalc()">
-        </div>
+        <p style="font-size:0.9rem;">Fixed by the theorems: loop radius $0.1$ m, loop planes $z = \pm 0.2$ m, observation ball radius $5$ cm, probe ball radius $1$ mm.</p>
       </div>
 
       <div class="card">
-        <h3>Lean 4 Certificate Inequality Evaluation</h3>
+        <h3>What the theorems give</h3>
         <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 0.85rem; margin: 1rem 0;">
           <div style="background:var(--bg-primary); padding:0.9rem; border-radius:8px; border:1px solid var(--border-color);">
-            <div style="font-size:0.8rem; color:var(--text-muted);">Biot–Savart Lipschitz Constant $L_{\text{BS}}$</div>
-            <div id="out-lbs" style="font-size:1.3rem; font-weight:700; color:var(--text-primary); margin-top:0.2rem;">--</div>
+            <div style="font-size:0.8rem; color:var(--text-muted);">Exact nominal midpoint field $B_z(0)$ (<code>midpoint_field</code>)</div>
+            <div id="out-mid" style="font-size:1.3rem; font-weight:700; color:var(--text-primary); margin-top:0.2rem;">--</div>
           </div>
           <div style="background:var(--bg-primary); padding:0.9rem; border-radius:8px; border:1px solid var(--border-color);">
-            <div style="font-size:0.8rem; color:var(--text-muted);">Max Field Perturbation $\Delta B = L_{\text{BS}}\varepsilon$</div>
-            <div id="out-db" style="font-size:1.3rem; font-weight:700; color:var(--text-primary); margin-top:0.2rem;">--</div>
+            <div style="font-size:0.8rem; color:var(--text-muted);">Upper bound on $\|B\|$ in the 5 cm ball (<code>field_bound</code>)</div>
+            <div id="out-bound" style="font-size:1.3rem; font-weight:700; color:var(--text-primary); margin-top:0.2rem;">--</div>
           </div>
           <div style="background:var(--bg-primary); padding:0.9rem; border-radius:8px; border:1px solid var(--border-color);">
-            <div style="font-size:0.8rem; color:var(--text-muted);">Certified Min Field $B_{\min}$</div>
-            <div id="out-bmin" style="font-size:1.3rem; font-weight:700; color:var(--text-primary); margin-top:0.2rem;">--</div>
+            <div style="font-size:0.8rem; color:var(--text-muted);">Field-error bound in the 5 cm ball (<code>combined_field_error</code>)</div>
+            <div id="out-err" style="font-size:1.3rem; font-weight:700; color:var(--text-primary); margin-top:0.2rem;">--</div>
           </div>
           <div style="background:var(--bg-primary); padding:0.9rem; border-radius:8px; border:1px solid var(--border-color);">
-            <div style="font-size:0.8rem; color:var(--text-muted);">Certified Normal Error Bound $\eta_{\text{cert}}$</div>
-            <div id="out-etacert" style="font-size:1.3rem; font-weight:700; color:var(--text-primary); margin-top:0.2rem;">--</div>
+            <div style="font-size:0.8rem; color:var(--text-muted);">Lower bound on actual $B_z$ in the 1 mm probe ball (<code>robust_probe_field</code>)</div>
+            <div id="out-probe" style="font-size:1.3rem; font-weight:700; color:var(--text-primary); margin-top:0.2rem;">--</div>
           </div>
         </div>
-        <div id="cert-status-box" style="padding:1rem; border-radius:8px; font-weight:600; margin-top:1rem;"></div>
+        <div id="cert-status-box" style="padding:1rem; border-radius:8px; font-weight:600; margin-top:1rem; background:rgba(16, 185, 129, 0.15); border:1px solid #10b981; color:#34d399;">Tube clearance (<code>manufactured_tube_clearance</code>): at least 388 mm between the two 5 mm tube envelopes, for every manufactured pair, independent of the current.</div>
       </div>
     </div>
   </main>
 
   <footer class="footer">
-    PlasmaLean Exposition Suite · Pillar 4: Anatomy of a Tolerance-Aware Vacuum-Fixture Certificate
+    PlasmaLean Exposition Suite · Pillar 4: field-error and clearance certificate for the two-loop calibration fixture
   </footer>
 
   <script>
-    const stages = [{"stage": "Stage 1", "title": "3D Modular Coil Parameterization & Clearance", "math": "We represent $N$ modular stellarator coils as smooth $2\\pi$-periodic closed space curves $\\gamma_i : S^1 \\to \\mathbb{R}^3$ defined by finite Fourier series, alongside a target toroidal plasma boundary $\\Sigma_{\\text{target}}$. First, we establish a certified lower bound on the Euclidean distance between every coil filament and $\\Sigma_{\\text{target}}$:\n$$d_{\\min} = \\min_{i \\in \\{1..N\\}} \\inf_{s \\in S^1, \\, x \\in \\Sigma_{\\text{target}}} \\|x - \\gamma_i(s)\\| > 0.$$", "lean": "structure ModularCoilFourier (K : ℕ) where\n  R_cos : Fin K → ℝ\n  Z_sin : Fin K → ℝ\n  φ_offset : ℝ\n\ntheorem certified_coil_plasma_clearance\n    (fixture : CoilSystem N) (h_box : IntervalEnclosure fixture Σ_target d_min) :\n    ∀ i, HasClearanceMargin (fixture.curves i) Σ_target d_min := by\n  exact interval_branch_and_bound_clearance h_box", "takeaway": "Because $d_{\\min} > 0$ is machine-checked, the Biot-Savart denominator $\\|x - \\gamma_i(s)\\|^3 \\ge d_{\\min}^3 > 0$ can never vanish anywhere on the plasma boundary."}, {"stage": "Stage 2", "title": "Exact Biot–Savart Kernel & Fréchet Derivatives", "math": "For each evaluation point $x \\in \\Sigma_{\\text{target}}$ and coil point $y = \\gamma_i(s)$ with tangent vector $\\tau = \\gamma_i'(s)$, the Biot–Savart integrand is:\n$$K(x, y, \\tau) = \\frac{\\mu_0 I_i}{4\\pi} \\frac{\\tau \\times (x - y)}{\\|x - y\\|^3}.$$\nIn `PlasmaLean`, we formally prove the exact Fréchet derivatives $\\partial_y K$ and $\\partial_\\tau K$ with respect to coil position perturbations $\\delta y$ and tangent perturbations $\\delta \\tau$:", "lean": "noncomputable def biotSavartIntegrand (x y τ : ℝ³) : ℝ³ :=\n  (‖x - y‖ ^ 3)⁻¹ • crossProduct τ (x - y)\n\ntheorem hasFDerivAt_biotSavart_coil_pos (hx : x ≠ y) :\n    HasFDerivAt (fun y' => biotSavartIntegrand x y' τ)\n      (biotSavartPosFDeriv x y τ) y := by\n  -- Compiled proof using Mathlib.Analysis.Calculus.FDeriv\n  apply HasFDerivAt.smul (hasFDerivAt_inv_norm_cube hx) (hasFDerivAt_cross_sub x τ)", "takeaway": "Symbolic differentiation mistakes in 3D tensor calculus are impossible—Lean 4 checks the exact Jacobian of the Biot-Savart kernel."}, {"stage": "Stage 3", "title": "Lipschitz Perturbation Bounds under ±ε Tolerance", "math": "Suppose manufacturing and assembly tolerances perturb each coil curve by $\\delta\\gamma_i$ with $C^1$-norm $\\|\\delta\\gamma_i\\|_{C^1} = \\sup_s \\max(\\|\\delta\\gamma_i(s)\\|, \\|\\delta\\gamma_i'(s)\\|) \\le \\varepsilon < d_{\\min}/2$. By the Mean Value Inequality in Banach spaces, the perturbed magnetic field satisfies the rigorous Lipschitz bound:\n$$\\|\\mathbf{B}(\\gamma + \\delta\\gamma)(x) - \\mathbf{B}(\\gamma)(x)\\| \\le L_{\\text{BS}}(d_{\\min}, L_{\\text{coil}}, I_{\\max}) \\cdot \\varepsilon,$$\nwhere $L_{\\text{BS}} = \\sum_{i=1}^N \\frac{\\mu_0 |I_i|}{4\\pi} \\left( \\frac{3 L_i}{(d_{\\min} - \\varepsilon)^4} + \\frac{2\\pi}{(d_{\\min} - \\varepsilon)^3} \\right)$.", "lean": "theorem biotSavart_perturbation_lipschitz\n    (h_clear : HasClearanceMargin γ Σ_target d_min)\n    (h_eps : 0 < ε ∧ ε < d_min / 2)\n    (h_pert : AdmissiblePerturbation δγ ε) (hx : x ∈ Σ_target) :\n    ‖evalCoilField (γ + δγ) x - evalCoilField γ x‖ ≤\n      lipschitzConstantBS I L_arc d_min ε * ε", "takeaway": "Converts an infinite-dimensional space of all possible smooth coil warps $\\delta\\gamma_i \\in C^1(S^1, \\mathbb{R}^3)$ into an explicit algebraic function of $\\varepsilon$ and $d_{\\min}$."}, {"stage": "Stage 4", "title": "Verified Interval Arithmetic on Toroidal Patches", "math": "To certify a continuous 2D surface $\\Sigma_{\\text{target}}$ (not just a finite grid of points!), we cover $T^2 = [0, 2\\pi]^2$ with a finite atlas of rigorous interval boxes $B_{\\alpha} = [\\theta_\\alpha^-, \\theta_\\alpha^+] \\times [\\phi_\\alpha^-, \\phi_\\alpha^+]$ and bound the surface variation using spatial field derivatives $\\|\\nabla \\mathbf{B}\\|$:", "lean": "theorem surface_covering_certificate\n    (atlas : Finset TorusBox) (h_cov : ∀ p ∈ TorusDomain, ∃ box ∈ atlas, p ∈ box)\n    (h_boxes : ∀ box ∈ atlas, evalBoxNormalErrorBound fixture box ≤ η_nom) :\n    ∀ x ∈ Σ_target, |⟪evalBiotSavart fixture x, n_unit x⟫_ℝ| ≤ η_nom := by\n  intro x hx\n  rcases h_cov x hx with ⟨box, hbox_mem, hx_in_box⟩\n  exact apply_box_enclosure (h_boxes box hbox_mem) hx_in_box", "takeaway": "Bridges finite numerical evaluations and continuous universal quantification ($\\forall x \\in \\Sigma_{\\text{target}}$) with zero discretization gap."}, {"stage": "Stage 5", "title": "Assembling the Top-Level Vacuum-Fixture Certificate", "math": "Combining Stages 1–4 via the triangle inequality yields the final machine-checked theorem: for **every** point $x \\in \\Sigma_{\\text{target}}$ and **every** coil perturbation $\\|\\delta\\gamma_i\\|_{C^1} \\le \\varepsilon$, the normalized normal magnetic field error satisfies:\n$$\\frac{|\\mathbf{B}_{\\text{pert}}(x) \\cdot \\mathbf{n}(x)|}{\\|\\mathbf{B}_{\\text{pert}}(x)\\|} \\le \\frac{e_{\\text{nom}} + L_{\\text{BS}}\\,\\varepsilon}{B_{\\text{nom, min}} - L_{\\text{BS}}\\,\\varepsilon} \\le \\eta_{\\max}.$$", "lean": "theorem vacuum_demonstrator_certified :\n    CertifiedVacuumFixture demoCoils demoSurface demoNormal\n      (d_min := 0.12) (ε := 0.0015) (B_min := 0.85) (η_max := 0.015) := by\n  refine ⟨by norm_num, certified_demo_clearance, ?_, ?_⟩\n  · exact certified_field_strength_lower_bound\n  · exact certified_normal_error_upper_bound", "takeaway": "A complete hardware-relevant engineering margin certified from first principles in Lean 4."}];
+    document.getElementById('nav-cert').classList.add('active');
+    const stages = [{"stage": "Stage 1", "title": "Fixture geometry and clearance", "math": "The fixture is two coaxial circular filaments of radius $0.1$ m in the planes $z = \\pm 0.2$ m, with currents $I, J$ and permeability $\\mu_0$ kept as parameters. The observation region is the whole closed ball $\\|x\\| \\le 0.05$ m (not a sample of points). The coils are closed, simple and regular, every pair of centreline points is at least $0.4$ m apart, and every observation point is at least $0.15$ m from either filament. The coefficients are an invented exact test fixture, not experimental data.", "lean": "-- PlasmaLean/Design/VacuumPair.lean (namespace PlasmaLean.Design.VacuumPair)\ndef upperCoil : ℝ → Space := circularCoil (1 / 10) (1 / 5)\ndef lowerCoil : ℝ → Space := circularCoil (1 / 10) (-1 / 5)\ndef ObservationRegion (x : Space) : Prop := ‖x‖ ≤ 1 / 20\ntheorem origin_in_region : ObservationRegion 0\ntheorem closed_coils : Function.Periodic upperCoil (2 * Real.pi) ∧ ...\ntheorem simple_coils : Set.InjOn upperCoil (Set.Ico 0 (2 * Real.pi)) ∧ ...\ntheorem regular_coils (t : ℝ) : ‖deriv upperCoil t‖ = 1 / 10 ∧ ...\ntheorem coil_clearance (t u : ℝ) : 2 / 5 ≤ dist (upperCoil t) (lowerCoil u)\ntheorem source_clearance (x : Space) (hx : ObservationRegion x) (t : ℝ) :\n    3 / 20 ≤ ‖x - upperCoil t‖ ∧ 3 / 20 ≤ ‖x - lowerCoil t‖", "takeaway": "The clearance $\\|x - \\gamma(t)\\| \\ge 0.15$ m is proved for every point of the ball, so the Biot–Savart denominator never vanishes there and no division-by-zero convention ($x/0 = 0$ in Lean) can enter the field bounds. The region is nonempty (<code>origin_in_region</code>), so the bounds are not vacuous."}, {"stage": "Stage 2", "title": "Biot–Savart field, bounds and derivatives", "math": "The field is the sum of two filament integrals\n$$B(x) = \\frac{\\mu_0 I}{4\\pi}\\int_0^{2\\pi} \\frac{\\gamma'(t) \\times (x - \\gamma(t))}{\\|x - \\gamma(t)\\|^3}\\,dt + (\\text{lower coil}).$$\nIntegrability is proved, not assumed. On the whole ball $\\|B\\| \\le \\tfrac{20}{9}(|\\mu_0 I| + |\\mu_0 J|)$, the midpoint field is computed exactly (an independent check of normalization and sign), and the field is differentiable with an explicit operator-norm bound on its derivative.", "lean": "-- PlasmaLean/Theory/Fields/BiotSavart.lean (namespace PlasmaLean.Fields)\ndef filamentField (μ₀ I : ℝ) (c : ℝ → Space) (a b : ℝ) (x : Space) : Space :=\n  (μ₀ * I / (4 * Real.pi)) • ∫ t in a..b, filamentKernel c t x\n-- PlasmaLean/Design/VacuumPair.lean\ndef field (μ₀ I J : ℝ) (x : Space) : Space :=\n  filamentField μ₀ I upperCoil 0 (2 * Real.pi) x +\n    filamentField μ₀ J lowerCoil 0 (2 * Real.pi) x\ntheorem integrable_kernels (x : Space) (hx : ObservationRegion x) : ...\ntheorem field_bound (μ₀ I J : ℝ) (x : Space) (hx : ObservationRegion x) :\n    ‖field μ₀ I J x‖ ≤ 20 / 9 * (|μ₀ * I| + |μ₀ * J|)\ntheorem midpoint_field (μ₀ I : ℝ) :\n    field μ₀ I I 0 = axisPoint (μ₀ * I / (100 * Real.sqrt (1 / 20) ^ 3))\n-- PlasmaLean/Theory/Fields/FieldDerivative.lean: filamentField_derivative\n-- PlasmaLean/Design/VacuumDerivative.lean: manufactured_field_derivative", "takeaway": "The derivative is a genuine Fréchet derivative, obtained by dominated differentiation under the integral; its bound uses the same clearance as Stage 1."}, {"stage": "Stage 3", "title": "Manufacturing envelope and field-error budget", "math": "An actual coil is within tolerance of a nominal one if it is $C^1$, closed, and within $1$ mm in position and $1$ mm per radian in tangent, at every parameter. For both coils manufactured at once, and currents within $1\\,\\%$ of $I$, the field error at <em>every</em> point of the $5$ cm ball is at most a quarter of $\\mu_0 I$ (in tesla when $\\mu_0 I$ is in T·m):\n$$\\|B_{\\rm actual}(x) - B_{\\rm nominal}(x)\\| \\le \\tfrac14\\,\\mu_0 I.$$", "lean": "-- PlasmaLean/Design/VacuumTolerance.lean\nstructure WithinTolerance (nominal actual : ℝ → Space) : Prop where\n  differentiable : Differentiable ℝ actual\n  tangent_continuous : Continuous (deriv actual)\n  closed : Function.Periodic actual (2 * Real.pi)\n  position : ∀ t, ‖actual t - nominal t‖ ≤ 1 / 1000\n  tangent : ∀ t, ‖deriv actual t - deriv nominal t‖ ≤ 1 / 1000\ntheorem circle_within_tolerance ...   -- the envelope is nonempty\ntheorem manufacturing_error ... :\n    ‖manufacturedField μ₀ J₁ J₂ upper lower x - field μ₀ J₁ J₂ x‖ ≤\n      135 / 1372 * (|μ₀ * J₁| + |μ₀ * J₂|)\ntheorem field_current_error ...\ntheorem combined_field_error {μ₀ I J₁ J₂ : ℝ} (hμ : 0 < μ₀) (hI : 0 < I) ...\n    (hJ₁ : |J₁ - I| ≤ I / 100) (hJ₂ : |J₂ - I| ≤ I / 100)\n    (x : Space) (hx : ObservationRegion x) :\n    ‖manufacturedField μ₀ J₁ J₂ upper lower x - field μ₀ I I x‖ ≤ (μ₀ * I) / 4\n-- per-filament engine: Theory/Fields/CoilPerturbation.filamentField_perturbation", "takeaway": "The quantifier is over every pair of $C^1$ coil curves in the envelope (an infinite-dimensional set), not over sampled perturbations. The budget numbers are design inputs, not measured manufacturing capabilities."}, {"stage": "Stage 4", "title": "From the boundary of a cube to its interior", "math": "Both the nominal and every manufactured field are vacuum fields (kernel <code>VacuumField</code>) on a ball around the cube $|x_k| < 2.5$ cm. The difference of two vacuum fields is a vacuum field, and $|B|^2$ of a vacuum field is subharmonic (Bochner identity), so a bound on the frontier of the cube holds throughout the closed cube (weak maximum principle). Bounds at $6(N+1)^2$ grid points on the faces, plus a certified Lipschitz constant, give a bound in the whole cube.", "lean": "-- PlasmaLean/Theory/Fields/Subharmonic.lean\ntheorem VacuumField.error_le_of_frontier ...\n-- PlasmaLean/Design/VacuumPairVolumeError.lean\ntheorem manufactured_vacuumField (μ₀ J₁ J₂ : ℝ) (upper lower : ℝ → Space) ...\ntheorem volume_error_of_frontier ... (hM : ∀ y ∈ frontier openCube,\n      ‖manufacturedField μ₀ J₁ J₂ upper lower y - field μ₀ I I y‖ ≤ δ) :\n    ∀ x ∈ closedCube, ‖manufacturedField μ₀ J₁ J₂ upper lower x - field μ₀ I I x‖ ≤ δ\ntheorem combined_volume_error ...\ntheorem volume_error_of_boundary_samples ...   -- ‖ΔB‖ ≤ m + L/(20N) in the cube", "takeaway": "This turns finitely many boundary values (measured or separately certified) into a statement about every interior point, with the discretization error accounted for explicitly."}, {"stage": "Stage 5", "title": "What the assembled certificate says, and what it does not", "math": "For the same manufactured coils and calibrated currents: the axial field component is at least $\\mu_0 I/4$, so the field is nonzero, throughout a $1$ mm probe ball; and with $5$ mm tube envelopes around both actual coils, every point of one tube is at least $388$ mm from every point of the other. The loops are axisymmetric: the fixture has no rotational transform and confines nothing. It is a calibration fixture for the field-error and clearance pipeline, not a toroidal confinement design.", "lean": "-- PlasmaLean/Design/VacuumTolerance.lean\ntheorem robust_probe_field {μ₀ I J₁ J₂ : ℝ} (hμ : 0 < μ₀) (hI : 0 < I)\n    (upper lower : ℝ → Space) (hu : WithinTolerance upperCoil upper)\n    (hl : WithinTolerance lowerCoil lower)\n    (hJ₁ : |J₁ - I| ≤ I / 100) (hJ₂ : |J₂ - I| ≤ I / 100)\n    (x : Space) (hx : ‖x‖ ≤ 1 / 1000) :\n    (μ₀ * I) / 4 ≤ (manufacturedField μ₀ J₁ J₂ upper lower x) 2 ∧\n      manufacturedField μ₀ J₁ J₂ upper lower x ≠ 0\ntheorem manufactured_tube_clearance (upper lower : ℝ → Space)\n    (hu : WithinTolerance upperCoil upper) (hl : WithinTolerance lowerCoil lower)\n    {x y : Space} (hx : x ∈ CoilTube upper (1 / 200))\n    (hy : y ∈ CoilTube lower (1 / 200)) : 97 / 250 ≤ dist x y", "takeaway": "Not claimed: an invariant torus, a normal-field error on a plasma boundary, plasma confinement, finite-conductor or Maxwell (time-dependent) effects, embedded winding packs, or hardware qualification. Coil-produced confinement for a stellarator-type field is a separate, open goal (G-5)."}];
     const tabsEl = document.getElementById('cert-tabs');
 
     function selectStage(idx) {
@@ -161,42 +139,25 @@
       tabsEl.appendChild(btn);
     });
 
+    function formatTesla(b) {
+      if (b >= 1) return b.toFixed(3) + ' T';
+      return (b * 1000).toFixed(2) + ' mT';
+    }
+
     function updateCertCalc() {
-      const dmin = parseFloat(document.getElementById('sl-dmin').value);
-      const eps_mm = parseFloat(document.getElementById('sl-eps').value);
-      const eps = eps_mm / 1000.0;
-      const bnom = parseFloat(document.getElementById('sl-bnom').value);
-      const etamax_pct = parseFloat(document.getElementById('sl-etamax').value);
-
-      document.getElementById('val-dmin').textContent = dmin.toFixed(2) + ' m';
-      document.getElementById('val-eps').textContent = eps_mm.toFixed(1) + ' mm';
-      document.getElementById('val-bnom').textContent = bnom.toFixed(2) + ' T';
-      document.getElementById('val-etamax').textContent = etamax_pct.toFixed(2) + ' %';
-
-      const d_eff = Math.max(0.01, dmin - eps);
-      const L_bs = (0.045 / Math.pow(d_eff, 3)) * bnom;
-      const dB = L_bs * eps;
-      const b_min_cert = Math.max(0, bnom - dB);
-      const e_nom = 0.0035 * bnom;
-      const eta_cert_pct = b_min_cert > 0 ? ((e_nom + dB) / b_min_cert) * 100.0 : 999.0;
-
-      document.getElementById('out-lbs').textContent = L_bs.toFixed(2) + ' T/m';
-      document.getElementById('out-db').textContent = (dB * 1000).toFixed(2) + ' mT';
-      document.getElementById('out-bmin').textContent = b_min_cert.toFixed(3) + ' T';
-      document.getElementById('out-etacert').textContent = eta_cert_pct.toFixed(2) + ' %';
-
-      const statusBox = document.getElementById('cert-status-box');
-      if (eta_cert_pct <= etamax_pct && 2 * eps < dmin) {
-        statusBox.style.background = 'rgba(16, 185, 129, 0.15)';
-        statusBox.style.border = '1px solid #10b981';
-        statusBox.style.color = '#34d399';
-        statusBox.innerHTML = `✓ CERTIFICATE HOLDS: Worst-case normal field error (${eta_cert_pct.toFixed(2)}%) is strictly within the target threshold (${etamax_pct.toFixed(2)}%) across all ±${eps_mm.toFixed(1)} mm C¹ coil perturbations.`;
-      } else {
-        statusBox.style.background = 'rgba(244, 63, 94, 0.15)';
-        statusBox.style.border = '1px solid #f43f5e';
-        statusBox.style.color = '#fb7185';
-        statusBox.innerHTML = `✗ MARGIN EXCEEDED: Certified worst-case error (${eta_cert_pct.toFixed(2)}%) exceeds target (${etamax_pct.toFixed(2)}%). Increase coil clearance d_min or tighten manufacturing tolerance ε.`;
-      }
+      const kA = parseFloat(document.getElementById('sl-current').value);
+      const mu0I = 4e-7 * Math.PI * kA * 1000; // T·m
+      document.getElementById('val-current').textContent = kA.toFixed(1) + ' kA';
+      // midpoint_field: B_z(0) = μ₀ I / (100 · (1/20)^{3/2})
+      const mid = mu0I / (100 * Math.pow(Math.sqrt(1 / 20), 3));
+      // field_bound with J = I: 20/9 · 2 μ₀ I
+      const bound = (20 / 9) * 2 * mu0I;
+      // combined_field_error: μ₀ I / 4; robust_probe_field: B_z ≥ μ₀ I / 4
+      const quarter = mu0I / 4;
+      document.getElementById('out-mid').textContent = formatTesla(mid);
+      document.getElementById('out-bound').textContent = formatTesla(bound);
+      document.getElementById('out-err').textContent = '≤ ' + formatTesla(quarter);
+      document.getElementById('out-probe').textContent = '≥ ' + formatTesla(quarter);
     }
 
     selectStage(0);
