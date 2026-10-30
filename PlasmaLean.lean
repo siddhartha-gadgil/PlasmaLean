@@ -270,6 +270,7 @@ public import PlasmaLean.Theory.Kinetic.BoozerGCForward
 public import PlasmaLean.Design.NearAxisQAExistenceFull
 public import PlasmaLean.Theory.Transport.RelativeEntropy
 public import PlasmaLean.Sanity.RelativeEntropy
+public import PlasmaLean.Theory.Transport.RelativeEntropyCoercive
 public import PlasmaLean.Theory.Geometry.TorusHodge
 public import PlasmaLean.Theory.Fields.WeakQuasisymmetry
 public import PlasmaLean.Design.LandremanNotQS

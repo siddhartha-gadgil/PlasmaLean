@@ -210,6 +210,17 @@ run_cmd do
 #print axioms PlasmaLean.Transport.RelativeEntropy.old_identity_false
 #print axioms PlasmaLean.Transport.RelativeEntropy.old_rate_identity_false
 #print axioms PlasmaLean.Sanity.RelativeEntropy.constRef_rate
+#print axioms PlasmaLean.Transport.RelativeEntropy.RelEntSetup.ratio_eq_of_fisher_eq_zero
+#print axioms PlasmaLean.Transport.RelativeEntropy.RelEntSetup.exists_const_of_fisher_eq_zero
+#print axioms PlasmaLean.Transport.RelativeEntropy.phi_le_half_mul_sq_log
+#print axioms PlasmaLean.Transport.RelativeEntropy.sq_integral_le
+#print axioms PlasmaLean.Transport.RelativeEntropy.RelEntSetup.sq_log_ratio_le
+#print axioms PlasmaLean.Transport.RelativeEntropy.RelEntSetup.relEnt_le_mul_fisher
+#print axioms PlasmaLean.Transport.RelativeEntropy.exp_decay_of_deriv_le_neg_fisher
+#print axioms PlasmaLean.Transport.RelativeEntropy.RelEntSetup.relEnt_exp_decay
+#print axioms PlasmaLean.Transport.RelativeEntropy.RelEntSetup.relEnt_exp_decay_const_ref
+#print axioms PlasmaLean.Transport.RelativeEntropy.constSetup_one_equality
+#print axioms PlasmaLean.Transport.RelativeEntropy.no_coercivity_without_boundary
 #print axioms PlasmaLean.Geometry.TorusHodge.ConstMetric.periodBound_eq
 #print axioms PlasmaLean.Geometry.TorusHodge.ConstMetric.periodBound_shift
 #print axioms PlasmaLean.Geometry.TorusHodge.latticeMetric_tau

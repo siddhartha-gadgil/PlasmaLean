@@ -12,10 +12,10 @@
 | Dependency requirement | supplied classical solutions (`HasDerivAt` data); no existence theorem used |
 | Produces | the 1-D pointwise and integrated identity, the case 1 and case 2 sign theorems, the counterexample to the BKM §3.1 identity |
 | Difficulty | moderate (bookkeeping of cross and boundary terms; 2-D/3-D needs divergence-theorem infrastructure) |
-| Status | verified (1-D pointwise and integrated identity, cases 1–2, counterexample); 2-D/3-D and time-differentiated `dH/dt` open |
-| Lean evidence | default build: `PlasmaLean.Theory.Transport.RelativeEntropy` (`hasDerivAt_relEntDensity_time`, `relEnt_flux_identity`, `relEnt_flux_identity_unintegrated`, `relEnt_pointwise_identity`, `RelEntSetup.integral_identity`, `RelEntSetup.rate_eq`, `RelEntSetup.rate_le_neg_fisher_const_ref`, `RelEntSetup.rate_le_neg_fisher_steady`, `cexSetup_fisher_pos`, `cexSetup_cross_eq_fisher`, `old_identity_false`, `old_rate_identity_false`); sanity: `PlasmaLean.Sanity.RelativeEntropy` (`setup_self`, `const_ref_identity`, `constRef_rate`, `reaction_sign_fails_increasing`); standard axioms only |
+| Status | verified (1-D pointwise and integrated identity, cases 1–2, counterexample; 1-D equality case, coercivity H ≤ C𝓕 and conditional exponential decay); 2-D/3-D and the justification of `dH/dt` (differentiation under the integral) open |
+| Lean evidence | default build: `PlasmaLean.Theory.Transport.RelativeEntropy` (`hasDerivAt_relEntDensity_time`, `relEnt_flux_identity`, `relEnt_flux_identity_unintegrated`, `relEnt_pointwise_identity`, `RelEntSetup.integral_identity`, `RelEntSetup.rate_eq`, `RelEntSetup.rate_le_neg_fisher_const_ref`, `RelEntSetup.rate_le_neg_fisher_steady`, `cexSetup_fisher_pos`, `cexSetup_cross_eq_fisher`, `old_identity_false`, `old_rate_identity_false`); sanity: `PlasmaLean.Sanity.RelativeEntropy` (`setup_self`, `const_ref_identity`, `constRef_rate`, `reaction_sign_fails_increasing`); coercivity: `PlasmaLean.Theory.Transport.RelativeEntropyCoercive` (`RelEntSetup.ratio_eq_of_fisher_eq_zero`, `RelEntSetup.exists_const_of_fisher_eq_zero`, `phi_le_half_mul_sq_log`, `sq_integral_le`, `RelEntSetup.sq_log_ratio_le`, `RelEntSetup.relEnt_le_mul_fisher`, `exp_decay_of_deriv_le_neg_fisher`, `RelEntSetup.relEnt_exp_decay`, `RelEntSetup.relEnt_exp_decay_const_ref`, sanity `constSetup_one_equality`, `sq_integral_const`, `constSetup_two_other_hyps`, `no_coercivity_without_boundary`); standard axioms only |
 | Audit evidence | audit confirmed the corrected identity (cross term, boundary terms, Q not ΔQ); Lean module not audited |
-| Last updated | 2026-10-30: 1-D identity, integrated form, sign theorems and counterexample formalized |
+| Last updated | 2026-10-30: 1-D identity, integrated form, sign theorems and counterexample formalized; coercivity step (equality case, H ≤ C𝓕, exponential decay) formalized |
 
 **Lane:** A, Cycle 1 (track T3, implementation plan §1.5). **Date:** 2026-10-20.
 **Checks:** `/tmp/lanea/relent.py`, `/tmp/lanea/cex.py` (sympy, outside the repo). All residuals are 0.
@@ -103,7 +103,34 @@ Module `PlasmaLean/Theory/Transport/RelativeEntropy.lean` (namespace
 * `old_identity_false`, `old_rate_identity_false`: the counterexample T* = 1 + x², T = 1 + x on [0, 1];
   𝓒 = 𝓕 > 0 (`cexSetup_cross_eq_fisher`, `cexSetup_fisher_pos`), boundary term 0.
 
+### Coercivity step (2026-10-30)
+
+Module `PlasmaLean/Theory/Transport/RelativeEntropyCoercive.lean` (default build, standard axioms, no `decide`).
+Write ℓ = log(T/T*), H = ∫ₐᵇ nT*φ(T/T*), 𝓕 = ∫ₐᵇ κT*(ℓ′)².
+
+* **Equality case** (`RelEntSetup.ratio_eq_of_fisher_eq_zero`, `exists_const_of_fisher_eq_zero`): a < b,
+  κ > 0 on [a, b], 𝓕 = 0 ⇒ T = cT* on [a, b] with c = T(a)/T*(a) > 0 (continuous nonnegative integrand
+  with zero integral vanishes on (a, b); mean value theorem for ℓ).
+* **Scalar bound** (`phi_le_half_mul_sq_log`): φ(s) ≤ (M/2)(log s)² for 0 < s ≤ M, M ≥ 1 (from
+  eˣ − 1 − x ≤ x²/2 for x ≤ 0 and ≤ eˣx²/2 for x ≥ 0).
+* **Wirtinger/Poincaré step** (`sq_integral_le`, `RelEntSetup.sq_log_ratio_le`): (∫ₐˣ g)² ≤ (x − a)∫ₐˣ g²;
+  with T(a) = T*(a), ℓ(x)² ≤ (x − a)∫ₐᵇ(ℓ′)². Mathlib (pinned) has no 1-D Poincaré/Wirtinger inequality.
+* **Coercivity** (`RelEntSetup.relEnt_le_mul_fisher`): if T(a) = T*(a), k₀ ≤ κT*, nT* ≤ N, T ≤ MT* on [a, b]
+  (k₀ > 0, N ≥ 0, M ≥ 1), then **H ≤ C𝓕 with C = N M (b − a)²/(4k₀)**. The ratio bound T ≤ MT* is needed for
+  a quadratic bound (φ(eˡ) grows exponentially); the constant (b − a)²/2 in the Poincaré step is not sharp
+  (optimum 4(b − a)²/π² for one Dirichlet end).
+* **Exponential decay** (`exp_decay_of_deriv_le_neg_fisher`, `RelEntSetup.relEnt_exp_decay`,
+  `RelEntSetup.relEnt_exp_decay_const_ref`): dH/dt ≤ −𝓕 and H ≤ C𝓕 ⇒ H(t) ≤ H(0)e^{−t/C}, via
+  `Stability.riccati_exp_decay` with no quadratic term. In the constant-reference version the rate
+  ∫n(1 − T*/T)∂ₜT = −𝓕 comes from `rate_le_neg_fisher_const_ref`; the **hypothesis** that H has this right
+  derivative (differentiation under the integral) and continuity of H in t remain assumptions.
+* **Sanity**: `constSetup_one_equality` (T = T*: H = 0 = C·𝓕), `sq_integral_const` (equality in the
+  Wirtinger step for constant g), `no_coercivity_without_boundary` with `constSetup_two_other_hyps`:
+  T = 2T* constant has 𝓕 = 0 but H = 1 − log 2 > 0 and satisfies every hypothesis except T(a) = T*(a),
+  so the endpoint condition is necessary.
+
 Remaining: the 2-D/3-D identity (divergence theorem on a Lipschitz domain, matrix χ), the radial
 version with the degenerate axis (V′(0) = 0) made explicit, dH/dt itself (differentiation under the
-integral), equality/coercivity (𝓕 = 0 ⇒ T/T* constant; a Poincaré-type bound H ≤ C𝓕 for exponential decay),
-and the case 3 failure as an integrated example.
+integral, discharging the decay hypothesis), the steady-reference (case 2) decay (H ≤ C𝓕 holds by the same
+theorem, but needs a Dirichlet match and the uniform ratio bound along the flow, e.g. from a maximum principle),
+a zero-mean (Neumann) variant of the Poincaré step, a sharp constant, and the case 3 failure as an integrated example.
