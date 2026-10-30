@@ -216,10 +216,10 @@
     "text": "first strict audit: kernel, models and claims checked; overclaims corrected. audited commit cda8bd0 (30 october 2026): every kernel declaration, the twelve model definitions behind the headline results, repository scans and a trace of every headline claim to its lean statement. no critical findings and no false proof. the foundation is now audited under the strict protocol; findings and fixes are recorded in the plan and in notes/audit/."
   },
   {
-    "title": "Working with the agents: start, status, work on, keep working.",
+    "title": "Working with the agents: start, work status, work on, keep working.",
     "section": "Progress slideshow",
     "url": "slides.html#working-with-agents",
-    "text": "working with the agents: start, status, work on, keep working. theory is built as well as formalized while designing stellarators. work is a research graph of goals (g-*), questions (q-*) and notes (n-*); lean is the validity gate, so a result is established only when its named declaration compiles. the plasmalean-develop-theory skill and the research-graph registries are in place; after every stage of progress the agents update notes and slides, regenerate the site, commit and push."
+    "text": "working with the agents: start, work status, work on, keep working. theory is built as well as formalized while designing stellarators. work is a research graph of goals (g-*), questions (q-*) and notes (n-*); lean is the validity gate, so a result is established only when its named declaration compiles. the plasmalean-develop-theory skill and the research-graph registries are in place; after every stage of progress the agents update notes and slides, regenerate the site, commit and push."
   },
   {
     "title": "Theory, techniques and a ladder of models — for confinement and for heat.",

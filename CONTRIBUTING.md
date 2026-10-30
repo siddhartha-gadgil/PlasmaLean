@@ -15,7 +15,7 @@ their history, so compare proposed targets with the current source before starti
 Much of the work is done with coding agents using the project skills (`.agents/skills/`, entry
 point `plasmalean-develop-theory`). Open a checkout and say **`start`**: the agent strictly audits
 the existing code (every kernel declaration first), records the audited commit and findings, and
-offers ready choices. Then use **`status`**, **`work on G-…`/`Q-…`/`N-…`** (or a topic) for one
+offers ready choices. Then use **`work status`** (or **`summarise work`**), **`work on G-…`/`Q-…`/`N-…`** (or a topic) for one
 work unit, or **`keep working`** for autonomous mode.
 
 Goals, questions and research notes form the **research graph** in the

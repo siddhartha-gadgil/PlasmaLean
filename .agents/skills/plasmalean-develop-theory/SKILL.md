@@ -1,6 +1,6 @@
 ---
 name: plasmalean-develop-theory
-description: Entry point for PlasmaLean. Coordinate interactive or autonomous theory development and stellarator design through goals (G-*), questions (Q-*) and dependency-aware research notes (N-*). Use for `start`, project status or summaries, "work on ...", discussion that may change the research graph, and "keep working"; route ready tasks to discovery, formalization, numerics, audit or design while keeping Lean as the validity gate.
+description: Entry point for PlasmaLean. Coordinate interactive or autonomous theory development and stellarator design through goals (G-*), questions (Q-*) and dependency-aware research notes (N-*). Use for `start`; for "work status", "status of work", "project status", "where are we", or "summarise work"/"summarize work", "work summary", "summary of progress" (and close variants); for "work on ..."; for discussion that may change the research graph; and for "keep working"/"keep going"/"keep running". Routes ready tasks to discovery, formalization, numerics, audit or design while keeping Lean as the validity gate.
 ---
 
 # Coordinate PlasmaLean theory development
@@ -60,7 +60,7 @@ upstream change.
   Do not begin new theory on an unaudited foundation. Respect the laptop budget (below): if a full
   build is not affordable, audit by reading and targeted module builds, and record exactly what
   ran.
-- **`status`** or a summary: goals, questions, verified frontier (declaration names), active and
+- **`work status`** (also `status`, "status of work", "project status") or **`summarise work`** / **`summarize work`** (also "work summary", "summary of progress"): always answer from this skill, checked against the plan's registries and the actual Lean declarations, not from conversation memory. Report goals, questions, verified frontier (declaration names), active and
   blocked notes, open audit findings, and a few ready choices. Match the requested detail.
 - **`work on <item>`**: resolve the ID, note path or topic. If it is broad, select and announce the
   nearest useful subnote. Respect the user's selection even when it is blocked: explain the missing

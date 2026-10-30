@@ -1465,7 +1465,7 @@
   {
    "id": "working-with-agents",
    "eyebrow": "35 · Working with agents",
-   "title": "Working with the agents: start, status, work on, keep working.",
+   "title": "Working with the agents: start, work status, work on, keep working.",
    "lead": "Theory is built as well as formalized while designing stellarators. Work is a research graph of goals (G-*), questions (Q-*) and notes (N-*); Lean is the validity gate, so a result is established only when its named declaration compiles.",
    "cards": [
     {
@@ -1475,8 +1475,8 @@
      "kind": "next"
     },
     {
-     "title": "status and work on",
-     "text": "status summarizes goals, questions, the verified frontier and ready choices without builds. work on <item> runs one work unit: discovery, formalization, certificate, audit or design.",
+     "title": "work status and work on",
+     "text": "work status (or summarise work) summarizes goals, questions, the verified frontier and ready choices without builds. work on <item> runs one work unit: discovery, formalization, certificate, audit or design.",
      "status": "In use",
      "kind": "checked"
     },

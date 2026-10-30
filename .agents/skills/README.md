@@ -2,13 +2,13 @@
 
 Agent skills for PlasmaLean, a theory-development and verification project for stellarator design
 (`.claude` is a symlink to `.agents`, so these are also the Claude Code skills). The entry point is
-`plasmalean-develop-theory`: it interprets `start`, `status`, `work on …` and `keep working`, keeps
+`plasmalean-develop-theory`: it interprets `start`, `work status` / `summarise work`, `work on …` and `keep working`, keeps
 the research graph (`G-*`, `Q-*`, `N-*` in `notes/implementation-plan.md`) and routes work to the
 other skills.
 
 | Skill | Use when |
 | --- | --- |
-| `plasmalean-develop-theory` | **Entry point.** `start` (strict audit first), `status`, `work on …`, discussion, `keep working`; maintaining goals, questions and notes; sub-agent coordination (file ownership, serialized heavy builds, verifying reports); autonomous work selection |
+| `plasmalean-develop-theory` | **Entry point.** `start` (strict audit first), `work status`, `summarise work`/`summarize work`, `work on …`, discussion, `keep working`; maintaining goals, questions and notes; sub-agent coordination (file ownership, serialized heavy builds, verifying reports); autonomous work selection |
 | `plasmalean-audit-domain` | strictly auditing existing and new code, especially every kernel declaration (no grandfathering); model choice and changes; reviewing a confinement or stability claim; red-team checklist, sanity triad plus risk-specific adversarial checks, regression theorems, audit record in the plan |
 | `plasmalean-discover-theory` | existing results do not give the needed margin, bound, equilibrium or design condition: conjecture, proof, counterexample, refinement |
 | `plasmalean-formalize-theory` | formalizing a sourced result (paper, book, complete proof) as reusable Lean theory above the kernel |

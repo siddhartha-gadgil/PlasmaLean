@@ -113,7 +113,7 @@ skills (`.agents/skills/`, entry point `plasmalean-develop-theory`) understand a
   existing code, especially every kernel declaration, records the audited commit and findings, and
   then summarizes the status and offers ready choices. No new theory is built on an unaudited
   foundation.
-- **`status`**: goals, questions, the verified frontier, active and blocked notes, ready choices.
+- **`work status`** (or **`summarise work`** / **`summarize work`**): goals, questions, the verified frontier, active and blocked notes, ready choices.
 - **`work on G-…`, `Q-…`, `N-…`** or a topic: one coherent work unit on that item (literature,
   discovery, counterexample search, numerics, proof or Lean formalization), followed by an update of
   the notes and the plan.
