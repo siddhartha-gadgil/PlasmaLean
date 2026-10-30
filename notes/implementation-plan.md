@@ -59,6 +59,7 @@ gates P0–P9 (roadmap), E0–E8 (§11.2), P1–P4 (§12) and the rungs M0–M6 
 | `Q-13` | Is the 0-D / 1-D burn obstruction at nominal confinement removable by profile peaking on stellarator geometry (ISS04 needs f_ren above measured values)? | G-2, N-5 | open | Proved obstructions: `stellaris_measured_fren_no_access_steady`, `stellaris_measured_fren_no_access_loss`; the 1-D route on stellarator geometry is Q-15 |
 | `Q-14` | **Stepped pressure across the exact KAM torus** (Phase 14 route A): a finite-β equilibrium glued across the certified torus of the rational field | G-4, N-12, N-13 | open (lead) | plan only (`after-kam.md` §3, `finite-beta-stellarator.md`) |
 | `Q-15` | Transport barriers (T ≥ 10 keV in the core) on a **non-axisymmetric** validated geometry, with χ bounds from Â or neoclassical theory stated as supplied scalings | G-2 | open | Barriers exist on the cylinder, helical and Solov'ev geometries only |
+| `Q-16` | **A quasisymmetric solution**: an exact or validated field, vacuum or force-balanced, that is quasisymmetric but not exactly symmetric, with a certified bound on its quasisymmetry defect ξB on a nested region | G-1, G-4, G-6 | open (research) | None constructed. Existing fields are exactly symmetric (Solov'ev, helical) or exact but not quasisymmetric (`RationalStellarator`, Landreman families 1 and 2); the near-axis QA models `reactorQA`/`exactQA` give only ‖B‖ to the order of the near-axis expansion (no remainder bound, series convergence open), so they are not solutions. Routes: (i) a rigorous near-axis remainder bound; (ii) a validated numerical equilibrium near a QS target (Newton–Kantorovich with the radii-polynomial tools in `Certificates/`; workstation scale); (iii) quasisymmetric members of exact Landreman-type families. A solution would replace the supplied near-axis field behind the G-6 near-QA results |
 
 ### RG.3 Note registry and dependency graph
 
@@ -95,7 +96,7 @@ superseded; mixed notes list the status of their parts. "Lean" names compiled ev
 | `N-26` | `notes/theory/orbit-existence.md`: existence of the orbits the confinement theorems quantify over | G-1, G-6, MA-M1, MA-M2 | N-8, N-14; `FieldLineExistence` | hard | Lorentz part verified (`lorentzOrbit_exists`, `reactor_alpha_born_confined`, `reactor_alpha_confined_nonvacuous_35MeV`); Boozer part: band of births to 0.05 s and an explicit 1.5 μs horizon for the original class (`alpha_band_orbit_exists_005`, `alpha_orbit_exists_explicit`); proved obstructions `Dpsi_gt_psiStart`, `band_empty_Tav` | coordinates through the axis (user decision); uniqueness |
 
 Main dependency edges: N-9 → N-10 → N-14 → N-15 → (Q-4, Q-5); N-10 → N-13 → (N-16 → Q-2, Q-14);
-N-4 → (N-8, N-7 → N-17 → Q-1); N-12 → (Q-3, Q-14) → G-4; N-2, N-6 → Q-10 → G-2, G-7;
+N-4 → (N-8, N-7 → N-17 → Q-1); N-12 → (Q-3, Q-14, Q-16) → G-4; N-4 → Q-16 → G-6; N-2, N-6 → Q-10 → G-2, G-7;
 N-19 → Q-7 → Q-8 → Q-11 → G-8.
 
 ### RG.4 Strict audit status
