@@ -1,0 +1,3 @@
+{"task": "dommaschk-qa", "description": "Dommaschk QA fit (nmax 4, lmax 6, 48 starts, iota >= 0.2): vacuum C1+C2 candidate, untrusted", "stamp": "20261030T122122Z", "base_commit": "d92b112",
+ "host": "hornbill", "os": "Linux x86_64", "cpus": 24, "jobs": 24,
+ "mode": "workstation", "target": "default"}
