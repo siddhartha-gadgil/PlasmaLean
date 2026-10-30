@@ -145,3 +145,13 @@ run_cmd do
 #print axioms PlasmaLean.Stability.riccati_hyp_exp
 #print axioms PlasmaLean.Fields.magneticTwoForm_flux_surface
 #print axioms PlasmaLean.Fields.magneticTwoForm_tangent_example
+#print axioms PlasmaLean.Sanity.Audit.forceBalance_rejects_perp
+#print axioms PlasmaLean.Sanity.Audit.slab_negative_pressure
+#print axioms PlasmaLean.Sanity.Audit.steadySlab_zero_thickness
+#print axioms PlasmaLean.Sanity.Audit.vacuumField_empty
+#print axioms PlasmaLean.Sanity.Audit.fakeField_not_solution
+#print axioms PlasmaLean.Sanity.Audit.solution_outside_Tdom
+#print axioms PlasmaLean.Sanity.Audit.inconsistentPlasma_physical
+#print axioms PlasmaLean.Sanity.Audit.powerBalance_zero_density
+#print axioms PlasmaLean.Sanity.Audit.bremsCoeff_matches_NRL
+#print axioms PlasmaLean.Sanity.Audit.boschHaleWindows_cover

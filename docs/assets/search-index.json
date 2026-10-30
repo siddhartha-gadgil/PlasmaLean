@@ -198,10 +198,10 @@
     "text": "every pitch parameter up to λ = 1/4 — at one energy. five certified pitch cells, three of them computed on the workstation, combine into one theorem: passing 3.5 mev alpha guiding centres with any μ ∈ [0, e/(4b₀)] starting inside an exact torus stay inside, and stay passing, forever. λ = 1/4 is the limit of the present passing argument. the pitch range now reaches the limit of the passing argument with |b| ≤ 3b₀."
   },
   {
-    "title": "No decide +kernel: checks become explicit, inductive certificates.",
+    "title": "Fewer decide +kernel: checks become explicit, inductive certificates.",
     "section": "Progress slideshow",
     "url": "slides.html#proof-terms",
-    "text": "no decide +kernel: checks become explicit, inductive certificates. large numerical checks are rebuilt in the subsetsum pattern: an inductive certificate predicate with one constructor per local step, soundness by induction, a meta builder, and small kernel nat leaves. kernel-check memory was halved first. theorem statements are unchanged; bridges re-prove the original checks."
+    "text": "fewer decide +kernel: checks become explicit, inductive certificates. large numerical checks are rebuilt in the subsetsum pattern: an inductive certificate predicate with one constructor per local step, soundness by induction, a meta builder, and small kernel nat leaves. kernel-check memory was halved first. theorem statements are unchanged; bridges re-prove the original checks."
   },
   {
     "title": "Eleven workstation runs, with failures recorded as carefully as successes.",

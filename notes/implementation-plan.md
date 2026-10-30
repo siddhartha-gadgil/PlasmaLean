@@ -103,12 +103,24 @@ The canonical first command is `start` (skill `plasmalean-audit-domain`). Previo
 
 | Audit | Value |
 | --- | --- |
-| Audited commit | **not yet audited** (step 2 deferred). The review of 26 October 2026 (commit `4df1bb7`) corrected wording, notes and the plan; it was not a strict kernel audit |
-| Scope | the first strict audit must be a full startup audit |
-| Kernel coverage | none under the strict protocol (6 kernel modules: `Equilibrium`, `Slab`, `ThermalSlab`, `Transport`, `Vacuum`, `Fusion`) |
-| Commands run | none for this record (documentation step only, laptop reserved) |
-| Open findings (known) | see below |
-| Missing sanity checks | not yet inventoried (risk-specific adversarial checks per kernel law are part of step 2) |
+| Audited commit | `cda8bd0` (first strict audit, 30 October 2026): kernel and repository parts complete; the audit of the model definitions in `Theory/` (finding H-1) is in progress |
+| Scope | full startup audit: all six kernel modules; repository scans; headline-claims trace; note-to-code links; certificate soundness |
+| Kernel coverage | every kernel declaration reviewed (52: 28 definitions, 11 laws with 48 fields, 3 predicates, 10 theorems), record [`notes/audit/2026-10-30-kernel-audit.md`](https://github.com/siddhartha-gadgil/PlasmaLean/blob/main/notes/audit/2026-10-30-kernel-audit.md) |
+| Commands run | `lake build --no-build PlasmaLean` (current), `lake env lean scripts/check_axioms.lean` (122 entry points, standard axioms only), single-module builds of the new sanity modules, then `lake build PlasmaLean` (zero warnings) |
+| Open findings | kernel: 1 medium (F-1), 9 low; repository: 0 critical, 1 high (H-1), 5 medium; see below and [`notes/audit/2026-10-30-repository-audit.md`](https://github.com/siddhartha-gadgil/PlasmaLean/blob/main/notes/audit/2026-10-30-repository-audit.md) |
+| Missing sanity checks | added for the kernel: 58 theorems in `PlasmaLean/Sanity/Audit{Equilibrium, ThermalSlab, Vacuum, Transport, Fusion}.lean` (triad plus risk-specific and regression checks); model definitions pending (H-1) |
+
+**Strict-audit findings (30 October 2026).**
+
+- **H-1 (high, in progress):** headline alpha, Mercier, ballooning, screw-pinch and near-QA claims rest on model definitions in `Theory/` (`LittlejohnOrbit`, `LorentzOrbit`, `BoozerGCOrbitOn`, `mercierIndex`, ballooning `Stable`, `NewcombReduction`, `BoschHaleFine`, `SteadyScaling`, `FluxGeometry.Laws`), outside the kernel audit. G-1, G-4 and G-6 are not "audited" until this part is done.
+- **F-1 (medium, needs a decision):** `PhysicalPlasma` accepts inconsistent composition (fuel fraction 1 with Z_eff = 2), which overstates alpha heating. `m1Plasma` and `stellarisPlasma` are proved carbon-consistent; `m2Plasma` is not. Proposed fix: a quasi-neutral composition field in the law (changes a kernel law; user decision).
+- **M-1 (fixed):** README claimed both signs of v∥ over the whole B₀R₀ interval; v∥ < 0 is proved only at the design B₀R₀.
+- **M-2 (fixed):** "6 GB target met" contradicted the 6.17 GB peak (README, slides 0 and 32).
+- **M-3 (fixed):** "all-mode" screw-pinch stability is for m ≠ 0, with Newcomb's reduced form supplied.
+- **M-4 (open):** `scripts/check_axioms_heavy.lean` only prints and never fails; `CoilKamCert` is in no axiom script.
+- **M-5 (open):** legacy `decide +kernel` lines (268 default, 1,797 on-demand code lines).
+- **Kernel low findings (scope, recorded):** E-1 `ForceBalance B J (J×B)` holds for any B, J (meaningful only when g is proved to be ∇p; Solov'ev, Landreman family 1 and the helical design do this, 14 other users unchecked); S-1 negative slab pressure allowed; T-1 zero slab thickness; V-1 `VacuumField ∅ B`; R-1 zero-duration transport solutions; R-2 solutions may leave `Tdom`; R-3 D ≡ 0 allowed; F-2 n = 0 power balance; F-3 totalized division. Each has a regression theorem. R-4 (plain `decide` in `Sanity/Transport`) is fixed.
+- **Repository low findings:** 7 plain `decide` and 13 `maxHeartbeats 0` in the default build; misleading name `alpha_trapped_reactorQA_averaged` (a passing-alpha result); stale note names and docstrings; README coil and family-2 scope (fixed).
 
 Known open findings, carried from the logs (severity provisional):
 

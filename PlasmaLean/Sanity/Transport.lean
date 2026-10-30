@@ -176,7 +176,7 @@ instance : TransportLaws unitCoefficients where
   D_deriv := fun _ _ _ => hasDerivWithinAt_const _ _ _
   DT_deriv := fun _ _ T => hasDerivAt_const T _
   D_nonneg := fun _ _ _ => zero_le_one
-  D_axis := fun h => absurd h (by decide)
+  D_axis := fun h => nomatch h
   D_axis_regular := fun _ _ => one_pos
   Tdom_open := isOpen_univ
   R_cont := continuousOn_const
@@ -226,7 +226,7 @@ instance : TransportLaws cylUnitCoefficients where
   DT_deriv := fun _ _ T => hasDerivAt_const T _
   D_nonneg := fun _ hψ _ => hψ.1
   D_axis := fun _ _ => rfl
-  D_axis_regular := fun h => absurd h (by decide)
+  D_axis_regular := fun h => nomatch h
   Tdom_open := isOpen_univ
   R_cont := continuousOn_const
 
@@ -265,7 +265,7 @@ instance linField_radialHeatTransport {τ : ℝ} [Fact (0 ≤ τ)] (a₀ b : ℝ
   pde := fun ψ _ t _ => by
     simp only [linField, cylUnitCoefficients, RadialCoefficients.semilinear_op]
     ring
-  axis := fun h => absurd h (by decide)
+  axis := fun h => nomatch h
   edge := fun t _ => rfl
 
 /-- The non-vacuity solution violates the old Neumann axis condition when `b ≠ 0`. -/
@@ -291,7 +291,7 @@ instance : TransportLaws quasiCylCoefficients where
     simpa [quasiCylCoefficients] using this
   D_nonneg := fun _ hψ T => mul_nonneg hψ.1 (by positivity)
   D_axis := fun _ T => by simp [quasiCylCoefficients]
-  D_axis_regular := fun h => absurd h (by decide)
+  D_axis_regular := fun h => nomatch h
   Tdom_open := isOpen_univ
   R_cont := continuousOn_const
 

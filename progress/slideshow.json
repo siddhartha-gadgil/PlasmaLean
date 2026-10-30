@@ -19,7 +19,7 @@
     },
     {
      "value": "8.8 → 4.3 GB",
-     "label": "peak kernel-check memory per process (6 GB laptop target now met)"
+     "label": "peak KAM kernel-check memory per process (6 GB target met except one module at 6.17 GB)"
     }
    ],
    "progress": "All-time field-line and passing-alpha guiding-centre confinement in a genuine stellarator field (vacuum model); one axisymmetric field with a pressure-budget band (transport solutions supplied) and certified local stability; large checks rewritten as explicit proof-term certificates; heavy cells computed on a workstation and spot-checked on the laptop.",
@@ -252,7 +252,7 @@
     }
    ],
    "progress": "A realistic screw pinch (a = 1 m, R₀ = 4 m, 5 T, ⟨β⟩ = 2/75) satisfies Suydam everywhere with a 25% margin, and Newcomb-reduced δW ≥ 0 is certified for every mode with 1 ≤ |m| ≤ 6 (wall at the edge); Phase 2 extended this to every integer (m, n) with m ≠ 0 (ScrewPinchModesHighM).",
-   "boundary": "The δW reductions are cited source results, not formalized; the all-mode result is for this cylindrical screw pinch only. Suydam alone is necessary, not sufficient.",
+   "boundary": "The δW reductions are cited source results, not formalized; the result covers every mode with m ≠ 0 of this cylindrical screw pinch only. Suydam alone is necessary, not sufficient.",
    "evidence": [
     {
      "label": "New checked results",
@@ -1343,13 +1343,13 @@
   {
    "id": "proof-terms",
    "eyebrow": "32 · Phase 16: certificates as proof terms",
-   "title": "No decide +kernel: checks become explicit, inductive certificates.",
+   "title": "Fewer decide +kernel: checks become explicit, inductive certificates.",
    "lead": "Large numerical checks are rebuilt in the SubsetSum pattern: an inductive certificate predicate with one constructor per local step, soundness by induction, a meta builder, and small kernel Nat leaves. Kernel-check memory was halved first.",
    "cards": [
     {
      "title": "Low-memory checks",
      "text": "Sign–magnitude integers, divide-and-conquer row masks: peak per process 8.8 → 4.3 GB in the default build and on-demand families; check CPU about halved.",
-     "status": "6 GB target met",
+     "status": "6 GB target met in these families",
      "kind": "checked"
     },
     {

@@ -67,6 +67,11 @@ public import PlasmaLean.Kernel.Transport
 public import PlasmaLean.Kernel.Vacuum
 public import PlasmaLean.Sanity.Fusion
 public import PlasmaLean.Sanity.Transport
+public import PlasmaLean.Sanity.AuditEquilibrium
+public import PlasmaLean.Sanity.AuditThermalSlab
+public import PlasmaLean.Sanity.AuditVacuum
+public import PlasmaLean.Sanity.AuditTransport
+public import PlasmaLean.Sanity.AuditFusion
 public import PlasmaLean.Sanity.Vacuum
 public import PlasmaLean.Theory.Transport.PowerBalance
 public import PlasmaLean.Theory.Transport.Comparison

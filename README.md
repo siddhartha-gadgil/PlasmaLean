@@ -36,18 +36,20 @@ both confinement and keeping the plasma hot. Ten phases are complete, and Phases
   axis are **confined for all time**: a verified explicit-constant KAM theorem produces an exact
   invariant torus around the axis, and every field line starting inside it stays inside forever
   (field lines proved to exist and be unique; vacuum model field); passing 3.5 MeV alpha guiding
-  centres (μ = 0, either sign of v∥, Littlejohn model) are also confined for all time, for every
-  B₀R₀ ∈ [67.95, 69.99] T·m, and with μ > 0 for every pitch parameter λ ∈ [0, 1/4] (the limit of the
+  centres (μ = 0, Littlejohn model) are also confined for all time: with v∥ > 0 for every
+  B₀R₀ ∈ [67.95, 69.99] T·m, with v∥ < 0 at the design B₀R₀, and with μ > 0 for every pitch parameter λ ∈ [0, 1/4] (the limit of the
   passing argument) at one energy and one B₀R₀;
   over the energy window |E − 3.5 MeV| ≤ 0.4 eV × λ ∈ [0, 1/16] the confined initial velocities
   form a set of positive measure in 3-D velocity space, but only in a narrow energy band and at one
   B₀R₀ (these heavy certificates are on-demand top modules, outside the default build);
 - **coils:** a concrete set of closed polygonal coils produces a field whose lines near the axis
-  are certified to stay confined for 52 toroidal transits;
+  are certified to stay confined for 52 toroidal transits (field-line existence assumed; the
+  toroidal-field return conductor is idealized, placed at 10⁶ R₀);
 - **finite β without axisymmetry:** an explicit finite-pressure, non-axisymmetric toroidal
   equilibria (Landreman families 1 and 2, the latter with proved shear; idealized) satisfy the
   kernel force balance; family 1 is Mercier-unstable, while family 2 at low β (λ = 200) has a
-  certified Mercier-stable band of flux surfaces (flux labels derived from the field); its ideal
+  certified Mercier-stable band of flux surfaces (flux labels derived from the field; the
+  Landreman–Jorge Mercier formula is supplied); its ideal
   ballooning stability is reduced exactly to one pointwise certificate and is numerically stable
   (tail margin ×2.36–×9.39 in pressure), but **no certificate has been found**;
 - **stability:** Mercier stability and ideal-ballooning stability of the Solov'ev equilibrium are certified
@@ -55,12 +57,14 @@ both confinement and keeping the plasma hot. Ten phases are complete, and Phases
 - **near-quasisymmetric alphas:** passing alphas are held for 0.19 s;
 - **burn windows** follow from the IPB98 and ISS04 scaling laws;
 - **validation:** a slab Grad–Shafranov equilibrium with an exponential profile is validated;
-- **screw pinch:** all-mode Newcomb stability is proved.
+- **screw pinch:** Newcomb stability is proved for every mode with m ≠ 0 (Newcomb's reduced
+  form of δW is supplied).
 
 Heavy certificates are offloaded through a workstation pipeline (Phase 15) and re-checked on the
 laptop before merging; on-demand results are spot-checked rather than rebuilt in full, and compiled
-modules can be copied between machines; see [Workstation.md](Workstation.md). Kernel checks now peak
-at 4.3 GB per process, within the 6 GB laptop target. Large checks are being rewritten as explicit
+modules can be copied between machines; see [Workstation.md](Workstation.md). The KAM certificate checks
+now peak at 4.3 GB per process; in the last full rebuild one module peaked at 6.17 GB
+(`LandremanFamily2MercierStable`, to be split), slightly over the 6 GB laptop target. Large checks are being rewritten as explicit
 proof-term certificates (Phase 16): `decide +kernel` is down from about 28,700 uses to about 2,500
 lines containing it (690 lines in the default build).
 
