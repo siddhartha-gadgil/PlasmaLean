@@ -12,7 +12,7 @@
 | Dependency requirement | Harmonicity of the basis: exact symbolic identity (checked here in sympy; in Lean, a polynomial normal-form check). Boozer facts for B = ∇Φ: proved informally (N-30 §2). Everything optimised or measured here: **untrusted numerics** |
 | Produces | Scripts `scripts/dommaschk_qa/`; the workstation task `dommaschk-qa`; a candidate format (exact rational coefficients plus an explicit potential); success tiers for the decided Q-16 criterion; a smoke-test candidate |
 | Difficulty | moderate (numerics), hard (certification of the low-shear tori, barrier B2 of N-27) |
-| Status | exploratory: pipeline validated, smoke test done; medium workstation run (ι_min 0.2, r ≤ 0.06) missed the moderate tier (best defect/ι 0.12, nested to r = 0.032); diagnostic runs next |
+| Status | exploratory: pipeline validated, smoke test done; medium workstation run (ι_min 0.2, r ≤ 0.06) missed the moderate tier; diagnostic run at r ≤ 0.045 reaches the moderate tier on the nested region (defect/ι 0.021–0.038, ε_eff 0.6–1.0 %, |ι| ≈ 0.24) but nesting stops at the ι = 2/9 island chain (r_eff ≈ 0.019) |
 | Lean evidence | none |
 | Audit evidence | not audited |
 | Last updated | 30 October 2026: created (pipeline, validation, smoke test, workstation commands); medium workstation run reviewed (§7) |
@@ -220,6 +220,29 @@ by 24 coefficients. The run mixes two changes from the smoke test, ι_min (0.15 
 surface radii. The next runs separate them: nmax 2 at the smoke surfaces (0.015, 0.03, 0.045)
 with ι_min 0.15 and with 0.2. The larger run (ι_min 0.3, wider surfaces) is postponed until a
 medium run reaches the moderate tier.
+
+### 8. Diagnostic run at the smoke surfaces, ι_min 0.15 (30 October 2026; untrusted)
+
+Run `workstation/dommaschk-qa-20261030T115455Z`: nmax 2 (24 coefficients), 16 starts, ι_min 0.15,
+surfaces r = 0.015, 0.03, 0.045; 5.1 min wall on 16 jobs, results in
+`scripts/dommaschk_qa/results/20261030T115455Z/`.
+
+- **15 of 16 starts kept all three surfaces regular**, against 7 of 16 in the medium run. The
+  surface radii, not ι_min, caused the earlier failure: with ι_min = 0.15 the optimiser still
+  reached |ι| ≈ 0.24.
+- **The best start (3)** has |ι| = 0.246 on the axis and 0.243 and 0.232 on the two inner
+  surfaces. On those surfaces defect/|ι| is 0.021 and 0.038 (the moderate tier) and ε_eff is
+  0.56 % and 0.96 % (W7-X level), with κ = 0.34 and 0.59 (< 1, as the N-29 bridge needs). QA is
+  the best helicity.
+- **What limits the volume: the ι = 2/9 island chain.** At high resolution the surfaces are nested
+  only to r = 0.030 (r_eff ≈ 0.019). From r = 0.036 outward, ι locks at −0.2222 = −2/9, which is
+  ι/NFP = 1/9: a resonant island chain, crossed because the shear is negative. Field lines are
+  lost beyond r ≈ 0.048. The third surface lies in the island chain, so the summary's tier is
+  "not small" even though the nested region meets the moderate tier.
+- **Reading (numerical observation).** Defect/ι at the moderate level is attainable with 24
+  coefficients. The obstacle is the volume: the ι profile has to avoid low-order resonances
+  (2/9, 1/4 = 2/8, 2/7) across the target surfaces, so low shear or a placed ι window should
+  enter the objective. A larger basis alone may not suffice.
 
 ## Claims and evidence
 

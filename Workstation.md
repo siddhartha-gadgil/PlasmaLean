@@ -203,22 +203,12 @@ laptop with a small parameter setting, then commit it to `main` before running i
 Kept up to date from the laptop after every review ("update from workstation"). Run them on the
 workstation, inside `tmux`; `run.sh` pulls `main` itself.
 
-**Status (30 October 2026, after the medium run): run now.** Main item: the Dommaschk
-quasi-axisymmetric fit (Q-16, N-31, task `dommaschk-qa`), untrusted numerics only, no Lean build.
-
-The medium run (ι_min 0.2, surfaces 0.02–0.06) missed the moderate tier. Its best defect/ι was
-0.12, nested only to r = 0.032. The smoke test (ι_min 0.15, surfaces 0.015–0.045) reached
-0.014–0.029. The two diagnostic runs below use 24 coefficients at the smoke surfaces and differ
-only in ι_min, which separates the two causes. Each takes about 5–15 min wall with 16 jobs and
-about 0.8 GB per process. Run them one after the other:
-
-```bash
-cd PlasmaLean && git pull
-DQA_NMAX=2 DQA_STARTS=16 DQA_IOTA_MIN=0.15 DQA_SURFACES=0.015,0.03,0.045 \
-  scripts/workstation/run.sh --jobs 16 dommaschk-qa
-DQA_NMAX=2 DQA_STARTS=16 DQA_IOTA_MIN=0.2 DQA_SURFACES=0.015,0.03,0.045 \
-  scripts/workstation/run.sh --jobs 16 dommaschk-qa
-```
+**Status (30 October 2026, after the first diagnostic run): wait.** The second diagnostic run
+(ι_min 0.2 at the smoke surfaces) is running. The first one (ι_min 0.15) reached the moderate tier
+on its nested surfaces, but the ι = 2/9 island chain limits the volume (N-31 §8). The next,
+larger runs are chosen after the second diagnostic is reviewed. Runs take about 4–5 min wall for
+24 coefficients and 16 starts, so larger runs (more coefficients and starts, `--jobs 24`) are
+affordable.
 
 **Wait:** the larger run (62 coefficients, ι_min 0.3, wider surfaces, about 25 CPU-hours) waits
 until one of these reaches the moderate tier (defect/ι ≤ 0.05 on nested surfaces).

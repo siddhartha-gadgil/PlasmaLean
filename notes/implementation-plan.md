@@ -205,7 +205,7 @@ superseded; mixed notes list the status of their parts. "Lean" names compiled ev
 | `N-28` | `notes/theory/grad-conjecture.md`: Grad's conjecture and the 2026 counterexamples (contract re-label: mathematical infrastructure, not design progress) | G-4, Q-14, Q-16, Q-17 | N-12, N-27; `LandremanEquilibrium.family1` | routine (synthesis) | stated | Q-17 for family 1; τ-extension; stepped pressure source [ELP] for Q-14 |
 | `N-29` | `notes/theory/omnigeneity-bridge.md`: quasisymmetry ⇒ omnigeneity in the Boozer GC model | Q-23, G-10 | N-4, N-27; `helicalMomentum_conserved` | hard | exact and per-bounce bounds verified | ε_eff / 1/ν link; oscillation bound; link Boozer ξB to `WeakQS` |
 | `N-30` | `notes/theory/rational-field-c2.md`: C2 diagnostics for the current-free rational field | Q-19, G-10, Q-16 | N-9, N-10, N-29 | moderate | numerics untrusted; obstruction verified at first order (`rotatingEllipse_firstOrder_QA_defect`: the non-QA part of the first-order ‖B‖ is the exact sup-distance √(Nι₀)/2 > 0 iff ι₀ ≠ 0; `rationalStellarator_firstOrder_not_QS` for the actual field, 4ε² < 1, ε ≠ 0) | reuse the Boozer and ε_eff code for the Dommaschk route (N-31); straight-field-line vs Boozer angles at O(r²) not formalized |
-| `N-31` | `notes/theory/dommaschk-qa.md`: Dommaschk quasi-axisymmetric vacuum fit with a non-planar axis (workstation task `dommaschk-qa`) | Q-16, G-10, G-1 | N-27, N-29, N-30 | research | numerics untrusted: smoke test defect/ι 0.014–0.029 (ι_min 0.15, r ≤ 0.045); medium workstation run (24 coefficients, ι_min 0.2, r ≤ 0.06) missed the moderate tier (best defect/ι 0.12, nested to r = 0.032, ε_eff 4.5 %) | two diagnostic medium runs at the smoke surfaces (ι_min 0.15 and 0.2), then review; certification path: exact field in Lean, KAM tori, Boozer angles, certified QA defect relative to ι, N-29 drift bound |
+| `N-31` | `notes/theory/dommaschk-qa.md`: Dommaschk quasi-axisymmetric vacuum fit with a non-planar axis (workstation task `dommaschk-qa`) | Q-16, G-10, G-1 | N-27, N-29, N-30 | research | numerics untrusted: smoke test defect/ι 0.014–0.029 (ι_min 0.15, r ≤ 0.045); medium workstation run (24 coefficients, ι_min 0.2, r ≤ 0.06) missed the moderate tier (best defect/ι 0.12, nested to r = 0.032, ε_eff 4.5 %) ; diagnostic run (ι_min 0.15, r ≤ 0.045): moderate tier on the nested region (defect/ι 0.021–0.038, ε_eff 0.6–1.0 %, |ι| ≈ 0.24), volume limited by the ι = 2/9 island chain (r_eff ≈ 0.019) | second diagnostic (ι_min 0.2) pending; then a larger basis with low shear / an ι window avoiding 2/9; certification path: exact field in Lean, KAM tori, Boozer angles, certified QA defect relative to ι, N-29 drift bound |
 | `N-32` | `notes/theory/holomorphic-qs-brief.md`: assessment of the colleague's holomorphic strong-QS brief | Q-24, Q-25, Q-16; closes N-21 routes | N-21, N-27, N-30, N-31 | routine (assessment) | assessment complete; explicit numbers verified in sympy; KYM and holomorphic-generator routes of N-21 closed (brief Props 5.1–5.2, checked by hand); Boozer moment Ψ' = Mι − N links QA nondegeneracy to C1's ι ≠ 0 | Q-25 (a)–(b) in Lean, then (c) on the rational and Dommaschk fields |
 
 Main dependency edges: N-9 → N-10 → N-14 → N-15 → (Q-4, Q-5); N-10 → N-13 → (N-16 → Q-2, Q-14);
@@ -1322,3 +1322,11 @@ Gate E1 (§11.2, §11.4) and the "sanity theorem or counterexample" promised in 
   (`precompileModules`; `.so` on Linux, `.dylib` here). Modules outside that cone were accepted.
   The overwritten default-build modules are rebuilt here from source. The archive route does not carry the
   Mu/Ew on-demand families across platforms as it stands.
+
+### Dommaschk QA fit: first diagnostic run reviewed, 30 October 2026
+
+- Run `workstation/dommaschk-qa-20261030T115455Z`: nmax 2, 16 starts, ι_min 0.15, surfaces
+  r = 0.015, 0.03, 0.045; 5.1 min wall on 16 jobs. 15 of 16 starts regular. Best start: |ι| ≈ 0.24,
+  defect/ι 0.021 and 0.038 and ε_eff 0.56 % and 0.96 % on the two nested surfaces (moderate tier
+  there), κ 0.34–0.59. Nesting stops at the ι = 2/9 island chain (r_eff ≈ 0.019), so the summary
+  tier is "not small". The surface radii, not ι_min, caused the medium run's failure. N-31 §8.
