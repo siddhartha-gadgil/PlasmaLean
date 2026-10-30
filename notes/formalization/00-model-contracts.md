@@ -28,8 +28,8 @@ Use separate predicates, with explicit parameters:
 | `TransportBound` | Species, collision/turbulence model, profiles, heat/particle flux, and averaging interval |
 | `ComponentFeasible` | Geometry, loads, constitutive data, tolerances, temperatures, degradation, and duty cycle |
 | `DesignFeasible` | Explicit conjunction of the required contracts for the same candidate and operating states |
-| `CurrentFreeTransform` (C1, not yet in Lean) | Toroidal domain, field, family of invariant tori, net toroidal plasma current bound I_max, lower bound ι_min > 0 on the rotational transform; see [stellarator contract](#stellarator-contract-c1-c2-and-c5) |
-| `BounceAveragedDrift`, `Omnigenous`, `EffectiveRippleBound` (C2, not yet in Lean) | Field, certified surfaces, guiding-centre model, species (thermal ions and electrons), energy and pitch ranges, trapped-orbit class, drift or ε_eff bound; see [stellarator contract](#stellarator-contract-c1-c2-and-c5) |
+| `CurrentFreeTransform` (C1, partly in Lean: `Contract.CurrentFreeTransform`, `netToroidalCurrent`, `IotaOnTorus` in `Theory/Contract/StellaratorContract`) | Toroidal domain, field, family of invariant tori, net toroidal plasma current bound I_max, lower bound ι_min > 0 on the rotational transform; see [stellarator contract](#stellarator-contract-c1-c2-and-c5) |
+| `BounceAveragedDrift`, `Omnigenous`, `EffectiveRippleBound` (C2, partly in Lean: `Contract.OmnigeneityContract` over `Kinetic.Boozer.OmnigenousOn`/`ApproxOmnigenousOn`, Boozer guiding-centre model; `EffectiveRippleBound` not in Lean) | Field, certified surfaces, guiding-centre model, species (thermal ions and electrons), energy and pitch ranges, trapped-orbit class, drift or ε_eff bound; see [stellarator contract](#stellarator-contract-c1-c2-and-c5) |
 | `ThermalPerformance` (C5, not yet in Lean as a contract predicate) | The same candidate as C1–C4, operating interval, power balance (Bosch–Hale alpha heating, bremsstrahlung, transport losses), neoclassical losses from C2, supplied anomalous scaling, burn threshold and wall limits; see [stellarator contract](#stellarator-contract-c1-c2-and-c5) |
 
 Avoid an unqualified `Stable : Prop` encompassing all these meanings. In particular, linearly stable ideal MHD is compatible with kinetic microinstabilities and poor confinement.
@@ -43,8 +43,51 @@ contract (`notes/implementation-plan.md`, section "The stellarator contract"): C
 rotational transform, C2 omnigeneity or small neoclassical transport for thermal particles, C3
 finite-β MHD stability, C4 existence, C5 thermal performance on the same candidate. C3 and C4 use the existing predicates `LinearMHDStable` and
 `EquilibriumExists`/`FieldLineBarrier`. The entries below for C1, C2 and C5 are **normative
-specifications, not yet in Lean** (plan question Q-21, goal G-11). A Lean definition that
+specifications** (plan question Q-21, goal G-11); C1 and C2 are partly in Lean (status below), C5 is
+not yet in Lean. A Lean definition that
 implements them must reproduce the listed content and pass the sanity triad before any claim uses it.
+
+**Lean status (30 October 2026, Q-21, Q-18): C1 and C2 partly in Lean** (default build, standard
+axioms only). Module `PlasmaLean/Theory/Contract/StellaratorContract.lean`, namespace
+`PlasmaLean.Contract`:
+
+- C1 net current: `ampereCurrent μ₀ B` (`(∇ × B)/μ₀` of the same field), `netToroidalCurrent μ₀ B X
+  ζ₀ k₀` (flux of that current through the section `ζ = ζ₀`, `0 ≤ k ≤ k₀`, of a toroidal
+  coordinate map `X`), `NetCurrentBound`, `CurrentFree`; vacuum gives zero
+  (`netToroidalCurrent_eq_zero_of_vacuum`, `currentFree_of_vacuum`); degenerate
+  `netToroidalCurrent_zero_field`; counterexample `netToroidalCurrent_rotation` (`4πk₀/μ₀` for
+  `B = e_z × x`), `rotation_not_currentFree`.
+- C1 transform: `FieldTorus B R z ι` (torus in cylindrical form, field-line flow conjugate to the
+  linear flow of slope ι), `PoloidalAngle` (angle convention about a fixed reference circle; without
+  it ι is defined only modulo integers), `IotaOnTorus`; `IotaOnTorus.tendsto` (ι is the asymptotic
+  poloidal advance per toroidal radian along field lines). Tokamak exclusion:
+  `iota_eq_zero_of_purelyToroidal` (purely toroidal field, e.g. vacuum axisymmetric
+  `B = (μ₀I/2πR) e_φ` ⇒ ι = 0) and `not_currentFreeTransform_of_purelyToroidal`.
+- C1 predicate: `SurfaceData`, `SurfaceData.Spans` (section spans the poloidal loop of the torus),
+  `CurrentFreeTransform μ₀ B S I_max ι_min`; `currentFreeTransform_of_vacuum`,
+  `not_currentFreeTransform_of_current`, `CurrentFreeTransform.mono`.
+- C2: `OmnigeneityContract F c κ_max` (`ApproxOmnigenousOn` of `Theory/Kinetic/Omnigeneity`; `κ_max
+  = 0` is `OmnigenousOn`, `omnigeneityContract_zero_iff`), scope: the vacuum Boozer guiding-centre
+  model (supplied), all species, μ and energies. `BoozerAxisymmetric`; axisymmetric ⇒ omnigenous
+  (`omnigenousOn_of_axisymmetric`, ι ≥ ι_min > 0; `omnigenousOn_of_axisymmetric_iota_zero`, ι = 0,
+  vacuously); `constField_omnigeneityContract`; counterexample
+  `driftMirror_not_omnigeneityContract`.
+- Instances (`Design/RationalStellaratorContract`): **C1 witness**
+  `rationalStellarator_currentFreeTransform` (`field (1/4)`, `I_max = 0`, ι_min = ι_A =
+  (75 + √5)/562 on the exact KAM torus near torus A; `ExactTorus.iotaOnTorus`); tokamak exclusion
+  for `∇φ`: `toroidal_not_currentFreeTransform`, with `circTorus_iotaOnTorus` (ι = 0 attained) and
+  `toroidal_circ_current_zero` (it passes the current clause). (`Design/LandremanNetCurrent`, Q-18):
+  `torCurrent_eq_netToroidalCurrent` (rfl), `family2_net_current_pos` (I_tor > 0 for μ₀ > 0,
+  λ > 0, 0 < k₀ < 19/20), `family2_net_current_ge` (λ-independent lower bound 2π `curInf`/μ₀),
+  `family2_not_currentFree`, `family2_not_currentFreeTransform` (family 2 fails C1 for every
+  I_max < I_tor(k₀), in particular 0).
+- Still open: ε_eff (`EffectiveRippleBound`) and the 1/ν link; a generic 3-D field with an
+  explicit trapped orbit and nonzero drift beyond the Boozer model fixture `driftMirror`; the
+  theorem "axisymmetric, current-free, nested surfaces ⇒ purely toroidal" (maximum principle for
+  Δ*ψ = 0); section-independence of the net current (the contract fixes a spanning section);
+  moving reference curves for the poloidal angle; a nested family of certified tori with
+  ι ≥ ι_min for the rational stellarator (only one exact torus); family 1's net current; the
+  identification of the Boozer model with a Cartesian field.
 
 ### C1: `CurrentFreeTransform` (net toroidal current; ι from the field)
 

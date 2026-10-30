@@ -277,6 +277,9 @@ public import PlasmaLean.Design.LandremanNotQS
 public import PlasmaLean.Design.LandremanGradCounterexample
 public import PlasmaLean.Theory.Kinetic.Omnigeneity
 public import PlasmaLean.Design.NearAxisQAOmnigeneity
+public import PlasmaLean.Theory.Contract.StellaratorContract
+public import PlasmaLean.Design.LandremanNetCurrent
+public import PlasmaLean.Design.RationalStellaratorContract
 
 /-!
 # PlasmaLean public library
