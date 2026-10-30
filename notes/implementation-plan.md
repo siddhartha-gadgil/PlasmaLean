@@ -205,7 +205,7 @@ superseded; mixed notes list the status of their parts. "Lean" names compiled ev
 | `N-28` | `notes/theory/grad-conjecture.md`: Grad's conjecture and the 2026 counterexamples (contract re-label: mathematical infrastructure, not design progress) | G-4, Q-14, Q-16, Q-17 | N-12, N-27; `LandremanEquilibrium.family1` | routine (synthesis) | stated | Q-17 for family 1; τ-extension; stepped pressure source [ELP] for Q-14 |
 | `N-29` | `notes/theory/omnigeneity-bridge.md`: quasisymmetry ⇒ omnigeneity in the Boozer GC model | Q-23, G-10 | N-4, N-27; `helicalMomentum_conserved` | hard | exact and per-bounce bounds verified | ε_eff / 1/ν link; oscillation bound; link Boozer ξB to `WeakQS` |
 | `N-30` | `notes/theory/rational-field-c2.md`: C2 diagnostics for the current-free rational field | Q-19, G-10, Q-16 | N-9, N-10, N-29 | moderate | numerics untrusted; obstruction verified at first order (`rotatingEllipse_firstOrder_QA_defect`: the non-QA part of the first-order ‖B‖ is the exact sup-distance √(Nι₀)/2 > 0 iff ι₀ ≠ 0; `rationalStellarator_firstOrder_not_QS` for the actual field, 4ε² < 1, ε ≠ 0) | reuse the Boozer and ε_eff code for the Dommaschk route (N-31); straight-field-line vs Boozer angles at O(r²) not formalized |
-| `N-31` | `notes/theory/dommaschk-qa.md`: Dommaschk quasi-axisymmetric vacuum fit with a non-planar axis (workstation task `dommaschk-qa`) | Q-16, G-10, G-1 | N-27, N-29, N-30 | research | numerics ready (smoke test only; untrusted) | medium workstation run, then review; certification path: exact field in Lean, KAM tori, Boozer angles, certified QA defect relative to ι, N-29 drift bound |
+| `N-31` | `notes/theory/dommaschk-qa.md`: Dommaschk quasi-axisymmetric vacuum fit with a non-planar axis (workstation task `dommaschk-qa`) | Q-16, G-10, G-1 | N-27, N-29, N-30 | research | numerics untrusted: smoke test defect/ι 0.014–0.029 (ι_min 0.15, r ≤ 0.045); medium workstation run (24 coefficients, ι_min 0.2, r ≤ 0.06) missed the moderate tier (best defect/ι 0.12, nested to r = 0.032, ε_eff 4.5 %) | two diagnostic medium runs at the smoke surfaces (ι_min 0.15 and 0.2), then review; certification path: exact field in Lean, KAM tori, Boozer angles, certified QA defect relative to ι, N-29 drift bound |
 | `N-32` | `notes/theory/holomorphic-qs-brief.md`: assessment of the colleague's holomorphic strong-QS brief | Q-24, Q-25, Q-16; closes N-21 routes | N-21, N-27, N-30, N-31 | routine (assessment) | assessment complete; explicit numbers verified in sympy; KYM and holomorphic-generator routes of N-21 closed (brief Props 5.1–5.2, checked by hand); Boozer moment Ψ' = Mι − N links QA nondegeneracy to C1's ι ≠ 0 | Q-25 (a)–(b) in Lean, then (c) on the rational and Dommaschk fields |
 
 Main dependency edges: N-9 → N-10 → N-14 → N-15 → (Q-4, Q-5); N-10 → N-13 → (N-16 → Q-2, Q-14);
@@ -1304,3 +1304,21 @@ Gate E1 (§11.2, §11.4) and the "sanity theorem or counterexample" promised in 
 - Checked: the brief's explicit numbers for B = ∇(xyz) at (1, 2, 3), reproduced exactly in sympy
   (det 564480, η = (−2201/720, 869/180, 463/240), dη_xy = 1739/21600), and the div-u identity.
   No Lean change.
+
+### Dommaschk QA fit: medium workstation run reviewed, 30 October 2026
+
+- Run `workstation/dommaschk-qa-20261030T112135Z`: nmax 2 (24 coefficients), 16 starts, ι_min 0.2,
+  surfaces r = 0.02, 0.04, 0.06; 4.2 min wall on 16 jobs, 0.8 GB peak. Untrusted numerics; results
+  merged under `scripts/dommaschk_qa/results/20261030T112135Z/`.
+- Outcome: no tier. Best start defect/|ι| 0.12–0.13 with |ι| ≈ 0.24, nested only to r = 0.032,
+  ε_eff 4.5 % at r = 0.02; low-defect starts lost the outer surface. Worse than the smoke test
+  (defect/ι 0.014–0.029 at ι ≈ 0.17, surfaces ≤ 0.045). N-31 §7.
+- Next: two diagnostic medium runs at the smoke surfaces (ι_min 0.15 and 0.2) to separate the
+  effect of ι_min from the surface radii; the larger run (ι_min 0.3, wider surfaces) waits for a
+  medium run reaching the moderate tier.
+- On-demand olean archive (`ondemand.tar.gz`, built at 6377afa): the source checks passed, but lake
+  rejects every module downstream of `PlasmaLean.Certificates.EvalCert` (45 default-build, 57
+  on-demand-only modules), because their traces hash the native `PlasmaLeanMeta` library
+  (`precompileModules`; `.so` on Linux, `.dylib` here). Modules outside that cone were accepted.
+  The overwritten default-build modules are rebuilt here from source. The archive route does not carry the
+  Mu/Ew on-demand families across platforms as it stands.

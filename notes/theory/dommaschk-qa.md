@@ -12,10 +12,10 @@
 | Dependency requirement | Harmonicity of the basis: exact symbolic identity (checked here in sympy; in Lean, a polynomial normal-form check). Boozer facts for B = ∇Φ: proved informally (N-30 §2). Everything optimised or measured here: **untrusted numerics** |
 | Produces | Scripts `scripts/dommaschk_qa/`; the workstation task `dommaschk-qa`; a candidate format (exact rational coefficients plus an explicit potential); success tiers for the decided Q-16 criterion; a smoke-test candidate |
 | Difficulty | moderate (numerics), hard (certification of the low-shear tori, barrier B2 of N-27) |
-| Status | exploratory: pipeline validated, smoke test done, workstation runs pending |
+| Status | exploratory: pipeline validated, smoke test done; medium workstation run (ι_min 0.2, r ≤ 0.06) missed the moderate tier (best defect/ι 0.12, nested to r = 0.032); diagnostic runs next |
 | Lean evidence | none |
 | Audit evidence | not audited |
-| Last updated | 30 October 2026: created (pipeline, validation, smoke test, workstation commands) |
+| Last updated | 30 October 2026: created (pipeline, validation, smoke test, workstation commands); medium workstation run reviewed (§7) |
 
 ## Purpose and scope
 
@@ -191,6 +191,35 @@ The best start, recomputed on the rounded coefficients:
   - ι = 0.16–0.18 is below typical QA values (≈ 0.4).
   - The shear is strongly negative.
   - The tier is only "moderate" (see below).
+
+### 7. Medium workstation run (30 October 2026; untrusted, did not reach a tier)
+
+Run `workstation/dommaschk-qa-20261030T112135Z` (hornbill, 16 jobs, 4.2 min wall), with results in
+`scripts/dommaschk_qa/results/20261030T112135Z/`. The parameters were:
+- nmax = 2, lmax = 4, so 24 coefficients;
+- 16 starts;
+- ι_min = 0.2;
+- surfaces r = 0.02, 0.04, 0.06.
+
+Outcome:
+- **Every start missed the moderate tier.** The 7 starts that kept all three surfaces regular
+  have defect/|ι| ≥ 0.12.
+- **The best start (9)** has |ι_axis| = 0.25 and defect/|ι| = 0.12–0.13 on the inner surfaces.
+  Its surfaces are nested only out to r = 0.032, ε_eff = 4.5 % at r = 0.02, and QA is not the best
+  helicity on every surface. The summary's Q-16 checks fail: `nested`, `iota_ge_iota_min` and
+  `qa_best_helicity`.
+- **Starts with a low inner defect broke up at the outer surface.** For example, start 2 has
+  defect/ι 0.028 and 0.059 at r = 0.02 and 0.04, and lost r = 0.06.
+- **Compared with the smoke test** (12 coefficients, ι_min 0.15, surfaces at 0.015–0.045, defect/ι
+  0.014–0.029, ε_eff 0.1 %), this is worse by about 5× in defect/ι and by about 40× in ε_eff.
+
+Reading (numerical observation, not a theorem): the outer surfaces at r = 0.04–0.06 lie at or
+beyond the nested region of these fields. The objective is then dominated by penalties for
+broken surfaces, and the trade-off between ι ≥ 0.2, nested volume and QA defect is not resolved
+by 24 coefficients. The run mixes two changes from the smoke test, ι_min (0.15 → 0.2) and the
+surface radii. The next runs separate them: nmax 2 at the smoke surfaces (0.015, 0.03, 0.045)
+with ι_min 0.15 and with 0.2. The larger run (ι_min 0.3, wider surfaces) is postponed until a
+medium run reaches the moderate tier.
 
 ## Claims and evidence
 

@@ -203,46 +203,29 @@ laptop with a small parameter setting, then commit it to `main` before running i
 Kept up to date from the laptop after every review ("update from workstation"). Run them on the
 workstation, inside `tmux`; `run.sh` pulls `main` itself.
 
-**Status (30 October 2026): run now.** Main item: the Dommaschk quasi-axisymmetric fit (Q-16,
-N-31, task `dommaschk-qa`), the main route to a candidate satisfying C1 + C2 of the stellarator
-contract. Untrusted numerics only, no Lean build (verdict "no Lean modules"). It commits
-`scripts/dommaschk_qa/results/<stamp>/`: `candidate.json` (exact rational coefficients),
-`summary.json` (axis, nesting, ι, QA defect by helicity, ε_eff, defect/ι and the Q-16 tier),
-`starts.json` and three PNG plots. The task file must be on `main` first. Restartable: if a run is
-interrupted, start it again with the same parameters and finished starts are skipped.
+**Status (30 October 2026, after the medium run): run now.** Main item: the Dommaschk
+quasi-axisymmetric fit (Q-16, N-31, task `dommaschk-qa`), untrusted numerics only, no Lean build.
 
-Medium run (24 coefficients, 16 starts; about 1 CPU-hour, about 10–15 min wall with 16 jobs):
+The medium run (ι_min 0.2, surfaces 0.02–0.06) missed the moderate tier. Its best defect/ι was
+0.12, nested only to r = 0.032. The smoke test (ι_min 0.15, surfaces 0.015–0.045) reached
+0.014–0.029. The two diagnostic runs below use 24 coefficients at the smoke surfaces and differ
+only in ι_min, which separates the two causes. Each takes about 5–15 min wall with 16 jobs and
+about 0.8 GB per process. Run them one after the other:
 
 ```bash
 cd PlasmaLean && git pull
-DQA_NMAX=2 DQA_STARTS=16 DQA_IOTA_MIN=0.2 scripts/workstation/run.sh --jobs 16 dommaschk-qa
-```
-
-Larger run, after the medium one has been reviewed (62 coefficients, 32 starts, stronger ι target,
-wider surfaces; about 25 CPU-hours, so about 1.5 h wall with 16 jobs, capped at 4 h per start by
-`DQA_TIME`):
-
-```bash
-DQA_NMAX=4 DQA_STARTS=32 DQA_IOTA_MIN=0.3 DQA_NFEV=150 DQA_NPER=300 DQA_SURFACES=0.02,0.05,0.08 \
+DQA_NMAX=2 DQA_STARTS=16 DQA_IOTA_MIN=0.15 DQA_SURFACES=0.015,0.03,0.045 \
+  scripts/workstation/run.sh --jobs 16 dommaschk-qa
+DQA_NMAX=2 DQA_STARTS=16 DQA_IOTA_MIN=0.2 DQA_SURFACES=0.015,0.03,0.045 \
   scripts/workstation/run.sh --jobs 16 dommaschk-qa
 ```
 
-Memory: about 0.6 GB per process for the medium run and up to about 2 GB for the larger one
-(lower `--jobs` if needed). The estimates are scaled from laptop timings: one objective
-evaluation plus its batched Jacobian takes about 3.5 s for 24 coefficients and 15 s for 62.
+**Wait:** the larger run (62 coefficients, ι_min 0.3, wider surfaces, about 25 CPU-hours) waits
+until one of these reaches the moderate tier (defect/ι ≤ 0.05 on nested surfaces).
 
-**Optional, lower priority (still valid, not urgent).** Phase 16 stages 8–9 changed the Mu chain
-modules, so the on-demand families downstream of them (Mu2–Mu5, MuQuarter, Ew1–4) are stale on
-both machines (their sources are unchanged). When convenient, rebuild them on the workstation and
-send the compiled files back:
-
-```bash
-cd PlasmaLean && git pull
-lake build PlasmaLean.Design.RationalStellaratorGCMuQuarter PlasmaLean.Design.RationalStellaratorGCEwFamily
-python3 scripts/workstation/oleans.py pack ~/ondemand.tar.gz \
-  PlasmaLean.Design.RationalStellaratorGCMuQuarter PlasmaLean.Design.RationalStellaratorGCEwFamily
-```
-
-Copy `~/ondemand.tar.gz` to the laptop and say where it is.
+**Hold: on-demand olean transfer.** The archive from the last rebuild cannot be used on the
+laptop for anything downstream of `PlasmaLean.Certificates.EvalCert`. Lake hashes the native
+`PlasmaLeanMeta` library (`.so` on Linux, `.dylib` on macOS) into those traces, so the Mu/Ew
+families are rejected. Do not repeat the pack step until this is resolved on the laptop side.
 
 Then say "update from workstation" on the laptop.
