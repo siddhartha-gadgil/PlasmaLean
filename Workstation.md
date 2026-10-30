@@ -225,15 +225,16 @@ laptop with a small parameter setting, then commit it to `main` before running i
 Kept up to date from the laptop after every review ("update from workstation"). Run them on the
 workstation, inside `tmux`; `run.sh` pulls `main` itself.
 
-**Status (30 October 2026, after the nmax 3 run): wait for the nmax 4 run, then run the windowed
-runs below.** The nmax 3 run reached the moderate tier: defect/ι 0.009–0.023 at |ι| ≈ 0.24,
-ε_eff ≈ 0.1 %. Low shear keeps ι inside the resonance-free window (2/9, 1/4) (N-31 §10). The nmax 4
-run started in the same sequence is still to come; do not interrupt it.
+**Status (30 October 2026, after the nmax 4 run): run now.** The nmax 3 run reached the moderate
+tier: defect/ι 0.009–0.023 at |ι| ≈ 0.24, ε_eff ≈ 0.1 %, with low shear inside the
+resonance-free window (2/9, 1/4) (N-31 §10). The nmax 4 run did not improve on it: its best start
+fails the high-resolution check, because the 62-coefficient basis overfits the coarse objective
+(N-31 §11).
 
-After it, two windowed runs with the new `--iota-window` term (on `main`; `run.sh` pulls it). The
-first targets the window of the best candidate, with the outer surface moved out to enlarge the
-strictly nested region. The second targets the high-ι family seen in start 9 (|ι| ≈ 0.4, between
-2/5 and 4/9). Each takes about 10–15 min wall:
+Next, two windowed nmax 3 runs with the `--iota-window` term (on `main`). The first targets the
+window of the best candidate, with the outer surface moved out to enlarge the strictly nested
+region. The second targets the high-ι family seen in the nmax 3 run's start 9 (|ι| ≈ 0.4, between
+2/5 and 4/9). Each takes about 10–15 min wall. Run them one after the other:
 
 ```bash
 cd PlasmaLean && git pull

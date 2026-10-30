@@ -301,6 +301,28 @@ Run `workstation/dommaschk-qa-20261030T120952Z`: nmax 3, lmax 5 (42 coefficients
   certification, a run with the ι window and the outer surface moved to r ≈ 0.06 should make the
   whole optimised region strictly nested.
 
+### 11. Larger basis, nmax 4 (30 October 2026; untrusted): no improvement
+
+Run `workstation/dommaschk-qa-20261030T122122Z`: nmax 4, lmax 6 (62 coefficients), 48 starts on
+24 jobs, ι_min 0.2, surfaces r = 0.015, 0.03, 0.045, 150 evaluations per stage and 300 periods;
+40.6 min wall, 1.5 GB peak. Results in `scripts/dommaschk_qa/results/20261030T122122Z/`.
+
+- **26 of 48 starts were regular at optimiser resolution.** The best of them (start 39) had a worst
+  defect/ι of 0.041. Its middle surface had |ι| = 0.2222 = 2/9, and four other starts were in the
+  0.044–0.052 range.
+- **The high-resolution diagnostics (96 steps per period, 600 periods) reject it.**
+  - The middle surface lies in the 2/9 island chain, and the outer surface is lost.
+  - Strict nesting holds only to r = 0.015, with κ ≈ 1.
+  - The QA defect is not the best helicity on every surface.
+  - Tier "not small".
+  - Some traced lines left the domain of the potentials (`log R` of a negative number in the
+    log), so the field does not extend to the outer region.
+- **Reading (numerical observation).** With 62 coefficients the optimiser exploits the coarse
+  resolution of its objective (48 steps per period): results that look good at that resolution do
+  not survive the high-resolution check. The nmax 3 candidate of §10 remains the best. If larger
+  bases are tried again, the optimiser resolution (`DQA_EXTRA="--ns 96"`) and the ι window should
+  go with them.
+
 ## Claims and evidence
 
 1. **Complete mathematical proof (symbolic, sympy).** The basis potentials are harmonic and

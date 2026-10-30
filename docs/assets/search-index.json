@@ -2274,6 +2274,12 @@
     "text": "on-demand oleans installed via `oleans.py retrace`, 30 october 2026 implementation plan"
   },
   {
+    "title": "Dommaschk QA fit: nmax 4 run reviewed, 30 October 2026",
+    "section": "Implementation plan",
+    "url": "implementation-plan.html#dommaschk-qa-fit-nmax-4-run-reviewed-30-october-2026",
+    "text": "dommaschk qa fit: nmax 4 run reviewed, 30 october 2026 implementation plan"
+  },
+  {
     "title": "M0 · Exact symmetric equilibria: slab, screw pinch, Solov'ev, helical",
     "section": "Implementation plan · Lean verified — exact slab, screw-pinch, Solov'ev and helical equilibria with kernel force balance, all-time field-line/orbit confinement, Suydam both ways and screw-pinch Newcomb stability for every m ≠ 0 (reduced form supplied; idealized symmetric models).",
     "url": "implementation-plan.html",
