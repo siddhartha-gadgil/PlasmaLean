@@ -266,6 +266,8 @@ public import PlasmaLean.Theory.Kinetic.LorentzExistence
 public import PlasmaLean.Design.SolovevAlphaExistence
 public import PlasmaLean.Theory.Kinetic.BoozerGCExistence
 public import PlasmaLean.Design.NearAxisQAExistence
+public import PlasmaLean.Theory.Kinetic.BoozerGCForward
+public import PlasmaLean.Design.NearAxisQAExistenceFull
 public import PlasmaLean.Theory.Transport.RelativeEntropy
 public import PlasmaLean.Sanity.RelativeEntropy
 
