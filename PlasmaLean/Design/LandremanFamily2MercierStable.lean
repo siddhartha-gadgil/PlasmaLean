@@ -13,6 +13,8 @@ public import PlasmaLean.Design.LandremanFamily2Cert5
 public import PlasmaLean.Design.LandremanFamily2Cert6
 public import PlasmaLean.Design.LandremanFamily2Cert7
 public import PlasmaLean.Design.LandremanFamily2MercierData
+public import PlasmaLean.Design.LandremanFamily2MercierStableA
+public import PlasmaLean.Design.LandremanFamily2MercierStableB
 
 /-!
 # A certified Mercier-stable band of Landreman's family 2 (`ε = 1/4`, `S = 4`, `λ = 200`)
@@ -34,6 +36,8 @@ rigorous `arcsin`/`arctan`/`cosh`/`sinh` enclosures, product integration of the 
 rounding throughout) is run by `decide +kernel` on 34 `k`-cells covering `[7/10, 9/10]`
 (`LandremanFamily2Cert1` … `Cert7`); `cellCheck_sound` turns each run into `D6R > 0` on the
 cell, and `CoveredF2.sound` assembles the cover. No numerical value enters as a hypothesis.
+The rejected fixtures `cellCheck_rejects_axis` and `cellCheck_rejects_lam15` (non-vacuity of the
+checker) are proved piecewise in `LandremanFamily2MercierStableA`/`B` and re-exported here.
 
 **Physics.** The band `k ∈ [0.7, 0.9]` is the outer part of the plasma `ψ ≤ 81/200` whose field
 lines are confined for all time (`LandremanFamily2.fieldLine_confined`); the equilibrium,
@@ -153,17 +157,5 @@ theorem family2_lam200_equilibrium {μ₀ : ℝ} (hμ : 0 < μ₀) :
       pressure μ₀ ((81 / 200) / 200 ^ 2) (1 / 4) 4 200 x = 0) := by
   refine ⟨fun x hx => force_balance (by norm_num : (200 : ℝ) ≠ 0) μ₀ hx, fun x hx =>
     pressure_pos hμ (by norm_num : (200 : ℝ) ≠ 0) hx, fun x hx => pressure_boundary hx⟩
-
-set_option maxRecDepth 100000 in
-/-- Rejected fixture (non-vacuity of the checker): a near-axis cell `k ∈ [1/10, 11/100]`,
-where the surfaces are Mercier unstable (hill-dominated), is not accepted. -/
-theorem cellCheck_rejects_axis : cellCheck 200 128 8 8 4 (1 / 10) (11 / 100) = false := by
-  decide +kernel
-
-set_option maxRecDepth 100000 in
-/-- Rejected fixture: at the paper-scale `λ = 15` (on-axis `β ≈ 5%`) an outer cell
-`k ∈ [0.85, 0.86]` is not accepted (numerically those surfaces are Mercier unstable). -/
-theorem cellCheck_rejects_lam15 : cellCheck 15 128 8 8 4 (85 / 100) (86 / 100) = false := by
-  decide +kernel
 
 end PlasmaLean.Design.LandremanFamily2Cert

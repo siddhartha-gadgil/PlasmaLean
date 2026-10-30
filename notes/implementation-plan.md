@@ -130,8 +130,7 @@ The canonical first command is `start` (skill `plasmalean-audit-domain`). Previo
 
 Known open findings, carried from the logs (severity provisional):
 
-1. **Resource** (medium): in the full stage-9 rebuild (26 October) the highest peak was 6.17 GB in
-   `LandremanFamily2MercierStable` (unchanged module), above the 6 GB target; split it.
+1. **Resource** (resolved 30 October): `LandremanFamily2MercierStable` (6.74 GB measured, from two whole-checker `decide +kernel` rejection fixtures) is split: the fixtures are rebuilt as explicit certificates (`oned_cert`, a new `f2_arc_cert` for the outer arcs, `fiv_cert`) assembled by `cellCheck_eq_of_pieces`; peaks now 1.40 GB (main), 2.74 GB (`…StableA`), 2.65 GB (`…StableB`); public names unchanged.
    `NearAxisQAAveraged` (6.16 GB before stage 9) is now split into four modules, all of which
    built in that rebuild; its conversion to explicit certificates is still open.
 2. **Build state** (resolved): the ~204 modules left stale after stage 9 were rebuilt one at a

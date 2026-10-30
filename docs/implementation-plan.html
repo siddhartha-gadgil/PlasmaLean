@@ -41,8 +41,8 @@
 </ul>
 <p>Known open findings, carried from the logs (severity provisional):</p>
 <ol>
-<li><strong>Resource</strong> (medium): in the full stage-9 rebuild (26 October) the highest peak was 6.17 GB in</li>
-<p><code>LandremanFamily2MercierStable</code> (unchanged module), above the 6 GB target; split it. <code>NearAxisQAAveraged</code> (6.16 GB before stage 9) is now split into four modules, all of which built in that rebuild; its conversion to explicit certificates is still open.</p>
+<li><strong>Resource</strong> (resolved 30 October): <code>LandremanFamily2MercierStable</code> (6.74 GB measured, from two whole-checker <code>decide +kernel</code> rejection fixtures) is split: the fixtures are rebuilt as explicit certificates (<code>oned_cert</code>, a new <code>f2_arc_cert</code> for the outer arcs, <code>fiv_cert</code>) assembled by <code>cellCheck_eq_of_pieces</code>; peaks now 1.40 GB (main), 2.74 GB (<code>…StableA</code>), 2.65 GB (<code>…StableB</code>); public names unchanged.</li>
+<p><code>NearAxisQAAveraged</code> (6.16 GB before stage 9) is now split into four modules, all of which built in that rebuild; its conversion to explicit certificates is still open.</p>
 <li><strong>Build state</strong> (resolved): the ~204 modules left stale after stage 9 were rebuilt one at a</li>
 <p>time and in bounded parallel on 26 October (191 modules, no failures, no warnings); the full default build passed and <code>scripts/check_axioms.lean</code> (122 entry points) showed standard axioms only, before commit <code>2d620d2</code>.</p>
 <li><strong>On-demand trust</strong> (medium): the on-demand families (Ew1–4, Mu2–Mu5, MuQuarter, CoilKam*) are</li>
