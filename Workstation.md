@@ -203,25 +203,23 @@ laptop with a small parameter setting, then commit it to `main` before running i
 Kept up to date from the laptop after every review ("update from workstation"). Run them on the
 workstation, inside `tmux`; `run.sh` pulls `main` itself.
 
-**Status (30 October 2026, after both diagnostic runs): run now.** Both diagnostic runs at the
-smoke surfaces reached defect/ι ≈ 0.02–0.05 at |ι| ≈ 0.25. The nested volume is limited by
-low-order resonances (ι = 2/9, 1/4) and by the loss of field lines near r ≈ 0.05, not by ι_min
-(N-31 §§8–9). Runs are fast (3–5 min wall for 24 coefficients, 16 starts), so the next step is
-larger bases with more starts at the same surfaces. All 24 CPUs are used; memory is about 1–2 GB
-per process. Run these one after the other:
+**Status (30 October 2026, after the nmax 3 run): wait for the nmax 4 run, then run the windowed
+runs below.** The nmax 3 run reached the moderate tier: defect/ι 0.009–0.023 at |ι| ≈ 0.24,
+ε_eff ≈ 0.1 %. Low shear keeps ι inside the resonance-free window (2/9, 1/4) (N-31 §10). The nmax 4
+run started in the same sequence is still to come; do not interrupt it.
+
+After it, two windowed runs with the new `--iota-window` term (on `main`; `run.sh` pulls it). The
+first targets the window of the best candidate, with the outer surface moved out to enlarge the
+strictly nested region. The second targets the high-ι family seen in start 9 (|ι| ≈ 0.4, between
+2/5 and 4/9). Each takes about 10–15 min wall:
 
 ```bash
 cd PlasmaLean && git pull
-DQA_NMAX=3 DQA_STARTS=48 DQA_IOTA_MIN=0.2 DQA_SURFACES=0.015,0.03,0.045 DQA_NFEV=100 \
-  scripts/workstation/run.sh --jobs 24 dommaschk-qa
-DQA_NMAX=4 DQA_STARTS=48 DQA_IOTA_MIN=0.2 DQA_SURFACES=0.015,0.03,0.045 DQA_NFEV=150 DQA_NPER=300 \
-  scripts/workstation/run.sh --jobs 24 dommaschk-qa
+DQA_NMAX=3 DQA_STARTS=48 DQA_IOTA_MIN=0.2 DQA_SURFACES=0.02,0.04,0.06 DQA_NFEV=100 \
+  DQA_EXTRA="--iota-window 0.226,0.248" scripts/workstation/run.sh --jobs 24 dommaschk-qa
+DQA_NMAX=3 DQA_STARTS=48 DQA_IOTA_MIN=0.38 DQA_SURFACES=0.015,0.03,0.045 DQA_NFEV=100 \
+  DQA_EXTRA="--iota-window 0.405,0.44" scripts/workstation/run.sh --jobs 24 dommaschk-qa
 ```
-
-The first run has 42 coefficients (about 15–30 min wall), the second 62 (about 1–2 h wall,
-capped at 4 h per start by `DQA_TIME`). A later step adds an objective term that keeps ι inside
-a window free of low-order rationals. That is a code change on the laptop, and it will appear
-here when ready.
 
 **Hold: on-demand olean transfer.** The archive from the last rebuild cannot be used on the
 laptop for anything downstream of `PlasmaLean.Certificates.EvalCert`. Lake hashes the native

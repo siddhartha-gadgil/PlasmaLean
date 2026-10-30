@@ -12,7 +12,7 @@
 | Dependency requirement | Harmonicity of the basis: exact symbolic identity (checked here in sympy; in Lean, a polynomial normal-form check). Boozer facts for B = ∇Φ: proved informally (N-30 §2). Everything optimised or measured here: **untrusted numerics** |
 | Produces | Scripts `scripts/dommaschk_qa/`; the workstation task `dommaschk-qa`; a candidate format (exact rational coefficients plus an explicit potential); success tiers for the decided Q-16 criterion; a smoke-test candidate |
 | Difficulty | moderate (numerics), hard (certification of the low-shear tori, barrier B2 of N-27) |
-| Status | exploratory: pipeline validated, smoke test done; medium workstation run (ι_min 0.2, r ≤ 0.06) missed the moderate tier; diagnostic run at r ≤ 0.045 reaches the moderate tier on the nested region (defect/ι 0.021–0.038, ε_eff 0.6–1.0 %, |ι| ≈ 0.24) but nesting stops at the ι = 2/9 island chain (r_eff ≈ 0.019) |
+| Status | exploratory: pipeline validated, smoke test done; medium workstation run (ι_min 0.2, r ≤ 0.06) missed the moderate tier; diagnostic run at r ≤ 0.045 reaches the moderate tier on the nested region (defect/ι 0.021–0.038, ε_eff 0.6–1.0 %, |ι| ≈ 0.24) but nesting stops at the ι = 2/9 island chain (r_eff ≈ 0.019); nmax 3 (42 coefficients) reaches the **moderate tier**: defect/ι 0.009–0.023 at |ι| ≈ 0.24 with low shear inside (2/9, 1/4), ε_eff 0.08–0.13 %, regular to r_eff ≈ 0.037 (§10) |
 | Lean evidence | none |
 | Audit evidence | not audited |
 | Last updated | 30 October 2026: created (pipeline, validation, smoke test, workstation commands); medium workstation run reviewed (§7) |
@@ -267,6 +267,39 @@ jobs, results in `scripts/dommaschk_qa/results/20261030T120025Z/`.
   - (b) An objective term keeping ι on all target surfaces inside a window free of low-order
     rationals (or penalising low shear less than resonance proximity). This needs a change to
     `optimize.py`.
+
+### 10. Larger basis, nmax 3 (30 October 2026; untrusted): the moderate tier reached
+
+Run `workstation/dommaschk-qa-20261030T120952Z`: nmax 3, lmax 5 (42 coefficients), 48 starts on
+24 jobs, ι_min 0.2, surfaces r = 0.015, 0.03, 0.045, 100 evaluations per stage; 11.4 min wall,
+0.8 GB peak. Results in `scripts/dommaschk_qa/results/20261030T120952Z/`.
+
+**The best start (23)**, recomputed on the rounded rational coefficients at high resolution:
+
+| r (launch) | r_eff | ι | defect/ι | ε_eff | κ |
+| --- | --- | --- | --- | --- | --- |
+| 0.015 | 0.011 | −0.246 | 0.009 | 0.08 % | 0.11 |
+| 0.030 | 0.020 | −0.241 | 0.015 | 0.13 % | 0.20 |
+| 0.045 | 0.029 | −0.235 | 0.023 | — | 0.37 |
+
+- **Tier: moderate** (worst defect/ι 0.023). The inner surface is at the strong level, and QA is
+  the best helicity.
+- **Low shear.** ι runs from 0.248 on the axis to 0.227 at r = 0.06, inside the resonance-free
+  window (2/9, 1/4) = (0.222, 0.25). So no low-order island chain crosses the region.
+- **Volume.** Diagnostic lines are regular and r_eff increases out to r = 0.06 (r_eff ≈ 0.037).
+  The strict nesting test (Birkhoff error ≤ 10⁻⁶) passes to r = 0.042 (r_eff ≈ 0.027), and lines
+  are lost from r = 0.066. The summary's `nested` flag is false only because of those outer lines.
+- **Axis.** Non-planar, with z_max = 0.051, R between 0.90 and 1.00, curvature 0.62–1.21.
+- **Other starts.**
+  - Start 9: |ι| = 0.42–0.40 with defect/ι 0.007 and 0.008 on the two inner surfaces. Its outer
+    surface sits on ι = 2/5. This is a high-ι family worth a windowed run.
+  - Start 34: defect/ι 0.007–0.017, but |ι| 0.12–0.17 < ι_min.
+- **Reading (numerical observation).** Going from 24 to 42 coefficients improved the best worst
+  defect/ι from 0.05 to 0.023 and the clean volume from r_eff ≈ 0.019 to about 0.027–0.037. The
+  best candidate is the one whose low shear keeps ι between 2/9 and 1/4, which confirms §9.
+  `candidate_for_certification` is false only because of the strict nesting flag. Before any
+  certification, a run with the ι window and the outer surface moved to r ≈ 0.06 should make the
+  whole optimised region strictly nested.
 
 ## Claims and evidence
 
