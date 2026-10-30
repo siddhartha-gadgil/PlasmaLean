@@ -274,6 +274,8 @@ public import PlasmaLean.Theory.Geometry.TorusHodge
 public import PlasmaLean.Theory.Fields.WeakQuasisymmetry
 public import PlasmaLean.Design.LandremanNotQS
 public import PlasmaLean.Design.LandremanGradCounterexample
+public import PlasmaLean.Theory.Kinetic.Omnigeneity
+public import PlasmaLean.Design.NearAxisQAOmnigeneity
 
 /-!
 # PlasmaLean public library
