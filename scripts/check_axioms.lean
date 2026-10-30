@@ -227,3 +227,15 @@ run_cmd do
 #print axioms PlasmaLean.Geometry.TorusHodge.squareMetric_tau
 #print axioms PlasmaLean.Geometry.TorusHodge.energy_constForm_square
 #print axioms PlasmaLean.Geometry.TorusHodge.cosForm_energy_gt
+#print axioms PlasmaLean.Fields.weakQS_iff_defect_zero
+#print axioms PlasmaLean.Fields.qsDefect_eq_zero_iff
+#print axioms PlasmaLean.Fields.qsError_rotGen_eq_zero_of_axisymmetric
+#print axioms PlasmaLean.Fields.WeakQS.normB_const_of_gradient_eq_zero
+#print axioms PlasmaLean.Fields.WeakQS.normB_const_of_isLocalExtr
+#print axioms PlasmaLean.Fields.weakQS_uniform
+#print axioms PlasmaLean.Fields.weakQS_screw
+#print axioms PlasmaLean.Fields.not_weakQS_mirror
+#print axioms PlasmaLean.Design.LandremanNotQS.family1_not_weakQS
+#print axioms PlasmaLean.Design.LandremanNotQS.family1_not_weakQS_flux
+#print axioms PlasmaLean.Design.LandremanNotQS.family2_not_weakQS
+#print axioms PlasmaLean.Design.LandremanNotQS.family2_not_weakQS_flux

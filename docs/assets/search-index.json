@@ -2058,6 +2058,12 @@
     "text": "torus hodge identity (n-3), 30 october 2026 implementation plan"
   },
   {
+    "title": "Weak quasisymmetry and the Landreman barrier (N-27), 30 October 2026",
+    "section": "Implementation plan",
+    "url": "implementation-plan.html#weak-quasisymmetry-and-the-landreman-barrier-n-27-30-october-2026",
+    "text": "weak quasisymmetry and the landreman barrier (n-27), 30 october 2026 implementation plan"
+  },
+  {
     "title": "M0 · Exact symmetric equilibria: slab, screw pinch, Solov'ev, helical",
     "section": "Implementation plan · Lean verified — exact slab, screw-pinch, Solov'ev and helical equilibria with kernel force balance, all-time field-line/orbit confinement, Suydam both ways and screw-pinch Newcomb for 1 ≤ |m| ≤ 6 (idealized symmetric models).",
     "url": "implementation-plan.html",

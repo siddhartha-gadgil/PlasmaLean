@@ -12,10 +12,10 @@
 | Dependency requirement | Closed forms of the axis field in both families (compiled); the Boozer GC model (compiled, supplied model); KAM-torus and cohomological-equation estimates (compiled) for route (ii). No dependency on any conjecture |
 | Produces | Verdict per route; a precise, non-trivial restatement of Q-16 (§2); an exact obstruction (`|B|` is non-constant on the magnetic axis) showing that no member of Landreman families 1–2 with `ε ≠ 0` is weakly quasisymmetric near the axis (§5.1, proof complete, Lean-cheap); numerical Boozer spectra of family 2 (§5.2); a concrete certifiable problem for route (ii) (§4) with size estimates; recommended first deliverables (§6) |
 | Difficulty | research (strong form open mathematics); hard but finite for the recommended certified-defect target |
-| Status | stated (routes assessed); the family obstruction is proof-ready and lean-ready |
-| Lean evidence | none new (closed forms used: `LandremanFamily2.field_axis`, `LandremanEquilibrium.field_axis`, both default build) |
+| Status | stated (routes assessed); route (iii) is a **proved barrier** in Lean (§5.4) |
+| Lean evidence | `Theory/Fields/WeakQuasisymmetry.lean` (`WeakQS`, `WeakQSDefect`, `qsDefect`, axis lemma `WeakQS.normB_const_of_gradient_eq_zero`, sanity triad) and `Design/LandremanNotQS.lean` (`family1_not_weakQS`, `family2_not_weakQS` and variants), default build, standard axioms (§5.4) |
 | Audit evidence | not audited |
-| Last updated | 30 October 2026: created |
+| Last updated | 30 October 2026: created; same day: §6.2 item 1 formalized (route (iii) proved barrier) |
 
 Untrusted scripts (numerical observations only): `scripts/quasisymmetry/qs_family.py`
 (triple-product QS test), `boozer_line.py` (Boozer spectrum of `|B|` along one field line),
@@ -423,6 +423,29 @@ for the `WeakQSDefect` interface.
 No exact solution family in the literature that I know of contains QS members other than exactly
 symmetric ones (Solov'ev, helical). "None known" is a statement about my search, not a theorem.
 
+### 5.4 Lean status of route (iii): proved barrier (30 October 2026)
+
+Default build, zero warnings, axioms `propext`, `Classical.choice`, `Quot.sound` only.
+
+- `PlasmaLean.Fields.WeakQS B ξ ψ T` (`Theory/Fields/WeakQuasisymmetry.lean`): CDG Definition 1
+  pointwise on `T`: `ξ ≠ 0`, `div ξ = 0`, `B × ξ = -∇ψ`, `ξ·∇|B| = 0` (`qsError`), with `|B|`, `ξ`,
+  `ψ` differentiable on `T`. Tangency to `∂T`, `[ξ, B] = 0` and strong QS are not included.
+  `WeakQSDefect B ξ ψ T δ₀ δ₁ δ₂` (the §2 structure) and `qsDefect B ξ T = sup_T |ξ·∇|B||` in `ℝ≥0∞`;
+  `weakQS_iff_defect_zero`, `qsDefect_eq_zero_iff`, `qsDefect_le_ofReal_iff`. Exact symmetry is a special
+  case: `qsError_eq_zero_of_invariant`, `qsError_rotGen_eq_zero_of_axisymmetric` (ξ = ∂_φ).
+- Sanity triad: `weakQS_uniform` (degenerate), `weakQS_screw` (axisymmetric screw pinch `(-y, x, 1)`,
+  ξ = ∂_φ, ψ = (x² + y²)/2), `not_weakQS_mirror` (counterexample).
+- Axis lemma: `WeakQS.normB_const_of_gradient_eq_zero` (field line up to any time change, in `T`, with
+  `∇ψ = 0` on it ⇒ `|B|` constant on it); `WeakQS.normB_const_of_isLocalExtr`; `not_weakQS_of_normB_ne`.
+- `Design/LandremanNotQS.lean`: `family1_axis_normB_sq`, `family2_axis_normB_sq` (the closed forms
+  above), `family{1,2}_axis_normB_ne`, and the barrier `family1_not_weakQS` (`|ε| < 1`, `ε ≠ 0`) and
+  `family2_not_weakQS` (`S > 0`, `ε ≠ 0`, every `λ`): for every `ξ`, `ψ`, `T` with `T ⊇` axis and
+  `∇ψ = 0` on the axis, the field is not `WeakQS` (which includes `ξ ≠ 0` on the axis). Variants
+  `*_of_isLocalExtr` and `family{1,2}_not_weakQS_flux` (`ψ = F ∘ ψ_flux`, `F` monotone or antitone,
+  using `family{1,2}_psi_isLocalMin`). Not covered: generators vanishing on the axis, and potentials
+  with `∇ψ ≠ 0` somewhere on the axis (the topological argument that forces `∇ψ = 0` for a `ψ`
+  constant on nested tori is not formalized).
+
 ## 6. Recommendation
 
 ### 6.1 Route choice
@@ -434,7 +457,9 @@ non-QS ℓ¹ bound `ε_S ≤ 10⁻³ B₀`. Routes (i) and (iii) are closed as h
 
 ### 6.2 Smallest deliverables that change readiness
 
-1. **Lean (cheap, laptop, about 300–500 lines; makes route (iii) a recorded barrier).** In
+1. **Lean (cheap, laptop, about 300–500 lines; makes route (iii) a recorded barrier). Done 30 October
+   2026 (§5.4), in `Theory/Fields/WeakQuasisymmetry.lean` and `Design/LandremanNotQS.lean` with the
+   names listed there.** Originally planned in
    `Theory/Fields/Quasisymmetry.lean`:
    - `WeakQS`, `WeakQSDefect`;
    - `absB_const_on_axis_of_weakQS`, the lemma of §5.1 (`HasDerivAt` along an integral curve; no
@@ -485,8 +510,8 @@ non-QS ℓ¹ bound `ε_S ≤ 10⁻³ B₀`. Routes (i) and (iii) are closed as h
 | --- | --- | --- |
 | 1 | Exact QS on a volume for non-symmetric vacuum/MHS fields is neither proved nor disproved | sourced (CDG p. 7; BKM 2020; RSB 2022 disclaimer); my search not exhaustive |
 | 2 | Vacuum near-axis expansion is ill-posed; regularized version converges | sourced theorem (Ruth–Jorge–Bindel Thms 3.10, 3.13; version-dependent numbering) |
-| 3 | Weak QS with ξ ≠ 0 on the axis and ∇ψ = 0 there ⇒ \|B\| constant on the axis | complete mathematical proof (§5.1) |
-| 4 | Landreman families 1, 2 (ε ≠ 0) are not weakly QS near the axis | complete proof from compiled closed forms (`field_axis` in both files); lean-ready |
+| 3 | Weak QS with ξ ≠ 0 on the axis and ∇ψ = 0 there ⇒ \|B\| constant on the axis | compiled: `WeakQS.normB_const_of_gradient_eq_zero` (§5.4) |
+| 4 | Landreman families 1, 2 (ε ≠ 0) are not weakly QS near the axis | compiled: `family1_not_weakQS`, `family2_not_weakQS` (hypotheses in §5.4) |
 | 5 | Family-2 Boozer defect ≈ 0.063 ε B₀₀, mirror mode (0, 2) | numerical observation (`boozer_line.py`) |
 | 6 | Axisymmetric vacuum fields have no nested tori with ι ≠ 0 about a magnetic axis | proof sketch (maximum principle for Δ*) |
 | 7 | Planar circular axis ⇒ no vacuum QS at first order with ι₀ ≠ 0; hence `RationalStellarator.field (1/4)` is not QS at first order | proof sketch (σ equation; first-order derivation not formalized) |
