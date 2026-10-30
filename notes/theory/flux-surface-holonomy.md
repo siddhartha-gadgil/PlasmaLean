@@ -1,6 +1,19 @@
 # Flux-surface holonomy, rotational transform and conformal modulus (T10 verdict)
 
 **Lane:** A, Cycle 1, track T10 (implementation plan §1.2). **Date:** 2026-10-20.
+
+| Field | Value |
+| --- | --- |
+| ID | `N-3` |
+| Title | Flux-surface holonomy, periods, τ and Hodge bounds |
+| Kind | proof / formalization |
+| Addresses | G-7 (T10), plan §1.2, §11.6 |
+| Depends on | `magneticTwoForm_flux_surface` (compiled) |
+| Difficulty | moderate (constant metric done); hard for a non-constant metric (uniformization) |
+| Status | verified for the constant-metric model (P2 and its corollaries); holonomy ↔ ι refuted; P1 proved informally only |
+| Lean evidence | `PlasmaLean.Theory.Fields.FluxSurfaceTwoForm` (`magneticTwoForm_flux_surface`); `PlasmaLean.Theory.Geometry.TorusHodge` (default build, §6) |
+| Audit evidence | not audited |
+| Last updated | 2026-10-30: constant-metric τ/energy identity and Hodge period inequality formalized (§6) |
 **Checks:** `/tmp/lanea/hodge.py`, `/tmp/lanea/tau.py` (sympy, outside the repo). All residuals are 0.
 
 ## 1. Setting
@@ -87,10 +100,41 @@ correlates with any confinement figure of merit.
 
 ## 5. Concrete Lean targets (if/when scheduled)
 
-1. **Now (pure algebra, extends Challenge 6):** for `SurfaceMetricCoeffs` (E, F, G), define
+1. **Done (30 October, §6), in the form below with `E, F, G` a `ConstMetric`:** for `SurfaceMetricCoeffs` (E, F, G), define
    `constFormEnergy m a b := (G*a^2 - 2*F*a*b + E*b^2) / √(EG−F²)` (times 4π² for 2π-periodic angles), and prove
    `constFormEnergy m a b = |b − a τ|² / Im τ` with `τ = (F + i√(EG−F²))/E`. Also prove invariance under
    (a, b, τ) ↦ (a, b + k a, τ + k).
-2. **Later (needs torus integration over `AddCircle`):** `flatTorus_energy_ge_period`: for c ∈ ℝ² and periodic C¹ u,
+2. **Done for constant metrics (§6),** with the fundamental square `[0,1]²` instead of `AddCircle`, and for every
+   closed periodic form rather than only `c + ∇u` (formalized as `ClosedPeriodicForm.energy_ge`; planned name `flatTorus_energy_ge_period`): for c ∈ ℝ² and periodic C¹ u,
    ∫_{[0,1]²} ‖c + ∇u‖²_g ≥ ‖c‖²_g · area. The cross term vanishes by periodicity. This is P2 in flat coordinates.
 3. **Later:** P1 as a theorem about Boozer-coordinate fields, `boozer_Vprime_avg_B2`.
+
+## 6. Lean evidence (30 October 2026): constant-metric model
+
+Module `PlasmaLean.Theory.Geometry.TorusHodge` (default build, zero warnings, standard axioms only; 17 entries in
+`scripts/check_axioms.lean`). Model: lattice coordinates `(x, y) ∈ ℝ²/ℤ²` on `ℂ/(ℤω₁ + ℤω₂)`, a **constant** metric
+`E dx² + 2F dx dy + G dy²` (`ConstMetric`, `E > 0`, `EG − F² > 0`), `τ = (F + i√(EG − F²))/E` (`ConstMetric.tau`). A
+closed 1-form is `α = f dx + g dy` with `f, g` continuous and 1-periodic and `∂_y f = ∂_x g = d` continuous
+(`ClosedPeriodicForm`); periods are the line integrals `a = ∫₀¹ f(x, 0) dx` (γ_p ↦ ω₁) and `b = ∫₀¹ g(0, y) dy`
+(γ_t ↦ ω₂); energy `= ∫∫_{[0,1]²} (G f² − 2F fg + E g²)/√(EG − F²)` (`ClosedPeriodicForm.energy`).
+
+* `latticeMetric_tau`: for `E = |ω₁|²`, `F = Re(ω̄₁ω₂)`, `G = |ω₂|²` and `Im(ω̄₁ω₂) > 0`, `τ = ω₂/ω₁`.
+* (a) `ConstMetric.periodBound_eq`: `|b − aτ|²/Im τ = (G a² − 2F ab + E b²)/√(EG − F²)`; `energy_constForm`: the
+  harmonic form `a dx + b dy` has exactly this energy; `ConstMetric.periodBound_shift`: invariance under
+  `(b, τ) ↦ (b + ka, τ + k)`.
+* Periods are well defined: `lineIntegral_const` (Fubini + FTC from closedness and periodicity), `periodP_eq`,
+  `periodT_eq`; they equal the averages over `[0,1]²` (`avg_f`, `avg_g`).
+* (b) `integral_dens_decomp` (any probability measure: the cross term vanishes), `energy_eq_add` (energy = harmonic
+  energy + `∫ Q(f − a, g − b)/√det`), `energy_ge` (**energy ≥ |b − aτ|²/Im τ**), `energy_eq_iff` (equality iff
+  `f ≡ a` and `g ≡ b`).
+* (c) `fieldLine_energy_ge`: periods `(−Φ_t′, Φ_p′)`, `ι = Φ_p′/Φ_t′` ⇒ energy ≥ `Φ_t′² |ι + τ|²/Im τ`;
+  `fieldLine_energy_ge_normalized` (`ψ = Φ_t`, periods `(−1, ι)`): energy ≥ `|ι + τ|²/Im τ`;
+  `currentForm_energy_ge`: periods `(μ₀I, μ₀G)` ⇒ energy ≥ `μ₀²|G − τI|²/Im τ`.
+* Sanity: `squareMetric_tau` (`τ = i`), `energy_constForm_square` (`a² + b²`), `cosForm_energy_gt` (the closed
+  non-constant form `(a + cos 2πx) dx + b dy` has strictly larger energy on every constant metric).
+
+**Scope and what remains.** The metric is constant in the chosen angles (the model case). The identification of the
+physical energies (`∫|B|²/|∇ψ|² dA`, `∫|B|² dA`) with `energy` holds only when the induced metric has constant
+coefficients in `(θ, φ)`. For a general flux surface one needs conformal invariance of the 1-form energy plus
+uniformization of the induced metric (isothermal coordinates), not available in Mathlib; this is the next step. P1
+(Riemann bilinear / Boozer identity) is not formalized.
