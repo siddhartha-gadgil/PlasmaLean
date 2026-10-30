@@ -5,6 +5,89 @@
 Prepared 2026-10-20 against `8dcf3a2` (baseline: 14 Oct 2026 run, 53 modules, standard axioms only). Updated after each phase; see §9.
 This is a plan. Nothing listed here as a target is implemented until a progress report says so. Status marks (✅ ◐ ○) reflect the latest report.
 
+## The stellarator contract (30 October 2026)
+
+**User-approved restructuring (30 October 2026).** This section re-aims the project. It takes
+precedence over older formulations of the goals in RG.1 and §0. History, verified results and
+declaration names are unchanged; only the framing and the priorities change.
+
+**Rationale.** Tokamaks are not stable in the sense that matters for a reactor: they rely on a large
+inductive or driven toroidal plasma current, which brings current-driven instabilities (kinks,
+tearing), disruptions and the need for continuous current drive. That is the reason for
+stellarators. So the plan should not mainly try to prove the existence of *non-tokamak* or
+*non-axisymmetric* solutions (a Grad counterexample, a field that is "not exactly symmetric"), but
+of solutions with the additional properties a stellarator needs. Those properties exclude tokamaks
+and are achievable by stellarators, and the decisive ones concern the drifts of thermal ions and
+electrons.
+
+**The contract.** A candidate satisfies the stellarator contract when, for one decoded field and
+equilibrium with common witnesses:
+
+| Clause | Requirement | What it rules out or admits |
+| --- | --- | --- |
+| **C1. Current-free rotational transform** | The net toroidal plasma current vanishes or is small: ‖I_tor‖ ≤ I_max, a stated bootstrap-level bound (vacuum, J = 0, is the limiting case); and the rotational transform satisfies ι ≥ ι_min > 0 on the confining surfaces, provided by the external field (3-D shaping or helical coils), not by plasma current | Excludes tokamaks: an axisymmetric current-free field has ι = 0 (its field lines do not rotate poloidally), so it confines nothing. Admits vacuum stellarator fields |
+| **C2. Omnigeneity / small neoclassical transport for thermal particles** | For thermal ions **and electrons** (not only 3.5 MeV alphas): the bounce-averaged radial drift of trapped particles vanishes (omnigeneity) or is bounded by a stated amount, or the effective ripple ε_eff is bounded on the confining surfaces | Quasisymmetry and quasi-isodynamic fields are special cases. An axisymmetric field is automatically omnigenous; a generic 3-D field is not. C2 is what a stellarator needs to match tokamak neoclassical confinement |
+| **C3. MHD stability at finite β** | Mercier (interchange), ideal ballooning and, where available, global ideal modes, at a stated β > 0, with the reductions named | Current-driven modes (kinks, tearing driven by I_tor) are absent by C1; pressure-driven modes remain |
+| **C4. Existence** | Nested flux surfaces on the confining region (certified invariant tori, or a validated equilibrium) and force balance J × B = ∇p (vacuum: J = 0) | Makes C1–C3 statements about an object that exists |
+| **C5. Thermal performance** (added 30 October 2026) | On the **same** candidate that satisfies C1–C4: the core temperature stays above a burn threshold (e.g. T ≥ 10 keV in the core) over the operating interval [0, T_burn] (or forever), and below wall and material limits. Derived from power balance with alpha heating (Bosch–Hale), bremsstrahlung and transport losses; the neoclassical losses come from C2 (omnigeneity bounds for thermal ions and electrons); anomalous (turbulent) transport is a stated, supplied scaling (ISS04 or an Â bound), never hidden | C5 is the existing goal G-2 restated as a contract clause. The Solov'ev results show it only for a tokamak model with a supplied transport solution |
+
+C1–C4 are about the field and its stability; C5 makes the temperature requirement explicit.
+**C2 couples into C5:** poor omnigeneity means large 1/ν neoclassical losses (χ ∝ ε_eff^{3/2} in the
+1/ν regime), which can make burn inaccessible, as in the proved Stellaris obstructions
+(`stellaris_measured_fren_no_access_steady`, `stellaris_measured_fren_no_access_loss`, Q-13).
+
+**How this re-aims the project.**
+
+- Non-axisymmetry and "not exactly symmetric" become *consequences* of C1 (with C4), not goals: a
+  current-free field with ι > 0 cannot be axisymmetric. Results whose only content is
+  non-axisymmetry (Q-17, the Grad counterexamples of N-28) are mathematical infrastructure, not
+  design progress.
+- C1 and C2 are the new primary filters for candidates. A candidate that carries a net toroidal
+  current of the order of the field-producing current is tokamak-like under C1 however
+  non-axisymmetric it is.
+- C2 must be stated for **thermal** particles. Alpha confinement (G-6, Q-1) is one part of C2, not a
+  substitute for it.
+- Tokamak models (Solov'ev) stay in the library as models for G-2 and as test beds for techniques;
+  they are not stellarator candidates.
+- The goal registry RG.1 is restated around C1–C5 (G-1, G-2, G-4, G-8 restated; G-10, G-11 new),
+  the questions Q-18–Q-22 are added, and the work selection RG.5 now puts current-free and omnigenous
+  candidates first.
+- Definitions of net toroidal current, bounce-averaged radial drift, omnigeneity and ε_eff, and the
+  C5 thermal clause, are normative specifications in `notes/formalization/00-model-contracts.md`
+  (contract entries `CurrentFreeTransform`, `BounceAveragedDrift`/`Omnigenous`/
+  `EffectiveRippleBound` and `ThermalPerformance`), not yet in Lean as contract predicates (Q-21).
+
+**Where the project stands against the contract (30 October 2026, honest summary).**
+
+- **C1:** partial, vacuum only. The exact rational stellarator field is a vacuum field
+  (`RationalStellarator.field_vacuum`), so it carries no plasma current, and a KAM-certified exact
+  invariant torus with a Diophantine rotation number (torus A, ι ≈ 0.137, inside `torusA_exact`)
+  confines its field lines for all time (`rationalStellarator_confined_forever_exists`). Not yet
+  stated in Lean: ι ≥ ι_min on a nested family of surfaces, and any finite-β current-free
+  equilibrium. The Landreman families carry a net toroidal current: for family 2,
+  μ₀ I_tor(k₀)/2π = `curK` (`torCurrent_eq`), an integral of the positive integrand
+  κ(F₁/2 + E/λ²)/2π (`F1_pos`, `Eint_pos`), so I_tor > 0 for k₀ > 0 (a short corollary, not yet a
+  named declaration; Q-18). They are tokamak-like under C1 unless that current is shown to be
+  bootstrap-level.
+- **C2:** essentially nothing for thermal particles. Alpha results (passing alphas in the exact
+  rational field for all time under the Littlejohn model; passing alphas in near-QA for 0.19 s) are
+  particle-confinement results for one species and mostly for passing orbits. Weak quasisymmetry is
+  defined (`WeakQS`, `qsDefect`) and the Landreman families are proved not weakly quasisymmetric
+  (`family1_not_weakQS`, `family2_not_weakQS`). No bounce-averaged drift, omnigeneity or ε_eff is
+  defined in Lean.
+- **C3:** Landreman family 2 has a certified Mercier-stable band (`family2_mercier_stable_derived`;
+  the Mercier index is supplied) and ballooning reduced to one certificate (Q-3), but family 2
+  fails C1. The Solov'ev stability results are tokamak results. Nothing at finite β for a
+  current-free candidate.
+- **C4:** satisfied for the vacuum rational field on the region inside one certified torus; for
+  finite β only for the Landreman families (which fail C1) and the symmetric models.
+- **C5:** shown only for a tokamak model: on the Solov'ev field, for every supplied solution of the
+  radial transport model starting in a certified band, the core stays ≥ 10 keV for all time
+  (`solovev_one_plasma_actual` and variants; existence of the transport solution assumed, pressure
+  bounded by a budget). On stellarator parameters only 0-D windows (Stellaris ISS04,
+  `Design/BurnWindowStellarator`) and proved obstructions at measured renormalization factors
+  (Q-13). Nothing on a C1–C4 candidate, and no neoclassical loss derived from C2.
+
 Sources: [domain-libraries](domain-libraries.md) (run protocol), [roadmap](formalization/08-roadmap.md) (gates P0–P9, research problems R1–R8),
 [PDE bounds](https://github.com/siddhartha-gadgil/PlasmaLean/blob/main/notes/pde-bounds-and-verification-roadmap.md) (Stages 1–7, Milestones A–G),
 [microturbulence](https://github.com/siddhartha-gadgil/PlasmaLean/blob/main/notes/microturbulence-and-available-energy.md), [holomorphic/KYM/Wick](https://github.com/siddhartha-gadgil/PlasmaLean/blob/main/notes/holomorphic-bundles-kym-wick-rotations.md),
@@ -28,26 +111,41 @@ gates P0–P9 (roadmap), E0–E8 (§11.2), P1–P4 (§12) and the rungs M0–M6 
 
 ### RG.1 Goal registry
 
+Restated around the stellarator contract (C1–C5, section above) on 30 October 2026. Stable IDs are
+kept where the meaning carries over; superseded meanings are recorded in the row. New meanings get
+new IDs (G-10, G-11).
+
 | Goal | Goal and success criterion | Supports / supported by | Status | Evidence so far (declarations) / needed |
 | --- | --- | --- | --- | --- |
-| `G-1` | **Confinement and stability** (legacy G1): field lines and particles stay inside and the equilibrium is MHD stable, for one candidate, with every reduction named | supported by G-4, G-5, G-6; supports G-8 | active | Exact symmetric equilibria; `rationalStellarator_confined_forever_exists` (all-time field lines, exact vacuum stellarator field); `alpha_gc_passing_confined_forever`, `alpha_gc_confined_forever_robust`, `alpha_gc_confined_forever_pm` (passing alpha guiding centres, Littlejohn model supplied); `reactor_ballooning_all`, `reactor_mercier_stable` (Solov'ev, reductions supplied); `stable_uniform` (screw pinch). Needed: a non-symmetric candidate with confinement and stability together |
-| `G-2` | **Thermal performance** (legacy G2): core temperature above a burn threshold over the operating interval and below wall limits, with stated transport and reactivity assumptions | supports G-8; supported by Q-10, Q-15 | active | `m1_burn_window` (0-D), Stellaris ISS04 window (`Design/BurnWindowStellarator`), `solovev_one_plasma_actual` (two-sided band for every supplied transport solution, pressure budget). Needed: barriers on stellarator geometry, existence of the transport solution |
+| `G-1` | **Current-free confinement (C1 + C4)** (restated 30 October 2026): for one candidate, a field with net toroidal plasma current ‖I_tor‖ ≤ I_max (vacuum as the limiting case), nested certified invariant tori on a confining region, and ι ≥ ι_min > 0 on them provided by the field; field lines (and guiding centres, with the reduction named) stay inside. *Superseded meaning (legacy G1, 29 October):* "confinement and stability for one candidate", which counted symmetric and tokamak models; stability is now G-4 (C3) and omnigeneity G-10 (C2) | supported by G-5, G-6, Q-16, Q-18, Q-19, Q-21; supports G-8 | active (partial, vacuum) | Satisfies C1 + C4 in vacuum on one torus: `RationalStellarator.field_vacuum` (J = 0), `rationalStellarator_confined_forever_exists` (all-time field lines inside a KAM-certified exact torus with Diophantine rotation number ι ≈ 0.137); C2 unknown (Q-19). Guiding centres: `alpha_gc_passing_confined_forever`, `alpha_gc_confined_forever_robust`, `alpha_gc_confined_forever_pm` (passing alphas, Littlejohn model supplied). *Not candidates under C1:* the Solov'ev results (`reactor_alpha_born_confined`, `reactor_ballooning_all`, `reactor_mercier_stable`) are tokamak models, kept for G-2 and as technique test beds; `stable_uniform` (screw pinch) is a model problem. Needed: ι ≥ ι_min on a nested family of certified tori stated in Lean; a finite-β current-free equilibrium |
+| `G-2` | **Thermal performance = contract clause C5** (legacy G2, restated 30 October 2026): on the same candidate that satisfies C1–C4, core temperature above a burn threshold (e.g. T ≥ 10 keV) over [0, T_burn] (or forever) and below wall and material limits, from power balance with Bosch–Hale alpha heating, bremsstrahlung and transport losses; neoclassical losses from C2 (Q-22), anomalous transport a stated supplied scaling (ISS04 or an Â bound). C2 couples into C5: poor omnigeneity (large 1/ν losses) can make burn inaccessible (Q-13) | supports G-8; supported by Q-10, Q-13, Q-15, Q-22, G-10 | active (tokamak model and 0-D only) | `m1_burn_window` (0-D), Stellaris ISS04 window (`Design/BurnWindowStellarator`), `solovev_one_plasma_actual` (two-sided band for every supplied transport solution, pressure budget; **a tokamak model**: the Solov'ev field is axisymmetric and current-carrying, so this is a model for G-2, not a candidate). Needed: barriers on stellarator geometry with χ bounded by C2 (Q-15, Q-22), existence of the transport solution |
 | `G-3` | **Model adequacy and probabilistic goals** (§12): quantify one omitted effect on a design observable (N1), activation rules (N2), decision infrastructure (N3); probabilistic loss and uncertainty (P1–P4) | supports G-1, G-2, G-8 | proposed | none in Lean; specifications in `notes/goals/` |
-| `G-4` | **A stable finite-β stellarator equilibrium** (Phase 14): an exact or validated non-axisymmetric finite-pressure equilibrium with certified local and ballooning stability | supports G-1 | active | Landreman family 1 force balance and `family1_mercier_unstable` (negative); family 2 `family2_mercier_stable_derived` (band k ∈ [0.7, 0.9], λ = 200, Mercier index supplied); ballooning reduced to one certificate (`family2_stable_of_cert`, `family2_stable_of_secular_cert`). Needed: Q-3, or route A (Q-14) |
+| `G-4` | **Finite-β stable current-free equilibrium (C1 + C3 + C4)** (restated 30 October 2026): an exact or validated finite-pressure equilibrium with net toroidal current ‖I_tor‖ ≤ I_max and ι ≥ ι_min > 0 from the field, with certified Mercier, ballooning and interchange stability at a stated β > 0 (reductions named). *Superseded meaning (Phase 14):* "a stable non-axisymmetric finite-β equilibrium", which did not constrain the current | supports G-8; supported by Q-3, Q-14, Q-18, Q-20 | active (no current-free candidate) | Landreman family 1 force balance and `family1_mercier_unstable` (negative); family 2 `family2_mercier_stable_derived` (band k ∈ [0.7, 0.9], λ = 200, Mercier index supplied); ballooning reduced to one certificate (`family2_stable_of_cert`, `family2_stable_of_secular_cert`). **Both families carry net toroidal current** (family 2: μ₀ I_tor/2π = `curK` > 0 by `torCurrent_eq`, `F1_pos`, `Eint_pos`; Q-18), so they are C3 technique test beds, tokamak-like under C1 unless that current is bootstrap-level. Needed: a current-free finite-β equilibrium (Q-14 stepped pressure across the rational field's torus; or a finite-β Dommaschk/QA equilibrium) and then C3 on it; Q-3 stays useful as technique |
 | `G-5` | **Coil-produced confinement** (Phase 13): field lines of the field of a concrete coil set confined for all time (or a long certified horizon) | supports G-1, G-8 | active (all-time: blocked, research) | `coil_stellarator_confined_concrete_N` (52 transits, field-line existence assumed). Needed: Q-2 |
-| `G-6` | **Robust alpha confinement** (Phases 11–12): all-time confinement of 3.5 MeV alphas on physically meaningful energy, pitch and B₀R₀ ranges, passing and trapped | supports G-1 | active | `alpha_gc_passing_confined_forever_quarter` (on-demand; λ ∈ [0, 1/4], one energy and B₀R₀), `alpha_gc_confined_forever_energy_window` (on-demand; ±0.4 eV × λ ∈ [0, 1/16]), `alpha_trapped_reactorQA_averaged` (passing, near-axis QA, 0.19 s). Needed: Q-1, Q-4, Q-5 |
+| `G-6` | **Robust alpha confinement** (Phases 11–12): all-time confinement of 3.5 MeV alphas on physically meaningful energy, pitch and B₀R₀ ranges, passing and trapped. Under the contract the trapped part is the alpha component of C2 (G-10) | supports G-1, G-10 | active | `alpha_gc_passing_confined_forever_quarter` (on-demand; λ ∈ [0, 1/4], one energy and B₀R₀), `alpha_gc_confined_forever_energy_window` (on-demand; ±0.4 eV × λ ∈ [0, 1/16]), `alpha_trapped_reactorQA_averaged` (passing, near-axis QA, 0.19 s). Needed: Q-1, Q-4, Q-5 |
 | `G-7` | **Verified plasma evolution** (§11): for one candidate, a certified interval on which the selected plasma model exists and stays within error, stability, thermal and geometric bounds | supports G-8; supported by Q-7–Q-11 | proposed (E1 done) | E1: `lieBracket_gradient_of_contDiffAt`, `quasisymmetry_not_pde_symmetry`; conditional `riccati_le_initial`. Needed: gates E2–E8 |
-| `G-8` | **Integrated candidate** (M6, §11.1): coils, equilibrium, stability, transport and engineering margins on one decoded candidate with common witnesses | supported by G-1, G-2, G-4–G-7 | open | `Bridge/Contracts` (common-witness composition) only |
+| `G-8` | **Integrated stellarator candidate (C1–C5 with common witnesses)** (restated 30 October 2026): one decoded candidate satisfying C1 (current-free ι ≥ ι_min), C2 (omnigeneity or a bounded ε_eff for thermal ions and electrons), C3 (finite-β stability), C4 (nested surfaces, force balance) and C5 (thermal performance, G-2) with the same witnesses, then coils and engineering margins (M6, §11.1). *Superseded meaning:* "coils, equilibrium, stability, transport and engineering margins on one candidate" without the C1/C2 filters | supported by G-1, G-2, G-4–G-7, G-10, G-11 | open | `Bridge/Contracts` (common-witness composition) only |
 | `G-9` | **Auditable certificates within the laptop budget** (Phases 15–16, auxiliary): every concrete check an explicit certificate, ≤ 6 GB per Lean process, no `decide` of any kind | supports all | active | Certificate tactics in `PlasmaLean/Certificates/`; workstation pipeline. Needed: Q-6, Q-12 |
+| `G-10` | **Omnigeneity for thermal particles (C2)** (new, 30 October 2026): on the certified surfaces of a current-free candidate (G-1), the bounce-averaged radial drift of trapped thermal ions and electrons vanishes (exact omnigeneity) or is bounded by a stated amount, or ε_eff ≤ ε_max (a stated value, e.g. the W7-X level of about 1 %); quasisymmetry and quasi-isodynamicity are admissible special cases | supports G-8, G-2 (via Q-22); supported by Q-16, Q-19, Q-21, Q-1 | open (definitions not in Lean) | Only adjacent: `WeakQS`, `qsDefect`, `family1_not_weakQS`, `family2_not_weakQS` (N-27); `boozerGC_trapped` (exact-symmetry Boozer model). Needed: Q-21 (definitions and sanity triad), then Q-19 on the rational field and Q-16 on a Dommaschk QA fit |
+| `G-11` | **Contract infrastructure** (new, 30 October 2026, auxiliary): kernel-level definitions of net toroidal current, rotational transform of the field on a family of tori, bounce-averaged radial drift, omnigeneity and ε_eff, each with the sanity triad, and a `StellaratorContract` record composing C1–C5 on a common witness | supports G-1, G-4, G-8, G-10 | open | specifications in `notes/formalization/00-model-contracts.md` (not yet in Lean); adjacent compiled pieces: `torCurrent` (family 2), `iotaK`, `WeakQS`. Needed: Q-21 |
+
+**Re-labelled results (30 October 2026).** The Solov'ev work (`solovev_one_plasma_*`,
+`reactor_alpha_born_confined`, `reactor_ballooning_all`, `reactor_mercier_stable`) is a tokamak model
+for G-2 and a technique test bed, not a candidate. Q-17 and the Grad counterexamples
+(`family1_grad_counterexample`, N-28) are mathematical infrastructure, not design progress: they
+establish non-symmetry, which the contract treats as a consequence. The vacuum rational stellarator
+field (`Design/RationalStellarator*`) satisfies C1 in vacuum (current-free, KAM-certified torus with
+ι ≈ 0.137 > 0); its C2 status is unknown (Q-19). The Landreman families are finite-β C3/C4 test beds
+that carry net toroidal current (Q-18).
 
 ### RG.2 Question registry
 
 | Question | Statement | Needed by | Status | Current best answer / barrier |
 | --- | --- | --- | --- | --- |
-| `Q-1` | All-time (or slowing-down-time) confinement of **trapped** 3.5 MeV alphas in near-QA: can the per-bounce remainder (phase shear) be bounded? | G-6, N-17 | open (research, parked) | Compiled: `reference_kick_osc` (kick amplitude ≤ 0.0816 T m²), `exactQA_kick_osc`. Barrier: one-bounce remainders (Lipschitz–Grönwall hopeless, `e^{KP} ≈ e^{29000}`), shears, validated bounce-time enclosure, existence of re-anchored references (`trapped-alpha-status.md` §3); re-anchoring with absolute amplitudes cannot close (Phase 11 part 1) |
+| `Q-1` | All-time (or slowing-down-time) confinement of **trapped** 3.5 MeV alphas in near-QA: can the per-bounce remainder (phase shear) be bounded? *Re-framed (contract, 30 October 2026):* this is the alpha component of C2; the per-bounce radial kick is the single-orbit form of the bounce-averaged radial drift, so the definitions of Q-21 and the thermal-particle question Q-19 come first, and a bound here should be stated as an omnigeneity defect | G-6, G-10, N-17 | open (research, parked) | Compiled: `reference_kick_osc` (kick amplitude ≤ 0.0816 T m²), `exactQA_kick_osc`. Barrier: one-bounce remainders (Lipschitz–Grönwall hopeless, `e^{KP} ≈ e^{29000}`), shears, validated bounce-time enclosure, existence of re-anchored references (`trapped-alpha-status.md` §3); re-anchoring with absolute amplitudes cannot close (Phase 11 part 1) |
 | `Q-2` | **Coil-produced all-time confinement**: can a KAM torus refitted to `tfField + polyCoilFieldC` meet the smallness budget? | G-5, N-16 | blocked (research) | On-demand `CoilKamCert` proves only a vacuous residual bound (≈ 10⁹ against ≈ 10⁻³⁰ needed). Barrier: sharp cancellation-aware complex sup bound, torus-adapted neighbourhood, anisotropic strips, high-precision refit (≈ 4 CPU-days estimated) |
-| `Q-3` | **Family-2 ballooning certificate**: one pointwise inequality on surface × ℝ for Landreman family 2 on the Mercier-stable band | G-4 | open | Reduction compiled (`family2_stable_of_cert`, `family2_stable_of_secular_cert`); numerics stable (tail margin ×2.36–×9.39); linear-in-s certificates fail, the B-spline × rational basis fails the dense check at k = 0.9; checker not written (≈ 8,000 boxes per surface, 100–200 CPU-h for the band search) |
-| `Q-4` | **Wider energy window** (±3 eV, then ±1 %) and a joint B₀R₀ range, with λ up to 1/4 | G-6, N-14 | open (workstation route) | Compiled (on-demand): ±0.4 eV × λ ∈ [0, 1/16]. Barrier: the torus family moves ≈ 30·Δρ; needs re-certified low-resolution chains with larger admissibility balls, ≈ 3 / ≈ 10 CPU-h (`energy-window.sh`) |
+| `Q-3` | **Family-2 ballooning certificate**: one pointwise inequality on surface × ℝ for Landreman family 2 on the Mercier-stable band. *Re-framed (contract):* family 2 carries net toroidal current (Q-18), so this is a C3 technique result on a tokamak-like test bed, not a stellarator candidate; lower priority than C1/C2 work, but the checker transfers to a current-free equilibrium | G-4 (technique) | open | Reduction compiled (`family2_stable_of_cert`, `family2_stable_of_secular_cert`); numerics stable (tail margin ×2.36–×9.39); linear-in-s certificates fail, the B-spline × rational basis fails the dense check at k = 0.9; checker not written (≈ 8,000 boxes per surface, 100–200 CPU-h for the band search) |
+| `Q-4` | **Wider energy window** (±3 eV, then ±1 %) and a joint B₀R₀ range, with λ up to 1/4. *Re-framed (contract):* passing alphas in the vacuum rational field are a C1-compatible particle result; it does not address C2 (trapped and thermal particles), so it ranks after Q-19 and Q-21 | G-6, N-14 | open (workstation route) | Compiled (on-demand): ±0.4 eV × λ ∈ [0, 1/16]. Barrier: the torus family moves ≈ 30·Δρ; needs re-certified low-resolution chains with larger admissibility balls, ≈ 3 / ≈ 10 CPU-h (`energy-window.sh`) |
 | `Q-5` | Passing confinement **beyond λ = 1/4** | G-6 | open | λ = 1/4 is the limit of the passing argument with ‖B‖ ≤ 3B₀ (`quarter_passing_margin`); needs a sharper ‖B‖ bound or another argument |
 | `Q-6` | **Landreman `outerArc` certificates**: explicit certificates for the ≈ 135 `outerArc` lines of `LandremanFamily2Cert1–7` | G-9, G-4 | open | `oned_cert` closed the `oneD` quadratures; one arc did not finish in 10 min (some inner cell definition is unfolded); next: profile one `tipCell` with `eval_cert?` (§13 stage 9) |
 | `Q-7` | **E2–E3**: Pizzocchero–Tassi Proposition 4.3 on the periodic benchmark, then a certified trajectory with full residual enclosures | G-7, N-19 | open | not started in Lean (§11.3 is the first target) |
@@ -56,11 +154,16 @@ gates P0–P9 (roadmap), E0–E8 (§11.2), P1–P4 (§12) and the rungs M0–M6 
 | `Q-10` | **E5–E6**: existence/continuation for the radial transport model; a steady pressure-matched state (pressure equality, not a budget); the corrected relative-entropy identity with all terms | G-2, G-7, N-2, N-6 | open | Transport solutions are supplied in `solovev_one_plasma_*`; the relative-entropy identity is proved informally (N-2), not in Lean |
 | `Q-11` | **E7–E8**: compatible numerics (constrained transport, admissible states) and integration on a shared candidate | G-7, G-8 | open | not started; E8 needs the earlier gates |
 | `Q-12` | **Phase 16 remaining opaque leaves**: replace the remaining `decide +kernel` and opaque `kernel_fact` leaves within ≤ 6 GB and the olean budget | G-9 | active | §13 stage 9: 297 default / 2,114 overall lines with `decide +kernel`; 6,098 class-b `kernel_fact` leaves in the default build (0 of ≥ 0.1 s); `decide_cbv` in on-demand Mu3–Mu5 Adm; open: `NearAxisQAAveraged` parts, the fast side `famTB − famO`, `nodeFin`/`famL1` leaves, `KamTorusACheck`/`SurrogateCheck`/`FrameCheck` |
-| `Q-13` | Is the 0-D / 1-D burn obstruction at nominal confinement removable by profile peaking on stellarator geometry (ISS04 needs f_ren above measured values)? | G-2, N-5 | open | Proved obstructions: `stellaris_measured_fren_no_access_steady`, `stellaris_measured_fren_no_access_loss`; the 1-D route on stellarator geometry is Q-15 |
-| `Q-14` | **Stepped pressure across the exact KAM torus** (Phase 14 route A): a finite-β equilibrium glued across the certified torus of the rational field | G-4, N-12, N-13 | open (lead) | plan only (`after-kam.md` §3, `finite-beta-stellarator.md`) |
-| `Q-15` | Transport barriers (T ≥ 10 keV in the core) on a **non-axisymmetric** validated geometry, with χ bounds from Â or neoclassical theory stated as supplied scalings | G-2 | open | Barriers exist on the cylinder, helical and Solov'ev geometries only |
-| `Q-16` | **A quasisymmetric solution**. Decided criterion (user, 30 October 2026), vacuum version: an explicit or validated **vacuum** field with certified invariant tori on a nested region, rotational transform ι ≥ ι_min > 0 on them, and a certified quasisymmetry defect ε_QS small **relative to ι** (both numbers reported; in vacuum an axisymmetric field has ι = 0, so ι ≥ ι_min excludes trivially near-axisymmetric fields). The finite-β version needs a separate criterion (plasma current gives ι > 0 to near-tokamak fields): zero net toroidal current or a non-Killing bound on the generator ξ, to be decided | G-1, G-4, G-6 | open (research); the strong form (exact QS in a volume) is open mathematics | See N-27. Exact QS on a volume: neither existence nor non-existence is known (Constantin–Drivas–Ginsberg, arXiv:2009.08860; Burby–Kallinikos–MacKay, arXiv:1912.06468). Route (i), near-axis remainder, not recommended (the vacuum expansion is ill-posed without regularization, Ruth–Jorge–Bindel arXiv:2411.04352). Route (iii) negative: QS with a generator nonvanishing on the axis forces constant ‖B‖ on the axis, and both Landreman families have non-constant axis ‖B‖ for every ε ≠ 0 (compiled: `family1_not_weakQS`, `family2_not_weakQS`). Recommended: route (ii) as an explicit vacuum field (finite Dommaschk sum fitted to a QA target, exact by identity) + KAM-certified invariant tori + Boozer angles by one more cohomological equation + certified non-QS ℓ¹ part of ‖B‖. Criterion decided: vacuum version as stated (ratio form) |
-| `Q-17` | **A Lean statement of a Grad counterexample**: for Landreman family 1 (and family 2), one theorem giving smooth fields on a toroidal domain with nested toroidal flux surfaces, non-constant pressure, force balance, and no continuous Euclidean symmetry (axial, helical or reflection); then the non-stellarator-symmetric τ-extension of Issan–Citrin–Landreman–Tracey (arXiv:2610.07304) | G-4, N-28 | family 1 verified (`family1_grad_counterexample`); family 2 and τ-extension open | `family1_grad_counterexample`: smooth B, J, p on 𝒰; ∇·B = 0 and force balance with the gradient of p = (2δ − 2ψ)/μ₀; ψ a first integral with compact nested sublevel sets, each level set ψ = c ∈ (0, δ] homeomorphic to Circle × Circle (`torusMap`); p non-constant; no rotation, translation or screw-motion symmetry (`killing_trivial_of_axis`); contrast `axisymmetric_limit_lie_zero` at ε = 0. Not covered: plane reflections; family 1 has ι ≡ 2 (closed field lines), so family 2 (sheared ι) is the stronger target |
+| `Q-13` | Is the 0-D / 1-D burn obstruction at nominal confinement removable by profile peaking on stellarator geometry (ISS04 needs f_ren above measured values)? *Contract (C5):* this is the C5 obstruction for supplied anomalous scaling; with Q-22 the same question must be asked with C2-derived neoclassical losses added (poor omnigeneity can make burn inaccessible) | G-2 (C5), N-5 | open | Proved obstructions: `stellaris_measured_fren_no_access_steady`, `stellaris_measured_fren_no_access_loss`; the 1-D route on stellarator geometry is Q-15 |
+| `Q-14` | **Stepped pressure across the exact KAM torus** (Phase 14 route A): a finite-β equilibrium glued across the certified torus of the rational field. Under the contract this is the lead route to Q-20 (current-free finite β), provided the net toroidal part of the sheet currents is controlled | G-4, Q-20, N-12, N-13 | open (lead) | plan only (`after-kam.md` §3, `finite-beta-stellarator.md`) |
+| `Q-15` | Transport barriers (T ≥ 10 keV in the core) on a **non-axisymmetric** validated geometry, with χ bounds from Â or neoclassical theory stated as supplied scalings; under the contract the geometry should satisfy C1 and the neoclassical χ comes from C2 (Q-22) | G-2, Q-22 | open | Barriers exist on the cylinder, helical and Solov'ev geometries only |
+| `Q-16` | **A quasisymmetric solution**, *re-aimed at C1 + C2 (contract, 30 October 2026)*: the target is a current-free field with ι ≥ ι_min > 0 (C1) that is omnigenous in the quasisymmetric form (C2). The decided vacuum criterion below already fits the contract (vacuum ⇒ I_tor = 0; ι ≥ ι_min; small ε_QS relative to ι). The finite-β criterion is now decided by the contract: **zero (bootstrap-level) net toroidal current**, ‖I_tor‖ ≤ I_max, replacing the alternative non-Killing bound on ξ. Decided criterion (user, 30 October 2026), vacuum version: an explicit or validated **vacuum** field with certified invariant tori on a nested region, rotational transform ι ≥ ι_min > 0 on them, and a certified quasisymmetry defect ε_QS small **relative to ι** (both numbers reported; in vacuum an axisymmetric field has ι = 0, so ι ≥ ι_min excludes trivially near-axisymmetric fields). The finite-β version needs a separate criterion (plasma current gives ι > 0 to near-tokamak fields): zero net toroidal current or a non-Killing bound on the generator ξ, to be decided | G-1, G-10, G-4, G-6 | open (research); the strong form (exact QS in a volume) is open mathematics | See N-27. Exact QS on a volume: neither existence nor non-existence is known (Constantin–Drivas–Ginsberg, arXiv:2009.08860; Burby–Kallinikos–MacKay, arXiv:1912.06468). Route (i), near-axis remainder, not recommended (the vacuum expansion is ill-posed without regularization, Ruth–Jorge–Bindel arXiv:2411.04352). Route (iii) negative: QS with a generator nonvanishing on the axis forces constant ‖B‖ on the axis, and both Landreman families have non-constant axis ‖B‖ for every ε ≠ 0 (compiled: `family1_not_weakQS`, `family2_not_weakQS`). Recommended: route (ii) as an explicit vacuum field (finite Dommaschk sum fitted to a QA target, exact by identity) + KAM-certified invariant tori + Boozer angles by one more cohomological equation + certified non-QS ℓ¹ part of ‖B‖. Criterion decided: vacuum version as stated (ratio form) |
+| `Q-17` | **A Lean statement of a Grad counterexample** (*re-labelled, contract 30 October 2026: mathematical infrastructure, not design progress*; non-symmetry is a consequence of C1, and both Landreman families carry net toroidal current, Q-18): for Landreman family 1 (and family 2), one theorem giving smooth fields on a toroidal domain with nested toroidal flux surfaces, non-constant pressure, force balance, and no continuous Euclidean symmetry (axial, helical or reflection); then the non-stellarator-symmetric τ-extension of Issan–Citrin–Landreman–Tracey (arXiv:2610.07304) | G-4, N-28 | family 1 verified (`family1_grad_counterexample`); family 2 and τ-extension open | `family1_grad_counterexample`: smooth B, J, p on 𝒰; ∇·B = 0 and force balance with the gradient of p = (2δ − 2ψ)/μ₀; ψ a first integral with compact nested sublevel sets, each level set ψ = c ∈ (0, δ] homeomorphic to Circle × Circle (`torusMap`); p non-constant; no rotation, translation or screw-motion symmetry (`killing_trivial_of_axis`); contrast `axisymmetric_limit_lie_zero` at ε = 0. Not covered: plane reflections; family 1 has ι ≡ 2 (closed field lines), so family 2 (sheared ι) is the stronger target |
+| `Q-18` | **Net toroidal current of the Landreman families** (contract C1): compute I_tor(ψ) for families 1 and 2 and compare it with the field-producing current (B₀R₀·2π/μ₀) and with a bootstrap-level bound. If it is not small, the families are tokamak-like under C1 (ι comes from plasma current) | G-1, G-4, Q-16, Q-17 | open; family 2 essentially answered | Family 2: μ₀ I_tor(k₀)/2π = `curK λ (1/4) 4 k₀` (`torCurrent_eq`, current through ζ = 0), with integrand κ(F₁/2 + E/λ²)/2π > 0 by `F1_pos`, `Eint_pos`; so I_tor > 0 for 0 < k₀ < 19/20, and the F₁/2 part does not vanish as λ → ∞ (a positivity corollary and the ratio to the external current are short Lean targets, not yet named declarations). Family 1: not computed (`LandremanEquilibrium.current` is available) |
+| `Q-19` | **Bounce-averaged drift / ε_eff for the rational stellarator vacuum field** (contract C2): on the certified surfaces of `RationalStellarator.field (1/4)`, compute (numerically first, as an untrusted oracle) the bounce-averaged radial drift of trapped particles and ε_eff, then decide whether a certified bound is reachable | G-10, G-1 | open | nothing yet; the field has no optimization for omnigeneity, so a large ε_eff is the likely outcome (numerical observation needed). Inputs: the KAM tori and Boozer-angle pipeline of N-27; definitions of Q-21 |
+| `Q-20` | **A finite-β current-free equilibrium** (C1 + C4 at β > 0): stepped pressure across the certified torus of the rational field (Q-14), or a finite-β equilibrium near a Dommaschk QA vacuum field, with ‖I_tor‖ ≤ I_max proved | G-4, G-8 | open (research) | Q-14 is the lead (`after-kam.md` §3); stepped-pressure equilibria carry surface currents whose net toroidal part must be controlled |
+| `Q-21` | **Definitions and model contracts for C1 and C2** (kernel-level): net toroidal current through a cross-section of a toroidal domain; ι of a field on a family of invariant tori; bounce-averaged radial drift (ψ̇ averaged over a bounce; zero for all trapped orbits iff ∂J/∂α = 0 for the second adiabatic invariant J); omnigeneity; ε_eff (Nemov et al. 1999). Each with the **sanity triad**: (1) axisymmetric ⇒ omnigenous (bounce-averaged radial drift zero); (2) current-free axisymmetric ⇒ ι = 0, hence no confining rotational transform (no confinement); (3) a generic 3-D field (an explicit one) is not omnigenous | G-11, G-10, G-1 | open (specification written) | Normative specifications: `notes/formalization/00-model-contracts.md`, entries `CurrentFreeTransform`, `BounceAveragedDrift`, `Omnigenous`, `EffectiveRippleBound` (not yet in Lean). Adjacent compiled: `WeakQS`, `qsError_rotGen_eq_zero_of_axisymmetric`, `boozerGC_trapped`, `torCurrent` |
+| `Q-22` | **Thermal-particle neoclassical transport bounds feeding G-2**: from a C2 bound (ε_eff or bounce-averaged drift), a stated neoclassical scaling (1/ν regime χ ∝ ε_eff^{3/2}, supplied as a model law) giving χ bounds for ions and electrons on stellarator geometry, used in the barrier theorems of Q-15 | G-2, G-10, Q-15 | open | none; the transport barriers exist on cylinder, helical and Solov'ev geometries with supplied χ |
 
 ### RG.3 Note registry and dependency graph
 
@@ -74,33 +177,35 @@ superseded; mixed notes list the status of their parts. "Lean" names compiled ev
 | `N-3` | `notes/theory/flux-surface-holonomy.md`: periods, τ, Hodge bounds | G-7 (T10) | §1.2 | moderate | holonomy ↔ ι refuted; 2-form vanishing verified (`magneticTwoForm_flux_surface`); constant-metric τ/energy identity and Hodge period inequality verified (`periodBound_eq`, `energy_ge`, `energy_eq_iff`, `fieldLine_energy_ge`) | non-constant metric (isothermal coordinates, not in Mathlib) |
 | `N-4` | `notes/theory/near-axis-quasisymmetry.md`: Garren–Boozer construction, Boozer GC model | G-1, G-6 | sources | hard | construction formal asymptotic; GC identity verified (`boozerGC_trapped_until`, `boozerGC_trapped`) | none pending; feeds N-8, N-17 |
 | `N-5` | `notes/theory/stellarator-burn-parameters.md`: ISS04, reactor studies | G-2, Q-13 | Bosch–Hale, ISS04 (supplied) | routine | verified window and obstructions (`Design/BurnWindowStellarator`); parameters published | Q-15 |
-| `N-6` | `notes/theory/transport-mhd-coupling.md`: one field for G-1 and G-2 | G-1, G-2, Q-10 | K2 kernel | moderate | verified in budget form (`solovev_one_plasma_actual`, `…_highQ_actual`, `…_ignited_actual`); solution existence and pressure equality open | Q-10 |
+| `N-6` | `notes/theory/transport-mhd-coupling.md`: one field for G-1 and G-2 | G-1, G-2, Q-10 | K2 kernel | moderate | verified in budget form (`solovev_one_plasma_actual`, `…_highQ_actual`, `…_ignited_actual`) on the Solov'ev field, **a tokamak model** (contract re-label, 30 October 2026: a model for G-2 and a technique test bed, not a candidate); solution existence and pressure equality open | Q-10; the transfer to a C1 geometry (Q-15, Q-22) |
 | `N-7` | `notes/theory/near-qa-trapped-particles.md`: banana-alpha mechanisms | G-6, Q-1 | N-4 | research | mechanisms published; single well proved; superseded for status by N-17 | see N-17 |
 | `N-8` | `notes/theory/guiding-centre-averaging.md`: averaging, exact-symmetry alphas | G-1, G-6 | N-4 | hard | verified (`reactor_alpha_confined`, `alpha_trapped_reactorQA_averaged`: passing, 0.19 s) | none; longer near-QA times would need new averaging |
-| `N-9` | `notes/theory/first-stellarator-rung.md`: exact rational vacuum field | G-1, G-5 | — | moderate | verified (`Design/RationalStellarator`, `rationalStellarator_confined`: 95 transits) | superseded by N-10 for all-time |
-| `N-10` | `notes/theory/kam-route.md`: KAM route to all-time confinement | G-1 | N-9 | research | verified (`rationalStellarator_confined_forever_exists`) | none |
+| `N-9` | `notes/theory/first-stellarator-rung.md`: exact rational vacuum field (contract: satisfies C1 in vacuum; C2 unknown, Q-19) | G-1, G-5, Q-19 | — | moderate | verified (`Design/RationalStellarator`, `rationalStellarator_confined`: 95 transits) | superseded by N-10 for all-time |
+| `N-10` | `notes/theory/kam-route.md`: KAM route to all-time confinement | G-1 | N-9 | research | verified (`rationalStellarator_confined_forever_exists`); the C1 + C4 evidence for the vacuum field | state ι ≥ ι_min on a nested family of certified tori (C1 in the form of G-1); supply surfaces for Q-19 |
 | `N-11` | `notes/theory/kam-k3-plan.md`: explicit KAM theorem plan | G-1 | N-10 | research | superseded (K3 done, Phase 10) | none |
-| `N-12` | `notes/theory/finite-beta-stellarator.md`: routes to finite β | G-4, Q-14 | sources (preprints) | research | family 1 verified with `family1_mercier_unstable`; family 2 `family2_mercier_stable_derived`; stepped-pressure route lead | Q-3, Q-14 |
+| `N-12` | `notes/theory/finite-beta-stellarator.md`: routes to finite β (contract: the Landreman families carry net toroidal current, Q-18, so they are C3/C4 test beds; the current-free route is Q-14 → Q-20) | G-4, Q-14, Q-18, Q-20 | sources (preprints) | research | family 1 verified with `family1_mercier_unstable`; family 2 `family2_mercier_stable_derived`; stepped-pressure route lead | Q-3, Q-14 |
 | `N-13` | `notes/theory/after-kam.md`: coil KAM, stepped pressure, GC KAM | G-5, G-6, Q-2, Q-14 | N-10 | research | target 3 verified (N-14); target 1 blocked (Q-2); target 2 lead (Q-14) | — |
 | `N-14` | `notes/theory/gc-kam-status.md`: guiding-centre KAM | G-6, Q-4 | N-10, Littlejohn model (supplied) | hard | verified (`alpha_gc_passing_confined_forever`; on-demand `alpha_gc_confined_forever_energy_window`, `alpha_gc_passing_confined_forever_wide`) | Q-4 |
 | `N-15` | `notes/theory/robust-alpha-confinement.md`: intervals of ρ, v∥ < 0, μ > 0 | G-6 | N-14 | hard | verified (`alpha_gc_confined_forever_robust`, `alpha_gc_confined_forever_pm`, on-demand `alpha_gc_passing_confined_forever_quarter`) | Q-4, Q-5 |
 | `N-16` | `notes/theory/coil-kam-status.md`: coil-field KAM stages | G-5, Q-2 | N-10, N-13 | research | stage-1 tools verified (default build); stage-2 certificate vacuous (on-demand `CoilKamCert`); blocked | stage-1 sharpening (complex sup bound) |
-| `N-17` | `notes/theory/trapped-alpha-status.md`: trapped alphas, Phase 12 | G-6, Q-1 | N-4, N-7 | research | partly verified (`reference_kick_osc`, `exactQA_kick_osc`); blocked on the per-bounce remainder | conserved-quantity comparison (route a) |
+| `N-17` | `notes/theory/trapped-alpha-status.md`: trapped alphas, Phase 12 | G-6, Q-1 | N-4, N-7 | research | partly verified (`reference_kick_osc`, `exactQA_kick_osc`); blocked on the per-bounce remainder; contract: the alpha part of C2 | after Q-21: restate the kick as a bounce-averaged drift defect; then conserved-quantity comparison (route a) |
 | `N-18` | `notes/pde-bounds-and-verification-roadmap.md`: Stages 1–7, Milestones A–G | G-1, G-2, G-7 | — | research | Milestone A verified (T1); others stated | link stages to Q-7–Q-11 |
 | `N-19` | `notes/bkm-regularity-and-perelman-burn-bounds.md`: corrected evolution specification (§11) | G-7, Q-7–Q-10 | §1.3, §11 | research | E1 verified (`quasisymmetry_not_pde_symmetry`, `lieBracket_gradient_of_contDiffAt`); conditional Riccati verified; rest stated | Q-7 (first theorem, §11.3) |
 | `N-20` | `notes/microturbulence-and-available-energy.md`: available energy, Â | G-2, Q-15 | sources | research | kernel lemmas verified (`Theory/Kinetic/AvailableEnergy`); opposite-sign claim refuted; Â bound stated | extract the Helander–Mackenbach Â formula (§1.5) |
 | `N-21` | `notes/holomorphic-bundles-kym-wick-rotations.md`: exploratory geometry (T10) | G-7 | §1.2, §1.4 | research | exploratory; flux degree corrected to 0; refuted contract sketches fenced | verdict note before any Lean (T10 rule) |
 | `N-22` | `notes/goals/` (overview, probabilistic, deterministic, milestones) | G-3 | §12 | research | stated (proposals); D/K cross-references unresolved | choose one N1 observable |
 | `N-23` | `notes/design/vacuum-demonstrator.md`: tolerance-aware vacuum fixture | G-5, G-8 | — | routine | verified fixture (`Design/VacuumPair`, `Design/VacuumTolerance`) | none |
-| `N-24` | `notes/formalization/00`–`09`: model contracts and topic specifications | all | — | — | active specifications (00 contracts is normative) | add contracts as kernels change |
+| `N-24` | `notes/formalization/00`–`09`: model contracts and topic specifications | all, G-11, Q-21 | — | — | active specifications (00 contracts is normative); C1/C2 entries added 30 October 2026 (`CurrentFreeTransform`, `BounceAveragedDrift`, `Omnigenous`, `EffectiveRippleBound`; not yet in Lean) | Q-21: Lean definitions and the sanity triad |
 | `N-25` | `notes/Stellerator.md`: original design basis | G-8 | — | — | historical (illustrative distances are not universal limits) | none |
 | `N-26` | `notes/theory/orbit-existence.md`: existence of the orbits the confinement theorems quantify over | G-1, G-6, MA-M1, MA-M2 | N-8, N-14; `FieldLineExistence` | hard | Lorentz part verified (`lorentzOrbit_exists`, `reactor_alpha_born_confined`, `reactor_alpha_confined_nonvacuous_35MeV`); Boozer part: band of births to 0.05 s and an explicit 1.5 μs horizon for the original class (`alpha_band_orbit_exists_005`, `alpha_orbit_exists_explicit`); proved obstructions `Dpsi_gt_psiStart`, `band_empty_Tav` | coordinates through the axis (user decision); uniqueness |
-| `N-27` | `notes/theory/quasisymmetric-solution.md`: routes to a quasisymmetric solution (Q-16) | Q-16, G-1, G-4, G-6 | N-4, N-12; Landreman `field_axis` theorems; KAM pipeline | research | stated; route (iii) a proved barrier (`family1_not_weakQS`, `family2_not_weakQS`, with `WeakQS`/`qsDefect` in `Theory/Fields/WeakQuasisymmetry`) | numerics (workstation, awaiting decision): Dommaschk QA fit with torus and Boozer diagnostics; check the τ-families of N-28 |
-| `N-28` | `notes/theory/grad-conjecture.md`: Grad's conjecture and the 2026 counterexamples | G-4, Q-14, Q-16, Q-17 | N-12, N-27; `LandremanEquilibrium.family1` | routine (synthesis) | stated | Q-17 for family 1; τ-extension; stepped pressure source [ELP] for Q-14 |
+| `N-27` | `notes/theory/quasisymmetric-solution.md`: routes to a quasisymmetric solution (Q-16; re-aimed at C1 + C2 by the contract) | Q-16, G-1, G-10, G-4, G-6 | N-4, N-12; Landreman `field_axis` theorems; KAM pipeline | research | stated; route (iii) a proved barrier (`family1_not_weakQS`, `family2_not_weakQS`, with `WeakQS`/`qsDefect` in `Theory/Fields/WeakQuasisymmetry`) | first priority under the contract: Dommaschk QA fit (current-free by construction) with torus, ι and Boozer/ε_QS diagnostics; the same Boozer pipeline for Q-19 on the rational field |
+| `N-28` | `notes/theory/grad-conjecture.md`: Grad's conjecture and the 2026 counterexamples (contract re-label: mathematical infrastructure, not design progress) | G-4, Q-14, Q-16, Q-17 | N-12, N-27; `LandremanEquilibrium.family1` | routine (synthesis) | stated | Q-17 for family 1; τ-extension; stepped pressure source [ELP] for Q-14 |
 
 Main dependency edges: N-9 → N-10 → N-14 → N-15 → (Q-4, Q-5); N-10 → N-13 → (N-16 → Q-2, Q-14);
 N-4 → (N-8, N-7 → N-17 → Q-1); N-12 → (Q-3, Q-14, Q-16) → G-4; N-4 → Q-16 → G-6; N-2, N-6 → Q-10 → G-2, G-7;
 N-19 → Q-7 → Q-8 → Q-11 → G-8.
+Contract edges (30 October 2026): Q-21 → (Q-19, Q-16, Q-18) → G-10, G-1; N-9 → N-10 → Q-19 → G-10;
+Q-14 → Q-20 → G-4; G-10 → Q-22 → Q-15 → G-2; (G-1, G-4, G-10) → G-8.
 
 ### RG.4 Strict audit status
 
@@ -165,9 +270,31 @@ Known open findings, carried from the logs (severity provisional):
   G-2 both moving. Continue without waiting; stop for a user decision, missing authorization, a
   resource budget question, or when nothing useful is ready.
 
-Current ready choices (provisional): the startup strict audit (RG.4, step 2); Q-6 (profile one
-`tipCell`); N-2 → formalize the 1-D relative-entropy identity; Q-7 (Pizzocchero–Tassi
-Proposition 4.3); Q-4 on the workstation.
+**Priority order under the stellarator contract (30 October 2026, user-approved).** Current-free
+and omnigenous candidates come first, ahead of further non-axisymmetry results:
+
+1. **Dommaschk QA fit** (Q-16, N-27 route ii): an explicit vacuum field (C1 by construction) fitted
+   to a quasi-axisymmetric target, with certified tori, ι ≥ ι_min and Boozer/ε_QS diagnostics
+   (workstation numerics first, untrusted oracle; then certificates).
+2. **C2 diagnostics on the rational field** (Q-19): bounce-averaged radial drift and ε_eff on the
+   certified surfaces of `RationalStellarator.field (1/4)`; decide whether it can satisfy C2 or is
+   only a C1 demonstrator.
+3. **Net toroidal current of the Landreman families** (Q-18): the positivity corollary of
+   `torCurrent_eq` for family 2 and its ratio to the external current; family 1. Cheap, and it
+   settles the families' status under C1.
+4. **The definitions** (Q-21, G-11): net current, ι on a family of tori, bounce-averaged drift,
+   omnigeneity, ε_eff in Lean, with the sanity triad.
+5. Then: Q-20 / Q-14 (current-free finite β), Q-22 (thermal neoclassical bounds for G-2), and the
+   C3 technique work (Q-3) to be transferred to a current-free equilibrium.
+
+Lower priority than before: further non-axisymmetry or Grad-counterexample results (Q-17 family 2,
+τ-extension), passing-alpha widening (Q-4, Q-5) and Solov'ev refinements, unless they serve one of
+the items above. Validity work (RG.4 findings) and the laptop-budget work of G-9 (Q-6, Q-12) keep
+their place as maintenance.
+
+Earlier ready choices (29 October 2026, superseded by the order above): the startup strict audit
+(RG.4, step 2, done); Q-6 (profile one `tipCell`); N-2 → formalize the 1-D relative-entropy
+identity (done); Q-7 (Pizzocchero–Tassi Proposition 4.3); Q-4 on the workstation.
 
 ---
 
@@ -1119,3 +1246,34 @@ Gate E1 (§11.2, §11.4) and the "sanity theorem or counterexample" promised in 
 ### Weak quasisymmetry and the Landreman barrier (N-27), 30 October 2026
 
 - **Done (default build):** `Theory/Fields/WeakQuasisymmetry.lean`: `WeakQS` (Constantin–Drivas–Ginsberg Definition 1, pointwise: ξ ≠ 0, div ξ = 0, B × ξ = −∇ψ, ξ·∇‖B‖ = 0), the defect `qsDefect` (sup of ‖ξ·∇‖B‖‖; exact QS iff zero, `qsDefect_eq_zero_iff`), exact axisymmetry as a special case (`qsError_rotGen_eq_zero_of_axisymmetric`), sanity triad (`weakQS_uniform`, `weakQS_screw`, `not_weakQS_mirror`), and the axis lemma (`WeakQS.normB_const_of_gradient_eq_zero`: ‖B‖ constant on a field line where ∇ψ = 0). `Design/LandremanNotQS.lean`: `family1_not_weakQS`, `family2_not_weakQS` (and `_flux` variants): for ε ≠ 0 neither family is weakly quasisymmetric on a region containing the whole axis with ∇ψ = 0 there. Not excluded: generators vanishing on the axis.
+
+### The stellarator contract: restructuring of the plan, 30 October 2026
+
+- **Decision (user-approved):** the plan is restructured around the stellarator contract (section
+  "The stellarator contract" near the top): C1 current-free rotational transform (‖I_tor‖ ≤ a
+  bootstrap-level bound, vacuum as the limit; ι ≥ ι_min > 0 from the field), C2 omnigeneity or
+  bounded ε_eff for thermal ions and electrons, C3 finite-β MHD stability, C4 existence (nested
+  certified surfaces, force balance), and C5 thermal performance on the same candidate (core
+  T ≥ burn threshold over [0, T_burn], below wall limits; power balance with Bosch–Hale, bremsstrahlung,
+  C2-derived neoclassical losses and a supplied anomalous scaling). Rationale: tokamaks need a large plasma current, with
+  current-driven instabilities, disruptions and current drive; C1 excludes them (an axisymmetric
+  current-free field has ι = 0), C2 is what a stellarator needs to match tokamak confinement, and
+  non-axisymmetry becomes a consequence rather than a goal.
+- **Registry changes:** G-1 restated as current-free confinement (C1 + C4); G-2 as clause C5;
+  G-4 as finite-β stable current-free equilibrium (C1 + C3 + C4); G-8 as the integrated candidate
+  satisfying C1–C5 with common witnesses; new G-10 (omnigeneity for thermal particles, C2) and G-11 (contract
+  infrastructure). New questions Q-18 (net toroidal current of the Landreman families), Q-19
+  (bounce-averaged drift and ε_eff for the rational vacuum field), Q-20 (finite-β current-free
+  equilibrium), Q-21 (definitions and model contracts with the sanity triad), Q-22 (thermal
+  neoclassical bounds for G-2). Q-16 re-aimed at C1 + C2 with zero net toroidal current as its
+  finite-β criterion; Q-1, Q-3, Q-4, Q-13, Q-14, Q-15, Q-17 re-framed. RG.5 has a new priority order.
+- **Re-labels:** Solov'ev results are a tokamak model for G-2; Q-17 and the Grad counterexamples
+  are mathematical infrastructure; the rational vacuum field satisfies C1 (current-free,
+  KAM-certified torus with ι ≈ 0.137), C2 unknown.
+- **Finding recorded while restating (no new Lean):** for Landreman family 2 the compiled
+  `torCurrent_eq`, `F1_pos` and `Eint_pos` give I_tor > 0 for every 0 < k₀ < 19/20, so family 2
+  carries net toroidal current (positivity corollary not yet a named declaration; Q-18).
+- **Specifications:** contract entries `CurrentFreeTransform`, `BounceAveragedDrift`,
+  `Omnigenous`, `EffectiveRippleBound`, `ThermalPerformance` added to `notes/formalization/00-model-contracts.md`
+  (normative, not yet in Lean). README rewritten to state the aim as the contract and to describe
+  progress against C1–C5. No Lean file changed; no verified result or declaration name changed.

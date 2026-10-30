@@ -330,6 +330,30 @@
     "text": "contracts model contracts"
   },
   {
+    "title": "Stellarator contract: C1, C2 and C5",
+    "section": "Model contracts",
+    "url": "model-contracts.html#stellarator-contract-c1-c2-and-c5",
+    "text": "stellarator contract: c1, c2 and c5 model contracts"
+  },
+  {
+    "title": "C1: `CurrentFreeTransform` (net toroidal current; ι from the field)",
+    "section": "Model contracts",
+    "url": "model-contracts.html#c1-currentfreetransform-net-toroidal-current-from-the-field",
+    "text": "c1: `currentfreetransform` (net toroidal current; ι from the field) model contracts"
+  },
+  {
+    "title": "C2: `BounceAveragedDrift`, `Omnigenous`, `EffectiveRippleBound`",
+    "section": "Model contracts",
+    "url": "model-contracts.html#c2-bounceaverageddrift-omnigenous-effectiveripplebound",
+    "text": "c2: `bounceaverageddrift`, `omnigenous`, `effectiveripplebound` model contracts"
+  },
+  {
+    "title": "C5: `ThermalPerformance` (temperature on the same candidate)",
+    "section": "Model contracts",
+    "url": "model-contracts.html#c5-thermalperformance-temperature-on-the-same-candidate",
+    "text": "c5: `thermalperformance` (temperature on the same candidate) model contracts"
+  },
+  {
     "title": "Architecture",
     "section": "Model contracts",
     "url": "model-contracts.html#architecture",
@@ -1542,6 +1566,12 @@
     "text": "implementation plan cyclic plan: theory tracks, certificate techniques, and a ladder of successively realistic models for confinement and burn temperature."
   },
   {
+    "title": "The stellarator contract (30 October 2026)",
+    "section": "Implementation plan",
+    "url": "implementation-plan.html#the-stellarator-contract-30-october-2026",
+    "text": "the stellarator contract (30 october 2026) implementation plan"
+  },
+  {
     "title": "Research graph (added 29 October 2026)",
     "section": "Implementation plan",
     "url": "implementation-plan.html#research-graph-added-29-october-2026",
@@ -2062,6 +2092,12 @@
     "section": "Implementation plan",
     "url": "implementation-plan.html#weak-quasisymmetry-and-the-landreman-barrier-n-27-30-october-2026",
     "text": "weak quasisymmetry and the landreman barrier (n-27), 30 october 2026 implementation plan"
+  },
+  {
+    "title": "The stellarator contract: restructuring of the plan, 30 October 2026",
+    "section": "Implementation plan",
+    "url": "implementation-plan.html#the-stellarator-contract-restructuring-of-the-plan-30-october-2026",
+    "text": "the stellarator contract: restructuring of the plan, 30 october 2026 implementation plan"
   },
   {
     "title": "M0 · Exact symmetric equilibria: slab, screw pinch, Solov'ev, helical",

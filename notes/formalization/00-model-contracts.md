@@ -6,6 +6,7 @@ Prepared 10 October 2026 from [PlasmaLean](https://github.com/siddhartha-gadgil/
 
 - [Contracts](#contracts)
 - [Architecture](#architecture)
+- [Stellarator contract: C1, C2 and C5](#stellarator-contract-c1-c2-and-c5)
 - [Corrections to the starting notes](#corrections-to-the-starting-notes)
 - [The model hierarchy](#the-model-hierarchy)
 - [Certificate composition](#certificate-composition)
@@ -27,10 +28,62 @@ Use separate predicates, with explicit parameters:
 | `TransportBound` | Species, collision/turbulence model, profiles, heat/particle flux, and averaging interval |
 | `ComponentFeasible` | Geometry, loads, constitutive data, tolerances, temperatures, degradation, and duty cycle |
 | `DesignFeasible` | Explicit conjunction of the required contracts for the same candidate and operating states |
+| `CurrentFreeTransform` (C1, not yet in Lean) | Toroidal domain, field, family of invariant tori, net toroidal plasma current bound I_max, lower bound ι_min > 0 on the rotational transform; see [stellarator contract](#stellarator-contract-c1-c2-and-c5) |
+| `BounceAveragedDrift`, `Omnigenous`, `EffectiveRippleBound` (C2, not yet in Lean) | Field, certified surfaces, guiding-centre model, species (thermal ions and electrons), energy and pitch ranges, trapped-orbit class, drift or ε_eff bound; see [stellarator contract](#stellarator-contract-c1-c2-and-c5) |
+| `ThermalPerformance` (C5, not yet in Lean as a contract predicate) | The same candidate as C1–C4, operating interval, power balance (Bosch–Hale alpha heating, bremsstrahlung, transport losses), neoclassical losses from C2, supplied anomalous scaling, burn threshold and wall limits; see [stellarator contract](#stellarator-contract-c1-c2-and-c5) |
 
 Avoid an unqualified `Stable : Prop` encompassing all these meanings. In particular, linearly stable ideal MHD is compatible with kinetic microinstabilities and poor confinement.
 
 Record each assumption's origin: mathematical theorem; chosen model law; measured datum or empirical fit; machine requirement; or unresolved research hypothesis. Keep arithmetic error, discretization error, parameter/data uncertainty, and model discrepancy separate.
+
+## Stellarator contract: C1, C2 and C5
+
+Added 30 October 2026 with the user-approved restructuring of the plan around the stellarator
+contract (`notes/implementation-plan.md`, section "The stellarator contract"): C1 current-free
+rotational transform, C2 omnigeneity or small neoclassical transport for thermal particles, C3
+finite-β MHD stability, C4 existence, C5 thermal performance on the same candidate. C3 and C4 use the existing predicates `LinearMHDStable` and
+`EquilibriumExists`/`FieldLineBarrier`. The entries below for C1, C2 and C5 are **normative
+specifications, not yet in Lean** (plan question Q-21, goal G-11). A Lean definition that
+implements them must reproduce the listed content and pass the sanity triad before any claim uses it.
+
+### C1: `CurrentFreeTransform` (net toroidal current; ι from the field)
+
+| Component | Required content |
+| --- | --- |
+| Domain and section | A toroidal domain Ω (open, solid-torus-like) and an oriented cross-section Σ ⊂ Ω (a surface bounded by a poloidal loop on ∂Ω, or the part of a section inside a flux surface S). The definition must state which surface is used; the value is section-independent when ∇·J = 0 and J·n = 0 on the flux surfaces (a theorem obligation, not an assumption) |
+| Net toroidal current | I_tor(S) = ∫_Σ J·n dA with J = (∇ × B)/μ₀, the Ampère current of the same field (not a separately supplied J). Equivalently, by Stokes, μ₀ I_tor = ∮ B·dl around a poloidal loop on S, minus nothing (no external conductor threads the poloidal loop inside Ω). Units: A |
+| Current bound | ‖I_tor(S)‖ ≤ I_max for every confining surface S, with I_max a stated number and its origin recorded (bootstrap-level estimate, a machine requirement, or 0). Vacuum (J = 0 on Ω, the kernel `VacuumField`) implies I_tor = 0 and is the limiting case |
+| Rotational transform | A family of invariant tori (certified, e.g. KAM tori with explicit parametrizations) on which the field-line flow is conjugate to a linear flow with rotation number ι(S), or ι(S) = dψ_p/dψ_t from flux labels; the definition fixes the angle conventions and the orientation |
+| Transform bound | ι(S) ≥ ι_min > 0 for every confining surface S, with ι_min stated |
+| Provenance clause | The contract is `I_tor bound ∧ ι bound` on the same field and surfaces; "provided by the field" means precisely the current bound, so no further clause is needed |
+| Sanity triad | (1) witness: the exact rational stellarator vacuum field with its certified torus (I_tor = 0, ι ≈ 0.137); (2) **current-free axisymmetric ⇒ ι = 0**: an axisymmetric field with I_tor = 0 on every surface has zero poloidal field on the surfaces, hence ι = 0, so it fails C1 for every ι_min > 0 (no confining transform); (3) a tokamak-like field (Solov'ev, or Landreman family 2 with I_tor > 0) violates the current bound for small I_max |
+| Not covered | Current profiles inside S (only the net current), surface currents of stepped-pressure equilibria (to be included via a measure-valued J or a jump condition), external conductors threading the domain |
+
+### C2: `BounceAveragedDrift`, `Omnigenous`, `EffectiveRippleBound`
+
+| Component | Required content |
+| --- | --- |
+| Model | A guiding-centre model named as a hypothesis (Littlejohn or a Boozer-coordinate drift model), species (charge, mass), energy E and magnetic moment μ (or pitch λ) ranges; the flux label ψ and field-line label α on certified surfaces with a chart (Boozer or other straight-field-line angles) whose existence is proved |
+| Trapped orbits | For fixed (ψ, α, E, μ), a bounce interval between consecutive turning points where v∥ = 0 on the field line, with v∥ ≠ 0 inside; nondegeneracy of the turning points (B·∇B ≠ 0 there) stated or the degenerate (marginally trapped) set excluded |
+| Bounce-averaged radial drift | ⟨ψ̇⟩_b = (∮ v_d·∇ψ dl/v∥) / (∮ dl/v∥), with v_d the drift velocity of the stated model; equivalently, in terms of the second adiabatic invariant J = ∮ m v∥ dl, ⟨ψ̇⟩_b is proportional to ∂J/∂α. The proportionality must be a theorem in the chosen model |
+| `Omnigenous` | ⟨ψ̇⟩_b = 0 for every trapped orbit in the stated class on every confining surface (equivalently J independent of α). Quasisymmetry (‖B‖ depends on ψ and one helical angle) and quasi-isodynamicity (poloidally closed ‖B‖ contours) are sufficient conditions, to be proved as theorems |
+| Bounded drift | The quantitative form: sup ‖⟨ψ̇⟩_b‖ ≤ D over the class, with D and its units stated, for thermal ions and electrons at stated temperatures (not only 3.5 MeV alphas) |
+| `EffectiveRippleBound` | ε_eff(ψ) ≤ ε_max on the confining surfaces, with ε_eff defined exactly as in Nemov–Kasilov–Kernbichler–Heyn (Phys. Plasmas 6, 4622, 1999), including the field-line length and the normalization (reference field B₀, major radius R₀); a certified value needs enclosures of the bounce integrals, not samples. The link to a 1/ν-regime diffusivity (χ ∝ ε_eff^{3/2}) is a supplied model law, used only in G-2 (Q-22) |
+| Sanity triad | (1) **axisymmetric ⇒ omnigenous**: in an axisymmetric field ⟨ψ̇⟩_b = 0 for every trapped orbit (canonical momentum conservation), so ε_eff = 0; (2) consistency with C1: an axisymmetric field passes C2 but fails C1 when current-free (ι = 0), so C1 ∧ C2 excludes tokamaks and trivial fields; (3) a generic 3-D field is not omnigenous: an explicit field (for example a field with a single-harmonic helical ripple on a torus) with a trapped orbit class and ⟨ψ̇⟩_b ≠ 0 |
+| Not covered | Collisions, the radial electric field (E × B drift, which matters in stellarators and must be added as a separate clause), finite orbit width, and turbulence; C2 alone is not a transport bound (`TransportBound` remains separate) |
+
+### C5: `ThermalPerformance` (temperature on the same candidate)
+
+| Component | Required content |
+| --- | --- |
+| Candidate | The **same** decoded field, equilibrium and surfaces that satisfy C1–C4 (common witness), with the flux-surface geometry of that equilibrium (volumes, ⟨‖∇ψ‖²⟩) used in the transport model |
+| Requirement | Core temperature T(0, t) ≥ T_burn (e.g. 10 keV) for t in the operating interval [0, T_op] (or all t ≥ 0), and temperature and heat flux at the edge and wall below stated wall and material limits |
+| Power balance | Alpha heating from Bosch–Hale reactivity (enclosure supplied as a named law), bremsstrahlung with the Z_eff of a quasineutral composition (`PhysicalPlasma.composition`), auxiliary heating if any, and transport losses |
+| Transport losses | Neoclassical part derived from C2 (an ε_eff or bounce-averaged-drift bound turned into χ bounds for thermal ions and electrons through a stated neoclassical law, e.g. 1/ν regime χ ∝ ε_eff^{3/2}); anomalous (turbulent) part a stated, supplied scaling (ISS04 with its renormalization factor, or an available-energy Â bound). Never hidden in a free constant |
+| Solution | The transport solution either constructed (existence proved) or explicitly supplied as a hypothesis, stated in the scope of every claim; pressure equal to (not only bounded by) the force-balance pressure for a full consistency claim |
+| Coupling | C2 couples into C5: poor omnigeneity means large 1/ν losses, which can make burn inaccessible (compare the proved Stellaris obstructions at measured renormalization factors) |
+| Sanity | (1) witness: the Solov'ev budget results (`solovev_one_plasma_actual`), which satisfy the temperature clause for a **tokamak model** with a supplied transport solution, hence not C5 for a stellarator candidate; (2) obstruction: with the measured ISS04 renormalization the 0-D steady state is inaccessible (`stellaris_measured_fren_no_access_steady`); (3) monotonicity: increasing the loss (larger ε_eff or χ) cannot turn an inaccessible burn into an accessible one |
+| Not covered | Profile control, impurity accumulation, alpha ash, density limits and exhaust, unless added as separate clauses |
 
 ## Architecture
 
