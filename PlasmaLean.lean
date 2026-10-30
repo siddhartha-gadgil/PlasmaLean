@@ -280,6 +280,7 @@ public import PlasmaLean.Design.NearAxisQAOmnigeneity
 public import PlasmaLean.Theory.Contract.StellaratorContract
 public import PlasmaLean.Design.LandremanNetCurrent
 public import PlasmaLean.Design.RationalStellaratorContract
+public import PlasmaLean.Design.RationalStellaratorQAObstruction
 
 /-!
 # PlasmaLean public library

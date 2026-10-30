@@ -306,3 +306,5 @@ run_cmd do
 #print axioms PlasmaLean.Design.RationalStellaratorContract.toroidal_circ_current_zero
 #print axioms PlasmaLean.Design.RationalStellaratorContract.ExactTorus.iotaOnTorus
 #print axioms PlasmaLean.Design.RationalStellaratorContract.rationalStellarator_currentFreeTransform
+#print axioms PlasmaLean.Design.RationalStellaratorQAObstruction.rotatingEllipse_firstOrder_QA_defect
+#print axioms PlasmaLean.Design.RationalStellaratorQAObstruction.rationalStellarator_firstOrder_not_QS

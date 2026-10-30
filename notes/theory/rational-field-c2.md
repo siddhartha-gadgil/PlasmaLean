@@ -12,10 +12,10 @@
 | Dependency requirement | Field definition and vacuum property: compiled. KAM torus A: compiled. Everything computed here: **untrusted numerics**. The Boozer facts of §2 are **proved informally** |
 | Produces | Numbers (ι profile, Boozer spectra, QS defects, ε_eff); the closed-form first-order QA defect `sqrt(ι₀/N)` (proved informally); verdict on C2; recommendation for Q-16 |
 | Difficulty | moderate (numerics routine; the obstruction is a short near-axis computation) |
-| Status | exploratory (numerics) / proof-ready (first-order obstruction) |
-| Lean evidence | none |
+| Status | exploratory (numerics) / **formalized** (first-order obstruction, §4; first order in r only) |
+| Lean evidence | `PlasmaLean/Design/RationalStellaratorQAObstruction.lean` (default build, standard axioms only): `rotatingEllipse_firstOrder_QA_defect`, `b1_not_quasiSymmetric` (general N), `firstOrderNormB_eq_b1`, `rationalStellarator_firstOrder_not_QS`, `rationalStellarator_firstOrder_QA_defect`, `nonQA_fraction_quarter` (N = 2, the actual field) |
 | Audit evidence | not audited |
-| Last updated | 30 October 2026: created |
+| Last updated | 30 October 2026: created; §4 obstruction formalized (first order) |
 
 ## Purpose and scope
 
@@ -226,7 +226,8 @@ omnigeneity (lead, not checked).
    helicities have defect fraction ≥ 0.96.
 4. **Numerical observation.** ε_eff ≈ 0.2 r_eff: 2.7 % at torus A, 4.5 % at r = 0.2, 7.1 % at
    r = 0.287 and 9.9 % at r = 0.36. The ε_eff code is validated on the classical-stellarator limit.
-5. **Proved informally.** First-order QA defect fraction = sqrt(ι₀/N), exact for the family (§4).
+5. **Lean (first order).** First-order QA defect fraction = sqrt(ι₀/N), exact for the family (§4);
+   see "Lean formalization of §4" below.
 6. **Lead.** The obstruction extends to first-order omnigeneity (Plunk–Landreman–Helander).
 
 ## Difficulty, barriers and readiness
@@ -251,6 +252,33 @@ omnigeneity (lead, not checked).
     proxy.
   - Electron versus ion distinction. ε_eff is species-independent in the 1/ν regime.
   - Finite β.
+
+## Lean formalization of §4 (30 October 2026)
+
+Module `PlasmaLean/Design/RationalStellaratorQAObstruction.lean` (default build; zero warnings;
+`#print axioms`: `propext`, `Classical.choice`, `Quot.sound` only; entries in
+`scripts/check_axioms.lean`).
+
+- **General N (algebra).** `b1 N ε θ φ = qaPart + nonQAPart`, with
+  `qaPart = −(a cos θ + ε sin θ)`, `nonQAPart = −(c cos(Nφ − θ) + ε sin(Nφ − θ))`,
+  `a, c = (N/2 ± κ_N)/2`. Hypotheses `0 < N`, `16ε² ≤ N²`.
+  - `rotatingEllipse_firstOrder_QA_defect`: `|b1 − qaPart| ≤ |P|` everywhere; for every `f`
+    some `(θ, φ)` has `|b1 θ φ − f θ| ≥ |P|` (so `|P|` is the exact sup-distance to QA
+    functions); `|P| = √(N ι₀)/2`; fraction `|P|/√(|P|² + |Q|²) = √(ι₀/N)`; `|P| > 0 ↔ ι₀ ≠ 0`.
+  - `b1_not_quasiSymmetric` (`ι₀ ≠ 0`, `(M, K) ≠ (0, 0)`): `b1` is not a function of
+    `Mθ − KNφ`, for any real helicity.
+  - Sanity: `b1_zero_iota` (`ε = 0`: `b1 = −(N/2) cos θ`, QA, zero defect).
+- **The actual field, N = 2.** `normField_hasFDerivAt_axis` (`D‖B‖(axis φ) = −⟪e_R, ·⟫`, the
+  actual Fréchet derivative); `linTorus` with `linTorus_eq_Φ`, `linTorus_hasDerivAt` (solves the
+  variational equation `v' = 2ε S(φ) v` of `RationalStellaratorAxis`); `firstOrderNormB_eq_b1`
+  (the first-order ‖B‖ on these tori in `θ_s = ι₀φ − θ₀` is `b1 2 ε`);
+  `rationalStellarator_firstOrder_not_QS` (`ε ≠ 0`, `4ε² < 1`),
+  `rationalStellarator_firstOrder_QA_defect` (`4ε² < 1`), `nonQA_fraction_quarter`
+  (`0.2588 < √(ι₀/2) < 0.2589` at `ε = 1/4`).
+- **Scope.** First order in r only (derivative at the axis, linearized tori). The angles are
+  the straight-field-line angles of the linear flow; their agreement with Boozer angles up to
+  O(r²) (§2) is not formalized, nor the link to N-29's `ξB`. The Plunk–Landreman–Helander
+  extension to omnigeneity (claim 6) remains a lead.
 
 ## Outputs and next dependencies
 
