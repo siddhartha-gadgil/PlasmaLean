@@ -512,7 +512,7 @@
     }
    ],
    "progress": "15 new modules and a recorded kernel change. Three review passes: pressure consistency of the barrier, a finite-time Boozer orbit structure, a kernel law excluding vacuous regular axes, and non-vacuity witnesses.",
-   "boundary": "The alpha theorem is for an axisymmetric equilibrium; near-quasisymmetric fields reached only 0.8 ms in this phase (0.11 s in Phase 4). Flux-surface averages, scaling laws, reactivity and solutions are supplied. No coil-produced configuration. Near-QA (Boozer) guiding-centre results assume the orbit stays off the magnetic axis (ψ > 0) on the time interval; such orbits are proved to exist only on some short interval (boozerGCOrbitOn_exists_local).",
+   "boundary": "The alpha theorem is for an axisymmetric equilibrium; near-quasisymmetric fields reached only 0.8 ms in this phase (0.11 s in Phase 4). Flux-surface averages, scaling laws, reactivity and solutions are supplied. No coil-produced configuration. Near-QA (Boozer) guiding-centre results assume the orbit stays off the magnetic axis (ψ > 0) on the time interval; such orbits are proved to exist on the full horizon for a band of births further out (to 0.05 s) and on about 1.5 μs for births near the axis; longer horizons near the axis need coordinates through it.",
    "evidence": [
     {
      "label": "New checked results",
@@ -1076,7 +1076,7 @@
     }
    ],
    "progress": "About 90 new modules (mostly certificates).",
-   "boundary": "Still μ = 0 for confinement theorems; supplied guiding-centre model. Near-QA (Boozer) guiding-centre results assume the orbit stays off the magnetic axis (ψ > 0) on the time interval; such orbits are proved to exist only on some short interval (boozerGCOrbitOn_exists_local).",
+   "boundary": "Still μ = 0 for confinement theorems; supplied guiding-centre model. Near-QA (Boozer) guiding-centre results assume the orbit stays off the magnetic axis (ψ > 0) on the time interval; such orbits are proved to exist on the full horizon for a band of births further out (to 0.05 s) and on about 1.5 μs for births near the axis; longer horizons near the axis need coordinates through it.",
    "evidence": [
     {
      "label": "New checked results",
@@ -1454,7 +1454,7 @@
     },
     {
      "title": "Open",
-     "text": "Near-QA guiding-centre orbits exist only on some short interval (full horizon open); one module at 6.17 GB; about 2,060 legacy decide +kernel lines.",
+     "text": "Near-QA orbits born close to the axis: existence beyond about 1.5 μs needs coordinates through the axis (user decision); one module at 6.17 GB (being split); about 2,060 legacy decide +kernel lines.",
      "status": "Next: off-axis bound, Phase 16",
      "kind": "next"
     }
