@@ -438,6 +438,12 @@
     "text": "contents geometry & fields"
   },
   {
+    "title": "Role in the stellarator contract",
+    "section": "Geometry & fields",
+    "url": "geometry-and-fields.html#role-in-the-stellarator-contract",
+    "text": "role in the stellarator contract geometry & fields"
+  },
+  {
     "title": "Euclidean foundations",
     "section": "Geometry & fields",
     "url": "geometry-and-fields.html#euclidean-foundations",
@@ -466,6 +472,12 @@
     "section": "Geometry & fields",
     "url": "geometry-and-fields.html#quasisymmetry-and-near-axis-theory",
     "text": "quasisymmetry and near-axis theory geometry & fields"
+  },
+  {
+    "title": "Status in PlasmaLean",
+    "section": "Geometry & fields",
+    "url": "geometry-and-fields.html#status-in-plasmalean",
+    "text": "status in plasmalean geometry & fields"
   },
   {
     "title": "Theorem backlog",
@@ -546,6 +558,12 @@
     "text": "contents models & equilibrium"
   },
   {
+    "title": "Role in the stellarator contract",
+    "section": "Models & equilibrium",
+    "url": "plasma-models-and-equilibrium.html#role-in-the-stellarator-contract",
+    "text": "role in the stellarator contract models & equilibrium"
+  },
+  {
     "title": "State, scales, and units",
     "section": "Models & equilibrium",
     "url": "plasma-models-and-equilibrium.html#state-scales-and-units",
@@ -580,6 +598,12 @@
     "section": "Models & equilibrium",
     "url": "plasma-models-and-equilibrium.html#kinetic-reference-and-reduction-contracts",
     "text": "kinetic reference and reduction contracts models & equilibrium"
+  },
+  {
+    "title": "Status in PlasmaLean",
+    "section": "Models & equilibrium",
+    "url": "plasma-models-and-equilibrium.html#status-in-plasmalean",
+    "text": "status in plasmalean models & equilibrium"
   },
   {
     "title": "Theorem backlog",
@@ -654,6 +678,12 @@
     "text": "contents mhd stability"
   },
   {
+    "title": "Role in the stellarator contract",
+    "section": "MHD stability",
+    "url": "mhd-stability.html#role-in-the-stellarator-contract",
+    "text": "role in the stellarator contract mhd stability"
+  },
+  {
     "title": "Start with an abstract energy theorem",
     "section": "MHD stability",
     "url": "mhd-stability.html#start-with-an-abstract-energy-theorem",
@@ -694,6 +724,12 @@
     "section": "MHD stability",
     "url": "mhd-stability.html#discretization-and-nonlinear-targets",
     "text": "discretization and nonlinear targets mhd stability"
+  },
+  {
+    "title": "Status in PlasmaLean",
+    "section": "MHD stability",
+    "url": "mhd-stability.html#status-in-plasmalean",
+    "text": "status in plasmalean mhd stability"
   },
   {
     "title": "Theorem backlog",
@@ -774,6 +810,12 @@
     "text": "contents particles & transport"
   },
   {
+    "title": "Status in PlasmaLean and the stellarator contract",
+    "section": "Particles & transport",
+    "url": "particles-and-transport.html#status-in-plasmalean-and-the-stellarator-contract",
+    "text": "status in plasmalean and the stellarator contract particles & transport"
+  },
+  {
     "title": "Full-orbit dynamics",
     "section": "Particles & transport",
     "url": "particles-and-transport.html#full-orbit-dynamics",
@@ -834,10 +876,10 @@
     "text": "k3 approximate-invariant finite-time confinement theorem backlog partially implemented — 3.5 mev alpha orbits in an exact solov'ev field (a tokamak model) exist and are all confined for all time (reactor_alpha_born_confined); passing alpha guiding centres confined for all time in an exact vacuum stellarator field (littlejohn model): μ = 0 over b₀r₀ ∈ [67.95, 69.99] t·m, every λ ∈ [0, 1/4] at one energy and b₀r₀ (on-demand), a ±0.4 ev × λ ∈ [0, 1/16] window (on-demand); near-qa passing alphas 0.19 s for orbits off the axis, with existence on the full horizon only for a band of births. one species, mostly passing: part of c2 at most; trapped alphas open."
   },
   {
-    "title": "K4 · Omnigeneity/action relation in a specified class",
+    "title": "K4 · Omnigeneity/action relation in a specified class; bounce-averaged drift and ε_eff for thermal ions and electrons (C2)",
     "section": "Particles & transport · Planning only — no Lean code written; this is now the C2 priority (omnigeneity, bounce-averaged drift, ε_eff for thermal ions and electrons; specified in the model contracts, Q-21). Adjacent compiled: WeakQS, boozerGC_trapped.",
     "url": "particles-and-transport.html",
-    "text": "k4 omnigeneity/action relation in a specified class theorem backlog planning only — no lean code written; this is now the c2 priority (omnigeneity, bounce-averaged drift, ε_eff for thermal ions and electrons; specified in the model contracts, q-21). adjacent compiled: weakqs, boozergc_trapped."
+    "text": "k4 omnigeneity/action relation in a specified class; bounce-averaged drift and ε_eff for thermal ions and electrons (c2) theorem backlog planning only — no lean code written; this is now the c2 priority (omnigeneity, bounce-averaged drift, ε_eff for thermal ions and electrons; specified in the model contracts, q-21). adjacent compiled: weakqs, boozergc_trapped."
   },
   {
     "title": "K5 · Certified finite-time orbit bundle",
@@ -888,6 +930,18 @@
     "text": "contents verified numerics"
   },
   {
+    "title": "Status in PlasmaLean and the stellarator contract",
+    "section": "Verified numerics",
+    "url": "verified-numerics.html#status-in-plasmalean-and-the-stellarator-contract",
+    "text": "status in plasmalean and the stellarator contract verified numerics"
+  },
+  {
+    "title": "The certificate toolkit and the no-decide policy",
+    "section": "Verified numerics",
+    "url": "verified-numerics.html#the-certificate-toolkit-and-the-no-decide-policy",
+    "text": "the certificate toolkit and the no-decide policy verified numerics"
+  },
+  {
     "title": "Exact inputs and interval arithmetic",
     "section": "Verified numerics",
     "url": "verified-numerics.html#exact-inputs-and-interval-arithmetic",
@@ -928,6 +982,12 @@
     "section": "Verified numerics",
     "url": "verified-numerics.html#uncertainty-and-certificate-identity",
     "text": "uncertainty and certificate identity verified numerics"
+  },
+  {
+    "title": "Laptop budget and the workstation pipeline",
+    "section": "Verified numerics",
+    "url": "verified-numerics.html#laptop-budget-and-the-workstation-pipeline",
+    "text": "laptop budget and the workstation pipeline verified numerics"
   },
   {
     "title": "Theorem backlog",
@@ -1002,6 +1062,12 @@
     "text": "contents coils & design"
   },
   {
+    "title": "Status in PlasmaLean and the stellarator contract",
+    "section": "Coils & design",
+    "url": "coils-and-design.html#status-in-plasmalean-and-the-stellarator-contract",
+    "text": "status in plasmalean and the stellarator contract coils & design"
+  },
+  {
     "title": "Filament fields",
     "section": "Coils & design",
     "url": "coils-and-design.html#filament-fields",
@@ -1032,10 +1098,22 @@
     "text": "robust design specifications coils & design"
   },
   {
+    "title": "The Dommaschk QA route (Q-16)",
+    "section": "Coils & design",
+    "url": "coils-and-design.html#the-dommaschk-qa-route-q-16",
+    "text": "the dommaschk qa route (q-16) coils & design"
+  },
+  {
     "title": "A complete candidate workflow",
     "section": "Coils & design",
     "url": "coils-and-design.html#a-complete-candidate-workflow",
     "text": "a complete candidate workflow coils & design"
+  },
+  {
+    "title": "Design gates under the contract",
+    "section": "Coils & design",
+    "url": "coils-and-design.html#design-gates-under-the-contract",
+    "text": "design gates under the contract coils & design"
   },
   {
     "title": "Theorem backlog",
@@ -1188,6 +1266,18 @@
     "text": "contents materials & engineering"
   },
   {
+    "title": "Status in PlasmaLean",
+    "section": "Materials & engineering",
+    "url": "materials-and-engineering.html#status-in-plasmalean",
+    "text": "status in plasmalean materials & engineering"
+  },
+  {
+    "title": "Relation to the stellarator contract",
+    "section": "Materials & engineering",
+    "url": "materials-and-engineering.html#relation-to-the-stellarator-contract",
+    "text": "relation to the stellarator contract materials & engineering"
+  },
+  {
     "title": "Material laws and validity envelopes",
     "section": "Materials & engineering",
     "url": "materials-and-engineering.html#material-laws-and-validity-envelopes",
@@ -1320,10 +1410,28 @@
     "text": "contents roadmap"
   },
   {
+    "title": "The stellarator contract",
+    "section": "Roadmap",
+    "url": "roadmap.html#the-stellarator-contract",
+    "text": "the stellarator contract roadmap"
+  },
+  {
     "title": "Success criteria",
     "section": "Roadmap",
     "url": "roadmap.html#success-criteria",
     "text": "success criteria roadmap"
+  },
+  {
+    "title": "Goals and questions",
+    "section": "Roadmap",
+    "url": "roadmap.html#goals-and-questions",
+    "text": "goals and questions roadmap"
+  },
+  {
+    "title": "Current priority order",
+    "section": "Roadmap",
+    "url": "roadmap.html#current-priority-order",
+    "text": "current priority order roadmap"
   },
   {
     "title": "Parallel mathematical tracks",
@@ -1402,6 +1510,24 @@
     "section": "Roadmap",
     "url": "roadmap.html#r8-scalable-proof-certificates-for-practical-resolution",
     "text": "r8. scalable proof certificates for practical resolution roadmap"
+  },
+  {
+    "title": "History: phases 1–16",
+    "section": "Roadmap",
+    "url": "roadmap.html#history-phases-116",
+    "text": "history: phases 1–16 roadmap"
+  },
+  {
+    "title": "The workstation",
+    "section": "Roadmap",
+    "url": "roadmap.html#the-workstation",
+    "text": "the workstation roadmap"
+  },
+  {
+    "title": "Agent commands",
+    "section": "Roadmap",
+    "url": "roadmap.html#agent-commands",
+    "text": "agent commands roadmap"
   },
   {
     "title": "AI theory-development loop",
@@ -1512,16 +1638,16 @@
     "text": "6 theory.fields.biotsavart the first coding sequence partially implemented — current linearity, loop formula, actual field-integral differentiation, perturbation bounds and source-free maxwell identities."
   },
   {
-    "title": "7 · Theory.Stability.BlockBounds",
+    "title": "7 · Theory.Stability.BlockBounds, Certificates.BlockBounds",
     "section": "Roadmap · Lean verified — scalar block checker and polynomial interval checker with Riccati/Jacobi stability certificates; no MHD tail estimate.",
     "url": "roadmap.html",
-    "text": "7 theory.stability.blockbounds the first coding sequence lean verified — scalar block checker and polynomial interval checker with riccati/jacobi stability certificates; no mhd tail estimate."
+    "text": "7 theory.stability.blockbounds, certificates.blockbounds the first coding sequence lean verified — scalar block checker and polynomial interval checker with riccati/jacobi stability certificates; no mhd tail estimate."
   },
   {
-    "title": "8 · Bridge.Candidate, Design.Specification",
+    "title": "8 · Bridge.Contracts",
     "section": "Roadmap · Partially implemented — common-witness contracts; decoded geometry identity, source data and complete candidate ledger remain pending.",
     "url": "roadmap.html",
-    "text": "8 bridge.candidate, design.specification the first coding sequence partially implemented — common-witness contracts; decoded geometry identity, source data and complete candidate ledger remain pending."
+    "text": "8 bridge.contracts the first coding sequence partially implemented — common-witness contracts; decoded geometry identity, source data and complete candidate ledger remain pending."
   },
   {
     "title": "R1 · R1. Constructive three-dimensional finite-pressure equilibrium",
@@ -2170,6 +2296,18 @@
     "section": "Literature",
     "url": "literature.html#source-extraction-protocol",
     "text": "source extraction protocol literature"
+  },
+  {
+    "title": "Literature by contract clause",
+    "section": "Literature",
+    "url": "literature.html#literature-by-contract-clause",
+    "text": "literature by contract clause literature"
+  },
+  {
+    "title": "Sources the compiled library uses",
+    "section": "Literature",
+    "url": "literature.html#sources-the-compiled-library-uses",
+    "text": "sources the compiled library uses literature"
   },
   {
     "title": "Geometry, equilibrium, and symmetry",

@@ -6,9 +6,11 @@
   </div></header><div class="app-shell"><nav class="side-nav" aria-label="Handbook chapters"><div class="nav-kicker">Explore</div><a href="index.html">Home · illustrated overview</a><a href="handbook.html">Handbook &amp; tasks</a><a href="slides.html">Progress slideshow</a><a href="progress.html">Verified progress &amp; assumptions</a><a href="#" data-search>Search handbook</a><div class="nav-kicker">Foundation</div><a href="domain-library.html"><span class="nav-number">00</span>Library method</a><a href="model-contracts.html"><span class="nav-number">01</span>Model contracts</a><div class="nav-kicker">Physics</div><a href="geometry-and-fields.html"><span class="nav-number">02</span>Geometry & fields</a><a href="plasma-models-and-equilibrium.html"><span class="nav-number">03</span>Models & equilibrium</a><a href="mhd-stability.html"><span class="nav-number">04</span>MHD stability</a><a href="particles-and-transport.html"><span class="nav-number">05</span>Particles & transport</a><div class="nav-kicker">Verification</div><a href="verified-numerics.html" aria-current="page"><span class="nav-number">06</span>Verified numerics</a><div class="nav-kicker">Design</div><a href="coils-and-design.html"><span class="nav-number">07</span>Coils & design</a><a href="vacuum-demonstrator.html"><span class="nav-number">08</span>Vacuum demonstrator</a><a href="materials-and-engineering.html"><span class="nav-number">09</span>Materials & engineering</a><div class="nav-kicker">Program</div><a href="roadmap.html"><span class="nav-number">10</span>Roadmap</a><a href="implementation-plan.html"><span class="nav-number">11</span>Implementation plan</a><a href="literature.html"><span class="nav-number">12</span>Literature</a></nav><main class="doc">
     <section class="doc-hero"><div class="eyebrow">Verification · PlasmaLean handbook</div><h1>Verified numerics and continuous certificates</h1><p>Exact inputs, continuous bounds, equilibrium validation, and certificate identity.</p><div class="hero-meta"><span>Lean 4.34.1</span><span>Mathlib 4.34.1</span><span>9 tracked tasks</span></div></section>
     <div class="progress-banner"><span class="progress-dot"></span><div><strong>Implementation status · 2026-10-30</strong>Organized by the stellarator contract (C1 current-free rotational transform, C2 omnigeneity for thermal ions and electrons, C3 finite-β stability, C4 existence, C5 thermal performance on the same candidate); non-axisymmetry is a consequence, not a goal. Status: C1 and C4 only in vacuum (an exact non-axisymmetric vacuum field with a KAM-certified torus, ι ≈ 0.137, confining field lines for all time); C2 essentially open for thermal particles (weak quasisymmetry defined, Landreman families proved not weakly quasisymmetric; passing 3.5 MeV alphas confined for all time in the vacuum field, Littlejohn model, one species); C3 only on test beds that fail C1 (Landreman family 2 carries positive net toroidal current) and on a Solov'ev tokamak model; C5 only on that tokamak model (one field with a pressure-budget band, transport solutions supplied) and in 0-D. First strict audit done; orbits proved to exist; Landreman family 1 proved a Grad counterexample (infrastructure); every module with a recorded peak is within the 6 GB laptop target after the split of the one 6.7 GB module. <a href="progress.html">Compiled declarations, build results and assumptions →</a> Chapter notes retain their original planning context; the task progress fields report subsequent work.</div></div>
-    <p class="overview-return"><a href="index.html#theory">← Illustrated introduction: Theory engine &amp; graphics</a></p><article class="prose"><p>External computation proposes candidates. A small proved checker and analytic soundness theorems turn selected candidates into mathematical evidence. This is a development specification, not an assertion that these checkers already exist.</p>
+    <p class="overview-return"><a href="index.html#theory">← Illustrated introduction: Theory engine &amp; graphics</a></p><article class="prose"><p>External computation proposes candidates. A small proved checker and analytic soundness theorems turn selected candidates into mathematical evidence. The chapter was written on 12 October 2026 as a development specification, before any checker existed. Its exposition still states the method. Many of the checkers now exist, and a status layer, last revised on 30 October 2026, records what is compiled, what remains open and what was corrected. Sources for the status layer are the <a href="implementation-plan.html">implementation plan</a> (the stellarator contract, the research graph and the §13 log), the <a href="https://github.com/siddhartha-gadgil/PlasmaLean/blob/main/progress/2026-10-30-progress-15.md">30 October progress report</a>, <a href="https://github.com/siddhartha-gadgil/PlasmaLean/blob/main/PlasmaLean/Certificates/README.md"><code>Certificates/README.md</code></a> and <a href="https://github.com/siddhartha-gadgil/PlasmaLean/blob/main/Workstation.md">Workstation.md</a>.</p>
 <h2 id="contents">Contents</h2>
 <ul>
+<li><a href="#status-in-plasmalean-and-the-stellarator-contract">Status in PlasmaLean and the stellarator contract</a></li>
+<li><a href="#the-certificate-toolkit-and-the-no-decide-policy">The certificate toolkit and the no-decide policy</a></li>
 <li><a href="#exact-inputs-and-interval-arithmetic">Exact inputs and interval arithmetic</a></li>
 <li><a href="#continuous-geometry-and-quadrature">Continuous geometry and quadrature</a></li>
 <li><a href="#finite-dimensional-certificates">Finite-dimensional certificates</a></li>
@@ -16,8 +18,63 @@
 <li><a href="#continuum-stability-validation">Continuum stability validation</a></li>
 <li><a href="#kam-and-orbit-certificates">KAM and orbit certificates</a></li>
 <li><a href="#uncertainty-and-certificate-identity">Uncertainty and certificate identity</a></li>
+<li><a href="#laptop-budget-and-the-workstation-pipeline">Laptop budget and the workstation pipeline</a></li>
 <li><a href="#theorem-backlog">Theorem backlog</a></li>
 </ul>
+<h2 id="status-in-plasmalean-and-the-stellarator-contract">Status in PlasmaLean and the stellarator contract</h2>
+<p>Verified numerics serves every clause of the <a href="implementation-plan.html#the-stellarator-contract-30-october-2026">stellarator contract</a>. Under the contract a candidate must satisfy:</p>
+<ul>
+<li>C1, a current-free rotational transform;</li>
+<li>C2, omnigeneity for thermal particles;</li>
+<li>C3, MHD stability at finite β;</li>
+<li>C4, existence;</li>
+<li>C5, thermal performance on the same candidate.</li>
+</ul>
+<p>Each of these needs certified numbers about a concrete field. Present uses:</p>
+<ul>
+<li><strong>C1 and C4 in vacuum.</strong> The a posteriori KAM certificate for torus A of the exact rational vacuum field is the main heavy certificate (<code>torusA_exact</code>, <code>rationalStellarator_confined_forever_exists</code>). The planned Dommaschk QA field (Q-16) reuses the same pipeline for further tori, for ι ≥ ι_min and for Boozer and ε_QS diagnostics.</li>
+<li><strong>C2.</strong> Nothing is certified yet. Q-19 (bounce-averaged drift and ε_eff on the rational field) and Q-16 need validated bounce integrals and Fourier bounds on certified surfaces. The toolkit below provides the arithmetic; the C2 definitions (Q-21) do not exist yet.</li>
+<li><strong>C3.</strong> Certificates exist only on test beds that fail C1: the Landreman family-2 Mercier band and Solov'ev ballooning. The checkers are designed to transfer to a current-free equilibrium.</li>
+<li><strong>C5.</strong> Bosch–Hale windows (<code>BoschHaleFine</code>) and the burn-window arithmetic are certified. The transport solution itself is supplied.</li>
+</ul>
+<p>All certificate entry points use the standard axioms only. <code>scripts/check_axioms.lean</code> covers 122 entry points. <code>scripts/check_axioms_heavy.lean</code> covers the on-demand tops, including <code>CoilKamCert</code>, and since audit M-4 it fails on any non-standard axiom.</p>
+<h2 id="the-certificate-toolkit-and-the-no-decide-policy">The certificate toolkit and the no-decide policy</h2>
+<p><strong>Pattern.</strong> Every certificate format consists of four parts:</p>
+<ul>
+<li>exact data;</li>
+<li>a checker, or an inductive certificate predicate;</li>
+<li>a soundness theorem: certificate ⇒ the mathematical statement for every real point, mode or cell;</li>
+<li>a proof-term builder.</li>
+</ul>
+<p>Large checks are built as explicit proof terms whose leaves are small kernel facts. This is the SubsetSum pattern (reference example <a href="https://github.com/siddhartha-gadgil/PlasmaLean/blob/main/PlasmaLean/SubsetSum.lean"><code>PlasmaLean/SubsetSum.lean</code></a>: an inductive predicate, a computable checker characterized by <code>fun_induction</code>/<code>grind</code>, and a <code>meta</code> builder). <strong>New code uses no <code>decide</code> of any kind.</strong> <code>eval_decide</code> and <code>fiv_decide</code> are evaluation certificates of <code>decide p</code>; the tactic <code>decide</code> itself is not run.</p>
+<p>All the modules below are in <code>PlasmaLean/Certificates/</code> and in the default build, unless another location is given.</p>
+<div class="table-wrap"><table><thead><tr><th>Tool</th><th>Module</th><th>Use</th></tr></thead><tbody><tr><td><code>kernel_fact</code></td><td><code>KernelFact</code></td><td>Closed side conditions, conjunctions and list quantifiers, as explicit proof terms</td></tr><tr><td><code>bool_cert</code> (<code>BCert</code>)</td><td><code>BoolCert</code></td><td>A Boolean checker over lists, unfolded one definition or matcher at a time, with one step per item</td></tr><tr><td><code>eval_cert</code>, <code>eval_decide</code> (<code>ECert</code>)</td><td><code>EvalCert</code>; builder in <code>PlasmaLeanMeta/EvalCert</code></td><td>Evaluation of a closed term (balls, intervals, rationals, polynomials, records, recursion): one leaf per operation, with shared subterms evaluated once</td></tr><tr><td><code>fiv_cert</code>, <code>fiv_decide</code></td><td><code>EvalCertFIv</code></td><td>The same, with the fixed-point interval operations <code>FIv</code> as leaves</td></tr><tr><td><code>kron_proof</code>, <code>kron_lt</code> (<code>SCert</code>, <code>PCert</code>)</td><td><code>KronProof</code></td><td>Kronecker ball checks of the KAM families (signed images, digit reading in blocks of 2⁹ rows)</td></tr><tr><td><code>kron2_proof</code> (<code>PCert2</code>)</td><td><code>KronProof2D</code></td><td>Two-dimensional Kronecker checks (Torus and NegTorus families, the weighted KAM checks <code>wcheck_*</code>)</td></tr><tr><td><code>l1kron_cert</code> (<code>DCert</code>)</td><td><code>DigitSumCert</code></td><td>Kronecker digit sums <code>l1Kron</code></td></tr><tr><td><code>icc_cert</code>, <code>icc_close</code></td><td><code>IccListCert</code></td><td>Finite sums and quantifiers over <code>Finset.Icc</code> as list computations</td></tr><tr><td><code>fampack_cert</code> (<code>FPCert</code>)</td><td><code>FamPackCert</code></td><td>Kronecker images of stored families, row by row (<code>famPack_eq_of_cert</code>)</td></tr><tr><td><code>f2_arc_cert</code></td><td><code>Design/LandremanFamily2ArcCert</code></td><td>The 136 outer-arc quadratures of Landreman family 2 (Q-6, done 30 October)</td></tr><tr><td><code>oned_cert</code></td><td><code>Design/LandremanFamily2Quad</code></td><td>The family-2 one-dimensional quadratures, with fast enclosures as leaves</td></tr><tr><td><code>line_cert</code></td><td><code>Design/PolygonCoilCubicLineCert</code></td><td>Per-segment line certificates of the cubic polygonal-coil cover</td></tr><tr><td><code>bl_cert</code></td><td><code>Design/SolovevBallooningEvalCert</code></td><td>Solov'ev ballooning boxes</td></tr></tbody></table></div>
+<p><strong>Legacy <code>decide +kernel</code> (Q-12, audit M-5).</strong> Phase 16 has been replacing the old whole-checker <code>decide +kernel</code> evaluations with these certificates. The count of lines containing <code>decide +kernel</code> in the default build fell 1,407 → 690 → 475 → 381 → 297 over stages 6–9. It then fell to <strong>130</strong> after the 136 Landreman outer arcs were converted to <code>f2_arc_cert</code> (Q-6). <strong>1,971</strong> lines remain overall, most of them in frozen on-demand families. Audit L-1 corrected an earlier slide figure of &quot;2,507 / 690&quot;, which was a stage-6 count. The remaining default-build items are:</p>
+<ul>
+<li>the <code>NearAxisQAAveraged</code> parts;</li>
+<li>the fast side <code>famTB − famO</code>;</li>
+<li><code>nodeFin</code> and <code>famL1</code> leaves;</li>
+<li><code>KamTorusACheck</code>, <code>SurrogateCheck</code> and <code>FrameCheck</code>.</li>
+</ul>
+<p>Some on-demand Adm modules use <code>decide_cbv</code>.</p>
+<p><strong>Opaque-leaf audit.</strong> A <code>kernel_fact</code> leaf can be as opaque as <code>decide</code> when it is one big <code>Eq.refl</code> on a whole checker. <code>scripts/audit_kernel_fact.py</code> walks the built proof terms and classifies each leaf:</p>
+<ul>
+<li>class a: literal facts;</li>
+<li>class a-data: data definitions without recursion;</li>
+<li>class b: a recursive PlasmaLean definition is reached.</li>
+</ul>
+<p>With <code>--time</code>, it also times each class-b leaf on its own. Results:</p>
+<ul>
+<li><strong>Default build:</strong> 6,098 class-b leaves, none taking 0.1 s or more (stage 8 had 34), about 20 s of opaque kernel time in total.</li>
+<li><strong>Overall:</strong> 18,518 class-b leaves; the 64 leaves of 0.1 s or more are all in the frozen on-demand Ew and Mu2–5 chains.</li>
+</ul>
+<p><strong>Low-memory kernel checks.</strong> The memory of the KAM-family checks is in the kernel: whnf caches keep every big intermediate number. Elaboration and literals are not the cost. Three changes fixed this (<code>KronLowMemCompute</code>, <code>KronBallLowMem</code>):</p>
+<ul>
+<li>sign–magnitude integers;</li>
+<li>per-row masks placed by divide and conquer;</li>
+<li>row block sums by two multiplications.</li>
+</ul>
+<p>The peak per process fell from 8.8 GB to 4.3 GB. Bridge lemmas re-prove the original statements, so no theorem changed.</p>
 <h2 id="exact-inputs-and-interval-arithmetic">Exact inputs and interval arithmetic</h2>
 <p>Use rational/dyadic endpoints and a semantic predicate <code>x ∈ [l,u]</code> with <code>l≤u</code>. Prove soundness of arithmetic, comparison, powers, roots, and transcendental enclosures. Exclude zero for reciprocals. Rational arithmetic avoids floating-rounding trust initially; faster arithmetic requires its own soundness bridge.</p>
 <p>Decode a decimal token as the exact rational it denotes, or as an uncertainty interval if it represents a measurement/rounded quantity. A float converted to a real without a declared interpretation does not identify a physical coefficient.</p>
@@ -27,6 +84,13 @@
 \operatorname{Claim}(\operatorname{decode}(c)).$$</div>
 <p>Keep all semantics, domain coverage, and remainder obligations in this theorem. Treat results returned by Python, CUDA, SMT, an optimizer, or an external interval package as certificate data rather than assertions accepted by Lean.</p>
 <p>Inspect axioms and execution trust of certificate entry points. Prefer proof-producing arithmetic and a kernel-checked soundness theorem. <a href="literature.html#validated-computation-and-analysis">Rump</a> is the general validated-computation reference.</p>
+<p><strong>Status in PlasmaLean.</strong> Three arithmetic cores are compiled in the default build:</p>
+<ul>
+<li><strong>Exact rational intervals</strong> (<code>Certificates/RationalIntervals</code>): <code>RationalInterval</code>, with <code>check_sound</code>, <code>add_sound</code>, <code>neg_sound</code>, <code>mulNonneg_sound</code>, and exact decimal decoding (<code>decodeDecimal</code>). There is no text parser for certificate files; data enters as Lean literals emitted by the generators.</li>
+<li><strong>Fixed-point intervals</strong> <code>FIv</code> with scale 2³² (<code>Certificates/ValidatedQuadrature</code>). The containment theorems <code>mem_add</code>, <code>mem_mul</code>, <code>mem_inv</code> and <code>mem_sqrt</code> cover the arithmetic. A reciprocal of an interval containing 0 is rejected (<code>fixture_inv_rejected</code>).</li>
+<li><strong>Validated transcendental functions</strong> (<code>Certificates/ValidatedTrig</code>, <code>ValidatedTrigFast</code>): arctan, arcsin, cosh and sinh on fixed-point enclosures, for example <code>atanTabN_check</code>.</li>
+</ul>
+<p>Ball arithmetic in the strip algebra (<code>KronBall*</code>) carries the KAM computations. Every Python oracle in <code>scripts/</code> proposes data only, and every certificate is re-checked by the Lean kernel. The axiom scripts cover the &quot;inspect axioms&quot; requirement above.</p>
 <h2 id="continuous-geometry-and-quadrature">Continuous geometry and quadrature</h2>
 <p>For a Fourier curve <code>c(t)</code>, bound <code>c,c',c''</code> on every parameter box. Prove regularity <code>|c'|≥v_*&gt;0</code> and use</p>
 <div class="math-block">$$\kappa(t)=\frac{|c'(t)\times c''(t)|}{|c'(t)|^3}.$$</div>
@@ -38,12 +102,34 @@
 <div class="math-block">$$\sum_{|k|&gt;N}|f_k|\le\nu^{-N}\|f\|_\nu.$$</div>
 <p>Derivatives require weighted factors <code>|k|^j</code> and generally a narrower analyticity strip/weight. Prove convolution-algebra and derivative-loss estimates before using them in a PDE proof. A finite Fourier polynomial has no unknown coefficient tail, but the exact equilibrium validated near it generally does.</p>
 <p>For Biot–Savart, prove a positive distance to conductor sources before using integrand derivative and quadrature bounds.</p>
+<p><strong>Status in PlasmaLean.</strong></p>
+<ul>
+<li><strong>Between-sample lemma.</strong> It is compiled as <code>clearance_of_lipschitz_cover</code> (<code>Theory/Geometry/ParametricBounds</code>). The surface versions are <code>le_of_grid</code> and <code>GridBound.sound</code> (<code>Theory/Geometry/SurfaceCover</code>). The vacuum demonstrator uses them for coil and tube clearance (<code>coil_clearance</code>, <code>manufactured_tube_clearance</code>).</li>
+<li><strong>Validated quadrature.</strong> Cell sums with sound remainders are in <code>integral_mem_sumIv</code> and <code>cell_bounds_of_lipschitz</code> (<code>Certificates/ValidatedQuadrature</code>). <code>ValidatedQuadratureArcs</code> treats periodic integrands with a sharp peak. These carry the Solov'ev Mercier quadrature and the Landreman family-2 quadratures.</li>
+<li><strong>Fourier tails and algebra.</strong></li>
+<li><code>WeightedEll1</code>: ℓ¹_ν(ℤ) as a Banach algebra.</li>
+<li><code>ConvAlgebra</code>: ℓ¹(ℤ) and its exponential.</li>
+<li>Strip tail sums: <code>hasSum_tailZ</code> (<code>Theory/KAM/StripPaleyWiener</code>).</li>
+<li>From coefficient equations to classical solutions: <code>classical_of_coeff</code> (<code>Certificates/FourierRegularity</code>).</li>
+</ul>
+<p>All of these are one-dimensional or two-dimensional Fourier only. A 3-D Fourier–Chebyshev algebra is missing (see the Q-16 analysis in the <a href="https://github.com/siddhartha-gadgil/PlasmaLean/blob/main/notes/theory/quasisymmetric-solution.md">quasisymmetric-solution note</a>).</p>
+<ul>
+<li><strong>Biot–Savart.</strong> The field bound <code>filamentField_bound</code> requires an explicit source distance.</li>
+<li><strong>Not done:</strong> curvature and self-clearance certificates for Fourier coils, and embedded winding packs.</li>
+</ul>
 <h2 id="finite-dimensional-certificates">Finite-dimensional certificates</h2>
 <p>For a symmetric exact matrix <code>A</code>, validate an exact factorization</p>
 <div class="math-block">$$A=LDL^\mathsf T,\qquad D_{ii}&gt;0,$$</div>
 <p>with diagonal <code>D</code> and invertible <code>L</code>. This proves positive definiteness. For a claimed quantitative margin use a factorization of <code>A-cM</code>, where <code>M</code> is the positive inertia/Gram matrix.</p>
 <p>If a numerical matrix approximates an exact matrix, prove the enclosure or form error and subtract it from the margin. A floating Cholesky success flag is not a certificate.</p>
 <p>For nonlinear finite systems validate a contraction/Newton/Krawczyk-style inclusion with its precise existence and uniqueness theorem. Handle gauge and phase symmetries so that the intended Jacobian/inverse is nonsingular. A root of projected equations is only a projected solution until the continuum/tail conditions are supplied.</p>
+<p><strong>Status in PlasmaLean.</strong></p>
+<ul>
+<li><strong>Polynomials.</strong> Exact positivity certificates on intervals are in <code>Certificates/PolyInterval</code>.</li>
+<li><strong>Block positivity.</strong> The two-block checker <code>BlockCertificate</code> (<code>Certificates/BlockBounds</code>) is sound (<code>BlockCertificate.sound</code>). It accepts the sanity example of the next section, (a, b_*, γ, c) = (5, 2, 2, 1) (<code>BlockCertificate.example_accepted</code>), and rejects a larger coupling or a zero margin. The real-variable lemma is <code>two_block_margin</code> (<code>Theory/Stability/BlockBounds</code>).</li>
+<li><strong>Scalar Newton validation.</strong> <code>validated_scalar_root</code> validates x² = 2 on [1, 2].</li>
+<li><strong>Not in the toolkit:</strong> a general LDLᵀ checker for symmetric matrices.</li>
+</ul>
 <h2 id="continuum-equilibrium-validation">Continuum equilibrium validation</h2>
 <p>Let <code>X</code> be a complete Banach space, <code>F:X→X</code> the gauge-fixed continuum equation, <code>x̂</code> a candidate, and <code>A</code> a bounded linear approximate inverse. Require <code>F</code> to be continuously Fréchet differentiable on an open neighborhood of the closed ball used below, so its derivative bound yields a Lipschitz bound along segments. Put</p>
 <div class="math-block">$$T(x)=x-AF(x).$$</div>
@@ -66,6 +152,21 @@ Y+Z(r)r\le r.$$</div>
 </ul>
 <p>The equilibrium operator may have derivative loss, small divisors, or lack a bounded inverse in the chosen space. In that case an elementary radii-polynomial argument may be unavailable. Explore an appropriate a posteriori KAM/Nash–Moser theorem, a weaker equilibrium class, or a restricted model; do not invent invertibility.</p>
 <p><a href="literature.html#validated-computation-and-analysis">Nakao–Plum–Watanabe</a> and <a href="literature.html#validated-computation-and-analysis">Lessard's tutorial</a> are entry points for validation methods. Transferring their machinery to full three-dimensional MHD is a research task.</p>
+<p><strong>Status in PlasmaLean.</strong></p>
+<ul>
+<li><strong>The abstract theorems are compiled.</strong></li>
+<li><code>radii_polynomial_fixedPoint</code>, <code>radii_polynomial_zero</code> and <code>radii_polynomial_fderiv</code> (<code>Certificates/RadiiPolynomial</code>). The rejection fixtures <code>radii_polynomial_rejects_small</code> and <code>radii_polynomial_rejects_identity</code> check that the theorem does not accept bad inputs.</li>
+<li><code>local_fixedPoint</code> and <code>fixedPoint_equation</code> (<code>Certificates/Contraction</code>), the latter being the injectivity bridge from AF(x) = 0 to F(x) = 0. <code>zero_inverse_counterexample</code> shows that the bridge cannot be dropped.</li>
+<li><strong>Two continuum examples are validated</strong> (default build):</li>
+<li><code>validated_bvp_classical</code>: a periodic nonlinear boundary-value problem with a classical C² solution.</li>
+<li><code>validated_slab_equilibrium</code>: a slab equilibrium.</li>
+</ul>
+<p>Neither is a stellarator equilibrium.</p>
+<ul>
+<li><strong>Small divisors.</strong> For the stellarator the project used the a posteriori KAM route that the paragraph above recommends when invertibility fails. That route is described under <a href="#kam-and-orbit-certificates">KAM and orbit certificates</a>.</li>
+<li><strong>Full 3-D MHD.</strong> Validating full 3-D MHD by a Newton–Kantorovich boundary-value formulation was assessed for Q-16 and judged not feasible on the laptop: a dense approximate inverse of about 5·10⁷ entries would be needed. The recommended route, an explicit Dommaschk vacuum field, moves the work to tori (see <a href="coils-and-design.html">06</a>).</li>
+<li><strong>Finite β.</strong> A finite-β current-free equilibrium (Q-20, via Q-14) has not been validated.</li>
+</ul>
 <h2 id="continuum-stability-validation">Continuum stability validation</h2>
 <p>First validate an actual equilibrium <code>e</code> or carry the difference from a valid reference explicitly. Take a Hilbert energy space <code>V</code> and a proved orthogonal decomposition <code>V=V_N⊕V_tail</code>, so <code>‖u+v‖²_V=‖u‖²_V+‖v‖²_V</code>. Suppose the symmetric form satisfies</p>
 <div class="math-block">$$q(u+v)=q_N(u)+2b(u,v)+q_{\rm tail}(v),$$</div>
@@ -83,14 +184,53 @@ q_{\rm tail}(v)\ge b_*\|v\|^2,\quad
 <div class="math-block">$$|q_e(\xi)-q_{\hat e}(\xi)|\le\varepsilon_{\rm eq}\|\xi\|_V^2,$$</div>
 <p>and every other nonnegative form-error bound is in the same norm, define <code>ε_tot=Σ_j ε_j</code>, including <code>ε_eq</code> once. The full-space bound is <code>q_e(ξ)≥(c_eff-ε_tot)‖ξ‖²_V</code>, with <code>c_eff=c</code> in the orthogonal case or <code>c/C_d²</code> otherwise. Require <code>c_eff&gt;ε_tot</code>; separately exceeding each error is insufficient. Derive the equilibrium estimate from enough derivative/trace control of the validated solution; a small force residual alone is not such control.</p>
 <p>Treat generalized eigenproblems with the actual mass/Gram form. Account for neutral modes and boundary/interface terms. Retain the label “finite-dimensional stability” if any continuum transfer ingredient is missing.</p>
+<p><strong>Status in PlasmaLean.</strong> The block lemma and its rational checker are compiled, with the sanity example above as a fixture (<code>block_example</code>, <code>BlockCertificate.example_accepted</code>). No MHD tail estimate is proved, so no all-mode continuum stability certificate exists for a 3-D equilibrium. The compiled stability results are local criteria or reduced forms, each with its reduction named; details are in <a href="mhd-stability.html">03</a>.</p>
+<ul>
+<li>Mercier: the Landreman family-2 band, with the Mercier index supplied (<code>family2_mercier_stable_derived</code>).</li>
+<li>Ballooning: the Solov'ev result <code>reactor_ballooning_all</code>, certified over 825 boxes; family-2 ballooning is reduced to one certificate (Q-3).</li>
+<li>Screw pinch: <code>stable_all_modes_equilibrium</code>. It covers every mode with m ≠ 0, with Newcomb's reduced form supplied. Audit M-3 corrected the earlier &quot;all-mode&quot; wording.</li>
+</ul>
+<p>Under the contract every C3 certificate so far is on a test bed that fails C1. The certificate machinery is what is meant to transfer.</p>
 <h2 id="kam-and-orbit-certificates">KAM and orbit certificates</h2>
 <p>For a selected KAM theorem, prove regularity, symplectic/flux-preserving structure, nondegeneracy, residual bounds, and the infinite Diophantine condition. An interval containing an unknown frequency does not certify that every value in it is Diophantine. Use the theorem's frequency/parameter setup correctly.</p>
 <p>For finite-time trajectories, enclose the full initial set and every time segment, bound the vector field/Jacobian on the enclosure, and prove the integration remainder and boundary separation. Distinguish numerical integrator error from guiding-centre/full-orbit model error.</p>
+<p><strong>Status in PlasmaLean.</strong></p>
+<ul>
+<li><strong>Field-line KAM (vacuum, default build).</strong> <code>torusA_exact</code> (<code>Design/KamTorusAExact</code>) certifies an exact invariant torus of the rational vacuum field <code>RationalStellarator.field (1/4)</code> from an a posteriori KAM theorem with explicit constants (modules <code>KamTorusA*</code>, <code>KamFlow*</code>, <code>Theory/KAM/*</code>). <code>rationalStellarator_confined_forever_exists</code> turns it into all-time confinement of field lines inside the torus. The rotation number (ι ≈ 0.137) is a specific number with a proved Diophantine condition, not an interval of frequencies, which respects the caveat above. This is the C1 + C4 evidence in vacuum.</li>
+<li><strong>Guiding-centre KAM.</strong> The alpha results of <a href="particles-and-transport.html">04</a> use tori of the guiding-centre field for explicit quadratic-irrational rotation numbers, for example (75 + √5)/562 in <code>alpha_gc_confined_forever_pm</code>. The Littlejohn model is supplied, and some families are on demand.</li>
+<li><strong>Coil-field KAM is blocked (Q-2).</strong> The on-demand <code>CoilKamCert</code> proves only a vacuous residual bound: about 10⁹, against the roughly 10⁻³⁰ the smallness condition needs. See <a href="coils-and-design.html">06</a>.</li>
+<li><strong>Finite time.</strong> Field lines are confined for 95 transits in the rational field (<code>rationalStellarator_confined</code>) and for 52 transits in a concrete polygonal coil field (<code>coil_stellarator_confined_concrete_N</code>, existence of the field line assumed). Near-QA passing alphas are confined for 0.19 s, off the axis. These results use covers plus invariant or defect bounds (<code>fieldLine_confined_of_defect</code>), not interval ODE integration. No validated ODE integrator is in the library, and no reduced-to-full-orbit error is certified.</li>
+</ul>
 <h2 id="uncertainty-and-certificate-identity">Uncertainty and certificate identity</h2>
 <p>A design certificate must identify geometry, coefficient serialization, species/profiles, material data version, field conventions, source commit, and checker version. A cryptographic hash can identify bytes but is not itself the theorem linking bytes to semantics; prove/use a well-defined decoder and attach the decoded value to the property.</p>
 <p>Define the uncertainty set <code>U</code>, including correlations. For boxes, prove a finite box cover and each bound on the full box. An uncertainty parameter may change the equilibrium witness; use a validated branch or a parameter-wise existence theorem.</p>
 <p>Monte Carlo confidence intervals require explicit probabilistic/statistical hypotheses and coverage theorems. They are not deterministic enclosures. Physical data intervals remain supplied assumptions unless their derivation is itself formalized.</p>
+<p><strong>Status in PlasmaLean.</strong></p>
+<ul>
+<li><strong>Data in the statement.</strong> Certificate data are Lean literals emitted by generators, and the decoded value is part of the theorem statement. For example, the polygonal-coil filaments are a literal list proved equal to their construction (<code>filsDLB_eq</code>). There is no hash-based identity layer.</li>
+<li><strong>Parameter uncertainty by covers.</strong> <code>alpha_gc_confined_forever_robust</code> holds for every B₀R₀ ∈ [67.95, 69.99] T·m, with a torus that depends on B₀R₀. Physical constants enter as intervals, for example the alpha mass and the elementary charge.</li>
+<li><strong>Composition.</strong> Common-witness composition exists as a framework (<code>Bridge/Contracts</code>) but is not instantiated for any candidate (audit L-12). The C1–C5 contract on one candidate (G-8) has no composed instance.</li>
+<li><strong>Probability.</strong> No probabilistic statement is formalized (G-3 proposals only).</li>
+</ul>
+<h2 id="laptop-budget-and-the-workstation-pipeline">Laptop budget and the workstation pipeline</h2>
+<p><strong>Budget.</strong> Every Lean process should stay at or below 6 GB on the development laptop. Since 30 October every module with a recorded peak is within 6 GB. The one exception, <code>LandremanFamily2MercierStable</code> at 6.74 GB, was split into three modules with peaks of 1.40, 2.74 and 2.65 GB (<code>cellCheck_eq_of_pieces</code>). The individual peaks of the four <code>NearAxisQAAveraged</code> parts are not recorded. Audit M-2 corrected an earlier report that claimed the 6 GB target held everywhere before this split.</p>
+<p><strong>Workstation.</strong> Heavy untrusted numerics run on a workstation through <code>scripts/workstation/run.sh</code>, as do the first builds of large certificates. Examples of the numerics are KAM tori, Chebyshev families and ballooning oracles. Each run builds every module, measures CPU time and peak memory, checks axioms, and pushes a branch <code>workstation/&lt;task&gt;-&lt;stamp&gt;</code> with a laptop verdict:</p>
+<ul>
+<li>default build: peak ≤ 6 GB and at most 60 CPU-min;</li>
+<li>separate on-demand top module: peak ≤ 6 GB and at most 240 CPU-min;</li>
+<li>otherwise not merged.</li>
+</ul>
+<p>The rule is that the final Lean must build on the laptop. On the laptop the skill <code>plasmalean-workstation-update</code> re-checks passing runs with <code>--verify-only</code>, merges them, and records them in <a href="https://github.com/siddhartha-gadgil/PlasmaLean/blob/main/workstation/REVIEWED.md"><code>workstation/REVIEWED.md</code></a>. Default-build results are always rebuilt in full. On-demand results are spot-checked. Such families are marked &quot;on demand&quot; wherever they are cited, and they are stale after upstream changes until rebuilt.</p>
+<p><strong>Sharing oleans.</strong> <a href="https://github.com/siddhartha-gadgil/PlasmaLean/blob/main/scripts/workstation/oleans.py"><code>scripts/workstation/oleans.py</code></a> packs and unpacks compiled PlasmaLean modules between machines, like the Mathlib cache. Before extracting, it checks the Lean version, <code>lake-manifest.json</code> and identical sources against a manifest. Trust caveat: unpacked files are not re-checked by the kernel on the receiving machine. Using them means trusting the machine that built them, so they are not a substitute for a laptop rebuild of default-build results.</p>
 <h2 id="theorem-backlog">Theorem backlog</h2>
 <div class="table-wrap"><table><thead><tr><th>ID</th><th>Target</th><th>Scope</th><th>Progress so far</th></tr></thead><tbody><tr><td>N1</td><td>Exact rational parser and arithmetic containment</td><td>Small trusted certificate core</td><td class="progress-cell">Partially implemented — exact mantissa/scale decoding, interval containment, addition, negation, and nonnegative products; no text parser yet.</td></tr><tr><td>N2</td><td>Grid/Lipschitz and Fourier-tail bounds</td><td>Continuous geometric certificates</td><td class="progress-cell">Partially implemented — continuous Lipschitz-cover clearance; Fourier and tail estimates remain pending.</td></tr><tr><td>N3</td><td>Matrix factorization and block positivity</td><td>Finite algebra and reusable form theory</td><td class="progress-cell">Partially implemented — exact two-block checker plus a polynomial interval checker (kernel decide) proving Riccati/Jacobi certificates; proof-term certificate predicates (Kronecker, Boolean-checker, digit-sum and term-evaluation certificates, sound by induction) now replace most decide +kernel checks; matrix factorization pending.</td></tr><tr><td>N4</td><td>Generic contraction/radii-polynomial soundness</td><td>Banach spaces, explicit hypotheses</td><td class="progress-cell">Lean verified — local contraction existence/uniqueness, radii inequalities, and the injective equation bridge; operator-specific bounds are hypotheses.</td></tr><tr><td>N5</td><td>A validated scalar/ODE/axisymmetric equilibrium</td><td>First continuum examples</td><td class="progress-cell">Lean verified — nonlinear scalar x²=2 validation on [1,2], with residual 1/12 and Lipschitz constant 1/3; not a plasma PDE.</td></tr><tr><td>N6</td><td>MHD equilibrium/operator tail estimates</td><td>Substantial analysis/research</td><td class="progress-cell">Planning only — no Lean code written</td></tr><tr><td>N7</td><td>All-mode robust energy certificate</td><td>N6 plus <a href="mhd-stability.html">03</a></td><td class="progress-cell">Planning only — no Lean code written</td></tr><tr><td>N8</td><td>Invariant-torus and finite-time orbit certificates</td><td>Source-specific KAM and validated ODEs</td><td class="progress-cell">Lean verified (vacuum model field) — KAM invariant-torus certificates (torusA_exact, rationalStellarator_confined_forever_exists) and guiding-centre tori are compiled; finite-time field-line certificates (95 and 52 transits); the coil-field torus is blocked (Q-2).</td></tr><tr><td>N9</td><td>Certificate composition over correlated uncertainty</td><td>Common witnesses, norms, and data</td><td class="progress-cell">Partially implemented — common-witness composition and restriction of uncertainty sets; candidate decoding and physical feedback closure remain pending.</td></tr></tbody></table></div>
+<p>The progress column is generated from <code>progress/status.json</code>; the status sections above give the reading of 30 October 2026. In short:</p>
+<ul>
+<li>N4, N5 and the vacuum part of N8 are compiled.</li>
+<li>N1–N3 are partial: there is no text parser and no general LDLᵀ checker.</li>
+<li>N6, N7 and the coil part of N8 (Q-2) are open.</li>
+<li>N9 has the framework only.</li>
+</ul>
+<p>Under the contract, the next numerics needs are certified tori and Boozer/ε_QS diagnostics for the Dommaschk QA field (Q-16), and validated bounce integrals for the C2 diagnostics (Q-19).</p>
 </article>
-  </main><aside class="toc" aria-label="On this page"><div class="nav-kicker">On this page</div><ul><a href="#contents">Contents</a><a href="#exact-inputs-and-interval-arithmetic">Exact inputs and interval arithmetic</a><a href="#continuous-geometry-and-quadrature">Continuous geometry and quadrature</a><a href="#finite-dimensional-certificates">Finite-dimensional certificates</a><a href="#continuum-equilibrium-validation">Continuum equilibrium validation</a><a href="#continuum-stability-validation">Continuum stability validation</a><a href="#kam-and-orbit-certificates">KAM and orbit certificates</a><a href="#uncertainty-and-certificate-identity">Uncertainty and certificate identity</a><a href="#theorem-backlog">Theorem backlog</a></ul></aside></div><dialog id="search-dialog" class="search-dialog"><div class="search-box"><input id="search-input" type="search" placeholder="Search the handbook…" aria-label="Search handbook"><div id="search-results" class="search-results"><p>Search topics and task IDs across the handbook.</p></div></div></dialog><footer class="site-footer">PlasmaLean · Plans are not proofs. Every implemented claim must identify its assumptions, declaration, and build result.</footer></body></html>
+  </main><aside class="toc" aria-label="On this page"><div class="nav-kicker">On this page</div><ul><a href="#contents">Contents</a><a href="#status-in-plasmalean-and-the-stellarator-contract">Status in PlasmaLean and the stellarator contract</a><a href="#the-certificate-toolkit-and-the-no-decide-policy">The certificate toolkit and the no-decide policy</a><a href="#exact-inputs-and-interval-arithmetic">Exact inputs and interval arithmetic</a><a href="#continuous-geometry-and-quadrature">Continuous geometry and quadrature</a><a href="#finite-dimensional-certificates">Finite-dimensional certificates</a><a href="#continuum-equilibrium-validation">Continuum equilibrium validation</a><a href="#continuum-stability-validation">Continuum stability validation</a><a href="#kam-and-orbit-certificates">KAM and orbit certificates</a><a href="#uncertainty-and-certificate-identity">Uncertainty and certificate identity</a><a href="#laptop-budget-and-the-workstation-pipeline">Laptop budget and the workstation pipeline</a><a href="#theorem-backlog">Theorem backlog</a></ul></aside></div><dialog id="search-dialog" class="search-dialog"><div class="search-box"><input id="search-input" type="search" placeholder="Search the handbook…" aria-label="Search handbook"><div id="search-results" class="search-results"><p>Search topics and task IDs across the handbook.</p></div></div></dialog><footer class="site-footer">PlasmaLean · Plans are not proofs. Every implemented claim must identify its assumptions, declaration, and build result.</footer></body></html>
