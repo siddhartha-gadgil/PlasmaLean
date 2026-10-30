@@ -8,14 +8,14 @@
 | Title | Grad's conjecture: recent counterexamples and their use in PlasmaLean |
 | Kind | source synthesis |
 | Addresses | `G-4`, `Q-14`, `Q-16`, `Q-17` |
-| Depends on | `N-12` (finite-β routes), `N-27` (quasisymmetric solution); Lean: `LandremanEquilibrium.family1`, `LandremanFamily2*`, `family2_lam200_equilibrium` |
+| Depends on | `N-12` (finite-β routes), `N-27` (quasisymmetric solution); Lean: `LandremanEquilibrium.family1`, `LandremanFamily2*`, `family2_lam200_equilibrium`, `LandremanGradCounterexample.family1_grad_counterexample` |
 | Dependency requirement | compiled force balance, invariant flux function and non-axisymmetry of the Landreman families (present) |
 | Produces | registry updates (Q-17), work items below |
 | Difficulty | routine (synthesis); moderate to hard for the Lean items |
-| Status | stated |
-| Lean evidence | partial: Landreman family 1 and 2 force balance, invariant surfaces, non-axisymmetry |
+| Status | Q-17 formalized for family 1 (30 October 2026); plane reflections, solid-torus topology of the domain and family 2 open |
+| Lean evidence | `PlasmaLean.Design.LandremanGradCounterexample.family1_grad_counterexample` (default build, zero warnings, standard axioms); family 2: force balance, invariant surfaces, non-axisymmetry only |
 | Audit evidence | not audited |
-| Last updated | 30 October 2026: created from a literature search |
+| Last updated | 30 October 2026: created from a literature search; Q-17 Lean statement for family 1 added |
 
 ## Purpose and scope
 
@@ -67,7 +67,8 @@ full texts (marked "unverified" where it matters).
    a certified Mercier-stable band. What is missing for a full Lean statement of a Grad
    counterexample is (a) nested toroidal surfaces on a smooth domain as one statement,
    (b) non-constant pressure, and (c) the absence of **every** continuous Euclidean symmetry
-   (axial, helical, reflection), not only of the rotation `rotQ`. This is question **Q-17**.
+   (axial, helical, reflection), not only of the rotation `rotQ`. This is question **Q-17**;
+   (a)–(c) are now formalized for family 1, except reflections (see the Q-17 section below).
 2. **[ICLT] (no stellarator symmetry)** is a cheap extension target: the same closed-form
    verification pattern with one more parameter τ.
 3. **Quasisymmetry (Q-16).** None of these papers claims quasisymmetry. The N-27 axis lemma
@@ -89,14 +90,49 @@ full texts (marked "unverified" where it matters).
 | --- | --- |
 | Smooth non-symmetric MHS equilibria with nested surfaces exist | sourced theorem ([GLT], with a Lean proof in its own repository); explicit solutions [L] |
 | Landreman family 1: force balance, invariant ψ, non-axisymmetric, non-planar axis | compiled Lean theorem `LandremanEquilibrium.family1` |
-| Absence of all continuous symmetries for the Landreman families | not formalized (Q-17) |
+| Landreman family 1 is a Grad counterexample (smooth, MHS, nested torus surfaces, non-constant p, no continuous Euclidean symmetry) | compiled Lean theorem `LandremanGradCounterexample.family1_grad_counterexample` (scope in the section below) |
+| Absence of continuous symmetries for family 2; absence of plane-reflection symmetry (either family) | not formalized |
 | Landreman families not quasisymmetric (axis-nonvanishing generator) | N-27 argument; Lean unit in progress |
+
+## Lean statement for family 1 (Q-17, 30 October 2026)
+
+Module `PlasmaLean/Design/LandremanGradCounterexample.lean` (default build, zero warnings,
+`propext`/`Classical.choice`/`Quot.sound` only). `family1_grad_counterexample` states, for
+`0 < ε < 1`, `0 < δ < (1-ε)²/4`, `μ₀ > 0`, `a = √(1+ε)`, `b = √(1-ε)`, pressure
+`p = (2δ - 2ψ)/μ₀` and plasma domain `Ω_δ = {x ∈ 𝒰 | ψ x ≤ δ}`:
+
+1. **Smooth.** `𝒰 ⊇ Ω_δ` is open; `B`, `J = (∇ × B)/μ₀` (actual derivative) and `p` are
+   `ContDiffOn ℝ ∞` on `𝒰`.
+2. **MHS.** On `𝒰`: `∇ · B = 0` and the kernel law `J × B = ∇p` with `∇p = gradient p`.
+3. **Nested toroidal surfaces.** `ψ` is a first integral and `ψ ≥ 0` on `𝒰`; the sublevel sets
+   `{x ∈ 𝒰 | ψ ≤ c}`, `c ≤ δ`, are compact and increase with `c`; for every `0 < c ≤ δ` the level
+   set `{x ∈ 𝒰 | ψ = c}` is homeomorphic to `S¹ × S¹` through an explicit map `torusMap`
+   (`fluxSurface_homeo_torus`); `{ψ = 0}` is homeomorphic to `S¹` and contains the magnetic
+   axis (`axisSet_homeo_circle`). The parametrization comes from new labels
+   `P + iQ = (2q² - w + i zF)/s` with `(u + iv) s = (P + iQ)(x/a + i y/b)²`; it formalizes
+   the paper's claim (below (2.11)) that the surfaces are tori.
+4. **Non-constant pressure**: `2δ/μ₀` on the axis, `0` on the torus `ψ = δ`.
+5. **No continuous Euclidean symmetry.** For every Killing field `K x = r × x + t` with
+   `(r, t) ≠ 0` (rotations, translations, screw motions; so axial and helical generators) there
+   is a point of `Ω_δ` with `L_K B = (DB) K - r × B ≠ 0`. In fact `L_K B = 0` at the two axis
+   points `ζ = 0, π/2` already forces `r = t = 0` (`killing_trivial_of_axis`): six linear
+   equations, the last pair giving `2t₂ = ±2ε r₂`.
+
+Sanity contrast: at `ε = 0` the rotation `e_z × x` satisfies `L_K B = 0` on all of `𝒰`
+(`axisymmetric_limit_lie_zero`).
+
+**Weakened or omitted.** (a) The solid-torus topology of `Ω_δ` is not stated (only
+compactness and the decomposition into the axis circle and the tori). (b) Only continuous
+symmetries are excluded; family 1 keeps its discrete symmetries (two field periods,
+stellarator symmetry: `field_rotPi`, `field_flipX`), and plane-reflection symmetry is not
+addressed (arbitrary planes give nonlinear conditions). (c) `ι ≡ 2`: all field lines are
+closed, so the example is non-generic. (d) Family 2 is not treated.
 
 ## Difficulty, barriers and readiness
 
-Q-17 is lean-ready for family 1: the closed forms are already compiled, and the missing parts
-are elementary (pressure non-constant; the symmetry classification needs the list of continuous
-Euclidean isometry generators and a computation showing none preserves the field). [ICLT] is
+Q-17 is done for family 1 (section above). Remaining: the same statement for family 2 (its
+closed forms and flux labels are compiled), plane-reflection symmetry, and the solid-torus
+topology of the plasma domain. [ICLT] is
 lean-ready once its closed forms are transcribed. Porting [GLT] is large.
 
 ## Outputs and next dependencies

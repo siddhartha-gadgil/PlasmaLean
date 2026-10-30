@@ -273,6 +273,7 @@ public import PlasmaLean.Sanity.RelativeEntropy
 public import PlasmaLean.Theory.Geometry.TorusHodge
 public import PlasmaLean.Theory.Fields.WeakQuasisymmetry
 public import PlasmaLean.Design.LandremanNotQS
+public import PlasmaLean.Design.LandremanGradCounterexample
 
 /-!
 # PlasmaLean public library

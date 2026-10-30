@@ -239,3 +239,9 @@ run_cmd do
 #print axioms PlasmaLean.Design.LandremanNotQS.family1_not_weakQS_flux
 #print axioms PlasmaLean.Design.LandremanNotQS.family2_not_weakQS
 #print axioms PlasmaLean.Design.LandremanNotQS.family2_not_weakQS_flux
+#print axioms PlasmaLean.Design.LandremanGradCounterexample.family1_grad_counterexample
+#print axioms PlasmaLean.Design.LandremanGradCounterexample.fluxSurface_homeo_torus
+#print axioms PlasmaLean.Design.LandremanGradCounterexample.axisSet_homeo_circle
+#print axioms PlasmaLean.Design.LandremanGradCounterexample.killing_trivial_of_axis
+#print axioms PlasmaLean.Design.LandremanGradCounterexample.isCompact_sublevel
+#print axioms PlasmaLean.Design.LandremanGradCounterexample.axisymmetric_limit_lie_zero
