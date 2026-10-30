@@ -19,6 +19,10 @@ the magnetic axis on the plane phi = 0:
   + the stage-A axis terms (iota_axis, non-planarity)
   + w_conv sum_j min(birkhoff_err_j / 1e-6, 100)^2                            regular (non-chaotic) lines
   + lam sum_k s_k^2 (a_k - a_seed_k)^2                                        regularisation
+  [+ w_window sum (dist(|iota|, [lo, hi]) / (hi - lo))^2 over the axis and all surfaces, with
+     --iota-window lo,hi (off by default): keeps the whole transform profile inside a window
+     free of low-order rationals iota = NFP k/m, so that no low-order island chain crosses the
+     target surfaces (N-31 sections 8-9); also applied to the axis in stage A]
 A lost or undefined surface contributes a constant penalty (the other surfaces stay live).
 
 c_mn: Boozer coefficients of |B| (fieldeval.py, exact vacuum Boozer angles phi_B = Phi), modes
@@ -92,16 +96,31 @@ def parse(argv=None):
     ap.add_argument('--diag-nper', type=int, default=600)
     ap.add_argument('--diag-lines', type=int, default=12)
     ap.add_argument('--eps-transits', type=int, default=100)
+    ap.add_argument('--iota-window', default=None,
+                    help='lo,hi: keep |iota| on the axis and all surfaces in [lo, hi] (off by default)')
+    ap.add_argument('--w-window', type=float, default=1.0)
     ap.add_argument('--force', action='store_true', help='reuse --work even if parameters changed')
     a = ap.parse_args(argv)
     if a.lmax is None:
         a.lmax = a.nmax + 2
     a.surfaces = [float(s) for s in a.surfaces.split(',')]
+    if a.iota_window is not None:
+        a.iota_window = [float(s) for s in a.iota_window.split(',')]
+        assert len(a.iota_window) == 2 and 0 <= a.iota_window[0] < a.iota_window[1]
     return a
 
 
 OPT_KEYS = ('nfp', 'nmax', 'lmax', 'iota_min', 'surfaces', 'axis_delta', 'zmin', 'sigma', 'lam',
             'w_iota', 'w_axis', 'w_conv', 'w_bax', 'mmax', 'nmodes', 'ns', 'nper', 'max_nfev', 'seed')
+WINDOW_KEYS = ('iota_window', 'w_window')   # in the configuration only when --iota-window is set
+
+
+def window_dist(cfg, aiota):
+    """(distance of |iota| from the window) / (window width); 0 inside or without a window."""
+    w = cfg.get('iota_window')
+    if not w:
+        return 0.0
+    return (max(0.0, w[0] - aiota) + max(0.0, aiota - w[1]))/(w[1] - w[0])
 
 
 # ---------------------------------------------------------------- problem
@@ -187,8 +206,11 @@ class Problem:
     def _r_axis(self, ax, i):
         c = self.cfg
         tgt = 1.2*c['iota_min']
-        return [c['w_iota']*max(0.0, tgt - ax['iota_ax'][i])/tgt if ax['ok'][i] else FAIL,
-                c['w_axis']*max(0.0, c['zmin'] - ax['zrms'][i])/c['zmin']]
+        r = [c['w_iota']*max(0.0, tgt - ax['iota_ax'][i])/tgt if ax['ok'][i] else FAIL,
+             c['w_axis']*max(0.0, c['zmin'] - ax['zrms'][i])/c['zmin']]
+        if c.get('iota_window'):
+            r.append(c['w_window']*window_dist(c, ax['iota_ax'][i]) if ax['ok'][i] else FAIL)
+        return r
 
     def evaluate_axis(self, X, axis_guess=None):
         """Stage A residuals (cheap, axis only): |iota_axis| >= 1.2 iota_min, non-planar axis,
@@ -221,6 +243,7 @@ class Problem:
         good = gs.all(1)
         aio = np.abs(io)
         defect = np.sqrt((np.abs(bad)**2).sum(-1))     # sqrt(sum_{n != 0} A_mn^2)/B00 (boozer.qs_defect)
+        win = bool(c.get('iota_window'))
         res = []
         for i in range(nc):
             parts = []
@@ -230,8 +253,10 @@ class Problem:
                     parts += [np.real(r_qs), np.imag(r_qs),
                               [c['w_iota']*max(0.0, c['iota_min'] - aio[i, j])/c['iota_min'],
                                c['w_conv']*min(err[i, j]/1e-6, 100.0)]]
+                    if win:
+                        parts.append([c['w_window']*window_dist(c, aio[i, j])])
                 else:   # lost or undefined surface: constant penalty (other surfaces stay live)
-                    parts.append(np.full(2*bad.shape[2] + 2, FAIL))
+                    parts.append(np.full(2*bad.shape[2] + 2 + win, FAIL))
             parts += [self._r_axis(ax, i), np.sqrt(c['lam'])*self.s*(X[i] - self.x_seed)]
             r = np.concatenate([np.ravel(v) for v in parts])
             res.append(np.nan_to_num(r, nan=FAIL, posinf=FAIL, neginf=-FAIL))
@@ -347,6 +372,7 @@ def merit(out, cfg):
     worst defect/iota; infeasible ones by cost."""
     m = out['metrics']
     feas = m['ok'] and min(np.abs(m['iota'])) >= cfg['iota_min'] and m['axis_zrms'] >= cfg['zmin']
+    feas = feas and all(window_dist(cfg, abs(v)) == 0 for v in m['iota'] + [m['iota_axis_abs']])
     return (0, max(m['defect_over_iota'])) if feas else (1, out['cost'])
 
 
@@ -357,6 +383,8 @@ def to_rational(x, decimals):
 def main(argv=None):
     a = parse(argv)
     cfg = {k: getattr(a, k) for k in OPT_KEYS}
+    if a.iota_window is not None:
+        cfg.update({k: getattr(a, k) for k in WINDOW_KEYS})
     os.makedirs(a.work, exist_ok=True)
     cpath = os.path.join(a.work, 'config.json')
     if os.path.exists(cpath) and not a.force:
@@ -366,7 +394,8 @@ def main(argv=None):
     json.dump(cfg, open(cpath, 'w'), indent=1)
     P = Problem(cfg)
     print(f"Dommaschk QA fit: NFP={a.nfp} nmax={a.nmax} lmax={a.lmax}: {P.nb} coefficients, "
-          f"{a.starts} starts, {a.jobs} jobs; surfaces {a.surfaces}; iota_min {a.iota_min}", flush=True)
+          f"{a.starts} starts, {a.jobs} jobs; surfaces {a.surfaces}; iota_min {a.iota_min}"
+          + (f"; iota window {a.iota_window}" if a.iota_window else ''), flush=True)
     t0 = time.time()
     jobs = [(cfg, a.work, k, a.time_limit) for k in range(a.starts)]
     if a.jobs > 1 and a.starts > 1:

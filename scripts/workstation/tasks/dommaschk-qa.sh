@@ -19,7 +19,8 @@
 #   DQA_NFEV      least-squares evaluations per start and stage (default 60; stage A gets 4x)
 #   DQA_NPER      field periods traced per objective evaluation (default 200)
 #   DQA_TIME      time limit per start in seconds (default 14400)
-#   DQA_EXTRA     further options for scripts/dommaschk_qa/optimize.py (default empty)
+#   DQA_EXTRA     further options for scripts/dommaschk_qa/optimize.py (default empty), e.g.
+#                 "--iota-window 0.29,0.33" to keep the transform profile between low-order rationals
 DQA_NMAX="${DQA_NMAX:-2}"
 DQA_LMAX="${DQA_LMAX:-$((DQA_NMAX + 2))}"
 DQA_STARTS="${DQA_STARTS:-16}"
@@ -45,6 +46,7 @@ TASK_TARGET="default"
 # interrupted starts resume from their checkpoints. Each run writes a new results/<UTC stamp>/.
 task_numerics() {
   local tag="n${DQA_NMAX}l${DQA_LMAX}s${DQA_STARTS}i${DQA_IOTA_MIN}r$(echo "$DQA_SURFACES" | tr ',' '_')f${DQA_NFEV}p${DQA_NPER}"
+  if [ -n "$DQA_EXTRA" ]; then tag="${tag}x$(printf '%s' "$DQA_EXTRA" | cksum | cut -d' ' -f1)"; fi
   local work="$WS_WORK/dommaschk-qa/$tag"
   local stamp; stamp="$(date -u +%Y%m%dT%H%M%SZ)"
   mkdir -p "$work"
