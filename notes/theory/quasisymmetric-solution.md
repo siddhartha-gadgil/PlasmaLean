@@ -529,3 +529,15 @@ Suggested registry updates (for the coordinator):
   - a design note for the Dommaschk fit and the torus certificate (an N-* when stage 1 starts).
 - No downstream note becomes ready until stage 1 reports a viable candidate. The Lean unit of §6.2
   item 1 is ready now.
+
+## Decision on the criterion (30 October 2026)
+
+The user adopted the recommended criterion for Q-16 in its vacuum version: certified invariant tori
+with ι ≥ ι_min > 0 on a nested region of an explicit or validated vacuum field, and a certified
+quasisymmetry defect small relative to ι (report ι and ε_QS/B together; no single absolute
+threshold). Rationale: an axisymmetric vacuum field is purely toroidal with ι = 0, so a fixed
+ι_min cannot come from a small perturbation of a symmetric vacuum field. Limits recorded: the
+criterion does not transfer to force-balanced fields (plasma current gives near-tokamak fields
+ι > 0), the ι–defect scaling used to justify the ratio is heuristic, and near-helically-symmetric
+large-aspect-ratio fields are not excluded. The finite-β version of Q-16 needs a separate
+criterion (zero net toroidal current, or a quantitative non-Killing bound on ξ), still open.
