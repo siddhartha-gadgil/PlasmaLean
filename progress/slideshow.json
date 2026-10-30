@@ -47,15 +47,15 @@
    "cards": [
     {
      "title": "C1 · current-free rotational transform",
-     "text": "Net toroidal current zero or bootstrap-level, ι ≥ ι_min > 0 from the external field. Met in vacuum by the exact rational field (field_vacuum, rationalStellarator_confined_forever_exists); ι ≥ ι_min on a nested family not yet stated. Landreman family 2 carries positive net toroidal current: tokamak-like under C1.",
-     "status": "Partial · vacuum only",
+     "text": "Defined in Lean (netToroidalCurrent, CurrentFreeTransform) with the tokamak exclusion: a purely toroidal (current-free axisymmetric) field has ι = 0. The vacuum rational field satisfies C1 on its KAM torus (rationalStellarator_currentFreeTransform). Landreman family 2 carries positive net current and fails C1 (family2_not_currentFree).",
+     "status": "Defined; one current-free candidate",
      "kind": "partial"
     },
     {
      "title": "C2 · omnigeneity for thermal particles",
-     "text": "Bounce-averaged radial drift of trapped thermal ions and electrons zero or bounded, or ε_eff bounded; QS and QI are special cases. Only adjacent results: WeakQS, qsDefect, family1_not_weakQS, family2_not_weakQS; alpha confinement is one species, mostly passing.",
-     "status": "Essentially open",
-     "kind": "next"
+     "text": "Omnigeneity is defined in the Boozer guiding-centre model, and quasisymmetry implies it (exactly, and with a drift bound linear in the defect). The current-free rational field is far from omnigenous (ε_eff ≈ 0.2 r, untrusted numerics) because its axis is planar (Garren–Boozer). Nothing certified for thermal ions and electrons on a candidate.",
+     "status": "Bridge proved; no candidate yet",
+     "kind": "partial"
     },
     {
      "title": "C3 · finite-β MHD stability",
