@@ -1635,6 +1635,12 @@
      "text": "Net current, ι on a family of tori, bounce-averaged drift, omnigeneity and ε_eff in Lean; axisymmetric ⇒ omnigenous, current-free axisymmetric ⇒ ι = 0, a generic 3-D field is not omnigenous (Q-21).",
      "status": "C1 + C2 · next",
      "kind": "next"
+    },
+    {
+     "title": "Colleague's holomorphic brief (N-32)",
+     "text": "Assessed: the holomorphic lift re-encodes the unique vacuum field of a domain, and two of its ansatz obstructions close earlier holomorphic routes. Adopted: a linear system for the quasisymmetry moment and a pointwise jet obstruction (Q-25). Its explicit numbers were re-derived exactly in sympy.",
+     "status": "Plan update, no Lean yet",
+     "kind": "next"
     }
    ],
    "progress": "Phases 1–16 and the model ladder M0–M5 are kept as history in the plan; the research graph maps their results to goals G-1–G-11 and records the strict-audit findings.",

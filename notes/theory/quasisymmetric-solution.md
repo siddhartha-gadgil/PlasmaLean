@@ -541,3 +541,7 @@ criterion does not transfer to force-balanced fields (plasma current gives near-
 ι > 0), the ι–defect scaling used to justify the ratio is heuristic, and near-helically-symmetric
 large-aspect-ratio fields are not excluded. The finite-β version of Q-16 needs a separate
 criterion (zero net toroidal current, or a quantitative non-Killing bound on ξ), still open.
+
+## Addendum (30 October 2026): the colleague's brief (N-32)
+
+In vacuum Boozer coordinates the strong-QS moment satisfies Ψ' = Mι − N. For quasi-axisymmetry (N = 0) the moment is regular exactly where ι ≠ 0, so C1's ι ≥ ι_min is also the nondegeneracy condition of the QA moment; this supports measuring the defect relative to ι. The brief's linear system for the moment and its pointwise jet obstruction are question Q-25 (`holomorphic-qs-brief.md`).

@@ -93,3 +93,5 @@ When moving from 2D elliptic cross-sections to either **(a) 3D steady MHD with r
 ### 4.2 Lean 4 kernel contract — historical sketch, not the library API
 
 > **Not implemented in this form.** The original block (a structure `ElsasserParaKahlerState` and an identity left as `sorry`) is superseded: the true algebraic identities ‖z₊‖² + ‖z₋‖² = 2(‖v‖² + ‖b‖²) and ‖z₊‖² − ‖z₋‖² = 4⟪v, b⟫ are proved in `PlasmaLean/Theory/Stability/Elsasser.lean` (`energy_identity`, `cross_helicity_identity`). The "topological degree analogue" reading is a heuristic. The code was removed.
+
+> **Update (30 October 2026, N-32).** A colleague's brief (`notes/theory/holomorphic-qs-brief.md`) gives short proofs that the direct flat rank-one Kähler–Yang–Mills coupling forces a constant field (impossible with a tangent boundary condition) and that a QS generator holomorphic for the product complex structure is a Euclidean Killing field. Both routes are closed. The holomorphic (HYM/Bogomolny) lift of a vacuum field is a re-encoding of the unique field of the domain.
