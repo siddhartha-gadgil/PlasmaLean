@@ -46,3 +46,4 @@ Phase 8 (kam-route.md, finite-beta-stellarator.md):
 - [`quasisymmetric-solution.md`](quasisymmetric-solution.md) (N-27): routes to a quasisymmetric solution (Q-16); exact QS in a volume is open; exact families obstructed; validated explicit vacuum field recommended.
 - [`grad-conjecture.md`](grad-conjecture.md) (N-28): Grad's conjecture, the 2026 counterexamples (Gómez-Serrano–Liehr–Taylor with a Lean proof, Landreman, Issan et al.) and their use here.
 - [`omnigeneity-bridge.md`](omnigeneity-bridge.md) (N-29): quasisymmetry ⇒ omnigeneity (exact and per-bounce quantitative) in the Boozer guiding-centre model.
+- [`rational-field-c2.md`](rational-field-c2.md) (N-30): C2 diagnostics for the rational vacuum field (Q-19): exact Boozer angles, QA defect ≈ 26 % of the |B| variation, ε_eff ≈ 0.2 r_eff (untrusted numerics), and the first-order obstruction sqrt(ι₀/N) for a planar circular axis.

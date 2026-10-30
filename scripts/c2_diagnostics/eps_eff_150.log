@@ -1,0 +1,6 @@
+r = 0.0500 iota = 0.134490: eps_eff = 0.0097 (half length 0.0097);  |B| in [0.932, 1.071], mirror ratio (Bmax-Bmin)/(Bmax+Bmin) = 0.070;  max wells/b' = 789;  |grad psi| growth 1.053
+r = 0.1000 iota = 0.136005: eps_eff = 0.0202 (half length 0.0202);  |B| in [0.869, 1.144], mirror ratio (Bmax-Bmin)/(Bmax+Bmin) = 0.137;  max wells/b' = 808;  |grad psi| growth 1.109
+r = 0.1307 iota = 0.137431: eps_eff = 0.0271 (half length 0.0271);  |B| in [0.832, 1.189], mirror ratio (Bmax-Bmin)/(Bmax+Bmin) = 0.177;  max wells/b' = 812;  |grad psi| growth 1.138
+r = 0.2000 iota = 0.142084: eps_eff = 0.0446 (half length 0.0445);  |B| in [0.753, 1.291], mirror ratio (Bmax-Bmin)/(Bmax+Bmin) = 0.263;  max wells/b' = 837;  |grad psi| growth 1.241
+r = 0.2870 iota = 0.151053: eps_eff = 0.0712 (half length 0.0711);  |B| in [0.661, 1.419], mirror ratio (Bmax-Bmin)/(Bmax+Bmin) = 0.364;  max wells/b' = 875;  |grad psi| growth 1.446
+r = 0.3600 iota = 0.161725: eps_eff = 0.0992 (half length 0.0991);  |B| in [0.588, 1.524], mirror ratio (Bmax-Bmin)/(Bmax+Bmin) = 0.443;  max wells/b' = 924;  |grad psi| growth 1.749
