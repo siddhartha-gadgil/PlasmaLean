@@ -1351,3 +1351,14 @@ Gate E1 (§11.2, §11.4) and the "sanity theorem or counterexample" promised in 
   r_eff ≈ 0.027; non-planar axis (z_max 0.051). Untrusted numerics. N-31 §10.
 - Also new on `main`: an optional `--iota-window lo,hi` objective term in `optimize.py` (off by
   default, residuals unchanged when off), passed through `DQA_EXTRA`.
+
+### On-demand oleans installed via `oleans.py retrace`, 30 October 2026
+
+- The workstation archive (MuQuarter and EwFamily, built at 6377afa) is installed: the default
+  build was rebuilt here (192 modules, bounded, 0 failures, all targets up to date), and 57
+  on-demand modules downstream of `PlasmaLean.Certificates.EvalCert` were retraced (new
+  `oleans.py retrace`, on-demand modules only, outputs byte-identical to the archive). Lake
+  accepts `RationalStellaratorGCMuQuarter` and `RationalStellaratorGCEwFamily`. The 12 entry points of
+  Mu2–Mu5, MuQuarter and EwFamily (`scripts/check_axioms_heavy.lean` minus MuWide/CoilKamCert, which
+  were not in the archive) load with `propext`, `Classical.choice`, `Quot.sound` only. Workstation
+  trust as for the on-demand policy; not re-checked by the laptop kernel.

@@ -169,8 +169,30 @@ python3 scripts/workstation/oleans.py unpack ~/Downloads/ew-oleans.tar.gz
 - **Trust:** unpacked modules are **not** re-checked by the kernel on the laptop. That is what saves
   the time, and it means trusting the workstation's build, as with the on-demand spot-check policy.
   Default-build modules should still be built here.
-- **Status:** works across platforms. On 26 October 2026, Mu2–Mu5 (400 modules, 314 MB) were packed
-  on the Linux workstation, unpacked on the Mac laptop, and Lake accepted them without rebuilding.
+- **Status:** works across platforms, with one extra step for modules downstream of the native
+  `PlasmaLeanMeta` library. On 26 October 2026, Mu2–Mu5 (400 modules, 314 MB) were packed on the
+  Linux workstation, unpacked on the Mac laptop, and Lake accepted them without rebuilding; that
+  was before the Mu chains imported `PlasmaLean.Certificates.EvalCert`.
+- **Modules downstream of `PlasmaLean.Certificates.EvalCert`.** Their traces include a hash of the
+  precompiled `PlasmaLeanMeta` library: `.so` on Linux, `.dylib` on macOS. Lake therefore rejects
+  them on the other platform, although their compiled outputs are the same. In that case:
+
+  ```bash
+  python3 scripts/workstation/oleans.py unpack  ~/Downloads/ondemand.tar.gz   # reports "NOT up to date"
+  lake build PlasmaLean          # rebuild the default-build modules here (bounded; see the skills)
+  python3 scripts/workstation/oleans.py retrace ~/Downloads/ondemand.tar.gz
+  ```
+
+  `retrace` handles only modules outside the default build (user decision, 30 October 2026). It
+  checks that their sources match and that their installed outputs are byte-identical to the
+  archive's. It then rewrites each trace's inputs and hash to the ones Lake expects here, layer by
+  layer, until Lake accepts the targets. It refuses if a default-build module is out of date.
+  Trust is the same as for `unpack`.
+
+  First use, 30 October 2026: the MuQuarter and EwFamily archive (1,010 modules, 738 MB). Lake
+  rejected 102 modules downstream of `EvalCert`. The 45 default-build ones among them were rebuilt
+  here, then 57 on-demand modules were retraced in 8 rounds (about 1 minute). The 12 Mu2–Mu5,
+  MuQuarter and Ew entry points load with standard axioms only.
 
 ## Adding a task
 
@@ -221,9 +243,8 @@ DQA_NMAX=3 DQA_STARTS=48 DQA_IOTA_MIN=0.38 DQA_SURFACES=0.015,0.03,0.045 DQA_NFE
   DQA_EXTRA="--iota-window 0.405,0.44" scripts/workstation/run.sh --jobs 24 dommaschk-qa
 ```
 
-**Hold: on-demand olean transfer.** The archive from the last rebuild cannot be used on the
-laptop for anything downstream of `PlasmaLean.Certificates.EvalCert`. Lake hashes the native
-`PlasmaLeanMeta` library (`.so` on Linux, `.dylib` on macOS) into those traces, so the Mu/Ew
-families are rejected. Do not repeat the pack step until this is resolved on the laptop side.
+**On-demand olean transfer: resolved (30 October 2026).** The MuQuarter and EwFamily archive is
+installed on the laptop via `oleans.py retrace` (see "Sharing compiled files"). The pack step can
+be used again when needed.
 
 Then say "update from workstation" on the laptop.

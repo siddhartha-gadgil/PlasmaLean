@@ -15,13 +15,25 @@ unpack on the other machine. Standard library only. See Workstation.md, "Sharing
                                   extract into .lake/build, then confirm with `lake --no-build build`
                                   that the targets are up to date.
   info ARCHIVE.tar.gz             print the manifest.
+  retrace ARCHIVE.tar.gz          after `unpack`, when lake still reports on-demand modules out of
+                                  date only because their traces differ between platforms (the
+                                  native PlasmaLeanMeta library: .so on Linux, .dylib on macOS):
+                                  for modules NOT in the default build, check that the installed
+                                  outputs are byte-identical to the archive's, then replace each
+                                  trace's inputs and depHash by the ones lake expects here
+                                  (`.trace.nobuild`), layer by layer, until lake accepts the
+                                  targets. Default-build modules are never retraced: build them
+                                  here first (`lake build PlasmaLean`).
 
 Only PlasmaLean's own modules are packed. Mathlib and the other packages come from the usual
 `lake exe cache get` and must be the same versions on both machines (checked through
 lake-manifest.json).
 
 Trust: unpacked files are used without being checked again by the kernel on this machine. That is
-the point (it saves the build), and it means trusting the machine that built them.
+the point (it saves the build), and it means trusting the machine that built them. `retrace` goes
+one step further: it overrides lake's platform check for on-demand modules (the user's decision of
+30 October 2026), so it is restricted to modules outside the default build, with identical sources
+and identical compiled outputs.
 """
 
 import hashlib
@@ -173,6 +185,66 @@ def unpack(archive):
     print('lake: targets up to date (no rebuild needed)')
 
 
+def default_closure():
+    return set(closure(['PlasmaLean']))
+
+
+def retrace(archive):
+    archive = os.path.abspath(archive)
+    os.chdir(REPO)
+    man = read_manifest(archive)
+    for m, h in man['modules'].items():
+        if sha256(src(m)) != h:
+            sys.exit('source differs here: ' + src(m) + '; refusing to retrace')
+    default = default_closure()
+    allowed = set(man['modules']) - default
+    # installed outputs of the allowed modules must be the archive's, byte for byte
+    with tarfile.open(archive, 'r:gz') as tar:
+        for x in tar.getmembers():
+            if x.name == 'MANIFEST.json' or x.name.endswith('.trace'):
+                continue
+            parts = x.name.split('/')
+            rel = '/'.join(parts[4:]) if parts[2] == 'lib' else '/'.join(parts[3:])
+            mod = rel.split('.')[0].replace('/', '.')
+            if mod not in allowed:
+                continue
+            h = hashlib.sha256(tar.extractfile(x).read()).hexdigest()
+            if not os.path.exists(x.name) or sha256(x.name) != h:
+                sys.exit('installed output differs from the archive: ' + x.name)
+    print(f'{len(allowed)} on-demand modules eligible; outputs identical to the archive')
+    total = 0
+    for rnd in range(200):
+        start = time.time()
+        r = subprocess.run(['lake', '--no-build', 'build'] + man['targets'], capture_output=True, text=True)
+        if r.returncode == 0:
+            print(f'lake: targets up to date after retracing {total} modules')
+            return
+        fixed = 0
+        for m in man['modules']:
+            base = os.path.join(LIB, *m.split('.'))
+            nb = base + '.trace.nobuild'
+            if not os.path.exists(nb) or os.path.getmtime(nb) < start - 1:
+                continue
+            if m not in allowed:
+                sys.exit(f'{m} (default build) is out of date: build it here first '
+                         f'(lake build PlasmaLean), then retry')
+            new = json.load(open(nb))
+            old = json.load(open(base + '.trace'))
+            if not old.get('outputs'):
+                sys.exit('no outputs recorded in the trace of ' + m)
+            new['outputs'], new['log'] = old['outputs'], old['log']
+            with open(base + '.trace', 'w') as f:
+                json.dump(new, f)
+            os.remove(nb)
+            fixed += 1
+        if fixed == 0:
+            print(r.stdout[-3000:] + r.stderr[-2000:])
+            sys.exit('lake still reports out-of-date targets, and no eligible trace to fix')
+        total += fixed
+        print(f'round {rnd + 1}: retraced {fixed} modules')
+    sys.exit('too many rounds')
+
+
 def main():
     if len(sys.argv) >= 5 and sys.argv[1] == 'pack' and sys.argv[2] == '--only':
         pack(sys.argv[3], sys.argv[4:], only=True)
@@ -180,6 +252,8 @@ def main():
         pack(sys.argv[2], sys.argv[3:])
     elif len(sys.argv) == 3 and sys.argv[1] == 'unpack':
         unpack(sys.argv[2])
+    elif len(sys.argv) == 3 and sys.argv[1] == 'retrace':
+        retrace(sys.argv[2])
     elif len(sys.argv) == 3 and sys.argv[1] == 'info':
         man = read_manifest(sys.argv[2])
         man['modules'] = f"{len(man['modules'])} modules"
