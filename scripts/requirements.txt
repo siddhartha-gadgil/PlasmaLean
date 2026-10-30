@@ -6,3 +6,4 @@ gmpy2>=2.2
 sympy>=1.13
 mpmath>=1.3
 clarabel>=0.9   # family2-ballooning certificate search (SOCP)
+matplotlib>=3.8  # dommaschk-qa diagnostic plots (PNG)

@@ -203,7 +203,35 @@ laptop with a small parameter setting, then commit it to `main` before running i
 Kept up to date from the laptop after every review ("update from workstation"). Run them on the
 workstation, inside `tmux`; `run.sh` pulls `main` itself.
 
-**Status (26 October 2026, evening): run now (optional).** Phase 16 stages 8–9 changed the Mu chain
+**Status (30 October 2026): run now.** Main item: the Dommaschk quasi-axisymmetric fit (Q-16,
+N-31, task `dommaschk-qa`), the main route to a candidate satisfying C1 + C2 of the stellarator
+contract. Untrusted numerics only, no Lean build (verdict "no Lean modules"). It commits
+`scripts/dommaschk_qa/results/<stamp>/`: `candidate.json` (exact rational coefficients),
+`summary.json` (axis, nesting, ι, QA defect by helicity, ε_eff, defect/ι and the Q-16 tier),
+`starts.json` and three PNG plots. The task file must be on `main` first. Restartable: if a run is
+interrupted, start it again with the same parameters and finished starts are skipped.
+
+Medium run (24 coefficients, 16 starts; about 1 CPU-hour, about 10–15 min wall with 16 jobs):
+
+```bash
+cd PlasmaLean && git pull
+DQA_NMAX=2 DQA_STARTS=16 DQA_IOTA_MIN=0.2 scripts/workstation/run.sh --jobs 16 dommaschk-qa
+```
+
+Larger run, after the medium one has been reviewed (62 coefficients, 32 starts, stronger ι target,
+wider surfaces; about 25 CPU-hours, so about 1.5 h wall with 16 jobs, capped at 4 h per start by
+`DQA_TIME`):
+
+```bash
+DQA_NMAX=4 DQA_STARTS=32 DQA_IOTA_MIN=0.3 DQA_NFEV=150 DQA_NPER=300 DQA_SURFACES=0.02,0.05,0.08 \
+  scripts/workstation/run.sh --jobs 16 dommaschk-qa
+```
+
+Memory: about 0.6 GB per process for the medium run and up to about 2 GB for the larger one
+(lower `--jobs` if needed). The estimates are scaled from laptop timings: one objective
+evaluation plus its batched Jacobian takes about 3.5 s for 24 coefficients and 15 s for 62.
+
+**Optional, lower priority (still valid, not urgent).** Phase 16 stages 8–9 changed the Mu chain
 modules, so the on-demand families downstream of them (Mu2–Mu5, MuQuarter, Ew1–4) are stale on
 both machines (their sources are unchanged). When convenient, rebuild them on the workstation and
 send the compiled files back:
