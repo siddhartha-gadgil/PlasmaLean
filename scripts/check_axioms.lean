@@ -89,6 +89,7 @@ run_cmd do
 #print axioms PlasmaLean.Design.TransportBarrier.m2_core_barrier
 #print axioms PlasmaLean.Design.BurnWindowScaling.m1_scaling_window_loss
 #print axioms PlasmaLean.Design.ScrewPinchModesHighM.stable_all_modes
+#print axioms PlasmaLean.Design.ScrewPinchModesHighM.stable_all_modes_equilibrium
 #print axioms PlasmaLean.Vacuum.VacuumField.not_closed_fieldLine_transverse_minB
 #print axioms PlasmaLean.Design.SolovevAlpha.reactor_alpha_confined
 #print axioms PlasmaLean.Design.HelicalTransportBarrier.helical_core_barrier
@@ -151,7 +152,15 @@ run_cmd do
 #print axioms PlasmaLean.Sanity.Audit.vacuumField_empty
 #print axioms PlasmaLean.Sanity.Audit.fakeField_not_solution
 #print axioms PlasmaLean.Sanity.Audit.solution_outside_Tdom
-#print axioms PlasmaLean.Sanity.Audit.inconsistentPlasma_physical
+#print axioms PlasmaLean.Sanity.Audit.inconsistentPlasma_not_physical
+#print axioms PlasmaLean.Sanity.Audit.purePlasma_physical
+#print axioms PlasmaLean.Sanity.Audit.carbonHeliumPlasma_physical
+#print axioms PlasmaLean.Sanity.Audit.ionRatio_gt_one_not_physical
+#print axioms PlasmaLean.Sanity.Audit.carbon_values_Zeff_ge
+#print axioms PlasmaLean.Fusion.physicalPlasma_of_impurity
+#print axioms PlasmaLean.Fusion.quasineutralComposition_of_impurity
+#print axioms PlasmaLean.Fusion.QuasineutralComposition.Zeff_eq_one_of_fuel_one
+#print axioms PlasmaLean.Design.TransportBarrier.m2Plasma_carbon
 #print axioms PlasmaLean.Sanity.Audit.powerBalance_zero_density
 #print axioms PlasmaLean.Sanity.Audit.bremsCoeff_matches_NRL
 #print axioms PlasmaLean.Sanity.Audit.boschHaleWindows_cover
@@ -160,3 +169,8 @@ run_cmd do
 #print axioms PlasmaLean.Sanity.AuditModel.mercierIndex_reverseField
 #print axioms PlasmaLean.Sanity.AuditModel.fine_chain_check
 #print axioms PlasmaLean.Sanity.AuditModel.g_nonneg_of_h_nonneg
+#print axioms PlasmaLean.Design.ForceBalanceGradient.solovev_reactor_force_balance_gradient
+#print axioms PlasmaLean.Design.ForceBalanceGradient.helical_scaled_force_balance_gradient
+#print axioms PlasmaLean.Design.ForceBalanceGradient.landreman1_force_balance_SI_gradient
+#print axioms PlasmaLean.Design.ForceBalanceGradient.landreman2_force_balance_SI_gradient
+#print axioms PlasmaLean.Design.ForceBalanceGradient.family2_lam200_force_balance_gradient

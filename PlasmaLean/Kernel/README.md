@@ -12,7 +12,7 @@ default build.
 | [`ThermalSlab`](ThermalSlab.lean) | Supplied steady slab heat laws `SteadySlab` (an engineering slab, not plasma transport) |
 | [`Transport`](Transport.lean) | Flux-surface-averaged radial heat transport: `RadialCoefficients` (regular or degenerate axis, `D(ψ, T) ≥ 0`, kernel K2), `TransportLaws`, `ClassicalRadialSolution`, `RadialHeatTransport` (solutions are supplied, not constructed) |
 | [`Vacuum`](Vacuum.lean) | Vacuum magnetic fields on open sets of `Euclid3`: `VacuumField Ω B` (C², div = 0, curl = 0) |
-| [`Fusion`](Fusion.lean) | 0-D D-T burning plasma: `DTPlasma`, `PhysicalPlasma`, `ReactivityWindow`, `BoschHaleDT` (cited rational enclosures of ⟨σv⟩), `PowerBalance` |
+| [`Fusion`](Fusion.lean) | 0-D D-T burning plasma: `DTPlasma`, `PhysicalPlasma` (with the quasineutral composition law `QuasineutralComposition`), `ReactivityWindow`, `BoschHaleDT` (cited rational enclosures of ⟨σv⟩), `PowerBalance` |
 
 Rules: keep the kernel small; record every change in the module docstring and the assumption
 ledger (`notes/formalization/00-model-contracts.md`); give every law the sanity triad and

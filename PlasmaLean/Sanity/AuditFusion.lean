@@ -25,9 +25,16 @@ already give the degenerate case (zero density), concrete instances (`bhSv_bosch
   (`BoschHaleDT.pos_of_mem`);
 * counterexamples: zero density is not a physical plasma (`not_physical_zero_density`); a zero
   confinement time is rejected by `PowerBalance` (`powerBalance_rejects_zero_tau`);
-* contradictory fields (regression for finding F-1): `PhysicalPlasma` accepts `f_fuel = 1`
-  with `Z_eff = 2` (`inconsistentPlasma_physical`), although quasineutrality forces `Z_eff = 1`
-  when all electrons come from fuel (`fuel_one_forces_Zeff_one`);
+* contradictory fields (regression for finding F-1, fixed by the quasineutral composition law
+  `QuasineutralComposition`): `f_fuel = 1` with `Z_eff = 2` is **not** physical
+  (`inconsistentPlasma_not_physical`), since quasineutrality forces `Z_eff = 1` when all
+  electrons come from fuel (`fuel_one_forces_Zeff_one`); the sanity triad for the new law is a
+  pure plasma (`purePlasma_physical`, degenerate), a carbon plus helium mixture
+  (`carbonHeliumPlasma_physical`, instance), the counterexamples `inconsistentPlasma_not_physical`
+  and `ionRatio_gt_one_not_physical`, and the risk-specific check that the carbon values
+  `f_fuel = 0.86`, `r_i = 53/60` force `Z_eff ≥ 1.7` for **every** admissible mixture
+  (`carbon_values_Zeff_ge`), so the M1/M2/Stellaris value `Z_eff = 1.7` is the least radiating
+  composition consistent with them;
 * zero-parameter witness (regression for finding F-2): with zero density and no auxiliary
   power, every temperature trajectory satisfies `PowerBalance` (`powerBalance_zero_density`);
 * totalized operations (regression for finding F-3): `W/τ_E` with `τ_E = 0` is `0`, i.e.
@@ -143,15 +150,67 @@ theorem powerBalance_rejects_zero_tau (p : DTPlasma) (sv : ℝ → ℝ) (P T₀ 
 /-- A plasma with fuel fraction `1` and ion ratio `1` but `Z_eff = 2`. -/
 @[expose] def inconsistentPlasma : DTPlasma := ⟨1e20, 1, 2, 1, 1⟩
 
-/-- **Regression (finding F-1).** `PhysicalPlasma` accepts `f_fuel = r_i = 1` with
-`Z_eff = 2`. -/
-instance inconsistentPlasma_physical : PhysicalPlasma inconsistentPlasma where
-  n_pos := by norm_num [inconsistentPlasma]
-  V_pos := by norm_num [inconsistentPlasma]
-  Zeff_ge_one := by norm_num [inconsistentPlasma]
-  fuel_pos := by norm_num [inconsistentPlasma]
-  fuel_le_ions := by norm_num [inconsistentPlasma]
-  ions_le_one := by norm_num [inconsistentPlasma]
+/-- **Regression (finding F-1), now a counterexample.** With the quasineutral composition
+law, `f_fuel = r_i = 1` with `Z_eff = 2` is not physical: `f_fuel = 1` forces `Z_eff = 1`. -/
+theorem inconsistentPlasma_not_physical : ¬ PhysicalPlasma inconsistentPlasma := fun h => by
+  have := h.composition.Zeff_eq_one_of_fuel_one (by norm_num [inconsistentPlasma])
+  norm_num [inconsistentPlasma] at this
+
+/-- **Degenerate case.** A pure D-T plasma (`Z_eff = f_fuel = r_i = 1`, no impurity species)
+is physical. -/
+theorem purePlasma_physical : PhysicalPlasma ⟨1e20, 1, 1, 1, 1⟩ where
+  n_pos := by norm_num
+  V_pos := by norm_num
+  fuel_pos := by norm_num
+  composition := ⟨0, Fin.elim0, Fin.elim0, fun i => i.elim0, fun i => i.elim0,
+    by simp, by simp, by simp⟩
+
+/-- Carbon (`Z = 6`, `c = 1/50`) and helium (`Z = 2`, `c = 1/20`) impurities per electron:
+`f_fuel = 1 − 6/50 − 2/20 = 39/50`, `Z_eff = 39/50 + 36/50 + 4/20 = 17/10`,
+`r_i = 39/50 + 1/50 + 1/20 = 17/20`. -/
+@[expose] def carbonHeliumPlasma : DTPlasma := ⟨1e20, 1, 17 / 10, 39 / 50, 17 / 20⟩
+
+/-- **Concrete instance (two species).** The carbon plus helium mixture is physical. -/
+theorem carbonHeliumPlasma_physical : PhysicalPlasma carbonHeliumPlasma where
+  n_pos := by norm_num [carbonHeliumPlasma]
+  V_pos := by norm_num [carbonHeliumPlasma]
+  fuel_pos := by norm_num [carbonHeliumPlasma]
+  composition := ⟨2, ![6, 2], ![1 / 50, 1 / 20],
+    fun i => by fin_cases i <;> norm_num, fun i => by fin_cases i <;> norm_num,
+    by simp [Fin.sum_univ_two, carbonHeliumPlasma]; norm_num,
+    by simp [Fin.sum_univ_two, carbonHeliumPlasma]; norm_num,
+    by simp [Fin.sum_univ_two, carbonHeliumPlasma]; norm_num⟩
+
+/-- **Counterexample.** An ion ratio above `1` (more ions than electrons) is not physical. -/
+theorem ionRatio_gt_one_not_physical (p : DTPlasma) (h : 1 < p.ionRatio) :
+    ¬ PhysicalPlasma p := fun hp => absurd hp.composition.ions_le_one (not_le.2 h)
+
+/-- **Risk-specific check (composition).** For any quasineutral composition and any real `a`,
+`Z_eff ≥ f_fuel + 2a(1 − f_fuel) − a²(r_i − f_fuel)` (from `Σ (Z_i − a)² c_i ≥ 0`). -/
+theorem Zeff_ge_of_composition {p : DTPlasma} (h : QuasineutralComposition p) (a : ℝ) :
+    p.fuelFraction + 2 * a * (1 - p.fuelFraction) - a ^ 2 * (p.ionRatio - p.fuelFraction) ≤
+      p.Zeff := by
+  obtain ⟨k, Z, c, -, hc, hq, hz, hr⟩ := h
+  have hsq : 0 ≤ ∑ i, (Z i - a) ^ 2 * c i :=
+    Finset.sum_nonneg fun i _ => mul_nonneg (sq_nonneg _) (hc i)
+  have hexp : ∑ i, (Z i - a) ^ 2 * c i =
+      ∑ i, Z i ^ 2 * c i - 2 * a * ∑ i, Z i * c i + a ^ 2 * ∑ i, c i := by
+    simp only [Finset.mul_sum, ← Finset.sum_sub_distrib, ← Finset.sum_add_distrib]
+    exact Finset.sum_congr rfl fun i _ => by ring
+  have h1 : ∑ i, Z i * c i = 1 - p.fuelFraction := by linarith
+  have h2 : ∑ i, c i = p.ionRatio - p.fuelFraction := by linarith
+  rw [hexp, h1, h2] at hsq
+  linarith
+
+/-- **Risk-specific check (the design values).** Every physical plasma with the carbon values
+`f_fuel = 0.86`, `r_i = 53/60` used by `m1Plasma`, `m2Plasma` and `stellarisPlasma` has
+`Z_eff ≥ 1.7`; so `Z_eff = 1.7` (pure carbon) is the least radiating consistent choice and the
+bremsstrahlung in those designs is not underestimated. -/
+theorem carbon_values_Zeff_ge (p : DTPlasma) [h : PhysicalPlasma p] (hf : p.fuelFraction = 0.86)
+    (hr : p.ionRatio = 53 / 60) : 1.7 ≤ p.Zeff := by
+  have := Zeff_ge_of_composition h.composition 6
+  rw [hf, hr] at this
+  linarith
 
 /-- **Quasineutrality forbids it.** If every electron comes from fuel (`n_fuel = n_e`), then
 for an impurity of charge `Z ≠ 0` quasineutrality `n_e = n_fuel + Z n_imp` and the definition

@@ -69,13 +69,9 @@ theorem m1Plasma_carbon :
   constructor <;> norm_num [m1Plasma, impurityIonRatio, impurityFuelFraction]
 
 /-- The M1 data are physical. -/
-instance : PhysicalPlasma m1Plasma where
-  n_pos := by norm_num [m1Plasma]
-  V_pos := by norm_num [m1Plasma]
-  Zeff_ge_one := by norm_num [m1Plasma]
-  fuel_pos := by norm_num [m1Plasma]
-  fuel_le_ions := by norm_num [m1Plasma]
-  ions_le_one := by norm_num [m1Plasma]
+instance : PhysicalPlasma m1Plasma :=
+  physicalPlasma_of_impurity (Z := 6) (by norm_num [m1Plasma]) (by norm_num [m1Plasma])
+    (by norm_num [m1Plasma]) (by norm_num [m1Plasma]) m1Plasma_carbon.1 m1Plasma_carbon.2
 
 /-- Explicit form of the M1 net heating with a constant reactivity value `s`. -/
 theorem m1_netHeating_const (s P τ x : ℝ) :

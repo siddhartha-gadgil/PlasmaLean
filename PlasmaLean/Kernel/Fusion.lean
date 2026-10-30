@@ -8,6 +8,7 @@ module
 public import Mathlib.Analysis.Calculus.Deriv.Basic
 public import Mathlib.Analysis.SpecialFunctions.Sqrt
 public import Mathlib.Order.Monotone.Basic
+public import Mathlib.Algebra.BigOperators.Fin
 
 /-!
 # Zero-dimensional D-T burning-plasma kernel
@@ -27,6 +28,9 @@ species, fuel plus impurities). Impurities therefore dilute the fuel: quasineutr
 impurity species of charge `Z` the consistent values are
 `f_fuel = 1 − (Z_eff − 1)/(Z − 1)` and `r_i = f_fuel + (1 − f_fuel)/Z`
 (`impurityFuelFraction`, `impurityIonRatio`; derivation checked in `Sanity/Fusion`).
+The admissibility class `PhysicalPlasma` requires such a quasineutral composition
+(`QuasineutralComposition`: finitely many non-fuel species with charges `Z_k ≥ 1`), so
+`Z_eff`, `f_fuel` and `r_i` cannot be chosen independently.
 All powers are in W and energies in J. The keV→J conversion `keV = 1.602176634e-16 J`
 (exact SI value of the elementary charge times 10³) is explicit.
 
@@ -92,16 +96,6 @@ structure DTPlasma where
   /-- Ion ratio `n_ions/n_e`, all ion species (dimensionless). -/
   ionRatio : ℝ
 
-/-- Physical admissibility: positive density and volume, `Z_eff ≥ 1`,
-`0 < f_fuel ≤ r_i ≤ 1` (fuel ions are among all ions; every ion has charge ≥ 1). -/
-class PhysicalPlasma (p : DTPlasma) : Prop where
-  n_pos : 0 < p.n
-  V_pos : 0 < p.V
-  Zeff_ge_one : 1 ≤ p.Zeff
-  fuel_pos : 0 < p.fuelFraction
-  fuel_le_ions : p.fuelFraction ≤ p.ionRatio
-  ions_le_one : p.ionRatio ≤ 1
-
 /-- Fuel fraction for a single impurity species of charge `Z`:
 `f_fuel = 1 − (Z_eff − 1)/(Z − 1)` (from quasineutrality and the definition of `Z_eff`). -/
 @[expose] def impurityFuelFraction (Zeff Z : ℝ) : ℝ := 1 - (Zeff - 1) / (Z - 1)
@@ -109,6 +103,146 @@ class PhysicalPlasma (p : DTPlasma) : Prop where
 /-- Ion ratio for a single impurity species of charge `Z`: `r_i = f + (1 − f)/Z`. -/
 @[expose] def impurityIonRatio (Zeff Z : ℝ) : ℝ :=
   impurityFuelFraction Zeff Z + (1 - impurityFuelFraction Zeff Z) / Z
+
+/-- **Quasineutral composition.** The electrons are supplied by the fuel ions (charge 1,
+density `f_fuel n_e`) and by finitely many non-fuel ion species `i : Fin k` of charge
+`Z i ≥ 1` and density `c i · n_e` with `c i ≥ 0`, such that (all densities divided by `n_e`)
+* quasineutrality holds: `f_fuel + Σ Z_i c_i = 1`;
+* `Z_eff` is the effective charge of this mixture: `f_fuel + Σ Z_i² c_i = Z_eff`;
+* `r_i` counts all ions: `r_i = f_fuel + Σ c_i`.
+
+Consequences: `f_fuel ≤ r_i ≤ 1`, `Z_eff ≥ 1`, and `f_fuel = 1` forces `Z_eff = 1`
+(`QuasineutralComposition.Zeff_eq_one_of_fuel_one`). A single impurity of charge `Z > 1`
+with the values `impurityFuelFraction`, `impurityIonRatio` is an instance
+(`quasineutralComposition_of_impurity`). -/
+@[expose] def QuasineutralComposition (p : DTPlasma) : Prop :=
+  ∃ (k : ℕ) (Z c : Fin k → ℝ), (∀ i, 1 ≤ Z i) ∧ (∀ i, 0 ≤ c i) ∧
+    p.fuelFraction + ∑ i, Z i * c i = 1 ∧
+    p.fuelFraction + ∑ i, Z i ^ 2 * c i = p.Zeff ∧
+    p.ionRatio = p.fuelFraction + ∑ i, c i
+
+namespace QuasineutralComposition
+
+variable {p : DTPlasma}
+
+/-- The fuel fraction is at most `1`. -/
+theorem fuel_le_one (h : QuasineutralComposition p) : p.fuelFraction ≤ 1 := by
+  obtain ⟨k, Z, c, hZ, hc, hq, -, -⟩ := h
+  have : 0 ≤ ∑ i, Z i * c i :=
+    Finset.sum_nonneg fun i _ => mul_nonneg (zero_le_one.trans (hZ i)) (hc i)
+  linarith
+
+/-- Fuel ions are among all ions: `f_fuel ≤ r_i`. -/
+theorem fuel_le_ions (h : QuasineutralComposition p) : p.fuelFraction ≤ p.ionRatio := by
+  obtain ⟨k, Z, c, -, hc, -, -, hr⟩ := h
+  have : 0 ≤ ∑ i, c i := Finset.sum_nonneg fun i _ => hc i
+  linarith
+
+/-- Every ion carries at least one charge: `r_i ≤ 1`. -/
+theorem ions_le_one (h : QuasineutralComposition p) : p.ionRatio ≤ 1 := by
+  obtain ⟨k, Z, c, hZ, hc, hq, -, hr⟩ := h
+  have : ∑ i, c i ≤ ∑ i, Z i * c i :=
+    Finset.sum_le_sum fun i _ => le_mul_of_one_le_left (hc i) (hZ i)
+  linarith
+
+/-- The effective charge is at least `1`. -/
+theorem Zeff_ge_one (h : QuasineutralComposition p) : 1 ≤ p.Zeff := by
+  obtain ⟨k, Z, c, hZ, hc, hq, hz, -⟩ := h
+  have : ∑ i, Z i * c i ≤ ∑ i, Z i ^ 2 * c i :=
+    Finset.sum_le_sum fun i _ => by
+      have h1 : Z i ≤ Z i ^ 2 := by nlinarith [hZ i]
+      exact mul_le_mul_of_nonneg_right h1 (hc i)
+  linarith
+
+/-- **No impurity electrons, no impurities.** If the fuel supplies every electron
+(`f_fuel = 1`), then `Z_eff = 1`. -/
+theorem Zeff_eq_one_of_fuel_one (h : QuasineutralComposition p) (hf : p.fuelFraction = 1) :
+    p.Zeff = 1 := by
+  obtain ⟨k, Z, c, hZ, hc, hq, hz, -⟩ := h
+  have hnn : ∀ i ∈ Finset.univ, 0 ≤ Z i * c i := fun i _ =>
+    mul_nonneg (zero_le_one.trans (hZ i)) (hc i)
+  have hzero := (Finset.sum_eq_zero_iff_of_nonneg hnn).1 (by linarith)
+  have h2 : ∑ i, Z i ^ 2 * c i = 0 := Finset.sum_eq_zero fun i hi => by
+    have := hzero i hi
+    calc Z i ^ 2 * c i = Z i * (Z i * c i) := by ring
+      _ = 0 := by rw [this, mul_zero]
+  linarith
+
+/-- An effective charge above `1` forces fuel dilution: `Z_eff > 1 → f_fuel < 1`. -/
+theorem fuel_lt_one_of_Zeff_gt_one (h : QuasineutralComposition p) (hZ : 1 < p.Zeff) :
+    p.fuelFraction < 1 :=
+  lt_of_le_of_ne h.fuel_le_one fun hf => by
+    have := h.Zeff_eq_one_of_fuel_one hf
+    linarith
+
+end QuasineutralComposition
+
+/-- A single impurity species of charge `Z > 1` with `1 ≤ Z_eff` and the fuel fraction and ion
+ratio `impurityFuelFraction Z_eff Z`, `impurityIonRatio Z_eff Z` is a quasineutral
+composition (impurity density `(1 − f_fuel)/Z` per electron). -/
+theorem quasineutralComposition_of_impurity {p : DTPlasma} {Z : ℝ} (hZ : 1 < Z)
+    (hZeff : 1 ≤ p.Zeff) (hf : p.fuelFraction = impurityFuelFraction p.Zeff Z)
+    (hr : p.ionRatio = impurityIonRatio p.Zeff Z) : QuasineutralComposition p := by
+  have hZ1 : Z - 1 ≠ 0 := sub_ne_zero.mpr hZ.ne'
+  have hZ0 : Z ≠ 0 := (zero_lt_one.trans hZ).ne'
+  have h1f : 1 - p.fuelFraction = (p.Zeff - 1) / (Z - 1) := by
+    rw [hf, impurityFuelFraction]; ring
+  have hc : 0 ≤ (1 - p.fuelFraction) / Z := by
+    rw [h1f]; exact div_nonneg (div_nonneg (by linarith) (by linarith)) (by linarith)
+  refine ⟨1, fun _ => Z, fun _ => (1 - p.fuelFraction) / Z, fun _ => hZ.le, fun _ => hc,
+    ?_, ?_, ?_⟩ <;> simp only [Fin.sum_univ_one]
+  · field_simp; ring
+  · have : p.fuelFraction + Z ^ 2 * ((1 - p.fuelFraction) / Z) =
+        1 + (Z - 1) * (1 - p.fuelFraction) := by field_simp; ring
+    rw [this, h1f]; field_simp; ring
+  · rw [hr, impurityIonRatio, ← hf]
+
+/-- Physical admissibility: positive density, volume and fuel fraction, and a quasineutral
+composition (`QuasineutralComposition`) linking `Z_eff`, `f_fuel` and `r_i` through an
+explicit list of non-fuel ion species. The bounds `Z_eff ≥ 1` and `0 < f_fuel ≤ r_i ≤ 1` are
+consequences (`PhysicalPlasma.Zeff_ge_one`, `.fuel_le_ions`, `.ions_le_one`), and so is
+`f_fuel = 1 → Z_eff = 1`. -/
+class PhysicalPlasma (p : DTPlasma) : Prop where
+  n_pos : 0 < p.n
+  V_pos : 0 < p.V
+  fuel_pos : 0 < p.fuelFraction
+  composition : QuasineutralComposition p
+
+namespace PhysicalPlasma
+
+variable {p : DTPlasma} [h : PhysicalPlasma p]
+include h
+
+/-- `Z_eff ≥ 1` for a physical plasma. -/
+theorem Zeff_ge_one : 1 ≤ p.Zeff := h.composition.Zeff_ge_one
+
+/-- `f_fuel ≤ r_i` for a physical plasma. -/
+theorem fuel_le_ions : p.fuelFraction ≤ p.ionRatio := h.composition.fuel_le_ions
+
+/-- `r_i ≤ 1` for a physical plasma. -/
+theorem ions_le_one : p.ionRatio ≤ 1 := h.composition.ions_le_one
+
+/-- `f_fuel ≤ 1` for a physical plasma. -/
+theorem fuel_le_one : p.fuelFraction ≤ 1 := h.composition.fuel_le_one
+
+/-- A physical plasma with `f_fuel = 1` has `Z_eff = 1`. -/
+theorem Zeff_eq_one_of_fuel_one (hf : p.fuelFraction = 1) : p.Zeff = 1 :=
+  h.composition.Zeff_eq_one_of_fuel_one hf
+
+end PhysicalPlasma
+
+/-- A single-impurity plasma (charge `Z`, `1 ≤ Z_eff < Z`) with positive density and volume and
+the consistent `f_fuel`, `r_i` is physical. -/
+theorem physicalPlasma_of_impurity {p : DTPlasma} {Z : ℝ} (hn : 0 < p.n) (hV : 0 < p.V)
+    (h1 : 1 ≤ p.Zeff) (hZ : p.Zeff < Z) (hf : p.fuelFraction = impurityFuelFraction p.Zeff Z)
+    (hr : p.ionRatio = impurityIonRatio p.Zeff Z) : PhysicalPlasma p where
+  n_pos := hn
+  V_pos := hV
+  fuel_pos := by
+    have hZ1 : 0 < Z - 1 := by linarith
+    have : (p.Zeff - 1) / (Z - 1) < 1 := (div_lt_one hZ1).mpr (by linarith)
+    rw [hf, impurityFuelFraction]; linarith
+  composition := quasineutralComposition_of_impurity (by linarith) h1 hf hr
 
 namespace DTPlasma
 

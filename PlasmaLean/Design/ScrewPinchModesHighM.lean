@@ -569,6 +569,22 @@ theorem stable_all_modes {μ₀ : ℝ} (hμ : μ₀ ≠ 0) (m n : ℤ) (hm : m �
   · exact stable_low_m hμ m n hm h
   · exact stable_high_m_int hμ m n (by omega)
 
+/-- **Screw-pinch headline with force balance (audit finding MA-L6).** For `μ₀ > 0` the
+example is an equilibrium and is stable to every mode with `m ≠ 0`, for the same profiles:
+(1) the cylindrical radial force balance `RadialBalance` holds on `(0, 1]` for the pressure
+`p = (1 − r⁴)/(2μ₀)` with derivative `p' = pressure' μ₀`, the azimuthal field `Bθ` and
+`S = Bz²` (`ScrewPinchExample.balance`); (2) the mode-stability profiles are these same fields,
+`Bz = √S` with `Bz² = S` and `bθ = Bθ/r` on `(0, 1]`; (3) every `(m, n)` with `m ≠ 0` is
+Newcomb-stable (`stable_all_modes`, Newcomb's reduced form) with the pressure gradient
+`pressure' μ₀` of the balanced pressure. -/
+theorem stable_all_modes_equilibrium {μ₀ : ℝ} (hμ : 0 < μ₀) :
+    PlasmaLean.Equilibrium.ScrewPinch.RadialBalance μ₀ 1 (pressure μ₀) Bθ S (pressure' μ₀)
+        Bθ' S' ∧
+      (∀ r ∈ Ioc (0 : ℝ) 1, Bz r ^ 2 = S r ∧ bθ r = Bθ r / r) ∧
+      ∀ m n : ℤ, m ≠ 0 → ModeStable μ₀ 1 (m : ℝ) ((n : ℝ) / 4) (pressure' μ₀) Bz bθ :=
+  ⟨balance hμ, fun _ hr => ⟨Bz_sq hr.1.le hr.2, bθ_eq hr.1.ne'⟩,
+    fun m n hm => stable_all_modes hμ.ne' m n hm⟩
+
 /-- Under a supplied Newcomb reduction for the mode `(m, n)`, the full ideal-MHD energy of
 every admissible displacement is nonnegative, for every `m ≠ 0`. -/
 theorem energy_nonneg_all_modes {Disp : Type*} {W : Disp → ℝ} {admissible : Disp → Prop}

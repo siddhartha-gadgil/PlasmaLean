@@ -150,6 +150,19 @@ theorem volumeDeriv_pos : 0 < volumeDeriv := by
 `Z_eff = 1.7` from carbon, `f_fuel = 0.86`, `r_i = 53/60` (as in the M1 burn window). -/
 @[expose] def m2Plasma : DTPlasma := ⟨1e20, 1, 1.7, 0.86, 53 / 60⟩
 
+/-- The M2 fuel fraction and ion ratio are the single-carbon-impurity (`Z = 6`) values of the
+kernel impurity model (audit finding F-1). -/
+theorem m2Plasma_carbon :
+    m2Plasma.fuelFraction = impurityFuelFraction 1.7 6 ∧
+      m2Plasma.ionRatio = impurityIonRatio 1.7 6 := by
+  constructor <;> norm_num [m2Plasma, impurityIonRatio, impurityFuelFraction]
+
+/-- The M2 data are physical: positive density and volume and a quasineutral carbon
+composition. -/
+instance : PhysicalPlasma m2Plasma :=
+  physicalPlasma_of_impurity (Z := 6) (by norm_num [m2Plasma]) (by norm_num [m2Plasma])
+    (by norm_num [m2Plasma]) (by norm_num [m2Plasma]) m2Plasma_carbon.1 m2Plasma_carbon.2
+
 /-- Thermal capacity per unit volume `(3/2) n (1+r_i) keV` (J m⁻³ keV⁻¹). -/
 @[expose] def heatCap : ℝ := m2Plasma.thermalEnergy 1
 

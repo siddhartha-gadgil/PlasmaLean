@@ -204,3 +204,74 @@ All commands ran on the laptop at commit `cda8bd0`, with free memory at 65–68 
 - Builds, one module at a time: `lake build PlasmaLean.Sanity.AuditEquilibrium`, `…AuditThermalSlab`, `…AuditVacuum`, `…AuditTransport`, `…AuditFusion`. All succeeded with zero warnings (after replacing flexible `simp … at` calls flagged by `linter.flexible`).
 - Axioms: `lake env lean /tmp/kaudit/ax.lean` (`#print axioms` for all 59 new theorems and named instances). All 59 depend on `[propext, Classical.choice, Quot.sound]` only.
 - Not run: full `lake build`, `scripts/check_axioms.lean`, `scripts/audit_kernel_fact.py` (outside lane E's scope and budget; the new modules are not yet imported by `PlasmaLean.lean`).
+
+## 13. Follow-up (30 October 2026, on top of `f6b500b`)
+
+Fixes from the strict-audit backlog (F-1 approved by the user; E-1, M-4, MA-L6, L-2).
+
+**F-1, fixed (kernel law changed).** `Kernel/Fusion.PhysicalPlasma` now has the fields `n_pos`,
+`V_pos`, `fuel_pos` and `composition : QuasineutralComposition p`, where
+
+```lean
+def QuasineutralComposition (p : DTPlasma) : Prop :=
+  ∃ (k : ℕ) (Z c : Fin k → ℝ), (∀ i, 1 ≤ Z i) ∧ (∀ i, 0 ≤ c i) ∧
+    p.fuelFraction + ∑ i, Z i * c i = 1 ∧          -- quasineutrality
+    p.fuelFraction + ∑ i, Z i ^ 2 * c i = p.Zeff ∧  -- definition of Z_eff
+    p.ionRatio = p.fuelFraction + ∑ i, c i          -- ion count
+```
+
+(finitely many non-fuel species, densities per electron). The old fields `Zeff_ge_one`,
+`fuel_le_ions`, `ions_le_one` are now theorems with the same names (`PhysicalPlasma.*`), plus
+`fuel_le_one` and `Zeff_eq_one_of_fuel_one`; `QuasineutralComposition.fuel_lt_one_of_Zeff_gt_one`.
+Single impurity: `quasineutralComposition_of_impurity`, `physicalPlasma_of_impurity` (charge
+`Z > 1`, `1 ≤ Z_eff < Z`, `f = impurityFuelFraction`, `r_i = impurityIonRatio`).
+- Users changed: `Design/BurnWindow` (`m1Plasma`), `Design/BurnWindowStellarator`
+  (`stellarisPlasma`), both instances now from `physicalPlasma_of_impurity` and the existing carbon
+  theorems; `Design/TransportBarrier`: new `m2Plasma_carbon` and a `PhysicalPlasma m2Plasma`
+  instance (the values `(1.7, 0.86, 53/60)` were already carbon-consistent, so **no numeric
+  result changed**); `Sanity/Fusion.impurity_physical` (now a one-liner). The theory users
+  (`Theory/Transport/{PowerBalance, ConfinementScaling}`, `Sanity/Fusion`) compile unchanged.
+- Sanity triad (`Sanity/AuditFusion`): degenerate `purePlasma_physical` (no species); instance
+  `carbonHeliumPlasma_physical` (two species); counterexamples `inconsistentPlasma_not_physical`
+  (renamed from `inconsistentPlasma_physical`, now a proof of non-admissibility) and
+  `ionRatio_gt_one_not_physical`; risk-specific `Zeff_ge_of_composition` (from
+  `Σ (Z_i − a)² c_i ≥ 0`) and `carbon_values_Zeff_ge`: every admissible mixture with
+  `f = 0.86`, `r_i = 53/60` has `Z_eff ≥ 1.7`, so the design value is the least radiating one and
+  bremsstrahlung is not underestimated.
+
+**E-1, checked (no kernel change).** All 14 design users tie `g` to an actual pressure gradient
+and use the Ampère current `J = μ₀⁻¹ ∇ × B`:
+- in the statement itself: `SolovevOnePlasma`, `SolovevBand`, `SolovevBandHighQ`,
+  `SolovevBandIgnited`, `SolovevCoarea`, `SolovevFluxGeometry` (Mathlib
+  `gradient (offsetPressure μ₀ Δ) x`), `ValidatedSlabEquilibrium` (`deriv` of the explicit
+  pressure, together with `StaticSlab`);
+- via a named `pressureGrad` plus a separate `pressure_hasFDerivAt`: `Solovev`, `SolovevAlpha`,
+  `HelicalEquilibrium`, `HelicalReactorScale`, `LandremanEquilibrium` (incl. `force_balance_SI`,
+  `family1`), `LandremanFamily2` (incl. `force_balance_SI`, `family2`),
+  `LandremanFamily2MercierStable.family2_lam200_equilibrium`. The new module
+  `Design/ForceBalanceGradient` composes them into statements with `g = gradient p`
+  (`solovev_force_balance_gradient`, `solovev_reactor_…`, `helical_…`, `helical_scaled_…`,
+  `landreman1_…`, `landreman1_…_SI_…`, `landreman2_…`, `landreman2_…_SI_…`,
+  `family2_lam200_force_balance_gradient`). Remaining (not changed): the headline theorems
+  `family1`, `family2`, `family2_lam200_equilibrium` still state the `pressureGrad` form;
+  cite the companions when advertising them.
+
+**M-4, fixed.** `scripts/check_axioms_heavy.lean` now runs the same `collectAxioms` loop as
+`check_axioms.lean` over every `PlasmaLean*` declaration in its import closure and fails on any
+non-standard axiom; it imports `Design/CoilKamCert` and prints `CoilKam.coilTorus_resR_Bd`,
+`coilTorus_resZ_Bd`. The loop was smoke-tested on a light import; the script itself was not run,
+since all seven on-demand tops (`RationalStellaratorGC{EwFamily, MuWide, Mu3–5Confined,
+MuQuarter}`, `CoilKamCert`) are stale and were not rebuilt.
+
+**MA-L6, fixed.** `ScrewPinchModesHighM.stable_all_modes_equilibrium (hμ : 0 < μ₀)`:
+`RadialBalance μ₀ 1 (pressure μ₀) Bθ S (pressure' μ₀) Bθ' S'`, and `Bz² = S`, `bθ = Bθ/r` on
+`(0, 1]`, and `∀ m n, m ≠ 0 → ModeStable … (pressure' μ₀) Bz bθ`. `stable_all_modes` is unchanged.
+
+**L-2 / R-4, fixed.** The last 3 plain `by decide` tactics (`Theory/Transport/BarrierCheck:109`,
+`Comparison:1176,1244`) are replaced by `nomatch`; the 4 in `Sanity/Transport` had already gone
+in `0eb0d56`. The default build now has 0 plain `decide` tactics.
+
+**Checks.** Full default build through the bounded driver (24 stale modules, 0 failed), then
+`lake build`: success, zero warnings. `lake env lean scripts/check_axioms.lean`: "Axiom audit
+passed for 47015 PlasmaLean declarations", standard axioms only, zero warnings; `#print axioms`
+lines added for the new and renamed entry points.

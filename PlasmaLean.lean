@@ -200,6 +200,7 @@ public import PlasmaLean.Theory.Stability.MercierShearless
 public import PlasmaLean.Theory.Stability.RiccatiComparison
 public import PlasmaLean.Design.LandremanMercier
 public import PlasmaLean.Design.LandremanFamily2MercierStable
+public import PlasmaLean.Design.ForceBalanceGradient
 public import PlasmaLean.Design.LandremanFamily2MercierDerived
 public import PlasmaLean.Design.LandremanFamily2Coarea
 public import PlasmaLean.Design.LandremanFamily2Ballooning

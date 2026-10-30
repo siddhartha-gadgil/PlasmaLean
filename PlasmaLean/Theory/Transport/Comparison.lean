@@ -1172,8 +1172,8 @@ theorem lt_of_strictSubsolution_pureReaction {c : RadialCoefficients} {Tedge : �
     (hu : ClassicalRadialSolution c Tedge τ u) (hS : StrictSubsolution c τ S)
     (h0 : ∀ ψ ∈ Icc (0 : ℝ) 1, S.T ψ 0 < u.T ψ 0) (h1 : ∀ t ∈ Icc 0 τ, S.T 1 t < Tedge t) :
     ∀ ψ ∈ Icc (0 : ℝ) 1, ∀ t ∈ Icc 0 τ, S.T ψ t < u.T ψ t :=
-  lt_of_strictSubsolution (fun ψ hψ T => (hD0 ψ hψ T).ge) (fun h => absurd (hk.symm.trans h)
-    (by decide)) hu hS h0 h1
+  lt_of_strictSubsolution (fun ψ hψ T => (hD0 ψ hψ T).ge) (fun h => nomatch hk.symm.trans h)
+    hu hS h0 h1
 
 /-- Backward-diffusion coefficients (`D = −1`, `V' = 1`, no sources, regular axis): ellipticity
 fails. -/
@@ -1241,7 +1241,7 @@ instance : TransportLaws relaxCoefficients where
   D_deriv := fun _ _ _ => hasDerivWithinAt_const _ _ _
   DT_deriv := fun _ _ T => hasDerivAt_const T _
   D_nonneg := fun _ _ _ => zero_le_one
-  D_axis := fun h => absurd h (by decide)
+  D_axis := fun h => nomatch h
   D_axis_regular := fun _ _ => one_pos
   Tdom_open := isOpen_univ
   R_cont := (continuous_const.sub continuous_snd).continuousOn

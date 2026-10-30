@@ -156,13 +156,10 @@ theorem stellarisPlasma_density : stellarisPlasma.n = stellarisParams.n19 * 1e19
   norm_num [stellarisPlasma, stellarisParams]
 
 /-- The Stellaris-scale data are physical. -/
-instance : PhysicalPlasma stellarisPlasma where
-  n_pos := by norm_num [stellarisPlasma]
-  V_pos := by norm_num [stellarisPlasma]
-  Zeff_ge_one := by norm_num [stellarisPlasma]
-  fuel_pos := by norm_num [stellarisPlasma]
-  fuel_le_ions := by norm_num [stellarisPlasma]
-  ions_le_one := by norm_num [stellarisPlasma]
+instance : PhysicalPlasma stellarisPlasma :=
+  physicalPlasma_of_impurity (Z := 6) (by norm_num [stellarisPlasma])
+    (by norm_num [stellarisPlasma]) (by norm_num [stellarisPlasma])
+    (by norm_num [stellarisPlasma]) stellarisPlasma_carbon.1 stellarisPlasma_carbon.2
 
 /-- Explicit thermal energy (J) at `x` keV. -/
 theorem st_W (x : ℝ) :

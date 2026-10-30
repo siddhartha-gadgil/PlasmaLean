@@ -141,18 +141,8 @@ theorem impurity_consistency {ne nf ni Z Zeff : ℝ} (hne : ne ≠ 0) (hZ : Z �
 /-- The single-impurity parameters are physical when `1 ≤ Z_eff < Z`. -/
 theorem impurity_physical {n V Zeff Z : ℝ} (hn : 0 < n) (hV : 0 < V) (h1 : 1 ≤ Zeff)
     (hZ : Zeff < Z) :
-    PhysicalPlasma ⟨n, V, Zeff, impurityFuelFraction Zeff Z, impurityIonRatio Zeff Z⟩ := by
-  have hZ1 : 0 < Z - 1 := by linarith
-  have hq : (Zeff - 1) / (Z - 1) < 1 := (div_lt_one hZ1).mpr (by linarith)
-  have hq0 : 0 ≤ (Zeff - 1) / (Z - 1) := div_nonneg (by linarith) hZ1.le
-  have hZpos : 0 < Z := by linarith
-  have hd : (1 - impurityFuelFraction Zeff Z) / Z ≤ 1 - impurityFuelFraction Zeff Z := by
-    unfold impurityFuelFraction
-    exact div_le_self (by linarith) (by linarith)
-  have hd0 : 0 ≤ (1 - impurityFuelFraction Zeff Z) / Z := by
-    unfold impurityFuelFraction; exact div_nonneg (by linarith) hZpos.le
-  exact ⟨hn, hV, h1, by unfold impurityFuelFraction; linarith,
-    by unfold impurityIonRatio; linarith, by unfold impurityIonRatio; linarith⟩
+    PhysicalPlasma ⟨n, V, Zeff, impurityFuelFraction Zeff Z, impurityIonRatio Zeff Z⟩ :=
+  physicalPlasma_of_impurity hn hV h1 hZ rfl rfl
 
 /-- Carbon fixture: `Z_eff = 1.7`, `Z = 6` gives `f_fuel = 0.86`, `r_i = 53/60`. -/
 theorem carbon_fixture :

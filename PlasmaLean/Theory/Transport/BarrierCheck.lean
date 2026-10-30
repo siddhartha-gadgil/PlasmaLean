@@ -106,7 +106,7 @@ theorem AxisFreeSolution.classical {c : RadialCoefficients} {Tedge : ℝ → ℝ
   tau_nonneg := h.tau_nonneg
   regular := h.regular
   pde := h.pde
-  axis := fun hr => absurd (hr.symm.trans hk) (by decide)
+  axis := fun hr => nomatch hr.symm.trans hk
   edge := h.edge
 
 /-- **Comparison by residuals, degenerate axis** (first-touching-time argument). Let `S`, `u`
