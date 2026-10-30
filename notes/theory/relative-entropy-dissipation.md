@@ -1,10 +1,27 @@
 # Relative-entropy dissipation for the heat equation with fixed n, T*
 
+## Metadata
+
+| Field | Value |
+| --- | --- |
+| ID | `N-2` |
+| Title | Corrected relative-entropy identity for heat transport with fixed n, T* |
+| Kind | proof / counterexample / formalization |
+| Addresses | `G-2`, `G-7`, `Q-10`; track T3, gate E6 (plan §1.5, §11) |
+| Depends on | none (self-contained calculus); Mathlib FTC (`intervalIntegral.integral_eq_sub_of_hasDerivAt`) |
+| Dependency requirement | supplied classical solutions (`HasDerivAt` data); no existence theorem used |
+| Produces | the 1-D pointwise and integrated identity, the case 1 and case 2 sign theorems, the counterexample to the BKM §3.1 identity |
+| Difficulty | moderate (bookkeeping of cross and boundary terms; 2-D/3-D needs divergence-theorem infrastructure) |
+| Status | verified (1-D pointwise and integrated identity, cases 1–2, counterexample); 2-D/3-D and time-differentiated `dH/dt` open |
+| Lean evidence | default build: `PlasmaLean.Theory.Transport.RelativeEntropy` (`hasDerivAt_relEntDensity_time`, `relEnt_flux_identity`, `relEnt_flux_identity_unintegrated`, `relEnt_pointwise_identity`, `RelEntSetup.integral_identity`, `RelEntSetup.rate_eq`, `RelEntSetup.rate_le_neg_fisher_const_ref`, `RelEntSetup.rate_le_neg_fisher_steady`, `cexSetup_fisher_pos`, `cexSetup_cross_eq_fisher`, `old_identity_false`, `old_rate_identity_false`); sanity: `PlasmaLean.Sanity.RelativeEntropy` (`setup_self`, `const_ref_identity`, `constRef_rate`, `reaction_sign_fails_increasing`); standard axioms only |
+| Audit evidence | audit confirmed the corrected identity (cross term, boundary terms, Q not ΔQ); Lean module not audited |
+| Last updated | 2026-10-30: 1-D identity, integrated form, sign theorems and counterexample formalized |
+
 **Lane:** A, Cycle 1 (track T3, implementation plan §1.5). **Date:** 2026-10-20.
 **Checks:** `/tmp/lanea/relent.py`, `/tmp/lanea/cex.py` (sympy, outside the repo). All residuals are 0.
 **Verdict:** the identity in `bkm-regularity-and-perelman-burn-bounds.md` §3.1 is **refuted** for non-constant
 T* (exact counterexample below). The corrected identity and the regime where dissipation holds are stated here.
-Status: **proved informally + symbolically checked**.
+Status: **proved informally + symbolically checked**; 1-D version **[Lean]** (2026-10-30, see the metadata).
 
 ## Setting and hypotheses
 
@@ -69,3 +86,24 @@ axis-regularity hypothesis). The edge term vanishes under matched Dirichlet data
   and the scalar lemma `1 - 1/s - log s ≤ 0`, together with the sign lemma for case 2.
 * **Cycle 2:** integrate on [0,1] (FTC, `intervalIntegral`) to get `dH/dt ≤ -𝓕` under the hypotheses of case 2, plus the
   counterexample as a `decide`-free exact sanity theorem (T* = 1+x², T = 1+x).
+
+## Lean status (2026-10-30)
+
+Module `PlasmaLean/Theory/Transport/RelativeEntropy.lean` (namespace
+`PlasmaLean.Transport.RelativeEntropy`, default build, standard axioms only, no `decide`):
+
+* `hasDerivAt_relEntDensity_time`: ∂ₜ(nT*φ(T/T*)) = n(1 − T*/T)∂ₜT.
+* `relEnt_flux_identity`: (1 − T*/T)F′ = −κT*(∂ₓ log(T/T*))² + log(T/T*)F*′ + ∂ₓ[(1 − T*/T)F − log(T/T*)F*]
+  for F = κT′, F* = κT*′ (κ independent of T); `relEnt_flux_identity_unintegrated` is the second form above.
+* `relEnt_pointwise_identity`: the space-time identity with n∂ₜT = F′ + Q (reaction (1 − T*/T)Q).
+* `RelEntSetup` (supplied data on `uIcc a b`), `integral_identity` (∫(1 − T*/T)F′ = −𝓕 + 𝓒 + 𝓑) and
+  `rate_eq` (∫ n(1 − T*/T)∂ₜT = −𝓕 + 𝓒 + 𝓡 + 𝓑), by the fundamental theorem of calculus for the flux.
+* `rate_le_neg_fisher_const_ref` (case 1: T*′ = 0, Q = 0, matched Dirichlet or no-flux at each end: rate = −𝓕 ≤ 0)
+  and `rate_le_neg_fisher_steady` (case 2: steady matched T*, Q(x,T*) ≥ 0, Q non-increasing in T: rate ≤ −𝓕 ≤ 0).
+* `old_identity_false`, `old_rate_identity_false`: the counterexample T* = 1 + x², T = 1 + x on [0, 1];
+  𝓒 = 𝓕 > 0 (`cexSetup_cross_eq_fisher`, `cexSetup_fisher_pos`), boundary term 0.
+
+Remaining: the 2-D/3-D identity (divergence theorem on a Lipschitz domain, matrix χ), the radial
+version with the degenerate axis (V′(0) = 0) made explicit, dH/dt itself (differentiation under the
+integral), equality/coercivity (𝓕 = 0 ⇒ T/T* constant; a Poincaré-type bound H ≤ C𝓕 for exponential decay),
+and the case 3 failure as an integrated example.

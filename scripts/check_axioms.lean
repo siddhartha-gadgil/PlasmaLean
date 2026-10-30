@@ -188,3 +188,13 @@ run_cmd do
 #print axioms PlasmaLean.Design.NearAxisQAExistence.reactorQA_orbit_exists_local
 #print axioms PlasmaLean.Design.NearAxisQAExistence.alpha_trapped_reactorQA_averaged_nonvacuous
 #print axioms PlasmaLean.Design.SolovevAlpha.reactor_alpha_orbit_exists_label
+#print axioms PlasmaLean.Transport.RelativeEntropy.hasDerivAt_relEntDensity_time
+#print axioms PlasmaLean.Transport.RelativeEntropy.relEnt_flux_identity
+#print axioms PlasmaLean.Transport.RelativeEntropy.relEnt_pointwise_identity
+#print axioms PlasmaLean.Transport.RelativeEntropy.RelEntSetup.integral_identity
+#print axioms PlasmaLean.Transport.RelativeEntropy.RelEntSetup.rate_eq
+#print axioms PlasmaLean.Transport.RelativeEntropy.RelEntSetup.rate_le_neg_fisher_const_ref
+#print axioms PlasmaLean.Transport.RelativeEntropy.RelEntSetup.rate_le_neg_fisher_steady
+#print axioms PlasmaLean.Transport.RelativeEntropy.old_identity_false
+#print axioms PlasmaLean.Transport.RelativeEntropy.old_rate_identity_false
+#print axioms PlasmaLean.Sanity.RelativeEntropy.constRef_rate

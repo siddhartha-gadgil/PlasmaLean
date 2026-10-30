@@ -1447,6 +1447,12 @@
      "kind": "checked"
     },
     {
+     "title": "Relative entropy (1-D)",
+     "text": "The corrected relative-entropy identity (cross and source terms, boundary terms) is proved pointwise and integrated; dissipation ≤ −Fisher information for constant and steady references; the old identity is refuted in Lean.",
+     "status": "Lean verified",
+     "kind": "checked"
+    },
+    {
      "title": "Open",
      "text": "Near-QA guiding-centre orbits exist only on some short interval (full horizon open); one module at 6.17 GB; about 2,060 legacy decide +kernel lines.",
      "status": "Next: off-axis bound, Phase 16",
