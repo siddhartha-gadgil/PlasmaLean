@@ -244,6 +244,30 @@ surfaces r = 0.015, 0.03, 0.045; 5.1 min wall on 16 jobs, results in
   (2/9, 1/4 = 2/8, 2/7) across the target surfaces, so low shear or a placed ι window should
   enter the objective. A larger basis alone may not suffice.
 
+### 9. Diagnostic run at the smoke surfaces, ι_min 0.2 (30 October 2026; untrusted)
+
+Run `workstation/dommaschk-qa-20261030T120025Z`: as §8 but with ι_min 0.2; 2.7 min wall on 16
+jobs, results in `scripts/dommaschk_qa/results/20261030T120025Z/`.
+
+- **13 of 16 starts kept all three surfaces regular.** Nine of them have defect/ι ≤ 0.031 on the
+  inner surface. Start 14 has |ι| = 0.32–0.34 with defect/ι 0.056–0.065 on all three surfaces.
+- **The best start (4)** has |ι| = 0.258, 0.250 and 0.238, with defect/ι 0.020 on the inner
+  surface and 0.051 on the outer one, ε_eff 0.66 % and κ 0.48.
+- **The middle surface again sits on a resonance**, this time ι = 1/4 (2/8): r_eff blows up at
+  r = 0.030. The tori on both sides are regular: r_eff 0.014 inside, 0.020–0.025 outside, out to
+  r = 0.048, and field lines are lost from r = 0.054. So the summary reports nesting only to
+  r = 0.024.
+- **Conclusion from §§7–9 (numerical observation).** ι_min = 0.2 costs nothing: defect/ι of
+  0.02–0.05 is reached at |ι| ≈ 0.25. Low-order resonances ι = 2/m (NFP = 2: 2/9, 1/4, 2/7, 1/3)
+  crossing the target surfaces set the nested volume, together with outright loss of field lines
+  near r ≈ 0.05.
+- **Next steps.**
+  - (a) More coefficients at the same surfaces (larger runs are cheap: 3–5 min wall for 24
+    coefficients).
+  - (b) An objective term keeping ι on all target surfaces inside a window free of low-order
+    rationals (or penalising low shear less than resonance proximity). This needs a change to
+    `optimize.py`.
+
 ## Claims and evidence
 
 1. **Complete mathematical proof (symbolic, sympy).** The basis potentials are harmonic and

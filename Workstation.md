@@ -203,15 +203,25 @@ laptop with a small parameter setting, then commit it to `main` before running i
 Kept up to date from the laptop after every review ("update from workstation"). Run them on the
 workstation, inside `tmux`; `run.sh` pulls `main` itself.
 
-**Status (30 October 2026, after the first diagnostic run): wait.** The second diagnostic run
-(ι_min 0.2 at the smoke surfaces) is running. The first one (ι_min 0.15) reached the moderate tier
-on its nested surfaces, but the ι = 2/9 island chain limits the volume (N-31 §8). The next,
-larger runs are chosen after the second diagnostic is reviewed. Runs take about 4–5 min wall for
-24 coefficients and 16 starts, so larger runs (more coefficients and starts, `--jobs 24`) are
-affordable.
+**Status (30 October 2026, after both diagnostic runs): run now.** Both diagnostic runs at the
+smoke surfaces reached defect/ι ≈ 0.02–0.05 at |ι| ≈ 0.25. The nested volume is limited by
+low-order resonances (ι = 2/9, 1/4) and by the loss of field lines near r ≈ 0.05, not by ι_min
+(N-31 §§8–9). Runs are fast (3–5 min wall for 24 coefficients, 16 starts), so the next step is
+larger bases with more starts at the same surfaces. All 24 CPUs are used; memory is about 1–2 GB
+per process. Run these one after the other:
 
-**Wait:** the larger run (62 coefficients, ι_min 0.3, wider surfaces, about 25 CPU-hours) waits
-until one of these reaches the moderate tier (defect/ι ≤ 0.05 on nested surfaces).
+```bash
+cd PlasmaLean && git pull
+DQA_NMAX=3 DQA_STARTS=48 DQA_IOTA_MIN=0.2 DQA_SURFACES=0.015,0.03,0.045 DQA_NFEV=100 \
+  scripts/workstation/run.sh --jobs 24 dommaschk-qa
+DQA_NMAX=4 DQA_STARTS=48 DQA_IOTA_MIN=0.2 DQA_SURFACES=0.015,0.03,0.045 DQA_NFEV=150 DQA_NPER=300 \
+  scripts/workstation/run.sh --jobs 24 dommaschk-qa
+```
+
+The first run has 42 coefficients (about 15–30 min wall), the second 62 (about 1–2 h wall,
+capped at 4 h per start by `DQA_TIME`). A later step adds an objective term that keeps ι inside
+a window free of low-order rationals. That is a code change on the laptop, and it will appear
+here when ready.
 
 **Hold: on-demand olean transfer.** The archive from the last rebuild cannot be used on the
 laptop for anything downstream of `PlasmaLean.Certificates.EvalCert`. Lake hashes the native
