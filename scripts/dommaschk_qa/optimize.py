@@ -51,7 +51,8 @@ field instead of the seed, and use its magnetic axis as the first axis guess.
 
 Selection: the best --rerank starts at optimiser resolution are re-evaluated at the diagnostic
 resolution (--diag-ns, --diag-nper) and the final candidate is the best of them there (feasible
-first: regular lines with Birkhoff error <= 1e-4, |iota| >= iota_min, inside the window if set;
+first: regular lines with Birkhoff error <= 1e-5 and the QA defect from Boozer modes up to
+m, |n| <= 8 (an island chain on a surface shows up there), |iota| >= iota_min, inside the window if set;
 then the worst defect/iota).  This avoids candidates that only look good at coarse resolution.
 starts.json keeps every start's coefficients, so any start can be re-diagnosed or used with
 --init starts.json:K.
@@ -446,7 +447,7 @@ def merit_hr(out, cfg):
     """Selection at diagnostic resolution (metrics_hr): feasible first, then worst defect/iota."""
     m = out['metrics_hr']
     feas = (m['ok'] and min(np.abs(m['iota'])) >= cfg['iota_min'] and m['axis_zrms'] >= cfg['zmin']
-            and max(m["birkhoff_err"]) <= 1e-4
+            and max(m["birkhoff_err"]) <= 1e-5
             and all(window_dist(cfg, abs(v)) == 0 for v in m['iota'] + [m['iota_axis_abs']]))
     return (0, max(m['defect_over_iota'])) if feas else (1, max(m['defect_over_iota']))
 
@@ -496,9 +497,10 @@ def main(argv=None):
     outs.sort(key=lambda o: merit(o, cfg))
     if a.rerank > 1:
         top = [o for o in outs[:a.rerank] if o['metrics']['ok']] or outs[:1]
+        Phr = Problem(dict(cfg, mmax=max(cfg['mmax'], 8), nmodes=max(cfg['nmodes'], 8)))
         for o in top:
             ax = (o['metrics']['axis_R'], o['metrics']['axis_z'])
-            _, info = P.evaluate(np.array(o['x'])[None], ns=a.diag_ns, nper=a.diag_nper, axis_guess=ax)
+            _, info = Phr.evaluate(np.array(o['x'])[None], ns=a.diag_ns, nper=a.diag_nper, axis_guess=ax)
             o['metrics_hr'] = metrics_of(info)
             mh = o['metrics_hr']
             print(f"[rerank] start {o['start']}: ok={mh['ok']} iota {np.round(mh['iota'], 4).tolist()} "

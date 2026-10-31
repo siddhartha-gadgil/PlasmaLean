@@ -12,7 +12,7 @@
 | Dependency requirement | Harmonicity of the basis: exact symbolic identity (checked here in sympy; in Lean, a polynomial normal-form check). Boozer facts for B = ∇Φ: proved informally (N-30 §2). Everything optimised or measured here: **untrusted numerics** |
 | Produces | Scripts `scripts/dommaschk_qa/`; the workstation task `dommaschk-qa`; a candidate format (exact rational coefficients plus an explicit potential); success tiers for the decided Q-16 criterion; a smoke-test candidate |
 | Difficulty | moderate (numerics), hard (certification of the low-shear tori, barrier B2 of N-27) |
-| Status | exploratory: pipeline validated, smoke test done; medium workstation run (ι_min 0.2, r ≤ 0.06) missed the moderate tier; diagnostic run at r ≤ 0.045 reaches the moderate tier on the nested region (defect/ι 0.021–0.038, ε_eff 0.6–1.0 %, |ι| ≈ 0.24) but nesting stops at the ι = 2/9 island chain (r_eff ≈ 0.019); nmax 3 (42 coefficients) reaches the **moderate tier**: defect/ι 0.009–0.023 at |ι| ≈ 0.24 with low shear inside (2/9, 1/4), ε_eff 0.08–0.13 %, regular to r_eff ≈ 0.037 (§10) |
+| Status | strong-tier candidate found (§21, NFP 2, defect/ι ≤ 0.0043, untrusted); purely rational moderate-tier candidate (§21, NFP 3); exploratory: pipeline validated, smoke test done; medium workstation run (ι_min 0.2, r ≤ 0.06) missed the moderate tier; diagnostic run at r ≤ 0.045 reaches the moderate tier on the nested region (defect/ι 0.021–0.038, ε_eff 0.6–1.0 %, |ι| ≈ 0.24) but nesting stops at the ι = 2/9 island chain (r_eff ≈ 0.019); nmax 3 (42 coefficients) reaches the **moderate tier**: defect/ι 0.009–0.023 at |ι| ≈ 0.24 with low shear inside (2/9, 1/4), ε_eff 0.08–0.13 %, regular to r_eff ≈ 0.037 (§10) |
 | Lean evidence | certification step 1 for the NFP-3 candidate (§17): `PlasmaLean.Design.DommaschkQA3.candidate_vacuum`, `field_vacuum` (every coefficient vector), `candidate_netToroidalCurrent_eq_zero`, `candidate_currentFree`, `field_stellSym`; reusable `PlasmaLean.Fields.CylAlgebra.gradField_vacuum` (default build, standard axioms) |
 | Audit evidence | not audited |
 | Last updated | 30 October 2026: created (pipeline, validation, smoke test, workstation commands); medium workstation run reviewed (§7) |
@@ -572,6 +572,49 @@ Kronecker substitution.
 3. Emit the Lean certificate on the `KamTorusA` pattern: exact field data from `emit_lean.py`,
    residual forms, Kronecker norms, the a posteriori theorem. This gives certified invariant tori
    with ι, and hence C1 through `currentFreeTransform_of_vacuum`.
+
+### 21. Strong tier reached; a purely rational moderate-tier field (31 October 2026; untrusted)
+
+**Re-rank fix.** In the batch `2026-10-31-rerank-nolog` the first re-rank (Birkhoff ≤ 1e-4, Boozer
+modes m ≤ 4, |n| ≤ 6) did not catch island chains: start 34 (NFP 3) and start 42 (NFP 2) were kept
+although their inner surfaces sit on ι = 3/8 and ι = 1/4. The criterion is now Birkhoff ≤ 1e-5 and
+the QA defect is computed from modes up to m, |n| ≤ 8, where the islands show (start 42: defect/ι
+7.2 on the inner surface).
+
+**Strong-tier candidate (NFP 2, 42 coefficients).** This is start 11 of the warm-start run
+`20261031T083850Z`, re-ranked on the laptop from the committed `starts.json`; results are in
+`scripts/dommaschk_qa/results/20261031-laptop-rerank-083850Z/`. High resolution, rounded
+rational coefficients:
+
+| r (launch) | r_eff | ι | defect/ι | ε_eff | κ |
+| --- | --- | --- | --- | --- | --- |
+| 0.015 | 0.010 | −0.240 | 0.0013 | 0.002 % | 0.03 |
+| 0.030 | 0.018 | −0.237 | 0.0021 | 0.002 % | 0.04 |
+| 0.045 | 0.027 | −0.233 | 0.0043 | 0.019 % | 0.08 |
+
+- **Tier: strong** (worst defect/ι 0.0043 ≤ 0.01). All Q-16 checks pass, and
+  `candidate_for_certification` is true.
+- **Nesting.** Strictly nested to r = 0.054 (r_eff ≈ 0.032) and regular to r = 0.06. The first
+  island, at ι = 2/9, is at r = 0.066. ι runs from 0.241 on the axis to 0.228, inside the
+  resonance-free window (2/9, 1/4), with moderate monotone shear, which is good for the KAM twist.
+- **Axis.** Non-planar, with z_max 0.030 and R between 0.95 and 0.99.
+- **Log terms.** The field contains them, so its KAM certificate would need log enclosures.
+
+**Purely rational moderate-tier candidate (NFP 3, `--exclude-log`, 21 free coefficients).** Run
+`20261031T084057Z`:
+- defect/ι 0.0066, 0.0122 and 0.0187 at |ι| ≈ 0.327–0.330, with ε_eff 0.08 % and 0.12 %;
+- the log coefficients are exactly 0;
+- Birkhoff errors of 10⁻⁹–10⁻⁸ out to r = 0.042 and regular lines out to r = 0.066
+  (r_eff ≈ 0.047), the largest region so far;
+- a shearless point near r ≈ 0.027, so a certified torus must sit in the sheared outer part
+  (|ι| 0.34–0.36);
+- the strict nesting flag fails only on the outer optimised surface (Birkhoff 1.4 × 10⁻⁶ against
+  10⁻⁶).
+
+**Choice for certification (pending the NFP-2 `--exclude-log` run of the same batch).**
+- The strong NFP-2 field has the better quality numbers and a monotone ι.
+- The rational NFP-3 field fits the existing polynomial KAM pipeline directly.
+- If the NFP-2 no-log run reaches the strong tier, it combines both.
 
 ## Claims and evidence
 

@@ -2340,6 +2340,12 @@
     "text": "audit fix ar-h1/ar-m1: intrinsic c1 current clause, 31 october 2026 implementation plan"
   },
   {
+    "title": "Dommaschk QA fit: strong tier reached, 31 October 2026",
+    "section": "Implementation plan",
+    "url": "implementation-plan.html#dommaschk-qa-fit-strong-tier-reached-31-october-2026",
+    "text": "dommaschk qa fit: strong tier reached, 31 october 2026 implementation plan"
+  },
+  {
     "title": "M0 · Exact symmetric equilibria: slab, screw pinch, Solov'ev, helical",
     "section": "Implementation plan · Lean verified — exact slab, screw-pinch, Solov'ev and helical equilibria with kernel force balance, all-time field-line/orbit confinement, Suydam both ways and screw-pinch Newcomb stability for every m ≠ 0 (reduced form supplied; idealized symmetric models).",
     "url": "implementation-plan.html",
