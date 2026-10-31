@@ -299,6 +299,14 @@ public import PlasmaLean.Design.DommaschkQA2RDataCheck1
 public import PlasmaLean.Design.DommaschkQA2RDataCheck2
 public import PlasmaLean.Design.DommaschkQA2R
 public import PlasmaLean.Design.DommaschkKamDio
+public import PlasmaLean.Design.DommaschkKamPoly
+public import PlasmaLean.Design.DommaschkKamFieldData
+public import PlasmaLean.Design.DommaschkKamFieldCheck
+public import PlasmaLean.Design.DommaschkKamField
+public import PlasmaLean.Design.DommaschkKamIdentCheck
+public import PlasmaLean.Design.DommaschkKamIdentCheckD
+public import PlasmaLean.Design.DommaschkKamIdentCheckR
+public import PlasmaLean.Design.DommaschkKamIdent
 public import PlasmaLean.Design.QSJetExample
 
 /-!

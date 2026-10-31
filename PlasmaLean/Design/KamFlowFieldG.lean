@@ -189,6 +189,10 @@ structure FlowFieldG where
   Pap : PolyExpr ℂ (Fin 6)
   /-- Numerator `R^{k_b}·b` of the `dz`-coefficient of the flux primitive. -/
   Pbp : PolyExpr ℂ (Fin 6)
+  /-- The `dφ`-coefficient `P_c` of the flux primitive (`0` for fields whose vertical and radial
+  fluxes through rotated annuli vanish; needed for the Dommaschk target, whose `B_z` has nonzero
+  `φ`-mean). -/
+  Pcp : PolyExpr ℂ (Fin 6)
   /-- The torsion numerator `P = (D² (X − A' − DX·V₀)) × V₀`. -/
   Pp : PolyExpr ℂ (Fin 6)
   /-- The radial offset `a_R(φ)` of the moving frame centre (from `R₀`). -/
@@ -224,13 +228,13 @@ structure FlowFieldG where
         (kb : FA) * PolyExpr.eval (xB u z) Pbp * Ring.inverse (RofG R₀ u) ^ (kb + 1) -
       pd (xB u z) 1 Pap * Ring.inverse (RofG R₀ u) ^ ka =
         PolyExpr.eval (xB u z) Dp * Ring.inverse (RofG R₀ u) ^ p
-  /-- **Flux primitive identity** (b): `∂_φ a = w X_z` (the `dz∧dφ`-coefficient). -/
+  /-- **Flux primitive identity** (b): `∂_φ a − ∂_R P_c = w X_z`. -/
   flux_b : ∀ u z : FA, IsUnit (RofG R₀ u) →
-    phiD (xB u z) Pap * Ring.inverse (RofG R₀ u) ^ ka =
+    phiD (xB u z) Pap * Ring.inverse (RofG R₀ u) ^ ka - pd (xB u z) 0 Pcp =
       PolyExpr.eval (xB u z) nZp * Ring.inverse (RofG R₀ u) ^ p
-  /-- **Flux primitive identity** (c): `∂_φ b = −w X_R` (the `dR∧dφ`-coefficient). -/
+  /-- **Flux primitive identity** (c): `∂_φ b − ∂_z P_c = −w X_R`. -/
   flux_c : ∀ u z : FA, IsUnit (RofG R₀ u) →
-    phiD (xB u z) Pbp * Ring.inverse (RofG R₀ u) ^ kb =
+    phiD (xB u z) Pbp * Ring.inverse (RofG R₀ u) ^ kb - pd (xB u z) 1 Pcp =
       -(PolyExpr.eval (xB u z) nRp * Ring.inverse (RofG R₀ u) ^ p)
   /-- **The torsion numerator** `P = Y_R V₀_z − Y_z V₀_R` with
   `Y = n D − D ∇n·V₀ + n ∇D·V₀ − D² A'` (`= D² (X − DX·V₀ − A')`). -/
@@ -358,6 +362,7 @@ def toroidal (R₀ : ℝ) : FlowFieldG where
   nZp := const 0
   Pap := const 0
   Pbp := const (-1 / 2)
+  Pcp := const 0
   Pp := const 0
   aRp := const 0
   aZp := const 0
@@ -436,6 +441,7 @@ def toG : FlowFieldG where
   nZp := F.nZp
   Pap := F.Pap
   Pbp := F.Pbp
+  Pcp := const 0
   Pp := F.Pp
   aRp := const 0
   aZp := const 0
@@ -461,12 +467,14 @@ def toG : FlowFieldG where
       pd (xB u z) 1 F.Pap * r * ((1 + u) * r + 1)) * hr
   flux_b := fun u z hu => by
     rw [Rof_one] at hu ⊢
+    rw [show pd (xB u z) 0 (const 0 : PolyExpr ℂ (Fin 6)) = 0 from rfl, sub_zero]
     have h := F.flux_b u z
     have hr := Ring.mul_inverse_cancel _ hu
     set r := Ring.inverse (1 + u)
     linear_combination r ^ 3 * h - phiD (xB u z) F.Pap * r * ((1 + u) * r + 1) * hr
   flux_c := fun u z hu => by
     rw [Rof_one] at hu ⊢
+    rw [show pd (xB u z) 1 (const 0 : PolyExpr ℂ (Fin 6)) = 0 from rfl, sub_zero]
     have h := F.flux_c u z
     have hr := Ring.mul_inverse_cancel _ hu
     set r := Ring.inverse (1 + u)

@@ -176,3 +176,142 @@ To call `FlowFieldG.KamHG.kam_flow_torus` for `dkField` and torus A of the Domma
   #print axioms PlasmaLean.Design.KamNewton.torusA_exactG
   #print axioms PlasmaLean.Design.KamNewton.torusA_exact_viaG
   ```
+
+## Item 5: the Dommaschk target in flow form (31 October 2026)
+
+**Status:** the data, all identities and the identification with `field candidate` compile.
+The instance `dkField : FlowFieldG` **cannot be built with the current interface**, because of
+an obstruction proved in Lean (below). With a small interface extension it is a 30-line
+definition, checked in a scratch worktree (not committed).
+
+**Files** (new; all zero warnings, standard axioms). None is imported by `PlasmaLean.lean` yet.
+
+| Module | Content | Time, peak RSS |
+| --- | --- | --- |
+| `Design/DommaschkKamPoly` | `DkPoly`: sparse rational polynomials in `(u, z, c, s)` with checker operations `merge`, `scale`, `mul`, `dU/dZ/dC/dS`, `phiS`, `atZero`, `AO`. Soundness (`ev_merge`, `ev_mul`, …) is unconditional. Bridges: `eval_toPE`, `pd_toPE_U/Z/C/S`, `phiD_toPE`; `ev_congr_AO`, `AO_phiS` | 5 s, 1.6 GB |
+| `Design/DommaschkKamFieldData` | generated data: `dD, dnR, dnZ, dPa, dPb, dPc` (344/362/328/309/362/3 terms), `dQ`, `Kq`, the `R`-form data `dDR, dnRh, dnZR`, and the denominators `NDn, NRn, NZn, Lw` | 5 s, 1.6 GB |
+| `Design/DommaschkKamFieldCheck` | kernel checks `divCombo_eq`, `faCombo_eq`, `fbCombo_eq`, `fcCombo_eq`, `obsCombo_eq`, `AO_dQ` (`kernel_fact`) | 8 s, 2.0 GB |
+| `Design/DommaschkKamField` | the interface-shaped identities and the obstruction | 5 s, 1.6 GB |
+| `Design/DommaschkKamIdentCheck`, `…CheckD`, `…CheckR` | kernel checks: the substitution `R = R₀ + u` (`subst_D/nR/nZ`), exact conversion (`convOK_*`, `LW_int`), the Cartesian identities `ident_nZ`, `ident_D`, `ident_nR` (`degCheck`: `CylAlgebra.sliceCheck` sliced by `R`-degree) | 12 s / 9 s / 10 s; 2.1 / 2.9 / 3.0 GB |
+| `Design/DommaschkKamIdent` | the identification theorems | 5 s, 1.6 GB |
+
+The generator is `scripts/dommaschk_kam/emit_flowfield.py`. It validates every identity and
+every kernel combination by an exact Python mirror of the Lean checkers before it writes, and
+checks `D = R⁷B_φ`, `n_R = R⁸B_R`, `n_z = R⁸B_z` exactly at rational points against the Cartesian
+potentials parsed from `DommaschkQA2RData.lean`.
+
+**Choices.**
+- **Centre and exponents.** `R₀ = 29/32` (`dkR0`, the middle of torus A's `R`-range), `u = R − R₀`.
+  The exponents are `p = k_a = k_b = 7`.
+- **Polynomials.**
+  - `D = R⁶(1 + ∂_φV) = R⁷B_φ`, `n_R = R⁸B_R`, `n_z = R⁸B_z`.
+  - `P_a = R⁸∂_zW − zR⁶` and `P_b = −R⁸∂_RW`, where `W` is the `φ`-antiderivative of the
+    oscillating part of `V`.
+  - `P_c = −c₀R²/2`, with `c₀ = −0.0239…` the coefficient of the axisymmetric potential `z`.
+- **`φ`-encoding.** `c = cos 2φ`, `s = sin 2φ`, with `φ` the cylindrical angle (the strip
+  algebra's `cS`, `sS`).
+  - The harmonics `m = 2, 4, 6` are the homogeneous harmonic polynomials `Re/Im (c + i s)^{m/2}`.
+  - `phiD` acts on them exactly, so every identity holds as a polynomial identity in independent
+    `(u, z, c, s)`. The relation `c² + s² = 1` is never used.
+- **Torsion.** `Pp aR aZ` is *defined* by the torsion formula for any angle-only centre
+  `(aR, aZ)`, so `torsion_poly` holds for every centre chosen later.
+
+**Identities (`DommaschkKamField`), at every `xB u z`.**
+- `divFree`, `flux_a` and `torsion_poly aR aZ hR hZ` are exactly the fields of `FlowFieldG`.
+- `flux_b'` and `flux_c'` are the flux identities **with** the `dφ`-component:
+  - `phiD Pap · R⁻⁷ − pd 0 Pcp = nZ · R⁻⁷`;
+  - `phiD Pbp · R⁻⁷ − pd 1 Pcp = −(nR · R⁻⁷)`.
+- Side conditions: `noW_Dp/nRp/nZp`, `real_Dp/nRp/nZp`, `real_Pp`, `realConsts_toPE`.
+- Sanity: `Pp_zero_centre`, `R7l_ne`, and the `DkPoly` fixtures.
+
+**Obstruction.** `no_primitive_without_dphi ka p Pa` states that
+`phiD Pa R^{-ka} = nZ R^{-p}` holds at no family of torus points. `no_flowFieldG` deduces that no
+`FlowFieldG` has `R₀ = 29/32` and this `n_z`.
+- **Proof.** At `u = z = 0`, take the `φ`-mean (`avg`). The left side is a `dPh`, so its mean is
+  0. The mean of `n_z` is `c₀R₀⁸ ≠ 0` (`avg_nZ`, via `obsCombo_eq`).
+- **Physics.** `B_z` has `φ`-mean `c₀`. So the flux of `B` through a horizontal annulus swept
+  around the axis is `πc₀(R₂² − R₁²) ≠ 0`.
+- **Consequence.** The primitive needs a `dφ`-term. The N-33 §2.4 remark "no dφ-component" is
+  wrong for this candidate: it overlooked `⟨B_z⟩ = c₀`.
+
+**Interface extension needed (coordinator decision; edits to existing files).** This is the
+`FlowFieldS` pattern.
+1. **`KamFlowFieldG`.**
+   - Add the field `Pcp : PolyExpr ℂ (Fin 6)` after `Pbp`.
+   - `flux_b` becomes `phiD (xB u z) Pap * R⁻¹^ka - pd (xB u z) 0 Pcp = eval nZp * R⁻¹^p`.
+   - `flux_c` becomes `phiD (xB u z) Pbp * R⁻¹^kb - pd (xB u z) 1 Pcp = -(eval nRp * R⁻¹^p)`.
+   - `toroidal` and `toG` get `Pcp := const 0`. In `toG.flux_b/c`, first
+     `rw [show pd (xB u z) i (const 0 : PolyExpr ℂ (Fin 6)) = 0 from rfl, sub_zero]`.
+2. **`KamFlowFrameG`.**
+   - Add `def Pc : FA := PolyExpr.eval (xB u z) F.Pcp`.
+   - `BF := aF ∂_φu + bF ∂_φz + Pc`.
+   - In `eta2_flux`, add
+     `have hPc : dTh (F.Pc u z) = pd 0 Pcp * Rt u + pd 1 Pcp * zt z := H.dTh_evalB F.Pcp`.
+     `hBF` gains `+ dTh (F.Pc u z)` (with `dS_add … (H.ana_evalB F.Pcp)`), and the final rewrite
+     uses `hPc`. The `linear_combination` is unchanged.
+3. **Nothing else.** `KamFlowStepG` uses only `avg_eta2`, and `KamFlowIterationG` and
+   `KamTorusAExactG` are untouched.
+
+Checked in a scratch worktree: with this 106-line diff, `KamFlowFieldG`, `KamFlowFrameG`,
+`KamFlowStepG`, `KamFlowIterationG` and `KamTorusAExactG` all build. The instance below builds too:
+```lean
+def dkFieldC (aR aZ : SP) (hR : AO aR = true) (hZ : AO aZ = true) : FlowFieldG where
+  R₀ := dkR0; p := 7; ka := 7; kb := 7
+  Dp := Dp; nRp := nRp; nZp := nZp; Pap := Pap; Pbp := Pbp; Pcp := Pcp; Pp := Pp aR aZ
+  aRp := toPE aR; aZp := toPE aZ
+  noW_Dp := noW_Dp; noW_nRp := noW_nRp; noW_nZp := noW_nZp
+  real_Dp := real_Dp; real_nRp := real_nRp; real_nZp := real_nZp; real_Pp := real_Pp aR aZ
+  real_aRp := realConsts_toPE aR; real_aZp := realConsts_toPE aZ
+  divFree := divFree; flux_a := flux_a; flux_b := flux_b'; flux_c := flux_c'
+  torsion_poly := torsion_poly aR aZ hR hZ
+def dkField : FlowFieldG := dkFieldC [] [] rfl rfl
+```
+After the extension, `no_flowFieldG` takes the extra hypothesis `F.Pcp = const 0`. The proof
+gains `rwa [hc, show pd (xB u z) 0 (const 0 : PolyExpr ℂ (Fin 6)) = 0 from rfl, sub_zero] at h`.
+That was also checked.
+
+**Identification (`DommaschkKamIdent`).** Let `B = field candidate (cylPoint R φ z)` with
+`R > 0`. Its cylindrical components are `cylBR = cos φ B_x + sin φ B_y`,
+`cylBphi = −sin φ B_x + cos φ B_y` and `cylBz = B_z`. Evaluate the polynomials at
+`ptC R φ z = (R − R₀, z, cos 2φ, sin 2φ, 0, 0) : Fin 6 → ℂ`.
+- `Dp_ident`: `eval (ptC R φ z) Dp = ↑(R⁷ · cylBphi R φ z)`.
+- `nRp_ident`: `n_R = ↑(R⁸ · cylBR R φ z)`.
+- `nZp_ident`: `n_z = ↑(R⁸ · cylBz R φ z)`.
+- `flow_ident`: if `cylBphi ≠ 0`, then `D ≠ 0`, `n_R/D = ↑(R·B_R/B_φ)` and `n_z/D = ↑(R·B_z/B_φ)`.
+  These are the field-line equations `dR/dφ`, `dz/dφ` of `field candidate`.
+
+For item 10:
+- In the strip algebra, `eval (PolyExpr.eval (xB u z) e) θ ψ` is `e` at
+  `(u(θ,ψ), z(θ,ψ), −sin ψ, cos ψ, 0, 0)` (`KamFlowField.eval_polyExpr`).
+- With `ψ = 2φ − π/2`, this is `ptC (R₀ + u) φ z`, once `u` and `z` are real.
+
+**Remaining for item 5:** only the interface decision above. Then add the instance (as
+`Design/DommaschkKamInstance` or in `DommaschkKamField`) and adjust `no_flowFieldG`. The moving
+centre is a parameter of `dkFieldC`; it is to be chosen with the torus data (items 6–8).
+
+**Shared files (owner to add).**
+- `PlasmaLean.lean`, after line 301 (`DommaschkKamDio`); light modules, about 60 CPU-s in total:
+  ```
+  public import PlasmaLean.Design.DommaschkKamPoly
+  public import PlasmaLean.Design.DommaschkKamFieldData
+  public import PlasmaLean.Design.DommaschkKamFieldCheck
+  public import PlasmaLean.Design.DommaschkKamField
+  public import PlasmaLean.Design.DommaschkKamIdentCheck
+  public import PlasmaLean.Design.DommaschkKamIdentCheckD
+  public import PlasmaLean.Design.DommaschkKamIdentCheckR
+  public import PlasmaLean.Design.DommaschkKamIdent
+  ```
+- `scripts/check_axioms.lean`:
+  ```
+  #print axioms PlasmaLean.Design.DommaschkKam.divFree
+  #print axioms PlasmaLean.Design.DommaschkKam.flux_a
+  #print axioms PlasmaLean.Design.DommaschkKam.flux_b'
+  #print axioms PlasmaLean.Design.DommaschkKam.flux_c'
+  #print axioms PlasmaLean.Design.DommaschkKam.torsion_poly
+  #print axioms PlasmaLean.Design.DommaschkKam.no_flowFieldG
+  #print axioms PlasmaLean.Design.DommaschkKam.Dp_ident
+  #print axioms PlasmaLean.Design.DommaschkKam.nRp_ident
+  #print axioms PlasmaLean.Design.DommaschkKam.nZp_ident
+  #print axioms PlasmaLean.Design.DommaschkKam.flow_ident
+  #print axioms PlasmaLean.Design.DommaschkKam.DkPoly.merge_fixture_ne
+  ```

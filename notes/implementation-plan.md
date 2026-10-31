@@ -1615,3 +1615,13 @@ Gate E1 (§11.2, §11.4) and the "sanity theorem or counterexample" promised in 
   contract) is next, and needs the high-resolution oracle runs. Axiom audit passed (49,638
   declarations).
 
+### Certification step 2: Dommaschk flow-field instance (N-33 item 5), 31 October 2026
+
+- The target needs a dφ-component in the KAM flux primitive (⟨B_z⟩ = c₀ ≠ 0; proved:
+  `DommaschkKam.no_flowFieldG`); `FlowFieldG` extended by `Pcp` (rational field: 0; all G modules
+  unchanged otherwise). `DommaschkKam.dkFieldC` / `dkField : FlowFieldG` (R₀ = 29/32, p = 7) with
+  kernel-checked identities (`divFree`, `flux_a`, `flux_b'`, `flux_c'`, `torsion_poly`) and the
+  identification with `DommaschkQA2R.field candidate` (`Dp_ident`, `nRp_ident`, `nZp_ident`,
+  `flow_ident`). Modules ≤ 3.0 GB. Axiom audit passed (49,997 declarations). Items 6–10 need the
+  high-resolution oracle (workstation).
+

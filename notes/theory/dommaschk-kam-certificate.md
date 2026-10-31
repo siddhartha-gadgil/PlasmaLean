@@ -652,3 +652,27 @@ through `FlowField.toG` (`toG_frameHyp_iff`, `field14G_invariant_iff`). `KamFlow
 (`KamTorusAExactG.torusA_exact_viaG`). Remaining: items 5–10 (Dommaschk field instance, constants,
 low- and high-resolution chains, contract). See `kamflow-g-status.md` for what each needs.
 
+## Update (31 October 2026): plan item 5 done; correction to §2.4
+
+- **Correction.** The claim that the flux primitive needs no dφ-component is wrong for this target.
+  B_z has φ-mean c₀ = −0.0239 (the coefficient of the potential z), and `no_flowFieldG` proves that
+  no instance without a dφ-component exists. The interface `FlowFieldG` therefore gained a field
+  `Pcp`: the primitive is α = (P_a/R^ka) dR + (P_b/R^kb) dz + P_c dφ, and the flux identities
+  carry −∂P_c terms (the precedent is `FlowFieldS`). The rational field takes `Pcp = 0`, and all
+  `KamFlow*G` modules and `KamTorusAExactG` build unchanged.
+- **Instance.** `DommaschkKam.dkFieldC aR aZ` / `dkField` is a `FlowFieldG`, with R₀ = 29/32,
+  p = ka = kb = 7 and P_c = −c₀R²/2. The polynomials `Dp, nRp, nZp, Pap, Pbp` have 309–362 terms
+  each, in (u, z, cos 2φ, sin 2φ). The identities `divFree`, `flux_a`, `flux_b'`, `flux_c'` and
+  `torsion_poly` are kernel-checked by a sparse-polynomial checker (`DommaschkKamPoly`).
+- **Identification** (`DommaschkKamIdent`), at every point with R > 0:
+  - `Dp_ident`: D = R⁷B_φ;
+  - `nRp_ident`: n_R = R⁸B_R;
+  - `nZp_ident`: n_z = R⁸B_z;
+  - `flow_ident`: n/D gives the field-line equations of `field candidate`.
+
+  These are the inputs item 10 needs.
+- **Emitter.** `scripts/dommaschk_kam/emit_flowfield.py` checks everything exactly before
+  writing, including against the Cartesian potentials of `DommaschkQA2RData`.
+- **Remaining.** Items 6–10: torus data and centre, constants, the low- and high-resolution
+  chains, the contract link. They need the high-resolution oracle runs on the workstation.
+

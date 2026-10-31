@@ -139,8 +139,10 @@ def aF : FA := F.Pa u z * F.Ri u ^ F.ka
 def bF : FA := F.Pb u z * F.Ri u ^ F.kb
 /-- The `dθ`-component `A = a ∂_θR + b ∂_θz` of the pulled-back primitive. -/
 def AF : FA := F.aF u z * Rt u + F.bF u z * zt z
-/-- The `dφ`-component `B = a ∂_φR + b ∂_φz` of the pulled-back primitive. -/
-def BF : FA := F.aF u z * dPh u + F.bF u z * dPh z
+/-- `P_c(K)`, the `dφ`-coefficient of the primitive at the torus. -/
+def Pc : FA := PolyExpr.eval (xB u z) F.Pcp
+/-- The `dφ`-component `B = a ∂_φR + b ∂_φz + P_c` of the pulled-back primitive. -/
+def BF : FA := F.aF u z * dPh u + F.bF u z * dPh z + F.Pc u z
 
 end Frame
 
@@ -547,9 +549,13 @@ theorem eta2_flux : F.eta2 ι u z = dTh (F.BF u z) - dPh (F.AF u z) := by
     rw [dTh, dPh, Rt, dTh, dS_dS_comm _ _ _ _ H.ana_u]; rfl
   have hcomm_z : dTh (dPh z) = dPh (zt z) := by
     rw [dTh, dPh, zt, dTh, dS_dS_comm _ _ _ _ H.ana_z]; rfl
+  have hPc : dTh (F.Pc u z) = pd (xB u z) 0 F.Pcp * Rt u + pd (xB u z) 1 F.Pcp * zt z :=
+    H.dTh_evalB F.Pcp
   have hBF : dTh (F.BF u z) = dTh (F.aF u z) * dPh u + F.aF u z * dTh (dPh u) +
-      (dTh (F.bF u z) * dPh z + F.bF u z * dTh (dPh z)) := by
-    rw [BF, dTh, dS_add _ _ (H.ana_aF.mul H.ana_dPh_u) (H.ana_bF.mul H.ana_dPh_z),
+      (dTh (F.bF u z) * dPh z + F.bF u z * dTh (dPh z)) + dTh (F.Pc u z) := by
+    have hPa : Ana (F.Pc u z) := H.ana_evalB F.Pcp
+    rw [BF, dTh, dS_add _ _ ((H.ana_aF.mul H.ana_dPh_u).add (H.ana_bF.mul H.ana_dPh_z)) hPa,
+      dS_add _ _ (H.ana_aF.mul H.ana_dPh_u) (H.ana_bF.mul H.ana_dPh_z),
       dS_mul _ _ H.ana_aF H.ana_dPh_u, dS_mul _ _ H.ana_bF H.ana_dPh_z]; rfl
   have hAF : dPh (F.AF u z) = dPh (F.aF u z) * Rt u + F.aF u z * dPh (Rt u) +
       (dPh (F.bF u z) * zt z + F.bF u z * dPh (zt z)) := by
@@ -590,7 +596,7 @@ theorem eta2_flux : F.eta2 ι u z = dTh (F.BF u z) - dPh (F.AF u z) := by
   have hc := F.flux_c u z H.unit_R
   have hDDi : PolyExpr.eval (xB u z) F.Dp * F.Di u z = 1 := H.D_Di
   rw [← Ri] at ha hb hc
-  rw [hBF, hAF, haθ, haφ, hbθ, hbφ, hcomm_u, hcomm_z]
+  rw [hBF, hPc, hAF, haθ, haφ, hbθ, hbφ, hcomm_u, hcomm_z]
   simp only [eta2, wD, hER, hEZ, XR, XZ, Algebra.smul_def, Pa, Pb, nR, nZ, Dof]
   linear_combination -(Rt u * dPh z - zt z * dPh u) * ha + Rt u * hb + zt z * hc -
     F.Ri u ^ F.p * (Rt u * PolyExpr.eval (xB u z) F.nZp - zt z * PolyExpr.eval (xB u z) F.nRp) *
