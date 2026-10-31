@@ -7,7 +7,8 @@
 # usage (inside tmux, from the clone):  scripts/workstation/poll.sh [--interval SECONDS] [--once]
 #
 # - Idle means: no `scripts/workstation/run.sh` and no `lake build`/`lake env`/`lake exe` process
-#   is running (a Lean language server, `lake serve`, does not count). The log names what it waits for.
+#   is running for the user running the poller (other users' processes and a Lean language
+#   server, `lake serve`, do not count). The log names what it waits for.
 # - next.sh runs at most once per NEXT_ID, success or failure; a failed batch is not retried. To
 #   retry, the laptop issues a new NEXT_ID. Logs: $WS_WORK/poll/<NEXT_ID>.log.
 # - Status: on start and end of every batch, a one-file commit (status.txt) is pushed to the
@@ -78,10 +79,11 @@ main() {
   done
 }
 
-# Heavy work in progress: run.sh, or lake build/env/exe (not `lake serve`). Prints "pid command"
+# Heavy work in progress by this user (processes of other users are ignored): run.sh, or
+# lake build/env/exe (not `lake serve`). Prints "pid command"
 # lines joined by "; ", or nothing.
 busy_procs() {
-  ps -eo pid=,args= 2>/dev/null | awk -v me="$$" '
+  ps -U "$(id -u)" -o pid=,args= 2>/dev/null | awk -v me="$$" '
     $1 == me || / awk / || /^ *[0-9]+ (\/[^ ]*\/)?(awk|ps) / { next }
     /scripts\/workstation\/run\.sh/ || /(^|[ \/])lake (build|env|exe)( |$)/ {
       line = $1 " " substr($0, index($0, $2)); out = out (out ? "; " : "") substr(line, 1, 120) }
