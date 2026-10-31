@@ -1,0 +1,8 @@
+{
+ "cmd": "bash /home/gadgil/code/PlasmaLean/scripts/workstation/run.sh __step numerics dommaschk-kam",
+ "status": "ok",
+ "returncode": 0,
+ "wall_min": 8.06,
+ "cpu_min": 33.77,
+ "peak_rss_gb": 5.21
+}
