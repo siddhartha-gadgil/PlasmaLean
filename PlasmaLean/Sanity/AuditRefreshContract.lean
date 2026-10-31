@@ -8,7 +8,7 @@ module
 public import PlasmaLean.Theory.Contract.StellaratorContract
 
 /-!
-# Audit refresh (31 October 2026): regression for the C1 current clause (finding AR-H1)
+# Audit refresh (31 October 2026): regressions for clause C1 (findings AR-H1 and AR-L4)
 
 Record: `notes/audit/2026-10-31-refresh-audit.md`, finding AR-H1.
 
@@ -32,6 +32,16 @@ poloidal loop; no section is chosen. Regression fixtures:
   family containing that surface (`rotY_not_currentFreeTransform`), whatever `ι_min`;
 * `CurrentFreeTransform.circulation_eq_zero`: C1 with `I_max = 0` forces zero circulation around
   every poloidal loop of the family.
+
+**Finding AR-L4 (reference curves).** `PoloidalAngle` now measures the poloidal angle about a
+continuous `2π`-periodic reference curve `(R₀(φ), z₀(φ))`. Fixtures:
+* constant curve: `constCurve_poloidalAngle` (the old fixed-circle notion, via
+  `PoloidalAngle.ofConst`);
+* moving curve needed: the wandering torus `wanderR`, `wanderZ` (tube of radius `1/4` about
+  `R = 3 + cos φ`) has a poloidal angle about its centre curve (`wander_poloidalAngle`) and none
+  about any fixed circle (`wander_not_poloidalAngle_const`);
+* the tokamak exclusion still holds with moving curves (`iota_eq_zero_of_purelyToroidal`); its
+  non-trivial instance is `Design/RationalStellaratorContract.twistTorus_not_iotaOnTorus`.
 -/
 
 open scoped RealInnerProductSpace
@@ -167,5 +177,51 @@ theorem CurrentFreeTransform.circulation_eq_zero {μ₀ ιmin : ℝ} {B : Space 
   have h0 := abs_nonpos_iff.1 (h.current_le s hs)
   rw [SurfaceData.current, loopCurrent, div_eq_zero_iff] at h0
   exact h0.resolve_right h.mu0_pos.ne'
+
+/-! ## Reference curves (finding AR-L4)
+
+Before the fix, `PoloidalAngle` measured the poloidal angle about one fixed point `(R₀, z₀)` for
+all toroidal angles, so a torus whose cross-sections share no common interior point (a magnetic
+axis wandering by more than the minor radius) admitted no `IotaOnTorus`. -/
+
+/-- **Constant curve (accepted fixture)**: the circular torus `R = 2 + cos θ`, `z = sin θ` with
+the polar angle `θ` about the fixed circle `R = 2, z = 0`, as a constant reference curve. -/
+theorem constCurve_poloidalAngle :
+    PoloidalAngle (fun θ _ => 2 + cos θ) (fun θ _ => sin θ) (fun _ => 2) (fun _ => 0)
+      (fun θ _ => θ) :=
+  PoloidalAngle.ofConst continuous_fst (fun θ _ => ⟨1, one_pos, by ring, by ring⟩)
+    (fun _ _ => rfl) (fun _ _ => rfl)
+
+/-- The **wandering torus**: a tube of minor radius `1/4` about the curve `R = 3 + cos φ`,
+`z = 0`, whose radial position varies by `2 > 2 · (1/4)` around the torus. -/
+@[expose] def wanderR (θ φ : ℝ) : ℝ := 3 + cos φ + 1 / 4 * cos θ
+
+/-- The wandering torus: `z = sin θ / 4`. -/
+@[expose] def wanderZ (θ _φ : ℝ) : ℝ := 1 / 4 * sin θ
+
+/-- **Non-vacuity of the moving reference curve**: the wandering torus has the poloidal angle `θ`
+about its centre curve `(3 + cos φ, 0)`. -/
+theorem wander_poloidalAngle :
+    PoloidalAngle wanderR wanderZ (fun φ => 3 + cos φ) (fun _ => 0) (fun θ _ => θ) where
+  continuous_R₀ := by fun_prop
+  continuous_z₀ := continuous_const
+  per_R₀ φ := by simp
+  per_z₀ _ := rfl
+  continuous := continuous_fst
+  polar θ φ := ⟨1 / 4, by norm_num, by simp only [wanderR]; ring, by simp only [wanderZ]; ring⟩
+  wind_θ _ _ := rfl
+  wind_φ _ _ := rfl
+
+/-- **A fixed point does not suffice (rejected fixture)**: the wandering torus admits no
+poloidal-angle convention about any fixed circle `R = R₀, z = z₀`. The reference point would have
+to lie below the cross-section at `φ = 0` (where `R ≥ 15/4`) and above the one at `φ = π` (where
+`R ≤ 9/4`) in `R` (`PoloidalAngle.exists_R_lt`, `exists_R_gt`). -/
+theorem wander_not_poloidalAngle_const (R₀ z₀ : ℝ) (Θ : ℝ → ℝ → ℝ) :
+    ¬ PoloidalAngle wanderR wanderZ (fun _ => R₀) (fun _ => z₀) Θ := by
+  intro h
+  obtain ⟨θ₁, h₁⟩ := h.exists_R_lt 0
+  obtain ⟨θ₂, h₂⟩ := h.exists_R_gt π
+  simp only [wanderR, cos_zero, cos_pi] at h₁ h₂
+  nlinarith [neg_one_le_cos θ₁, cos_le_one θ₂]
 
 end PlasmaLean.Sanity.AuditRefresh

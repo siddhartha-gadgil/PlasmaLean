@@ -268,4 +268,9 @@ Dommaschk target (non-planar axis wandering ≈ 0.11 × 0.13 in (R, z), nested r
 most 73 of 256 cross-sections of torus A enclose any common fixed point (N-33 §2.2), so no surface
 of that field can satisfy `IotaOnTorus`. Fix in progress: a continuous 2π-periodic reference curve.
 The `DommaschkQA2R` docstring claim "C1 reduces to certified tori" holds only after this fix.
+- **AR-L4 resolved (31 October 2026).** `PoloidalAngle` now uses a continuous 2π-periodic
+  reference curve. `poloidalAngle_const_iff` gives the constant case, and the tokamak exclusion
+  `iota_eq_zero_of_purelyToroidal` has a new proof: the outermost point of the common cross-section
+  keeps cos Θ > 0. Fixtures: `wander_poloidalAngle`, `wander_not_poloidalAngle_const` (a fixed
+  point is insufficient) and `twistTorus_not_iotaOnTorus`.
 

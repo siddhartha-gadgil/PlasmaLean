@@ -339,6 +339,12 @@ run_cmd do
 #print axioms PlasmaLean.Design.DommaschkQA2R.candidate_currentFreeTransform
 #print axioms PlasmaLean.Design.DommaschkQA2R.field_stellSym
 #print axioms PlasmaLean.Design.DommaschkQA2R.candidate_log_free
+#print axioms PlasmaLean.Contract.poloidalAngle_const_iff
+#print axioms PlasmaLean.Contract.PoloidalAngle.exists_R_gt
+#print axioms PlasmaLean.Contract.iota_eq_zero_of_purelyToroidal
+#print axioms PlasmaLean.Design.RationalStellaratorContract.twistTorus_not_iotaOnTorus
+#print axioms PlasmaLean.Sanity.AuditRefresh.wander_poloidalAngle
+#print axioms PlasmaLean.Sanity.AuditRefresh.wander_not_poloidalAngle_const
 #print axioms PlasmaLean.Fields.QSLinear.fieldDiv_fqsGen
 #print axioms PlasmaLean.Fields.QSLinear.JetHyp.jet_obstruction_curl
 #print axioms PlasmaLean.Fields.QSLinear.jet_obstruction_eta

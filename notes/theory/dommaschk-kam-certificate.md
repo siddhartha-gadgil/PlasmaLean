@@ -604,3 +604,14 @@ them. In parallel, the coordinator decides on (O3).
   - the high-resolution oracle (workstation task `dommaschk-kam`, extended with 96 × 80 and the
     refinement of §6 step 0).
 - **Edge.** N-31 → N-33 → Q-16 / C1.
+
+## Update (31 October 2026): O3 resolved
+
+The contract now measures the poloidal angle about a continuous 2π-periodic reference curve
+(`PoloidalAngle R z R₀ z₀ Θ` with `R₀ z₀ : ℝ → ℝ`; `poloidalAngle_const_iff` recovers the fixed
+circle). The tokamak exclusion `iota_eq_zero_of_purelyToroidal` is re-proved, and there are new
+fixtures: the wandering torus `Sanity.AuditRefresh.wander_poloidalAngle` /
+`wander_not_poloidalAngle_const`, and `twistTorus_not_iotaOnTorus`. The blocker of §2.2 (O3) is
+gone. The torus certificate must supply a reference curve inside each cross-section, e.g. the axis
+approximation A(φ) of (O1).
+

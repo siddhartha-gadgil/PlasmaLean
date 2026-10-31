@@ -40,7 +40,8 @@ Results.
 * C1 current clause: `field_poloidalCirculation_eq_zero`, `candidate_loopCurrent_eq_zero` (zero
   circulation around every closed `C¹` poloidal loop at constant toroidal angle with `R > 0`),
   `candidate_currentFreeTransform` (C1 with `I_max = 0` reduces to certified tori with
-  `|ι| ≥ ι_min`).
+  `|ι| ≥ ι_min`; their poloidal angle may be measured about a moving reference curve that follows
+  the non-planar magnetic axis, as `IotaOnTorus` allows since the AR-L4 fix).
 * Section flux (auxiliary): `candidate_netToroidalCurrent_eq_zero`, `candidate_currentFree`.
 * `field_stellSym a`: stellarator symmetry `(x, y, z) ↦ (x, −y, −z)`, for every `a`.
 * `candidate_log_free`: the coefficients of the 9 `ln R` potentials are exactly 0.

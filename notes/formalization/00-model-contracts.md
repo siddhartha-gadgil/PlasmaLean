@@ -58,7 +58,9 @@ axioms only). Module `PlasmaLean/Theory/Contract/StellaratorContract.lean`, name
   `netToroidalCurrent_zero_field`; counterexample `netToroidalCurrent_rotation` (`4πk₀/μ₀` for
   `B = e_z × x`), `rotation_not_currentFree`.
 - C1 transform: `FieldTorus B R z ι` (torus in cylindrical form, field-line flow conjugate to the
-  linear flow of slope ι), `PoloidalAngle` (angle convention about a fixed reference circle; without
+  linear flow of slope ι), `PoloidalAngle` (angle convention about a continuous 2π-periodic reference curve
+  `(R₀(φ), z₀(φ))`, e.g. an approximation of the magnetic axis; a fixed circle is the constant case,
+  `poloidalAngle_const_iff`; audit fix AR-L4, 31 October 2026; without
   it ι is defined only modulo integers), `IotaOnTorus`; `IotaOnTorus.tendsto` (ι is the asymptotic
   poloidal advance per toroidal radian along field lines). Tokamak exclusion:
   `iota_eq_zero_of_purelyToroidal` (purely toroidal field, e.g. vacuum axisymmetric

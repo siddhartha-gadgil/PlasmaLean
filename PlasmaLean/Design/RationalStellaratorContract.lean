@@ -20,8 +20,9 @@ exact KAM torus near torus A (`torusA_exact`, `exactTorus`):
 * `ExactTorus.fieldTorus`: an `ExactTorus` (the flow form `D (∂_φ K + ι ∂_θ K) = (2εR Ps, εR² Pz)`
   of the field-line equations) is a `FieldTorus` with rotation number `ι_A` (velocity
   `(R⁴/D) • B`, `field_cylPt`);
-* `ExactTorus.poloidalAngle`: its polar angle `Θf` about the circle `R = 1, z = 0` is a
-  poloidal-angle convention (`polar`, `Θf_add_two_pi`, `Θf_add_pi`);
+* `ExactTorus.poloidalAngle`: its polar angle `Θf` about the circle `R = 1, z = 0` (a constant
+  reference curve, `PoloidalAngle.ofConst`) is a poloidal-angle convention (`polar`,
+  `Θf_add_two_pi`, `Θf_add_pi`);
 * `field_split`, `hasFDerivAt_potential`: `field (1/4) = ∇φ + ∇(H/16)` off the axis, with the
   single-valued potential `H/16` (`H_hasFDerivAt`), and `∇φ` purely toroidal; so the
   circulation of the field around the poloidal loop of the torus at `φ = 0` (which lies in the
@@ -32,7 +33,10 @@ So C1 holds on one certified torus. Not yet: a nested family of certified tori w
 **Tokamak exclusion (C1 fails although `I = 0`).** The purely toroidal vacuum field
 `toroidal = ∇φ = e_φ/R` (`toroidal_vacuum`): `toroidal_purelyToroidal`; the circular tori
 `circTorus a` (`0 < a < 1`) are invariant with transform `0` (`circTorus_iotaOnTorus`; the
-definition is not vacuous for this field); their poloidal loops enclose zero current
+definition is not vacuous for this field); the twisted parametrisation `twistR`, `twistZ` of the
+same surface is a `FieldTorus` with rotation number `1` (`twistTorus_fieldTorus`) but not an
+`IotaOnTorus` with `ι = 1` for any reference curve (`twistTorus_not_iotaOnTorus`, the exclusion
+at work); their poloidal loops enclose zero current
 (`toroidal_circ_circulation_zero`); and `toroidal_not_currentFreeTransform`: `∇φ` fails C1 for every
 `I_max`, `ι_min` and every family of surfaces.
 -/
@@ -85,8 +89,9 @@ theorem circTorus_iotaOnTorus {a : ℝ} (ha : 0 < a) (ha1 : a < 1) :
     nlinarith [neg_one_le_cos θ, cos_le_one θ]
   refine ⟨⟨by unfold circR; fun_prop, by unfold circZ; fun_prop, fun θ _ => hRpos θ,
     fun θ φ => by simp [circR], fun θ φ => by simp [circZ], fun _ _ => rfl, fun _ _ => rfl,
-    fun θ φ => ?_⟩, 1, 0, fun θ _ => θ, ⟨continuous_fst, fun θ φ => ⟨a, ha, ?_, ?_⟩,
-    fun _ _ => rfl, fun _ _ => rfl⟩⟩
+    fun θ φ => ?_⟩, fun _ => 1, fun _ => 0, fun θ _ => θ,
+    PoloidalAngle.ofConst continuous_fst (fun θ φ => ⟨a, ha, ?_, ?_⟩) (fun _ _ => rfl)
+      (fun _ _ => rfl)⟩
   · refine ⟨(1 + a * cos θ) ^ 2, ?_⟩
     have hφ : HasDerivAt (fun t : ℝ => φ + t) 1 0 := by
       simpa using (hasDerivAt_id (0 : ℝ)).const_add φ
@@ -101,6 +106,52 @@ theorem circTorus_iotaOnTorus {a : ℝ} (ha : 0 < a) (ha1 : a < 1) :
     fin_cases i <;> simp <;> field_simp
   · simp [circR]
   · simp [circZ]
+
+/-- The **twisted parametrisation** of the circular torus: `R = 1 + a cos (θ − φ)` (the same
+surface as `circR`, with the poloidal label rotating once per toroidal turn). -/
+@[expose] def twistR (a : ℝ) (θ φ : ℝ) : ℝ := 1 + a * cos (θ - φ)
+
+/-- The twisted parametrisation: `z = a sin (θ − φ)`. -/
+@[expose] def twistZ (a : ℝ) (θ φ : ℝ) : ℝ := a * sin (θ - φ)
+
+/-- The twisted circular torus is an invariant torus of `∇φ` with **rotation number `1`**: the
+lines `t ↦ (θ + t, φ + t)` are horizontal circles. (The flow conjugacy alone does not determine
+`ι`; the poloidal-angle convention does.) -/
+theorem twistTorus_fieldTorus {a : ℝ} (ha : 0 < a) (ha1 : a < 1) :
+    FieldTorus toroidal (twistR a) (twistZ a) 1 := by
+  have hRpos : ∀ x, 0 < 1 + a * cos x := fun x => by
+    nlinarith [neg_one_le_cos x, cos_le_one x]
+  refine ⟨by unfold twistR; fun_prop, by unfold twistZ; fun_prop, fun θ φ => hRpos _,
+    fun θ φ => by simp [twistR, show θ + 2 * π - φ = θ - φ + 2 * π by ring],
+    fun θ φ => by simp [twistZ, show θ + 2 * π - φ = θ - φ + 2 * π by ring],
+    fun θ φ => by simp [twistR, show θ - (φ + 2 * π) = θ - φ - 2 * π by ring],
+    fun θ φ => by simp [twistZ, show θ - (φ + 2 * π) = θ - φ - 2 * π by ring],
+    fun θ φ => ?_⟩
+  refine ⟨(1 + a * cos (θ - φ)) ^ 2, ?_⟩
+  have hφ : HasDerivAt (fun t : ℝ => φ + t) 1 0 := by
+    simpa using (hasDerivAt_id (0 : ℝ)).const_add φ
+  have h0 := (hφ.cos).const_mul (1 + a * cos (θ - φ))
+  have h1 := (hφ.sin).const_mul (1 + a * cos (θ - φ))
+  have h := hasDerivAt_toLp3 h0 h1 (hasDerivAt_const (0 : ℝ) (a * sin (θ - φ)))
+  have hfun : (fun t => cylPoint (twistR a (θ + t * 1) (φ + t)) (φ + t)
+      (twistZ a (θ + t * 1) (φ + t))) = fun t => cylPoint (1 + a * cos (θ - φ)) (φ + t)
+        (a * sin (θ - φ)) := by
+    funext t
+    simp only [twistR, twistZ, show θ + t * 1 - (φ + t) = θ - φ by ring]
+  rw [hfun]
+  simp only [twistR, twistZ]
+  refine h.congr_deriv ?_
+  rw [toroidal_cylPoint (hRpos _)]
+  have hR0 := (hRpos (θ - φ)).ne'
+  ext i
+  fin_cases i <;> simp <;> field_simp
+
+/-- **Tokamak exclusion, non-trivial instance**: although the twisted circular torus is an
+invariant torus of `∇φ` with rotation number `1` (`twistTorus_fieldTorus`), it has no
+poloidal-angle convention about **any** continuous periodic reference curve with that rotation
+number: `iota_eq_zero_of_purelyToroidal` forces `ι = 0`. -/
+theorem twistTorus_not_iotaOnTorus (a : ℝ) : ¬ IotaOnTorus toroidal (twistR a) (twistZ a) 1 :=
+  fun h => one_ne_zero (iota_eq_zero_of_purelyToroidal toroidal_purelyToroidal h)
 
 /-- The C1 surface data of the circular torus of `∇φ` (poloidal loop at `φ = 0`). -/
 @[expose] def circSurface (a : ℝ) : SurfaceData where
@@ -192,15 +243,15 @@ theorem fieldTorus : FieldTorus (field (1 / 4)) Rk zk iota where
 
 /-- The polar angle `Θf` about the circle `R = 1, z = 0` is a poloidal-angle convention for an
 `ExactTorus`. -/
-theorem poloidalAngle : PoloidalAngle Rk zk 1 0 (Θf Rk zk) where
-  continuous := hK.contDiff_Θf.continuous
-  polar θ φ := ⟨rtK Rk zk θ φ, hK.rtK_pos θ φ, (hK.polar θ φ).1, by simpa using (hK.polar θ φ).2⟩
-  wind_θ := hK.Θf_add_two_pi
-  wind_φ θ φ := by rw [show φ + 2 * π = φ + π + π by ring, hK.Θf_add_pi, hK.Θf_add_pi]
+theorem poloidalAngle : PoloidalAngle Rk zk (fun _ => 1) (fun _ => 0) (Θf Rk zk) :=
+  PoloidalAngle.ofConst hK.contDiff_Θf.continuous
+    (fun θ φ => ⟨rtK Rk zk θ φ, hK.rtK_pos θ φ, (hK.polar θ φ).1, by simpa using (hK.polar θ φ).2⟩)
+    hK.Θf_add_two_pi
+    (fun θ φ => by rw [show φ + 2 * π = φ + π + π by ring, hK.Θf_add_pi, hK.Θf_add_pi])
 
 /-- An `ExactTorus` has rotational transform `ι_A` in the sense of the contract. -/
 theorem iotaOnTorus : IotaOnTorus (field (1 / 4)) Rk zk iota :=
-  ⟨ExactTorus.fieldTorus hK, 1, 0, Θf Rk zk, ExactTorus.poloidalAngle hK⟩
+  ⟨ExactTorus.fieldTorus hK, fun _ => 1, fun _ => 0, Θf Rk zk, ExactTorus.poloidalAngle hK⟩
 
 end ExactTorus
 

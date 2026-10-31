@@ -2376,6 +2376,12 @@
     "text": "certification step 2: lean certificate design (n-33), 31 october 2026 implementation plan"
   },
   {
+    "title": "Audit fix AR-L4: poloidal angle about a moving reference curve, 31 October 2026",
+    "section": "Implementation plan",
+    "url": "implementation-plan.html#audit-fix-ar-l4-poloidal-angle-about-a-moving-reference-curve-31-october-2026",
+    "text": "audit fix ar-l4: poloidal angle about a moving reference curve, 31 october 2026 implementation plan"
+  },
+  {
     "title": "M0 · Exact symmetric equilibria: slab, screw pinch, Solov'ev, helical",
     "section": "Implementation plan · Lean verified — exact slab, screw-pinch, Solov'ev and helical equilibria with kernel force balance, all-time field-line/orbit confinement, Suydam both ways and screw-pinch Newcomb stability for every m ≠ 0 (reduced form supplied; idealized symmetric models).",
     "url": "implementation-plan.html",

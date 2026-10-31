@@ -14,7 +14,9 @@ Strip norms are FFT values on the torus (sharp, as a ball chain would give them)
 polynomial majorant of the second derivatives (as Design/KamTorusAComposition), in u = R - R0.
 
 It also reports: the frame comparison (several choices of V0), the Neumann ratios of D, W0, R, the
-modes needed by an approximate inverse of D^3 W0^2, and whether any fixed reference circle is
+modes needed by an approximate inverse of D^3 W0^2, and whether any fixed reference circle is (diagnostic only: since audit fix AR-L4 the
+contract measures the poloidal angle about a moving reference curve, so the relevant check is
+that each cross-section encloses the axis approximation A(phi))
 enclosed by all cross-sections (the PoloidalAngle convention of Theory/Contract/StellaratorContract).
 
 usage: python kam_constants.py --work DIR [--N 40 --M 32] [--tag A]
@@ -130,7 +132,7 @@ def main():
             dd = np.diff(np.concatenate([ang, ang[:, :1]], axis=1), axis=1)
             dd = (dd + np.pi) % (2*np.pi) - np.pi
             cnt[i0, :] += (np.abs(np.round(dd.sum(1)/(2*np.pi))) == 1)
-    print(f"\nPoloidalAngle about a fixed circle: at most {cnt.max()} of {R.shape[1]} cross-sections "
+    print(f"\n(old convention, diagnostic) PoloidalAngle about a fixed circle: at most {cnt.max()} of {R.shape[1]} cross-sections "
           f"enclose a common fixed point (all would be needed)")
 
     V1 = R - Ax; V2 = z - Az

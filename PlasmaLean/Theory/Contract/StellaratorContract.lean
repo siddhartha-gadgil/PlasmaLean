@@ -26,11 +26,18 @@ contract: C1, C2 and C5"; plan question Q-21, goal G-11.
   form (`φ` the geometric toroidal angle), `2π`-periodic in both angles, `R > 0`, on which the
   field-line flow is **conjugate to the linear flow with rotation number `ι`**: every line
   `t ↦ (θ + ι t, φ + t)` is mapped to a curve tangent to `B` (`flow`).
-* `PoloidalAngle R z R₀ z₀ Θ`: the angle convention. `Θ` is a continuous polar angle of
-  `(R − R₀, z − z₀)` about a fixed reference circle `R = R₀, z = z₀` that winds once in `θ` and
-  not at all in `φ`. Without such a convention `ι` is defined only modulo integers
-  (`θ ↦ θ + nφ` changes `ι` by `n`).
-* `IotaOnTorus B R z ι`: `FieldTorus` plus a poloidal-angle convention. `IotaOnTorus.tendsto`:
+* `PoloidalAngle R z R₀ z₀ Θ`: the angle convention, about a **reference curve**
+  `R₀, z₀ : ℝ → ℝ` (continuous and `2π`-periodic in `φ`; e.g. an approximation of a non-planar
+  magnetic axis). `Θ` is a continuous polar angle of `(R θ φ − R₀ φ, z θ φ − z₀ φ)` that winds
+  once in `θ` and not at all in `φ`. Without such a convention `ι` is defined only modulo integers
+  (`θ ↦ θ + nφ` changes `ι` by `n`). A fixed reference circle is the constant case
+  (`poloidalAngle_const_iff`, `PoloidalAngle.ofConst`). A fixed circle is not enough in general:
+  when the magnetic axis wanders in `(R, z)` by more than the minor radius, no fixed point lies
+  inside every cross-section (audit AR-L4; fixture `Sanity/AuditRefreshContract.wander_*`).
+  `PoloidalAngle.exists_R_gt`/`exists_R_lt`: each reference point lies strictly inside the radial
+  range of its cross-section.
+* `IotaOnTorus B R z ι`: `FieldTorus` plus a poloidal-angle convention about some reference
+  curve. `IotaOnTorus.tendsto`:
   along every field line on the torus the poloidal angle advances at the asymptotic rate `ι`
   per toroidal radian (`(Θ − Θ₀)/φ → ι`), the physical definition of the rotational transform.
   `ι` is signed (its sign is the handedness of the field lines); C1 bounds `|ι|`.
@@ -65,8 +72,10 @@ Sanity triad (C1):
 * degenerate: `poloidalCirculation_zero_field`, `netToroidalCurrent_zero_field`;
 * **tokamak exclusion**: `iota_eq_zero_of_purelyToroidal`: for a purely toroidal field
   (`B_z = 0`, `B · (x, y, 0) = 0`; the vacuum axisymmetric field `B = (μ₀ I/2πR) e_φ` is one)
-  every `IotaOnTorus` has `ι = 0`; hence `not_currentFreeTransform_of_purelyToroidal`: such a
-  field fails C1 for every `I_max` and every `ι_min > 0`, although it carries no current;
+  every `IotaOnTorus` has `ι = 0`, whatever the reference curve (along the field line through a
+  point of maximal `R` the polar angle stays in a half-plane, `abs_sub_lt_pi_of_cos_pos`);
+  hence `not_currentFreeTransform_of_purelyToroidal`: such a field fails C1 for every `I_max`
+  and every `ι_min > 0`, although it carries no current;
 * counterexamples: `netToroidalCurrent_rotation`/`rotation_not_currentFree` (section flux of the
   uniform-current field `B = e_z × x`); its loop circulation is `2π a²` around a circular loop of
   radius `a` (`Sanity/AuditRefreshContract`, `rotation_poloidalCirculation`), so it fails the C1
@@ -105,7 +114,7 @@ transport; the bounce-averaged drift as a function on velocity space; trapped-or
 a given field; the identification of the Boozer model with a Cartesian field; the theorem
 "axisymmetric, current-free, nested surfaces ⇒ purely toroidal" (needs the maximum principle for
 `Δ*ψ = 0`); section-independence of the section flux; Stokes' theorem for loops that do not bound a
-coordinate section; reference curves that are not fixed circles.
+coordinate section.
 -/
 
 open scoped RealInnerProductSpace
@@ -290,23 +299,56 @@ structure FieldTorus (B : Space → Space) (R z : ℝ → ℝ → ℝ) (ι : ℝ
     HasDerivAt (fun t => cylPoint (R (θ + t * ι) (φ + t)) (φ + t) (z (θ + t * ι) (φ + t)))
       (c • B (cylPoint (R θ φ) φ (z θ φ))) 0
 
-/-- **Poloidal-angle convention**: `Θ` is a continuous polar angle of `(R − R₀, z − z₀)` about the
-fixed reference circle `R = R₀, z = z₀`, winding once in `θ` and not at all in `φ`. -/
-structure PoloidalAngle (R z : ℝ → ℝ → ℝ) (R₀ z₀ : ℝ) (Θ : ℝ → ℝ → ℝ) : Prop where
+/-- **Poloidal-angle convention about a reference curve**: `R₀, z₀ : ℝ → ℝ` are continuous and
+`2π`-periodic in the toroidal angle `φ` (the reference curve `φ ↦ cylPoint (R₀ φ) φ (z₀ φ)`, e.g.
+an approximation of a non-planar magnetic axis), and `Θ` is a continuous polar angle of
+`(R θ φ − R₀ φ, z θ φ − z₀ φ)` that winds once in `θ` and not at all in `φ`. A fixed reference
+circle is the constant case (`poloidalAngle_const_iff`, `PoloidalAngle.ofConst`). -/
+structure PoloidalAngle (R z : ℝ → ℝ → ℝ) (R₀ z₀ : ℝ → ℝ) (Θ : ℝ → ℝ → ℝ) : Prop where
+  /-- The reference radius is continuous in `φ`. -/
+  continuous_R₀ : Continuous R₀
+  /-- The reference height is continuous in `φ`. -/
+  continuous_z₀ : Continuous z₀
+  /-- The reference radius is `2π`-periodic in `φ`. -/
+  per_R₀ : ∀ φ, R₀ (φ + 2 * π) = R₀ φ
+  /-- The reference height is `2π`-periodic in `φ`. -/
+  per_z₀ : ∀ φ, z₀ (φ + 2 * π) = z₀ φ
   /-- `Θ` is continuous. -/
   continuous : Continuous (fun p : ℝ × ℝ => Θ p.1 p.2)
-  /-- `Θ` is a polar angle of `(R − R₀, z − z₀)` (the torus avoids the reference circle). -/
-  polar : ∀ θ φ, ∃ r, 0 < r ∧ R θ φ - R₀ = r * cos (Θ θ φ) ∧ z θ φ - z₀ = r * sin (Θ θ φ)
+  /-- `Θ` is a polar angle of `(R − R₀, z − z₀)` (each cross-section avoids its reference
+  point). -/
+  polar : ∀ θ φ, ∃ r, 0 < r ∧ R θ φ - R₀ φ = r * cos (Θ θ φ) ∧ z θ φ - z₀ φ = r * sin (Θ θ φ)
   /-- One poloidal turn in `θ`. -/
   wind_θ : ∀ θ φ, Θ (θ + 2 * π) φ = Θ θ φ + 2 * π
   /-- No poloidal winding in `φ`. -/
   wind_φ : ∀ θ φ, Θ θ (φ + 2 * π) = Θ θ φ
 
+/-- **Fixed reference circle as a constant reference curve**: for constant `R₀, z₀` the
+convention is exactly the fixed-point one (continuity, polar angle about `(R₀, z₀)`, one turn in
+`θ`, none in `φ`). -/
+theorem poloidalAngle_const_iff {R z : ℝ → ℝ → ℝ} {R₀ z₀ : ℝ} {Θ : ℝ → ℝ → ℝ} :
+    PoloidalAngle R z (fun _ => R₀) (fun _ => z₀) Θ ↔
+      Continuous (fun p : ℝ × ℝ => Θ p.1 p.2) ∧
+      (∀ θ φ, ∃ r, 0 < r ∧ R θ φ - R₀ = r * cos (Θ θ φ) ∧ z θ φ - z₀ = r * sin (Θ θ φ)) ∧
+      (∀ θ φ, Θ (θ + 2 * π) φ = Θ θ φ + 2 * π) ∧ (∀ θ φ, Θ θ (φ + 2 * π) = Θ θ φ) :=
+  ⟨fun h => ⟨h.continuous, h.polar, h.wind_θ, h.wind_φ⟩, fun ⟨hc, hp, h1, h2⟩ =>
+    ⟨continuous_const, continuous_const, fun _ => rfl, fun _ => rfl, hc, hp, h1, h2⟩⟩
+
+/-- Build a poloidal-angle convention about the fixed reference circle `R = R₀, z = z₀` (the
+constant reference curve). -/
+theorem PoloidalAngle.ofConst {R z : ℝ → ℝ → ℝ} {R₀ z₀ : ℝ} {Θ : ℝ → ℝ → ℝ}
+    (hc : Continuous (fun p : ℝ × ℝ => Θ p.1 p.2))
+    (hp : ∀ θ φ, ∃ r, 0 < r ∧ R θ φ - R₀ = r * cos (Θ θ φ) ∧ z θ φ - z₀ = r * sin (Θ θ φ))
+    (h1 : ∀ θ φ, Θ (θ + 2 * π) φ = Θ θ φ + 2 * π) (h2 : ∀ θ φ, Θ θ (φ + 2 * π) = Θ θ φ) :
+    PoloidalAngle R z (fun _ => R₀) (fun _ => z₀) Θ :=
+  poloidalAngle_const_iff.2 ⟨hc, hp, h1, h2⟩
+
 /-- **Rotational transform `ι` of the field `B` on the torus `(R, z)`**: an invariant torus with
 rotation number `ι` (`FieldTorus`) whose angle `θ` is poloidal in the sense of
-`PoloidalAngle` about some fixed reference circle. -/
+`PoloidalAngle` about some continuous `2π`-periodic reference curve `(R₀(φ), z₀(φ))` (which may
+follow a non-planar magnetic axis; a fixed circle is the constant case). -/
 @[expose] def IotaOnTorus (B : Space → Space) (R z : ℝ → ℝ → ℝ) (ι : ℝ) : Prop :=
-  FieldTorus B R z ι ∧ ∃ R₀ z₀ : ℝ, ∃ Θ : ℝ → ℝ → ℝ, PoloidalAngle R z R₀ z₀ Θ
+  FieldTorus B R z ι ∧ ∃ R₀ z₀ : ℝ → ℝ, ∃ Θ : ℝ → ℝ → ℝ, PoloidalAngle R z R₀ z₀ Θ
 
 /-- A continuous function on `ℝ²`, `2π`-periodic in both variables, is bounded. -/
 theorem bound_of_doubly_periodic {f : ℝ × ℝ → ℝ} (hf : Continuous f)
@@ -326,7 +368,7 @@ section Torus
 variable {B : Space → Space} {R z : ℝ → ℝ → ℝ} {ι : ℝ}
 
 /-- `Θ − θ` is bounded for a poloidal angle. -/
-theorem PoloidalAngle.exists_bound {R₀ z₀ : ℝ} {Θ : ℝ → ℝ → ℝ}
+theorem PoloidalAngle.exists_bound {R₀ z₀ : ℝ → ℝ} {Θ : ℝ → ℝ → ℝ}
     (hΘ : PoloidalAngle R z R₀ z₀ Θ) : ∃ C, ∀ θ φ, |Θ θ φ - θ| ≤ C := by
   obtain ⟨C, hC⟩ := bound_of_doubly_periodic (f := fun p : ℝ × ℝ => Θ p.1 p.2 - p.1)
     (hΘ.continuous.sub continuous_fst) (fun a b => by simp only [hΘ.wind_θ]; ring)
@@ -335,7 +377,7 @@ theorem PoloidalAngle.exists_bound {R₀ z₀ : ℝ} {Θ : ℝ → ℝ → ℝ}
 
 /-- **The poloidal angle advances at rate `ι`** along the line of slope `ι`:
 `(Θ(θ₀ + s ι, s) − Θ(θ₀, 0))/s → ι` as `s → ∞`. -/
-theorem PoloidalAngle.tendsto {R₀ z₀ : ℝ} {Θ : ℝ → ℝ → ℝ} (hΘ : PoloidalAngle R z R₀ z₀ Θ)
+theorem PoloidalAngle.tendsto {R₀ z₀ : ℝ → ℝ} {Θ : ℝ → ℝ → ℝ} (hΘ : PoloidalAngle R z R₀ z₀ Θ)
     (ι θ₀ : ℝ) :
     Tendsto (fun s => (Θ (θ₀ + s * ι) s - Θ θ₀ 0) / s) atTop (𝓝 ι) := by
   obtain ⟨C, hC⟩ := hΘ.exists_bound
@@ -360,6 +402,39 @@ theorem PoloidalAngle.tendsto {R₀ z₀ : ℝ} {Θ : ℝ → ℝ → ℝ} (hΘ 
   field_simp
   ring
 
+/-- **Every direction occurs in each cross-section**: since `Θ(·, φ)` increases by `2π` over a
+period of `θ` (`wind_θ`), it takes a value with any prescribed cosine. -/
+theorem PoloidalAngle.exists_cos_eq {R₀ z₀ : ℝ → ℝ} {Θ : ℝ → ℝ → ℝ}
+    (hΘ : PoloidalAngle R z R₀ z₀ Θ) (φ c : ℝ) : ∃ θ, cos (Θ θ φ) = cos c := by
+  have hf : Continuous fun θ => Θ θ φ :=
+    hΘ.continuous.comp (continuous_id.prodMk continuous_const)
+  have h2 : Θ (2 * π) φ = Θ 0 φ + 2 * π := by simpa using hΘ.wind_θ 0 φ
+  have hx := toIcoMod_mem_Ico two_pi_pos (Θ 0 φ) c
+  obtain ⟨θ, -, hθ⟩ := intermediate_value_Icc two_pi_pos.le hf.continuousOn
+    (show toIcoMod two_pi_pos (Θ 0 φ) c ∈ Icc (Θ 0 φ) (Θ (2 * π) φ) by
+      rw [h2]; exact ⟨hx.1, hx.2.le⟩)
+  refine ⟨θ, ?_⟩
+  simp only at hθ
+  rw [hθ, ← self_sub_toIcoDiv_zsmul, zsmul_eq_mul, cos_sub_int_mul_two_pi]
+
+/-- **The reference point lies strictly inside the radial range of each cross-section**
+(outer side): some point of the cross-section at `φ` has `R > R₀(φ)`. -/
+theorem PoloidalAngle.exists_R_gt {R₀ z₀ : ℝ → ℝ} {Θ : ℝ → ℝ → ℝ}
+    (hΘ : PoloidalAngle R z R₀ z₀ Θ) (φ : ℝ) : ∃ θ, R₀ φ < R θ φ := by
+  obtain ⟨θ, hθ⟩ := hΘ.exists_cos_eq φ 0
+  obtain ⟨r, hr, hR, -⟩ := hΘ.polar θ φ
+  rw [hθ, cos_zero, mul_one] at hR
+  exact ⟨θ, by linarith⟩
+
+/-- **The reference point lies strictly inside the radial range of each cross-section**
+(inner side): some point of the cross-section at `φ` has `R < R₀(φ)`. -/
+theorem PoloidalAngle.exists_R_lt {R₀ z₀ : ℝ → ℝ} {Θ : ℝ → ℝ → ℝ}
+    (hΘ : PoloidalAngle R z R₀ z₀ Θ) (φ : ℝ) : ∃ θ, R θ φ < R₀ φ := by
+  obtain ⟨θ, hθ⟩ := hΘ.exists_cos_eq φ π
+  obtain ⟨r, hr, hR, -⟩ := hΘ.polar θ φ
+  rw [hθ, cos_pi, mul_neg_one] at hR
+  exact ⟨θ, by linarith⟩
+
 /-- The tangency of `FieldTorus` at every point of a line of slope `ι`. -/
 theorem FieldTorus.flow_at (hT : FieldTorus B R z ι) (θ₀ s : ℝ) : ∃ c : ℝ,
     HasDerivAt (fun t => cylPoint (R (θ₀ + t * ι) t) t (z (θ₀ + t * ι) t))
@@ -378,7 +453,7 @@ theorem IotaOnTorus.tendsto (h : IotaOnTorus B R z ι) (θ₀ : ℝ) :
     (∀ s, ∃ c : ℝ,
       HasDerivAt (fun t => cylPoint (R (θ₀ + t * ι) t) t (z (θ₀ + t * ι) t))
         (c • B (cylPoint (R (θ₀ + s * ι) s) s (z (θ₀ + s * ι) s))) s) ∧
-    ∃ R₀ z₀ : ℝ, ∃ Θ : ℝ → ℝ → ℝ, PoloidalAngle R z R₀ z₀ Θ ∧
+    ∃ R₀ z₀ : ℝ → ℝ, ∃ Θ : ℝ → ℝ → ℝ, PoloidalAngle R z R₀ z₀ Θ ∧
       Tendsto (fun s => (Θ (θ₀ + s * ι) s - Θ θ₀ 0) / s) atTop (𝓝 ι) := by
   obtain ⟨hT, R₀, z₀, Θ, hΘ⟩ := h
   exact ⟨hT.flow_at θ₀, R₀, z₀, Θ, hΘ, hΘ.tendsto ι θ₀⟩
@@ -474,43 +549,87 @@ theorem eq_zero_of_cos_eq_one {f : ℝ → ℝ} (hf : Continuous f) (h0 : f 0 = 
     rw [ht, cos_pi] at this
     norm_num at this
 
+/-- A continuous real function with `cos ∘ f > 0` everywhere stays within `π` of `f 0`: it cannot
+cross a zero of `cos` (`f` is a lift of an angle confined to the open right half-plane). -/
+theorem abs_sub_lt_pi_of_cos_pos {f : ℝ → ℝ} (hf : Continuous f) (h : ∀ s, 0 < cos (f s))
+    (s : ℝ) : |f s - f 0| < π := by
+  by_contra hge
+  push Not at hge
+  have h0 := h 0
+  -- a zero `x` of `cos` between `f 0` and `f s`
+  obtain ⟨x, hxs, hx0⟩ : ∃ x ∈ uIcc (f 0) (f s), cos x = 0 := by
+    rcases le_abs'.1 hge with hneg | hpos
+    · obtain ⟨x, hx, hcx⟩ := intermediate_value_Icc (show f 0 - π ≤ f 0 by linarith [pi_pos])
+        continuous_cos.continuousOn
+        (show (0 : ℝ) ∈ Icc (cos (f 0 - π)) (cos (f 0)) by
+          rw [cos_sub_pi]; exact ⟨by linarith, h0.le⟩)
+      refine ⟨x, ?_, hcx⟩
+      rw [mem_uIcc]; right; exact ⟨by linarith [hx.1], hx.2⟩
+    · obtain ⟨x, hx, hcx⟩ := intermediate_value_Icc' (show f 0 ≤ f 0 + π by linarith [pi_pos])
+        continuous_cos.continuousOn
+        (show (0 : ℝ) ∈ Icc (cos (f 0 + π)) (cos (f 0)) by
+          rw [cos_add_pi]; exact ⟨by linarith, h0.le⟩)
+      refine ⟨x, ?_, hcx⟩
+      rw [mem_uIcc]; left; exact ⟨hx.1, by linarith [hx.2]⟩
+  obtain ⟨t, -, ht⟩ := intermediate_value_uIcc (a := 0) (b := s) hf.continuousOn hxs
+  have := h t
+  rw [ht, hx0] at this
+  exact lt_irrefl _ this
+
 /-- **Tokamak exclusion (vacuum axisymmetric case).** In a purely toroidal field (in particular
 the vacuum axisymmetric field `B = (μ₀ I/2πR) e_φ`) every invariant torus with a poloidal-angle
-convention has rotational transform `ι = 0`. -/
+convention, about any continuous periodic reference curve, has rotational transform `ι = 0`.
+
+Proof: field lines keep `(R, z)` fixed, so every cross-section is the same set and
+`R ≤ M := max_θ R(θ, 0)` on the whole torus. Each reference point satisfies `R₀(φ) < M`
+(`PoloidalAngle.exists_R_gt`). Along the field line through a point with `R = M`, the vector
+`(M − R₀(s), z − z₀(s))` stays in the open right half-plane, so its continuous polar angle
+`Θ(θ₀ + sι, s)` stays within `π` of its initial value (`abs_sub_lt_pi_of_cos_pos`); hence the
+asymptotic rate `ι` (`PoloidalAngle.tendsto`) is `0`. -/
 theorem iota_eq_zero_of_purelyToroidal (hB : PurelyToroidal B) (h : IotaOnTorus B R z ι) :
     ι = 0 := by
   obtain ⟨hT, R₀, z₀, Θ, hΘ⟩ := h
-  -- the poloidal angle is constant along the line of slope `ι` through `(0, 0)`
-  have hconst : ∀ s, Θ (0 + s * ι) s - Θ 0 0 = 0 := by
-    refine eq_zero_of_cos_eq_one (f := fun s => Θ (0 + s * ι) s - Θ 0 0) ?_ (by simp) ?_
-    · exact (hΘ.continuous.comp ((continuous_const.add (continuous_id.mul continuous_const)).prodMk
-        continuous_id)).sub continuous_const
-    · intro s
-      obtain ⟨hRs, hzs⟩ := hT.Rz_const_of_purelyToroidal hB 0 s
-      obtain ⟨r, hr, hRr, hzr⟩ := hΘ.polar (0 + s * ι) s
-      obtain ⟨r₀, hr₀, hRr₀, hzr₀⟩ := hΘ.polar 0 0
-      rw [hRs] at hRr
-      rw [hzs] at hzr
-      have hrr : r = r₀ := by
-        have e : r ^ 2 = r₀ ^ 2 := by
-          have a := cos_sq_add_sin_sq (Θ (0 + s * ι) s)
-          have b := cos_sq_add_sin_sq (Θ 0 0)
-          have := congrArg (· ^ 2) (hRr.symm.trans hRr₀)
-          have := congrArg (· ^ 2) (hzr.symm.trans hzr₀)
-          nlinarith
-        exact (pow_left_inj₀ hr.le hr₀.le two_ne_zero).1 e
-      subst hrr
-      have hc : cos (Θ (0 + s * ι) s) = cos (Θ 0 0) :=
-        mul_left_cancel₀ hr.ne' (hRr.symm.trans hRr₀)
-      have hs' : sin (Θ (0 + s * ι) s) = sin (Θ 0 0) :=
-        mul_left_cancel₀ hr.ne' (hzr.symm.trans hzr₀)
-      rw [cos_sub, hc, hs', ← sq, ← sq]
-      exact cos_sq_add_sin_sq _
-  have hlim := hΘ.tendsto ι 0
-  have hz : (fun s => (Θ (0 + s * ι) s - Θ 0 0) / s) = fun _ => 0 := by
-    funext s; rw [hconst s, zero_div]
-  rw [hz] at hlim
-  exact (tendsto_nhds_unique tendsto_const_nhds hlim).symm
+  -- the maximum `M = R θ₀ 0` of `R` on the cross-section `φ = 0`
+  have hcont0 : Continuous fun θ => R θ 0 :=
+    hT.continuous_R.comp (continuous_id.prodMk continuous_const)
+  obtain ⟨θ₀, -, hθ₀⟩ := (isCompact_Icc (a := (0 : ℝ)) (b := 2 * π)).exists_isMaxOn
+    (nonempty_Icc.2 two_pi_pos.le) hcont0.continuousOn
+  have hmax : ∀ θ, R θ 0 ≤ R θ₀ 0 := fun θ => by
+    obtain ⟨θ', hθ', e⟩ := Function.Periodic.exists_mem_Ico₀ (f := fun θ => R θ 0)
+      (fun θ => hT.per_θ_R θ 0) two_pi_pos θ
+    rw [e]
+    exact hθ₀ (Ico_subset_Icc_self hθ')
+  -- every cross-section is the cross-section `φ = 0`, so `R ≤ M` everywhere
+  have hle : ∀ θ φ, R θ φ ≤ R θ₀ 0 := fun θ φ => by
+    have e := (hT.Rz_const_of_purelyToroidal hB (θ - φ * ι) φ).1
+    rw [show θ - φ * ι + φ * ι = θ by ring] at e
+    rw [e]
+    exact hmax _
+  have hlt : ∀ φ, R₀ φ < R θ₀ 0 := fun φ => by
+    obtain ⟨θ, hθ⟩ := hΘ.exists_R_gt φ
+    linarith [hle θ φ]
+  -- along the field line through `(θ₀, 0)` the polar angle stays in the right half-plane
+  set g : ℝ → ℝ := fun s => Θ (θ₀ + s * ι) s with hg
+  have hgc : Continuous g :=
+    hΘ.continuous.comp ((continuous_const.add (continuous_id.mul continuous_const)).prodMk
+      continuous_id)
+  have hcos : ∀ s, 0 < cos (g s) := fun s => by
+    obtain ⟨r, hr, hRr, -⟩ := hΘ.polar (θ₀ + s * ι) s
+    rw [(hT.Rz_const_of_purelyToroidal hB θ₀ s).1] at hRr
+    have hpos : 0 < r * cos (g s) := by rw [hg, ← hRr]; linarith [hlt s]
+    exact pos_of_mul_pos_right hpos hr.le
+  have hbd := abs_sub_lt_pi_of_cos_pos hgc hcos
+  have hg0 : g 0 = Θ θ₀ 0 := by simp [hg]
+  have h0 : Tendsto (fun s => (g s - g 0) / s) atTop (𝓝 0) := by
+    have hlim : Tendsto (fun s : ℝ => π / s) atTop (𝓝 0) :=
+      tendsto_const_nhds.div_atTop tendsto_id
+    refine squeeze_zero_norm' ?_ hlim
+    filter_upwards [eventually_gt_atTop 0] with s hs
+    rw [Real.norm_eq_abs, abs_div, abs_of_pos hs]
+    exact div_le_div_of_nonneg_right (hbd s).le hs.le
+  have hlim := hΘ.tendsto ι θ₀
+  rw [← hg0] at hlim
+  exact tendsto_nhds_unique hlim h0
 
 end Torus
 
