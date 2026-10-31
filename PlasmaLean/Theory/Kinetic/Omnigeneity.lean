@@ -143,7 +143,12 @@ structure TrappedBounce (F : BoozerField) (m q μ c : ℝ) (ψ θ φ ρ : ℝ �
 
 /-- **Omnigeneity** on the region `0 < ψ ≤ c` (Boozer guiding-centre model): for every species
 (`m > 0`, `q ≠ 0`), every magnetic moment `μ ≥ 0` and every trapped bounce in the region (any
-energy), the flux label returns after one bounce period. -/
+energy), the flux label returns after one bounce period.
+
+This is exact (all-order) return of the guiding-centre flux label per bounce, stronger than
+leading-order omnigeneity: QS fields satisfy it (`omnigenousOn_of_exactQS`), whereas
+quasi-isodynamic fields are expected to satisfy only the approximate form
+(`ApproxOmnigenousOn`). -/
 @[expose] def OmnigenousOn (F : BoozerField) (c : ℝ) : Prop :=
   ∀ (m q μ : ℝ) (ψ θ φ ρ : ℝ → ℝ) (τ : ℝ), 0 < m → q ≠ 0 → 0 ≤ μ →
     TrappedBounce F m q μ c ψ θ φ ρ τ → ψ τ = ψ 0

@@ -253,6 +253,11 @@ The smallest step that restores C1 content is `poloidalCirculation μ₀ B R z �
 - **AR-M1 resolved** in C1 (ι_min ≤ |ι|). The negative-ι version of the C2 twist lemma is still open.
 - **AR-M2–M8, AR-L1, AR-L6, AR-L8, AR-L9: prose fixed** (commit fc82e6b).
 - **AR-L2:** the `VacuumField` closure lemmas stay in `CylAlgebra` (theorems only; no kernel change).
-- **Open:** AR-L3 (Dommaschk non-triviality fixture), AR-L4, AR-L5, AR-L7 (docstrings), and the
-  AR-M3 Lean fixture (a trapped bounce for `exactQA`).
+- **AR-L7 and the Lean-side wording of AR-M2/M3/M4/M6: fixed** (31 October). This covers the
+  docstrings of `LorentzExistence`, `RelativeEntropyCoercive`, `NearAxisQAExistence(Full)`,
+  `TorusHodge`, `Omnigeneity`, `NearAxisQAOmnigeneity` and `RationalStellaratorQAObstruction`. The
+  `decide +kernel` mentions in `LandremanFamily2MercierStable.lean:36`/`Quad.lean:1701` are left,
+  because they are heavy certificate modules; batch them with their next rebuild.
+- **Open:** AR-L3 (Dommaschk non-triviality fixture), AR-L4, AR-L5, and the AR-M3 Lean fixture (a
+  trapped bounce for `exactQA`).
 

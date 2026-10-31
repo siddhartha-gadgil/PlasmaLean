@@ -38,7 +38,9 @@ open PlasmaLean.Kinetic.Boozer PlasmaLean.Design.NearAxisQA
   PlasmaLean.Design.NearAxisQATrappedBounce Real Set
 
 /-- **`exactQA` is omnigenous** on every region `0 < ψ ≤ c`: exact quasi-axisymmetry
-(`∂_φB ≡ 0`) and `ψ_p = 0.422 ψ` injective. -/
+(`∂_φB ≡ 0`) and `ψ_p = 0.422 ψ` injective. The existence of a trapped bounce in `exactQA` is not
+proved here, so this may hold vacuously; definitional non-vacuity of `OmnigenousOn` is the
+`driftMirror` fixture. -/
 theorem exactQA_omnigenousOn (c : ℝ) : OmnigenousOn exactQA c := by
   refine omnigenousOn_of_exactQS (N := 0) (M := 1) (by rw [exactQA, qaField_G]; norm_num)
     (fun x θ φ _ _ => by simp [symmetryDefect, exactQA_Bφ]) ?_

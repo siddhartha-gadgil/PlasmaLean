@@ -442,7 +442,11 @@ theorem energy_constForm (m : ConstMetric) (a b : ℝ) :
   have := ((constForm a b).energy_eq_iff m).2 (fun _ _ => ⟨ha.symm, hb.symm⟩)
   rwa [ha, hb] at this
 
-/-! ### (c) Physics corollaries (constant metric only) -/
+/-! ### (c) Physics corollaries (constant metric only)
+
+The statements below are about abstract closed periodic forms with prescribed periods; their
+reading as the field-line form `i_Bσ` or the current form `B♭|_Σ` of a magnetic field is the
+motivation (note N-3), not formalized here (no field `B` appears). -/
 
 /-- **Field-line form bound** (model case: constant metric in the angles). For the field-line
 form `β = i_Bσ` on a flux torus, with periods `(−Φ_t′, Φ_p′)` (note N-3, §2 orientations) and

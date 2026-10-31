@@ -28,7 +28,7 @@ Results:
 * interval conservation laws for solutions on a closed time interval `[a, b]`: speed
   (`speed_eq_Icc`) and, for an axisymmetric field, canonical angular momentum
   (`canonicalMomentum_eq_Icc`), the flux band and the trapping argument (`orbit_trapped_Icc`);
-* `lorentz_apriori_of_contDiff`: for a field that is `C¹` on all of space, position and velocity
+* `lorentz_apriori_univ`: for a field that is `C¹` on all of space, position and velocity
   stay in `closedBall x₀ (|v₀| T) × closedBall 0 |v₀|` up to time `T` (a priori bound);
 * **`lorentzOrbit_exists`**: if `B` is `C¹` on all of space and `m ≠ 0`, then for every initial
   position `x₀` and velocity `v₀` there is a Lorentz orbit defined for all real times with

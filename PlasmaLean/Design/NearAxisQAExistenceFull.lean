@@ -43,10 +43,11 @@ smaller band.
   `band_empty_Tav` (no band survives for `T ≥ 0.06 s`, in particular not for `T_av = 0.19 s`).
 
 **Not proved.** Existence on `[0, 0.19 s]` (or `[0, 8 × 10⁻⁴ s]`) for the original class
-`ψ₀ ≤ ψ_start`: passing alphas born that close to the axis can reach it (the orbit width in `ψ` is
-comparable to `ψ_start`), so the chart `ψ > 0` itself is the obstruction (route (iii), coordinates
-through the axis, is needed). All statements are about the supplied guiding-centre model and the
-truncated near-axis field (see `NearAxisQA`).
+`ψ₀ ≤ ψ_start`. `Dpsi_gt_psiStart` and `band_empty_Tav` are proved limits of the band method, not
+obstructions to existence: whether orbits of the original class leave the chart `ψ > 0` before
+0.19 s is not proved (the orbit width in `ψ` is comparable to `ψ_start`); coordinates through
+the axis (route (iii)) are the proposed route. All statements are about the supplied
+guiding-centre model and the truncated near-axis field (see `NearAxisQA`).
 -/
 
 public section

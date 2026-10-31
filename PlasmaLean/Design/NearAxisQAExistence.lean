@@ -28,6 +28,9 @@ Results:
   birth at `ψ₀ = psiStart`, orbit on `[0, T]`) is satisfied by a constructed orbit for some
   `0 < T ≤ 0.19 s`, and that orbit stays at `ψ ≤ 8.2` on `[0, T]`.
 
+**Superseded in part** by `Design/NearAxisQAExistenceFull` (bands of births on the full horizon
+to 0.05 s, and the explicit horizon `r₀/285000 s` for the original class).
+
 **Not proved** (recorded in `notes/theory/orbit-existence.md`): existence on the full horizon
 `[0, 0.19 s]` (or `[0, 8 × 10⁻⁴ s]` of `alpha_trapped_reactorQA`). That needs an a priori lower
 bound `ψ ≥ ψ_min > 0` along the orbit up to the horizon (`boozerGCOrbitOn_exists_of_apriori`

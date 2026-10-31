@@ -14,8 +14,9 @@ public import Mathlib.Analysis.SpecialFunctions.Integrals.Basic
 
 Source: `notes/theory/relative-entropy-dissipation.md` (N-2). This module continues
 `PlasmaLean.Theory.Transport.RelativeEntropy`, where the corrected identity
-`dH/dt = −𝓕 + 𝓒 + 𝓡 + 𝓑` and the case 1 statement (constant reference: `rate = −𝓕`) are proved
-for supplied data `RelEntSetup a b`.
+`rate = −𝓕 + 𝓒 + 𝓡 + 𝓑` (the rate of the relative entropy `H` for supplied data, not a time
+derivative of a constructed solution) and the case 1 statement (constant reference: `rate = −𝓕`)
+are proved for supplied data `RelEntSetup a b`.
 
 ## Model
 

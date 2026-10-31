@@ -76,10 +76,12 @@ certified torus: `field_vacuum`,
 and **C4** (KAM torus, field lines confined forever: `rationalStellarator_confined_forever`). But
 it cannot be quasi-axisymmetric (nor quasisymmetric with any helicity) **even at first order** in
 the distance from the axis: the defect is pinned at the fraction `√(ι₀/N)` of the first-order
-variation, and the defect/ι ratio `1/√(N ι₀)` grows as `ι₀ → 0`. So a C2 certificate through the
-quasisymmetry bridge of Q-23 (`Kinetic.Boozer.omnigenousOn_of_exactQS`,
-`approxOmnigenousOn_of_defect_le`, which need a QS defect small relative to `ι`) is impossible
-for every member of this planar-axis family; a C2 candidate needs a non-planar axis (Q-16).
+variation, and the defect/ι ratio `1/√(N ι₀)` grows as `ι₀ → 0`. So the quasisymmetry route to C2
+(Q-23: `Kinetic.Boozer.omnigenousOn_of_exactQS`, `approxOmnigenousOn_of_defect_le`, which need a
+QS defect small relative to `ι`) cannot give a small relative defect for this field at first
+order (linearized straight-field-line angles, N = 2; no link to a Boozer model is formalized). A
+QS-based C2 candidate therefore needs a different axis geometry; Garren–Boozer suggests a
+non-planar axis (not proved here). Quasi-isodynamic routes are not addressed.
 -/
 
 public section
