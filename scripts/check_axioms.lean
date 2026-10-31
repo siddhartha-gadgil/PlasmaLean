@@ -392,6 +392,8 @@ run_cmd do
 #print axioms PlasmaLean.Fields.QSLinear.strongQS_jet_obstruction
 #print axioms PlasmaLean.Design.QSJetExample.strongQS_obstruction
 #print axioms PlasmaLean.Design.QSJetExample.not_strongQS_of_ne_zero
+#print axioms PlasmaLean.Design.RationalStellaratorJetObstruction.strongQS_obstruction
+#print axioms PlasmaLean.Design.RationalStellaratorJetObstruction.not_strongQS_of_ne_zero
 
 #print axioms PlasmaLean.Sanity.AuditRefresh.netToroidalCurrent_pinch
 #print axioms PlasmaLean.Sanity.AuditRefresh.pinch_spans

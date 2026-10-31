@@ -308,6 +308,7 @@ public import PlasmaLean.Design.DommaschkKamIdentCheckD
 public import PlasmaLean.Design.DommaschkKamIdentCheckR
 public import PlasmaLean.Design.DommaschkKamIdent
 public import PlasmaLean.Design.QSJetExample
+public import PlasmaLean.Design.RationalStellaratorJetObstruction
 
 /-!
 # PlasmaLean public library
