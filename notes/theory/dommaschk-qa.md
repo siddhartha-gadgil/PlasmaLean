@@ -512,6 +512,28 @@ Run `workstation/dommaschk-qa-20261031T075059Z`, the first run started by the un
   reuses the finished starts (the work directory is unchanged), so only the re-ranking and the
   diagnostics run.
 
+### 19. Warm start from the NFP-2 candidate: near the strong tier (31 October 2026; untrusted)
+
+Run `workstation/dommaschk-qa-20261031T075915Z` (poller batch `2026-10-31-warmstart`, second run):
+NFP 2, nmax 3 (42 coefficients), 48 starts from the §10 candidate with `--init-sigma 0.002`;
+15.6 min wall. Results in `scripts/dommaschk_qa/results/20261031T075915Z/`.
+
+- **45 of 48 starts were regular at optimiser resolution.** The best five have worst defect/ι of
+  only **0.0025–0.0042**, against the strong-tier threshold of 0.01.
+  - Start 42: |ι| 0.250–0.229, defect/ι 0.0006, 0.0012 and 0.0025.
+  - Start 30: |ι| 0.243–0.234, defect/ι up to 0.0035.
+  - Start 21 (|ι| 0.29–0.27) and start 40 (|ι| 0.32–0.29) are in the same range.
+- **The selected start (42) at high resolution:**
+  - Its inner surface (r = 0.015) has |ι| = 0.2502, which is on ι = 1/4: island chain.
+  - The other two surfaces have **defect/ι 0.0012 and 0.0026 (strong level)**, with
+    **ε_eff 0.002 % and 0.03 %** and κ 0.03–0.06.
+  - Lines are regular out to r = 0.066 (r_eff ≈ 0.042), the largest region so far, with ι from
+    0.253 on the axis to 0.207.
+  - The only defect is the ι = 1/4 crossing near the axis.
+- **Expectation.** Start 30, whose ι stays inside (2/9, 1/4), or start 42 with ι shifted slightly
+  below 1/4, should give a strong-tier candidate. The queued re-rank batch
+  (`2026-10-31-rerank`) checks the top 8 starts at high resolution.
+
 ## Claims and evidence
 
 1. **Complete mathematical proof (symbolic, sympy).** The basis potentials are harmonic and

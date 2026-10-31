@@ -1431,3 +1431,11 @@ Gate E1 (§11.2, §11.4) and the "sanity theorem or counterexample" promised in 
   resolution. The selected one fails at high resolution (inner surface on ι = 3/8). `optimize.py` now
   re-ranks the top starts at diagnostic resolution and keeps all coefficients in `starts.json`
   (`--init starts.json:K`). N-31 §18.
+
+### Dommaschk QA fit: NFP-2 warm start reaches the strong level on most surfaces, 31 October 2026
+
+- Run `workstation/dommaschk-qa-20261031T075915Z`: 48 warm starts around the N-31 §10 candidate
+  (σ 0.002); best five worst defect/ι 0.0025–0.0042 at optimiser resolution. Selected start at high
+  resolution: inner surface on ι = 1/4 (island); outer surfaces defect/ι 0.0012 and 0.0026, ε_eff
+  0.002 % and 0.03 %, regular to r_eff ≈ 0.042. The poller's batch `2026-10-31-warmstart` finished
+  (exit 0, 23 min); the re-rank batch `2026-10-31-rerank` is queued. N-31 §19.
