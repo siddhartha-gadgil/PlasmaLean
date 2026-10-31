@@ -1,0 +1,41 @@
+{
+ "task": "dommaschk-qa",
+ "description": "Dommaschk QA fit (nmax 2, lmax 4, 48 starts, iota >= 0.25): vacuum C1+C2 candidate, untrusted",
+ "stamp": "20261031T084057Z",
+ "base_commit": "4acc0e6",
+ "host": "hornbill",
+ "os": "Linux x86_64",
+ "cpus": 24,
+ "jobs": 24,
+ "mode": "workstation",
+ "target": "default",
+ "steps": {
+  "emit": {
+   "cmd": "bash /home/gadgil/code/PlasmaLean/scripts/workstation/run.sh __step emit dommaschk-qa",
+   "status": "ok",
+   "returncode": 0,
+   "wall_min": 0.0,
+   "cpu_min": 0.0,
+   "peak_rss_gb": 0.01
+  },
+  "numerics": {
+   "cmd": "bash /home/gadgil/code/PlasmaLean/scripts/workstation/run.sh __step numerics dommaschk-qa",
+   "status": "ok",
+   "returncode": 0,
+   "wall_min": 12.94,
+   "cpu_min": 171.61,
+   "peak_rss_gb": 0.8
+  }
+ },
+ "laptop": {
+  "lean_cpu_min_scaled": 0.0,
+  "lean_peak_rss_gb": 0.0,
+  "budget": {
+   "max_rss_gb": 6.0,
+   "default_cpu_min": 60.0,
+   "max_cpu_min": 240.0,
+   "slowdown": 1.0
+  },
+  "verdict": "no Lean modules"
+ }
+}
