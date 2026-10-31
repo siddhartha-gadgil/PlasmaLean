@@ -3,7 +3,11 @@
 Usage:
     /tmp/dqa-venv/bin/python -I scripts/dommaschk_qa/emit_lean.py \
         scripts/dommaschk_qa/results/20261031T044845Z/candidate.json \
-        PlasmaLean/Design/DommaschkQA3Data.lean
+        PlasmaLean/Design/DommaschkQA3Data.lean [NAMESPACE]
+NAMESPACE (default DommaschkQA3) names `PlasmaLean.Design.NAMESPACE`; the basis size and the
+parameters are read from the candidate. An optional fifth argument K moves the kernel checks to
+K modules `<out>Check0.lean` … (keeps each Lean process within the memory budget); a sixth
+argument `slice` checks harmonicity slice by slice in the z-degree (`sliceCheck`, less kernel memory).
 
 Each basis potential V_k = trig(m phi) * sum c R^p (ln R)^q z^j is rewritten in Cartesian
 coordinates (r2 = x^2 + y^2) as a sum of monomials  c' x^a y^b z^j r2^s (log r2)^q  using
@@ -160,7 +164,8 @@ def lean_int(c):
     return f"({c})" if c < 0 else str(c)
 
 
-def emit(cand_path, b, polys, a, out):
+def emit(cand_path, b, polys, a, out, name='DommaschkQA3', params='NFP 3, nmax 2, lmax 4', nsplit=0, slices=False):
+    n = len(b)
     rel = os.path.relpath(cand_path, os.path.join(HERE, '..', '..'))
     L = []
     L.append("""/-
@@ -174,12 +179,12 @@ public import PlasmaLean.Theory.Fields.CylAlgebra
 public import PlasmaLean.Certificates.KernelFact
 
 /-!
-# Data of the Dommaschk QA candidate (NFP 3, nmax 2, lmax 4): generated file
+# Data of the Dommaschk QA candidate (""" + params + """): generated file
 
 **Generated** by `scripts/dommaschk_qa/emit_lean.py` from
 `""" + rel + """` (do not edit by hand).
 
-The 24 Dommaschk basis potentials `V_k = trig(m φ) Σ c R^p (ln R)^q z^j` (`basis.py`), rewritten in
+The """ + str(n) + """ Dommaschk basis potentials `V_k = trig(m φ) Σ c R^p (ln R)^q z^j` (`basis.py`), rewritten in
 Cartesian coordinates as integer cylindrical potentials `P k : CylPoly` with
 `V_k = scale k · eval (P k)` (`scale k = 1 / D_k`, `D_k` the lcm of the rational monomial
 coefficients), and the exact fitted coefficient vector `candidate`. The generator checks
@@ -191,7 +196,7 @@ each `P k` is odd under the stellarator symmetry `(x, y, z) ↦ (x, −y, −z)`
 -/
 
 public section
-namespace PlasmaLean.Design.DommaschkQA3
+namespace PlasmaLean.Design.""" + name + """
 open PlasmaLean.Fields.CylAlgebra
 """)
     for k, (bk, (P, D)) in enumerate(zip(b, polys)):
@@ -211,41 +216,80 @@ open PlasmaLean.Fields.CylAlgebra
         L.append(f"@[expose] def P{k} : CylPoly :=")
         L.append(f"  [{monos}]")
         L.append("")
-    L.append("/-- The 24 basis potentials (integer forms `D_k V_k`). -/")
-    L.append("@[expose] def P : Fin 24 → CylPoly :=")
+    L.append(f"/-- The {n} basis potentials (integer forms `D_k V_k`). -/")
+    L.append(f"@[expose] def P : Fin {n} → CylPoly :=")
     L.append("  ![" + ",\n    ".join(", ".join(f"P{k}" for k in range(i, min(i + 12, len(b))))
                                       for i in range(0, len(b), 12)) + "]")
     L.append("")
+    checks = []
     for k, bk in enumerate(b):
-        L.append(f"/-- Harmonicity check for `P{k}` (`{bk['name']}`): the formal Laplacian\n"
-                 f"normalises to zero (kernel evaluation). -/")
-        L.append(f"theorem nf_lap_P{k} : nf (lap P{k}) = [] := by kernel_fact")
-        L.append("")
-        L.append(f"/-- Stellarator-symmetry check for `P{k}`: every monomial is odd under\n"
+        C = []
+        lp = lap([(c,) + key for key, c in polys[k][0].items()])
+        if slices:   # z-degree slices: each normal form is smaller (kernel memory)
+            js = sorted({m[3] for m in lp})
+            C.append(f"/-- Harmonicity check for `P{k}` (`{bk['name']}`): the formal Laplacian\n"
+                     f"normalises to zero slice by slice in the `z`-degree (kernel evaluation). -/")
+            C.append(f"theorem slice_P{k} : sliceCheck {js} (lap P{k}) = true := by kernel_fact")
+        else:
+            if len(lp) > 700:   # the kernel evaluation of the largest normal forms recurses deeply
+                C.append("set_option maxRecDepth 8000 in")
+            C.append(f"/-- Harmonicity check for `P{k}` (`{bk['name']}`): the formal Laplacian\n"
+                     f"normalises to zero (kernel evaluation). -/")
+            C.append(f"theorem nf_lap_P{k} : nf (lap P{k}) = [] := by kernel_fact")
+        C.append("")
+        C.append(f"/-- Stellarator-symmetry check for `P{k}`: every monomial is odd under\n"
                  f"`(x, y, z) ↦ (x, −y, −z)`. -/")
-        L.append(f"theorem parity_P{k} : parityCheck 1 P{k} = true := by kernel_fact")
-        L.append("")
+        C.append(f"theorem parity_P{k} : parityCheck 1 P{k} = true := by kernel_fact")
+        C.append("")
+        checks.append(C)
+    if not nsplit:
+        for C in checks:
+            L += C
     L.append("/-- `scale k = 1 / D_k`: `V_k = scale k · eval (P k)`. -/")
-    L.append("@[expose] def scale : Fin 24 → ℚ :=")
+    L.append(f"@[expose] def scale : Fin {n} → ℚ :=")
     L.append("  ![" + ",\n    ".join(", ".join(f"1 / {D}" for _, D in polys[i:i + 8])
                                       for i in range(0, len(polys), 8)) + "]")
     L.append("")
     L.append("/-- The exact fitted coefficients `a_k` of the candidate (`candidate.json`). -/")
-    L.append("@[expose] def candidate : Fin 24 → ℚ :=")
+    L.append(f"@[expose] def candidate : Fin {n} → ℚ :=")
     L.append("  ![" + ",\n    ".join(f"{ak.numerator} / {ak.denominator}" for ak in a) + "]")
     L.append("")
-    L.append("end PlasmaLean.Design.DommaschkQA3")
+    L.append(f"end PlasmaLean.Design.{name}")
     L.append("")
     with open(out, 'w') as fh:
         fh.write("\n".join(L))
+    if nsplit:   # the kernel checks go to separate modules (memory: each module < 6 GB)
+        mod = os.path.relpath(out, os.path.join(HERE, '..', '..'))[:-5].replace(os.sep, '.')
+        per = -(-len(checks) // nsplit)
+        for i in range(nsplit):
+            part = checks[i*per:(i+1)*per]
+            ks = range(i*per, i*per + len(part))
+            H = ["/-", "Copyright (c) 2026 PlasmaLean contributors. All rights reserved.",
+                 "Released under Apache 2.0 license as described in the file LICENSE.",
+                 "Authors: PlasmaLean contributors", "-/", "module", "",
+                 f"public import {mod}", "public import PlasmaLean.Certificates.KernelFact", "",
+                 "/-!", f"# Kernel checks {ks.start}–{ks.stop - 1} of `{mod}` (generated file)", "",
+                 "Harmonicity (`nf_lap_P*`) and stellarator parity (`parity_P*`) of the basis potentials,",
+                 "by kernel evaluation (`kernel_fact`). Generated by `scripts/dommaschk_qa/emit_lean.py`;",
+                 "split from the data module to keep each Lean process under the laptop memory budget.",
+                 "-/", "", "public section", f"namespace PlasmaLean.Design.{name}",
+                 "open PlasmaLean.Fields.CylAlgebra", ""]
+            for C in part:
+                H += C
+            H += [f"end PlasmaLean.Design.{name}", ""]
+            with open(out[:-5] + f"Check{i}.lean", 'w') as fh:
+                fh.write("\n".join(H))
 
 
 def main():
     cand_path, out = sys.argv[1], sys.argv[2]
+    name = sys.argv[3] if len(sys.argv) > 3 else 'DommaschkQA3'
+    nsplit = int(sys.argv[4]) if len(sys.argv) > 4 else 0
+    slices = len(sys.argv) > 5 and sys.argv[5] == 'slice'
     with open(cand_path) as fh:
         cand = json.load(fh)
     b = cand['basis']
-    assert len(b) == 24 and cand['nfp'] == 3
+    params = f"NFP {cand['nfp']}, nmax {cand['nmax']}, lmax {cand['lmax']}"
     a = [Fr(s) for s in cand['coefficients']]
     polys = [integerise(cart_terms(bk)) for bk in b]
     for bk, (P, D) in zip(b, polys):
@@ -257,13 +301,13 @@ def main():
         print(f"{bk['name']:18s} D={D:6d} monomials={len(P):3d} lap terms={len(lap(f)):5d} "
               f"gcd={g}")
     exprs, xyz = sympy_checks(b, polys)
-    print("sympy: all 24 potentials match the cylindrical form and are harmonic")
+    print(f"sympy: all {len(b)} potentials match the cylindrical form and are harmonic")
     pt = ('21/20', '1/10', '1/50')
     Bl, Bf = sample_field(b, exprs, xyz, a, pt)
     print("B at", pt, "from emitted data:", Bl)
     print("B at", pt, "from fieldeval   :", Bf)
     assert max(abs(u - v) for u, v in zip(Bl, Bf)) < 1e-10
-    emit(cand_path, b, polys, a, out)
+    emit(cand_path, b, polys, a, out, name, params, nsplit, slices)
     print("wrote", out)
 
 

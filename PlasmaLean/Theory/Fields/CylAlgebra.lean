@@ -385,6 +385,25 @@ theorem eval_eq_zero_of_nf {f : CylPoly} (h : nf f = []) {y : Space} (hy : r2 y 
 
 /-! ## The vacuum criterion -/
 
+/-- **Vacuum criterion** (evaluation form): if the formal Laplacian of `f` evaluates to zero off
+the axis, then `∇ eval f` is a vacuum field off the `z`-axis. -/
+theorem gradField_vacuum_of_eval {f : CylPoly} (h : ∀ x : Space, r2 x ≠ 0 → eval (lap f) x = 0) :
+    VacuumField domain (gradField f) := by
+  refine ⟨isOpen_domain, ?_, fun x hx => ?_, fun x hx => ?_⟩
+  · intro x hx
+    refine ContDiffAt.contDiffWithinAt ((contDiffAt_piLp 2).mpr fun k => ?_)
+    simp only [gradField_apply]
+    exact contDiffAt_eval _ (ne_of_gt hx)
+  · have hx' : r2 x ≠ 0 := ne_of_gt hx
+    rw [fieldDiv, (hasFDerivAt_gradField f hx').fderiv, divOp_apply, hess_entry, hess_entry,
+      hess_entry, ← eval_lap]
+    exact h x hx'
+  · have hx' : r2 x ≠ 0 := ne_of_gt hx
+    rw [fieldCurl, (hasFDerivAt_gradField f hx').fderiv, curlOp_eq_zero_iff]
+    intro i j
+    rw [hess_entry, hess_entry]
+    exact eval_d_comm f hx' j i
+
 /-- **Vacuum criterion**: if the formal Laplacian of `f` normalises to zero, then `∇ eval f` is
 a vacuum field off the `z`-axis (open, `C²`, divergence free, curl free). -/
 theorem gradField_vacuum {f : CylPoly} (h : nf (lap f) = []) :
@@ -403,6 +422,47 @@ theorem gradField_vacuum {f : CylPoly} (h : nf (lap f) = []) :
     intro i j
     rw [hess_entry, hess_entry]
     exact eval_d_comm f hx' j i
+
+/-! ### Sliced normal-form check
+
+For large potentials the normal form of the whole Laplacian is expensive in the kernel (its
+insertion sort is quadratic). The Laplacian cancels within each power of `z`, so the check can be
+done slice by slice: `sliceCheck js L` normalises the monomials with `z`-exponent `j` separately
+for each `j ∈ js`, and the remaining monomials (none, in practice) together. -/
+
+/-- Slice-by-slice normal-form check (see above). -/
+@[expose] def sliceCheck : List ℕ → CylPoly → Bool
+  | [], L => (nf L).isEmpty
+  | j :: js, L => (nf (L.filter fun m => m.j == j)).isEmpty &&
+      sliceCheck js (L.filter fun m => m.j != j)
+
+theorem eval_filter_add (L : CylPoly) (p : Mono → Bool) (y : Space) :
+    eval (L.filter p) y + eval (L.filter fun m => !p m) y = eval L y := by
+  induction L with
+  | nil => simp
+  | cons m L ih =>
+    by_cases hp : p m
+    · simp [hp, ← ih]; ring
+    · simp [hp, ← ih]; ring
+
+/-- Soundness of the sliced check. -/
+theorem eval_eq_zero_of_sliceCheck {js : List ℕ} {L : CylPoly} (h : sliceCheck js L = true)
+    {y : Space} (hy : r2 y ≠ 0) : eval L y = 0 := by
+  induction js generalizing L with
+  | nil =>
+    simp only [sliceCheck, List.isEmpty_iff] at h
+    exact eval_eq_zero_of_nf h hy
+  | cons j js ih =>
+    simp only [sliceCheck, Bool.and_eq_true, List.isEmpty_iff] at h
+    have h1 := eval_eq_zero_of_nf h.1 hy
+    have h2 := ih h.2
+    rw [← eval_filter_add L (fun m => m.j == j) y, h1, zero_add]
+    simpa [bne] using h2
+
+/-- **Vacuum criterion, sliced form.** -/
+theorem gradField_vacuum_of_sliceCheck {f : CylPoly} {js : List ℕ}
+    (h : sliceCheck js (lap f) = true) : VacuumField domain (gradField f) :=
+  gradField_vacuum_of_eval fun _ hx => eval_eq_zero_of_sliceCheck h hx
 
 /-- Harmonicity in coordinates: `∂ₓ² + ∂_y² + ∂_z²` of `eval f` vanishes on the domain. -/
 theorem eval_lap_eq_zero {f : CylPoly} (h : nf (lap f) = []) {x : Space} (hx : x ∈ domain) :

@@ -332,6 +332,13 @@ run_cmd do
 #print axioms PlasmaLean.Design.DommaschkQA3.candidate_loopCurrent_eq_zero
 #print axioms PlasmaLean.Design.DommaschkQA3.candidate_currentFreeTransform
 #print axioms PlasmaLean.Design.DommaschkQA3.field_stellSym
+#print axioms PlasmaLean.Fields.CylAlgebra.gradField_vacuum_of_sliceCheck
+#print axioms PlasmaLean.Design.DommaschkQA2R.field_vacuum
+#print axioms PlasmaLean.Design.DommaschkQA2R.candidate_vacuum
+#print axioms PlasmaLean.Design.DommaschkQA2R.candidate_loopCurrent_eq_zero
+#print axioms PlasmaLean.Design.DommaschkQA2R.candidate_currentFreeTransform
+#print axioms PlasmaLean.Design.DommaschkQA2R.field_stellSym
+#print axioms PlasmaLean.Design.DommaschkQA2R.candidate_log_free
 #print axioms PlasmaLean.Fields.QSLinear.fieldDiv_fqsGen
 #print axioms PlasmaLean.Fields.QSLinear.JetHyp.jet_obstruction_curl
 #print axioms PlasmaLean.Fields.QSLinear.jet_obstruction_eta

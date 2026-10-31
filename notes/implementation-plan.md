@@ -1520,3 +1520,12 @@ Gate E1 (§11.2, §11.4) and the "sanity theorem or counterexample" promised in 
   r_eff ≈ 0.052, monotone ι in (2/9, 1/4); `candidate_for_certification` true (untrusted). Chosen as the
   certification target (N-31 §22): purely rational, so the polynomial KAM pipeline applies.
 
+### Certification step 1 for the target: exact NFP-2 rational field in Lean, 31 October 2026
+
+- `Design/DommaschkQA2RData` (+ `DommaschkQA2RDataCheck0`–`2`, generated, sliced harmonicity checks,
+  peaks ≤ 3.1 GB) and `Design/DommaschkQA2R`: `field_vacuum` (all coefficients), `candidate_vacuum`,
+  `candidate_loopCurrent_eq_zero`, `candidate_currentFreeTransform` (C1 reduces to certified tori),
+  `field_stellSym`, `candidate_log_free`. `Theory/Fields/CylAlgebra`: `sliceCheck`,
+  `eval_eq_zero_of_sliceCheck`, `gradField_vacuum_of_eval`, `gradField_vacuum_of_sliceCheck`.
+  `lake build PlasmaLean` clean; axiom audit passed (48,770 declarations). N-31 §23.
+

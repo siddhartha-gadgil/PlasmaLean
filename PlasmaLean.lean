@@ -287,6 +287,11 @@ public import PlasmaLean.Design.RationalStellaratorContract
 public import PlasmaLean.Design.RationalStellaratorQAObstruction
 public import PlasmaLean.Design.DommaschkQA3Data
 public import PlasmaLean.Design.DommaschkQA3
+public import PlasmaLean.Design.DommaschkQA2RData
+public import PlasmaLean.Design.DommaschkQA2RDataCheck0
+public import PlasmaLean.Design.DommaschkQA2RDataCheck1
+public import PlasmaLean.Design.DommaschkQA2RDataCheck2
+public import PlasmaLean.Design.DommaschkQA2R
 public import PlasmaLean.Design.QSJetExample
 
 /-!
