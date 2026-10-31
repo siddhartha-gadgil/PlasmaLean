@@ -251,6 +251,8 @@ public import PlasmaLean.Design.KamFlowIterationS
 public import PlasmaLean.Design.KamFlowFieldG
 public import PlasmaLean.Design.KamFlowFrameG
 public import PlasmaLean.Design.KamFlowStepG
+public import PlasmaLean.Design.KamFlowIterationG
+public import PlasmaLean.Design.KamTorusAExactG
 public import PlasmaLean.Design.RationalStellaratorGC
 public import PlasmaLean.Design.RationalStellaratorGCPoly
 public import PlasmaLean.Design.RationalStellaratorGCFlow

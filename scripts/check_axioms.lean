@@ -368,6 +368,12 @@ run_cmd do
 #print axioms PlasmaLean.Design.KamNewton.field14_stepH_toG
 #print axioms PlasmaLean.Design.KamNewton.SC.toSCG_kap
 #print axioms PlasmaLean.Design.KamNewton.FlowField.toG_dRs
+#print axioms PlasmaLean.Design.KamNewton.FlowFieldG.KamHG.kam_flow_torus
+#print axioms PlasmaLean.Design.KamNewton.FlowFieldG.AdmBoundsG.bV0R_of_close
+#print axioms PlasmaLean.Design.KamNewton.FlowField.KamH.toG
+#print axioms PlasmaLean.Design.KamNewton.FlowField.toG_iterK
+#print axioms PlasmaLean.Design.KamNewton.torusA_exactG
+#print axioms PlasmaLean.Design.KamNewton.torusA_exact_viaG
 #print axioms PlasmaLean.Fields.QSLinear.fieldDiv_fqsGen
 #print axioms PlasmaLean.Fields.QSLinear.JetHyp.jet_obstruction_curl
 #print axioms PlasmaLean.Fields.QSLinear.jet_obstruction_eta

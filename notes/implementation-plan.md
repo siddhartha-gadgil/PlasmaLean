@@ -1604,3 +1604,14 @@ Gate E1 (§11.2, §11.4) and the "sanity theorem or counterexample" promised in 
   `field14_stepH_toG` (needs e·δ₀ ≤ 1, true for torus A). Remaining: `KamFlowIterationG` (milestone 3).
   Axiom audit passed (49,485 declarations).
 
+### Certification step 2: generalised KAM iteration, milestone 3 (interface complete), 31 October 2026
+
+- `Design/KamFlowIterationG`: `AdmBoundsG`, `GlobalHG` (split Diophantine, no `hδ2`), `KamHG`, and
+  `FlowFieldG.KamHG.kam_flow_torus` (exact real analytic invariant torus, same shape as the original).
+  Adapters `FlowField.GlobalH.toG`, `KamH.toG`, `toG_iterK`. `Design/KamTorusAExactG`: the certified
+  rational torus A re-derived through the generalised theorem (`torusA_exactG`, `torusA_exact_viaG`, the
+  statement of `torusA_exact`, same iterates). The generalised KAM interface (N-33 item 3) is complete;
+  the Dommaschk instantiation (items 5–10: field, constants, admissibility chain, residual chain,
+  contract) is next, and needs the high-resolution oracle runs. Axiom audit passed (49,638
+  declarations).
+

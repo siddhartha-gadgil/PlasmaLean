@@ -1,6 +1,6 @@
 # KamFlow*G: status of the generalised KAM interface (N-33 module plan item 3)
 
-Last updated: 31 October 2026. Companion to `dommaschk-kam-certificate.md` (N-33), §2.2 (O1, O2)
+Last updated: 31 October 2026 (milestone 3). Companion to `dommaschk-kam-certificate.md` (N-33), §2.2 (O1, O2)
 and §6 item 3.
 
 ## Done (milestone 1): `Design/KamFlowFieldG`, `Design/KamFlowFrameG`
@@ -78,55 +78,79 @@ Checked together with `import PlasmaLean`: no name clashes.
   `δ₀ = r_A/7 ≈ 0.018`) and `field14_stepH_toG`. `FlowField.toG_dRs`: the correction is the
   same. Degenerate sanity: `SCG.kh_of_p_zero`.
 
-## Remaining
+## Done (milestone 3): `Design/KamFlowIterationG`, `Design/KamTorusAExactG`
 
-### `KamFlowIterationG` (copy of `KamFlowIteration`, 832 lines)
+Both compile with zero warnings and standard axioms only (`KamFlowIterationG`: 816 lines, about
+4 s, 1.6 GB peak RSS; `KamTorusAExactG`: 70 lines, about 5 s, 1.6 GB, all its imports are in
+the default build). Checked together with `import PlasmaLean`: no name clashes.
 
-What it needs from `KamFlowStepG` (all available):
-- `FlowFieldG.StepH.kam_step` (the eight-part conclusion, same order as before) and
-  `FlowFieldG.FrameHyp.isReal_dRs`; `FlowFieldG.dRs/dZs` for `stepK`.
-- `SCG.withρ` (define as `{ c with ρ := ρ }`; with `extends` this updates `toSC.ρ`). All
-  derived constants are independent of `ρ` (`rfl`), as before.
-- `AdmBounds` (G): the `AdmBounds` fields, with `F.Ri u`, `F.Wi u z` (G versions), plus
-  `hV0R`, `hV0Z`, `hR`. The admissibility hypothesis must supply them for every `μ`-close torus.
-  `‖V₀‖`: `V₀ − V₀⁽⁰⁾ = u − u₀` (the centre does not depend on the torus), so `Close` already gives `avR = ‖V₀_R⁽⁰⁾‖ + μ`
-  by `Bd.add`; similarly `aR = ‖R⁽⁰⁾‖ + μ`.
-- `GlobalH` (G): `dio : DiophantineSplit (ι/2) c.dlow c.γ 1 c.Klow`, `hK`, `hd`, `hlow`, `γ_pos`,
-  `hp : F.p = c.p`; drop `hδ2`. `hlow` is stated at `δ₀`, so it holds at every `δ_j ≤ δ₀`
-  (`stepH_of_adm` passes `hδ0`).
-- `stepH_of_adm` (G): field-by-field as in `KamFlowIteration`, plus `hp`, `hK`, `hd`, `hlow`,
-  `hV0R/hV0Z/hR` from `AdmBounds`.
-- `cauchy_conv` uses `hE1`, unchanged. The `kamExact` part is field-independent.
-- The conclusion `kam_flow_torus` for `F : FlowFieldG` is unchanged in form.
-- **Chain sanity**: with `field14_stepH_toG` and `SC.toSCG_*`, the torus-A `KamH` instantiates the
-  G-hypotheses once `GlobalH.toG`/`KamH.toG` adapters are written (needs `exp 1 * δ₀ ≤ 1`;
-  `AdmBounds` adds `hV0R = hu`, `hR = bR`).
-- **Effort.** About 850 lines, one session.
+**Iteration (`KamFlowIterationG`).**
+- Constants: `SCG.withρ` (`{ c with ρ := ρ }`; sanity `withρ_ρ`, `withρ_kap`), and the
+  generalised scalar sequences `SCG.eN` (`kamExact c.kap c.δ0 e₀`), `SCG.SK/St/SL`. The strips
+  and losses reuse `rhoN c.toSC`, `delN c.toSC`, `rInf c.toSC` (they depend only on `ρ`, `δ₀`).
+- `FlowFieldG.AdmBoundsG c ι ρ u z`: the old fields (with `F.Ri`, `F.Wi`) plus `hV0R`, `hV0Z`,
+  `hR`. Helpers for the admissibility proof: `AdmBoundsG.bV0R_of_close`, `bV0Z_of_close`,
+  `bR_of_close` (`‖V₀(u)‖ ≤ ‖V₀(u₀)‖ + μ`, `‖R(u)‖ ≤ ‖R(u₀)‖ + μ` from `Close`).
+- `FlowFieldG.GlobalHG c ι`: `hp : F.p = c.p`, `dio : DiophantineSplit (ι/2) c.dlow c.γ 1 c.Klow`,
+  `hK`, `hd`, `γ_pos`, `hlow : exp 1 * γ * δ₀ ≤ dlow`, `hτ'`, `hC2R/Z`, `hac`, `hE1`, `hcb`
+  (no `hδ2`).
+- `FlowFieldG.stepH_of_admG`, `stepK`, `iterK` (`iterK_zero`), `KamHG` (same fields as
+  `FlowField.KamH`), `InvG`.
+- **Main theorem `FlowFieldG.KamHG.kam_flow_torus`**: `K : F.KamHG c ι u₀ z₀ e₀ μ →
+  ∃ u z, Ana u ∧ Ana z ∧ IsReal u ∧ IsReal z ∧ F.resR ι u z = 0 ∧ F.resZ ι u z = 0 ∧
+  Close (rInf c.toSC) ι u z u₀ z₀ μ` (same shape as `FlowField.KamH.kam_flow_torus`; reality of
+  the limit included).
+- Reduction: `FlowField.GlobalH.toG` (needs `exp 1 * δ₀ ≤ 1`), `FlowField.AdmBounds.toG`,
+  `FlowField.KamH.toG` (needs `exp 1 * δ₀ ≤ 1`), `FlowField.toG_Talg`, `FlowField.toG_dZs`,
+  `FlowField.toG_stepK`, `FlowField.toG_iterK` (the generalised iterates of `F.toG` **are** the
+  old ones).
 
-### Sanity for the chain
+**Chain sanity (`KamTorusAExactG`).** `cA_exp_δ0 : exp 1 * cA.δ0 ≤ 1`;
+`cA_kamHG : field14G.KamHG cA.toSCG iota u₀ z₀ e0A μA` (from `cA_kamH` by `KamH.toG`);
+`torusA_exactG` (exact real analytic invariant torus of `field14G` on `r_A/7`, `μA`-close);
+`torusA_exact_viaG`: **the statement of `torusA_exact`, re-derived** through the generalised
+theorem and `field14G_invariant_iff`; `torusA_iterK_G` (same iterates, hence the same torus);
+`cA_toSCG_consts` (same `cK`, `cL`, `κ`).
 
-At the end, re-derive `KamTorusAExact.torusA_exact` through `field14G`, or at least check that
-`torusA`'s `SC`/`KamH` instantiate the G-hypotheses with `R₀ = 1`, `p = 3`, `av = a` and
-`Diophantine.toSplit`. That adapter already exists in `Theory/KAM/CohomologicalLow`.
+Plan item 3 is complete (about 4,000 lines over the four `G` modules).
 
-### Total
+## What the Dommaschk instantiation (N-33 items 5–10) needs from this interface
 
-About 2,100 more lines (StepG + IterationG), each light (seconds, ≪ 1 GB). The interface choice
-(solved-form flux identities and the polynomial centre) needs no change for the Dommaschk field
-data of N-33 §2.4.
+To call `FlowFieldG.KamHG.kam_flow_torus` for `dkField` and torus A of the Dommaschk target:
+1. **Item 5, `dkField : FlowFieldG`**: `R₀`, `p = k_a = k_b = 7`, the polynomials
+   `Dp, nRp, nZp, Pap, Pbp, Pp, aRp, aZp` (the centre polynomials in `c, s` only), and the fields
+   `noW_*`, `real_*`, `divFree`, `flux_a/b/c` (solved form, at points where `R` is a unit),
+   `torsion_poly`.
+2. **Item 4 (done, `DiophantineSplit` for torus A)**: `GlobalHG.dio` with `Klow` low modes,
+   `dlow = γ_low`, `γ` the high-mode constant (0.3645), `hK`, `hd`, and the loss threshold
+   `hlow : e γ δ₀ ≤ dlow` (a closed numeric fact once `δ₀` is chosen; with `δ₀ = r/7` small it
+   is far from tight).
+3. **Item 9, constants `cDK : SCG`**: all `SC` fields plus `avR`, `avZ`, `aR`, `p = 7`, `dlow`,
+   `Klow`; then `hτ' : 0 < cDK.τ'`, `hC2R/Z` (Taylor constant as `PolyExpr.majD2` at
+   `avec + Tq • mvec`), `hac`, `hE1`, `hcb`, `hκ`, `hsmall`, `hcK`, `hcL`, `hμK/t/L` — closed
+   numeric checks on the `SCG.*` derived constants (unfold set: `SCG.cK, k1, k2, kc, k20, g,
+   kη1, kη2, kh, kE, tTot, τ', kTc, eM, mA, mV, cL, kA, XRb, XZb, kRem, kS, kap`).
+4. **Item 8, `hadm`**: for every `ρ ∈ [ρ₀ − 6δ₀, ρ₀]` and every analytic `μ`-close torus, an
+   `AdmBoundsG cDK ι ρ u z`: frame (units and analytic inverses of `D`, `R`, `W₀`), torus bounds,
+   field bounds (`Dof, Du, Dz, nR, …` via majorants at `avec`-type bounds), inverse bounds
+   `sD, sR, sW`, torsion `tT` and twist `τ`. The frame-vector and `R` bounds come for free from
+   the initial torus by `bV0R_of_close`, `bV0Z_of_close`, `bR_of_close` (so set
+   `avR = ‖V₀_R⁽⁰⁾‖ + μ`, etc.).
+5. **Item 7, initial error**: `e0R/e0Z : Bd ρ₀ (dkField.resR/Z ι u₀ z₀) e₀`, plus `ana_*`,
+   `real_*` of the data torus and `hθ : θ = e₀/δ₀⁴`, `hδ0`, `hρ6`.
+6. **Item 10** consumes the conclusion unchanged: `resR = resZ = 0` (`D 𝓛K = n`), reality, and
+   `Close (rInf cDK.toSC) …`, with `rInf cDK.toSC = ρ₀ − 6δ₀`.
 
 ## Shared files (owner to add)
 
-- `PlasmaLean.lean`, after line 250 (`KamFlowIterationS`):
+- `PlasmaLean.lean`, after line 253 (`KamFlowStepG`):
   ```
-  public import PlasmaLean.Design.KamFlowFieldG
-  public import PlasmaLean.Design.KamFlowFrameG
+  public import PlasmaLean.Design.KamFlowIterationG
+  public import PlasmaLean.Design.KamTorusAExactG
   ```
-  (both present). Add after line 252 (`KamFlowFrameG`):
-  ```
-  public import PlasmaLean.Design.KamFlowStepG
-  ```
-- `scripts/check_axioms.lean`:
+  (`KamTorusAExactG` imports only `KamTorusAExact`, already in the default build through
+  `RationalStellaratorConfinedForever`, and is light.)
+- `scripts/check_axioms.lean` (milestones 1–2 lines, if not yet added):
   ```
   #print axioms PlasmaLean.Design.KamNewton.FlowField.toG
   #print axioms PlasmaLean.Design.KamNewton.field14G_invariant_iff
@@ -142,4 +166,13 @@ data of N-33 §2.4.
   #print axioms PlasmaLean.Design.KamNewton.field14_stepH_toG
   #print axioms PlasmaLean.Design.KamNewton.SC.toSCG_kap
   #print axioms PlasmaLean.Design.KamNewton.FlowField.toG_dRs
+  ```
+  and for milestone 3:
+  ```
+  #print axioms PlasmaLean.Design.KamNewton.FlowFieldG.KamHG.kam_flow_torus
+  #print axioms PlasmaLean.Design.KamNewton.FlowFieldG.AdmBoundsG.bV0R_of_close
+  #print axioms PlasmaLean.Design.KamNewton.FlowField.KamH.toG
+  #print axioms PlasmaLean.Design.KamNewton.FlowField.toG_iterK
+  #print axioms PlasmaLean.Design.KamNewton.torusA_exactG
+  #print axioms PlasmaLean.Design.KamNewton.torusA_exact_viaG
   ```

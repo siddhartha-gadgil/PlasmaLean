@@ -645,3 +645,10 @@ centre R₀, exponent p, a moving trigonometric frame centre. They reduce to the
 through `FlowField.toG` (`toG_frameHyp_iff`, `field14G_invariant_iff`). `KamFlowStepG` and
 `KamFlowIterationG` remain; see `kamflow-g-status.md`.
 
+## Update (31 October 2026): plan item 3 complete
+
+`KamFlowFieldG`, `KamFlowFrameG`, `KamFlowStepG` and `KamFlowIterationG` are compiled
+(`FlowFieldG.KamHG.kam_flow_torus`). The certified rational torus A is re-derived through them
+(`KamTorusAExactG.torusA_exact_viaG`). Remaining: items 5–10 (Dommaschk field instance, constants,
+low- and high-resolution chains, contract). See `kamflow-g-status.md` for what each needs.
+
