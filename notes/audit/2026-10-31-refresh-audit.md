@@ -261,3 +261,11 @@ The smallest step that restores C1 content is `poloidalCirculation μ₀ B R z �
 - **Open:** AR-L3 (Dommaschk non-triviality fixture), AR-L4, AR-L5, and the AR-M3 Lean fixture (a
   trapped bounce for `exactQA`).
 
+## Follow-up (31 October 2026): AR-L4 raised
+
+The fixed reference circle of `PoloidalAngle` (AR-L4) is a blocker, not a disclosure: for the
+Dommaschk target (non-planar axis wandering ≈ 0.11 × 0.13 in (R, z), nested region r_eff ≤ 0.053) at
+most 73 of 256 cross-sections of torus A enclose any common fixed point (N-33 §2.2), so no surface
+of that field can satisfy `IotaOnTorus`. Fix in progress: a continuous 2π-periodic reference curve.
+The `DommaschkQA2R` docstring claim "C1 reduces to certified tori" holds only after this fix.
+
