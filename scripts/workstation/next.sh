@@ -2,16 +2,8 @@
 # GENERATED on the laptop after each review ("update from workstation"); mirrors "Next Commands"
 # in Workstation.md. Run by scripts/workstation/poll.sh once per NEXT_ID, or by hand:
 #   bash scripts/workstation/next.sh
-# Commands run one after the other; a failing command does not stop the later ones.
-NEXT_ID="2026-11-01-kam-C-96"
+NEXT_ID="2026-11-01-idle-1"
 
-cd "$(dirname "${BASH_SOURCE[0]}")/../.." || exit 1
-rc=0
-step() { echo "=== $(date '+%Y-%m-%d %H:%M:%S') $*"; "$@" || { echo "=== failed (exit $?): $*"; rc=1; }; }
-
-# Certification step 2 numerics (N-31 §26): torus C, the preferred certification torus, at 96 x 80
-# modes with 60-digit refinement for margin (about 31,000 unknowns; peak about 16 GB).
-step env DKAM_TORI=C DKAM_N=96 DKAM_M=80 DKAM_DPS=60 \
-  scripts/workstation/run.sh dommaschk-kam
-
-exit $rc
+echo "Nothing to do (1 November 2026): the certification torus C is computed (96 x 80, flow error"
+echo "1.6e-30; N-31 §27). The next workstation task (the first build of the Lean residual chain,"
+echo "N-33 items 6-10) is being written on the laptop and will be queued here when ready."

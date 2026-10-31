@@ -754,6 +754,20 @@ error is evaluated on a 496 × 400 grid.
 - The printed "k ≥ 2: 0.3646" is display rounding of the exact 0.364559; the ratios use the exact
   value, and the Lean bound uses 0.3645 (`DommaschkKamDio`).
 
+### 27. Torus C at 96 × 80 (1 November 2026; untrusted): ample margin
+
+Run `workstation/dommaschk-kam-20261031T184225Z` (poller batch `2026-11-01-kam-C-96`, 5 min wall), 60-digit
+refinement.
+- **Error.** The Galerkin residual drops from 1.7 × 10⁻¹⁶ to 1.7 × 10⁻⁶⁸. The true invariance error
+  on a 592 × 496 grid is 6.6 × 10⁻³¹, and the flow error is **1.6 × 10⁻³⁰**.
+- **Smallness.** The FHL tolerance on C₁ is 7.8 × 10¹⁵, and 1.9 × 10¹⁷ with exact low divisors.
+- **Twist** is +0.151 (unchanged).
+- **Against the N-33 requirement** (e₀ ≲ 2 × 10⁻²³ with the Lean constants and exact low divisors):
+  a margin of about 10⁷.
+- **Consequence.** Torus C at 96 × 80 is the certification torus. The Lean residual chain can use
+  this resolution or a lower one: about 80 × 64 already gives a 13× margin (§26), which keeps the
+  KronBall nodes smaller.
+
 ## Claims and evidence
 
 1. **Complete mathematical proof (symbolic, sympy).** The basis potentials are harmonic and

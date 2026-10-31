@@ -1641,3 +1641,10 @@ Gate E1 (§11.2, §11.4) and the "sanity theorem or counterexample" promised in 
   requirement (e₀ ≲ 2 × 10⁻²³) by about 13× at 80 × 64 and becomes the preferred certification torus;
   a 96 × 80 run of C is queued for margin. N-31 §26. Untrusted numerics.
 
+### Certification step 2: torus C at 96 × 80 (workstation), 1 November 2026
+
+- Run `workstation/dommaschk-kam-20261031T184225Z`: flow error 1.6 × 10⁻³⁰ (FHL tolerance 1.9 × 10¹⁷ with exact low
+  divisors), margin ≈ 10⁷ over the N-33 requirement; torus C is the certification torus. Numerics
+  for step 2 are sufficient; the remaining work is the Lean certificate chain (N-33 items 6–10).
+  N-31 §27. Untrusted numerics.
+

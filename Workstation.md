@@ -261,17 +261,13 @@ laptop with a small parameter setting, then commit it to `main` before running i
 ## Next Commands
 
 Kept up to date from the laptop after every review ("update from workstation"). The same
-commands are in [`scripts/workstation/next.sh`](scripts/workstation/next.sh), with `NEXT_ID` =
-`2026-11-01-kam-C-96`, which the poller runs by itself (see "Unattended polling").
+commands are in [`scripts/workstation/next.sh`](scripts/workstation/next.sh), which the poller runs
+by itself (see "Unattended polling").
 
-**Status (1 November 2026, after the 80 × 64 KAM run): queued for the poller.** At 80 × 64, torus C
-already meets the certificate requirement by about 13× (flow error 1.5 × 10⁻²⁴; N-31 §26). This run
-takes C to 96 × 80 with 60 digits for margin: about 31,000 unknowns, peak about 16 GB.
-
-```bash
-cd PlasmaLean && git pull
-DKAM_TORI=C DKAM_N=96 DKAM_M=80 DKAM_DPS=60 scripts/workstation/run.sh dommaschk-kam
-```
+**Status (1 November 2026, after the torus C run): nothing to run.** `next.sh` =
+`2026-11-01-idle-1` only prints a message. The certification torus C is computed at 96 × 80, with
+flow error 1.6 × 10⁻³⁰ (N-31 §27). The next workstation task, the first build of the Lean residual
+chain (N-33 items 6–10), will be queued here.
 
 **On-demand olean transfer: resolved (30 October 2026).** The MuQuarter and EwFamily archive is
 installed on the laptop via `oleans.py retrace` (see "Sharing compiled files"). The pack step can
