@@ -26,10 +26,12 @@ decided for Q-16:
 - ι ≥ ι_min on them, provided by the 3-D shape;
 - a quasi-axisymmetry defect that is small **relative to ι**.
 
-The field must then be certifiable by the existing KAM pipeline. N-30 showed that the circular,
-planar axis of `RationalStellarator.field` forces an O(r) QA defect fraction sqrt(ι₀/N)
-(Garren–Boozer: a planar axis in vacuum admits no QS with ι ≠ 0). So the candidate here has a
-**non-planar** magnetic axis.
+The field must then be certifiable by the existing KAM pipeline. N-30 showed, at first order and
+in linearised straight-field-line angles, that the QA defect of `RationalStellarator.field` is a
+fixed fraction √(ι₀/N) of its first-order ‖B‖ variation, so the QS route to C2 cannot give a small
+relative defect for that field. A QS-based C2 candidate therefore needs a different axis geometry;
+Garren–Boozer suggests a non-planar axis, but this is not proved here (audit AR-M4). So the
+candidate here has a **non-planar** magnetic axis.
 
 - **Model.** `B = ∇Φ`, `Φ = φ + Σ_k a_k V_k`, cylindrical (R, φ, z), R₀ = B₀R₀ = 1. The V_k are
   stellarator-symmetric Dommaschk potentials with N = 2 field periods.

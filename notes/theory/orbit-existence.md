@@ -144,7 +144,8 @@ Uniqueness of the orbits is not stated (it follows from Grönwall, as in
   `ψ₀ ≤ ψ_start ≈ 0.51 T m²` of `alpha_trapped_reactorQA*` (births further out); for them the
   band theorem itself is the confinement statement. (2) *Original class, explicit horizon
   (route i).* Every birth with `0 < ψ₀ ≤ ψ_start` (any pitch) exists on `[0, r₀/285000 s]`,
-  about `1.5 μs` at `r₀ = a/4` and proportional to `r₀`.
+  at most 1.49 μs (at ψ₀ = ψ_start) and proportional to `r₀ = √(2ψ₀/B₀)`, so it shrinks to 0
+  at the axis (audit AR-M5).
 - **B: what is open, and why.** Existence on `[0, 0.19 s]` or `[0, 8 × 10⁻⁴ s]` for births with
   `ψ₀ ≤ ψ_start`. Obstructions (the last two are compiled sanity theorems):
   - the band half-width contains the orbit-width term `|G| Δρ/ι₀ ≈ 2.59 T m² > ψ_start`

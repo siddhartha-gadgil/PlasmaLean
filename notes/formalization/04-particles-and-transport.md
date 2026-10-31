@@ -28,7 +28,7 @@ Since 30 October 2026 the project is organized around the [stellarator contract]
 | --- | --- | --- | --- |
 | Full orbits | `kinetic_energy_conserved`, `energy_conserved`, `helix_orbit`, `larmor_radius_formula` (`Theory/Kinetic/FullOrbit`); `canonicalMomentum_conserved`, `orbit_trapped` (`Theory/Kinetic/CanonicalMomentum`) | default | Newton–Lorentz model `LorentzOrbit`; Noether invariant for an exact symmetry |
 | Orbit existence | `ODEGlobal.exists_global_of_apriori` (`Theory/Fields/ODEContinuation`), `Kinetic.lorentzOrbit_exists` (`Theory/Kinetic/LorentzExistence`); `reactor_alpha_born_confined`, `reactor_alpha_confined_nonvacuous_35MeV` (`Design/SolovevAlphaExistence`) | default | C¹ field; the reactor field is Solov'ev, a tokamak model (audit MA-M2 closed) |
-| Near-QA orbit existence | `boozerGCOrbitOn_exists_local`, `ODEGlobal.exists_forward_of_apriori`, `band_estimate`, `alpha_band_orbit_exists_005`, `alpha_orbit_exists_explicit`; obstructions `Dpsi_gt_psiStart`, `band_empty_Tav` (`Design/NearAxisQAExistenceFull`) | default | Boozer guiding-centre model, chart ψ > 0 (audit MA-M1) |
+| Near-QA orbit existence | `boozerGCOrbitOn_exists_local`, `ODEGlobal.exists_forward_of_apriori`, `band_estimate`, `alpha_band_orbit_exists_005`, `alpha_orbit_exists_explicit`; proved limits of the band method `Dpsi_gt_psiStart`, `band_empty_Tav` (`Design/NearAxisQAExistenceFull`) | default | Boozer guiding-centre model, chart ψ > 0 (audit MA-M1) |
 | Passing alphas, rational vacuum field | `alpha_gc_passing_confined_forever`, `alpha_gc_confined_forever_robust`, `alpha_gc_confined_forever_pm`; on demand `alpha_gc_passing_confined_forever_quarter`, `alpha_gc_confined_forever_energy_window` | default and on demand | Littlejohn guiding-centre model (supplied); vacuum field satisfying C1 in vacuum |
 | Trapped alphas | `reference_kick_osc`, `exactQA_kick_osc` (`Design/NearAxisQATrappedOscCover`) | default | Single-bounce kick bound only; Q-1 open and parked |
 | Quasisymmetry (adjacent to C2) | `WeakQS`, `qsDefect` (`Theory/Fields/WeakQuasisymmetry`); `family1_not_weakQS`, `family2_not_weakQS` (`Design/LandremanNotQS`) | default | Pointwise Constantin–Drivas–Ginsberg definition; not omnigeneity |
@@ -101,9 +101,9 @@ Exact invariance of `μ` belongs to this reduced model. In full Lorentz motion i
 
 - 2.75 ≤ ψ₀ ≤ 5.5 for 8·10⁻⁴ s (`alpha_band_orbit_exists_short`);
 - 4 ≤ ψ₀ ≤ 4.3 for 0.05 s (`alpha_band_orbit_exists_005`, witness `alpha_band_nonvacuous_005`);
-- every birth with 0 < ψ₀ ≤ psiStart, on an explicit horizon of about 1.5 μs (`alpha_orbit_exists_explicit`, `alpha_trapped_reactorQA_averaged_explicit`).
+- every birth with 0 < ψ₀ ≤ psiStart, on the explicit horizon r₀/285000 s with r₀ = √(2ψ₀/B₀) (at most 1.49 μs, shrinking to 0 at the axis) (`alpha_orbit_exists_explicit`, `alpha_trapped_reactorQA_averaged_explicit`).
 
-Proved obstructions limit this route. No band reaches ψ₀ ≤ psiStart (`Dpsi_gt_psiStart`), and no band survives for T ≥ 0.06 s (`band_empty_Tav`). Existence on the full 0.19 s horizon for the original class therefore needs coordinates through the magnetic axis. That would change the model statement, so it is a user decision (audit MA-M1).
+Proved limits of the band method (not obstructions to existence). No band reaches ψ₀ ≤ psiStart (`Dpsi_gt_psiStart`), and no band survives for T ≥ 0.06 s (`band_empty_Tav`). Whether orbits of the original class leave the chart before 0.19 s is not proved; coordinates through the magnetic axis are the proposed route. That would change the model statement, so it is a user decision (audit MA-M1).
 
 Not done: the derivation from an action principle, conservation of μ as an adiabatic theorem (K10), electric fields, and time-dependent fields.
 

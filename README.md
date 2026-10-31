@@ -38,30 +38,52 @@ Heavy numerics and large certificate builds can be offloaded to a workstation; s
 
 ## Progress
 
-**Against the contract (30 October 2026), honestly:** no candidate satisfies more than C1 and C4
+**Against the contract (31 October 2026), honestly:** no candidate satisfies more than C1 and C4
 together, and those only in vacuum.
 
-- **C1 (partial, vacuum only):** an exact non-axisymmetric *vacuum* field (no plasma current) has
-  a KAM-certified invariant torus with rotation number ι ≈ 0.137 that confines its field lines for
-  all time. Not yet proved: ι ≥ ι_min on a nested family of surfaces, or any current-free
-  equilibrium at finite β. The finite-β Landreman families carry a net toroidal current (for
-  family 2 this follows from compiled formulas), so they are tokamak-like under C1.
-- **C2 (almost nothing for thermal particles):** omnigeneity, bounce-averaged drifts and ε_eff are
-  specified but not defined in Lean. Weak quasisymmetry is defined, and the Landreman families are
-  proved not weakly quasisymmetric. The alpha results below concern 3.5 MeV alphas, mostly passing
-  orbits, which is one part of C2 at most.
-- **C3 (test beds only):** Mercier stability on a band of Landreman family 2 (current-carrying) and
-  Mercier and ballooning stability of a Solov'ev tokamak equilibrium; nothing for a current-free
-  equilibrium.
-- **C4:** the vacuum field inside its certified torus; finite-β exact equilibria exist only for
+- **C1 (partial, vacuum only):**
+  - An exact non-axisymmetric *vacuum* field (no plasma current) has a KAM-certified invariant
+    torus with rotation number ι ≈ 0.137 that confines its field lines for all time.
+  - An exact Dommaschk vacuum field with three field periods is in Lean
+    (`DommaschkQA3.candidate_vacuum`), together with zero net current.
+  - Not yet proved: ι ≥ ι_min on a nested family of certified surfaces of that field, or any
+    current-free equilibrium at finite β.
+  - The Landreman family 2 carries positive net current through its coordinate section
+    (`family2_net_current_pos`).
+  - **Audit (31 October, AR-H1):** the Lean current clause of C1 measured the current through a
+    freely chosen section, and a degenerate section made it vacuous. It is being restated as the
+    circulation of B around the torus's poloidal loop. Until then, "family 2 fails C1" is not
+    established in Lean.
+- **C2 (partial, guiding-centre model):**
+  - Omnigeneity and the bounce-averaged drift are defined in the Boozer guiding-centre model
+    (`OmnigenousOn`, `bounceAvgDrift`).
+  - Quasisymmetry ⇒ omnigeneity is proved there, exactly and with a per-bounce defect bound
+    (`omnigenousOn_of_exactQS`, `approxOmnigenousOn_of_defect_le`).
+    - `OmnigenousOn` asks for exact return of the guiding-centre flux label after each bounce,
+      which is stronger than leading-order omnigeneity. Quasi-isodynamic fields are expected to
+      meet only the approximate form.
+  - ε_eff is not in Lean.
+  - Weak quasisymmetry is defined. Neither Landreman family is weakly quasisymmetric on any
+    region containing its magnetic axis, for any potential critical on the axis.
+  - The Dommaschk quasi-axisymmetric candidates have small quasisymmetry defects and ε_eff ≈ 0.1 %
+    in untrusted numerics only.
+  - The alpha results below concern 3.5 MeV alphas, mostly passing orbits, which is one part of
+    C2 at most.
+- **C3 (test beds only):** Mercier stability on a band of Landreman family 2 (current-carrying),
+  and Mercier and ballooning stability of a Solov'ev tokamak equilibrium. Nothing for a
+  current-free equilibrium.
+- **C4:** the vacuum fields inside their certified torus. Finite-β exact equilibria exist only for
   symmetric models and the current-carrying Landreman families.
-- **C5 (tokamak model and 0-D only):** a burn-temperature band holds on a Solov'ev (tokamak)
-  field for every *supplied* transport solution; on stellarator parameters only 0-D windows and
-  proved obstructions at measured confinement factors.
+- **C5 (tokamak model and 0-D only):** a burn-temperature band holds on a Solov'ev (tokamak) field
+  for every *supplied* transport solution. On stellarator parameters there are only 0-D windows
+  and proved obstructions at measured confinement factors.
 
-The next priorities are current-free and omnigenous candidates: a Dommaschk-potential
-quasi-axisymmetric vacuum field with certified tori, drift and ε_eff diagnostics on the existing
-vacuum field, the net current of the Landreman families, and Lean definitions for C1 and C2.
+The next priorities:
+- certify invariant tori with ι ≥ ι_min, and the quasisymmetry defect, for a Dommaschk
+  quasi-axisymmetric vacuum field;
+- restate the C1 current clause intrinsically (audit AR-H1);
+- ε_eff in Lean;
+- a current-free finite-β equilibrium.
 
 The earliest checked results (14 October 2026) are source-free Maxwell identities for closed
 filament fields; the Suydam interchange criterion in both directions; Newcomb/Riccati
@@ -104,8 +126,11 @@ The results by topic, with their role under the contract:
 - **finite β without axisymmetry (C3/C4 test beds; they carry net toroidal current, so not
   current-free):** explicit finite-pressure, non-axisymmetric toroidal
   equilibria (Landreman families 1 and 2, the latter with proved shear; idealized) satisfy the
-  kernel force balance; family 1 is proved to be a counterexample to Grad's conjecture in Lean
-  (mathematical infrastructure, not design progress); neither family is weakly quasisymmetric; family 1 is Mercier-unstable, while family 2 at low β (λ = 200) has a
+  kernel force balance; family 1 satisfies in Lean the hypotheses of a Grad counterexample in the formulation of
+  Cardona et al. (Conjecture 2.5): smooth MHS, toroidal level sets, non-constant pressure, no continuous
+  Euclidean symmetry. All its field lines are closed (ι ≡ 2), so it is non-generic. This is mathematical
+  infrastructure, not design progress. Neither family is weakly quasisymmetric on a region containing its
+  magnetic axis; family 1 is Mercier-unstable, while family 2 at low β (λ = 200) has a
   certified Mercier-stable band of flux surfaces (flux labels derived from the field; the
   Landreman–Jorge Mercier formula is supplied); its ideal
   ballooning stability is reduced exactly to one pointwise certificate and is numerically stable

@@ -22,8 +22,8 @@
      "label": "peak of the split module that was over 6 GB; KAM checks peak at 4.3 GB; every recorded module within the 6 GB laptop target"
     }
    ],
-   "progress": "Strict audit done (30 October); orbits proved to exist; weak quasisymmetry defined and the Landreman families proved not weakly quasisymmetric; Landreman family 1 proved a Grad counterexample (infrastructure); 1-D relative-entropy identity and torus Hodge identity; large checks rewritten as explicit proof-term certificates; heavy cells computed on a workstation and spot-checked on the laptop.",
-   "boundary": "Non-axisymmetry is a means, not a goal. No candidate satisfies more than C1 and C4, and those only in vacuum. Omnigeneity, bounce-averaged drift and ε_eff are specified but not in Lean. Alpha results: one B₀R₀, Littlejohn model supplied, vacuum model field, trapped alphas open. Coil-produced all-time confinement blocked. On-demand workstation modules spot-checked, not fully rebuilt.",
+   "progress": "Strict audit done (30 October); orbits proved to exist; weak quasisymmetry defined and the Landreman families proved not weakly quasisymmetric on regions containing their axis; Landreman family 1 satisfies the hypotheses of a Grad counterexample (ι ≡ 2, non-generic; infrastructure); 1-D relative-entropy identity and a torus Hodge period inequality; large checks rewritten as explicit proof-term certificates; heavy cells computed on a workstation and spot-checked on the laptop.",
+   "boundary": "Non-axisymmetry is a means, not a goal. No candidate satisfies more than C1 and C4, and those only in vacuum. Omnigeneity and bounce-averaged drift are in Lean (Boozer guiding-centre model); ε_eff is not. Audit AR-H1: the C1 current clause is being restated intrinsically. Alpha results: one B₀R₀, Littlejohn model supplied, vacuum model field, trapped alphas open. Coil-produced all-time confinement blocked. On-demand workstation modules spot-checked, not fully rebuilt.",
    "evidence": [
     {
      "label": "Latest report",
@@ -47,7 +47,7 @@
    "cards": [
     {
      "title": "C1 · current-free rotational transform",
-     "text": "Defined in Lean (netToroidalCurrent, CurrentFreeTransform) with the tokamak exclusion: a purely toroidal (current-free axisymmetric) field has ι = 0. The vacuum rational field satisfies C1 on its KAM torus (rationalStellarator_currentFreeTransform). Landreman family 2 carries positive net current and fails C1 (family2_not_currentFree).",
+     "text": "Defined in Lean (netToroidalCurrent, CurrentFreeTransform) with the tokamak exclusion: a purely toroidal (current-free axisymmetric) field has ι = 0. The vacuum rational field satisfies C1 on its KAM torus (rationalStellarator_currentFreeTransform). Landreman family 2 carries positive net current through its coordinate section (family2_net_current_pos). Audit AR-H1 (31 October): the section-based current clause is vacuous with degenerate sections; it is being restated as the circulation around the poloidal loop, so 'family 2 fails C1' is not yet established.",
      "status": "Defined; one current-free candidate",
      "kind": "partial"
     },
@@ -77,7 +77,7 @@
     }
    ],
    "progress": "Plan restructured around the contract on 30 October (user-approved): goals restated, new questions Q-18–Q-22 on net current, drift and ε_eff, current-free finite β, definitions and thermal neoclassical bounds.",
-   "boundary": "The contract predicates (CurrentFreeTransform, BounceAveragedDrift, Omnigenous, EffectiveRippleBound, ThermalPerformance) are normative specifications in the model contracts, not yet Lean definitions.",
+   "boundary": "CurrentFreeTransform and the omnigeneity predicates are Lean definitions (the current clause under revision, audit AR-H1); EffectiveRippleBound and ThermalPerformance are still specifications only.",
    "evidence": [
     {
      "label": "Implementation plan: the contract",
@@ -562,7 +562,7 @@
     }
    ],
    "progress": "15 new modules and a recorded kernel change. Three review passes: pressure consistency of the barrier, a finite-time Boozer orbit structure, a kernel law excluding vacuous regular axes, and non-vacuity witnesses.",
-   "boundary": "The alpha theorem is for an axisymmetric equilibrium; near-quasisymmetric fields reached only 0.8 ms in this phase (0.11 s in Phase 4). Flux-surface averages, scaling laws, reactivity and solutions are supplied. No coil-produced configuration. Near-QA (Boozer) guiding-centre results assume the orbit stays off the magnetic axis (ψ > 0) on the time interval; such orbits are proved to exist on the full horizon for a band of births further out (to 0.05 s) and on about 1.5 μs for births near the axis; longer horizons near the axis need coordinates through it.",
+   "boundary": "The alpha theorem is for an axisymmetric equilibrium; near-quasisymmetric fields reached only 0.8 ms in this phase (0.11 s in Phase 4). Flux-surface averages, scaling laws, reactivity and solutions are supplied. No coil-produced configuration. Near-QA (Boozer) guiding-centre results assume the orbit stays off the magnetic axis (ψ > 0) on the time interval; such orbits are proved to exist on the full horizon for a band of births further out (to 0.05 s) and, for births near the axis, on the explicit horizon r₀/285000 s (at most 1.49 μs, shrinking to 0 at the axis); longer horizons near the axis need coordinates through it.",
    "evidence": [
     {
      "label": "New checked results",
@@ -1126,7 +1126,7 @@
     }
    ],
    "progress": "About 90 new modules (mostly certificates).",
-   "boundary": "Still μ = 0 for confinement theorems; supplied guiding-centre model. Near-QA (Boozer) guiding-centre results assume the orbit stays off the magnetic axis (ψ > 0) on the time interval; such orbits are proved to exist on the full horizon for a band of births further out (to 0.05 s) and on about 1.5 μs for births near the axis; longer horizons near the axis need coordinates through it.",
+   "boundary": "Still μ = 0 for confinement theorems; supplied guiding-centre model. Near-QA (Boozer) guiding-centre results assume the orbit stays off the magnetic axis (ψ > 0) on the time interval; such orbits are proved to exist on the full horizon for a band of births further out (to 0.05 s) and, for births near the axis, on the explicit horizon r₀/285000 s (at most 1.49 μs, shrinking to 0 at the axis); longer horizons near the axis need coordinates through it.",
    "evidence": [
     {
      "label": "New checked results",
@@ -1151,7 +1151,7 @@
     {
      "title": "Stable band",
      "text": "D_Merc > 0 on k ∈ [0.7, 0.9] for both signs and all pressure scales; force balance with positive pressure; rejection fixtures at the axis and λ = 15.",
-     "status": "C3 test bed · fails C1 · Lean verified",
+     "status": "C3 test bed · net section current · Lean verified",
      "kind": "checked"
     },
     {
@@ -1205,7 +1205,7 @@
     {
      "title": "Stable band, labels derived",
      "text": "Family-2 flux labels, volume, fluxes, current and coarea proved from the field; ι′ > 0 and V″ > 0 certified on the Mercier-stable band.",
-     "status": "C3 test bed · fails C1 · Lean verified",
+     "status": "C3 test bed · net section current · Lean verified",
      "kind": "checked"
     }
    ],
@@ -1492,7 +1492,7 @@
     },
     {
      "title": "Orbits exist",
-     "text": "Global existence of Lorentz orbits (lorentzOrbit_exists) and of 3.5 MeV alpha orbits born in the Solov'ev core, all confined forever (reactor_alpha_born_confined, witness reactor_alpha_confined_nonvacuous_35MeV). Near-QA Boozer orbits: full horizon for a band of births to 0.05 s (alpha_band_orbit_exists_005), ≈ 1.5 μs near the axis (alpha_orbit_exists_explicit); obstructions beyond (Dpsi_gt_psiStart, band_empty_Tav).",
+     "text": "Global existence of Lorentz orbits (lorentzOrbit_exists) and of 3.5 MeV alpha orbits born in the Solov'ev core, all confined forever (reactor_alpha_born_confined, witness reactor_alpha_confined_nonvacuous_35MeV). Near-QA Boozer orbits: full horizon for a band of births to 0.05 s (alpha_band_orbit_exists_005), the horizon r₀/285000 s (≤ 1.49 μs) near the axis (alpha_orbit_exists_explicit); proved limits of the band method beyond (Dpsi_gt_psiStart, band_empty_Tav).",
      "status": "C4 · orbits exist · Lean verified",
      "kind": "checked"
     },
@@ -1504,7 +1504,7 @@
     },
     {
      "title": "Open",
-     "text": "Near-QA orbits born close to the axis: existence beyond about 1.5 μs needs coordinates through the axis (user decision); the four NearAxisQAAveraged parts are not yet converted or individually measured; 2,114 legacy decide +kernel lines (297 in the default build).",
+     "text": "Near-QA orbits born close to the axis: existence beyond the horizon r₀/285000 s (≤ 1.49 μs) needs coordinates through the axis (user decision); the four NearAxisQAAveraged parts are not yet converted or individually measured; 2,114 legacy decide +kernel lines (297 in the default build).",
      "status": "Next: off-axis bound, Phase 16",
      "kind": "next"
     }
@@ -1538,7 +1538,7 @@
     },
     {
      "title": "Family 2 carries net current",
-     "text": "From the compiled torCurrent_eq, F1_pos and Eint_pos: μ₀ I_tor/2π = curK > 0 for 0 < k₀ < 19/20, so family 2 is tokamak-like under C1. The positivity corollary is not yet a named declaration (Q-18).",
+     "text": "family2_net_current_pos: μ₀ I_tor/2π = curK > 0 through the family-2 coordinate section for 0 < k₀ < 19/20, so family 2 carries plasma current. The C1 statement awaits the intrinsic current clause (audit AR-H1).",
      "status": "C1 finding · from compiled formulas",
      "kind": "partial"
     },
@@ -1632,7 +1632,7 @@
     },
     {
      "title": "4 · Definitions with the sanity triad",
-     "text": "Net current, ι on a family of tori, bounce-averaged drift, omnigeneity and ε_eff in Lean; axisymmetric ⇒ omnigenous, current-free axisymmetric ⇒ ι = 0, a generic 3-D field is not omnigenous (Q-21).",
+     "text": "Net current, ι on a family of tori, bounce-averaged drift and omnigeneity are in Lean, with axisymmetric ⇒ omnigenous, purely toroidal ⇒ ι = 0 and a non-omnigenous mirror fixture (driftMirror); open: ε_eff, and the intrinsic current clause (audit AR-H1) (Q-21).",
      "status": "C1 + C2 · next",
      "kind": "next"
     },
