@@ -2328,6 +2328,12 @@
     "text": "dommaschk qa fit: nfp-2 warm start reaches the strong level on most surfaces, 31 october 2026 implementation plan"
   },
   {
+    "title": "Q-25 (a)–(b) verified: QS linear system and jet obstruction, 31 October 2026",
+    "section": "Implementation plan",
+    "url": "implementation-plan.html#q-25-ab-verified-qs-linear-system-and-jet-obstruction-31-october-2026",
+    "text": "q-25 (a)–(b) verified: qs linear system and jet obstruction, 31 october 2026 implementation plan"
+  },
+  {
     "title": "M0 · Exact symmetric equilibria: slab, screw pinch, Solov'ev, helical",
     "section": "Implementation plan · Lean verified — exact slab, screw-pinch, Solov'ev and helical equilibria with kernel force balance, all-time field-line/orbit confinement, Suydam both ways and screw-pinch Newcomb stability for every m ≠ 0 (reduced form supplied; idealized symmetric models).",
     "url": "implementation-plan.html",

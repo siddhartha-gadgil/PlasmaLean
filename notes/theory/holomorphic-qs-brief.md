@@ -12,8 +12,8 @@
 | Dependency requirement | none for the assessment; Q-25 needs pointwise vector calculus on `EuclideanSpace ℝ (Fin 3)` (as in `WeakQuasisymmetry`) and symmetry of second derivatives (Mathlib) |
 | Produces | Q-25; the verdict below on each section of the brief; a sympy check of its explicit numbers |
 | Difficulty | routine (assessment); moderate (Q-25 in Lean) |
-| Status | assessment complete; Q-25 open |
-| Lean evidence | none new |
+| Status | assessment complete; Q-25 (a)–(b) verified in Lean (31 October): `QSLinear.strongQS_jet_obstruction`, `QSJetExample.not_strongQS_of_ne_zero`; (c)–(d) open |
+| Lean evidence | `PlasmaLean.Fields.QSLinear.fieldDiv_fqsGen`, `FQSAt.strongQSAt`, `jet_obstruction_eta`, `strongQS_jet_obstruction`; `PlasmaLean.Design.QSJetExample.strongQS_obstruction` (default build, standard axioms) |
 | Audit evidence | the brief's explicit computations re-derived in sympy (below); the other claims checked by hand |
 | Last updated | 30 October 2026: created |
 

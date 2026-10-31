@@ -274,6 +274,7 @@ public import PlasmaLean.Theory.Transport.RelativeEntropyCoercive
 public import PlasmaLean.Theory.Geometry.TorusHodge
 public import PlasmaLean.Theory.Fields.WeakQuasisymmetry
 public import PlasmaLean.Theory.Fields.CylAlgebra
+public import PlasmaLean.Theory.Fields.QSLinearSystem
 public import PlasmaLean.Design.LandremanNotQS
 public import PlasmaLean.Design.LandremanGradCounterexample
 public import PlasmaLean.Theory.Kinetic.Omnigeneity
@@ -284,6 +285,7 @@ public import PlasmaLean.Design.RationalStellaratorContract
 public import PlasmaLean.Design.RationalStellaratorQAObstruction
 public import PlasmaLean.Design.DommaschkQA3Data
 public import PlasmaLean.Design.DommaschkQA3
+public import PlasmaLean.Design.QSJetExample
 
 /-!
 # PlasmaLean public library

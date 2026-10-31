@@ -316,3 +316,9 @@ run_cmd do
 #print axioms PlasmaLean.Design.DommaschkQA3.candidate_netToroidalCurrent_eq_zero
 #print axioms PlasmaLean.Design.DommaschkQA3.candidate_currentFree
 #print axioms PlasmaLean.Design.DommaschkQA3.field_stellSym
+#print axioms PlasmaLean.Fields.QSLinear.fieldDiv_fqsGen
+#print axioms PlasmaLean.Fields.QSLinear.JetHyp.jet_obstruction_curl
+#print axioms PlasmaLean.Fields.QSLinear.jet_obstruction_eta
+#print axioms PlasmaLean.Fields.QSLinear.strongQS_jet_obstruction
+#print axioms PlasmaLean.Design.QSJetExample.strongQS_obstruction
+#print axioms PlasmaLean.Design.QSJetExample.not_strongQS_of_ne_zero
