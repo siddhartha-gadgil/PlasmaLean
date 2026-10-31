@@ -308,3 +308,11 @@ run_cmd do
 #print axioms PlasmaLean.Design.RationalStellaratorContract.rationalStellarator_currentFreeTransform
 #print axioms PlasmaLean.Design.RationalStellaratorQAObstruction.rotatingEllipse_firstOrder_QA_defect
 #print axioms PlasmaLean.Design.RationalStellaratorQAObstruction.rationalStellarator_firstOrder_not_QS
+#print axioms PlasmaLean.Fields.CylAlgebra.gradField_vacuum
+#print axioms PlasmaLean.Fields.CylAlgebra.nf_lap_x2_ne
+#print axioms PlasmaLean.Design.DommaschkQA3.basis_harmonic
+#print axioms PlasmaLean.Design.DommaschkQA3.field_vacuum
+#print axioms PlasmaLean.Design.DommaschkQA3.candidate_vacuum
+#print axioms PlasmaLean.Design.DommaschkQA3.candidate_netToroidalCurrent_eq_zero
+#print axioms PlasmaLean.Design.DommaschkQA3.candidate_currentFree
+#print axioms PlasmaLean.Design.DommaschkQA3.field_stellSym

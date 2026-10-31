@@ -1614,8 +1614,8 @@
    "cards": [
     {
      "title": "1 · Dommaschk QA fit",
-     "text": "An explicit vacuum field (current-free by construction) fitted to a quasi-axisymmetric target (Q-16). Workstation numerics, untrusted: with three field periods and 24 coefficients, the defect is 0.7–2.0 % of ι at |ι| ≈ 0.28, with ε_eff 0.1–0.5 %. All Q-16 checks pass, so it is the first candidate for certification. Next: the exact field in Lean, certified tori, ι and the defect.",
-     "status": "C1 + C2 · numerics untrusted, certification next",
+     "text": "An explicit vacuum field (current-free by construction) fitted to a quasi-axisymmetric target (Q-16). Workstation numerics, untrusted: three field periods, a defect of 0.7–2.0 % of ι at |ι| ≈ 0.28, ε_eff 0.1–0.5 %. In Lean (verified): the exact field is a vacuum field with zero net toroidal current (DommaschkQA3.candidate_vacuum, candidate_currentFree). Next: certified tori, ι and the QA defect.",
+     "status": "C1 current clause verified · tori, ι and defect next",
      "kind": "next"
     },
     {
