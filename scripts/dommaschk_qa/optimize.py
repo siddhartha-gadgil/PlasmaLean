@@ -49,6 +49,13 @@ perturbation of size --init-sigma (no re-projection on the seed's axis condition
 skip stage A (the axis-only objective would undo a good field), regularise towards the initial
 field instead of the seed, and use its magnetic axis as the first axis guess.
 
+Selection: the best --rerank starts at optimiser resolution are re-evaluated at the diagnostic
+resolution (--diag-ns, --diag-nper) and the final candidate is the best of them there (feasible
+first: regular lines with Birkhoff error <= 1e-4, |iota| >= iota_min, inside the window if set;
+then the worst defect/iota).  This avoids candidates that only look good at coarse resolution.
+starts.json keeps every start's coefficients, so any start can be re-diagnosed or used with
+--init starts.json:K.
+
 Restartable: everything lives in --work (one directory per parameter set); finished starts are
 skipped, interrupted starts resume from their checkpoint.  Parallel over starts with --jobs.
 The final candidate (best start) is rounded to exact decimal rationals and passed to
@@ -105,7 +112,9 @@ def parse(argv=None):
     ap.add_argument('--diag-lines', type=int, default=12)
     ap.add_argument('--eps-transits', type=int, default=100)
     ap.add_argument('--init', default=None,
-                    help='warm start: candidate.json or start_NNN.json of an earlier run')
+                    help='warm start: candidate.json, start_NNN.json, or starts.json:K of an earlier run')
+    ap.add_argument('--rerank', type=int, default=8,
+                    help='re-evaluate the best RERANK starts at diagnostic resolution before choosing')
     ap.add_argument('--init-sigma', type=float, default=0.001,
                     help='warm start: random perturbation scale (field units)')
     ap.add_argument('--iota-window', default=None,
@@ -131,7 +140,12 @@ INIT_KEYS = ('init', 'init_sha256', 'init_sigma')   # only when --init is set
 def load_init(path, b):
     """Initial coefficients for basis b and the initial axis guess, from candidate.json (matched
     by basis name; exact rationals) or start_NNN.json (same size)."""
+    path, _, k = path.partition(':')
     d = json.load(open(path))
+    if isinstance(d, list):                      # starts.json: pick start K
+        d = next((o for o in d if o['start'] == int(k or 0)), None)
+        if d is None or 'x' not in d:
+            sys.exit(f'--init: start {k} with coefficients not found in {path}')
     if 'basis' in d:
         names = [bk['name'] for bk in d['basis']]
         coef = dict(zip(names, (float(Fraction(c)) for c in d['coefficients'])))
@@ -413,6 +427,15 @@ def run_start(args):
     return out
 
 
+def merit_hr(out, cfg):
+    """Selection at diagnostic resolution (metrics_hr): feasible first, then worst defect/iota."""
+    m = out['metrics_hr']
+    feas = (m['ok'] and min(np.abs(m['iota'])) >= cfg['iota_min'] and m['axis_zrms'] >= cfg['zmin']
+            and max(m["birkhoff_err"]) <= 1e-4
+            and all(window_dist(cfg, abs(v)) == 0 for v in m['iota'] + [m['iota_axis_abs']]))
+    return (0, max(m['defect_over_iota'])) if feas else (1, max(m['defect_over_iota']))
+
+
 def merit(out, cfg):
     """Selection: feasible (ok, iota >= iota_min on all surfaces, axis non-planar) first, then the
     worst defect/iota; infeasible ones by cost."""
@@ -432,7 +455,7 @@ def main(argv=None):
     if a.iota_window is not None:
         cfg.update({k: getattr(a, k) for k in WINDOW_KEYS})
     if a.init is not None:
-        a.init_sha256 = hashlib.sha256(open(a.init, 'rb').read()).hexdigest()
+        a.init_sha256 = hashlib.sha256(open(a.init.partition(':')[0], 'rb').read()).hexdigest()
         cfg.update({k: getattr(a, k) for k in INIT_KEYS})
     os.makedirs(a.work, exist_ok=True)
     cpath = os.path.join(a.work, 'config.json')
@@ -454,6 +477,18 @@ def main(argv=None):
     else:
         outs = [run_start(j) for j in jobs]
     outs.sort(key=lambda o: merit(o, cfg))
+    if a.rerank > 1:
+        top = [o for o in outs[:a.rerank] if o['metrics']['ok']] or outs[:1]
+        for o in top:
+            ax = (o['metrics']['axis_R'], o['metrics']['axis_z'])
+            _, info = P.evaluate(np.array(o['x'])[None], ns=a.diag_ns, nper=a.diag_nper, axis_guess=ax)
+            o['metrics_hr'] = metrics_of(info)
+            mh = o['metrics_hr']
+            print(f"[rerank] start {o['start']}: ok={mh['ok']} iota {np.round(mh['iota'], 4).tolist()} "
+                  f"defect/|iota| {np.round(mh['defect_over_iota'], 4).tolist()} "
+                  f"birkhoff max {max(mh['birkhoff_err']):.1e}", flush=True)
+        top.sort(key=lambda o: merit_hr(o, cfg))
+        outs = top + [o for o in outs if o not in top]
     best = outs[0]
     print(f"best start {best['start']} ({time.time() - t0:.0f} s for the starts)", flush=True)
     q = to_rational(best['x'], a.decimals)
@@ -468,8 +503,7 @@ def main(argv=None):
         coefficients_float=best['x'], start=best['start'], optimiser_metrics=best['metrics'])
     cand['sha256'] = hashlib.sha256(json.dumps([cand['coefficients'], cand['basis']]).encode()).hexdigest()
     json.dump(cand, open(os.path.join(a.work, 'candidate.json'), 'w'), indent=1)
-    json.dump([{k: v for k, v in o.items() if k != 'x'} for o in outs],
-              open(os.path.join(a.work, 'starts.json'), 'w'), indent=1)
+    json.dump(outs, open(os.path.join(a.work, 'starts.json'), 'w'), indent=1)
     if a.results:
         import diagnostics
         diagnostics.run(os.path.join(a.work, 'candidate.json'), a.results, cfg=cfg, args=a,

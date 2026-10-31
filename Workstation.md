@@ -259,19 +259,15 @@ laptop with a small parameter setting, then commit it to `main` before running i
 
 Kept up to date from the laptop after every review ("update from workstation"). The same
 commands are in [`scripts/workstation/next.sh`](scripts/workstation/next.sh), with `NEXT_ID` =
-`2026-10-31-warmstart`, which the poller runs by itself (see "Unattended polling"). By hand, run
+`2026-10-31-rerank`, which the poller runs by itself (see "Unattended polling"). By hand, run
 them inside `tmux` (`run.sh` pulls `main` itself), or run `bash scripts/workstation/next.sh`.
 
-**Status (31 October 2026, after both NFP 3 runs): run now.** NFP 3 with only 24 coefficients
-gave the first candidate that passes every Q-16 check: defect/ι 0.007–0.020 at |ι| ≈ 0.28,
-ε_eff 0.13–0.47 % (N-31 §15). The 42-coefficient NFP 3 run was worse: it crosses the 1/3 and 3/10
-resonances (N-31 §16). Next are the two warm-start runs below.
-
-**Warm-start refinement** (N-31 §14; `--init` is on `main`). The first run
-restarts from the NFP 3 candidate of N-31 §15, the lead candidate. The second restarts from the
-NFP 2 candidate of N-31 §10, where a 2-start laptop test already found a nearby moderate-tier field
-with |ι| ≈ 0.32. Both use small random perturbations and go straight into the full objective.
-Each takes about 10–15 min wall. Run them one after the other:
+**Status (31 October 2026, after the first warm-start run): queued for the poller.** The NFP 3
+warm start found six starts better than the lead candidate at optimiser resolution. The one it
+selected fails at high resolution, because its inner surface sits on ι = 3/8 (N-31 §18).
+`optimize.py` now re-ranks the top starts at diagnostic resolution and keeps every start's
+coefficients. The batch below repeats the two warm-start commands, so the finished starts are
+reused and only the re-ranking and diagnostics run, a few minutes each:
 
 ```bash
 cd PlasmaLean && git pull
