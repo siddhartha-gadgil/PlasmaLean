@@ -1,5 +1,46 @@
 host: hornbill
-time: 2026-10-31T18:42:21Z
+time: 2026-10-31T18:47:27Z
 main: ae3c075
 batch: 2026-11-01-kam-C-96
-state: running
+state: finished, exit 0 after 5 min
+--- last 40 lines of the batch log ---
+  decay: theta rate 0.616/mode (strip 0.098 turns), psi rate 0.886/mode (strip 0.141 turns of phi/pi); tails 0.0e+00 / 0.0e+00
+  mp refine 0: |F_galerkin|_inf = 1.713e-16 (13.1s)
+  mp refine 1: |F_galerkin|_inf = 2.519e-28 (15.8s)
+  mp refine 2: |F_galerkin|_inf = 1.047e-40 (15.8s)
+  mp refine 3: |F_galerkin|_inf = 1.374e-52 (15.8s)
+  mp refine 4: |F_galerkin|_inf = 1.203e-64 (15.9s)
+  mp refine 5: |F_galerkin|_inf = 1.655e-68 (15.9s)
+  mp refinement (dps 60): |F_galerkin| 1.7e-16 -> 1.7e-68, 152s
+  invariance error (mp, 592x496 grid): sup|RR| 6.59e-31, sup|RZ| 2.01e-31; flow error sup|RR/D, RZ/D| 1.62e-30; D in [0.279, 0.979]
+   rho    ||E_R||_rho  ||E_Z||_rho  edge-frac  ratio(gamma)  ratio(gamma_k>=2)
+   0.000  1.02e-30     2.45e-31     7.5e-36
+   0.005  1.71e-29     4.13e-30     1.1e-30    1.28e-16      5.37e-18
+   0.010  2.94e-28     7.13e-29     7.3e-25    1.38e-16      5.77e-18
+   0.015  5.18e-27     1.26e-27     6.2e-19    4.80e-16      2.01e-17
+   0.020  9.34e-26     2.27e-26     5.8e-13    2.74e-15      1.15e-16
+   0.030  4.47e-23     2.38e-23     3.5e-01    2.59e-13      1.08e-14
+   0.040  4.53e-09     5.86e-09     9.2e-01    1.07e+01      4.49e-01
+   0.050  1.93e+06     2.46e+06     9.6e-01    1.85e+15      7.72e+13
+   0.075  9.62e+42     1.19e+43     9.9e-01    1.76e+51      7.37e+49
+   0.100  5.97e+79     7.22e+79     1.0e+00    3.39e+87      1.42e+86
+  FHL: best rho 0.005: ratio 1.28e-16 -> C1 tolerance 7.8e+15 (gamma 0.121); with low divisors exact (gamma 0.267): 1.9e+17
+  ELP-S twist T = +5.5787e-02 (T/|omega_s| = +1.512e-01); invariance check 4.0e-13; flux 1.6697e-03 (r_eff 0.0218); d iota/d Phi = 2.2701e+00, d iota/d r_eff = 0.3477
+
+done in 300s; summary in scripts/dommaschk_kam/results/20261031T184225Z/summary.json
+
+==> [emit] bash /home/gadgil/code/PlasmaLean/scripts/workstation/run.sh __step emit dommaschk-kam
+dommaschk-kam: no Lean modules
+
+==> committing results on workstation/dommaschk-kam-20261031T184225Z
+remote: 
+remote: Create a pull request for 'workstation/dommaschk-kam-20261031T184225Z' on GitHub by visiting:        
+remote:      https://github.com/siddhartha-gadgil/PlasmaLean/pull/new/workstation/dommaschk-kam-20261031T184225Z        
+remote: 
+To https://github.com/siddhartha-gadgil/PlasmaLean.git
+ * [new branch]      workstation/dommaschk-kam-20261031T184225Z -> workstation/dommaschk-kam-20261031T184225Z
+branch 'workstation/dommaschk-kam-20261031T184225Z' set up to track 'origin/workstation/dommaschk-kam-20261031T184225Z'.
+
+==> pushed workstation/dommaschk-kam-20261031T184225Z; on the laptop: git fetch && scripts/workstation/run.sh --verify-only dommaschk-kam
+
+==> back on main
