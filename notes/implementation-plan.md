@@ -1576,3 +1576,11 @@ Gate E1 (§11.2, §11.4) and the "sanity theorem or counterexample" promised in 
   for fields with a wandering non-planar axis (N-33 O3). `lake build PlasmaLean` clean; axiom audit
   passed (48,803 declarations).
 
+### Certification step 2: exact low small divisors, 31 October 2026
+
+- `Theory/KAM/CohomologicalLow` (`DiophantineSplit`, `cohSol_estimate_split`, `Bd.coh_split`, reduces to
+  `cohSol_estimate_one`) and `Design/DommaschkKamDio` (`dkOmegaA_split` with d = 0.1193 for k = 1,
+  γ₂ = 0.3645 for |k| ≥ 2; the oracle's 0.3646 is refuted by `dkOmegaA_not_split_high`). Rüssmann factor
+  3.05× better; N-33 plan items 2 and 4 done. Default build; axiom audit passed (48,865
+  declarations). Next: the `KamFlow*G` generalisation (N-33 item 3).
+

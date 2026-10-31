@@ -175,6 +175,7 @@ public import PlasmaLean.Design.KamTorusACheck
 public import PlasmaLean.Design.KamTorusA
 public import PlasmaLean.Theory.KAM.Diophantine
 public import PlasmaLean.Theory.KAM.Cohomological
+public import PlasmaLean.Theory.KAM.CohomologicalLow
 public import PlasmaLean.Design.PolygonCoilConfined
 public import PlasmaLean.Design.PolygonCoilCubicCover
 public import PlasmaLean.Design.PolygonCoilCubicLineCert
@@ -292,6 +293,7 @@ public import PlasmaLean.Design.DommaschkQA2RDataCheck0
 public import PlasmaLean.Design.DommaschkQA2RDataCheck1
 public import PlasmaLean.Design.DommaschkQA2RDataCheck2
 public import PlasmaLean.Design.DommaschkQA2R
+public import PlasmaLean.Design.DommaschkKamDio
 public import PlasmaLean.Design.QSJetExample
 
 /-!

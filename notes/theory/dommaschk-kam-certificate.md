@@ -615,3 +615,26 @@ fixtures: the wandering torus `Sanity.AuditRefresh.wander_poloidalAngle` /
 gone. The torus certificate must supply a reference curve inside each cross-section, e.g. the axis
 approximation A(φ) of (O1).
 
+## Update (31 October 2026): exact low small divisors done (plan items 2 and 4)
+
+- `Theory/KAM/CohomologicalLow` (default build):
+  - `DiophantineSplit ω d γ τ K` (|kω − m| ≥ d for 0 < |k| ≤ K, ≥ γ/|k|^τ for |k| > K);
+  - `cohSol_estimate_split` / `cohSol_estimate_split_one_of_one_le` (Rüssmann constant with the
+    high-mode γ when eγδ ≤ d);
+  - `cohSol_estimate_one_of_split`, which recovers the old bound;
+  - `Bd.coh_split`, a drop-in for `Bd.coh`;
+  - `diophantineAbove_one_of_conj`.
+- `Design/DommaschkKamDio`:
+  - `dkOmegaA_split : DiophantineSplit ω_A (1193/10000) (3645/10000) 1 1`, with ω_A = (19+√5)/178 a
+    root of 89x² − 19x + 1;
+  - `dkIotaA_period_split` and `dkIotaA_Bd_coh` (for δ ≤ 3/25);
+  - rejected fixtures `dkOmegaA_not_split_low` and `dkOmegaA_not_split_high`.
+- **Correction.** The oracle's high-mode constant 0.3646 is invalid; the true value is 0.364559 at
+  k = 8. Use γ₂ = 0.3645.
+- **Gain.** The Rüssmann factor improves 3645/1193 ≈ 3.05× (`dk_russmann_gain`), consistent with
+  the ≈ 80× in κ of §3.3.
+- **Consumption, for the `KamFlow*G` copies (item 3).** In `StepH`, replace `Diophantine` by
+  `DiophantineSplit` (with `1 ≤ K`, `0 < d`, `e·γ·δ₀ ≤ d`) and use `Bd.coh_split` in
+  `bXi20`/`bXi1`. The qualitative uses go through `.toDiophantine`. Existing instances go through
+  `Diophantine.toSplit`.
+

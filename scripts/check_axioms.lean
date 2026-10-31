@@ -345,6 +345,15 @@ run_cmd do
 #print axioms PlasmaLean.Design.RationalStellaratorContract.twistTorus_not_iotaOnTorus
 #print axioms PlasmaLean.Sanity.AuditRefresh.wander_poloidalAngle
 #print axioms PlasmaLean.Sanity.AuditRefresh.wander_not_poloidalAngle_const
+#print axioms PlasmaLean.Theory.KAM.cohSol_estimate_split
+#print axioms PlasmaLean.Theory.KAM.cohSol_estimate_split_one_of_one_le
+#print axioms PlasmaLean.Theory.KAM.cohSol_estimate_one_of_split
+#print axioms PlasmaLean.Theory.KAM.Bd.coh_split
+#print axioms PlasmaLean.Theory.KAM.diophantineAbove_one_of_conj
+#print axioms PlasmaLean.Design.DommaschkKamDio.dkOmegaA_split
+#print axioms PlasmaLean.Design.DommaschkKamDio.dkIotaA_period_split
+#print axioms PlasmaLean.Design.DommaschkKamDio.dkIotaA_Bd_coh
+#print axioms PlasmaLean.Design.DommaschkKamDio.dkOmegaA_not_split_high
 #print axioms PlasmaLean.Fields.QSLinear.fieldDiv_fqsGen
 #print axioms PlasmaLean.Fields.QSLinear.JetHyp.jet_obstruction_curl
 #print axioms PlasmaLean.Fields.QSLinear.jet_obstruction_eta
