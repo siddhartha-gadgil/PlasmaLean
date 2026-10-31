@@ -15,8 +15,8 @@ public import PlasmaLean.Theory.Contract.StellaratorContract
 # The Dommaschk QA certification target (NFP 2, purely rational) is an exact vacuum field
 
 Certification step 1 for the certification target of research note N-31
-(`notes/theory/dommaschk-qa.md`, §22):
-`scripts/dommaschk_qa/results/20261031T085357Z/candidate.json`
+(`notes/theory/dommaschk-qa.md`, §24, refining the field of §22):
+`scripts/dommaschk_qa/results/20261031T092522Z/candidate.json`
 (NFP 2, nmax 3, lmax 5, 42 Dommaschk basis potentials, the 9 potentials containing `ln R` held at
 exactly 0, so the field is purely rational). In cylindrical coordinates, with `R₀ = 1`,
 `B = ∇φ + Σ_k a_k ∇V_k`, `V_k = trig(m_k φ) Σ c R^p (ln R)^q z^j` (exact rational data). The
@@ -47,7 +47,7 @@ Results.
 
 Sanity: `field_zero`, `eval_P0` (`V₀ = z`). Numerical cross-check (informal): at
 `(x, y, z) = (21/20, 1/10, 1/50)` the emitted data give
-`field candidate ≈ (−0.101585468971, 0.972511385037, −0.0711223346855)`, agreeing with
+`field candidate ≈ (−0.0996001333794, 0.972211286636, −0.0768064907229)`, agreeing with
 `scripts/dommaschk_qa/fieldeval.py` to `10⁻¹⁴` (printed by `emit_lean.py`).
 
 Not proved here: the two-field-period symmetry (rotation by `π`), field-line properties (axis,

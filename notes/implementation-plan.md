@@ -1529,3 +1529,11 @@ Gate E1 (§11.2, §11.4) and the "sanity theorem or counterexample" promised in 
   `eval_eq_zero_of_sliceCheck`, `gradField_vacuum_of_eval`, `gradField_vacuum_of_sliceCheck`.
   `lake build PlasmaLean` clean; axiom audit passed (48,770 declarations). N-31 §23.
 
+### Refined certification target, 31 October 2026
+
+- Poller batch `2026-10-31-refine-target` (exit 0, 29 min): run `20261031T092522Z` start 46 is strong
+  tier on surfaces out to r = 0.06 (defect/ι ≤ 0.0047, ε_eff ≤ 0.036 %), strictly nested to
+  r_eff ≈ 0.053, purely rational; it replaces the §22 field as the certification target, and
+  `DommaschkQA2RData`/`DommaschkQA2R` were regenerated from it (same theorems, standard axioms). Run
+  `20261031T094002Z`: strong tier, smaller region. N-31 §24.
+

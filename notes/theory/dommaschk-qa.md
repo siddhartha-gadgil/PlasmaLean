@@ -676,6 +676,27 @@ and standard axioms only.
 **Next for the target (step 2):** the flow-torus oracle and a KAM certificate for one Diophantine
 ι near 0.235 in the sheared region (§20).
 
+### 24. Refined certification target (31 October 2026; untrusted numerics, step 1 verified)
+
+Poller batch `2026-10-31-refine-target` made warm starts from the §22 field, with `--exclude-log`.
+- **Run `20261031T094002Z`** (σ 0.0005, the original surfaces) reached the strong tier, with
+  defect/ι ≤ 0.0025 and ε_eff ≤ 0.013 %, but is nested only to r = 0.048. Its ι reaches 2/9 at
+  r ≈ 0.054.
+- **Run `20261031T092522Z`** (σ 0.001, surfaces 0.02/0.04/0.06, window 0.2235–0.2495), start 46,
+  is the new target:
+  - **strong tier on surfaces out to r = 0.06**: defect/ι 0.0018, 0.0022 and 0.0047, ε_eff
+    0.0015 %, 0.0046 % and 0.036 %, κ 0.03, 0.09 and 0.23;
+  - strictly nested to r = 0.072 (r_eff ≈ 0.053) and regular to r = 0.08 (r_eff ≈ 0.059);
+  - ι decreases monotonically from 0.245 to 0.228;
+  - log coefficients exactly 0, and the same 42-potential basis.
+
+  **It replaces the §22 field as the certification target.**
+
+The Lean modules `DommaschkQA2RData`/`DommaschkQA2R` were regenerated from this candidate. The
+basis, the checks and the theorems are unchanged; only the coefficients changed. The §23 results
+(`candidate_vacuum`, `candidate_currentFreeTransform`, `candidate_log_free`) now concern this
+field, with standard axioms only and peaks ≤ 3.1 GB.
+
 ## Claims and evidence
 
 1. **Complete mathematical proof (symbolic, sympy).** The basis potentials are harmonic and
