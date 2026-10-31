@@ -1595,3 +1595,12 @@ Gate E1 (§11.2, §11.4) and the "sanity theorem or counterexample" promised in 
   `KamFlowStepG` (constants with p, `DiophantineSplit`) and `KamFlowIterationG`
   (`notes/theory/kamflow-g-status.md`). Axiom audit passed.
 
+### Certification step 2: generalised KAM Newton step, milestone 2, 31 October 2026
+
+- `Design/KamFlowStepG` (default build): `SCG` (bounds for the moving centre, ‖R‖, exponent p, split
+  Diophantine data), `FlowFieldG.StepH` with `DiophantineSplit` and `Bd.coh_split`, and
+  `FlowFieldG.StepH.kam_step` (one Newton step: ‖ΔK‖ ≤ cK e/δ², ‖𝓛ΔK‖ ≤ cL e/δ², new error ≤ κ e²/δ⁴).
+  Reduction: `SC.toSCG` makes every constant equal for the rational field; `FlowField.StepH.toG`,
+  `field14_stepH_toG` (needs e·δ₀ ≤ 1, true for torus A). Remaining: `KamFlowIterationG` (milestone 3).
+  Axiom audit passed (49,485 declarations).
+

@@ -5,8 +5,8 @@ and §6 item 3.
 
 ## Done (milestone 1): `Design/KamFlowFieldG`, `Design/KamFlowFrameG`
 
-Both compile with zero warnings and standard axioms only (about 3 s and 4 s, under 0.2 GB). Neither
-is imported by `PlasmaLean.lean` yet.
+Both compile with zero warnings and standard axioms only (about 3 s and 4 s, under 0.2 GB). Both are
+now imported by `PlasmaLean.lean`.
 
 **Generalised (`FlowFieldG`).**
 - **Radial centre.** `R = R₀ + u` (`Rof R₀ u`, field `R₀ : ℝ`).
@@ -45,46 +45,62 @@ is imported by `PlasmaLean.lean` yet.
   `toroidalShift` (`a_R = sin 2φ`), with `toroidalShift_Pof` (`P = −2 cos 2φ · z`) and the
   rejected fixture `toroidalShift_Pof_ne`.
 
+## Done (milestone 2): `Design/KamFlowStepG`
+
+Compiles with zero warnings and standard axioms only (about 6 s, 1.7 GB peak RSS; 1,303 lines).
+Checked together with `import PlasmaLean`: no name clashes.
+
+- **Constants `SCG extends SC`.** New fields: `avR`, `avZ` (bounds of `‖V₀_R‖`, `‖V₀_z‖`), `aR`
+  (bound of `‖R‖`), `p : ℕ` (the exponent), `dlow`, `Klow` (split Diophantine data; `γ` is now
+  the high-mode constant). `au`, `az` stay as bounds of `u, z` (used in `avec`, `C₂`). The
+  derived constants (`SCG.kη1 … SCG.kap`) are all redefined in `SCG`:
+  - `kη1 = sW (avZ + avR) kE`, `kη2 = bD sR^p (aRt + azt) kE`, `kh = aR^p sD sW`;
+  - `kTc = aR^p sD sW² (avZ + avR) kE`, `kS = … + p sR kE δ₀ + sW (avZ + avR) kE/E1`;
+  - `mV = max avR avZ`. The rest (`g = 2 E1 γ`, `k20`, `kc`, `k2`, `k1`, `cK`, `kRem`, `kA`,
+    `cL`, `kap`, `avec`, `mvec`, `Tq`) have the old formulas.
+- **Step hypothesis `FlowFieldG.StepH c ι u z e δ`.** As `FlowField.StepH`, with:
+  - `hp : F.p = c.p`;
+  - `dio : DiophantineSplit (ι/2) c.dlow c.γ 1 c.Klow`, `hK : 1 ≤ c.Klow`, `hd : 0 < c.dlow`,
+    `hlow : exp 1 * c.γ * c.δ0 ≤ c.dlow` (passed to `δ` by `StepH.hlowδ`);
+  - `hV0R : Bd ρ (F.V0R u) avR`, `hV0Z : Bd ρ (F.V0Z z) avZ`, `hR : Bd ρ (F.R u) aR`;
+  - `hsR : Bd ρ (F.Ri u) sR`, `hsW : Bd ρ (F.Wi u z) sW`, field bounds via `FlowFieldG.Du` etc.;
+  - **no `hδ2 : δ₀ ≤ 2/e`** (not needed by `Bd.coh_split`).
+- **Main theorem `FlowFieldG.StepH.kam_step`**: analytic `ΔR, Δz`,
+  `‖ΔK‖_{ρ−2δ} ≤ cK e/δ²`, `‖𝓛ΔK‖_{ρ−2δ} ≤ cL e/δ²`, `‖E(K+ΔK)‖_{ρ−2δ} ≤ κ e²/δ⁴` (same shape
+  as `FlowField.StepH.kam_step`). Components: `bXi20`/`bXi1` (by `Bd.coh_split`), `bdR/bdZ`,
+  `bLdR/bLdZ`, `bER'/bEZ'`, `bQR/bQZ`. Qualitative uses: `StepH.dioG` (`.toDiophantine`,
+  constant `min dlow γ`), `dioG_pos`.
+- **Reality**: `FlowFieldG.FrameHyp.isReal_dRs` (and `isReal_xi1/xi2/eta1/eta2/Tor/…`).
+- **Correction**: `FlowFieldG.xi20/cbar/xi2/xi1/dRs/dZs`.
+- **Reduction.** `SC.toSCG` (`p = 3`, `avR = au`, `avZ = az`, `aR = 1 + au`, `dlow = γ`,
+  `Klow = 1`): `toSCG_cK`, `toSCG_cL`, `toSCG_kap` (and `kη1, kη2, kh, kTc, τ', mV, kS, kRem`,
+  `toSCG_taylor`) are **equalities**. `FlowField.StepH.toG` (needs `exp 1 * δ₀ ≤ 1`; torus A has
+  `δ₀ = r_A/7 ≈ 0.018`) and `field14_stepH_toG`. `FlowField.toG_dRs`: the correction is the
+  same. Degenerate sanity: `SCG.kh_of_p_zero`.
+
 ## Remaining
-
-### `KamFlowStepG` (copy of `KamFlowStep`, 1,226 lines)
-
-- **`SC` fields.**
-  - Add `R₀` and `p`, or take them from `F`.
-  - Replace the frame-vector bounds `au, az` by bounds `av_R, av_z` of `‖V₀_R‖, ‖V₀_z‖`.
-  - Add a bound `aR` of `‖R‖` (today `1 + au`).
-  - Keep `au, az` for `avec`/`C₂`.
-- **Constants.**
-  - `kη1 = sW (av_z + av_R) kE`.
-  - `kη2 = bD sR^p (aRt + azt) kE`.
-  - `kh = aR^p sD sW`.
-  - `kTc = aR^p sD sW² (av_z + av_R) kE`.
-  - In `kS`, replace `3 sR` by `p sR`.
-  - `mV = max av_R av_z`.
-- **Bounds.**
-  - `bR` becomes `Bd ρ (F.R u) aR`.
-  - `bwD`, `bhN`, `bTcorr` and `bS` change only in these constants.
-  - `bdR/bdZ` use `NR = h V₀_R`.
-- **Cohomological step.** Replace `dio : Diophantine (ι/2) γ 1` by `DiophantineSplit` (with
-  `1 ≤ K`, `0 < d`, `e γ δ₀ ≤ d`). Use `Bd.coh_split` in `bXi20`/`bXi1`, and `.toDiophantine`
-  for `ana_xi*`.
-  - This is "the Rüssmann constant as a parameter": `g = 2 E1 γ` becomes the split constant.
-  - Existing instances pass through `Diophantine.toSplit`.
-- **Reality.**
-  - `isReal_W` and `isReal_eta1` need `F.isReal_V0R/V0Z`, which exist.
-  - `isReal_Ri` uses `isReal_Rof`.
-- **Unchanged.** `real_resRp/real_resZp` already exist in `FieldG`, and `bQR/bQZ` (`C₂` via
-  `majD2`) carry over verbatim.
-- **Effort.** Mechanical. About 1,250 lines, 1–2 sessions. Expect `positivity`/`gcongr` fixes
-  where `(1 + au)^3` becomes `aR^p`.
 
 ### `KamFlowIterationG` (copy of `KamFlowIteration`, 832 lines)
 
-- `AdmBounds` takes the new `SC` bounds (`‖V₀‖`, `‖R‖`). The displacement budget must
-  propagate `‖V₀‖ ≤ av` along the iteration; this is automatic, since `V₀ = K − A` moves with
-  `K`.
-- `GlobalH` uses the split Diophantine.
+What it needs from `KamFlowStepG` (all available):
+- `FlowFieldG.StepH.kam_step` (the eight-part conclusion, same order as before) and
+  `FlowFieldG.FrameHyp.isReal_dRs`; `FlowFieldG.dRs/dZs` for `stepK`.
+- `SCG.withρ` (define as `{ c with ρ := ρ }`; with `extends` this updates `toSC.ρ`). All
+  derived constants are independent of `ρ` (`rfl`), as before.
+- `AdmBounds` (G): the `AdmBounds` fields, with `F.Ri u`, `F.Wi u z` (G versions), plus
+  `hV0R`, `hV0Z`, `hR`. The admissibility hypothesis must supply them for every `μ`-close torus.
+  `‖V₀‖`: `V₀ − V₀⁽⁰⁾ = u − u₀` (the centre does not depend on the torus), so `Close` already gives `avR = ‖V₀_R⁽⁰⁾‖ + μ`
+  by `Bd.add`; similarly `aR = ‖R⁽⁰⁾‖ + μ`.
+- `GlobalH` (G): `dio : DiophantineSplit (ι/2) c.dlow c.γ 1 c.Klow`, `hK`, `hd`, `hlow`, `γ_pos`,
+  `hp : F.p = c.p`; drop `hδ2`. `hlow` is stated at `δ₀`, so it holds at every `δ_j ≤ δ₀`
+  (`stepH_of_adm` passes `hδ0`).
+- `stepH_of_adm` (G): field-by-field as in `KamFlowIteration`, plus `hp`, `hK`, `hd`, `hlow`,
+  `hV0R/hV0Z/hR` from `AdmBounds`.
+- `cauchy_conv` uses `hE1`, unchanged. The `kamExact` part is field-independent.
 - The conclusion `kam_flow_torus` for `F : FlowFieldG` is unchanged in form.
+- **Chain sanity**: with `field14_stepH_toG` and `SC.toSCG_*`, the torus-A `KamH` instantiates the
+  G-hypotheses once `GlobalH.toG`/`KamH.toG` adapters are written (needs `exp 1 * δ₀ ≤ 1`;
+  `AdmBounds` adds `hV0R = hu`, `hR = bR`).
 - **Effort.** About 850 lines, one session.
 
 ### Sanity for the chain
@@ -106,6 +122,10 @@ data of N-33 §2.4.
   public import PlasmaLean.Design.KamFlowFieldG
   public import PlasmaLean.Design.KamFlowFrameG
   ```
+  (both present). Add after line 252 (`KamFlowFrameG`):
+  ```
+  public import PlasmaLean.Design.KamFlowStepG
+  ```
 - `scripts/check_axioms.lean`:
   ```
   #print axioms PlasmaLean.Design.KamNewton.FlowField.toG
@@ -116,4 +136,10 @@ data of N-33 §2.4.
   #print axioms PlasmaLean.Design.KamNewton.FlowFieldG.FrameHyp.eta2_flux
   #print axioms PlasmaLean.Design.KamNewton.FlowFieldG.FrameHyp.newton_error_R
   #print axioms PlasmaLean.Design.KamNewton.FlowField.toG_Scoef
+  #print axioms PlasmaLean.Design.KamNewton.FlowFieldG.StepH.kam_step
+  #print axioms PlasmaLean.Design.KamNewton.FlowFieldG.FrameHyp.isReal_dRs
+  #print axioms PlasmaLean.Design.KamNewton.FlowField.StepH.toG
+  #print axioms PlasmaLean.Design.KamNewton.field14_stepH_toG
+  #print axioms PlasmaLean.Design.KamNewton.SC.toSCG_kap
+  #print axioms PlasmaLean.Design.KamNewton.FlowField.toG_dRs
   ```
