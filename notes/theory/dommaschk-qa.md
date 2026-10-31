@@ -429,6 +429,20 @@ coefficients at high resolution:
 
 This is now the lead candidate for the certification path below. Untrusted numerics.
 
+### 16. Three field periods, nmax 3 (31 October 2026; untrusted): worse than nmax 2
+
+Run `workstation/dommaschk-qa-20261031T045824Z`: NFP 3, nmax 3 (42 coefficients), 48 starts,
+ι_min 0.25, surfaces r = 0.015, 0.03, 0.045; 21.4 min wall. Results in
+`scripts/dommaschk_qa/results/20261031T045824Z/`.
+
+- **45 of 48 starts were regular at optimiser resolution.** The best worst defect/ι was 0.045.
+- **The selected start (4) fails the high-resolution check.** Its ι falls from 0.351 to 0.300 and
+  crosses the resonances 1/3 (r ≈ 0.024) and 3/10 (the outer surface sits on it). That gives
+  defect/ι 0.054 and ε_eff 1.1–2.1 %, and strict nesting only to r = 0.018. Tier "not small".
+- **The pattern of §11 repeats.** The larger basis buys more shear and overfits the coarse
+  objective, and does not improve on the smaller basis. The NFP 3, nmax 2 candidate of §15
+  remains the lead.
+
 ## Claims and evidence
 
 1. **Complete mathematical proof (symbolic, sympy).** The basis potentials are harmonic and

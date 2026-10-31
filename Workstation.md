@@ -225,21 +225,12 @@ laptop with a small parameter setting, then commit it to `main` before running i
 Kept up to date from the laptop after every review ("update from workstation"). Run them on the
 workstation, inside `tmux`; `run.sh` pulls `main` itself.
 
-**Status (31 October 2026, after the first NFP 3 run): wait for the second NFP 3 run (nmax 3),
-then run the warm-start refinement below.** NFP 3 with only 24 coefficients gave the first
-candidate that passes every Q-16 check: defect/ι 0.007–0.020 at |ι| ≈ 0.28, ε_eff 0.13–0.47 %
-(N-31 §15). It is now the lead candidate for certification. The NFP 3 commands, for reference
-(the first is done; the second is running):
+**Status (31 October 2026, after both NFP 3 runs): run now.** NFP 3 with only 24 coefficients
+gave the first candidate that passes every Q-16 check: defect/ι 0.007–0.020 at |ι| ≈ 0.28,
+ε_eff 0.13–0.47 % (N-31 §15). The 42-coefficient NFP 3 run was worse: it crosses the 1/3 and 3/10
+resonances (N-31 §16). Next are the two warm-start runs below.
 
-```bash
-cd PlasmaLean && git pull
-DQA_NMAX=2 DQA_STARTS=48 DQA_IOTA_MIN=0.25 DQA_SURFACES=0.015,0.03,0.045 DQA_NFEV=100 \
-  DQA_EXTRA="--nfp 3" scripts/workstation/run.sh --jobs 24 dommaschk-qa
-DQA_NMAX=3 DQA_STARTS=48 DQA_IOTA_MIN=0.25 DQA_SURFACES=0.015,0.03,0.045 DQA_NFEV=100 \
-  DQA_EXTRA="--nfp 3" scripts/workstation/run.sh --jobs 24 dommaschk-qa
-```
-
-**After the NFP 3 runs: warm-start refinement** (N-31 §14; `--init` is on `main`). The first run
+**Warm-start refinement** (N-31 §14; `--init` is on `main`). The first run
 restarts from the NFP 3 candidate of N-31 §15, the lead candidate. The second restarts from the
 NFP 2 candidate of N-31 §10, where a 2-start laptop test already found a nearby moderate-tier field
 with |ι| ≈ 0.32. Both use small random perturbations and go straight into the full objective.
