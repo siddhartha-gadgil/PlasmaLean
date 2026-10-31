@@ -206,8 +206,8 @@ cd PlasmaLean && git checkout main && git pull
 scripts/workstation/poll.sh            # every 10 minutes; --interval SECONDS, --once
 ```
 
-- **What it runs.** Every 10 minutes, if the workstation is idle (no `run.sh` and no `lake`
-  running), it pulls `main` and reads `NEXT_ID` in
+- **What it runs.** Every 10 minutes, if the workstation is idle (no `run.sh` and no `lake build`,
+  `lake env` or `lake exe` running; a Lean language server, `lake serve`, does not count), it pulls `main` and reads `NEXT_ID` in
   [`scripts/workstation/next.sh`](scripts/workstation/next.sh). For a `NEXT_ID` it has not run
   before, it runs `next.sh` once.
 - **Who writes `next.sh`.** The laptop rewrites it after every review, together with "Next
@@ -221,7 +221,9 @@ scripts/workstation/poll.sh            # every 10 minutes; --interval SECONDS, -
   commit (`status.txt`: host, time, batch, state and the tail of the log) to the branch
   `ws-status`. It uses git plumbing, so the working tree is not touched. `pending.sh` prints it;
   by hand, `git fetch origin ws-status && git show origin/ws-status:status.txt`.
-- **Updates.** If a pull changes `poll.sh`, the poller re-executes the new version. It never pulls
+- **Updates.** If a pull changes `poll.sh`, the poller re-executes the new version. While it reports
+  "busy" it does not pull, so to pick up a fix during a busy spell, restart it (`Ctrl-C`, `git pull`,
+  `scripts/workstation/poll.sh`). The busy message names the processes it is waiting for. It never pulls
   over modified tracked files, and says so in its log.
 - **Trust.** `next.sh` is executed as found on `main`. Only push `next.sh` changes you would run
   by hand.
