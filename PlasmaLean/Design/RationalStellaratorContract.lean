@@ -22,16 +22,18 @@ exact KAM torus near torus A (`torusA_exact`, `exactTorus`):
   `(R⁴/D) • B`, `field_cylPt`);
 * `ExactTorus.poloidalAngle`: its polar angle `Θf` about the circle `R = 1, z = 0` is a
   poloidal-angle convention (`polar`, `Θf_add_two_pi`, `Θf_add_pi`);
-* `ExactTorus.surface`: the section is the radial filling `k ↦ 1 + k (K(χ, 0) − (1, 0))`,
-  `0 ≤ k ≤ 1`, of the poloidal loop at `φ = 0`, which lies in the vacuum region (`R ≥ 0.8`).
+* `field_split`, `hasFDerivAt_potential`: `field (1/4) = ∇φ + ∇(H/16)` off the axis, with the
+  single-valued potential `H/16` (`H_hasFDerivAt`), and `∇φ` purely toroidal; so the
+  circulation of the field around the poloidal loop of the torus at `φ = 0` (which lies in the
+  vacuum region, `R ≥ 0.8`) vanishes (`poloidalCirculation_eq_zero_of_potential`).
 So C1 holds on one certified torus. Not yet: a nested family of certified tori with
 `ι ≥ ι_min` on each (only one exact torus is certified).
 
 **Tokamak exclusion (C1 fails although `I = 0`).** The purely toroidal vacuum field
 `toroidal = ∇φ = e_φ/R` (`toroidal_vacuum`): `toroidal_purelyToroidal`; the circular tori
 `circTorus a` (`0 < a < 1`) are invariant with transform `0` (`circTorus_iotaOnTorus`; the
-definition is not vacuous for this field); their sections carry zero current
-(`toroidal_circ_current_zero`); and `toroidal_not_currentFreeTransform`: `∇φ` fails C1 for every
+definition is not vacuous for this field); their poloidal loops enclose zero current
+(`toroidal_circ_circulation_zero`); and `toroidal_not_currentFreeTransform`: `∇φ` fails C1 for every
 `I_max`, `ι_min` and every family of surfaces.
 -/
 
@@ -100,38 +102,31 @@ theorem circTorus_iotaOnTorus {a : ℝ} (ha : 0 < a) (ha1 : a < 1) :
   · simp [circR]
   · simp [circZ]
 
-/-- The radial filling of the poloidal loop of the circular torus at `φ = 0`. -/
-@[expose] def circSection (a : ℝ) (p : Space) : Space :=
-  cylPoint (1 + p 0 * (a * cos (p 1))) 0 (p 0 * (a * sin (p 1)))
-
-/-- The C1 surface data of the circular torus of `∇φ`. -/
+/-- The C1 surface data of the circular torus of `∇φ` (poloidal loop at `φ = 0`). -/
 @[expose] def circSurface (a : ℝ) : SurfaceData where
   R := circR a
   z := circZ a
   iota := 0
-  X := circSection a
-  ζ₀ := 0
-  k₀ := 1
   φ₀ := 0
 
-/-- The section spans the poloidal loop. -/
-theorem circSurface_spans (a : ℝ) : (circSurface a).Spans := by
-  refine ⟨zero_le_one, fun χ => ?_, fun χ χ' => ?_⟩ <;>
-    simp [circSurface, circSection, circR, circZ, coordPt]
-
-/-- **`∇φ` carries no current through the sections of the circular tori** (`toroidal_vacuum`):
-it passes the current clause of C1 and fails only the transform clause. -/
-theorem toroidal_circ_current_zero {a : ℝ} (ha : 0 < a) (ha1 : a < 1) (μ₀ : ℝ) :
-    netToroidalCurrent μ₀ toroidal (circSection a) 0 1 = 0 := by
-  refine netToroidalCurrent_eq_zero_of_vacuum toroidal_vacuum zero_le_one fun k hk χ _ => ?_
+/-- A point with `R > 0` lies in the vacuum region off the axis. -/
+theorem cylPoint_mem_domain {R : ℝ} (hR : 0 < R) (φ z : ℝ) : cylPoint R φ z ∈ domain := by
   change 0 < r2 (cylPt _ _ _)
   rw [r2_cylPt]
-  simp only [coordPt, PiLp.toLp_apply, Matrix.cons_val_zero, Matrix.cons_val_one]
-  have := neg_one_le_cos χ
-  have e1 : 0 ≤ k * (a * cos χ + a) := mul_nonneg hk.1 (by nlinarith)
-  have e2 : k * a ≤ a := by nlinarith [hk.2]
-  have : 0 < 1 + k * (a * cos χ) := by nlinarith
   positivity
+
+/-- **`∇φ` has zero circulation around the poloidal loops of the circular tori**: it passes the
+current clause of C1 and fails only the transform clause. -/
+theorem toroidal_circ_circulation_zero {a : ℝ} (ha : 0 < a) (ha1 : a < 1) :
+    poloidalCirculation toroidal (circR a) (circZ a) 0 = 0 := by
+  have hRpos : ∀ θ, 0 < circR a θ 0 := fun θ => by
+    unfold circR; nlinarith [neg_one_le_cos θ, cos_le_one θ]
+  refine poloidalCirculation_eq_zero_of_potential (T := toroidal) (g := fun _ => 0)
+    (Φ := fun _ => 0) (by unfold circR; fun_prop) (by unfold circZ; fun_prop) hRpos
+    (by simp [circR]) (by simp [circZ]) (fun θ => ?_) (fun θ => by simp)
+    toroidal_purelyToroidal (fun θ => by simpa using hasFDerivAt_const (0 : ℝ) _)
+  exact (toroidal_vacuum.contDiffOn.continuousOn.continuousAt
+    (toroidal_vacuum.isOpen.mem_nhds (cylPoint_mem_domain (hRpos θ) _ _)))
 
 /-! ## The witness: the exact KAM torus of the rational stellarator -/
 
@@ -209,53 +204,53 @@ theorem iotaOnTorus : IotaOnTorus (field (1 / 4)) Rk zk iota :=
 
 end ExactTorus
 
-/-- The radial filling `k ↦ (1, 0) + k ((R, z)(χ, 0) − (1, 0))` of the poloidal loop at `φ = 0`
-of a torus `(R, z)`. -/
-@[expose] def fillSection (Rk zk : ℝ → ℝ → ℝ) (p : Space) : Space :=
-  cylPoint (1 + p 0 * (Rk (p 1) 0 - 1)) 0 (p 0 * zk (p 1) 0)
-
-/-- The C1 surface data of a torus `(R, z)` with transform `ι_A` and its radial filling. -/
+/-- The C1 surface data of a torus `(R, z)` with transform `ι_A`, poloidal loop at `φ = 0`. -/
 @[expose] def exactSurface (Rk zk : ℝ → ℝ → ℝ) : SurfaceData where
   R := Rk
   z := zk
   iota := iota
-  X := fillSection Rk zk
-  ζ₀ := 0
-  k₀ := 1
   φ₀ := 0
 
-/-- The radial filling spans the poloidal loop. -/
-theorem exactSurface_spans (Rk zk : ℝ → ℝ → ℝ) : (exactSurface Rk zk).Spans := by
-  refine ⟨zero_le_one, fun χ => ?_, fun χ χ' => ?_⟩ <;>
-    simp [exactSurface, fillSection, coordPt]
+/-- **The rational stellarator field is `∇φ` plus a gradient**: `field (1/4) = ∇φ + g` with
+`g = (1/16) ∇H`. -/
+theorem field_split (y : Space) :
+    field (1 / 4) y = toroidal y + ((1 / 4 : ℝ) / 4) • gradH y := rfl
 
-/-- The radial filling of an `ExactTorus` lies in the vacuum region `R > 0`. -/
-theorem fillSection_mem {Rk zk : ℝ → ℝ → ℝ} (hK : ExactTorus Rk zk) {k χ : ℝ}
-    (hk : k ∈ Icc (0 : ℝ) 1) : fillSection Rk zk (coordPt k χ 0) ∈ domain := by
-  change 0 < r2 (cylPt _ _ _)
-  rw [r2_cylPt]
-  simp only [coordPt, PiLp.toLp_apply, Matrix.cons_val_zero, Matrix.cons_val_one]
-  have := (hK.R_bounds χ 0).1
-  have e1 : 0 ≤ k * (Rk χ 0 - 1 + 1 / 5) := mul_nonneg hk.1 (by linarith)
-  have e2 : k ≤ 1 := hk.2
-  have : 0 < 1 + k * (Rk χ 0 - 1) := by nlinarith
-  positivity
+/-- `g = (1/16) ∇H` is the gradient of the single-valued potential `H/16` off the axis. -/
+theorem hasFDerivAt_potential {x : Space} (hx : x ∈ domain) :
+    HasFDerivAt (fun y => (1 / 4 : ℝ) / 4 * H y) (innerSL ℝ (((1 / 4 : ℝ) / 4) • gradH x)) x := by
+  refine ((H_hasFDerivAt x hx).const_mul ((1 / 4 : ℝ) / 4)).congr_fderiv ?_
+  ext v
+  simp
 
 /-- `ι_A > 0`. -/
 theorem iota_pos : 0 < iota := by unfold iota; positivity
 
 /-- **C1 witness**: the rational stellarator vacuum field satisfies clause C1 with `I_max = 0` and
-`ι_min = ι_A = (75 + √5)/562` on the exact KAM torus near torus A. -/
-theorem rationalStellarator_currentFreeTransform (μ₀ : ℝ) :
+`ι_min = ι_A = (75 + √5)/562` on the exact KAM torus near torus A (zero circulation around its
+poloidal loop at `φ = 0`), for every `μ₀ > 0`. -/
+theorem rationalStellarator_currentFreeTransform {μ₀ : ℝ} (hμ : 0 < μ₀) :
     ∃ S : Set SurfaceData, CurrentFreeTransform μ₀ (field (1 / 4)) S 0 iota := by
   obtain ⟨u, z, hu, hz, hur, hzr, hR, hZ, hC⟩ := PlasmaLean.Design.KamNewton.torusA_exact
   have hK := PlasmaLean.Design.KamNewton.exactTorus hu hz hur hzr hR hZ hC
+  have hmem : ∀ θ, (exactSurface (KamNewton.Rof u) (KamNewton.Zof z)).loop θ ∈ domain :=
+    fun θ => cylPoint_mem_domain (show 0 < KamNewton.Rof u θ 0 by
+      linarith [(hK.R_bounds θ 0).1]) _ _
   refine ⟨{exactSurface (KamNewton.Rof u) (KamNewton.Zof z)},
-    currentFreeTransform_of_vacuum (field_vacuum (1 / 4)) (singleton_nonempty _) iota_pos
-      ?_ ?_ ?_ ?_⟩
+    currentFreeTransform_of_potential (T := toroidal) (g := fun y => ((1 / 4 : ℝ) / 4) • gradH y)
+      (Φ := fun y => (1 / 4 : ℝ) / 4 * H y) hμ (singleton_nonempty _) iota_pos ?_ ?_ ?_ ?_
+      ?_ toroidal_purelyToroidal ?_ ?_⟩
   · rintro s rfl; exact ExactTorus.iotaOnTorus hK
-  · rintro s rfl; exact exactSurface_spans _ _
-  · rintro s rfl k hk χ _; exact fillSection_mem hK hk
-  · rintro s rfl; exact le_rfl
+  · rintro s rfl
+    exact hK.contDiff_R.comp (contDiff_id.prodMk contDiff_const)
+  · rintro s rfl
+    exact hK.contDiff_Z.comp (contDiff_id.prodMk contDiff_const)
+  · rintro s rfl θ
+    exact (field_vacuum (1 / 4)).contDiffOn.continuousOn.continuousAt
+      ((field_vacuum (1 / 4)).isOpen.mem_nhds (hmem θ))
+  · rintro s rfl θ; exact field_split _
+  · rintro s rfl θ; exact hasFDerivAt_potential (hmem θ)
+  · rintro s rfl
+    exact le_of_eq (abs_of_pos iota_pos).symm
 
 end PlasmaLean.Design.RationalStellaratorContract

@@ -21,14 +21,6 @@ contract: C1, C2 and C5"; plan question Q-21, goal G-11.
 
 * `ampereCurrent μ₀ B x = (∇ × B)(x)/μ₀`: the Ampère current of the **same** field (not a
   separately supplied `J`).
-* `netToroidalCurrent μ₀ B X ζ₀ k₀`: the flux `∫₀^{k₀} ∫_{-π}^{π} J · (∂_k X × ∂_χ X) dχ dk`
-  of that current through the section `ζ = ζ₀`, `0 ≤ k ≤ k₀`, of a toroidal coordinate map
-  `X : (k, χ, ζ) ↦ x` (radial label `k`, poloidal angle `χ`, toroidal angle `ζ`), oriented by
-  `∂_k X × ∂_χ X`. This is the form of `LandremanFamily2FluxLabels.torCurrent` (equal by `rfl`,
-  `Design/LandremanNetCurrent`). `X` need not be a global chart; only its values and derivatives
-  on the section enter. The section-independence of the value (from `∇ · J = 0` and `J · n = 0` on
-  flux surfaces) is **not** proved here: the contract fixes the section.
-* `NetCurrentBound μ₀ B X ζ₀ K I_max`, `CurrentFree μ₀ B X ζ₀ K` (`I_max = 0`).
 * `cylPoint R φ z`: the point with cylindrical coordinates `(R, φ, z)`.
 * `FieldTorus B R z ι`: a continuous torus `(θ, φ) ↦ cylPoint (R θ φ) φ (z θ φ)` in cylindrical
   form (`φ` the geometric toroidal angle), `2π`-periodic in both angles, `R > 0`, on which the
@@ -41,26 +33,49 @@ contract: C1, C2 and C5"; plan question Q-21, goal G-11.
 * `IotaOnTorus B R z ι`: `FieldTorus` plus a poloidal-angle convention. `IotaOnTorus.tendsto`:
   along every field line on the torus the poloidal angle advances at the asymptotic rate `ι`
   per toroidal radian (`(Θ − Θ₀)/φ → ι`), the physical definition of the rotational transform.
-* `SurfaceData`, `SurfaceData.Spans`, `CurrentFreeTransform μ₀ B S I_max ι_min` (clause C1):
-  a nonempty family `S` of surfaces, each a torus with transform `ι ≥ ι_min > 0` and a section
-  spanning its poloidal loop (outer edge `k = k₀` is the loop at toroidal angle `φ₀`, inner edge
-  `k = 0` a point) carrying net current `|I| ≤ I_max`, all for the same field `B`.
+  `ι` is signed (its sign is the handedness of the field lines); C1 bounds `|ι|`.
+* **Net toroidal current, intrinsically (Ampère's law)**: `lineIntegral B γ a b =
+  ∫_a^b ⟪B(γ t), γ'(t)⟫ dt`; `poloidalLoop R z φ₀ θ = cylPoint (R θ φ₀) φ₀ (z θ φ₀)`, the
+  poloidal loop of the torus itself at toroidal angle `φ₀`;
+  `poloidalCirculation B R z φ₀ = ∮ B · dl` over `θ ∈ [-π, π]`; and
+  `loopCurrent μ₀ B R z φ₀ = μ₀⁻¹ ∮ B · dl`. The loop is fixed by the surface data: there is no
+  choice of spanning surface.
+* `SurfaceData`, `CurrentFreeTransform μ₀ B S I_max ι_min` (clause C1): `μ₀ > 0` and a nonempty
+  family `S` of surfaces, each a torus with transform `|ι| ≥ ι_min > 0` whose poloidal loop is
+  `C¹`, along which `B` is continuous, and around which `|μ₀⁻¹ ∮ B · dl| ≤ I_max`, all for the
+  same field `B`.
+
+Section flux (auxiliary, **not** the C1 quantity):
+* `netToroidalCurrent μ₀ B X ζ₀ k₀`: the flux `∫₀^{k₀} ∫_{-π}^{π} J · (∂_k X × ∂_χ X) dχ dk`
+  of the Ampère current through the section `ζ = ζ₀`, `0 ≤ k ≤ k₀`, of a toroidal coordinate map
+  `X : (k, χ, ζ) ↦ x`, oriented by `∂_k X × ∂_χ X` (the form of
+  `LandremanFamily2FluxLabels.torCurrent`). `NetCurrentBound`, `CurrentFree` (`I_max = 0`) and
+  `SectionSpans` (outer edge the loop, inner edge a point) are section-flux notions. Without
+  regularity the section flux is not the circulation: a pinched section spanning the loop has
+  flux `0` for every field (`Sanity/AuditRefreshContract`, audit finding AR-H1). For regular
+  sections (`C²` map, `C¹` field, matched seams) Stokes' theorem identifies the two
+  (`Theory/Contract/SectionStokes`, `netToroidalCurrent_eq_lineIntegral_div`).
 
 Sanity triad (C1):
-* degenerate: `netToroidalCurrent_zero_field`; vacuum: `netToroidalCurrent_eq_zero_of_vacuum`,
-  `currentFree_of_vacuum`, `currentFreeTransform_of_vacuum` (a vacuum field satisfies the current
-  clause with `I_max = 0`);
+* witness lemma: `lineIntegral_eq_zero_of_potential` (FTC), `inner_toroidal_poloidalLoop` (a
+  purely toroidal field is orthogonal to a loop of constant `φ`), and
+  `poloidalCirculation_eq_zero_of_potential`: a field equal near the loop to a purely toroidal
+  field plus the gradient of a single-valued `C¹` potential has zero circulation around every
+  closed `C¹` poloidal loop; hence `currentFreeTransform_of_potential` (C1 with `I_max = 0`);
+* degenerate: `poloidalCirculation_zero_field`, `netToroidalCurrent_zero_field`;
 * **tokamak exclusion**: `iota_eq_zero_of_purelyToroidal`: for a purely toroidal field
   (`B_z = 0`, `B · (x, y, 0) = 0`; the vacuum axisymmetric field `B = (μ₀ I/2πR) e_φ` is one)
   every `IotaOnTorus` has `ι = 0`; hence `not_currentFreeTransform_of_purelyToroidal`: such a
   field fails C1 for every `I_max` and every `ι_min > 0`, although it carries no current;
-* counterexample: `netToroidalCurrent_rotation`: the uniform-current field `B = e_z × x`
-  (`μ₀ J = 2 e_z`) has current `4π k₀/μ₀` through the slab section of the identity chart, so it
-  is not current-free (`rotation_not_currentFree`); the toroidal counterexample is Landreman
-  family 2 (`Design/LandremanNetCurrent`, `family2_not_currentFree`).
+* counterexamples: `netToroidalCurrent_rotation`/`rotation_not_currentFree` (section flux of the
+  uniform-current field `B = e_z × x`); its loop circulation is `2π a²` around a circular loop of
+  radius `a` (`Sanity/AuditRefreshContract`, `rotation_poloidalCirculation`), so it fails the C1
+  current clause with `I_max = 0`; the toroidal counterexample is Landreman family 2
+  (`Design/LandremanNetCurrent`, `family2_loopCurrent_eq`, `family2_not_currentFreeTransform`).
 
 Witnesses and instances in `Design/RationalStellaratorContract` (the rational stellarator vacuum
-field with the KAM torus A, and the circular torus of the field `∇φ` with `ι = 0`).
+field with the KAM torus A, and the circular torus of the field `∇φ` with `ι = 0`) and
+`Design/DommaschkQA3` (zero circulation around every poloidal loop off the axis).
 
 ## C2: omnigeneity in the Boozer guiding-centre model
 
@@ -89,7 +104,8 @@ Sanity (C2):
 transport; the bounce-averaged drift as a function on velocity space; trapped-orbit existence for
 a given field; the identification of the Boozer model with a Cartesian field; the theorem
 "axisymmetric, current-free, nested surfaces ⇒ purely toroidal" (needs the maximum principle for
-`Δ*ψ = 0`); section-independence of the net current; reference curves that are not fixed circles.
+`Δ*ψ = 0`); section-independence of the section flux; Stokes' theorem for loops that do not bound a
+coordinate section; reference curves that are not fixed circles.
 -/
 
 open scoped RealInnerProductSpace
@@ -101,7 +117,10 @@ namespace PlasmaLean.Contract
 
 open Real Set Filter Topology Matrix WithLp PlasmaLean.Fields PlasmaLean.Vacuum
 
-/-! ## Net toroidal current -/
+/-! ## Section flux of the Ampère current (auxiliary; not the C1 quantity)
+
+The C1 current is the loop circulation `loopCurrent` below. The section flux agrees with it only
+for regular sections (`Theory/Contract/SectionStokes`). -/
 
 /-- The coordinate point `(k, χ, ζ)` of a toroidal coordinate system, as an element of
 `Space`. -/
@@ -116,38 +135,49 @@ Fréchet derivative of `B`. -/
 @[expose] def ampereCurrent (μ₀ : ℝ) (B : Space → Space) (x : Space) : Space :=
   μ₀⁻¹ • curl (fderiv ℝ B x)
 
-/-- **Net toroidal current** of the field `B` through the section `ζ = ζ₀`, `0 ≤ k ≤ k₀`,
+/-- **Section flux** of the Ampère current of `B` through the section `ζ = ζ₀`, `0 ≤ k ≤ k₀`,
 `-π ≤ χ ≤ π` of the toroidal coordinate map `X : (k, χ, ζ) ↦ x`:
 `I = ∫₀^{k₀} ∫_{-π}^{π} J · (∂_k X × ∂_χ X) dχ dk`, `J = (∇ × B)/μ₀` (units: A when `B` is in T,
-lengths in m and `μ₀` in SI). -/
+lengths in m and `μ₀` in SI). This is the net toroidal current only for a regular section
+spanning the poloidal loop (Stokes, `SectionStokes.netToroidalCurrent_eq_lineIntegral_div`);
+clause C1 uses the loop circulation `loopCurrent` instead. -/
 @[expose] def netToroidalCurrent (μ₀ : ℝ) (B X : Space → Space) (ζ₀ k₀ : ℝ) : ℝ :=
   ∫ k in (0 : ℝ)..k₀, ∫ χ in (-π)..π,
     tripleFlux (ampereCurrent μ₀ B (X (coordPt k χ ζ₀)))
       (fderiv ℝ X (coordPt k χ ζ₀) (basis 0)) (fderiv ℝ X (coordPt k χ ζ₀) (basis 1))
 
-/-- **Net-current bound**: `|I(k₀)| ≤ I_max` for every surface label `k₀ ∈ K`. -/
+/-- **Section-flux bound**: `|I(k₀)| ≤ I_max` for the section flux through every section label
+`k₀ ∈ K` (a section-flux notion, not clause C1). -/
 @[expose] def NetCurrentBound (μ₀ : ℝ) (B X : Space → Space) (ζ₀ : ℝ) (K : Set ℝ)
     (Imax : ℝ) : Prop :=
   ∀ k₀ ∈ K, |netToroidalCurrent μ₀ B X ζ₀ k₀| ≤ Imax
 
-/-- **Current-free** on the surfaces `K`: the net-current bound with `I_max = 0`. -/
+/-- **Section-current-free** on the sections `K`: the section-flux bound with `I_max = 0` (a
+section-flux notion, not clause C1). -/
 @[expose] def CurrentFree (μ₀ : ℝ) (B X : Space → Space) (ζ₀ : ℝ) (K : Set ℝ) : Prop :=
   NetCurrentBound μ₀ B X ζ₀ K 0
+
+/-- The section `ζ = ζ₀`, `0 ≤ k ≤ k₀` of `X` **spans the loop** `γ` in the weak sense: `k₀ ≥ 0`,
+its outer edge `k = k₀` is `γ` and its inner edge `k = 0` is a single point. Nothing is required
+of the seams `χ = ±π` or of the regularity of `X`, so this does not make the section flux equal
+to the circulation of `γ` (`Sanity/AuditRefreshContract.pinch_spans`). -/
+@[expose] def SectionSpans (X : Space → Space) (ζ₀ k₀ : ℝ) (γ : ℝ → Space) : Prop :=
+  0 ≤ k₀ ∧ (∀ χ, X (coordPt k₀ χ ζ₀) = γ χ) ∧ ∀ χ χ', X (coordPt 0 χ ζ₀) = X (coordPt 0 χ' ζ₀)
 
 section Current
 variable {μ₀ : ℝ} {B X : Space → Space} {ζ₀ : ℝ} {K : Set ℝ}
 
-/-- Current-free means zero net current on every surface of `K`. -/
+/-- Section-current-free means zero section flux through every section of `K`. -/
 theorem currentFree_iff :
     CurrentFree μ₀ B X ζ₀ K ↔ ∀ k₀ ∈ K, netToroidalCurrent μ₀ B X ζ₀ k₀ = 0 := by
   simp only [CurrentFree, NetCurrentBound, abs_nonpos_iff]
 
-/-- The net-current bound is monotone in `I_max`. -/
+/-- The section-flux bound is monotone in `I_max`. -/
 theorem NetCurrentBound.mono {Imax Imax' : ℝ} (h : NetCurrentBound μ₀ B X ζ₀ K Imax)
     (hI : Imax ≤ Imax') : NetCurrentBound μ₀ B X ζ₀ K Imax' :=
   fun k hk => (h k hk).trans hI
 
-/-- A current-free field satisfies every nonnegative net-current bound. -/
+/-- A section-current-free field satisfies every nonnegative section-flux bound. -/
 theorem CurrentFree.netCurrentBound {Imax : ℝ} (h : CurrentFree μ₀ B X ζ₀ K) (hI : 0 ≤ Imax) :
     NetCurrentBound μ₀ B X ζ₀ K Imax :=
   NetCurrentBound.mono h hI
@@ -180,15 +210,15 @@ theorem netToroidalCurrent_eq_zero_of_eqOn {k₀ : ℝ} (hk₀ : 0 ≤ k₀)
   rw [uIcc_of_le (by linarith [pi_pos])] at hχ
   simp only [h k hk χ hχ, tripleFlux, ofLp_zero, zero_dotProduct]
 
-/-- **Vacuum ⇒ zero net current**: if `B` is a vacuum field on `Ω` and the section lies in `Ω`,
-the net toroidal current through it vanishes. -/
+/-- **Vacuum ⇒ zero section flux**: if `B` is a vacuum field on `Ω` and the section lies in `Ω`,
+the flux of the Ampère current through it vanishes. -/
 theorem netToroidalCurrent_eq_zero_of_vacuum {Ω : Set Space} (hB : VacuumField Ω B) {k₀ : ℝ}
     (hk₀ : 0 ≤ k₀) (hX : ∀ k ∈ Icc 0 k₀, ∀ χ ∈ Icc (-π) π, X (coordPt k χ ζ₀) ∈ Ω) :
     netToroidalCurrent μ₀ B X ζ₀ k₀ = 0 :=
   netToroidalCurrent_eq_zero_of_eqOn hk₀ fun k hk χ hχ =>
     ampereCurrent_eq_zero_of_vacuum hB (hX k hk χ hχ) μ₀
 
-/-- A vacuum field is current-free on every family of sections lying in its region. -/
+/-- A vacuum field is section-current-free on every family of sections lying in its region. -/
 theorem currentFree_of_vacuum {Ω : Set Space} (hB : VacuumField Ω B)
     (hX : ∀ k₀ ∈ K, 0 ≤ k₀ ∧ ∀ k ∈ Icc 0 k₀, ∀ χ ∈ Icc (-π) π, X (coordPt k χ ζ₀) ∈ Ω) :
     CurrentFree μ₀ B X ζ₀ K :=
@@ -196,12 +226,12 @@ theorem currentFree_of_vacuum {Ω : Set Space} (hB : VacuumField Ω B)
 
 end Current
 
-/-- **Degenerate case**: the zero field carries no current through any section. -/
+/-- **Degenerate case**: the zero field has zero section flux through every section. -/
 theorem netToroidalCurrent_zero_field (μ₀ : ℝ) (X : Space → Space) (ζ₀ k₀ : ℝ) :
     netToroidalCurrent μ₀ (fun _ => 0) X ζ₀ k₀ = 0 := by
   simp [netToroidalCurrent, ampereCurrent, tripleFlux, curl]
 
-/-- **Counterexample (uniform current)**: the field `B = e_z × x = (-y, x, 0)` has
+/-- **Counterexample (uniform current, section flux)**: the field `B = e_z × x = (-y, x, 0)` has
 `μ₀ J = 2 e_z`, so its current through the slab section `{0 ≤ x ≤ k₀, -π ≤ y ≤ π, z = ζ₀}` of the
 identity chart is `4π k₀/μ₀`. -/
 theorem netToroidalCurrent_rotation (μ₀ ζ₀ k₀ : ℝ) :
@@ -216,8 +246,8 @@ theorem netToroidalCurrent_rotation (μ₀ ζ₀ k₀ : ℝ) :
   simp only [netToroidalCurrent, hJ, intervalIntegral.integral_const, smul_eq_mul]
   ring
 
-/-- The uniform-current field is not current-free on any family containing a surface
-`k₀ ≠ 0` (for `μ₀ ≠ 0`). -/
+/-- The uniform-current field is not section-current-free on any family containing a section
+`k₀ ≠ 0` of the identity chart (for `μ₀ ≠ 0`). -/
 theorem rotation_not_currentFree {μ₀ ζ₀ : ℝ} (hμ : μ₀ ≠ 0) {K : Set ℝ} {k₀ : ℝ} (hk : k₀ ∈ K)
     (hk0 : k₀ ≠ 0) : ¬ CurrentFree μ₀ (crossBilinear (basis 2)) (fun x => x) ζ₀ K := by
   intro h
@@ -484,11 +514,141 @@ theorem iota_eq_zero_of_purelyToroidal (hB : PurelyToroidal B) (h : IotaOnTorus 
 
 end Torus
 
+/-! ## The net toroidal current as a loop circulation (Ampère's law) -/
+
+/-- The **line integral** `∫_a^b ⟪B(γ t), γ'(t)⟫ dt` of the field `B` along the curve `γ`. -/
+@[expose] def lineIntegral (B : Space → Space) (γ : ℝ → Space) (a b : ℝ) : ℝ :=
+  ∫ t in a..b, ⟪B (γ t), deriv γ t⟫
+
+/-- The **poloidal loop** `θ ↦ cylPoint (R θ φ₀) φ₀ (z θ φ₀)` of the torus `(R, z)` at the
+toroidal angle `φ₀` (a loop of constant geometric toroidal angle on the torus itself). -/
+@[expose] def poloidalLoop (R z : ℝ → ℝ → ℝ) (φ₀ θ : ℝ) : Space :=
+  cylPoint (R θ φ₀) φ₀ (z θ φ₀)
+
+/-- The **poloidal circulation** `∮ B · dl` of `B` around the poloidal loop of the torus
+`(R, z)` at toroidal angle `φ₀`, over one period `θ ∈ [-π, π]`, oriented by increasing `θ`. -/
+@[expose] def poloidalCirculation (B : Space → Space) (R z : ℝ → ℝ → ℝ) (φ₀ : ℝ) : ℝ :=
+  lineIntegral B (poloidalLoop R z φ₀) (-π) π
+
+/-- **Net toroidal current enclosed by the poloidal loop**, by Ampère's law:
+`I = μ₀⁻¹ ∮ B · dl` (units: A when `B` is in T, lengths in m and `μ₀` in SI). It depends only on
+the field and the surface data `(R, z, φ₀)`. -/
+@[expose] def loopCurrent (μ₀ : ℝ) (B : Space → Space) (R z : ℝ → ℝ → ℝ) (φ₀ : ℝ) : ℝ :=
+  poloidalCirculation B R z φ₀ / μ₀
+
+section Loop
+variable {B : Space → Space} {R z : ℝ → ℝ → ℝ} {φ₀ : ℝ}
+
+/-- **Fundamental theorem of calculus for line integrals.** If, along a `C¹` curve `γ`, `B` is
+continuous and has the same tangential component as `g`, and `g = ∇Φ` along `γ`, then
+`∫_a^b B · dl = Φ(γ b) − Φ(γ a)`. -/
+theorem lineIntegral_eq_sub_of_potential {g : Space → Space} {γ : ℝ → Space} {Φ : Space → ℝ}
+    (a b : ℝ) (hγ : ContDiff ℝ 1 γ) (hB : ∀ t, ContinuousAt B (γ t))
+    (hg : ∀ t, ⟪B (γ t), deriv γ t⟫ = ⟪g (γ t), deriv γ t⟫)
+    (hΦ : ∀ t, HasFDerivAt Φ (innerSL ℝ (g (γ t))) (γ t)) :
+    lineIntegral B γ a b = Φ (γ b) - Φ (γ a) := by
+  have hd : ∀ t, HasDerivAt γ (deriv γ t) t := fun t =>
+    ((hγ.differentiable one_ne_zero) t).hasDerivAt
+  have hcont : Continuous fun t => ⟪B (γ t), deriv γ t⟫ :=
+    continuous_iff_continuousAt.2 fun t =>
+      ((hB t).comp hγ.continuous.continuousAt).inner
+        (hγ.continuous_deriv le_rfl).continuousAt
+  unfold lineIntegral
+  refine intervalIntegral.integral_eq_sub_of_hasDerivAt (f := fun t => Φ (γ t))
+    (fun t _ => ?_) (hcont.intervalIntegrable _ _)
+  have h := (hΦ t).comp_hasDerivAt t (hd t)
+  rw [hg t]
+  simpa [Function.comp_def] using h
+
+/-- A closed `C¹` curve along which `B` is tangentially a gradient has zero circulation. -/
+theorem lineIntegral_eq_zero_of_potential {g : Space → Space} {γ : ℝ → Space} {Φ : Space → ℝ}
+    {a b : ℝ} (hγ : ContDiff ℝ 1 γ) (hB : ∀ t, ContinuousAt B (γ t))
+    (hg : ∀ t, ⟪B (γ t), deriv γ t⟫ = ⟪g (γ t), deriv γ t⟫)
+    (hΦ : ∀ t, HasFDerivAt Φ (innerSL ℝ (g (γ t))) (γ t)) (hclosed : γ a = γ b) :
+    lineIntegral B γ a b = 0 := by
+  rw [lineIntegral_eq_sub_of_potential a b hγ hB hg hΦ, hclosed, sub_self]
+
+/-- A curve in space is differentiable when its three coordinates are. -/
+theorem hasDerivAt_space3 {f0 f1 f2 : ℝ → ℝ} {d0 d1 d2 t : ℝ} (h0 : HasDerivAt f0 d0 t)
+    (h1 : HasDerivAt f1 d1 t) (h2 : HasDerivAt f2 d2 t) :
+    HasDerivAt (fun s => (toLp 2 ![f0 s, f1 s, f2 s] : Space)) (toLp 2 ![d0, d1, d2]) t := by
+  have h := ((h0.smul_const (basis 0)).add (h1.smul_const (basis 1))).add
+    (h2.smul_const (basis 2))
+  convert h using 1
+  · funext s; ext k; fin_cases k <;> simp [basis]
+  · ext k; fin_cases k <;> simp [basis]
+
+/-- The velocity of the poloidal loop: `(R' cos φ₀, R' sin φ₀, z')`. -/
+theorem hasDerivAt_poloidalLoop {θ R' z' : ℝ} (hR : HasDerivAt (fun t => R t φ₀) R' θ)
+    (hz : HasDerivAt (fun t => z t φ₀) z' θ) :
+    HasDerivAt (poloidalLoop R z φ₀) (toLp 2 ![R' * cos φ₀, R' * sin φ₀, z']) θ :=
+  hasDerivAt_space3 (hR.mul_const _) (hR.mul_const _) hz
+
+/-- The poloidal loop of a torus with `C¹` profiles `R(·, φ₀)`, `z(·, φ₀)` is `C¹`. -/
+theorem contDiff_poloidalLoop (hR : ContDiff ℝ 1 fun t => R t φ₀)
+    (hz : ContDiff ℝ 1 fun t => z t φ₀) : ContDiff ℝ 1 (poloidalLoop R z φ₀) := by
+  refine (contDiff_piLp 2).2 fun i => ?_
+  fin_cases i
+  · simpa [poloidalLoop, cylPoint] using hR.mul contDiff_const
+  · simpa [poloidalLoop, cylPoint] using hR.mul contDiff_const
+  · simpa [poloidalLoop, cylPoint] using hz
+
+/-- **A purely toroidal field is orthogonal to a loop of constant toroidal angle**:
+`⟪T(γ θ), γ'(θ)⟫ = 0` for the poloidal loop `γ` (with `R > 0`). -/
+theorem inner_toroidal_poloidalLoop {T : Space → Space} (hT : PurelyToroidal T) {θ : ℝ}
+    (hRpos : 0 < R θ φ₀) (hR : DifferentiableAt ℝ (fun t => R t φ₀) θ)
+    (hz : DifferentiableAt ℝ (fun t => z t φ₀) θ) :
+    ⟪T (poloidalLoop R z φ₀ θ), deriv (poloidalLoop R z φ₀) θ⟫ = 0 := by
+  rw [(hasDerivAt_poloidalLoop hR.hasDerivAt hz.hasDerivAt).deriv]
+  obtain ⟨h2, h01⟩ := hT (poloidalLoop R z φ₀ θ)
+  set x := poloidalLoop R z φ₀ θ with hx
+  have hx0 : x 0 = R θ φ₀ * cos φ₀ := by simp [hx, poloidalLoop, cylPoint]
+  have hx1 : x 1 = R θ φ₀ * sin φ₀ := by simp [hx, poloidalLoop, cylPoint]
+  rw [hx0, hx1] at h01
+  have hc : cos φ₀ * T x 0 + sin φ₀ * T x 1 = 0 := by
+    have : R θ φ₀ * (cos φ₀ * T x 0 + sin φ₀ * T x 1) = 0 := by linear_combination h01
+    exact (mul_eq_zero.1 this).resolve_left hRpos.ne'
+  simp only [EuclideanSpace.inner_eq_star_dotProduct, Fin.sum_univ_three, dotProduct]
+  simp [h2]
+  linear_combination deriv (fun t => R t φ₀) θ * hc
+
+/-- **Witness lemma (C1 current clause).** If near the poloidal loop the field is
+`B = T + ∇Φ` with `T` purely toroidal and `Φ` a single-valued `C¹` potential (`g = ∇Φ` along the
+loop), the loop is closed (`R`, `z` take the same values at `θ = ±π`) and `C¹` with `R > 0`, and
+`B` is continuous along it, then the circulation `∮ B · dl` vanishes. -/
+theorem poloidalCirculation_eq_zero_of_potential {T g : Space → Space} {Φ : Space → ℝ}
+    (hR : ContDiff ℝ 1 fun t => R t φ₀) (hz : ContDiff ℝ 1 fun t => z t φ₀)
+    (hRpos : ∀ θ, 0 < R θ φ₀) (hRper : R π φ₀ = R (-π) φ₀) (hzper : z π φ₀ = z (-π) φ₀)
+    (hB : ∀ θ, ContinuousAt B (poloidalLoop R z φ₀ θ))
+    (hsplit : ∀ θ, B (poloidalLoop R z φ₀ θ) =
+      T (poloidalLoop R z φ₀ θ) + g (poloidalLoop R z φ₀ θ))
+    (hT : PurelyToroidal T)
+    (hΦ : ∀ θ, HasFDerivAt Φ (innerSL ℝ (g (poloidalLoop R z φ₀ θ))) (poloidalLoop R z φ₀ θ)) :
+    poloidalCirculation B R z φ₀ = 0 := by
+  refine lineIntegral_eq_zero_of_potential (contDiff_poloidalLoop hR hz) hB (fun θ => ?_) hΦ ?_
+  · rw [hsplit θ, inner_add_left,
+      inner_toroidal_poloidalLoop hT (hRpos θ) ((hR.differentiable one_ne_zero) θ)
+        ((hz.differentiable one_ne_zero) θ), zero_add]
+  · simp [poloidalLoop, hRper, hzper]
+
+/-- An invariant torus is closed in `θ`: `R`, `z` agree at `θ = ±π`. -/
+theorem FieldTorus.closed {ι : ℝ} (h : FieldTorus B R z ι) (φ : ℝ) :
+    R π φ = R (-π) φ ∧ z π φ = z (-π) φ := by
+  have e : -π + 2 * π = π := by ring
+  exact ⟨by rw [← h.per_θ_R (-π), e], by rw [← h.per_θ_z (-π), e]⟩
+
+end Loop
+
+/-- **Degenerate case**: the zero field has zero circulation around every loop. -/
+theorem poloidalCirculation_zero_field (R z : ℝ → ℝ → ℝ) (φ₀ : ℝ) :
+    poloidalCirculation (fun _ => 0) R z φ₀ = 0 := by
+  simp [poloidalCirculation, lineIntegral]
+
 /-! ## Clause C1 -/
 
 /-- The data of one confining surface for clause C1: the torus `(R, z)` with its transform
-`iota`, and a section of a toroidal coordinate map `X` (`ζ = ζ₀`, `0 ≤ k ≤ k₀`) used to measure
-the net current, spanning the poloidal loop of the torus at toroidal angle `φ₀`. -/
+`iota`, and the toroidal angle `φ₀` of the poloidal loop around which the net current is
+measured. -/
 structure SurfaceData where
   /-- Cylindrical radius of the torus. -/
   R : ℝ → ℝ → ℝ
@@ -496,55 +656,70 @@ structure SurfaceData where
   z : ℝ → ℝ → ℝ
   /-- Rotational transform on the torus. -/
   iota : ℝ
-  /-- Toroidal coordinate map carrying the current section. -/
-  X : Space → Space
-  /-- Toroidal coordinate of the section. -/
-  ζ₀ : ℝ
-  /-- Radial extent of the section. -/
-  k₀ : ℝ
-  /-- Toroidal angle of the poloidal loop spanned by the section. -/
+  /-- Toroidal angle of the poloidal loop. -/
   φ₀ : ℝ
 
-/-- The section **spans the poloidal loop** of the torus: `k₀ ≥ 0`, its outer edge `k = k₀` is
-the loop `χ ↦ cylPoint (R χ φ₀) φ₀ (z χ φ₀)` and its inner edge `k = 0` is a single point. -/
-@[expose] def SurfaceData.Spans (s : SurfaceData) : Prop :=
-  0 ≤ s.k₀ ∧ (∀ χ, s.X (coordPt s.k₀ χ s.ζ₀) = cylPoint (s.R χ s.φ₀) s.φ₀ (s.z χ s.φ₀)) ∧
-    ∀ χ χ', s.X (coordPt 0 χ s.ζ₀) = s.X (coordPt 0 χ' s.ζ₀)
+/-- The poloidal loop of the surface. -/
+@[expose] def SurfaceData.loop (s : SurfaceData) : ℝ → Space := poloidalLoop s.R s.z s.φ₀
 
-/-- **Contract clause C1 (current-free rotational transform)** for the field `B`: a nonempty
-family `S` of confining surfaces, each an invariant torus with rotational transform
-`ι ≥ ι_min > 0` (`IotaOnTorus`), with a section spanning its poloidal loop through which the net
-toroidal current of `B` satisfies `|I| ≤ I_max`. -/
+/-- The net toroidal current enclosed by the poloidal loop of the surface,
+`μ₀⁻¹ ∮ B · dl`. -/
+@[expose] def SurfaceData.current (μ₀ : ℝ) (B : Space → Space) (s : SurfaceData) : ℝ :=
+  loopCurrent μ₀ B s.R s.z s.φ₀
+
+/-- **Contract clause C1 (current-free rotational transform)** for the field `B` (with
+`μ₀ > 0`): a nonempty family `S` of confining surfaces, each an invariant torus with rotational
+transform `|ι| ≥ ι_min > 0` (`IotaOnTorus`; either handedness), whose poloidal loop at `φ₀` is
+`C¹` and carries `B` continuously, and around which the Ampère current
+`I = μ₀⁻¹ ∮ B · dl` satisfies `|I| ≤ I_max`. -/
 structure CurrentFreeTransform (μ₀ : ℝ) (B : Space → Space) (S : Set SurfaceData)
     (Imax ιmin : ℝ) : Prop where
+  /-- The vacuum permeability is positive. -/
+  mu0_pos : 0 < μ₀
   /-- There is at least one confining surface. -/
   nonempty : S.Nonempty
   /-- The transform bound is positive. -/
   iotaMin_pos : 0 < ιmin
   /-- Each surface is an invariant torus with its transform. -/
   torus : ∀ s ∈ S, IotaOnTorus B s.R s.z s.iota
-  /-- Each current section spans the poloidal loop of its torus. -/
-  spans : ∀ s ∈ S, s.Spans
-  /-- Net-current bound. -/
-  current_le : ∀ s ∈ S, |netToroidalCurrent μ₀ B s.X s.ζ₀ s.k₀| ≤ Imax
-  /-- Transform bound. -/
-  iota_ge : ∀ s ∈ S, ιmin ≤ s.iota
+  /-- The radial profile of each poloidal loop is `C¹`. -/
+  loop_R : ∀ s ∈ S, ContDiff ℝ 1 fun θ => s.R θ s.φ₀
+  /-- The vertical profile of each poloidal loop is `C¹`. -/
+  loop_z : ∀ s ∈ S, ContDiff ℝ 1 fun θ => s.z θ s.φ₀
+  /-- The field is continuous along each poloidal loop. -/
+  field_continuous : ∀ s ∈ S, ∀ θ, ContinuousAt B (s.loop θ)
+  /-- Net-current bound (Ampère's law around the poloidal loop). -/
+  current_le : ∀ s ∈ S, |s.current μ₀ B| ≤ Imax
+  /-- Transform bound (either handedness). -/
+  iota_ge : ∀ s ∈ S, ιmin ≤ |s.iota|
 
 section C1
 variable {μ₀ : ℝ} {B : Space → Space} {S : Set SurfaceData} {Imax ιmin : ℝ}
 
-/-- **A vacuum field satisfies the current clause with `I_max = 0`**: C1 reduces to the
-transform clause on surfaces whose sections lie in the vacuum region. -/
-theorem currentFreeTransform_of_vacuum {Ω : Set Space} (hB : VacuumField Ω B) (hS : S.Nonempty)
-    (hι : 0 < ιmin) (hT : ∀ s ∈ S, IotaOnTorus B s.R s.z s.iota) (hsp : ∀ s ∈ S, s.Spans)
-    (hΩ : ∀ s ∈ S, ∀ k ∈ Icc 0 s.k₀, ∀ χ ∈ Icc (-π) π, s.X (coordPt k χ s.ζ₀) ∈ Ω)
-    (hge : ∀ s ∈ S, ιmin ≤ s.iota) : CurrentFreeTransform μ₀ B S 0 ιmin where
+/-- **Toroidal field plus gradient satisfies the current clause with `I_max = 0`**: if along every
+poloidal loop of `S` the field is `B = T + ∇Φ` with `T` purely toroidal and `Φ` a single-valued
+`C¹` potential, C1 reduces to the transform clause and the regularity of the loops. -/
+theorem currentFreeTransform_of_potential {T g : Space → Space} {Φ : Space → ℝ} (hμ : 0 < μ₀)
+    (hS : S.Nonempty) (hι : 0 < ιmin) (hTor : ∀ s ∈ S, IotaOnTorus B s.R s.z s.iota)
+    (hR : ∀ s ∈ S, ContDiff ℝ 1 fun θ => s.R θ s.φ₀)
+    (hz : ∀ s ∈ S, ContDiff ℝ 1 fun θ => s.z θ s.φ₀)
+    (hB : ∀ s ∈ S, ∀ θ, ContinuousAt B (s.loop θ))
+    (hsplit : ∀ s ∈ S, ∀ θ, B (s.loop θ) = T (s.loop θ) + g (s.loop θ))
+    (hT : PurelyToroidal T) (hΦ : ∀ s ∈ S, ∀ θ, HasFDerivAt Φ (innerSL ℝ (g (s.loop θ))) (s.loop θ))
+    (hge : ∀ s ∈ S, ιmin ≤ |s.iota|) : CurrentFreeTransform μ₀ B S 0 ιmin where
+  mu0_pos := hμ
   nonempty := hS
   iotaMin_pos := hι
-  torus := hT
-  spans := hsp
+  torus := hTor
+  loop_R := hR
+  loop_z := hz
+  field_continuous := hB
   current_le s hs := by
-    rw [netToroidalCurrent_eq_zero_of_vacuum hB (hsp s hs).1 (hΩ s hs), abs_zero]
+    have hcl := (hTor s hs).1.closed s.φ₀
+    rw [SurfaceData.current, loopCurrent,
+      poloidalCirculation_eq_zero_of_potential (hR s hs) (hz s hs)
+        (fun θ => (hTor s hs).1.R_pos θ s.φ₀) hcl.1 hcl.2 (hB s hs) (hsplit s hs) hT (hΦ s hs),
+      zero_div, abs_zero]
   iota_ge := hge
 
 /-- **Tokamak exclusion at contract level**: a purely toroidal field (e.g. the vacuum
@@ -555,12 +730,12 @@ theorem not_currentFreeTransform_of_purelyToroidal (hB : PurelyToroidal B) :
   obtain ⟨s, hs⟩ := h.nonempty
   have h0 := iota_eq_zero_of_purelyToroidal hB (h.torus s hs)
   have := h.iota_ge s hs
+  rw [h0, abs_zero] at this
   linarith [h.iotaMin_pos]
 
-/-- A surface carrying net current above `I_max` violates C1. -/
+/-- A surface whose poloidal loop encloses net current above `I_max` violates C1. -/
 theorem not_currentFreeTransform_of_current {s : SurfaceData} (hs : s ∈ S)
-    (hI : Imax < |netToroidalCurrent μ₀ B s.X s.ζ₀ s.k₀|) :
-    ¬ CurrentFreeTransform μ₀ B S Imax ιmin :=
+    (hI : Imax < |s.current μ₀ B|) : ¬ CurrentFreeTransform μ₀ B S Imax ιmin :=
   fun h => absurd (h.current_le s hs) (not_le.2 hI)
 
 /-- C1 is monotone: a larger current allowance and a smaller transform bound (still positive)
@@ -568,10 +743,13 @@ are weaker. -/
 theorem CurrentFreeTransform.mono {Imax' ιmin' : ℝ} (h : CurrentFreeTransform μ₀ B S Imax ιmin)
     (hI : Imax ≤ Imax') (hι : ιmin' ≤ ιmin) (hι' : 0 < ιmin') :
     CurrentFreeTransform μ₀ B S Imax' ιmin' where
+  mu0_pos := h.mu0_pos
   nonempty := h.nonempty
   iotaMin_pos := hι'
   torus := h.torus
-  spans := h.spans
+  loop_R := h.loop_R
+  loop_z := h.loop_z
+  field_continuous := h.field_continuous
   current_le s hs := (h.current_le s hs).trans hI
   iota_ge s hs := hι.trans (h.iota_ge s hs)
 

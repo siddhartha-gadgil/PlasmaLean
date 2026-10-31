@@ -286,7 +286,14 @@ run_cmd do
 #print axioms PlasmaLean.Contract.IotaOnTorus.tendsto
 #print axioms PlasmaLean.Contract.FieldTorus.Rz_const_of_purelyToroidal
 #print axioms PlasmaLean.Contract.iota_eq_zero_of_purelyToroidal
-#print axioms PlasmaLean.Contract.currentFreeTransform_of_vacuum
+#print axioms PlasmaLean.Contract.currentFreeTransform_of_potential
+#print axioms PlasmaLean.Contract.poloidalCirculation_eq_zero_of_potential
+#print axioms PlasmaLean.Contract.lineIntegral_eq_zero_of_potential
+#print axioms PlasmaLean.Contract.inner_toroidal_poloidalLoop
+#print axioms PlasmaLean.Contract.poloidalCirculation_zero_field
+#print axioms PlasmaLean.Contract.netToroidalCurrent_eq_lineIntegral_div
+#print axioms PlasmaLean.Contract.netToroidalCurrent_eq_loopCurrent
+#print axioms PlasmaLean.Contract.stokes_rotation_disc
 #print axioms PlasmaLean.Contract.not_currentFreeTransform_of_purelyToroidal
 #print axioms PlasmaLean.Contract.not_currentFreeTransform_of_current
 #print axioms PlasmaLean.Contract.omnigeneityContract_zero_iff
@@ -301,9 +308,15 @@ run_cmd do
 #print axioms PlasmaLean.Design.LandremanNetCurrent.family2_net_current_ge
 #print axioms PlasmaLean.Design.LandremanNetCurrent.family2_not_currentFree
 #print axioms PlasmaLean.Design.LandremanNetCurrent.family2_not_currentFreeTransform
+#print axioms PlasmaLean.Design.LandremanNetCurrent.family2_not_currentFreeTransform_zero
+#print axioms PlasmaLean.Design.LandremanNetCurrent.torCurrent_eq_lineIntegral
+#print axioms PlasmaLean.Design.LandremanNetCurrent.family2_loopCurrent_eq
+#print axioms PlasmaLean.Design.LandremanNetCurrent.family2_loopCurrent_pos
+#print axioms PlasmaLean.Design.LandremanNetCurrent.contDiffAt_coordMap
+#print axioms PlasmaLean.Design.LandremanNetCurrent.contDiffAt_field
 #print axioms PlasmaLean.Design.RationalStellaratorContract.toroidal_not_currentFreeTransform
 #print axioms PlasmaLean.Design.RationalStellaratorContract.circTorus_iotaOnTorus
-#print axioms PlasmaLean.Design.RationalStellaratorContract.toroidal_circ_current_zero
+#print axioms PlasmaLean.Design.RationalStellaratorContract.toroidal_circ_circulation_zero
 #print axioms PlasmaLean.Design.RationalStellaratorContract.ExactTorus.iotaOnTorus
 #print axioms PlasmaLean.Design.RationalStellaratorContract.rationalStellarator_currentFreeTransform
 #print axioms PlasmaLean.Design.RationalStellaratorQAObstruction.rotatingEllipse_firstOrder_QA_defect
@@ -315,6 +328,9 @@ run_cmd do
 #print axioms PlasmaLean.Design.DommaschkQA3.candidate_vacuum
 #print axioms PlasmaLean.Design.DommaschkQA3.candidate_netToroidalCurrent_eq_zero
 #print axioms PlasmaLean.Design.DommaschkQA3.candidate_currentFree
+#print axioms PlasmaLean.Design.DommaschkQA3.field_poloidalCirculation_eq_zero
+#print axioms PlasmaLean.Design.DommaschkQA3.candidate_loopCurrent_eq_zero
+#print axioms PlasmaLean.Design.DommaschkQA3.candidate_currentFreeTransform
 #print axioms PlasmaLean.Design.DommaschkQA3.field_stellSym
 #print axioms PlasmaLean.Fields.QSLinear.fieldDiv_fqsGen
 #print axioms PlasmaLean.Fields.QSLinear.JetHyp.jet_obstruction_curl
@@ -322,3 +338,12 @@ run_cmd do
 #print axioms PlasmaLean.Fields.QSLinear.strongQS_jet_obstruction
 #print axioms PlasmaLean.Design.QSJetExample.strongQS_obstruction
 #print axioms PlasmaLean.Design.QSJetExample.not_strongQS_of_ne_zero
+
+#print axioms PlasmaLean.Sanity.AuditRefresh.netToroidalCurrent_pinch
+#print axioms PlasmaLean.Sanity.AuditRefresh.pinch_spans
+#print axioms PlasmaLean.Sanity.AuditRefresh.rotation_pinch_current_zero
+#print axioms PlasmaLean.Sanity.AuditRefresh.rotY_poloidalCirculation
+#print axioms PlasmaLean.Sanity.AuditRefresh.rotY_loopCurrent_ne_zero
+#print axioms PlasmaLean.Sanity.AuditRefresh.rotY_pinch_flux_zero
+#print axioms PlasmaLean.Sanity.AuditRefresh.rotY_not_currentFreeTransform
+#print axioms PlasmaLean.Sanity.AuditRefresh.CurrentFreeTransform.circulation_eq_zero

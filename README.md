@@ -48,12 +48,14 @@ together, and those only in vacuum.
     (`DommaschkQA3.candidate_vacuum`), together with zero net current.
   - Not yet proved: ι ≥ ι_min on a nested family of certified surfaces of that field, or any
     current-free equilibrium at finite β.
-  - The Landreman family 2 carries positive net current through its coordinate section
+  - The C1 current is the Ampère circulation μ₀⁻¹∮B·dl around each confining torus's own
+    poloidal loop, with |ι| ≥ ι_min. This was audit fix AR-H1, 31 October: an earlier section-based
+    clause could be satisfied vacuously.
+  - For the Dommaschk field the current clause holds for every poloidal loop
+    (`DommaschkQA3.candidate_currentFreeTransform`); only the tori remain to be certified.
+  - Landreman family 2 fails C1 (`family2_not_currentFreeTransform`), via a Stokes theorem for
+    regular sections (`netToroidalCurrent_eq_lineIntegral_div`) and positive section current
     (`family2_net_current_pos`).
-  - **Audit (31 October, AR-H1):** the Lean current clause of C1 measured the current through a
-    freely chosen section, and a degenerate section made it vacuous. It is being restated as the
-    circulation of B around the torus's poloidal loop. Until then, "family 2 fails C1" is not
-    established in Lean.
 - **C2 (partial, guiding-centre model):**
   - Omnigeneity and the bounce-averaged drift are defined in the Boozer guiding-centre model
     (`OmnigenousOn`, `bounceAvgDrift`).
@@ -81,7 +83,6 @@ together, and those only in vacuum.
 The next priorities:
 - certify invariant tori with ι ≥ ι_min, and the quasisymmetry defect, for a Dommaschk
   quasi-axisymmetric vacuum field;
-- restate the C1 current clause intrinsically (audit AR-H1);
 - ε_eff in Lean;
 - a current-free finite-β equilibrium.
 

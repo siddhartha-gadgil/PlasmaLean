@@ -66,14 +66,17 @@ refresh audit).**
     (`rationalStellarator_confined_forever_exists`).
   - The exact Dommaschk NFP-3 field is a vacuum field (`DommaschkQA3.candidate_vacuum`). Its
     certified tori and ι are open.
-  - **Audit finding AR-H1 (high, 31 October):** the Lean current clause of `CurrentFreeTransform`
-    bounds the current through a freely chosen coordinate section, and a degenerate section makes
-    it vacuous (`Sanity/AuditRefreshContract.currentFreeTransform_of_tori`). It is being restated
-    intrinsically, as the circulation of B around the torus's own poloidal loop (Ampère's law).
-  - Until then, the rational-field C1 witness stands as a vacuum statement, and **"Landreman
-    family 2 fails C1" is not established**. What is proved is positive net current through the
-    family-2 coordinate section (`family2_net_current_pos`).
-  - AR-M1: C1 should require ι_min ≤ |ι|, independent of handedness.
+  - **Audit fix AR-H1/AR-M1 (31 October):** C1 now bounds the Ampère circulation μ₀⁻¹∮B·dl
+    around each torus's own poloidal loop (`loopCurrent`, `SurfaceData.current`). The loop must be
+    C¹ with B continuous on it and μ₀ > 0, and the transform clause is ι_min ≤ |ι|. The earlier
+    section clause was vacuous; regression `Sanity/AuditRefreshContract`
+    (`rotY_not_currentFreeTransform`).
+  - Witnesses through potentials (`currentFreeTransform_of_potential`):
+    `rationalStellarator_currentFreeTransform` and `DommaschkQA3.candidate_currentFreeTransform`.
+    The second reduces C1 to certifying tori.
+  - **Landreman family 2 fails C1** (`family2_not_currentFreeTransform`), via the Stokes theorem
+    for regular sections `netToroidalCurrent_eq_lineIntegral_div` (`Theory/Contract/SectionStokes`)
+    and `family2_loopCurrent_pos`.
 - **C2:** partial, in the Boozer guiding-centre model.
   - Omnigeneity (`OmnigenousOn`: exact return of the flux label after each bounce, stronger than
     leading-order omnigeneity, AR-M2) and the bounce-averaged drift are defined.
@@ -170,7 +173,7 @@ that carry net toroidal current (Q-18).
 | `Q-15` | Transport barriers (T ≥ 10 keV in the core) on a **non-axisymmetric** validated geometry, with χ bounds from Â or neoclassical theory stated as supplied scalings; under the contract the geometry should satisfy C1 and the neoclassical χ comes from C2 (Q-22) | G-2, Q-22 | open | Barriers exist on the cylinder, helical and Solov'ev geometries only |
 | `Q-16` | **A quasisymmetric solution**, *re-aimed at C1 + C2 (contract, 30 October 2026)*: the target is a current-free field with ι ≥ ι_min > 0 (C1) that is omnigenous in the quasisymmetric form (C2). The decided vacuum criterion below already fits the contract (vacuum ⇒ I_tor = 0; ι ≥ ι_min; small ε_QS relative to ι). The finite-β criterion is now decided by the contract: **zero (bootstrap-level) net toroidal current**, ‖I_tor‖ ≤ I_max, replacing the alternative non-Killing bound on ξ. Decided criterion (user, 30 October 2026), vacuum version: an explicit or validated **vacuum** field with certified invariant tori on a nested region, rotational transform ι ≥ ι_min > 0 on them, and a certified quasisymmetry defect ε_QS small **relative to ι** (both numbers reported; in vacuum an axisymmetric field has ι = 0, so ι ≥ ι_min excludes trivially near-axisymmetric fields). The finite-β version needs a separate criterion (plasma current gives ι > 0 to near-tokamak fields): zero net toroidal current or a non-Killing bound on the generator ξ, to be decided | G-1, G-10, G-4, G-6 | open (research); the strong form (exact QS in a volume) is open mathematics | See N-27. Exact QS on a volume: neither existence nor non-existence is known (Constantin–Drivas–Ginsberg, arXiv:2009.08860; Burby–Kallinikos–MacKay, arXiv:1912.06468). Route (i), near-axis remainder, not recommended (the vacuum expansion is ill-posed without regularization, Ruth–Jorge–Bindel arXiv:2411.04352). Route (iii) negative: QS with a generator nonvanishing on the axis forces constant ‖B‖ on the axis, and both Landreman families have non-constant axis ‖B‖ for every ε ≠ 0 (compiled: `family1_not_weakQS`, `family2_not_weakQS`). Recommended: route (ii) as an explicit vacuum field (finite Dommaschk sum fitted to a QA target, exact by identity) + KAM-certified invariant tori + Boozer angles by one more cohomological equation + certified non-QS ℓ¹ part of ‖B‖. Criterion decided: vacuum version as stated (ratio form) |
 | `Q-17` | **A Lean statement of a Grad counterexample** (*re-labelled, contract 30 October 2026: mathematical infrastructure, not design progress*; non-symmetry is a consequence of C1, and both Landreman families carry net toroidal current, Q-18): for Landreman family 1 (and family 2), one theorem giving smooth fields on a toroidal domain with nested toroidal flux surfaces, non-constant pressure, force balance, and no continuous Euclidean symmetry (axial, helical or reflection); then the non-stellarator-symmetric τ-extension of Issan–Citrin–Landreman–Tracey (arXiv:2610.07304) | G-4, N-28 | family 1 verified (`family1_grad_counterexample`); family 2 and τ-extension open | `family1_grad_counterexample`: smooth B, J, p on 𝒰; ∇·B = 0 and force balance with the gradient of p = (2δ − 2ψ)/μ₀; ψ a first integral with compact nested sublevel sets, each level set ψ = c ∈ (0, δ] homeomorphic to Circle × Circle (`torusMap`); p non-constant; no rotation, translation or screw-motion symmetry (`killing_trivial_of_axis`); contrast `axisymmetric_limit_lie_zero` at ε = 0. Not covered: plane reflections; family 1 has ι ≡ 2 (closed field lines), so family 2 (sheared ι) is the stronger target |
-| `Q-18` | **Net toroidal current of the Landreman families** (contract C1): compute I_tor(ψ) for families 1 and 2 and compare it with the field-producing current (B₀R₀·2π/μ₀) and with a bootstrap-level bound. If it is not small, the families are tokamak-like under C1 (ι comes from plasma current) | G-1, G-4, Q-16, Q-17 | section current positive for family 2 (30 October); C1 failure **not established** after audit AR-H1 (31 October) | `family2_net_current_pos` (μ₀ > 0, λ > 0, 0 < k₀ < 19/20): positive net current through the family-2 coordinate section; λ-independent lower bound `family2_net_current_ge`. `family2_not_currentFree(Transform)` refer to the section-flux clause, which AR-H1 shows is vacuous as a C1 test; to be restated with the poloidal-loop circulation. Family 1 open |
+| `Q-18` | **Net toroidal current of the Landreman families** (contract C1): compute I_tor(ψ) for families 1 and 2 and compare it with the field-producing current (B₀R₀·2π/μ₀) and with a bootstrap-level bound. If it is not small, the families are tokamak-like under C1 (ι comes from plasma current) | G-1, G-4, Q-16, Q-17 | answered for family 2: fails C1 (re-established 31 October with the intrinsic loop current) | `family2_loopCurrent_pos` (loop current > 0 around `loop2 λ k₀`, 0 < k₀ < 19/20) via `torCurrent_eq_lineIntegral` (Stokes, `SectionStokes.netToroidalCurrent_eq_lineIntegral_div`) and `family2_net_current_pos`; `family2_not_currentFreeTransform(_zero)` for any surface whose loop is `loop2 λ k₀`; λ-independent bound `family2_net_current_ge`. Family 1 open |
 | `Q-19` | **Bounce-averaged drift / ε_eff for the rational stellarator vacuum field** (contract C2): on the certified surfaces of `RationalStellarator.field (1/4)`, compute (numerically first, as an untrusted oracle) the bounce-averaged radial drift of trapped particles and ε_eff, then decide whether a certified bound is reachable | G-10, G-1 | answered numerically (untrusted, 30 October): fails C2 | N-30: ι from 0.134 on the axis (1 − √3/2) to 0.169 at r = 0.40, matching the KAM torus (ι_A = 0.13743); best helicity QA (1, 0) with defect ≈ 26 % of the ‖B‖ variation (defect/ι ≈ 0.27, not shrinking toward the axis); ε_eff ≈ 0.2 r_eff (2.7 % at torus A, ≈ 10 % at r = 0.36), classical-stellarator level. Informal obstruction: for this planar-axis family the non-QA first-order ‖B‖ variation equals √(ι₀/N) (Garren–Boozer: a planar axis in vacuum admits no QS with ι ≠ 0), so adding harmonics cannot help. Lean target: `rotatingEllipse_firstOrder_QA_defect`. Consequence: the Dommaschk route (Q-16) needs a non-planar axis |
 | `Q-20` | **A finite-β current-free equilibrium** (C1 + C4 at β > 0): stepped pressure across the certified torus of the rational field (Q-14), or a finite-β equilibrium near a Dommaschk QA vacuum field, with ‖I_tor‖ ≤ I_max proved | G-4, G-8 | open (research) | Q-14 is the lead (`after-kam.md` §3); stepped-pressure equilibria carry surface currents whose net toroidal part must be controlled |
 | `Q-21` | **Definitions and model contracts for C1 and C2** (kernel-level): net toroidal current through a cross-section of a toroidal domain; ι of a field on a family of invariant tori; bounce-averaged radial drift (ψ̇ averaged over a bounce; zero for all trapped orbits iff ∂J/∂α = 0 for the second adiabatic invariant J); omnigeneity; ε_eff (Nemov et al. 1999). Each with the **sanity triad**: (1) axisymmetric ⇒ omnigenous (bounce-averaged radial drift zero); (2) current-free axisymmetric ⇒ ι = 0, hence no confining rotational transform (no confinement); (3) a generic 3-D field (an explicit one) is not omnigenous | G-11, G-10, G-1 | C1 and C2 definitions in Lean (30 October); ε_eff open | `Theory/Contract/StellaratorContract`: `netToroidalCurrent`, `CurrentFree`, `IotaOnTorus`, `CurrentFreeTransform` (C1); tokamak exclusion `iota_eq_zero_of_purelyToroidal`, `not_currentFreeTransform_of_purelyToroidal`; vacuum ⇒ current-free (`netToroidalCurrent_eq_zero_of_vacuum`, `currentFreeTransform_of_vacuum`); `OmnigeneityContract` (C2, Boozer GC model) with `omnigenousOn_of_axisymmetric` and counterexample. `rationalStellarator_currentFreeTransform`: the rational field satisfies C1 on KAM torus A. Open: ε_eff; current-free axisymmetric with nested surfaces ⇒ purely toroidal (maximum principle); section independence of the current |
@@ -240,10 +243,11 @@ The canonical first command is `start` (skill `plasmalean-audit-domain`). Previo
 
 **Refresh-audit findings (31 October 2026).** The kernel is sound (only F-1 changed). No new
 forbidden tactics, `check_axioms.lean` passes, every new module is covered.
-- **AR-H1 (high, fix in progress):** the C1 current clause is vacuous with degenerate sections
-  (regression `Sanity/AuditRefreshContract.lean`). It is being restated with the poloidal-loop
-  circulation.
-- **AR-M1 (in progress):** use ι_min ≤ |ι| in C1.
+- **AR-H1 (high, resolved 31 October):** the C1 current clause was vacuous with degenerate
+  sections. It is restated as the poloidal-loop circulation, with a Stokes theorem for regular
+  sections. Regressions are in `Sanity/AuditRefreshContract.lean`.
+- **AR-M1 (resolved):** C1 uses ι_min ≤ |ι|. Still open: the negative-ι version of the C2 twist
+  lemma (`twistOn_qa_of_iota_ge`).
 - **AR-M2–M8 (prose fixed 31 October):**
   - `OmnigenousOn` is stronger than leading-order omnigeneity.
   - No trapped bounce is constructed for `exactQA`/`reactorQA`.
@@ -1482,3 +1486,19 @@ Gate E1 (§11.2, §11.4) and the "sanity theorem or counterexample" promised in 
   `strongQS_obstruction` / `not_strongQS_of_ne_zero`: no strong QS with C ≠ 0 on any neighbourhood
   of (1, 2, 3). Standard axioms; 0.76 GB. Local example only. Next: (c) certified non-QS points for
   the rational and Dommaschk fields; (d) a quantitative version.
+
+### Audit fix AR-H1/AR-M1: intrinsic C1 current clause, 31 October 2026
+
+- `Theory/Contract/StellaratorContract`: `lineIntegral`, `poloidalLoop`, `poloidalCirculation`,
+  `loopCurrent`; `SurfaceData` reduced to (R, z, ι, φ₀); `CurrentFreeTransform` bounds
+  |μ₀⁻¹∮B·dl| around each torus's own poloidal loop (μ₀ > 0, C¹ loop, B continuous on it) and asks
+  ι_min ≤ |ι|. `currentFreeTransform_of_potential` (toroidal part plus single-valued potential) replaces
+  `currentFreeTransform_of_vacuum`; the tokamak exclusion is restated. New `Theory/Contract/SectionStokes`:
+  `netToroidalCurrent_eq_lineIntegral_div` (Stokes for C² seam-matched sections with a degenerate inner
+  edge, via Mathlib's divergence theorem on rectangles). Family 2 fails C1 again
+  (`family2_not_currentFreeTransform`, `family2_loopCurrent_pos`). Witnesses:
+  `rationalStellarator_currentFreeTransform` (now needs μ₀ > 0), `DommaschkQA3.candidate_currentFreeTransform`.
+  Regressions `Sanity/AuditRefreshContract` (pinch facts for the section notion, `rotY` circulation
+  2πa², `rotY_not_currentFreeTransform`). `lake build PlasmaLean` clean; axiom audit passed (48,589
+  declarations).
+

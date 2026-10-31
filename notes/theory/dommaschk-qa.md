@@ -486,6 +486,10 @@ the default build, with zero warnings and standard axioms only.
   field at (21/20, 1/10, 1/50) against `fieldeval.py` to about 3 × 10⁻¹⁵. The correspondence with
   `basis.py` is not a Lean theorem, but the Lean results are about the Cartesian field as stored,
   so they do not depend on it.
+- **C1 current clause (31 October, after audit AR-H1).** `candidate_loopCurrent_eq_zero`: the
+  loop current vanishes for every poloidal loop at constant φ₀ in r₂ > 0.
+  `candidate_currentFreeTransform`: C1 with I_max = 0 then reduces to certified tori with
+  |ι| ≥ ι_min. Left-handed fields (ι < 0) are accepted.
 - **Open (next certification steps).**
   - Three-field-period symmetry (rotation by 2π/3).
   - The magnetic axis and ι on certified invariant tori (KAM step), which complete C1 via

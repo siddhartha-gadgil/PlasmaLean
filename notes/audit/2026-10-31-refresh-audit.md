@@ -244,3 +244,15 @@ The smallest step that restores C1 content is `poloidalCirculation μ₀ B R z �
 - vacuum ⇒ 0 for loops that do not link the coil current. For the rational field this needs `B = ∇Φ` single-valued on a neighbourhood of the poloidal disc; `∇φ` itself is curl-free but its circulation is 0 only for loops not encircling the z-axis, which holds for poloidal loops;
 - `e_y × x` through a circular poloidal loop gives `2πa²/μ₀ ≠ 0` (counterexample);
 - Stokes agreement with `netToroidalCurrent` for `C¹` seam-matched sections.
+
+## Resolution (31 October 2026)
+
+- **AR-H1 resolved.** C1 uses the poloidal-loop circulation (`loopCurrent`), with a Stokes theorem
+  for regular sections (`Theory/Contract/SectionStokes`); family 2 fails C1 again. Regressions are
+  in `Sanity/AuditRefreshContract.lean`; `currentFreeTransform_of_tori` is removed.
+- **AR-M1 resolved** in C1 (ι_min ≤ |ι|). The negative-ι version of the C2 twist lemma is still open.
+- **AR-M2–M8, AR-L1, AR-L6, AR-L8, AR-L9: prose fixed** (commit fc82e6b).
+- **AR-L2:** the `VacuumField` closure lemmas stay in `CylAlgebra` (theorems only; no kernel change).
+- **Open:** AR-L3 (Dommaschk non-triviality fixture), AR-L4, AR-L5, AR-L7 (docstrings), and the
+  AR-M3 Lean fixture (a trapped bounce for `exactQA`).
+

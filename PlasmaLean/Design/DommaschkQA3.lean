@@ -33,8 +33,14 @@ Results.
   (kernel-checked, `DommaschkQA3Data.nf_lap_P*`); hence `basis_vacuum k` and `V_harmonic`.
 * **`field_vacuum a : VacuumField domain (field a)`** for every coefficient vector `a`, and
   **`candidate_vacuum`** (open region `r₂ > 0`, `C²`, `∇ · B = 0`, `∇ × B = 0`).
-* C1 current clause: `candidate_netToroidalCurrent_eq_zero` (zero net toroidal current through
-  every section lying off the `z`-axis) and `candidate_currentFree`.
+* C1 current clause (Ampère circulation): `field_split`, `hasFDerivAt_potential`
+  (`B_a = ∇φ + ∇Φ_a` off the axis with the single-valued potential `Φ_a = Σ a_k V_k`), hence
+  `field_poloidalCirculation_eq_zero` / `candidate_loopCurrent_eq_zero`: zero circulation
+  `∮ B · dl` around every closed `C¹` poloidal loop at constant toroidal angle with `R > 0`; and
+  `candidate_currentFreeTransform`: for the candidate, C1 with `I_max = 0` reduces to the
+  transform clause (certified invariant tori with `|ι| ≥ ι_min`, `C¹` loops).
+* Section flux (auxiliary, not C1): `candidate_netToroidalCurrent_eq_zero` (zero flux of the
+  Ampère current through every section lying off the `z`-axis) and `candidate_currentFree`.
 * `field_stellSym a`: stellarator symmetry `B(σ y) = −σ B(y)`,
   `σ = stellRefl : (x, y, z) ↦ (x, −y, −z)` (`(R, φ, z) ↦ (R, −φ, −z)`), for every `a`.
 
@@ -114,29 +120,113 @@ theorem field_vacuum (a : Fin 24 → ℚ) : VacuumField CylAlgebra.domain (field
 theorem candidate_vacuum : VacuumField CylAlgebra.domain (field candidate) :=
   field_vacuum candidate
 
-/-- **C1 current clause**: every field of the family carries zero net toroidal current through
-any section lying off the `z`-axis. -/
+/-- **Section flux**: every field of the family has zero flux of the Ampère current through any
+section lying off the `z`-axis (a section-flux statement, not the C1 current). -/
 theorem field_netToroidalCurrent_eq_zero (a : Fin 24 → ℚ) (μ₀ : ℝ) {X : Space → Space}
     {ζ₀ k₀ : ℝ} (hk₀ : 0 ≤ k₀)
     (hX : ∀ k ∈ Icc 0 k₀, ∀ χ ∈ Icc (-π) π, X (coordPt k χ ζ₀) ∈ CylAlgebra.domain) :
     netToroidalCurrent μ₀ (field a) X ζ₀ k₀ = 0 :=
   netToroidalCurrent_eq_zero_of_vacuum (field_vacuum a) hk₀ hX
 
-/-- **C1 current clause for the candidate**: zero net toroidal current through every section
-lying off the `z`-axis. -/
+/-- **Section flux for the candidate**: zero flux of the Ampère current through every section
+lying off the `z`-axis (not the C1 current; see `candidate_loopCurrent_eq_zero`). -/
 theorem candidate_netToroidalCurrent_eq_zero (μ₀ : ℝ) {X : Space → Space} {ζ₀ k₀ : ℝ}
     (hk₀ : 0 ≤ k₀)
     (hX : ∀ k ∈ Icc 0 k₀, ∀ χ ∈ Icc (-π) π, X (coordPt k χ ζ₀) ∈ CylAlgebra.domain) :
     netToroidalCurrent μ₀ (field candidate) X ζ₀ k₀ = 0 :=
   field_netToroidalCurrent_eq_zero candidate μ₀ hk₀ hX
 
-/-- The candidate is current-free (`CurrentFree`, `I_max = 0`) on every family of sections lying
-off the `z`-axis. -/
+/-- The candidate is section-current-free (`CurrentFree`, a section-flux notion) on every family
+of sections lying off the `z`-axis. -/
 theorem candidate_currentFree (μ₀ : ℝ) {X : Space → Space} {ζ₀ : ℝ} {K : Set ℝ}
     (hX : ∀ k₀ ∈ K, 0 ≤ k₀ ∧
       ∀ k ∈ Icc 0 k₀, ∀ χ ∈ Icc (-π) π, X (coordPt k χ ζ₀) ∈ CylAlgebra.domain) :
     CurrentFree μ₀ (field candidate) X ζ₀ K :=
   currentFree_of_vacuum candidate_vacuum hX
+
+/-! ## Clause C1: zero circulation around poloidal loops -/
+
+/-- The single-valued potential `Φ_a = Σ_k a_k V_k` of the non-toroidal part of `B_a`. -/
+@[expose] def potential (a : Fin 24 → ℚ) (y : Space) : ℝ := ∑ k, (a k : ℝ) * V k y
+
+/-- The non-toroidal part `g_a = Σ_k a_k ∇V_k` of `B_a`. -/
+@[expose] def gradPart (a : Fin 24 → ℚ) (y : Space) : Space :=
+  ∑ k, ((a k * scale k : ℚ) : ℝ) • gradField (P k) y
+
+/-- `B_a = ∇φ + g_a`. -/
+theorem field_split (a : Fin 24 → ℚ) (y : Space) :
+    field a y = RationalStellarator.toroidal y + gradPart a y := rfl
+
+/-- `g_a = ∇Φ_a` off the axis (actual Fréchet derivative). -/
+theorem hasFDerivAt_potential (a : Fin 24 → ℚ) {x : Space} (hx : x ∈ CylAlgebra.domain) :
+    HasFDerivAt (potential a) (innerSL ℝ (gradPart a x)) x := by
+  have h := HasFDerivAt.sum (u := Finset.univ) (A := fun k y => (a k : ℝ) * V k y)
+    (fun k _ => (hasFDerivAt_V k hx).const_mul (a k : ℝ))
+  have he : (∑ k ∈ Finset.univ, fun y => (a k : ℝ) * V k y) = potential a := by
+    funext y; simp [potential]
+  rw [he] at h
+  refine h.congr_fderiv ?_
+  ext v
+  simp [gradPart, mul_assoc]
+
+/-- The fields of the family are continuous off the axis. -/
+theorem continuousAt_field (a : Fin 24 → ℚ) {x : Space} (hx : x ∈ CylAlgebra.domain) :
+    ContinuousAt (field a) x :=
+  (field_vacuum a).contDiffOn.continuousOn.continuousAt ((field_vacuum a).isOpen.mem_nhds hx)
+
+/-- A poloidal loop with `R > 0` lies off the axis. -/
+theorem poloidalLoop_mem_domain {R z : ℝ → ℝ → ℝ} {φ₀ θ : ℝ} (hR : 0 < R θ φ₀) :
+    poloidalLoop R z φ₀ θ ∈ CylAlgebra.domain := by
+  change 0 < CylAlgebra.r2 _
+  simp only [CylAlgebra.r2, poloidalLoop, cylPoint, PiLp.toLp_apply, Matrix.cons_val_zero,
+    Matrix.cons_val_one]
+  have : (R θ φ₀ * cos φ₀) ^ 2 + (R θ φ₀ * sin φ₀) ^ 2 = R θ φ₀ ^ 2 := by
+    linear_combination R θ φ₀ ^ 2 * cos_sq_add_sin_sq φ₀
+  rw [this]
+  positivity
+
+/-- `∇φ` is purely toroidal. -/
+theorem toroidal_purelyToroidal : PurelyToroidal RationalStellarator.toroidal := fun x => by
+  simp only [RationalStellarator.toroidal]
+  refine ⟨by simp, ?_⟩
+  simp
+  ring
+
+/-- **C1 current clause for the family**: every field `B_a` has zero circulation `∮ B · dl`
+around every closed `C¹` poloidal loop of constant toroidal angle `φ₀` with `R > 0`. -/
+theorem field_poloidalCirculation_eq_zero (a : Fin 24 → ℚ) {R z : ℝ → ℝ → ℝ} {φ₀ : ℝ}
+    (hR : ContDiff ℝ 1 fun t => R t φ₀) (hz : ContDiff ℝ 1 fun t => z t φ₀)
+    (hRpos : ∀ θ, 0 < R θ φ₀) (hRper : R π φ₀ = R (-π) φ₀) (hzper : z π φ₀ = z (-π) φ₀) :
+    poloidalCirculation (field a) R z φ₀ = 0 :=
+  poloidalCirculation_eq_zero_of_potential hR hz hRpos hRper hzper
+    (fun θ => continuousAt_field a (poloidalLoop_mem_domain (hRpos θ)))
+    (fun _ => field_split a _) toroidal_purelyToroidal
+    (fun θ => hasFDerivAt_potential a (poloidalLoop_mem_domain (hRpos θ)))
+
+/-- **C1 current clause for the candidate**: the net toroidal current `μ₀⁻¹ ∮ B · dl` enclosed by
+every closed `C¹` poloidal loop of constant toroidal angle with `R > 0` is zero. -/
+theorem candidate_loopCurrent_eq_zero (μ₀ : ℝ) {R z : ℝ → ℝ → ℝ} {φ₀ : ℝ}
+    (hR : ContDiff ℝ 1 fun t => R t φ₀) (hz : ContDiff ℝ 1 fun t => z t φ₀)
+    (hRpos : ∀ θ, 0 < R θ φ₀) (hRper : R π φ₀ = R (-π) φ₀) (hzper : z π φ₀ = z (-π) φ₀) :
+    loopCurrent μ₀ (field candidate) R z φ₀ = 0 := by
+  rw [loopCurrent, field_poloidalCirculation_eq_zero candidate hR hz hRpos hRper hzper, zero_div]
+
+/-- **C1 for the candidate reduces to the transform clause**: for any nonempty family of invariant
+tori of the candidate with `C¹` poloidal loops and `|ι| ≥ ι_min > 0`, clause C1 holds with
+`I_max = 0`. (No such torus is certified yet.) -/
+theorem candidate_currentFreeTransform {μ₀ ιmin : ℝ} {S : Set SurfaceData} (hμ : 0 < μ₀)
+    (hS : S.Nonempty) (hι : 0 < ιmin)
+    (hTor : ∀ s ∈ S, IotaOnTorus (field candidate) s.R s.z s.iota)
+    (hR : ∀ s ∈ S, ContDiff ℝ 1 fun θ => s.R θ s.φ₀)
+    (hz : ∀ s ∈ S, ContDiff ℝ 1 fun θ => s.z θ s.φ₀) (hge : ∀ s ∈ S, ιmin ≤ |s.iota|) :
+    CurrentFreeTransform μ₀ (field candidate) S 0 ιmin :=
+  currentFreeTransform_of_potential (T := RationalStellarator.toroidal) (g := gradPart candidate)
+    (Φ := potential candidate) hμ hS hι hTor hR hz
+    (fun s hs θ => continuousAt_field candidate
+      (poloidalLoop_mem_domain ((hTor s hs).1.R_pos θ s.φ₀)))
+    (fun _ _ _ => field_split candidate _) toroidal_purelyToroidal
+    (fun s hs θ => hasFDerivAt_potential candidate
+      (poloidalLoop_mem_domain ((hTor s hs).1.R_pos θ s.φ₀))) hge
 
 /-! ## Stellarator symmetry -/
 

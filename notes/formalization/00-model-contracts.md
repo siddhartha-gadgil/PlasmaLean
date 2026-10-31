@@ -80,9 +80,12 @@ axioms only). Module `PlasmaLean/Theory/Contract/StellaratorContract.lean`, name
   `torCurrent_eq_netToroidalCurrent` (rfl), `family2_net_current_pos` (I_tor > 0 for μ₀ > 0,
   λ > 0, 0 < k₀ < 19/20), `family2_net_current_ge` (λ-independent lower bound 2π `curInf`/μ₀),
   `family2_not_currentFree`, `family2_not_currentFreeTransform` (fail the section-flux clause for
-  I_max < I_tor(k₀)). **Audit AR-H1 (31 October 2026):** the section-flux clause is vacuous with
-  degenerate sections (`Sanity/AuditRefreshContract`), so this does not establish that family 2
-  fails C1. The clause is being restated as the circulation of B around the torus's poloidal loop.
+  I_max < I_tor(k₀)). **Audit AR-H1 (31 October 2026):** the section-flux clause was vacuous with
+  degenerate sections. C1 now uses the Ampère circulation μ₀⁻¹∮B·dl around each torus's own poloidal
+  loop (`loopCurrent`; μ₀ > 0, C¹ loop, B continuous on it) and |ι| ≥ ι_min. "Equivalently, by
+  Stokes" is a theorem for regular sections (`SectionStokes.netToroidalCurrent_eq_lineIntegral_div`).
+  Family 2 fails C1 again for surfaces whose loop is `loop2 λ k₀`
+  (`family2_not_currentFreeTransform`).
 - Still open: ε_eff (`EffectiveRippleBound`) and the 1/ν link; a generic 3-D field with an
   explicit trapped orbit and nonzero drift beyond the Boozer model fixture `driftMirror`; the
   theorem "axisymmetric, current-free, nested surfaces ⇒ purely toroidal" (maximum principle for

@@ -23,7 +23,7 @@
     }
    ],
    "progress": "Strict audit done (30 October); orbits proved to exist; weak quasisymmetry defined and the Landreman families proved not weakly quasisymmetric on regions containing their axis; Landreman family 1 satisfies the hypotheses of a Grad counterexample (ι ≡ 2, non-generic; infrastructure); 1-D relative-entropy identity and a torus Hodge period inequality; large checks rewritten as explicit proof-term certificates; heavy cells computed on a workstation and spot-checked on the laptop.",
-   "boundary": "Non-axisymmetry is a means, not a goal. No candidate satisfies more than C1 and C4, and those only in vacuum. Omnigeneity and bounce-averaged drift are in Lean (Boozer guiding-centre model); ε_eff is not. Audit AR-H1: the C1 current clause is being restated intrinsically. Alpha results: one B₀R₀, Littlejohn model supplied, vacuum model field, trapped alphas open. Coil-produced all-time confinement blocked. On-demand workstation modules spot-checked, not fully rebuilt.",
+   "boundary": "Non-axisymmetry is a means, not a goal. No candidate satisfies more than C1 and C4, and those only in vacuum. Omnigeneity and bounce-averaged drift are in Lean (Boozer guiding-centre model); ε_eff is not. The C1 current clause is the intrinsic loop circulation (audit fix AR-H1). Alpha results: one B₀R₀, Littlejohn model supplied, vacuum model field, trapped alphas open. Coil-produced all-time confinement blocked. On-demand workstation modules spot-checked, not fully rebuilt.",
    "evidence": [
     {
      "label": "Latest report",
@@ -47,7 +47,7 @@
    "cards": [
     {
      "title": "C1 · current-free rotational transform",
-     "text": "Defined in Lean (netToroidalCurrent, CurrentFreeTransform) with the tokamak exclusion: a purely toroidal (current-free axisymmetric) field has ι = 0. The vacuum rational field satisfies C1 on its KAM torus (rationalStellarator_currentFreeTransform). Landreman family 2 carries positive net current through its coordinate section (family2_net_current_pos). Audit AR-H1 (31 October): the section-based current clause is vacuous with degenerate sections; it is being restated as the circulation around the poloidal loop, so 'family 2 fails C1' is not yet established.",
+     "text": "Defined in Lean (netToroidalCurrent, CurrentFreeTransform) with the tokamak exclusion: a purely toroidal (current-free axisymmetric) field has ι = 0. The vacuum rational field satisfies C1 on its KAM torus (rationalStellarator_currentFreeTransform). C1 bounds the Ampère circulation around each torus's poloidal loop, with |ι| ≥ ι_min. This is audit fix AR-H1; the earlier section-based clause was vacuous. Landreman family 2 fails C1 (family2_not_currentFreeTransform, via a Stokes theorem for regular sections). The exact Dommaschk field passes the current clause on every loop (candidate_currentFreeTransform).",
      "status": "Defined; one current-free candidate",
      "kind": "partial"
     },
@@ -77,7 +77,7 @@
     }
    ],
    "progress": "Plan restructured around the contract on 30 October (user-approved): goals restated, new questions Q-18–Q-22 on net current, drift and ε_eff, current-free finite β, definitions and thermal neoclassical bounds.",
-   "boundary": "CurrentFreeTransform and the omnigeneity predicates are Lean definitions (the current clause under revision, audit AR-H1); EffectiveRippleBound and ThermalPerformance are still specifications only.",
+   "boundary": "CurrentFreeTransform (loop circulation, |ι| ≥ ι_min) and the omnigeneity predicates are Lean definitions; EffectiveRippleBound and ThermalPerformance are still specifications only.",
    "evidence": [
     {
      "label": "Implementation plan: the contract",
@@ -1151,7 +1151,7 @@
     {
      "title": "Stable band",
      "text": "D_Merc > 0 on k ∈ [0.7, 0.9] for both signs and all pressure scales; force balance with positive pressure; rejection fixtures at the axis and λ = 15.",
-     "status": "C3 test bed · net section current · Lean verified",
+     "status": "C3 test bed · fails C1 · Lean verified",
      "kind": "checked"
     },
     {
@@ -1205,7 +1205,7 @@
     {
      "title": "Stable band, labels derived",
      "text": "Family-2 flux labels, volume, fluxes, current and coarea proved from the field; ι′ > 0 and V″ > 0 certified on the Mercier-stable band.",
-     "status": "C3 test bed · net section current · Lean verified",
+     "status": "C3 test bed · fails C1 · Lean verified",
      "kind": "checked"
     }
    ],
@@ -1538,7 +1538,7 @@
     },
     {
      "title": "Family 2 carries net current",
-     "text": "family2_net_current_pos: μ₀ I_tor/2π = curK > 0 through the family-2 coordinate section for 0 < k₀ < 19/20, so family 2 carries plasma current. The C1 statement awaits the intrinsic current clause (audit AR-H1).",
+     "text": "family2_net_current_pos: μ₀ I_tor/2π = curK > 0 through the family-2 coordinate section for 0 < k₀ < 19/20, so family 2 carries plasma current. With the Stokes theorem for regular sections this gives a positive loop current, so family 2 fails C1 (family2_not_currentFreeTransform).",
      "status": "C1 finding · from compiled formulas",
      "kind": "partial"
     },
@@ -1632,7 +1632,7 @@
     },
     {
      "title": "4 · Definitions with the sanity triad",
-     "text": "Net current, ι on a family of tori, bounce-averaged drift and omnigeneity are in Lean, with axisymmetric ⇒ omnigenous, purely toroidal ⇒ ι = 0 and a non-omnigenous mirror fixture (driftMirror); open: ε_eff, and the intrinsic current clause (audit AR-H1) (Q-21).",
+     "text": "Net current, ι on a family of tori, bounce-averaged drift and omnigeneity are in Lean, with axisymmetric ⇒ omnigenous, purely toroidal ⇒ ι = 0 and a non-omnigenous mirror fixture (driftMirror); open: ε_eff (Q-21).",
      "status": "C1 + C2 · next",
      "kind": "next"
     },
