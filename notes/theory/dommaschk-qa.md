@@ -392,6 +392,43 @@ Laptop check (untrusted, 2 starts, not a committed result):
 So restarting with small perturbations explores a family of low-shear QA fields around the §10
 candidate, with |ι| from about 0.23 to 0.32. Workstation refinement runs come next.
 
+### 15. Three field periods, nmax 2 (31 October 2026; untrusted): first certification candidate
+
+Run `workstation/dommaschk-qa-20261031T044845Z`: NFP 3 (`DQA_EXTRA="--nfp 3"`), nmax 2, lmax 4
+(24 coefficients), 48 starts on 24 jobs, ι_min 0.25, surfaces r = 0.015, 0.03, 0.045; 9.6 min wall.
+Results in `scripts/dommaschk_qa/results/20261031T044845Z/`.
+
+**43 of 48 starts kept all surfaces regular.** The best start (43), on the rounded rational
+coefficients at high resolution:
+
+| r (launch) | r_eff | ι | defect/ι | ε_eff | κ |
+| --- | --- | --- | --- | --- | --- |
+| 0.015 | 0.008 | −0.294 | 0.007 | 0.13 % | 0.14 |
+| 0.030 | 0.015 | −0.283 | 0.013 | 0.25 % | 0.21 |
+| 0.045 | 0.020 | −0.268 | 0.020 | 0.47 % | 0.40 |
+
+- **Tier: moderate** (worst defect/ι 0.020), with the inner surface at the strong level. The
+  summary's Q-16 checks all pass, and **`candidate_for_certification` is true**, for the first
+  time.
+- **Regularity.** Diagnostic lines are regular out to r = 0.066 (r_eff ≈ 0.025, Birkhoff errors
+  10⁻⁸–5×10⁻⁶). The first island chain is at r = 0.072, where ι ≈ 0.214 = 3/14.
+  - The strict "nested up to" figure reads 0 only because the innermost line (r = 0.006)
+    converges slowly: Birkhoff error 5.7×10⁻⁶ against the 10⁻⁶ tolerance. This is the known
+    near-axis artefact; the lines outside it are regular.
+- **The ι profile** falls from 0.298 on the axis to 0.235 at r = 0.066. With NFP 3 the low-order
+  resonances 3k/m are sparser in this range (3/10 lies above, 3/13 = 0.231 and 3/14 below).
+- **Axis.** Weakly non-planar: z_max 0.016, R between 1.065 and 1.076.
+- **Comparison with the NFP-2 candidate of §10** (42 coefficients):
+  - similar defect/ι;
+  - higher ι (0.27–0.29 against 0.24);
+  - ε_eff 0.1–0.5 %;
+  - κ ≤ 0.40;
+  - a slightly larger regular region;
+  - **half the coefficients**, which makes the Lean certification (exact field, harmonicity,
+    KAM tori) cheaper.
+
+This is now the lead candidate for the certification path below. Untrusted numerics.
+
 ## Claims and evidence
 
 1. **Complete mathematical proof (symbolic, sympy).** The basis potentials are harmonic and

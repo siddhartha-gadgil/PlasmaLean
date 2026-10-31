@@ -225,15 +225,11 @@ laptop with a small parameter setting, then commit it to `main` before running i
 Kept up to date from the laptop after every review ("update from workstation"). Run them on the
 workstation, inside `tmux`; `run.sh` pulls `main` itself.
 
-**Status (31 October 2026, after both windowed runs): run now (exploratory).** At two field
-periods the nmax 3 candidate of N-31 §10 remains the best: defect/ι 0.009–0.023 at |ι| ≈ 0.24,
-ε_eff ≈ 0.1 %. Larger bases, larger radii and the high-ι window all made things worse
-(N-31 §§11–13), so certifying that candidate is the main next step, on the laptop side.
-
-On the workstation, an exploratory change of family: **three field periods**. A 2-start laptop
-smoke test with NFP 3 gave |ι| ≈ 0.33 with defect/ι 0.04–0.05 after only 4 evaluations. The NFP is
-passed through `DQA_EXTRA`; the work directory is keyed by it. Each run takes about 5–15 min wall.
-Run them one after the other:
+**Status (31 October 2026, after the first NFP 3 run): wait for the second NFP 3 run (nmax 3),
+then run the warm-start refinement below.** NFP 3 with only 24 coefficients gave the first
+candidate that passes every Q-16 check: defect/ι 0.007–0.020 at |ι| ≈ 0.28, ε_eff 0.13–0.47 %
+(N-31 §15). It is now the lead candidate for certification. The NFP 3 commands, for reference
+(the first is done; the second is running):
 
 ```bash
 cd PlasmaLean && git pull
@@ -243,18 +239,19 @@ DQA_NMAX=3 DQA_STARTS=48 DQA_IOTA_MIN=0.25 DQA_SURFACES=0.015,0.03,0.045 DQA_NFE
   DQA_EXTRA="--nfp 3" scripts/workstation/run.sh --jobs 24 dommaschk-qa
 ```
 
-**After the NFP 3 runs: warm-start refinement of the best candidate** (N-31 §14; `--init` is on
-`main`). These restart from the nmax 3 candidate of N-31 §10 with small random perturbations,
-straight into the full objective. A 2-start laptop test already found a nearby moderate-tier field
-with |ι| ≈ 0.32. Each takes about 10–15 min wall. Run them one after the other:
+**After the NFP 3 runs: warm-start refinement** (N-31 §14; `--init` is on `main`). The first run
+restarts from the NFP 3 candidate of N-31 §15, the lead candidate. The second restarts from the
+NFP 2 candidate of N-31 §10, where a 2-start laptop test already found a nearby moderate-tier field
+with |ι| ≈ 0.32. Both use small random perturbations and go straight into the full objective.
+Each takes about 10–15 min wall. Run them one after the other:
 
 ```bash
 cd PlasmaLean && git pull
-DQA_NMAX=3 DQA_STARTS=48 DQA_IOTA_MIN=0.2 DQA_SURFACES=0.015,0.03,0.045 DQA_NFEV=60 \
-  DQA_EXTRA="--init scripts/dommaschk_qa/results/20261030T120952Z/candidate.json --init-sigma 0.001" \
+DQA_NMAX=2 DQA_STARTS=48 DQA_IOTA_MIN=0.25 DQA_SURFACES=0.015,0.03,0.045 DQA_NFEV=60 \
+  DQA_EXTRA="--nfp 3 --init scripts/dommaschk_qa/results/20261031T044845Z/candidate.json --init-sigma 0.001" \
   scripts/workstation/run.sh --jobs 24 dommaschk-qa
 DQA_NMAX=3 DQA_STARTS=48 DQA_IOTA_MIN=0.2 DQA_SURFACES=0.015,0.03,0.045 DQA_NFEV=60 \
-  DQA_EXTRA="--init scripts/dommaschk_qa/results/20261030T120952Z/candidate.json --init-sigma 0.003" \
+  DQA_EXTRA="--init scripts/dommaschk_qa/results/20261030T120952Z/candidate.json --init-sigma 0.002" \
   scripts/workstation/run.sh --jobs 24 dommaschk-qa
 ```
 

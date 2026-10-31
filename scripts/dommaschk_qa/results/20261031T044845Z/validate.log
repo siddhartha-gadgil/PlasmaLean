@@ -1,0 +1,4 @@
+basis selftest ok (30 potentials)
+rational field in the Dommaschk basis: fit residual 1.3e-16; axis (1.000000000000, -2.5e-16)
+  iota [0.13448981 0.13743074 0.15105252] (reference [0.1344898 0.1374307 0.1510525]); A10 0.0549 A11 0.0147; QA fraction [0.25866888 0.2580437  0.26011325]; mean Jacobian [1. 1. 1.]
+validate: PASS
