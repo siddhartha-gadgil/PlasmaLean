@@ -354,6 +354,14 @@ run_cmd do
 #print axioms PlasmaLean.Design.DommaschkKamDio.dkIotaA_period_split
 #print axioms PlasmaLean.Design.DommaschkKamDio.dkIotaA_Bd_coh
 #print axioms PlasmaLean.Design.DommaschkKamDio.dkOmegaA_not_split_high
+#print axioms PlasmaLean.Design.KamNewton.FlowField.toG
+#print axioms PlasmaLean.Design.KamNewton.field14G_invariant_iff
+#print axioms PlasmaLean.Design.KamNewton.FlowFieldG.toroidalShift_Pof_ne
+#print axioms PlasmaLean.Design.KamNewton.FlowFieldG.FrameHyp.torsion_coord
+#print axioms PlasmaLean.Design.KamNewton.FlowFieldG.FrameHyp.S_coord
+#print axioms PlasmaLean.Design.KamNewton.FlowFieldG.FrameHyp.eta2_flux
+#print axioms PlasmaLean.Design.KamNewton.FlowFieldG.FrameHyp.newton_error_R
+#print axioms PlasmaLean.Design.KamNewton.FlowField.toG_Scoef
 #print axioms PlasmaLean.Fields.QSLinear.fieldDiv_fqsGen
 #print axioms PlasmaLean.Fields.QSLinear.JetHyp.jet_obstruction_curl
 #print axioms PlasmaLean.Fields.QSLinear.jet_obstruction_eta

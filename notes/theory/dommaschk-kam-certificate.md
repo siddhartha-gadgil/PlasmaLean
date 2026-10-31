@@ -638,3 +638,10 @@ approximation A(φ) of (O1).
   `bXi20`/`bXi1`. The qualitative uses go through `.toDiophantine`. Existing instances go through
   `Diophantine.toSplit`.
 
+## Update (31 October 2026): plan item 3, milestone 1
+
+`Design/KamFlowFieldG` and `Design/KamFlowFrameG` generalise the field and frame interface:
+centre R₀, exponent p, a moving trigonometric frame centre. They reduce to the rational field
+through `FlowField.toG` (`toG_frameHyp_iff`, `field14G_invariant_iff`). `KamFlowStepG` and
+`KamFlowIterationG` remain; see `kamflow-g-status.md`.
+

@@ -248,6 +248,8 @@ public import PlasmaLean.Design.KamFlowFieldS
 public import PlasmaLean.Design.KamFlowFrameS
 public import PlasmaLean.Design.KamFlowStepS
 public import PlasmaLean.Design.KamFlowIterationS
+public import PlasmaLean.Design.KamFlowFieldG
+public import PlasmaLean.Design.KamFlowFrameG
 public import PlasmaLean.Design.RationalStellaratorGC
 public import PlasmaLean.Design.RationalStellaratorGCPoly
 public import PlasmaLean.Design.RationalStellaratorGCFlow

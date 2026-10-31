@@ -1584,3 +1584,14 @@ Gate E1 (§11.2, §11.4) and the "sanity theorem or counterexample" promised in 
   3.05× better; N-33 plan items 2 and 4 done. Default build; axiom audit passed (48,865
   declarations). Next: the `KamFlow*G` generalisation (N-33 item 3).
 
+### Certification step 2: generalised KAM interface, milestone 1, 31 October 2026
+
+- `Design/KamFlowFieldG` and `Design/KamFlowFrameG` (default build): `FlowFieldG` with a general centre
+  R₀, density exponent p, flux-primitive exponents, and a moving frame centre given by trigonometric
+  data (N-33 obstacles O1, O2); every frame identity of `KamFlowFrame` in this generality
+  (`frame_decomp_R/Z`, `torsion_coord`, `S_coord`, `eta2_flux`, `newton_error_R/Z`, …). Reduction to the
+  rational field: `FlowField.toG`, `toG_frameHyp_iff`, `toG_invariant_iff`, `field14G_invariant_iff`;
+  rejected fixture `toroidalShift_Pof_ne` (a moving centre changes the torsion). Remaining:
+  `KamFlowStepG` (constants with p, `DiophantineSplit`) and `KamFlowIterationG`
+  (`notes/theory/kamflow-g-status.md`). Axiom audit passed.
+
