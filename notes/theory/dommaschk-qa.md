@@ -342,6 +342,28 @@ Run `workstation/dommaschk-qa-20261031T034330Z`: nmax 3 (42 coefficients), 48 st
   the best. Further gains in volume probably need more field periods or a different seed axis
   rather than more coefficients at NFP = 2.
 
+### 13. Windowed high-ι run (31 October 2026; untrusted): failed
+
+Run `workstation/dommaschk-qa-20261031T040304Z`: nmax 3, 48 starts, ι_min 0.38,
+`--iota-window 0.405,0.44`, surfaces r = 0.015, 0.03, 0.045; 12.6 min wall. Results in
+`scripts/dommaschk_qa/results/20261031T040304Z/`.
+
+- **Only 2 of 48 starts kept all surfaces regular.** The selected one (start 28) has |ι| 0.385–0.364,
+  below the window, with defect/ι 0.11, ε_eff ≈ 10 % and κ > 1. Its outer surface sits on
+  ι = 4/11, and strict nesting holds only to r = 0.015.
+- **Reading.** The random starts around the NFP-2 seed axis rarely reach |ι| ≈ 0.4. The high-ι
+  start of §10 (start 9) was a lucky outlier, and the optimiser cannot be warm-started from it (no
+  such option yet). Forcing ι up through the window makes the objective much harder.
+
+**Summary of §§7–13.** At NFP = 2 the best candidate is the nmax 3 one of §10:
+- defect/ι 0.009–0.023 at |ι| ≈ 0.24, with ε_eff ≈ 0.1 %;
+- strictly nested to r_eff ≈ 0.027.
+
+Larger bases, larger radii and higher ι all made things worse. Two directions remain open:
+- three field periods (a quick laptop test with NFP 3 and 2 starts already gave |ι| ≈ 0.33 with
+  defect/ι 0.04–0.05);
+- a warm-start option, to refine the §10 candidate and the high-ι outlier.
+
 ## Claims and evidence
 
 1. **Complete mathematical proof (symbolic, sympy).** The basis potentials are harmonic and

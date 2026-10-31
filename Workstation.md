@@ -225,12 +225,23 @@ laptop with a small parameter setting, then commit it to `main` before running i
 Kept up to date from the laptop after every review ("update from workstation"). Run them on the
 workstation, inside `tmux`; `run.sh` pulls `main` itself.
 
-**Status (31 October 2026, after the first windowed run): wait.** The high-ι windowed run
-(|ι| in [0.405, 0.44]) is still running in the sequence; let it finish. The first windowed run
-(surfaces out to r = 0.06) was worse than the nmax 3 candidate (defect/ι ≥ 0.08, N-31 §12). That
-candidate (defect/ι 0.009–0.023, N-31 §10) remains the best, and its certification is the next
-step on the laptop side. The next workstation commands are chosen after the high-ι run is
-reviewed.
+**Status (31 October 2026, after both windowed runs): run now (exploratory).** At two field
+periods the nmax 3 candidate of N-31 §10 remains the best: defect/ι 0.009–0.023 at |ι| ≈ 0.24,
+ε_eff ≈ 0.1 %. Larger bases, larger radii and the high-ι window all made things worse
+(N-31 §§11–13), so certifying that candidate is the main next step, on the laptop side.
+
+On the workstation, an exploratory change of family: **three field periods**. A 2-start laptop
+smoke test with NFP 3 gave |ι| ≈ 0.33 with defect/ι 0.04–0.05 after only 4 evaluations. The NFP is
+passed through `DQA_EXTRA`; the work directory is keyed by it. Each run takes about 5–15 min wall.
+Run them one after the other:
+
+```bash
+cd PlasmaLean && git pull
+DQA_NMAX=2 DQA_STARTS=48 DQA_IOTA_MIN=0.25 DQA_SURFACES=0.015,0.03,0.045 DQA_NFEV=100 \
+  DQA_EXTRA="--nfp 3" scripts/workstation/run.sh --jobs 24 dommaschk-qa
+DQA_NMAX=3 DQA_STARTS=48 DQA_IOTA_MIN=0.25 DQA_SURFACES=0.015,0.03,0.045 DQA_NFEV=100 \
+  DQA_EXTRA="--nfp 3" scripts/workstation/run.sh --jobs 24 dommaschk-qa
+```
 
 **On-demand olean transfer: resolved (30 October 2026).** The MuQuarter and EwFamily archive is
 installed on the laptop via `oleans.py retrace` (see "Sharing compiled files"). The pack step can
