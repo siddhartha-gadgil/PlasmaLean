@@ -1634,3 +1634,10 @@ Gate E1 (§11.2, §11.4) and the "sanity theorem or counterexample" promised in 
   formal derivative proved correct off the axis. Local statement, complementing the first-order
   obstruction `RationalStellaratorQAObstruction`. 4.3 GB, 18 s. Axiom audit passed (50,162 declarations).
 
+### Certification step 2: KAM oracle at 80 × 64 (workstation), 1 November 2026
+
+- Run `workstation/dommaschk-kam-20261031T163518Z`: torus A flow error 1.6 × 10⁻²³, torus C 1.5 × 10⁻²⁴ (FHL tolerance
+  with exact low divisors 1.7 × 10¹¹ and 9.0 × 10¹¹); twist +0.147 / +0.151. Torus C meets the N-33
+  requirement (e₀ ≲ 2 × 10⁻²³) by about 13× at 80 × 64 and becomes the preferred certification torus;
+  a 96 × 80 run of C is queued for margin. N-31 §26. Untrusted numerics.
+

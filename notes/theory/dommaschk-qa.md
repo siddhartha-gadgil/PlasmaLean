@@ -734,6 +734,26 @@ README) and workstation task `dommaschk-kam`, ported from `scripts/kam_oracle/` 
 - **Next.** The workstation main run (A and C at 80 × 64, 50 digits; peak about 8 GB). Then the
   design of the Lean certificate (ball arithmetic with tails), the main open item for step 2.
 
+### 26. KAM oracle at 80 × 64 on the workstation (31 October 2026; untrusted)
+
+Run `workstation/dommaschk-kam-20261031T163518Z` (poller batch `2026-10-31-kam-A-C`, 8 min wall on 24 CPUs),
+50-digit refinement. The Galerkin residual drops from 2.5 × 10⁻¹⁶ to 10⁻⁵⁸; the true invariance
+error is evaluated on a 496 × 400 grid.
+
+| torus | ι | sup residual | flow error | FHL C₁ tolerance (exact low divisors) | twist T/\|ω\| |
+| --- | --- | --- | --- | --- | --- |
+| A | −0.238608 | 6.1 × 10⁻²⁴ | 1.6 × 10⁻²³ | 1.9 × 10⁹ (1.7 × 10¹¹) | +0.147 |
+| C | −0.241651 | 5.1 × 10⁻²⁵ | 1.5 × 10⁻²⁴ | 3.8 × 10¹⁰ (9.0 × 10¹¹) | +0.151 |
+
+- **Torus A** matches the laptop extrapolation of §25.
+- **Torus C** is about 10× better, with θ-decay 0.616 per mode and strip 0.098 turns.
+- **Against the Lean constants** (N-33 §3.3), which need e₀ ≲ 2 × 10⁻²³ with exact low divisors
+  (`CohomologicalLow`): torus C at 80 × 64 already meets this by a factor of about 13, and torus A is
+  borderline.
+- **Torus C becomes the preferred certification torus.** A run at 96 × 80 (60 digits) adds margin.
+- The printed "k ≥ 2: 0.3646" is display rounding of the exact 0.364559; the ratios use the exact
+  value, and the Lean bound uses 0.3645 (`DommaschkKamDio`).
+
 ## Claims and evidence
 
 1. **Complete mathematical proof (symbolic, sympy).** The basis potentials are harmonic and

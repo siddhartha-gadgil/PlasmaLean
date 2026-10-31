@@ -1,0 +1,41 @@
+{
+ "task": "dommaschk-kam",
+ "description": "Dommaschk KAM flow-torus oracle (tori A,C, N 80, M 64, dps 50): invariance error, twist, FHL ratio; untrusted",
+ "stamp": "20261031T163518Z",
+ "base_commit": "c9d343e",
+ "host": "hornbill",
+ "os": "Linux x86_64",
+ "cpus": 24,
+ "jobs": 24,
+ "mode": "workstation",
+ "target": "default",
+ "steps": {
+  "emit": {
+   "cmd": "bash /home/gadgil/code/PlasmaLean/scripts/workstation/run.sh __step emit dommaschk-kam",
+   "status": "ok",
+   "returncode": 0,
+   "wall_min": 0.0,
+   "cpu_min": 0.0,
+   "peak_rss_gb": 0.01
+  },
+  "numerics": {
+   "cmd": "bash /home/gadgil/code/PlasmaLean/scripts/workstation/run.sh __step numerics dommaschk-kam",
+   "status": "ok",
+   "returncode": 0,
+   "wall_min": 8.06,
+   "cpu_min": 33.77,
+   "peak_rss_gb": 5.21
+  }
+ },
+ "laptop": {
+  "lean_cpu_min_scaled": 0.0,
+  "lean_peak_rss_gb": 0.0,
+  "budget": {
+   "max_rss_gb": 6.0,
+   "default_cpu_min": 60.0,
+   "max_cpu_min": 240.0,
+   "slowdown": 1.0
+  },
+  "verdict": "no Lean modules"
+ }
+}
