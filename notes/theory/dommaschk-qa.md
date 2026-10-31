@@ -364,6 +364,34 @@ Larger bases, larger radii and higher ι all made things worse. Two directions r
   defect/ι 0.04–0.05);
 - a warm-start option, to refine the §10 candidate and the high-ι outlier.
 
+### 14. Warm start (`--init`), 31 October 2026
+
+`optimize.py --init FILE` restarts from an earlier field instead of the seed (`DQA_EXTRA="--init …"`
+in the task). FILE is either:
+- a `candidate.json`: coefficients are matched by basis name, so a smaller basis embeds into a
+  larger one, and the exact rationals are used;
+- a work-directory `start_NNN.json`, with the same basis size.
+
+How it runs:
+- Start 0 is the field itself. Start k ≥ 1 adds a field-scaled perturbation of size
+  `--init-sigma` (default 0.001), without re-projection.
+- Stage A is skipped, the regularisation pulls towards the initial field, and the field's axis
+  is the first axis guess.
+- The configuration records the file's SHA-256, so a changed file is not silently resumed.
+
+Default behaviour is unchanged: residuals and start points are bit-identical without `--init`.
+
+Laptop check (untrusted, 2 starts, not a committed result):
+- Restarting from the §10 candidate with no optimisation reproduces its metrics exactly.
+- A perturbed restart with 4 stage-B evaluations moved to |ι| ≈ 0.32, almost shearless.
+- At high resolution that restart has defect/ι 0.013, 0.016 and 0.021 (moderate tier),
+  ε_eff 0.3 % and 1.0 %, κ 0.41–0.70, and strict nesting to r = 0.036. Its r_eff ≈ 0.016 at
+  r = 0.045 is smaller than the §10 candidate's 0.029, and lines are lost from r = 0.048, where ι
+  meets 2/7.
+
+So restarting with small perturbations explores a family of low-shear QA fields around the §10
+candidate, with |ι| from about 0.23 to 0.32. Workstation refinement runs come next.
+
 ## Claims and evidence
 
 1. **Complete mathematical proof (symbolic, sympy).** The basis potentials are harmonic and

@@ -1385,3 +1385,12 @@ Gate E1 (§11.2, §11.4) and the "sanity theorem or counterexample" promised in 
   window), defect/ι 0.11, ε_eff ≈ 10 %. At NFP 2 the N-31 §10 candidate remains the best. Next on
   the workstation: exploratory NFP 3 runs (a laptop smoke test gave |ι| ≈ 0.33 with defect/ι
   0.04–0.05 after 4 evaluations). N-31 §13.
+
+### Dommaschk QA fit: warm-start option, 31 October 2026
+
+- `optimize.py --init FILE` (candidate.json matched by basis name, or start_NNN.json): restart from
+  an earlier field with field-scaled perturbations, straight into stage B; default behaviour
+  bit-identical. Laptop check (2 starts, untrusted): a perturbed restart of the N-31 §10 candidate
+  gives a moderate-tier field with |ι| ≈ 0.32, defect/ι 0.013–0.021, ε_eff 0.3–1.0 %, but a
+  smaller region (r_eff ≈ 0.016). Workstation refinement commands are queued after the NFP 3 runs.
+  N-31 §14.

@@ -243,6 +243,21 @@ DQA_NMAX=3 DQA_STARTS=48 DQA_IOTA_MIN=0.25 DQA_SURFACES=0.015,0.03,0.045 DQA_NFE
   DQA_EXTRA="--nfp 3" scripts/workstation/run.sh --jobs 24 dommaschk-qa
 ```
 
+**After the NFP 3 runs: warm-start refinement of the best candidate** (N-31 §14; `--init` is on
+`main`). These restart from the nmax 3 candidate of N-31 §10 with small random perturbations,
+straight into the full objective. A 2-start laptop test already found a nearby moderate-tier field
+with |ι| ≈ 0.32. Each takes about 10–15 min wall. Run them one after the other:
+
+```bash
+cd PlasmaLean && git pull
+DQA_NMAX=3 DQA_STARTS=48 DQA_IOTA_MIN=0.2 DQA_SURFACES=0.015,0.03,0.045 DQA_NFEV=60 \
+  DQA_EXTRA="--init scripts/dommaschk_qa/results/20261030T120952Z/candidate.json --init-sigma 0.001" \
+  scripts/workstation/run.sh --jobs 24 dommaschk-qa
+DQA_NMAX=3 DQA_STARTS=48 DQA_IOTA_MIN=0.2 DQA_SURFACES=0.015,0.03,0.045 DQA_NFEV=60 \
+  DQA_EXTRA="--init scripts/dommaschk_qa/results/20261030T120952Z/candidate.json --init-sigma 0.003" \
+  scripts/workstation/run.sh --jobs 24 dommaschk-qa
+```
+
 **On-demand olean transfer: resolved (30 October 2026).** The MuQuarter and EwFamily archive is
 installed on the laptop via `oleans.py retrace` (see "Sharing compiled files"). The pack step can
 be used again when needed.

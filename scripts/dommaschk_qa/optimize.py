@@ -41,6 +41,14 @@ Sengupta, Plunk, J. Plasma Phys. 85 (2019) 905850103, section 5.1 ("r1"):
 random starts add field-scaled random perturbations (scale --sigma) and re-project on the same
 axis conditions.  Start 0 is the unperturbed seed.
 
+Warm start (--init FILE): instead of the seed, start from an earlier field. FILE is a
+candidate.json (coefficients matched to this basis by name, so a smaller basis embeds into a
+larger one; exact rational coefficients are used) or a work-directory start_NNN.json (same basis
+size required).  Start 0 is the initial field itself, start k >= 1 adds a field-scaled random
+perturbation of size --init-sigma (no re-projection on the seed's axis conditions).  Warm starts
+skip stage A (the axis-only objective would undo a good field), regularise towards the initial
+field instead of the seed, and use its magnetic axis as the first axis guess.
+
 Restartable: everything lives in --work (one directory per parameter set); finished starts are
 skipped, interrupted starts resume from their checkpoint.  Parallel over starts with --jobs.
 The final candidate (best start) is rounded to exact decimal rationals and passed to
@@ -96,6 +104,10 @@ def parse(argv=None):
     ap.add_argument('--diag-nper', type=int, default=600)
     ap.add_argument('--diag-lines', type=int, default=12)
     ap.add_argument('--eps-transits', type=int, default=100)
+    ap.add_argument('--init', default=None,
+                    help='warm start: candidate.json or start_NNN.json of an earlier run')
+    ap.add_argument('--init-sigma', type=float, default=0.001,
+                    help='warm start: random perturbation scale (field units)')
     ap.add_argument('--iota-window', default=None,
                     help='lo,hi: keep |iota| on the axis and all surfaces in [lo, hi] (off by default)')
     ap.add_argument('--w-window', type=float, default=1.0)
@@ -113,6 +125,29 @@ def parse(argv=None):
 OPT_KEYS = ('nfp', 'nmax', 'lmax', 'iota_min', 'surfaces', 'axis_delta', 'zmin', 'sigma', 'lam',
             'w_iota', 'w_axis', 'w_conv', 'w_bax', 'mmax', 'nmodes', 'ns', 'nper', 'max_nfev', 'seed')
 WINDOW_KEYS = ('iota_window', 'w_window')   # in the configuration only when --iota-window is set
+INIT_KEYS = ('init', 'init_sha256', 'init_sigma')   # only when --init is set
+
+
+def load_init(path, b):
+    """Initial coefficients for basis b and the initial axis guess, from candidate.json (matched
+    by basis name; exact rationals) or start_NNN.json (same size)."""
+    d = json.load(open(path))
+    if 'basis' in d:
+        names = [bk['name'] for bk in d['basis']]
+        coef = dict(zip(names, (float(Fraction(c)) for c in d['coefficients'])))
+        mine = {bk['name'] for bk in b}
+        extra = [n for n, v in coef.items() if n not in mine and v != 0]
+        if extra:
+            sys.exit(f'--init: {len(extra)} nonzero coefficients not in this basis, e.g. {extra[0]}')
+        x = np.array([coef.get(bk['name'], 0.0) for bk in b])
+        m = d.get('optimiser_metrics', {})
+    else:
+        x = np.array(d['x'], dtype=float)
+        if len(x) != len(b):
+            sys.exit(f'--init: {len(x)} coefficients, this basis has {len(b)}')
+        m = d.get('metrics', {})
+    axis = (m['axis_R'], m['axis_z']) if 'axis_R' in m else None
+    return x, axis
 
 
 def window_dist(cfg, aiota):
@@ -133,6 +168,12 @@ class Problem:
         self.rs = np.array(cfg['surfaces'])
         self.axis_guess = (1.0 + cfg['axis_delta'], 0.0)
         self._seed_system()
+        self.x_init = None
+        if cfg.get('init'):
+            self.x_init, ax = load_init(cfg['init'], self.b)
+            self.x_seed = self.x_init.copy()     # regularise towards the initial field
+            if ax is not None:
+                self.axis_guess = ax
 
     # ---- seed: linear conditions on the target axis
     def _target_axis(self, n=64):
@@ -182,6 +223,11 @@ class Problem:
         return sol[:self.nb]
 
     def start_point(self, k):
+        if self.x_init is not None:
+            if k == 0:
+                return self.x_init.copy()
+            rng = np.random.default_rng(self.cfg['seed'] + 7919*k)
+            return self.x_init + self.cfg['init_sigma']*rng.standard_normal(self.nb)/self.s
         if k == 0:
             return self.x_seed.copy()
         rng = np.random.default_rng(self.cfg['seed'] + 7919*k)
@@ -289,7 +335,7 @@ def run_start(args):
     ck = os.path.join(work, f'start_{k:03d}.ckpt.json')
     P = Problem(cfg)
     x0 = P.start_point(k)
-    stage0, resumed, axis0 = 'A', False, None
+    stage0, resumed, axis0 = ('B' if cfg.get('init') else 'A'), False, None
     if os.path.exists(ck):
         d = json.load(open(ck)); x0 = np.array(d['x']); stage0 = d['stage']; resumed = True
         axis0 = tuple(d['axis']) if d.get('axis') else None
@@ -385,6 +431,9 @@ def main(argv=None):
     cfg = {k: getattr(a, k) for k in OPT_KEYS}
     if a.iota_window is not None:
         cfg.update({k: getattr(a, k) for k in WINDOW_KEYS})
+    if a.init is not None:
+        a.init_sha256 = hashlib.sha256(open(a.init, 'rb').read()).hexdigest()
+        cfg.update({k: getattr(a, k) for k in INIT_KEYS})
     os.makedirs(a.work, exist_ok=True)
     cpath = os.path.join(a.work, 'config.json')
     if os.path.exists(cpath) and not a.force:
@@ -395,7 +444,8 @@ def main(argv=None):
     P = Problem(cfg)
     print(f"Dommaschk QA fit: NFP={a.nfp} nmax={a.nmax} lmax={a.lmax}: {P.nb} coefficients, "
           f"{a.starts} starts, {a.jobs} jobs; surfaces {a.surfaces}; iota_min {a.iota_min}"
-          + (f"; iota window {a.iota_window}" if a.iota_window else ''), flush=True)
+          + (f"; iota window {a.iota_window}" if a.iota_window else '')
+          + (f"; warm start from {a.init} (sigma {a.init_sigma})" if a.init else ''), flush=True)
     t0 = time.time()
     jobs = [(cfg, a.work, k, a.time_limit) for k in range(a.starts)]
     if a.jobs > 1 and a.starts > 1:
