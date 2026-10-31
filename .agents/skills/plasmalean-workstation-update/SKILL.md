@@ -122,6 +122,20 @@ Final report to the user, concise:
 
 After every review, rewrite the **"Next Commands"** section at the end of `Workstation.md`: a
 dated status line (run now / wait, and why) and the exact commands for the next useful runs.
-Commit it with the review.
+
+**Also regenerate `scripts/workstation/next.sh`**, which the unattended poller on the workstation
+(`scripts/workstation/poll.sh`) runs once per `NEXT_ID`:
+- Give it a **new** `NEXT_ID` (for example `2026-11-01-nfp3-refine`) whenever its commands change.
+  The poller runs each ID once, so a reused ID is never run, and a failed batch is retried only
+  under a new ID.
+- Keep the same structure: the `step` helper, the commands one after the other, `exit $rc`. Use
+  exactly the commands of "Next Commands", with `env VAR=…` in front of `run.sh`.
+- When nothing should run, write a `next.sh` whose body only does
+  `echo "Nothing to do (<date>): <reason>"`, under a new `NEXT_ID` such as `2026-11-01-idle`.
+- Mention the `NEXT_ID` in the Next Commands section. Check the script with `bash -n`.
+- Before reviewing, read the poller's status: `pending.sh` prints `origin/ws-status`. Report a
+  failed or stuck batch.
+
+Commit `Workstation.md` and `next.sh` with the review.
 
 Do not delete remote `workstation/*` branches unless the user asks.

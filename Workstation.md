@@ -194,6 +194,41 @@ python3 scripts/workstation/oleans.py unpack ~/Downloads/ew-oleans.tar.gz
   here, then 57 on-demand modules were retraced in 8 rounds (about 1 minute). The 12 Mu2–Mu5,
   MuQuarter and Ew entry points load with standard axioms only.
 
+## Unattended polling
+
+When the connection to the workstation is unreliable, leave a poller running there. It picks up
+new commands from `main` by itself:
+
+```bash
+ssh workstation
+tmux new -s poll
+cd PlasmaLean && git checkout main && git pull
+scripts/workstation/poll.sh            # every 10 minutes; --interval SECONDS, --once
+```
+
+- **What it runs.** Every 10 minutes, if the workstation is idle (no `run.sh` and no `lake`
+  running), it pulls `main` and reads `NEXT_ID` in
+  [`scripts/workstation/next.sh`](scripts/workstation/next.sh). For a `NEXT_ID` it has not run
+  before, it runs `next.sh` once.
+- **Who writes `next.sh`.** The laptop rewrites it after every review, together with "Next
+  Commands" below; the two always agree. When there is nothing to do, `next.sh` only prints a
+  message saying so.
+- **Failures.** Each batch runs once, whether it succeeds or fails; a failed batch is not
+  retried. To retry, the laptop issues a new `NEXT_ID`.
+- **Logs.** In `$WS_WORK/poll/` (default `~/plasmalean-work/poll/`): `poll.log`, one
+  `<NEXT_ID>.log` per batch, and a `done-<NEXT_ID>` marker per batch.
+- **Status for the laptop.** At the start and end of each batch the poller pushes a one-file
+  commit (`status.txt`: host, time, batch, state and the tail of the log) to the branch
+  `ws-status`. It uses git plumbing, so the working tree is not touched. `pending.sh` prints it;
+  by hand, `git fetch origin ws-status && git show origin/ws-status:status.txt`.
+- **Updates.** If a pull changes `poll.sh`, the poller re-executes the new version. It never pulls
+  over modified tracked files, and says so in its log.
+- **Trust.** `next.sh` is executed as found on `main`. Only push `next.sh` changes you would run
+  by hand.
+
+Results come back as usual: each `run.sh` inside a batch pushes its own `workstation/...` branch,
+and "update from workstation" on the laptop reviews them.
+
 ## Adding a task
 
 Copy [`scripts/workstation/tasks/TEMPLATE.sh`](scripts/workstation/tasks/TEMPLATE.sh) to
@@ -222,8 +257,10 @@ laptop with a small parameter setting, then commit it to `main` before running i
 
 ## Next Commands
 
-Kept up to date from the laptop after every review ("update from workstation"). Run them on the
-workstation, inside `tmux`; `run.sh` pulls `main` itself.
+Kept up to date from the laptop after every review ("update from workstation"). The same
+commands are in [`scripts/workstation/next.sh`](scripts/workstation/next.sh), with `NEXT_ID` =
+`2026-10-31-warmstart`, which the poller runs by itself (see "Unattended polling"). By hand, run
+them inside `tmux` (`run.sh` pulls `main` itself), or run `bash scripts/workstation/next.sh`.
 
 **Status (31 October 2026, after both NFP 3 runs): run now.** NFP 3 with only 24 coefficients
 gave the first candidate that passes every Q-16 check: defect/ι 0.007–0.020 at |ι| ≈ 0.28,

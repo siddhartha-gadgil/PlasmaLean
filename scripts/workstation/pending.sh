@@ -30,3 +30,8 @@ for ref in $(git for-each-ref --format='%(refname:short)' 'refs/remotes/origin/w
   git diff --stat origin/main..."$ref" -- . ':(exclude)workstation/results' | sed 's/^/     /'
 done
 [ "$found" = 1 ] || echo "no pending workstation runs"
+# status of the unattended poller (scripts/workstation/poll.sh), if it has reported
+if git rev-parse -q --verify refs/remotes/origin/ws-status >/dev/null; then
+  echo "== poller status (origin/ws-status)"
+  git show origin/ws-status:status.txt | sed -n '1,6p' | sed 's/^/   /'
+fi
