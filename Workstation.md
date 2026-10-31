@@ -259,7 +259,7 @@ laptop with a small parameter setting, then commit it to `main` before running i
 
 Kept up to date from the laptop after every review ("update from workstation"). The same
 commands are in [`scripts/workstation/next.sh`](scripts/workstation/next.sh), with `NEXT_ID` =
-`2026-10-31-rerank`, which the poller runs by itself (see "Unattended polling"). By hand, run
+`2026-10-31-rerank-nolog`, which the poller runs by itself (see "Unattended polling"). By hand, run
 them inside `tmux` (`run.sh` pulls `main` itself), or run `bash scripts/workstation/next.sh`.
 
 **Status (31 October 2026, after the first warm-start run): queued for the poller.** The NFP 3
@@ -277,6 +277,17 @@ DQA_NMAX=2 DQA_STARTS=48 DQA_IOTA_MIN=0.25 DQA_SURFACES=0.015,0.03,0.045 DQA_NFE
 DQA_NMAX=3 DQA_STARTS=48 DQA_IOTA_MIN=0.2 DQA_SURFACES=0.015,0.03,0.045 DQA_NFEV=60 \
   DQA_EXTRA="--init scripts/dommaschk_qa/results/20261030T120952Z/candidate.json --init-sigma 0.002" \
   scripts/workstation/run.sh --jobs 24 dommaschk-qa
+```
+
+Then two fresh searches for **purely rational fields** (N-31 §20). These use `--exclude-log`: the
+potentials containing ln R stay at exactly 0, so the polynomial KAM certificate pipeline applies
+without log enclosures. About 10–15 min each:
+
+```bash
+DQA_NMAX=2 DQA_STARTS=48 DQA_IOTA_MIN=0.25 DQA_SURFACES=0.015,0.03,0.045 DQA_NFEV=100 \
+  DQA_EXTRA="--nfp 3 --exclude-log" scripts/workstation/run.sh --jobs 24 dommaschk-qa
+DQA_NMAX=3 DQA_STARTS=48 DQA_IOTA_MIN=0.2 DQA_SURFACES=0.015,0.03,0.045 DQA_NFEV=100 \
+  DQA_EXTRA="--exclude-log" scripts/workstation/run.sh --jobs 24 dommaschk-qa
 ```
 
 **On-demand olean transfer: resolved (30 October 2026).** The MuQuarter and EwFamily archive is

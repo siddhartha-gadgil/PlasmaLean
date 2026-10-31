@@ -113,6 +113,9 @@ def parse(argv=None):
     ap.add_argument('--eps-transits', type=int, default=100)
     ap.add_argument('--init', default=None,
                     help='warm start: candidate.json, start_NNN.json, or starts.json:K of an earlier run')
+    ap.add_argument('--exclude-log', action='store_true',
+                    help='hold the coefficients of potentials with ln R terms at exactly 0 (purely '
+                         'rational field, cheaper to certify with the polynomial KAM pipeline)')
     ap.add_argument('--rerank', type=int, default=8,
                     help='re-evaluate the best RERANK starts at diagnostic resolution before choosing')
     ap.add_argument('--init-sigma', type=float, default=0.001,
@@ -179,6 +182,10 @@ class Problem:
         self.b = basis(cfg['nfp'], cfg['nmax'], cfg['lmax'])
         self.tab = fe.Tables(self.b, cfg['nfp'])
         self.nb = len(self.b)
+        # free coefficients; with --exclude-log the potentials containing ln R stay exactly 0
+        self.free = np.array([i for i, bk in enumerate(self.b)
+                              if not (cfg.get('exclude_log') and any(t[2] > 0 for t in bk['terms']))])
+        self.fixed = np.setdiff1d(np.arange(self.nb), self.free)
         self.rs = np.array(cfg['surfaces'])
         self.axis_guess = (1.0 + cfg['axis_delta'], 0.0)
         self._seed_system()
@@ -349,6 +356,7 @@ def run_start(args):
     ck = os.path.join(work, f'start_{k:03d}.ckpt.json')
     P = Problem(cfg)
     x0 = P.start_point(k)
+    x0[P.fixed] = 0.0
     stage0, resumed, axis0 = ('B' if cfg.get('init') else 'A'), False, None
     if os.path.exists(ck):
         d = json.load(open(ck)); x0 = np.array(d['x']); stage0 = d['stage']; resumed = True
@@ -358,6 +366,11 @@ def run_start(args):
 
     def solve(stage, x0, max_nfev, axis0):
         ev = P.evaluate_axis if stage == 'A' else P.evaluate
+        F = P.free                       # optimise over the free coefficients only
+
+        def expand(xf):
+            x = x0.copy(); x[F] = xf
+            return x
         st = dict(best=np.inf, xbest=x0.copy(), last_x=None, last_r=None, nfev=0, tck=0.0, axis=axis0, axis_best=axis0)
 
         def note(x, r):
@@ -371,29 +384,31 @@ def run_start(args):
             if time.time() - t0 > time_limit:
                 raise Timeout()
 
-        def fun(x):
+        def fun(xf):
+            x = expand(xf)
             r, info = ev(x[None], axis_guess=st['axis'])
             okk = info['ok'][0]
             if okk:
                 Ra, za = (info['Ra'], info['za']) if stage == 'A' else info['axis']
                 st['axis'] = (float(Ra[0]), float(za[0]))
-            st['last_x'] = x.copy(); st['last_r'] = r[0]; st['nfev'] += 1
+            st['last_x'] = xf.copy(); st['last_r'] = r[0]; st['nfev'] += 1
             note(x, r[0])
             return r[0]
 
-        def jac(x):
-            h = 1e-6*(1 + np.abs(x))*np.median(P.s)/P.s
-            if st['last_x'] is None or not np.array_equal(st['last_x'], x):
-                fun(x)
-            r, _ = ev(x[None] + np.diag(h), axis_guess=st['axis'])
-            note(x, st['last_r'])
+        def jac(xf):
+            h = 1e-6*(1 + np.abs(xf))*np.median(P.s)/P.s[F]
+            if st['last_x'] is None or not np.array_equal(st['last_x'], xf):
+                fun(xf)
+            D = np.zeros((len(F), P.nb)); D[np.arange(len(F)), F] = h
+            r, _ = ev(expand(xf)[None] + D, axis_guess=st['axis'])
+            note(expand(xf), st['last_r'])
             return ((r - st['last_r'][None])/h[:, None]).T
 
-        r0 = fun(x0)
+        r0 = fun(x0[F])
         cost0 = 0.5*float(r0 @ r0)
         status = 'ok'
         try:
-            sol = least_squares(fun, x0, jac=jac, method='trf', x_scale=0.01/P.s, max_nfev=max_nfev,
+            sol = least_squares(fun, x0[F], jac=jac, method='trf', x_scale=0.01/P.s[F], max_nfev=max_nfev,
                                 ftol=1e-10, xtol=1e-10, gtol=1e-10)
             msg = sol.message
         except Timeout:
@@ -454,6 +469,8 @@ def main(argv=None):
     cfg = {k: getattr(a, k) for k in OPT_KEYS}
     if a.iota_window is not None:
         cfg.update({k: getattr(a, k) for k in WINDOW_KEYS})
+    if a.exclude_log:
+        cfg['exclude_log'] = True
     if a.init is not None:
         a.init_sha256 = hashlib.sha256(open(a.init.partition(':')[0], 'rb').read()).hexdigest()
         cfg.update({k: getattr(a, k) for k in INIT_KEYS})

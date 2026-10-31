@@ -3,7 +3,7 @@
 # in Workstation.md. Run by scripts/workstation/poll.sh once per NEXT_ID, or by hand:
 #   bash scripts/workstation/next.sh
 # Commands run one after the other; a failing command does not stop the later ones.
-NEXT_ID="2026-10-31-rerank"
+NEXT_ID="2026-10-31-rerank-nolog"
 
 cd "$(dirname "${BASH_SOURCE[0]}")/../.." || exit 1
 rc=0
@@ -19,5 +19,13 @@ step env DQA_NMAX=2 DQA_STARTS=48 DQA_IOTA_MIN=0.25 DQA_SURFACES=0.015,0.03,0.04
 step env DQA_NMAX=3 DQA_STARTS=48 DQA_IOTA_MIN=0.2 DQA_SURFACES=0.015,0.03,0.045 DQA_NFEV=60 \
   DQA_EXTRA="--init scripts/dommaschk_qa/results/20261030T120952Z/candidate.json --init-sigma 0.002" \
   scripts/workstation/run.sh --jobs 24 dommaschk-qa
+
+# Purely rational fields (N-31 §20): potentials containing ln R held at exactly 0
+# (--exclude-log), so the polynomial KAM certificate pipeline applies without log enclosures.
+# Fresh searches, 48 starts each, about 10-15 min wall each.
+step env DQA_NMAX=2 DQA_STARTS=48 DQA_IOTA_MIN=0.25 DQA_SURFACES=0.015,0.03,0.045 DQA_NFEV=100 \
+  DQA_EXTRA="--nfp 3 --exclude-log" scripts/workstation/run.sh --jobs 24 dommaschk-qa
+step env DQA_NMAX=3 DQA_STARTS=48 DQA_IOTA_MIN=0.2 DQA_SURFACES=0.015,0.03,0.045 DQA_NFEV=100 \
+  DQA_EXTRA="--exclude-log" scripts/workstation/run.sh --jobs 24 dommaschk-qa
 
 exit $rc

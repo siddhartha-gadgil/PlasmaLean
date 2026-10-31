@@ -534,6 +534,39 @@ NFP 2, nmax 3 (42 coefficients), 48 starts from the §10 candidate with `--init-
   below 1/4, should give a strong-tier candidate. The queued re-rank batch
   (`2026-10-31-rerank`) checks the top 8 starts at high resolution.
 
+### 20. Certification step 2: plan, and purely rational candidates (31 October 2026)
+
+The KAM step needs a high-precision flow torus for one Diophantine ι and a certified a posteriori
+bound. For the rational field this was done by the pipeline in `scripts/kam_oracle/` and
+`Design/KamTorusA*`. It works with **polynomial residual forms**: the denominators of the field are
+multiplied out, and the ℓ¹ norms of the resulting bivariate polynomials are certified with
+Kronecker substitution.
+
+- **Negative powers of r₂.** The Dommaschk fields are polynomial after multiplying by a power of
+  r₂, so these fit the pipeline.
+- **The ln R terms do not.** Three potentials contain them: N₀,₁, D₀,₃ and N₀,₃. A field with
+  these terms would need validated log enclosures in the strip algebra (`Theory/KAM/StripAlgebra`),
+  which is new infrastructure.
+- **Option.** `optimize.py --exclude-log` holds the coefficients of those potentials at exactly 0
+  and optimises only the others. The candidate keeps the full basis with exact zeros, so
+  diagnostics and `emit_lean.py` are unchanged, and `DommaschkQA3`-style vacuum proofs apply as
+  before. The default path is unchanged: start coefficients and costs are bit-identical to the
+  previous version.
+- **Test.** The batch `2026-10-31-rerank-nolog` includes fresh NFP 3 and NFP 2 searches with this
+  option. If they reach the moderate tier, the certification target should be a purely rational
+  candidate.
+
+**Remaining step-2 work, in order:**
+1. Choose the certification candidate (after the re-rank and no-log runs). Moderate shear
+   matters: the KAM twist constant must stay away from 0 (barrier B2), which argues against the
+   nearly shearless fields.
+2. Port the flow-torus oracle (`scripts/kam_oracle/flow_torus.py`, `refine.py`, `twist.py`) to the
+   Dommaschk field: one Diophantine ι per surface, a multiprecision torus, the invariance error,
+   the ELP-S twist and the strip width. This is untrusted numerics, run on the workstation.
+3. Emit the Lean certificate on the `KamTorusA` pattern: exact field data from `emit_lean.py`,
+   residual forms, Kronecker norms, the a posteriori theorem. This gives certified invariant tori
+   with ι, and hence C1 through `currentFreeTransform_of_vacuum`.
+
 ## Claims and evidence
 
 1. **Complete mathematical proof (symbolic, sympy).** The basis potentials are harmonic and
