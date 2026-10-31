@@ -1,5 +1,46 @@
 host: hornbill
-time: 2026-10-31T08:36:58Z
-main: be7d893
+time: 2026-10-31T09:15:14Z
+main: 4acc0e6
 batch: 2026-10-31-rerank-nolog
-state: running
+state: finished, exit 0 after 38 min
+--- last 40 lines of the batch log ---
+[start 38] ok [('A', 401, '6.5 -> 1.91e-07'), ('B', 35, '110 -> 0.00245')]; ok=True |iota_axis| 0.2329 iota [-0.2344, -0.2377, -0.2403] defect/|iota| [0.0209, 0.0349, 0.0483] axis zrms 0.0255 (253 s)
+[start 43] ok [('A', 401, '6.5 -> 7.73e-07'), ('B', 24, '110 -> 55')]; ok=False |iota_axis| 0.2377 iota [-0.2315, -0.2136, -0.2302] defect/|iota| [0.019, 0.0388, 23.1148] axis zrms 0.0402 (215 s)
+[start 42] ok [('A', 17, '0.376 -> 0.376'), ('B', 31, '1.51 -> 1.3')]; ok=True |iota_axis| 0.0411 iota [-0.0409, -0.0405, -0.0398] defect/|iota| [0.1013, 0.1331, 0.177] axis zrms 0.0327 (230 s)
+[start 35] ok [('A', 401, '6.5 -> 3.55e-07'), ('B', 36, '110 -> 0.0275')]; ok=True |iota_axis| 0.1962 iota [-0.1935, -0.186, -0.1783] defect/|iota| [0.0169, 0.0316, 0.0468] axis zrms 0.0142 (328 s)
+[start 39] ok [('A', 401, '0.369 -> 6.32e-08'), ('B', 34, '0.00277 -> 0.00237')]; ok=True |iota_axis| 0.2379 iota [-0.2371, -0.2347, -0.2311] defect/|iota| [0.0191, 0.0364, 0.054] axis zrms 0.0460 (259 s)
+[start 47] ok [('A', 401, '0.336 -> 3.19e-08'), ('B', 32, '0.0237 -> 0.00271')]; ok=True |iota_axis| 0.2386 iota [-0.2363, -0.2298, -0.2222] defect/|iota| [0.0201, 0.0389, 0.0588] axis zrms 0.0441 (200 s)
+[start 40] ok [('A', 401, '6.5 -> 1.11e-07'), ('B', 30, '110 -> 0.00238')]; ok=True |iota_axis| 0.2402 iota [-0.2377, -0.2309, -0.2202] defect/|iota| [0.0176, 0.0324, 0.0491] axis zrms 0.0460 (274 s)
+[start 10] ok [('A', 401, '6.5 -> 2.4e-07'), ('B', 101, '110 -> 0.000354')]; ok=True |iota_axis| 0.2395 iota [-0.2373, -0.2297, -0.2165] defect/|iota| [0.0068, 0.0127, 0.0223] axis zrms 0.0156 (771 s)
+[start 6] ok [('A', 401, '0.362 -> 4.67e-08'), ('B', 101, '0.00435 -> 0.00253')]; ok=True |iota_axis| 0.2363 iota [-0.235, -0.2312, -0.225] defect/|iota| [0.019, 0.0366, 0.0556] axis zrms 0.0423 (782 s)
+[start 13] ok [('A', 401, '0.344 -> 2.02e-07'), ('B', 101, '0.00324 -> 0.000161')]; ok=True |iota_axis| 0.2393 iota [-0.2428, -0.2527, -0.2683] defect/|iota| [0.0052, 0.0087, 0.0143] axis zrms 0.0103 (786 s)
+[start 5] ok [('A', 401, '0.348 -> 1.56e-07'), ('B', 101, '0.0054 -> 0.00021')]; ok=True |iota_axis| 0.2446 iota [-0.2437, -0.242, -0.2413] defect/|iota| [0.0057, 0.0093, 0.0145] axis zrms 0.0297 (897 s)
+[start 25] ok [('A', 401, '0.323 -> 3.39e-08'), ('B', 101, '55 -> 0.134')]; ok=True |iota_axis| 0.1666 iota [-0.164, -0.1561, -0.1407] defect/|iota| [0.0237, 0.0475, 0.0775] axis zrms 0.0390 (770 s)
+[start 37] ok [('A', 401, '6.5 -> 2.45e-07'), ('B', 101, '110 -> 0.0124')]; ok=True |iota_axis| 0.2065 iota [-0.2047, -0.2, -0.1952] defect/|iota| [0.0193, 0.032, 0.0472] axis zrms 0.0150 (729 s)
+[start 46] ok [('A', 401, '0.378 -> 4.98e-08'), ('B', 101, '0.045 -> 0.00206')]; ok=True |iota_axis| 0.2399 iota [-0.2375, -0.2309, -0.2225] defect/|iota| [0.0186, 0.0348, 0.0505] axis zrms 0.0457 (728 s)
+[rerank] start 30: ok=True iota [-0.2385, -0.235, -0.2305] defect/|iota| [0.0011, 0.0012, 0.0028] birkhoff max 1.6e-07
+[rerank] start 1: ok=True iota [-0.2412, -0.2399, -0.2376] defect/|iota| [0.0015, 0.0027, 0.0054] birkhoff max 8.3e-08
+[rerank] start 19: ok=True iota [-0.2668, -0.2828, -0.302] defect/|iota| [0.0036, 0.0059, 0.0098] birkhoff max 2.6e-06
+[rerank] start 4: ok=True iota [-0.3173, -0.3195, -0.3217] defect/|iota| [0.002, 0.0048, 0.0103] birkhoff max 5.8e-08
+[rerank] start 13: ok=True iota [-0.2428, -0.2527, -0.2683] defect/|iota| [0.0052, 0.0087, 0.0143] birkhoff max 5.9e-07
+[rerank] start 5: ok=True iota [-0.2437, -0.242, -0.2413] defect/|iota| [0.0057, 0.0093, 0.0145] birkhoff max 5.0e-08
+[rerank] start 10: ok=True iota [-0.2372, -0.2297, -0.2165] defect/|iota| [0.0068, 0.0127, 0.0223] birkhoff max 5.5e-07
+[rerank] start 15: ok=True iota [-0.2376, -0.228, -0.2164] defect/|iota| [0.0073, 0.0138, 0.0224] birkhoff max 1.1e-06
+best start 30 (1227 s for the starts)
+diagnostics: axis z_max 0.0622 torsion/len -0.018; nested to r = 0.060; surfaces iota [-0.2385, -0.235, -0.2305], QA defect [0.00028, 0.00038, 0.00081], defect/|iota| [0.0012, 0.0016, 0.0035], eps_eff [1.6606929708342952e-05, 4.3975231330847644e-05, 0.00018486655014188891]; tier strong; evaluator check 6.4e-15; 44 s
+
+==> [emit] bash /home/gadgil/code/PlasmaLean/scripts/workstation/run.sh __step emit dommaschk-qa
+dommaschk-qa: no Lean modules
+
+==> committing results on workstation/dommaschk-qa-20261031T085357Z
+remote: 
+remote: Create a pull request for 'workstation/dommaschk-qa-20261031T085357Z' on GitHub by visiting:        
+remote:      https://github.com/siddhartha-gadgil/PlasmaLean/pull/new/workstation/dommaschk-qa-20261031T085357Z        
+remote: 
+To https://github.com/siddhartha-gadgil/PlasmaLean.git
+ * [new branch]      workstation/dommaschk-qa-20261031T085357Z -> workstation/dommaschk-qa-20261031T085357Z
+branch 'workstation/dommaschk-qa-20261031T085357Z' set up to track 'origin/workstation/dommaschk-qa-20261031T085357Z'.
+
+==> pushed workstation/dommaschk-qa-20261031T085357Z; on the laptop: git fetch && scripts/workstation/run.sh --verify-only dommaschk-qa
+
+==> back on main
