@@ -1423,3 +1423,11 @@ Gate E1 (§11.2, §11.4) and the "sanity theorem or counterexample" promised in 
   `field_stellSym`; non-vacuity sanity `nf_lap_x2_ne`. Standard axioms only; `lake build PlasmaLean`
   clean. Open: 2π/3 rotation symmetry, KAM tori and ι (C1 transform clause), Boozer angles and the
   certified QA defect. N-31 §17.
+
+### Dommaschk QA fit: first poller batch, NFP-3 warm start reviewed, 31 October 2026
+
+- Run `workstation/dommaschk-qa-20261031T075059Z` (poller batch `2026-10-31-warmstart`): 48 warm
+  starts around the N-31 §15 candidate; 46 regular; six with worst defect/ι 0.013–0.019 at optimiser
+  resolution. The selected one fails at high resolution (inner surface on ι = 3/8). `optimize.py` now
+  re-ranks the top starts at diagnostic resolution and keeps all coefficients in `starts.json`
+  (`--init starts.json:K`). N-31 §18.

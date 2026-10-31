@@ -491,6 +491,27 @@ the default build, with zero warnings and standard axioms only.
   - Boozer angles and the certified QA defect relative to ι (the vacuum Q-16 criterion).
   - The C2 bound through N-29.
 
+### 18. Warm start from the NFP-3 candidate (31 October 2026; untrusted)
+
+Run `workstation/dommaschk-qa-20261031T075059Z`, the first run started by the unattended poller
+(batch `2026-10-31-warmstart`): NFP 3, nmax 2, 48 starts from the §15 candidate with
+`--init-sigma 0.001`, straight into stage B; 8.2 min wall. Results in
+`scripts/dommaschk_qa/results/20261031T075059Z/`.
+
+- **46 of 48 starts were regular at optimiser resolution.** Six had a worst defect/ι between 0.013
+  and 0.019, all better than the §15 candidate's 0.020. The family spans |ι| ≈ 0.25–0.38.
+- **The selected start (34) fails the high-resolution check.** At optimiser resolution it had
+  |ι| 0.375–0.348 and defect/ι 0.0055–0.013. At high resolution its inner surface (r = 0.015,
+  |ι| = 0.375 = 3/8) lies in an island chain. Its other two surfaces are excellent (defect/ι
+  0.0088 and 0.0131, ε_eff 0.17 % and 0.19 %), and lines are regular out to r ≈ 0.054.
+- **The other good starts could not be checked**, because their coefficients stayed on the
+  workstation (`starts.json` did not keep them).
+- **Fix (31 October 2026).** `optimize.py` now re-ranks the best `--rerank` starts (default 8) at
+  diagnostic resolution before choosing, and keeps every start's coefficients in `starts.json`.
+  `--init starts.json:K` restarts from any start. Re-running the same command on the workstation
+  reuses the finished starts (the work directory is unchanged), so only the re-ranking and the
+  diagnostics run.
+
 ## Claims and evidence
 
 1. **Complete mathematical proof (symbolic, sympy).** The basis potentials are harmonic and
