@@ -616,6 +616,38 @@ rational coefficients:
 - The rational NFP-3 field fits the existing polynomial KAM pipeline directly.
 - If the NFP-2 no-log run reaches the strong tier, it combines both.
 
+### 22. Certification target: a strong-tier, purely rational NFP-2 field (31 October 2026; untrusted)
+
+Run `workstation/dommaschk-qa-20261031T085357Z`: NFP 2, nmax 3, `--exclude-log` (9 of the 42 potentials held at
+exactly 0), a fresh search with 48 starts; 20.5 min wall. Results in
+`scripts/dommaschk_qa/results/20261031T085357Z/`. The best start (30), at high resolution on the rounded
+rational coefficients:
+
+| r (launch) | r_eff | ι | defect/ι | ε_eff | κ |
+| --- | --- | --- | --- | --- | --- |
+| 0.015 | 0.015 | −0.2385 | 0.0012 | 0.0017 % | 0.03 |
+| 0.030 | 0.029 | −0.2350 | 0.0016 | 0.0044 % | 0.11 |
+| 0.045 | 0.041 | −0.2305 | 0.0035 | 0.018 % | 0.24 |
+
+- **Tier: strong.** All Q-16 checks pass, and `candidate_for_certification` is true.
+- **Nesting.** Strictly nested to r = 0.060 (r_eff ≈ 0.052) and regular to r = 0.066
+  (r_eff ≈ 0.056), the largest region of any candidate.
+- **ι** decreases monotonically from 0.240 on the axis to 0.224 at r = 0.072, inside (2/9, 1/4).
+  This moderate shear is what the KAM twist needs.
+- **Axis.** Non-planar, with z_max 0.062 and R between 0.86 and 0.97.
+- **The field is purely rational:** polynomial after clearing powers of r₂. So the existing
+  polynomial KAM pipeline applies without log enclosures.
+- **Caveat.** Some coefficients are large, up to 4 × 10⁴, on high-l potentials whose z^l/l! factor
+  is small near the axis. This matters for the Lean majorants (§20).
+
+**This field is the certification target.** It replaces the NFP-3 field of §15, whose step-1
+modules remain as the reference pattern. Next:
+1. Step 1 for this field: emit and prove the exact vacuum field, and the loop-current clause, in
+   Lean.
+2. Port the flow-torus oracle and choose a Diophantine ι near 0.235 with a certified twist.
+3. Refinement runs on the workstation that try to enlarge the region while keeping the strong
+   tier.
+
 ## Claims and evidence
 
 1. **Complete mathematical proof (symbolic, sympy).** The basis potentials are harmonic and

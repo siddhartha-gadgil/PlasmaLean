@@ -261,35 +261,25 @@ laptop with a small parameter setting, then commit it to `main` before running i
 
 Kept up to date from the laptop after every review ("update from workstation"). The same
 commands are in [`scripts/workstation/next.sh`](scripts/workstation/next.sh), with `NEXT_ID` =
-`2026-10-31-rerank-nolog`, which the poller runs by itself (see "Unattended polling"). By hand, run
-them inside `tmux` (`run.sh` pulls `main` itself), or run `bash scripts/workstation/next.sh`.
+`2026-10-31-refine-target`, which the poller runs by itself (see "Unattended polling"). By hand,
+run them inside `tmux` (`run.sh` pulls `main` itself), or run `bash scripts/workstation/next.sh`.
 
-**Status (31 October 2026, after the first warm-start run): queued for the poller.** The NFP 3
-warm start found six starts better than the lead candidate at optimiser resolution. The one it
-selected fails at high resolution, because its inner surface sits on ι = 3/8 (N-31 §18).
-`optimize.py` now re-ranks the top starts at diagnostic resolution and keeps every start's
-coefficients. The batch below repeats the two warm-start commands, so the finished starts are
-reused and only the re-ranking and diagnostics run, a few minutes each:
+**Status (31 October 2026, after batch `2026-10-31-rerank-nolog`): queued for the poller.** The
+purely rational NFP-2 search reached the strong tier: defect/ι ≤ 0.0035 at |ι| ≈ 0.235,
+ε_eff ≤ 0.018 %, strictly nested to r_eff ≈ 0.052. It is now the certification target (N-31 §22).
+This batch refines it by warm starts. The first run pushes the surfaces out to r = 0.06 with the
+transform window between 2/9 and 1/4; the second makes small perturbations at the original
+surfaces. About 20 min each:
 
 ```bash
 cd PlasmaLean && git pull
-DQA_NMAX=2 DQA_STARTS=48 DQA_IOTA_MIN=0.25 DQA_SURFACES=0.015,0.03,0.045 DQA_NFEV=60 \
-  DQA_EXTRA="--nfp 3 --init scripts/dommaschk_qa/results/20261031T044845Z/candidate.json --init-sigma 0.001" \
+T=scripts/dommaschk_qa/results/20261031T085357Z/candidate.json
+DQA_NMAX=3 DQA_STARTS=48 DQA_IOTA_MIN=0.2 DQA_SURFACES=0.02,0.04,0.06 DQA_NFEV=60 \
+  DQA_EXTRA="--exclude-log --init $T --init-sigma 0.001 --iota-window 0.2235,0.2495" \
   scripts/workstation/run.sh --jobs 24 dommaschk-qa
 DQA_NMAX=3 DQA_STARTS=48 DQA_IOTA_MIN=0.2 DQA_SURFACES=0.015,0.03,0.045 DQA_NFEV=60 \
-  DQA_EXTRA="--init scripts/dommaschk_qa/results/20261030T120952Z/candidate.json --init-sigma 0.002" \
+  DQA_EXTRA="--exclude-log --init $T --init-sigma 0.0005" \
   scripts/workstation/run.sh --jobs 24 dommaschk-qa
-```
-
-Then two fresh searches for **purely rational fields** (N-31 §20). These use `--exclude-log`: the
-potentials containing ln R stay at exactly 0, so the polynomial KAM certificate pipeline applies
-without log enclosures. About 10–15 min each:
-
-```bash
-DQA_NMAX=2 DQA_STARTS=48 DQA_IOTA_MIN=0.25 DQA_SURFACES=0.015,0.03,0.045 DQA_NFEV=100 \
-  DQA_EXTRA="--nfp 3 --exclude-log" scripts/workstation/run.sh --jobs 24 dommaschk-qa
-DQA_NMAX=3 DQA_STARTS=48 DQA_IOTA_MIN=0.2 DQA_SURFACES=0.015,0.03,0.045 DQA_NFEV=100 \
-  DQA_EXTRA="--exclude-log" scripts/workstation/run.sh --jobs 24 dommaschk-qa
 ```
 
 **On-demand olean transfer: resolved (30 October 2026).** The MuQuarter and EwFamily archive is
