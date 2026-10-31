@@ -260,14 +260,21 @@ laptop with a small parameter setting, then commit it to `main` before running i
 ## Next Commands
 
 Kept up to date from the laptop after every review ("update from workstation"). The same
-commands are in [`scripts/workstation/next.sh`](scripts/workstation/next.sh), which the poller runs
-by itself (see "Unattended polling").
+commands are in [`scripts/workstation/next.sh`](scripts/workstation/next.sh), with `NEXT_ID` =
+`2026-10-31-kam-A-C`, which the poller runs by itself (see "Unattended polling").
 
-**Status (31 October 2026, after batch `2026-10-31-refine-target`): nothing to run.**
-`next.sh` = `2026-10-31-idle-1` only prints a message. The certification target is chosen (N-31
-§24: NFP 2, purely rational, strong tier on surfaces out to r = 0.06, nested to r_eff ≈ 0.053), and
-its Lean step 1 is done (`DommaschkQA2R`). The next workstation task, the KAM flow-torus oracle for
-certification step 2, is being written on the laptop and will be queued here.
+**Status (31 October 2026): queued for the poller.** Certification step 2 numerics (N-31 §25): the
+KAM flow-torus oracle `dommaschk-kam` on the certification target, tori A and C at 80 × 64 modes
+with 50-digit refinement. About 20,800 unknowns and a peak of about 8 GB. Untrusted numerics, no
+Lean modules.
+
+```bash
+cd PlasmaLean && git pull
+DKAM_TORI=A,C DKAM_N=80 DKAM_M=64 DKAM_DPS=50 scripts/workstation/run.sh dommaschk-kam
+```
+
+Optional later, stronger: `DKAM_TORI=A DKAM_N=96 DKAM_M=80 DKAM_DPS=60` (about 31,000 unknowns,
+peak about 16 GB).
 
 **On-demand olean transfer: resolved (30 October 2026).** The MuQuarter and EwFamily archive is
 installed on the laptop via `oleans.py retrace` (see "Sharing compiled files"). The pack step can

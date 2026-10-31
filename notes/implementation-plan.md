@@ -1537,3 +1537,12 @@ Gate E1 (§11.2, §11.4) and the "sanity theorem or counterexample" promised in 
   `DommaschkQA2RData`/`DommaschkQA2R` were regenerated from it (same theorems, standard axioms). Run
   `20261031T094002Z`: strong tier, smaller region. N-31 §24.
 
+### Certification step 2, numerics: KAM flow-torus oracle for the target, 31 October 2026
+
+- `scripts/dommaschk_kam/` and the task `dommaschk-kam`, ported from `scripts/kam_oracle/` (exact
+  polynomial flow form with D = s⁴B^φ). Laptop, torus A (ι = −(19+√5)/89): residual 9.5 × 10⁻²⁰ at
+  64 × 52 modes, 40 digits; ELP-S twist T/|ω| = +0.147, one sign (low shear is not a barrier); FHL
+  tolerance about 10⁹–10¹¹ expected at 80 × 64. Main barrier: certificate size (degree-17 residual,
+  about 6 × 10⁶ coefficients), so a ball-arithmetic certificate with tails, not exact Kronecker.
+  Workstation main run queued (batch `2026-10-31-kam-A-C`). N-31 §25. Untrusted numerics.
+

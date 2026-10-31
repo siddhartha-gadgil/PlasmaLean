@@ -697,6 +697,43 @@ basis, the checks and the theorems are unchanged; only the coefficients changed.
 (`candidate_vacuum`, `candidate_currentFreeTransform`, `candidate_log_free`) now concern this
 field, with standard axioms only and peaks ≤ 3.1 GB.
 
+### 25. Certification step 2, numerics: the KAM flow-torus oracle (31 October 2026; untrusted)
+
+New oracle `scripts/dommaschk_kam/` (`dfield.py`, `dioph.py`, `torus.py`, `twist.py`, `run.py`,
+README) and workstation task `dommaschk-kam`, ported from `scripts/kam_oracle/` to the §24 target.
+
+- **Flow form.** Field-line time is φ and the frequency vector is (ι, 1). The denominators are
+  cleared by D = s³(1 + ∂_φV) = s⁴B^φ, with s = r₂, giving
+  `D(∂_φR + ι∂_θR) − 2R·Ps = 0` and `D(∂_φz + ι∂_θz) − s·Pz = 0`.
+  - D, Ps and Pz are exact rational polynomials of degree 8 in s and 5 in z.
+  - They match `fieldeval.py` to 8 × 10⁻¹⁵.
+  - The load step checks the candidate's hash and the zero log coefficients.
+- **Tori.** Noble tails |ι|/2 = [0; 8, a, 1, 1, …] inside (2/9, 1/4):
+  - A: ι = −(19 + √5)/89 = −0.238608, between 4/17 and 6/25, at r ≈ 0.037;
+  - B: ι = −0.232071, at r ≈ 0.057;
+  - C: ι = −0.241651, at r ≈ 0.027.
+- **Laptop, torus A.**
+  - **Error.** At 64 × 52 modes (13,545 unknowns), refined to 40 digits, the sup of the
+    polynomial residual is 9.5 × 10⁻²⁰. Double precision alone stalls near 5 × 10⁻¹⁵.
+  - **Decay and twist.** Fourier decay is 0.65 per mode in θ and 0.87 in ψ. The ELP-S twist
+    T/|ω| = +0.147 (C: +0.151, B: +0.110), all of one sign and about 50× the rational field's
+    relative twist, so **low shear is not a barrier**.
+  - **Smallness.** The FHL tolerance on C₁ is about 3.7 × 10⁵ at 64 × 52. Extrapolated, it is
+    about 10⁹–10¹¹ at 80 × 64, comparable to torus A of the rational field.
+  - **Verdict.** A certificate is plausible for A and C at about 80 × 64 modes and 50 digits. B is
+    not recommended: it sits near the 3/13 chain and its θ-decay is only 0.47.
+- **Barriers.**
+  1. **Certificate size (main).** The residual has degree 17 in the torus series, against 6 for
+     `KamTorusA`. At 80 × 64 the exact residual has about 6 × 10⁶ Fourier coefficients, about 150×
+     the `KamTorusA` Kronecker certificate. The exact-Kronecker route is unlikely to fit the
+     laptop; truncated ℓ¹ ball arithmetic with tail bounds (`StripAlgebra`/`KronBall`) is
+     recommended.
+  2. **Large coefficients: manageable** in shifted variables u = s − R_axis², where the box
+     majorants of D, Ps and Pz are 1.3, 0.3 and 0.7 for |u|, |z| ≤ 0.1.
+  3. Resonances narrow the strip near the outer surfaces.
+- **Next.** The workstation main run (A and C at 80 × 64, 50 digits; peak about 8 GB). Then the
+  design of the Lean certificate (ball arithmetic with tails), the main open item for step 2.
+
 ## Claims and evidence
 
 1. **Complete mathematical proof (symbolic, sympy).** The basis potentials are harmonic and
