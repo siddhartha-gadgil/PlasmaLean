@@ -1,5 +1,9 @@
 host: hornbill
-time: 2026-10-31T18:57:31Z
+time: 2026-10-31T18:57:33Z
 main: cf4adb3
 batch: 2026-11-01-idle-1
-state: running
+state: finished, exit 0 after 0 min
+--- last 40 lines of the batch log ---
+Nothing to do (1 November 2026): the certification torus C is computed (96 x 80, flow error
+1.6e-30; N-31 §27). The next workstation task (the first build of the Lean residual chain,
+N-33 items 6-10) is being written on the laptop and will be queued here when ready.
