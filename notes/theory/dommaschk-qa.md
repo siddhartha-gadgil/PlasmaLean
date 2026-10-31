@@ -323,6 +323,25 @@ Run `workstation/dommaschk-qa-20261030T122122Z`: nmax 4, lmax 6 (62 coefficients
   bases are tried again, the optimiser resolution (`DQA_EXTRA="--ns 96"`) and the ι window should
   go with them.
 
+### 12. Windowed run at larger radii (31 October 2026; untrusted): worse
+
+Run `workstation/dommaschk-qa-20261031T034330Z`: nmax 3 (42 coefficients), 48 starts on 24 jobs,
+ι_min 0.2, `--iota-window 0.226,0.248`, surfaces r = 0.02, 0.04, 0.06; 19.5 min wall. Results in
+`scripts/dommaschk_qa/results/20261031T034330Z/`.
+
+- **38 of 48 starts were regular, but every one has defect/ι ≥ 0.08.** The best by defect is start
+  1, at 0.046–0.082, but its |ι| = 0.221 is just outside the window. The selected start 7 has
+  defect/ι 0.12–0.17 and ε_eff ≈ 5 %, and QA is not the best helicity on every surface.
+- **The window does not hold at r = 0.06.** In the high-resolution check, ι reaches 2/9 from
+  r ≈ 0.048 (island chain). Strict nesting holds to r = 0.040 (r_eff ≈ 0.021), which is no larger
+  than the §10 candidate's.
+- **Reading (numerical observation).** At 42 coefficients the trade-off between volume and
+  quasi-axisymmetry is steep. Moving the optimised surfaces from r ≤ 0.045 to r ≤ 0.06 raises
+  defect/ι from 0.009–0.023 (§10) to above 0.08. The window keeps the selection honest but
+  cannot remove the shear that carries ι through 2/9 at larger radius. The §10 candidate remains
+  the best. Further gains in volume probably need more field periods or a different seed axis
+  rather than more coefficients at NFP = 2.
+
 ## Claims and evidence
 
 1. **Complete mathematical proof (symbolic, sympy).** The basis potentials are harmonic and

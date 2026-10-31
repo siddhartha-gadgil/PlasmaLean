@@ -225,24 +225,12 @@ laptop with a small parameter setting, then commit it to `main` before running i
 Kept up to date from the laptop after every review ("update from workstation"). Run them on the
 workstation, inside `tmux`; `run.sh` pulls `main` itself.
 
-**Status (30 October 2026, after the nmax 4 run): run now.** The nmax 3 run reached the moderate
-tier: defect/ι 0.009–0.023 at |ι| ≈ 0.24, ε_eff ≈ 0.1 %, with low shear inside the
-resonance-free window (2/9, 1/4) (N-31 §10). The nmax 4 run did not improve on it: its best start
-fails the high-resolution check, because the 62-coefficient basis overfits the coarse objective
-(N-31 §11).
-
-Next, two windowed nmax 3 runs with the `--iota-window` term (on `main`). The first targets the
-window of the best candidate, with the outer surface moved out to enlarge the strictly nested
-region. The second targets the high-ι family seen in the nmax 3 run's start 9 (|ι| ≈ 0.4, between
-2/5 and 4/9). Each takes about 10–15 min wall. Run them one after the other:
-
-```bash
-cd PlasmaLean && git pull
-DQA_NMAX=3 DQA_STARTS=48 DQA_IOTA_MIN=0.2 DQA_SURFACES=0.02,0.04,0.06 DQA_NFEV=100 \
-  DQA_EXTRA="--iota-window 0.226,0.248" scripts/workstation/run.sh --jobs 24 dommaschk-qa
-DQA_NMAX=3 DQA_STARTS=48 DQA_IOTA_MIN=0.38 DQA_SURFACES=0.015,0.03,0.045 DQA_NFEV=100 \
-  DQA_EXTRA="--iota-window 0.405,0.44" scripts/workstation/run.sh --jobs 24 dommaschk-qa
-```
+**Status (31 October 2026, after the first windowed run): wait.** The high-ι windowed run
+(|ι| in [0.405, 0.44]) is still running in the sequence; let it finish. The first windowed run
+(surfaces out to r = 0.06) was worse than the nmax 3 candidate (defect/ι ≥ 0.08, N-31 §12). That
+candidate (defect/ι 0.009–0.023, N-31 §10) remains the best, and its certification is the next
+step on the laptop side. The next workstation commands are chosen after the high-ι run is
+reviewed.
 
 **On-demand olean transfer: resolved (30 October 2026).** The MuQuarter and EwFamily archive is
 installed on the laptop via `oleans.py retrace` (see "Sharing compiled files"). The pack step can
