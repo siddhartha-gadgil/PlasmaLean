@@ -6,7 +6,7 @@ Build the top modules first, `lake build PlasmaLean.Design.RationalStellaratorGC
 `lake build PlasmaLean.Design.CoilKamCert`, `lake build PlasmaLean.Design.DommaschkKamCAdm`, `lake build PlasmaLean.Design.DommaschkKamCConsts`,
 `lake build PlasmaLean.Design.DommaschkKamCContract`,
 `lake build PlasmaLean.Design.DommaschkKamCRes`, `lake build PlasmaLean.Design.DommaschkKamCFinal`,
-`lake build PlasmaLean.Design.DommaschkKamCQSTransfer`, `lake build PlasmaLean.Design.DommaschkKamCQSIdent`, `lake build PlasmaLean.Design.DommaschkKamCQS`
+`lake build PlasmaLean.Design.DommaschkKamCQSTransfer`, `lake build PlasmaLean.Design.DommaschkKamCQSIdent`, `lake build PlasmaLean.Design.DommaschkKamCQS`, `lake build PlasmaLean.Design.DommaschkKamCQSL2`
 (bounded, dependencies first),
 then run `lake env lean scripts/check_axioms_heavy.lean`.
 
@@ -31,6 +31,7 @@ import PlasmaLean.Design.DommaschkKamCFinal
 import PlasmaLean.Design.DommaschkKamCQSTransfer
 import PlasmaLean.Design.DommaschkKamCQSIdent
 import PlasmaLean.Design.DommaschkKamCQS
+import PlasmaLean.Design.DommaschkKamCQSL2
 
 /-! Audit all declarations owned by project modules in the import closure (the on-demand top
 modules and everything they import). Fails on any non-standard axiom. -/
@@ -120,3 +121,11 @@ run_cmd do
 #print axioms PlasmaLean.Design.DommaschkKamC.dommaschk_C1_qaDefect
 #print axioms PlasmaLean.Design.DommaschkKamC.dommaschk_C1_oracleDefect
 #print axioms PlasmaLean.Design.DommaschkKamC.oracleDefect_bound_num
+#print axioms PlasmaLean.Design.DommaschkKamC.dommaschk_C1_oracleDefect_L2
+#print axioms PlasmaLean.Design.DommaschkKamC.oracleDefect_L2_num
+#print axioms PlasmaLean.Design.DommaschkKamC.torusAvg_eval_psi
+#print axioms PlasmaLean.Design.DommaschkKamC.ExactTorusC.four_mul_sqJ_eq
+#print axioms PlasmaLean.Design.DommaschkKamC.ExactTorusC.weightedL2Sq_le_mF
+#print axioms PlasmaLean.Design.DommaschkKamC.l2_numbers
+#print axioms PlasmaLean.Design.DommaschkKamC.not_l2_tiny
+#print axioms PlasmaLean.Design.DommaschkKamC.torusAvg_eval_psi_one

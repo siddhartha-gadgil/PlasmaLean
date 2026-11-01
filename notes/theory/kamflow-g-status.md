@@ -845,3 +845,41 @@ only clash of `QSPoly` with the on-demand closure; my 779 new names do not clash
   #print axioms PlasmaLean.Design.DommaschkKamC.qsNg_instance
   #print axioms PlasmaLean.Design.DommaschkKamC.qsd_not_tiny
   ```
+
+## N-34 D7 by the L² route (2 November 2026): strong-tier certified QA defect of the C1 torus — complete
+
+**Result.** `DommaschkKamC.dommaschk_C1_oracleDefect_L2` (on-demand `Design/DommaschkKamCQSL2`):
+the exact Dommaschk field has an invariant torus with `ι_C` on which, for every finite set of
+half-lattice off-QA modes, `oracleDefect 2 ι_C (V∘K) (|B|∘K) S ≤ (√2/2) δ₂/B_min`
+(`δ₂ = 0.002244`, `B_min = 1.04259`); `oracleDefect_L2_num`: this is `< 0.0016`,
+`≤ (1/100)(6/25)` and `≤ 0.0063 |ι_C|` (**strong tier**; sup route was 0.0141 ≈ 0.058 |ι|).
+
+**The two missing identities.**
+- *Torus average = strip average* (`torusAvg_eval_psi`: `torusAvg 2 (fun p => eval x p.1 (psi p.2))
+  = avg x`, via `integral_box_eval_psi`): Fubini (`setIntegral_prod_swap`, `setIntegral_prod`), the
+  substitution `ψ = 2φ − π/2` (`integral_comp_mul_sub`), `2π`-periodicity in `ψ`
+  (`Periodic.intervalIntegral_add_eq`) and `avg_eq_integral` (`Theory/KAM/StripEval`).
+- *Pointwise identity* (`ExactTorusC.four_mul_sqJ_eq`): `F = 4 g² J · (q_G Q R¹⁷)²(q_D D)` with
+  `F = qsFX u z = (q_G N_g)² R⁸ q_D`. The approximate inverses need not be real:
+  `Re((q_G QR¹⁷)²(q_D D)) ≥ c_L = 2 − (1+ε_G)²(1+ε_D)` (`re_sq_mul_ge`), so `4c_L g²J ≤ Re F`
+  (`sqJ_le`) and `⟨g²J⟩ ≤ |⟨F⟩|/(4c_L) ≤ m_F/(4c_L) ≤ δ₂²` (`weightedL2Sq_le_mF`, `l2_numbers`;
+  `c_L` is below `(1−ε_G)²(1−ε_D)` by ~1e-11, slack in `δ₂²` is 7e-6 relative).
+
+**Build.** `lake build PlasmaLean.Design.DommaschkKamCQSL2`: ≈ 3 s user / 1.6–1.8 GB (after
+`DommaschkKamCQS`). Standard axioms; no `sorry`/`decide`; zero warnings; no clashes with
+`import PlasmaLean`.
+
+**Shared files (owner to add).**
+- `PlasmaLean.lean`: none (on demand).
+- `scripts/check_axioms_heavy.lean`:
+  ```
+  import PlasmaLean.Design.DommaschkKamCQSL2
+  #print axioms PlasmaLean.Design.DommaschkKamC.dommaschk_C1_oracleDefect_L2
+  #print axioms PlasmaLean.Design.DommaschkKamC.oracleDefect_L2_num
+  #print axioms PlasmaLean.Design.DommaschkKamC.torusAvg_eval_psi
+  #print axioms PlasmaLean.Design.DommaschkKamC.ExactTorusC.four_mul_sqJ_eq
+  #print axioms PlasmaLean.Design.DommaschkKamC.ExactTorusC.weightedL2Sq_le_mF
+  #print axioms PlasmaLean.Design.DommaschkKamC.l2_numbers
+  #print axioms PlasmaLean.Design.DommaschkKamC.not_l2_tiny
+  #print axioms PlasmaLean.Design.DommaschkKamC.torusAvg_eval_psi_one
+  ```

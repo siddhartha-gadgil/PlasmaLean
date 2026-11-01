@@ -28,10 +28,8 @@ off-QA Boozer spectral defect in the oracle's normalisation, over any finite set
 is at most `√2 · 0.020642/(2 · 1.04259) ≈ 0.0140`, i.e. about `0.058 |ι|` (sup route).
 
 Scope: one certified torus (a thin core, `r_eff ≈ 0.02`). The sup route gives defect/|ι| ≈ 0.058,
-just outside the moderate tier of Q-16 (0.05); the L² route (certified `δ₂ ≤ 0.00224` in
-`DommaschkKamCQSTransfer`, giving ≈ 0.0063 |ι|, strong tier) still needs the pointwise identity
-`4 g² J = F/((q_G Q R¹⁷)² (q_D D))` and the identification of the torus average with the strip
-average (N-34 D7, open). No C2 statement is made (audit item AC-1: the omnigeneity contract is not
+just outside the moderate tier of Q-16 (0.05); the L² route (certified `δ₂ ≤ 0.00224`) gives
+≈ 0.0063 |ι|, strong tier: `DommaschkKamCQSL2.dommaschk_C1_oracleDefect_L2`. No C2 statement is made (audit item AC-1: the omnigeneity contract is not
 yet tied to the physical field).
 -/
 

@@ -1614,8 +1614,8 @@
    "cards": [
     {
      "title": "1 · Dommaschk QA fit",
-     "text": "An explicit vacuum field (current-free by construction) fitted to a quasi-axisymmetric target (Q-16): a two-period, purely rational Dommaschk field. Its QS defect is ≤ 0.5 % of ι, in untrusted numerics. Verified in Lean: contract clause C1, a KAM-certified invariant torus with |ι| ≥ 0.24 and zero net toroidal current (dommaschk_C1_unconditional, on-demand modules). Next: the certified QS defect and C2.",
-     "status": "C1 verified · QS defect and C2 next",
+     "text": "An explicit vacuum field (current-free by construction) fitted to a quasi-axisymmetric target (Q-16): a two-period, purely rational Dommaschk field. Verified in Lean on one certified invariant torus: contract clause C1 (|ι| ≥ 0.24, zero net toroidal current; dommaschk_C1_unconditional) and a strong-tier quasi-axisymmetry defect, an off-QA Boozer spectrum ≤ 0.0063 |ι| (dommaschk_C1_oracleDefect_L2). Open: a nested region and C2.",
+     "status": "C1 and certified QA defect · nested region and C2 next",
      "kind": "checked"
     },
     {

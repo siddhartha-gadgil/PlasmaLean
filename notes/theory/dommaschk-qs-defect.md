@@ -453,3 +453,7 @@ A1 `Theory/Fields/VacuumBoozerTorus`, A2 `Theory/Fields/BoozerWirtinger` (`torus
 pointwise, and the torus average as the strip `avg`. Remaining risk statement unchanged: one thin
 torus; no C2 (AC-1).
 
+## Update (2 November 2026): D7 L² route done
+
+`dommaschk_C1_oracleDefect_L2` (on-demand `Design/DommaschkKamCQSL2`): defect ≤ (√2/2)δ₂/B_min < 0.0016 ≈ 0.0063 |ι| (strong tier). Scope unchanged: one thin torus, no C2 (AC-1).
+

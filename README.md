@@ -68,8 +68,11 @@ together, and those only in vacuum.
   - ε_eff is not in Lean.
   - Weak quasisymmetry is defined. Neither Landreman family is weakly quasisymmetric on any
     region containing its magnetic axis, for any potential critical on the axis.
-  - The Dommaschk C1 field above has QS defect ≤ 0.5 % of ι and ε_eff ≤ 0.04 % in untrusted
-    numerics only. Its QS defect is not yet certified, so it is not yet a C2 result.
+  - On the certified C1 torus of the Dommaschk field, the quasi-axisymmetry defect is **certified**
+    (2 November 2026, `DommaschkKamC.dommaschk_C1_oracleDefect_L2`, on demand): the off-QA Boozer
+    spectral defect is ≤ 0.0063 |ι|, strong tier. This is one thin torus. It is not a C2 result:
+    the omnigeneity contract is not yet tied to the physical field (audit AC-1), and a volume Boozer
+    chart does not exist exactly for this field.
   - The alpha results below concern 3.5 MeV alphas, mostly passing orbits, which is one part of
     C2 at most.
 - **C3 (test beds only):** Mercier stability on a band of Landreman family 2 (current-carrying),
@@ -82,8 +85,8 @@ together, and those only in vacuum.
   and proved obstructions at measured confinement factors.
 
 The next priorities:
-- certify the quasisymmetry defect of the C1 Dommaschk field (Boozer angles on the certified torus),
-  and through the QS ⇒ omnigeneity bridge a C2 statement;
+- a nested certified region for the Dommaschk field (a second torus); a Boozer model tied to the field
+  (audit AC-1) and a C2-type statement;
 - ε_eff in Lean;
 - a current-free finite-β equilibrium.
 
