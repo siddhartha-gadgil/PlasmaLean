@@ -1648,3 +1648,13 @@ Gate E1 (§11.2, §11.4) and the "sanity theorem or counterexample" promised in 
   for step 2 are sufficient; the remaining work is the Lean certificate chain (N-33 items 6–10).
   N-31 §27. Untrusted numerics.
 
+### Certification step 2: items 6–7 (centre, torus data, small divisors, constants), 1 November 2026
+
+- `Design/DommaschkKamCData` (96 × 80 torus C, generated, 6 s / 1.4 GB), `DommaschkKamCTorus` (quarter-turn
+  rotation `rotψ` between the oracle and strip-algebra angles; `u₀C`, `z₀C`, `dkFieldTC` with a 3-harmonic
+  centre, W₀ one-signed), `DommaschkKamDioC` (`dkOmegaC_split`, d = 0.1208, γ₂ = 0.2671). Constants
+  estimate: κ ≈ 4.0 × 10¹², required e₀ ≈ 1.3 × 10⁻²³; the 96 × 80 torus has ‖E‖_{0.045} = 5.9 × 10⁻²⁹
+  (margin 2.3 × 10⁵); **80 × 64 is insufficient** (correction to N-31 §26–27, which compared the sup
+  error). Next: item 8 (low-resolution admissibility chain, near-sharp inverses). Axiom audit passed
+  (50,270 declarations).
+

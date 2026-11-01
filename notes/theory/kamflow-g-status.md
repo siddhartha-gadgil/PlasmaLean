@@ -315,3 +315,120 @@ centre is a parameter of `dkFieldC`; it is to be chosen with the torus data (ite
   #print axioms PlasmaLean.Design.DommaschkKam.flow_ident
   #print axioms PlasmaLean.Design.DommaschkKam.DkPoly.merge_fixture_ne
   ```
+
+## Items 6–7 (development phase, 1 November 2026): torus C data, centre, small divisors, constants
+
+**Certification torus C** (`ι_C = −(85 + √5)/361`), exported by the workstation as
+`scripts/dommaschk_kam/results/20261101T015808Z/torus_C_N80_M64.json` and
+`…/20261101T015838Z/torus_C_N96_M80.json`.
+
+**Files** (new; zero warnings, standard axioms; not imported by `PlasmaLean.lean`).
+
+| File | Content | Build |
+| --- | --- | --- |
+| `scripts/dommaschk_kam/emit_torus.py` | generator (untrusted): exact rationals from the decimal strings, rounding to `2^-S`, packing, Python mirror of `fieldW`/`halfGridR`/`symGrid` (every field and complex coefficient decoded back and compared; error ≤ `2^-S` each), `ι_q` by integer squares, centre polynomials (sorted, angle only), `W₀` check | — |
+| `Design/DommaschkKamCData` (generated) | `Nc Mc Sc Fc Qc Iqc`, packed half grids `datU` (`U = R − R₀`) and `datZ` in the oracle angle `ψₒ = 2φ`, the centre `cenR cenZ : DkPoly.SP` | 80 × 64: 0.66 MB source, 4.5–5.3 s, 1.4 GB, olean 0.38 MB; 96 × 80 (measured, not left in place): 0.98 MB, 5.9 s, 1.4 GB, olean 0.49 MB |
+| `Design/DommaschkKamCTorus` | `rotψ` (`c_km ↦ iᵐ c_km`), `u₀C z₀C : FA`, `dkFieldTC`, `iotaqC_close` | 2.8 s, 1.4 GB |
+| `Design/DommaschkKamDioC` | the torus-C `DiophantineSplit` | 3.9 s, 1.4 GB |
+
+**Angle convention.** The oracle angle is `ψₒ = 2φ` (stellarator symmetry about `φ = 0`: `R` a
+cosine and `z` a sine series). The strip algebra's angle is `ψ = 2φ − π/2` (`cS = −sin ψ`). The data
+are stored in `ψₒ`, in the GC ball-chain format (`symGrid N M ((-1)^p) (halfGridR F N rows)`, `p = 0`
+for `U` and `p = 1` for `z`, `g = 2^S · coefficient · iᵖ`), so a KronBall residual chain (item 7)
+consumes them unchanged. The bridge is `rotψ`, an isometric `ℂ`-algebra automorphism:
+- `rotψHom`, `Bd_rotψ`, `ana_rotψ`, `isReal_rotψ`;
+- `eval_rotψ`: `rotψ x` at `(θ, ψ)` is `x` at `(θ, ψ + π/2)`;
+- `dS_rotψ`: it commutes with every derivative, hence with `Lt`;
+- `rotψ_cSo`, `rotψ_sSo`: it takes `cos ψₒ`, `sin ψₒ` to `cS`, `sS`;
+- `rotψ_eval`: it commutes with `PolyExpr.eval`.
+
+So `resR ι u₀C z₀C = rotψ (resR in the oracle frame, with cSo, sSo)`, with the same `Bd` norms. The
+residual chain can work entirely in `ψₒ`. Then `u₀C := rotψ Uo` and `z₀C := rotψ Zo`, with
+`ana_u₀C`, `isReal_u₀C`, `eval_u₀C` and `coeff_u₀C`.
+
+**Moving centre (N-33 O1).**
+- `A(ψₒ) = (0.9187 + 0.0592 cos ψₒ − 0.0108 cos 2ψₒ − 0.0030 cos 3ψₒ,
+  −0.0604 sin ψₒ + 0.0107 sin 2ψₒ + 0.0029 sin 3ψₒ)`.
+- These are the first three harmonics of the traced axis, rounded to `10⁻⁴`. A 4th harmonic is
+  `≤ 3e-5` and changes nothing. In Lean, `cenR` (6 terms) and `cenZ` (4 terms) are written in
+  `c = cos 2φ`, `s = sin 2φ`.
+- On torus C, `W₀ ∈ [−5.83e-4, −4.35e-4]` (ratio 0.747; float check, untrusted). One harmonic gives
+  `[−8.7e-4, −1.3e-4]`. An `sW`-optimised centre gains only 6% in `‖1/W₀‖`.
+
+**Small divisors (`DommaschkKamDioC`, namespace `DommaschkKamDio`).**
+- `ω_C = (85 + √5)/722` is a root of `361x² − 85x + 5` (`dkOmegaC_root`).
+- `dkOmegaC_split : DiophantineSplit ω_C 0.1208 0.2671 1 1`, with `γ₂ = 0.26716` attained at
+  `k = 8`. The conjugate-norm sum is `361(γ²/81 + γ√5/361) ≈ 0.915`.
+- `dkIotaC_period_split` (the `GlobalHG.dio` form), `dkOmegaC_diophantine`, `dkIotaC_Bd_coh`.
+- `dkC_low_threshold` (`e γ₂ δ ≤ 0.1208` for `δ ≤ 4/25`) and `dkC_low_δ0` (`δ₀ = 9/1400`).
+- Rejected fixtures `dkOmegaC_not_split_low` (0.1209) and `dkOmegaC_not_split_high` (0.2672).
+
+**Constants (item 7; `kam_constants.py --torus … --summary …`, untrusted).**
+- This transcribes `SCG.kη1 … SCG.kap` formula by formula. `C₂` comes from the actual Lean
+  polynomials (`DommaschkKamFieldData` parsed; `majD2` at `avec + Tq • mvec`).
+- Strip `r = 0.045`, `δ₀ = r/7 = 9/1400`, `E1 = 2.718`.
+- The "slack" column multiplies every field, inverse and torsion bound (and divides `τ`). Torus norms
+  are exact.
+
+| slack | `cK` | `cL` | `κ ≈ C₂` | required `e₀ = δ₀⁴/(32κ)` | 96 × 80: exported `‖E‖_r` 5.9e-29, margin | 80 × 64: exported 1.6e-23, margin |
+| --- | --- | --- | --- | --- | --- | --- |
+| 1 | 3.0e4 | 9.2e5 | 4.0e12 | 1.3e-23 | 2.3e5 | **0.84** |
+| 1.05 | 5.4e4 | 1.9e6 | 1.4e13 | 3.8e-24 | 6.4e4 | 0.24 |
+| 1.10 | 9.5e4 | 4.0e6 | 4.8e13 | 1.1e-24 | 1.9e4 | 0.07 |
+
+Sharp bounds at `r = 0.045`: `au 0.138`, `az 0.119`, `avR 0.053`, `avZ 0.046`, `aR 1.04`,
+`aRt 0.055`, `azt 0.053`, `aLR 0.254`, `aLz 0.252`, `bD 1.15`, `bDu 6.48`, `bDz 0.53`, `sD 3.82`,
+`sR 1.24`, `sW 2741`, `tT 2747`, `τ = |⟨T₀⟩| = 14.26` (`--detail` prints all of them).
+
+- **Correction to dommaschk-qa §26/§27.** The "13× at 80 × 64" compared the *sup* flow error with
+  the required `e₀`. The KAM step needs the *weighted* norm `‖E‖_r`, which at `r = 0.045` is
+  1.6e-23 for 80 × 64 (summary strip table, `ρ_turns = r/2π`).
+- **So 80 × 64 does not suffice with the current Lean constants** (margin ≤ 1 at every r). The
+  certification resolution is **96 × 80** (margin 2e4–2e5).
+- `κ` is sensitive to the admissibility bounds: 5% on every bound costs ×3.5, because
+  `C₂ ∝ cK²` and `cK ∝ sD·sW·tT/τ`. Item 8 must give near-sharp inverses (approximate inverses,
+  not Neumann).
+- Recommended:
+  - certified `e₀ = 10⁻²⁸` (the exported 5.9e-29 plus rounding ≤ 4e-34 plus chain rounding);
+  - `μ = 10⁻¹²` (needed: `hμt` ≈ 1.5e-17);
+  - smallness `32κe₀/δ₀⁴ ≈ 2.7e-5` at 5% slack.
+
+**What item 8 must certify** (`AdmBoundsG cDK ι ρ u z` for every `ρ ∈ [r − 6δ₀, r]` and every
+analytic `μ`-close `(u, z)`, with `cDK.p = 7`, `dlow = 1208/10000`, `γ = 2671/10000`, `Klow = 1`):
+- **`frame`**: `D(K)`, `R`, `W₀` are units with analytic inverses.
+- **Torus norms (free).** `au, az, aRt, azt, aLR, aLz, avR, avZ, aR` come from the data plus `μ`
+  (`bV0R_of_close`, `bV0Z_of_close`, `bR_of_close`). Item 7's chain or a norm node supplies
+  `‖V₀(u₀)‖`, `‖R(u₀)‖`, `‖u₀‖`, ….
+- **Field bounds** `bD, bDu, bDz, bnR, bnRu, bnRz, bnZ, bnZu, bnZz`, as balls of
+  `D, ∂_uD, ∂_zD, n_R, …` on the low-resolution surrogate that contain all `μ`-close tori.
+- **Inverse bounds** `sD`, `sR`, `sW`: `‖D⁻¹‖ ≤ 4.0`, `‖R⁻¹‖ ≤ 1.3`, `‖W₀⁻¹‖ ≤ 2.9e3`, by
+  approximate inverses `q_D`, `q_W` (Neumann about a constant fails for `W₀`: ratio 0.6).
+- **Torsion** `‖T₀‖ ≤ tT ≈ 2.9e3` and **twist** `τ ≤ |⟨T₀⟩|` (≥ 13.5), with
+  `T₀ = R⁷P/(D³W₀²)` via `q ≈ 1/(D³W₀²)` (`X = qD³W₀² − 1`, `τ' ≥ Re⟨Y⟩ − ‖Y‖‖X‖/(1 − ‖X‖)`).
+- **Closed numeric facts** (item 9, once the above are fixed): `hC2R/Z`, `hac` (`e^r ≤ ac`), `hE1`,
+  `hcb`, `hτ'`, `hsmall`, `hμK/t/L`.
+
+**Shared files (owner to add; all light).**
+- `PlasmaLean.lean`, after line 309 (`DommaschkKamIdent`):
+  ```
+  public import PlasmaLean.Design.DommaschkKamDioC
+  public import PlasmaLean.Design.DommaschkKamCData
+  public import PlasmaLean.Design.DommaschkKamCTorus
+  ```
+  `DommaschkKamCData` is 0.66 MB (80 × 64) and builds in about 5 s. If 96 × 80 replaces it,
+  re-run `emit_torus.py --torus …/torus_C_N96_M80.json` (0.98 MB, about 6 s).
+- `scripts/check_axioms.lean`:
+  ```
+  #print axioms PlasmaLean.Design.DommaschkKamDio.dkOmegaC_split
+  #print axioms PlasmaLean.Design.DommaschkKamDio.dkIotaC_period_split
+  #print axioms PlasmaLean.Design.DommaschkKamDio.dkIotaC_Bd_coh
+  #print axioms PlasmaLean.Design.DommaschkKamDio.dkOmegaC_not_split_high
+  #print axioms PlasmaLean.Design.DommaschkKamC.eval_rotψ
+  #print axioms PlasmaLean.Design.DommaschkKamC.rotψ_eval
+  #print axioms PlasmaLean.Design.DommaschkKamC.dS_rotψ
+  #print axioms PlasmaLean.Design.DommaschkKamC.rotψ_cSo
+  #print axioms PlasmaLean.Design.DommaschkKamC.isReal_u₀C
+  #print axioms PlasmaLean.Design.DommaschkKamC.iotaqC_close
+  #print axioms PlasmaLean.Design.DommaschkKamC.dkFieldTC
+  #print axioms PlasmaLean.Design.DommaschkKamC.rotψ_ne_id
+  ```

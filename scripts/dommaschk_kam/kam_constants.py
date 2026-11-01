@@ -20,6 +20,15 @@ that each cross-section encloses the axis approximation A(phi))
 enclosed by all cross-sections (the PoloidalAngle convention of Theory/Contract/StellaratorContract).
 
 usage: python kam_constants.py --work DIR [--N 40 --M 32] [--tag A]
+
+Generalised constants (`SCG` of Design/KamFlowStepG, N-33 item 7), from an exported refined torus:
+  python kam_constants.py --torus results/<stamp>/torus_C_N80_M64.json [--summary .../summary.json]
+transcribes `SCG.kη1 ... SCG.kap` (p = 7, R0 = 29/32, the moving centre of emit_torus.py, split
+Diophantine data dlow = 0.1208, gamma = 0.2671 of Design/DommaschkKamDioC, delta0 = r/7) and the Taylor
+constant from the actual Lean polynomials (DkPoly data parsed from Design/DommaschkKamFieldData.lean,
+the majorant second derivative `PolyExpr.majD2` at `avec`, direction `mvec`), for several strips r; it
+reports kappa, the required e0 = delta0^4/(32 kappa) and the margin against the exported weighted
+residual norm at r (summary.json strip table, interpolated in log).
 """
 import argparse
 import math
@@ -47,9 +56,163 @@ def mean(F):
     return float(np.real(np.fft.fft2(F)[0, 0]/F.size))
 
 
+# ------------------------------------------------------------------ generalised SCG constants (item 7)
+def lean_polys():
+    """dD, dnR, dnZ of Design/DommaschkKamFieldData.lean as [(q, a, b, c, d)] (u, z, c, s exponents)."""
+    import re
+    from fractions import Fraction
+    src = open(os.path.join(HERE, '..', '..', 'PlasmaLean', 'Design', 'DommaschkKamFieldData.lean')).read()
+    out = {}
+    for name in ('dD', 'dnR', 'dnZ'):
+        i = src.index(f'def {name} : SP := ['); j = src.index(']\n', i)
+        ts = re.findall(r'⟨mkRat \((-?\d+)\)\s*(\d+),\s*(\d+),\s*(\d+),\s*(\d+),\s*(\d+)⟩', src[i:j])
+        out[name] = [(float(Fraction(int(n), int(d))), int(a), int(b), int(c), int(e)) for n, d, a, b, c, e in ts]
+    assert [len(out[k]) for k in ('dD', 'dnR', 'dnZ')] == [344, 362, 328]
+    return out
+
+
+def majd(terms, au, az, ac, du, dz):
+    """Majorant sum |q| (d/du)^du (d/dz)^dz u^a z^b c^c s^d at (au, az, ac, ac) (`PolyExpr.maj`-type)."""
+    tot = 0.0
+    for q, a, b, c, d in terms:
+        if a < du or b < dz:
+            continue
+        f = math.prod(range(a - du + 1, a + 1))*math.prod(range(b - dz + 1, b + 1))
+        tot += abs(q)*f*au**(a - du)*az**(b - dz)*ac**(c + d)
+    return tot
+
+
+def exported_error(summary, r):
+    """Weighted residual norm max(||E_R||, ||E_Z||) at the strip r (radians; the summary uses turns,
+    weight e^{2 pi rho (|k| + |m|)}), log-interpolated in the strip table; None beyond the valid rows."""
+    rows = [x for x in summary['tori'][0]['error']['strip'] if x['edge_fraction'] < 1e-2]
+    rho = r/(2*math.pi)
+    for lo, hi in zip(rows, rows[1:]):
+        if lo['rho'] <= rho <= hi['rho']:
+            el, eh = max(lo['ER'], lo['EZ']), max(hi['ER'], hi['EZ'])
+            t = (rho - lo['rho'])/(hi['rho'] - lo['rho'])
+            return math.exp((1 - t)*math.log(el) + t*math.log(eh))
+    return None
+
+
+def run_scg(args):
+    import json
+    import emit_torus as ET
+    ex = ExactField(); ev = Evaluator(ex)
+    d = json.load(open(args.torus))
+    N, M = d['N'], d['M']
+    a = np.array([float(x) for x in d['a']]); b = np.array([float(x) for x in d['b']])
+    iota = float(d['iota'])
+    summary = json.load(open(args.summary)) if args.summary else None
+    R0 = float(ET.R0); p = 7
+    gam, dlow, Klow = 0.2671, 0.1208, 1          # Design/DommaschkKamDioC (dkIotaC_period_split)
+    E1 = 2.718
+    g = T.Galerkin(ev, N, M, iota, Nt=args.grid, Np=args.grid)
+    R, z, Rth, Rps, zth, zps = g.fields(a, b)
+    LR = 2*Rps + iota*Rth; LZ = 2*zps + iota*zth
+    ps = g.ps[None, :]
+    al = [float(x) for x in ET.CENTRE_ALPHA]; be = [float(x) for x in ET.CENTRE_BETA]
+    AR = sum(x*np.cos(n*ps) for n, x in enumerate(al)) + 0*ps
+    AZ = sum(x*np.sin(n*ps) for n, x in enumerate(be)) + 0*ps
+    ARp = sum(-2*n*x*np.sin(n*ps) for n, x in enumerate(al)) + 0*ps     # d/dphi, psi = 2 phi
+    AZp = sum(2*n*x*np.cos(n*ps) for n, x in enumerate(be)) + 0*ps
+    cf = ev.coeff_fields(trig_values(g.ps)[:, None, :])
+    s = R*R
+    D, Ps, Pz = ev.DPP(s, z, cf=cf)
+    h = 1e-30
+    Dc, Psc, Pzc = ev.DPP((R + 1j*h)**2, z + 0j, cf=cf)
+    D_R, Ps_R, Pz_R = Dc.imag/h, Psc.imag/h, Pzc.imag/h
+    Dc, Psc, Pzc = ev.DPP(s + 0j, z + 1j*h, cf=cf)
+    D_z, Ps_z, Pz_z = Dc.imag/h, Psc.imag/h, Pzc.imag/h
+    nR = 2*R*Ps; nZ = s*Pz                                   # = the Lean n_R = R^8 B_R, n_z = R^8 B_z
+    nR_R = 2*Ps + 2*R*Ps_R; nR_z = 2*R*Ps_z; nZ_R = 2*R*Pz + s*Pz_R; nZ_z = s*Pz_z
+    XR = nR/D; XZ = nZ/D; w = D/R**p
+    XR_R = (nR_R - XR*D_R)/D; XR_z = (nR_z - XR*D_z)/D
+    XZ_R = (nZ_R - XZ*D_R)/D; XZ_z = (nZ_z - XZ*D_z)/D
+    V1 = R - AR; V2 = z - AZ
+    W0 = Rth*V2 - zth*V1
+    Y1 = (XR - ARp) - (XR_R*V1 + XR_z*V2); Y2 = (XZ - AZp) - (XZ_R*V1 + XZ_z*V2)
+    T0 = (Y1*V2 - Y2*V1)/(w*W0**2)
+    pol = lean_polys()
+    print(f"torus {d['tag']} {N}x{M} (SCG, p = {p}, R0 = 29/32, moving centre of emit_torus.py): residual sup "
+          f"{np.abs(D*LR - nR).max():.1e}/{np.abs(D*LZ - nZ).max():.1e} (double grid); D in [{D.min():.3f}, "
+          f"{D.max():.3f}], W0 in [{W0.min():.3e}, {W0.max():.3e}], <T0> = {mean(T0):.4g}")
+    print(f"split Diophantine data: dlow = {dlow}, gamma = {gam}, Klow = {Klow}; E1 = {E1}; safety factor "
+          f"{args.slack} on the field, inverse and torsion bounds (item 8); torus norms + 1e-6")
+    hdr = ("  r      au    az    avR   avZ   aR    aRt   azt   aLR   aLz   bD    bDu   bDz   sD    sR    sW     "
+           "tT     tau    cK       cL       C2       kappa    e0 req   e0 exp   margin")
+    print(hdr)
+    rows = []
+    for r in map(float, args.rs.split(',')):
+        sl = args.slack
+        V = dict(au=wnorm(R - R0, r), az=wnorm(z, r), avR=wnorm(V1, r), avZ=wnorm(V2, r), aR=wnorm(R, r),
+                 aRt=wnorm(Rth, r), azt=wnorm(zth, r), aLR=wnorm(LR, r), aLz=wnorm(LZ, r),
+                 bD=wnorm(D, r), bDu=wnorm(D_R, r), bDz=wnorm(D_z, r), bnR=wnorm(nR, r), bnRu=wnorm(nR_R, r),
+                 bnRz=wnorm(nR_z, r), bnZ=wnorm(nZ, r), bnZu=wnorm(nZ_R, r), bnZz=wnorm(nZ_z, r),
+                 sD=wnorm(1/D, r), sR=wnorm(1/R, r), sW=wnorm(1/W0, r), tT=wnorm(T0, r))
+        # torus norms are read off the data (plus mu): no slack; the field, inverse and torsion bounds
+        # come from the low-resolution chain (item 8): factor `slack`
+        exact = ('au', 'az', 'avR', 'avZ', 'aR', 'aRt', 'azt', 'aLR', 'aLz')
+        V = {k: v*(1 + 1e-6 if k in exact else sl) for k, v in V.items()}
+        V['tau'] = abs(mean(T0))/sl
+        ac = math.exp(r)
+        d0 = r/7
+        e0x = exported_error(summary, r) if summary else None
+        e0 = e0x or 1e-25
+        th = e0/d0**4
+        # SCG derived constants, formula by formula (Design/KamFlowStepG)
+        kE = V['sD']
+        keta1 = V['sW']*(V['avZ'] + V['avR'])*kE
+        keta2 = V['bD']*V['sR']**p*(V['aRt'] + V['azt'])*kE
+        kh = V['aR']**p*V['sD']*V['sW']
+        kTc = V['aR']**p*V['sD']*V['sW']**2*(V['avZ'] + V['avR'])*kE
+        eM = th*d0**4
+        tTot = V['tT'] + kTc*eM; taup = V['tau'] - kTc*eM
+        gg = 2*E1*gam
+        k20 = keta2/gg; kc = (keta1*d0 + tTot*k20)/taup; k2 = k20 + kc
+        k1 = (keta1*d0 + tTot*k2)/gg
+        mA = max(V['aRt'], V['azt']); mV = max(V['avR'], V['avZ'])
+        cK = k1*mA + k2*d0*kh*mV
+        kS = (V['bDu'] + V['bDz'])*V['sD']*kE*d0 + p*V['sR']*kE*d0 + V['sW']*(V['avZ'] + V['avR'])*kE/E1
+        kRem = kS*k2*kh*mV*d0 + k1*kE/E1
+        XRb = V['bnR']*V['sD']; XZb = V['bnZ']*V['sD']
+        kA = max((V['bnRu'] + XRb*V['bDu'])*V['sD'] + (V['bnRz'] + XRb*V['bDz'])*V['sD'],
+                 (V['bnZu'] + XZb*V['bDu'])*V['sD'] + (V['bnZz'] + XZb*V['bDz'])*V['sD'])
+        cL = kA*cK + kE*d0**2 + kRem*th*d0**3
+        # Taylor constant: majD2 of resRp = D wR - nR (resZp) at avec + Tq mvec, direction mvec, halved
+        Tq = th*d0**2
+        au_, az_ = V['au'] + Tq*cK, V['az'] + Tq*cK
+        C2 = 0.0
+        for nm, aL in (('dnR', V['aLR']), ('dnZ', V['aLz'])):
+            m = lambda P, du, dz: majd(pol[P], au_, az_, ac, du, dz)  # noqa: E731
+            C2 = max(C2, 0.5*(cK**2*((m('dD', 2, 0) + 2*m('dD', 1, 1) + m('dD', 0, 2))*(aL + Tq*cL)
+                                      + m(nm, 2, 0) + 2*m(nm, 1, 1) + m(nm, 0, 2))
+                              + 2*cK*cL*(m('dD', 1, 0) + m('dD', 0, 1))))
+        kap = V['bD']*kRem*d0 + (V['bDu'] + V['bDz'])*cK*kE*d0**2 + C2
+        ereq = d0**4/(32*kap)
+        hlow = math.e*gam*d0 <= dlow
+        rows.append(dict(r=r, kap=kap, cK=cK, cL=cL, C2=C2, ereq=ereq, e0x=e0x, hlow=hlow, **V))
+        f = lambda x: f'{x:.3g}'.ljust(5)  # noqa: E731
+        print(f"  {r:.4f} " + ' '.join(f(V[k]) for k in ('au', 'az', 'avR', 'avZ', 'aR', 'aRt', 'azt', 'aLR', 'aLz',
+                                                         'bD', 'bDu', 'bDz', 'sD', 'sR'))
+              + f" {V['sW']:.4g}  {V['tT']:.4g}  {V['tau']:.3g}  {cK:.2e} {cL:.2e} {C2:.2e} {kap:.2e} "
+              f"{ereq:.2e} " + (f"{e0x:.2e} {ereq/e0x:.2e}" if e0x else "  —") + ('' if hlow else '  (hlow fails)'))
+    if args.detail:
+        for row in rows:
+            print(f"  r = {row['r']}: " + ', '.join(f"{k} {row[k]:.4g}" for k in (
+                'au', 'az', 'avR', 'avZ', 'aR', 'aRt', 'azt', 'aLR', 'aLz', 'bD', 'bDu', 'bDz', 'bnR', 'bnRu',
+                'bnRz', 'bnZ', 'bnZu', 'bnZz', 'sD', 'sR', 'sW', 'tT', 'tau', 'cK', 'cL', 'C2', 'kap', 'ereq')))
+    return rows
+
+
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument('--work', required=True)
+    ap.add_argument('--torus', default='', help='exported torus JSON: generalised SCG constants (item 7)')
+    ap.add_argument('--summary', default='', help='summary.json of the run (exported residual strip norms)')
+    ap.add_argument('--detail', action='store_true', help='print every SCG bound of each row')
+    ap.add_argument('--slack', type=float, default=1.0,
+                    help='factor on the field, inverse and torsion bounds (1/factor on tau) for certifiable margins')
+    ap.add_argument('--work', default='')
     ap.add_argument('--N', type=int, default=40)
     ap.add_argument('--M', type=int, default=32)
     ap.add_argument('--tag', default='A')
@@ -63,6 +226,11 @@ def main():
                     help="crude: C_R = 1/(e gamma delta) as Theory/KAM/Cohomological.cohSol_estimate; "
                          "exact: C_R = sup e^{-delta(|k|+|m|)}/|m + k omega| (not in Lean yet)")
     args = ap.parse_args()
+    if args.torus:
+        if args.rs == '0.03,0.045,0.0628,0.08,0.1':
+            args.rs = '0.02,0.025,0.03,0.035,0.04,0.045,0.05,0.06'
+        run_scg(args)
+        return
     ex = ExactField(); ev = Evaluator(ex)
     d = np.load(os.path.join(args.work, f'double_{args.tag}_N{args.N}_M{args.M}_f3.npz'))
     a, b = d['a'], d['b']
