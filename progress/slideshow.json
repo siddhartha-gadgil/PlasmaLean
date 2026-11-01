@@ -1614,9 +1614,9 @@
    "cards": [
     {
      "title": "1 · Dommaschk QA fit",
-     "text": "An explicit vacuum field (current-free by construction) fitted to a quasi-axisymmetric target (Q-16). Workstation numerics, untrusted: a two-period field reaches the strong tier, a defect of 0.13–0.43 % of ι at |ι| ≈ 0.24 with ε_eff ≤ 0.02 %; a purely rational three-period field reaches the moderate tier. In Lean: exact vacuum field with zero loop current (DommaschkQA3). Next: certified tori, ι and the defect.",
-     "status": "C1 current clause verified · tori, ι and defect next",
-     "kind": "next"
+     "text": "An explicit vacuum field (current-free by construction) fitted to a quasi-axisymmetric target (Q-16): a two-period, purely rational Dommaschk field. Its QS defect is ≤ 0.5 % of ι, in untrusted numerics. Verified in Lean: contract clause C1, a KAM-certified invariant torus with |ι| ≥ 0.24 and zero net toroidal current (dommaschk_C1_unconditional, on-demand modules). Next: the certified QS defect and C2.",
+     "status": "C1 verified · QS defect and C2 next",
+     "kind": "checked"
     },
     {
      "title": "2 · C2 diagnostics on the rational field",

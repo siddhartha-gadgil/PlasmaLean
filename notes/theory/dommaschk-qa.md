@@ -12,7 +12,7 @@
 | Dependency requirement | Harmonicity of the basis: exact symbolic identity (checked here in sympy; in Lean, a polynomial normal-form check). Boozer facts for B = ∇Φ: proved informally (N-30 §2). Everything optimised or measured here: **untrusted numerics** |
 | Produces | Scripts `scripts/dommaschk_qa/`; the workstation task `dommaschk-qa`; a candidate format (exact rational coefficients plus an explicit potential); success tiers for the decided Q-16 criterion; a smoke-test candidate |
 | Difficulty | moderate (numerics), hard (certification of the low-shear tori, barrier B2 of N-27) |
-| Status | strong-tier candidate found (§21, NFP 2, defect/ι ≤ 0.0043, untrusted); purely rational moderate-tier candidate (§21, NFP 3); exploratory: pipeline validated, smoke test done; medium workstation run (ι_min 0.2, r ≤ 0.06) missed the moderate tier; diagnostic run at r ≤ 0.045 reaches the moderate tier on the nested region (defect/ι 0.021–0.038, ε_eff 0.6–1.0 %, |ι| ≈ 0.24) but nesting stops at the ι = 2/9 island chain (r_eff ≈ 0.019); nmax 3 (42 coefficients) reaches the **moderate tier**: defect/ι 0.009–0.023 at |ι| ≈ 0.24 with low shear inside (2/9, 1/4), ε_eff 0.08–0.13 %, regular to r_eff ≈ 0.037 (§10) |
+| Status | **C1 certified in Lean** for the §24 target (`dommaschk_C1_unconditional`, §29); strong-tier candidate found (§21, NFP 2, defect/ι ≤ 0.0043, untrusted); purely rational moderate-tier candidate (§21, NFP 3); exploratory: pipeline validated, smoke test done; medium workstation run (ι_min 0.2, r ≤ 0.06) missed the moderate tier; diagnostic run at r ≤ 0.045 reaches the moderate tier on the nested region (defect/ι 0.021–0.038, ε_eff 0.6–1.0 %, |ι| ≈ 0.24) but nesting stops at the ι = 2/9 island chain (r_eff ≈ 0.019); nmax 3 (42 coefficients) reaches the **moderate tier**: defect/ι 0.009–0.023 at |ι| ≈ 0.24 with low shear inside (2/9, 1/4), ε_eff 0.08–0.13 %, regular to r_eff ≈ 0.037 (§10) |
 | Lean evidence | certification step 1 for the NFP-3 candidate (§17): `PlasmaLean.Design.DommaschkQA3.candidate_vacuum`, `field_vacuum` (every coefficient vector), `candidate_netToroidalCurrent_eq_zero`, `candidate_currentFree`, `field_stellSym`; reusable `PlasmaLean.Fields.CylAlgebra.gradField_vacuum` (default build, standard axioms) |
 | Audit evidence | not audited |
 | Last updated | 30 October 2026: created (pipeline, validation, smoke test, workstation commands); medium workstation run reviewed (§7) |
@@ -797,6 +797,16 @@ refinement.
   - the field bounds;
   - sD ≤ 4.0, sR ≤ 1.3, sW ≤ 2.9 × 10³;
   - tT ≤ 2.9 × 10³ and twist τ ≥ 13.5.
+
+### 29. C1 certified in Lean (1 November 2026; verified)
+
+`DommaschkKamC.dommaschk_C1_unconditional` (on-demand `Design/DommaschkKamCFinal`) proves contract
+clause C1 for the exact target field `DommaschkQA2R.field candidate` (§24). It rests on a
+KAM-certified invariant torus (torus C, ι = −(85+√5)/361, |ι| ≥ 0.24) and zero net toroidal current.
+The certificate chain is N-33: generalised KAM interface, Dommaschk flow-field instance,
+admissibility chain, constants, residual chain (e₀ ≤ 1.23 × 10⁻²⁷), contract link. The field's QS
+defect (≤ 0.5 % of ι) is still untrusted numerics; certifying it, with Boozer angles on the certified
+torus and the QS ⇒ omnigeneity bridge, is the next step towards C2.
 
 ## Claims and evidence
 
