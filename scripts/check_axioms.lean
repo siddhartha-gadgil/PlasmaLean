@@ -406,6 +406,16 @@ run_cmd do
 #print axioms PlasmaLean.Design.DommaschkKamC.pd_Qp_U
 #print axioms PlasmaLean.Design.DommaschkKamC.phiD_Qp
 #print axioms PlasmaLean.Design.DommaschkKamC.qsDefectSq_needs_invariance
+#print axioms PlasmaLean.Fields.VacuumBoozer.boozerJac_eq_normSq_div
+#print axioms PlasmaLean.Fields.VacuumBoozer.boozerPhiVec_eq_field
+#print axioms PlasmaLean.Fields.VacuumBoozer.qsError_eq_torusQADefect
+#print axioms PlasmaLean.Fields.WeakQSDefect.torusQADefectLe
+#print axioms PlasmaLean.Fields.VacuumBoozer.symmetryDefect_eq_torusQADefect_vacuum
+#print axioms PlasmaLean.Fields.VacuumBoozer.torusQADefect_eq_zero_of_qa
+#print axioms PlasmaLean.Fields.VacuumBoozer.exists_qa_of_torusQADefect_eq_zero
+#print axioms PlasmaLean.Fields.VacuumBoozer.boozerAngles_bijective
+#print axioms PlasmaLean.Fields.VacuumBoozer.torusQADefect_circle
+#print axioms PlasmaLean.Fields.VacuumBoozer.torusQADefect_ripple_ne_zero
 #print axioms PlasmaLean.Fields.QSLinear.fieldDiv_fqsGen
 #print axioms PlasmaLean.Fields.QSLinear.JetHyp.jet_obstruction_curl
 #print axioms PlasmaLean.Fields.QSLinear.jet_obstruction_eta

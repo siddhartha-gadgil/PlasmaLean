@@ -1734,3 +1734,15 @@ Gate E1 (§11.2, §11.4) and the "sanity theorem or counterexample" promised in 
   estimator to its finite-difference error (5.7e-9); sup of the defect 0.009002. Axiom audit passed
   (50,460 declarations).
 
+### N-34 A1: vacuum Boozer angles on an invariant torus, 1 November 2026
+
+- `Theory/Fields/VacuumBoozerTorus` (default build): `torusQADefect` (= ∂_{φ_B}|B| on a torus),
+  `boozerJac_eq_normSq_div` (J = ‖B‖²/B^φ on a `FieldTorus`), vacuum angle facts (straight field lines in
+  (θ_B, φ_B)), the Boozer direction `boozerPhiVec_eq_field`, the QA characterisation in both directions
+  (`torusQADefect_eq_zero_of_qa`, `exists_qa_of_torusQADefect_eq_zero` without the implicit function
+  theorem), `boozerAngles_bijective` (J > 0 and a bounded potential), links `qsError_eq_torusQADefect`,
+  `WeakQSDefect.torusQADefectLe` (the torus defect is the trace of the δ₂ component of `WeakQSDefect`) and
+  `symmetryDefect_eq_torusQADefect_vacuum` (the bridge's hypothesis on one surface). Sanity: the circular
+  torus of ∇φ (defect 0), a rippled toroidal field (defect ≠ 0; not a vacuum field), normalisations.
+  Axiom audit passed (50,609 declarations).
+

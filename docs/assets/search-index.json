@@ -2472,6 +2472,12 @@
     "text": "n-34 d3: polynomial form of the qa defect for the dommaschk field, 1 november 2026 implementation plan"
   },
   {
+    "title": "N-34 A1: vacuum Boozer angles on an invariant torus, 1 November 2026",
+    "section": "Implementation plan",
+    "url": "implementation-plan.html#n-34-a1-vacuum-boozer-angles-on-an-invariant-torus-1-november-2026",
+    "text": "n-34 a1: vacuum boozer angles on an invariant torus, 1 november 2026 implementation plan"
+  },
+  {
     "title": "M0 · Exact symmetric equilibria: slab, screw pinch, Solov'ev, helical",
     "section": "Implementation plan · Lean verified — exact slab, screw-pinch, Solov'ev and helical equilibria with kernel force balance, all-time field-line/orbit confinement, Suydam both ways and screw-pinch Newcomb stability for every m ≠ 0 (reduced form supplied; idealized symmetric models).",
     "url": "implementation-plan.html",
