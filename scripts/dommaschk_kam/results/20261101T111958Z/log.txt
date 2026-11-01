@@ -1,0 +1,37 @@
+field self-test vs fieldeval: rhs 8.5e-15, B 9.3e-15; degrees s^8 z^5; terms {'D': 61, 'Ps': 56, 'Pz': 45}; target sha ok True
+axis on phi = 0: R = 0.9639959117, z = 4.9e-15, trace 1.434503, |iota_axis| = 0.245400
+
+=== torus A: iota = -0.23860750536516617636  (omega = [0;8,2,1,1,...]), gamma = 0.1193 (k >= 2: 0.3646), neighbours ['2*2/17 = 0.235294', '2*3/25 = 0.240000']
+  launch r = 0.037034 on phi = 0 (axis R = 0.963996); traced iota -0.2386075218 (Birkhoff err 7.4e-11); 49s
+  double N=  8 M=  7 (255 unknowns): Newton |F| 5.6e-15, true sup (2x grid) 2.92e-04, D_min 0.262, 0.0s
+  double N= 12 M= 10 (525 unknowns): Newton |F| 8.1e-17, true sup (2x grid) 4.16e-05, D_min 0.262, 1.6s
+  double N= 16 M= 13 (891 unknowns): Newton |F| 8.5e-17, true sup (2x grid) 1.86e-06, D_min 0.262, 1.7s
+  double N= 24 M= 20 (2009 unknowns): Newton |F| 4.3e-17, true sup (2x grid) 8.21e-09, D_min 0.262, 3.7s
+  double N= 36 M= 30 (4453 unknowns): Newton |F| 2.9e-17, true sup (2x grid) 2.22e-12, D_min 0.262, 3.2s
+  double N= 54 M= 45 (9919 unknowns): Newton |F| 2.9e-17, true sup (2x grid) 4.82e-15, D_min 0.262, 7.8s
+  double N= 81 M= 68 (22331 unknowns): Newton |F| 1.6e-16, true sup (2x grid) 5.08e-15, D_min 0.262, 0.1s
+  double N= 96 M= 80 (31073 unknowns): Newton |F| 2.2e-16, true sup (2x grid) 5.26e-15, D_min 0.262, 0.1s
+  decay: theta rate 0.645/mode (strip 0.103 turns), psi rate 0.863/mode (strip 0.137 turns of phi/pi); tails 0.0e+00 / 0.0e+00
+  mp refine 0: |F_galerkin|_inf = 1.969e-16 (14.7s)
+  mp refine 1: |F_galerkin|_inf = 1.284e-28 (17.5s)
+  mp refine 2: |F_galerkin|_inf = 1.690e-41 (17.6s)
+  mp refine 3: |F_galerkin|_inf = 1.433e-53 (17.6s)
+  mp refine 4: |F_galerkin|_inf = 2.403e-66 (17.6s)
+  mp refine 5: |F_galerkin|_inf = 1.310e-68 (17.6s)
+  mp refinement (dps 60): |F_galerkin| 2.0e-16 -> 1.3e-68, 191s
+  invariance error (mp, 592x496 grid): sup|RR| 3.59e-29, sup|RZ| 4.49e-30; flow error sup|RR/D, RZ/D| 1.10e-28; D in [0.262, 1.042]
+   rho    ||E_R||_rho  ||E_Z||_rho  edge-frac  ratio(gamma)  ratio(gamma_k>=2)
+   0.000  4.54e-29     6.37e-30     1.9e-37
+   0.005  8.26e-28     1.19e-28     2.6e-32    6.53e-15      7.49e-17
+   0.010  1.56e-26     2.34e-27     1.5e-26    7.70e-15      8.83e-17
+   0.015  3.06e-25     4.84e-26     1.2e-20    2.98e-14      3.42e-16
+   0.020  6.26e-24     1.05e-24     9.5e-15    1.93e-13      2.21e-15
+   0.030  3.00e-21     5.82e-22     6.8e-03    1.83e-11      2.10e-13
+   0.040  4.30e-09     6.24e-09     9.2e-01    1.20e+01      1.38e-01
+   0.050  1.78e+06     2.66e+06     9.6e-01    2.10e+15      2.41e+13
+   0.075  8.44e+42     1.33e+43     9.9e-01    2.08e+51      2.38e+49
+   0.100  5.08e+79     8.22e+79     1.0e+00    4.06e+87      4.65e+85
+  FHL: best rho 0.005: ratio 6.53e-15 -> C1 tolerance 1.5e+14 (gamma 0.119); with low divisors exact (gamma 0.365): 1.3e+16
+  ELP-S twist T = +5.3708e-02 (T/|omega_s| = +1.468e-01); invariance check 1.2e-12; flux 3.0157e-03 (r_eff 0.0293); d iota/d Phi = 2.2381e+00, d iota/d r_eff = 0.4600
+
+done in 384s; summary in scripts/dommaschk_kam/results/20261101T111958Z/summary.json
