@@ -4,7 +4,8 @@ Build the top modules first, `lake build PlasmaLean.Design.RationalStellaratorGC
 `lake build PlasmaLean.Design.RationalStellaratorGCMuWide`,
 `lake build PlasmaLean.Design.RationalStellaratorGCMuQuarter` and
 `lake build PlasmaLean.Design.CoilKamCert`, `lake build PlasmaLean.Design.DommaschkKamCAdm`, `lake build PlasmaLean.Design.DommaschkKamCConsts`,
-`lake build PlasmaLean.Design.DommaschkKamCContract`
+`lake build PlasmaLean.Design.DommaschkKamCContract`,
+`lake build PlasmaLean.Design.DommaschkKamCRes`, `lake build PlasmaLean.Design.DommaschkKamCFinal`
 (bounded, dependencies first),
 then run `lake env lean scripts/check_axioms_heavy.lean`.
 
@@ -24,6 +25,8 @@ import Lean.Util.CollectAxioms
 import PlasmaLean.Design.DommaschkKamCAdm
 import PlasmaLean.Design.DommaschkKamCConsts
 import PlasmaLean.Design.DommaschkKamCContract
+import PlasmaLean.Design.DommaschkKamCRes
+import PlasmaLean.Design.DommaschkKamCFinal
 
 /-! Audit all declarations owned by project modules in the import closure (the on-demand top
 modules and everything they import). Fails on any non-standard axiom. -/
@@ -82,3 +85,12 @@ run_cmd do
 #print axioms PlasmaLean.Design.DommaschkKamC.Bd_radQ_surr
 #print axioms PlasmaLean.Design.DommaschkKamC.radQ_surr_ne
 #print axioms PlasmaLean.Design.DommaschkKamC.thProj_mode
+#print axioms PlasmaLean.Design.DommaschkKamC.dk_e0R
+#print axioms PlasmaLean.Design.DommaschkKamC.dk_e0Z
+#print axioms PlasmaLean.Design.DommaschkKamC.ballH_all
+#print axioms PlasmaLean.Design.DommaschkKamC.kron_gridR
+#print axioms PlasmaLean.Design.DommaschkKamC.Bd_ctr_of_node
+#print axioms PlasmaLean.Design.DommaschkKamC.e0q_not_tiny
+#print axioms PlasmaLean.Design.DommaschkKamC.fldZ_reject
+#print axioms PlasmaLean.Design.DommaschkKamC.dommaschk_C1_unconditional
+#print axioms PlasmaLean.Design.DommaschkKamC.dommaschk_iotaOnTorus_unconditional

@@ -610,3 +610,60 @@ from `dk_exact_of_res`, `dk_hadmC` and one new small certificate. Standard axiom
   #print axioms PlasmaLean.Design.DommaschkKamC.radQ_surr_ne
   #print axioms PlasmaLean.Design.DommaschkKamC.thProj_mode
   ```
+
+## Item 7 (1 November 2026): the high-resolution residual chain of torus C — complete
+
+**Result.** `DommaschkKamC.dk_e0R`, `dk_e0Z` (`Design/DommaschkKamCRes`, on demand):
+`Bd (9/200) (dkFieldTC.resR ι_C u₀C z₀C) e0q` and the same for `resZ`, with `e0q = 123/10^29`
+(`1.23e-27`; oracle `‖E‖_{0.045} = 5.9e-29`; the constants need `≲ 1.3e-23`, margin `≈ 1.06e4`).
+These are exactly the fields `e0R`, `e0Z` of `FlowFieldG.KamHG` for `c.ρ = 9/200`, `e₀ = e0q`.
+Standard axioms only; no `sorry`/`decide`; zero warnings; checked together with `import PlasmaLean`
+and `Design/DommaschkKamCAdm` (no name clashes).
+
+**Architecture.**
+- *Layout* = the data box `96 × 80`, scale `2^{−128}`, oracle angle, strip weights `68553^s 2^{16(K−s)}`
+  (intermediates truncated to the data box; truncation and rounding are read off the node images).
+- *Chain (66 variables, 60 nodes, 2 norm nodes).* Data `U`, `Z` and the exact
+  `LUx = 2^{Q}𝓛_{ι_q}U`, `LZx` (identity with `Design/DommaschkKamCData` checked entry by entry,
+  `…EqU/EqZ`); `R = R₀ + U` (exact), `s = R²`, `z²…z⁵`, `LU = LUx/2^Q`, `LZ`; Horner in `s` of the R-form
+  polynomials `dDR`, `dnRh` (`n_R = R G`), `dnZR/R²`: coefficient nodes `Pc_k = h_k(z, cos ψₒ, sin ψₒ)`
+  (`polyT` trees, no product, `≈ 6` Mbit images) and product nodes `H_k = s H_{k+1} + Pc_k`
+  (`≈ 34` Mbit images); norm nodes `D LU − R G`, `D LZ − s F`. The `R`-form polynomials are identified with
+  `dD`, `dnR`, `dnZ` by `subst_D/nR/nZ` and the list identity `horH … = dDR` (Horner regrouping).
+  `𝓛_{ι_C} − 𝓛_{ι_q} = (ι_C − ι_q)∂_θ` is bounded by `2^{−128}‖D‖·75‖x‖_{1/20}` (Cauchy, centre checks on
+  `e^r ≤ 68897/2^16`). Node-centre norms are tree majorants (`Bd_ctr_of_node`), not centre checks.
+- *Kernel engineering (`Design/DommaschkKamCResKron`).* Grids are **salted packed rows** `(lo, cnt, F, x)`
+  (per-row width, trimmed; a random 64-bit salt in the low word) with divide-and-conquer Kronecker images
+  `imgR` (`kron_gridR`). Two measured findings: (1) entry-by-entry `packGridNM` of a `193 × 161` grid costs
+  ≈ 26 s and 5 GB; (2) the kernel's caches degrade quadratically when many big literals share their low
+  64 bits (Nat literals hash by their low word; grids with vanishing corner coefficients produce them):
+  an unsalted spread of 80 rows took 21 s, salted 0.26 s. With both fixes one product node is ≈ 11 s
+  kernel, ≈ 3.3 GB above the imports. A node combining the product with a `polyT` sum exceeded 6 GB,
+  hence the split into coefficient and product nodes.
+- *Generator* `scripts/dommaschk_kam/emit_res.py` (+ `adm_ball.py`): exact gmpy2 mirror of `nodeKw`,
+  `normKw`, `centerKw`, row encodings decoded and compared, rationals rounded outward; ≈ 25 s.
+
+**Modules** (laptop, sequential `lake build`, wall per module / peak RSS): `…ResKron` 4 s / 1.5 GB;
+`…ResData1–9` 8–15 s each / 0.8 GB (22 MB source in total, 2.3–3.5 MB each); `…ResEnv` 5 s, `…ResTrees` 1 s,
+`…ResRel` 4 s / 1.5 GB; `…ResEqU`, `…ResEqZ` 15 s / 2.1 GB; `…ResCheck1–12` 34–46 s each (`Check12`, with
+the two norm nodes, 99 s) / **4.5–5.4 GB**; `…ResChain` 11 s / 1.6 GB; `DommaschkKamCRes` 3 s / 1.5 GB.
+Total ≈ 12 min wall (laptop-buildable as a separate top module; peak 5.40 GB in `Check12`); private
+oleans 15 MB. Workstation task `scripts/workstation/tasks/dommaschk-res.sh` (verdict target `separate`;
+`DRES_PARTIAL=1` builds a reduced pipeline) for rebuilds elsewhere.
+
+**For item 9.** Use `e₀ = e0q = 123/10^29` (`dk_e0R`, `dk_e0Z`); with `κ ≈ 4.1e12`, `δ₀ = 9/1400`,
+the smallness `32 κ e₀/δ₀⁴ ≈ 9.4e-5`.
+
+**Shared files (owner to add).**
+- `PlasmaLean.lean`: none (on-demand top module `Design/DommaschkKamCRes`).
+- `scripts/check_axioms_heavy.lean`:
+  ```
+  import PlasmaLean.Design.DommaschkKamCRes
+  #print axioms PlasmaLean.Design.DommaschkKamC.dk_e0R
+  #print axioms PlasmaLean.Design.DommaschkKamC.dk_e0Z
+  #print axioms PlasmaLean.Design.DommaschkKamC.ballH_all
+  #print axioms PlasmaLean.Design.DommaschkKamC.kron_gridR
+  #print axioms PlasmaLean.Design.DommaschkKamC.Bd_ctr_of_node
+  #print axioms PlasmaLean.Design.DommaschkKamC.e0q_not_tiny
+  #print axioms PlasmaLean.Design.DommaschkKamC.fldZ_reject
+  ```
