@@ -26,6 +26,12 @@ Boozer guiding-centre model; both are supplied models, see `Design/NearAxisQA`).
   `0 < ψ ≤ ψ_a` has `|ψ(τ) − ψ(0)| ≤ 4182 τ` (T m², `τ` in s) and bounce-averaged radial drift
   `|Δψ/τ| ≤ 4182 T m²/s`.
 
+**Model-level statements.** All results hold in the supplied Boozer models `exactQA`,
+`reactorQA`; they are **not tied to a physical field**: no Boozer chart of a Cartesian field
+(`Contract.BoozerModelOf`, `Theory/Contract/BoozerModel`) is constructed for them, so they are not
+instances of contract clause C2 (`Contract.OmnigeneityContract`), only of the model-level
+condition (audit item AC-1).
+
 The bound is the worst-case (constant-sign forcing) bound, linear in `ε_QS` and in the bounce
 time; it does not use the oscillation of the `sin 2φ` defect along the banana, so it is far from
 the true bounce-averaged drift. Its role is the exact/quantitative structure, not a transport
@@ -37,10 +43,10 @@ namespace PlasmaLean.Design.NearAxisQAOmnigeneity
 open PlasmaLean.Kinetic.Boozer PlasmaLean.Design.NearAxisQA
   PlasmaLean.Design.NearAxisQATrappedBounce Real Set
 
-/-- **`exactQA` is omnigenous** on every region `0 < ψ ≤ c`: exact quasi-axisymmetry
-(`∂_φB ≡ 0`) and `ψ_p = 0.422 ψ` injective. The existence of a trapped bounce in `exactQA` is not
-proved here, so this may hold vacuously; definitional non-vacuity of `OmnigenousOn` is the
-`driftMirror` fixture. -/
+/-- **`exactQA` is omnigenous** (in the supplied Boozer model, not tied to a physical field) on
+every region `0 < ψ ≤ c`: exact quasi-axisymmetry (`∂_φB ≡ 0`) and `ψ_p = 0.422 ψ` injective.
+The existence of a trapped bounce in `exactQA` is not proved here, so this may hold vacuously;
+definitional non-vacuity of `OmnigenousOn` is the `driftMirror` fixture. -/
 theorem exactQA_omnigenousOn (c : ℝ) : OmnigenousOn exactQA c := by
   refine omnigenousOn_of_exactQS (N := 0) (M := 1) (by rw [exactQA, qaField_G]; norm_num)
     (fun x θ φ _ _ => by simp [symmetryDefect, exactQA_Bφ]) ?_
@@ -62,7 +68,8 @@ theorem reactorQA_defect_le' {x θ φ : ℝ} (hx : 0 < x) (hxc : x ≤ psiEdge) 
 theorem reactorQA_twist : TwistOn reactorQA 0 1 psiEdge (211 / 500) :=
   twistOn_qa_of_iota_ge fun _ _ => le_rfl
 
-/-- **`reactorQA` is approximately omnigenous** on `0 < ψ ≤ ψ_a`, with
+/-- **`reactorQA` is approximately omnigenous** (in the supplied Boozer model, not tied to a
+physical field) on `0 < ψ ≤ ψ_a`, with
 `κ = 2 · 0.0024854/(4.93 · 0.422)`. -/
 theorem reactorQA_approxOmnigenousOn :
     ApproxOmnigenousOn reactorQA psiEdge (2 * 0.0024854 / (4.93 * (211 / 500))) :=
@@ -70,8 +77,9 @@ theorem reactorQA_approxOmnigenousOn :
     (by norm_num) (by norm_num) (fun _ _ _ hx hxc => (reactorQA_B_bounds hx hxc).1)
     (fun _ _ _ hx hxc => reactorQA_defect_le' hx hxc) reactorQA_twist
 
-/-- **3.5 MeV alphas in `reactorQA`**: every trapped bounce (any `μ ≥ 0`) in `0 < ψ ≤ ψ_a`
-has `|ψ(τ) − ψ(0)| ≤ 4182 τ` and bounce-averaged radial drift `|Δψ/τ| ≤ 4182 T m²/s`. -/
+/-- **3.5 MeV alphas in `reactorQA`** (in the supplied Boozer model): every trapped bounce
+(any `μ ≥ 0`) in `0 < ψ ≤ ψ_a` has `|ψ(τ) − ψ(0)| ≤ 4182 τ` and bounce-averaged radial drift
+`|Δψ/τ| ≤ 4182 T m²/s`. -/
 theorem reactorQA_alpha_bounce_drift {μ τ : ℝ} {ψ θ φ ρ : ℝ → ℝ} (hμ : 0 ≤ μ)
     (hb : TrappedBounce reactorQA mα qα μ psiEdge ψ θ φ ρ τ)
     (hE : boozerEnergy reactorQA mα qα μ ψ θ φ ρ 0 = Eα) :

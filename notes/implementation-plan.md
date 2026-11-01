@@ -1788,3 +1788,9 @@ Gate E1 (§11.2, §11.4) and the "sanity theorem or counterexample" promised in 
   nesting certificate), and C2 (AC-1, a Boozer model tied to the field; a volume Boozer chart does not
   exist exactly for this non-integrable field).
 
+### Audit fix AC-1: C2 tied to the physical field, 2 November 2026
+
+- `Theory/Contract/BoozerModel` (default build): `BoozerChart`, `BoozerModelOf`; C2 =
+  `OmnigeneityContract B Ω c κ := ∃ F, BoozerModelOf B Ω c F ∧ BoozerModelOmnigeneity F c κ`. The old
+  predicate is renamed `BoozerModelOmnigeneity` (model level). `exactQA`/`reactorQA` results are Boozer-model
+  statements. Field-level C2 instance so far: ∇φ (vacuous, ι = 0). Axiom audit passed (50,921 declarations).

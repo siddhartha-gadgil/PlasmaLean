@@ -282,3 +282,15 @@ asks for a proved chart. Severity: medium (no C2 claim for an actual field is ma
 one is. Fix: a `BoozerModelOf B Ω F` predicate (chart diffeomorphic onto the region, Φ∘x = φ_B,
 invariant surfaces carrying F.ι and the toroidal flux, F.B = |B|∘x) required in C2.
 
+## AC-1 resolved (2 November 2026)
+
+`Theory/Contract/BoozerModel`: `BoozerChart B Ω c F` / `BoozerModelOf` (a C¹ periodic chart onto Ω,
+injective modulo 2π, nonzero Jacobian, contravariant form J·B = ι e_θ + e_φ, covariant form B = G∇φ,
+F.B = |B|∘x: exactly what the vacuum White–Boozer guiding-centre Lagrangian needs). C2 is now
+`OmnigeneityContract B Ω c κ := ∃ F, BoozerModelOf B Ω c F ∧ BoozerModelOmnigeneity F c κ`; the old
+model-level predicate is `BoozerModelOmnigeneity` (renames: `boozerModelOmnigeneity_zero_iff`,
+`constField_boozerModelOmnigeneity`, `driftMirror_not_boozerModelOmnigeneity`). Fixtures:
+`toroidal_omnigeneityContract` (∇φ, explicit chart; vacuous, ι = 0), `toroidal_not_boozerModelOf_constField`,
+`not_omnigeneityContract_zero`; bridge corollaries `omnigeneityContract_of_exactQS`, `_of_qa`,
+`_of_defect_le`. Open: non-vacuum Boozer forms (I, K ≠ 0), smoothness of the inverse chart, no exact
+chart for non-integrable fields.

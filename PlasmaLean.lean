@@ -289,6 +289,7 @@ public import PlasmaLean.Design.NearAxisQAOmnigeneity
 public import PlasmaLean.Theory.Contract.StellaratorContract
 public import PlasmaLean.Theory.Fields.VacuumBoozerTorus
 public import PlasmaLean.Theory.Fields.BoozerWirtinger
+public import PlasmaLean.Theory.Contract.BoozerModel
 public import PlasmaLean.Theory.Contract.SectionStokes
 public import PlasmaLean.Design.LandremanNetCurrent
 public import PlasmaLean.Design.RationalStellaratorContract

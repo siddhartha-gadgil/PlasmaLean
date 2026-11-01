@@ -59,7 +59,9 @@ together, and those only in vacuum.
     (`family2_net_current_pos`).
 - **C2 (partial, guiding-centre model):**
   - Omnigeneity and the bounce-averaged drift are defined in the Boozer guiding-centre model
-    (`OmnigenousOn`, `bounceAvgDrift`).
+    (`OmnigenousOn`, `bounceAvgDrift`). Since audit fix AC-1 (2 November), C2 is a property of the
+    physical field: it needs a proved Boozer chart (`Contract.BoozerModelOf`). The `exactQA`/`reactorQA`
+    results are statements about a supplied Boozer model.
   - Quasisymmetry ⇒ omnigeneity is proved there, exactly and with a per-bounce defect bound
     (`omnigenousOn_of_exactQS`, `approxOmnigenousOn_of_defect_le`).
     - `OmnigenousOn` asks for exact return of the guiding-centre flux label after each bounce,

@@ -457,3 +457,7 @@ torus; no C2 (AC-1).
 
 `dommaschk_C1_oracleDefect_L2` (on-demand `Design/DommaschkKamCQSL2`): defect ≤ (√2/2)δ₂/B_min < 0.0016 ≈ 0.0063 |ι| (strong tier). Scope unchanged: one thin torus, no C2 (AC-1).
 
+## Update (2 November 2026): AC-1 resolved
+
+The chart predicate is compiled: `Contract.BoozerChart` / `BoozerModelOf` (`Theory/Contract/BoozerModel`; G is general, the note's G = 1 is the ∇φ + ∇V normalisation). C2 now requires it. Route R1 (an interpolated Boozer surrogate) would be a statement about `BoozerModelOmnigeneity` of a model, not C2 for the field, unless a `BoozerChart` of the actual field over the region is supplied.
+
