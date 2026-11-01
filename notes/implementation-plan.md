@@ -1671,3 +1671,13 @@ Gate E1 (§11.2, §11.4) and the "sanity theorem or counterexample" promised in 
   check). Remaining: item 9 (`cDK : SCG`, C₂, closed numeric facts) and the high-resolution residual
   chain (initial error e₀), then item 10 (contract link).
 
+### Certification step 2: item 9, constants and the conditional exact torus, 1 November 2026
+
+- `Design/DommaschkKamCJet` (default build; second-order majorant jets with a kernel-checked rational
+  mirror) and on-demand `Design/DommaschkKamCConsts` (`lake build PlasmaLean.Design.DommaschkKamCConsts`):
+  `cDK : SCG` (`cDK_ok`), certified κ ≤ 4.0798 × 10¹², C₂ = 4.0797 × 10¹², `dk_globalHG`, all closed `KamHG`
+  fields, `dk_kamHG` and **`dk_exact_of_res`**: given the two initial residual bounds
+  ‖resR‖, ‖resZ‖ ≤ e0qDK (= 10⁻²⁴; admissible up to 1.15 × 10⁻²³) at ρ = 0.045, there is an exact real
+  analytic invariant torus of `dkFieldTC` within μ = 10⁻¹² of torus C. Remaining: the residual chain
+  (in progress) and item 10 (contract link). Axioms standard.
+

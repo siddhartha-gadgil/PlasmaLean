@@ -514,3 +514,40 @@ high-resolution residual chain (`e0R`, `e0Z`) is still needed for `KamHG`.
   #print axioms PlasmaLean.Design.DommaschkKamC.polyT_reject
   #print axioms PlasmaLean.Design.DommaschkKamC.consts_sharp
   ```
+
+## Item 9 (1 November 2026): the constants `cDK` of torus C — complete
+
+**Result.** `Design/DommaschkKamCConsts` (on-demand, imports `DommaschkKamCAdm`):
+`cDK : SCG` with `ρ = 9/200`, `δ₀ = 9/1400`, `γ = 0.2671`, `dlow = 0.1208`, `Klow = 1`, `p = 7`,
+`θ = e0qDK/δ₀⁴` (error budget `e0qDK = 10⁻²⁴`, a definition), the certified constants
+`auC … tauC` (`cDK_ok : ConstsOK cDK` by `le_rfl`), `ac = 68553/2¹⁶`, `E1 = 2.718`,
+`cKb = 30496`, `cLb = 930856`, `C₂ = 4.0797e12`.
+- `dk_globalHG : dkFieldTC.GlobalHG cDK ι_C` (all fields; `dio` from `dkIotaC_period_split`,
+  `hlow` from `dkC_low_δ0`, `hac` from `exp_dk_le`);
+- all closed numeric fields of `KamHG … e0qDK muq` (`dk_small`, `dk_μK/t/L`, …) and
+  `dk_hadmC` (from `dk_hadm`); `dk_kamHG (e0R) (e0Z) : KamHG dkFieldTC cDK ι_C u₀C z₀C e0qDK muq`
+  and `dk_exact_of_res` (exact torus on the strip `9/1400`, `10⁻¹²`-close), conditional only on
+  the initial residual bounds `Bd (9/200) (resR/resZ ι_C u₀C z₀C) e0qDK`.
+- *Taylor constant.* `Design/DommaschkKamCJet` (default build): `maj`, `majD`, `majD2` form a
+  second-order jet (Leibniz rule `jmul`); kernel-computable rational mirror `jTm`/`jSP` of the
+  DkPoly data, bridge `rj_toPE`, and `majD2_resRp/Z`: `½ majD2` of the residual polynomials is
+  `c2Q …` (rational), bounded by `kernel_fact` (`½P̂''`: `4.05556e12` (R), `4.07969e12` (z)).
+
+**Certified values** (exact recomputation `scripts/dommaschk_kam/check_consts.py`; agree with
+`kam_constants.py`): `cK = 30495.72`, `cL = 930855.43`, `τ' = 14.1623`, **`κ = 4.07970e12`**,
+`32κe₀/δ₀⁴ = 0.0764` at `e₀ = 10⁻²⁴`. Largest admissible `e₀`: `1.308e-23` (smallness),
+`1.184e-23` (`hμt` with `μ = 10⁻¹²`, binding), `2.22e-23` (`hμL`). Any `e0qDK ≤ 1.15e-23` passes
+with unchanged `cKb`, `cLb`, `C₂` (edit `e0qDK`, rebuild; the script checks both ends).
+
+**Build.** `DommaschkKamCJet` 7 s / 1.4 GB; `DommaschkKamCConsts` 11 s / 2.5 GB (kernel C₂ checks
+included). Standard axioms only; no `sorry`/`decide`; zero warnings.
+
+**Remaining (item 10).** The residual chain: `Bd (9/200) (dkFieldTC.resR ι_C u₀C z₀C) e` with
+`e ≤ e0qDK` (then `Bd.le`), same for `resZ`; then `dk_exact_of_res` gives the exact torus; the
+contract link (`Theory/Contract`) from the flow-form torus.
+
+**Shared files (owner to add).**
+- `PlasmaLean.lean`: `public import PlasmaLean.Design.DommaschkKamCJet` (after `DommaschkKamCTorus`).
+- `scripts/check_axioms_heavy.lean`: `import PlasmaLean.Design.DommaschkKamCConsts`, and
+  `#print axioms PlasmaLean.Design.DommaschkKamC.dk_globalHG`, `….dk_kamHG`, `….dk_exact_of_res`,
+  `….cDK_ok`, `….dk_small_fails`; build note `lake build PlasmaLean.Design.DommaschkKamCConsts`.

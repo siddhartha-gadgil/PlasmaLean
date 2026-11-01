@@ -3,7 +3,7 @@ Axiom check for heavy certificates kept out of the default build (on-demand top 
 Build the top modules first, `lake build PlasmaLean.Design.RationalStellaratorGCEwFamily`,
 `lake build PlasmaLean.Design.RationalStellaratorGCMuWide`,
 `lake build PlasmaLean.Design.RationalStellaratorGCMuQuarter` and
-`lake build PlasmaLean.Design.CoilKamCert`, `lake build PlasmaLean.Design.DommaschkKamCAdm`
+`lake build PlasmaLean.Design.CoilKamCert`, `lake build PlasmaLean.Design.DommaschkKamCAdm`, `lake build PlasmaLean.Design.DommaschkKamCConsts`
 (bounded, dependencies first),
 then run `lake env lean scripts/check_axioms_heavy.lean`.
 
@@ -21,6 +21,7 @@ import PlasmaLean.Design.RationalStellaratorGCMuQuarter
 import PlasmaLean.Design.CoilKamCert
 import Lean.Util.CollectAxioms
 import PlasmaLean.Design.DommaschkKamCAdm
+import PlasmaLean.Design.DommaschkKamCConsts
 
 /-! Audit all declarations owned by project modules in the import closure (the on-demand top
 modules and everything they import). Fails on any non-standard axiom. -/
@@ -65,3 +66,8 @@ run_cmd do
 #print axioms PlasmaLean.Design.DommaschkKamC.eval_polyT
 #print axioms PlasmaLean.Design.DommaschkKamC.polyT_reject
 #print axioms PlasmaLean.Design.DommaschkKamC.consts_sharp
+#print axioms PlasmaLean.Design.DommaschkKamC.dk_globalHG
+#print axioms PlasmaLean.Design.DommaschkKamC.dk_kamHG
+#print axioms PlasmaLean.Design.DommaschkKamC.dk_exact_of_res
+#print axioms PlasmaLean.Design.DommaschkKamC.cDK_ok
+#print axioms PlasmaLean.Design.DommaschkKamC.dk_small_fails
