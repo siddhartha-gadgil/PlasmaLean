@@ -36,7 +36,7 @@ Fourier coefficients (`Bd 0`):
 points); `|D − c_D| ≤ e_D` (so `D ≥ @@Dmin_f@@ > 0`, i.e. `B_φ > 0` and `J > 0`). With
 `qsd_defect_real` (`|N_g/(2Q√Q R⁹)| ≤ d₁/(2 B_min)` for real `N_g`, `Q, R > 0`,
 `Q/R¹⁶ ≥ B_min²`): **`sup |torusQADefect| ≤ δ_∞ = @@delta_f@@`** (`qsd_numbers`);
-with `|ι_C| ≥ 6/25`: `κ = 2δ_∞/(B_min |ι|) ≤ @@kappa@@`, `δ_∞/|ι| ≤ @@dioa@@`. `L²(J)`: pointwise
+with `|ι_C| ≥ @@iolo_txt@@`: `κ = 2δ_∞/(B_min |ι|) ≤ @@kappa@@`, `δ_∞/|ι| ≤ @@dioa@@`. `L²(J)`: pointwise
 `4 g² J = F/((qG Q R¹⁷)²(qD D))` with `F = (qG N_g)² R⁸ qD ≥ 0`, so
 `⟨g² J⟩ ≤ m_F/(4(1 − ε_G)²(1 − ε_D)) ≤ δ₂²` with **`δ₂ = @@delta2_f@@`**; with the Wirtinger bound
 of N-34 §2(3) the oracle-normalised defect is `≤ (√2/2) δ₂/(B_min |ι|) ≤ @@oracle@@`
@@ -240,7 +240,7 @@ def epsDq : ℚ := @@epsDq@@
 /-- The bounds of the 16 variables at the surrogate. -/
 def aV : Fin 16 → ℚ := ![BA 106 + EA 106, BA 115 + EA 115, BA 123 + EA 123, BQ 204 + EQ 204,
   BA 133 + EA 133, BA 143 + EA 143, BA 151 + EA 151, BQ 214 + EQ 214, BA 159 + EA 159,
-  BA 167 + EA 167, BA 173 + EA 173, BQ 222 + EQ 222, BA 10 + EA 10, 2417 / 10000, BA 6, BA 7]
+  BA 167 + EA 167, BA 173 + EA 173, BQ 222 + EQ 222, BA 10 + EA 10, @@ioup@@, BA 6, BA 7]
 
 /-- The deviations of the 16 variables. -/
 def bV : Fin 16 → ℚ := ![dlD, dlDu, dlDz, dlDf, dlnR, dlnRu, dlnRz, dlnRf, dlnZ, dlnZu, dlnZz,
@@ -314,7 +314,7 @@ theorem hx16 : ∀ i, Bd 0 (v16 lS iotaF (xA 6) (xA 7) i) ((aV i : ℚ) : ℝ) :
     rw [h11]; exact_mod_cast valQ_le 222 (by norm_num)
   · simp only [v16, Fin.isValue, Fin.reduceFinMk, Matrix.cons_val, aV, Rat.cast_add]
     rw [h12]; exact_mod_cast sA0 10 (by norm_num)
-  · change Bd 0 iotaF ((2417 / 10000 : ℚ) : ℝ)
+  · change Bd 0 iotaF ((@@ioup@@ : ℚ) : ℝ)
     refine (Bd_algebraMap 0 _).le ?_
     rw [Complex.norm_real, Real.norm_eq_abs]
     exact dkIotaC_abs_le
@@ -807,16 +807,16 @@ def Dminq : ℚ := @@Dmin@@
 def delta2q : ℚ := @@delta2@@
 
 /-- **The certified numbers of torus C** (closed rational facts):
-`B_min² ≤ c_B − e_B'`, `d₁/(2B_min) ≤ δ_∞ ≤ 0.021`, `B_min ≥ 1.042`,
-`κ = 2δ_∞/(B_min · 6/25) ≤ 0.17` (`|ι_C| ≥ 6/25`), `D ≥ c_D − e_D ≥ D_min > 0`,
+`B_min² ≤ c_B − e_B'`, `d₁/(2B_min) ≤ δ_∞ ≤ @@thd_txt@@`, `B_min ≥ @@thB_txt@@`,
+`κ = 2δ_∞/(B_min · @@iolo_txt@@) ≤ @@thk_txt@@` (`|ι_C| ≥ @@iolo_txt@@`), `D ≥ c_D − e_D ≥ D_min > 0`,
 `m_F/(4(1 − ε_G)²(1 − ε_D)) ≤ δ₂²`, and the oracle-normalised defect
-`(√2/2) δ₂/(B_min · 6/25) ≤ 0.0066` (with `√2/2 ≤ 0.7072`). -/
+`(√2/2) δ₂/(B_min · @@iolo_txt@@) ≤ @@tho_txt@@` (with `√2/2 ≤ 0.7072`). -/
 theorem qsd_numbers :
-    Bminq ^ 2 ≤ cBq - eBpq ∧ d1q / (2 * Bminq) ≤ deltaq ∧ deltaq ≤ 21 / 1000 ∧
-      1042 / 1000 ≤ Bminq ∧ 2 * deltaq / (Bminq * (6 / 25)) ≤ 17 / 100 ∧
+    Bminq ^ 2 ≤ cBq - eBpq ∧ d1q / (2 * Bminq) ≤ deltaq ∧ deltaq ≤ @@thd@@ ∧
+      @@thB@@ ≤ Bminq ∧ 2 * deltaq / (Bminq * (@@iolo@@)) ≤ @@thk@@ ∧
       Dminq ≤ cDq - eDq ∧ 0 < Dminq ∧
       mFq / (4 * (1 - epsGq) ^ 2 * (1 - epsDq)) ≤ delta2q ^ 2 ∧
-      7072 / 10000 * delta2q / (Bminq * (6 / 25)) ≤ 66 / 10000 := by
+      7072 / 10000 * delta2q / (Bminq * (@@iolo@@)) ≤ @@tho@@ := by
   refine ⟨?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_⟩ <;> kernel_fact
 
 /-- **Sanity (rejected fixture)**: the certified bound is not below `10⁻³` (and cannot be: the

@@ -6,7 +6,7 @@ Build the top modules first, `lake build PlasmaLean.Design.RationalStellaratorGC
 `lake build PlasmaLean.Design.CoilKamCert`, `lake build PlasmaLean.Design.DommaschkKamCAdm`, `lake build PlasmaLean.Design.DommaschkKamCConsts`,
 `lake build PlasmaLean.Design.DommaschkKamCContract`,
 `lake build PlasmaLean.Design.DommaschkKamCRes`, `lake build PlasmaLean.Design.DommaschkKamCFinal`,
-`lake build PlasmaLean.Design.DommaschkKamCQSTransfer`, `lake build PlasmaLean.Design.DommaschkKamCQSIdent`, `lake build PlasmaLean.Design.DommaschkKamCQS`, `lake build PlasmaLean.Design.DommaschkKamCQSL2`, `lake build PlasmaLean.Design.DommaschkKamNested`
+`lake build PlasmaLean.Design.DommaschkKamCQSTransfer`, `lake build PlasmaLean.Design.DommaschkKamCQSIdent`, `lake build PlasmaLean.Design.DommaschkKamCQS`, `lake build PlasmaLean.Design.DommaschkKamCQSL2`, `lake build PlasmaLean.Design.DommaschkKamNested`, `lake build PlasmaLean.Design.DommaschkKamQ16`
 (bounded, dependencies first),
 then run `lake env lean scripts/check_axioms_heavy.lean`.
 
@@ -33,6 +33,7 @@ import PlasmaLean.Design.DommaschkKamCQSIdent
 import PlasmaLean.Design.DommaschkKamCQS
 import PlasmaLean.Design.DommaschkKamCQSL2
 import PlasmaLean.Design.DommaschkKamNested
+import PlasmaLean.Design.DommaschkKamQ16
 
 /-! Audit all declarations owned by project modules in the import closure (the on-demand top
 modules and everything they import). Fails on any non-standard axiom. -/
@@ -152,3 +153,21 @@ run_cmd do
 #print axioms PlasmaLean.Design.DommaschkKamNested.NestedTori.inside
 #print axioms PlasmaLean.Design.DommaschkKamNested.not_nested_C1_quarter
 #print axioms PlasmaLean.Design.DommaschkKamNested.not_nestedTori_swap
+#print axioms PlasmaLean.Design.DommaschkKamA.ExactTorusA.torusQADefectLe_delta
+#print axioms PlasmaLean.Design.DommaschkKamA.ExactTorusA.torusQADefect_eq
+#print axioms PlasmaLean.Design.DommaschkKamA.ExactTorusA.weightedL2Sq_le_mF
+#print axioms PlasmaLean.Design.DommaschkKamA.dommaschkA_C1_qaDefect
+#print axioms PlasmaLean.Design.DommaschkKamA.dommaschkA_oracleDefect
+#print axioms PlasmaLean.Design.DommaschkKamA.dommaschkA_oracleDefect_L2
+#print axioms PlasmaLean.Design.DommaschkKamA.l2_numbers
+#print axioms PlasmaLean.Design.DommaschkKamA.not_l2_tiny
+#print axioms PlasmaLean.Design.DommaschkKamA.oracleDefectA_L2_num
+#print axioms PlasmaLean.Design.DommaschkKamA.qsd_bounds
+#print axioms PlasmaLean.Design.DommaschkKamA.qsd_not_tiny
+#print axioms PlasmaLean.Design.DommaschkKamA.qsd_numbers
+#print axioms PlasmaLean.Design.DommaschkKamA.surr_G_ne
+#print axioms PlasmaLean.Design.DommaschkKamQ16.dommaschk_Q16_strong
+#print axioms PlasmaLean.Design.DommaschkKamQ16.dommaschk_Q16_vacuum
+#print axioms PlasmaLean.Design.DommaschkKamQ16.nested_C1_of_exact
+#print axioms PlasmaLean.Design.DommaschkKamQ16.not_q16_C_tiny
+#print axioms PlasmaLean.Design.DommaschkKamQ16.q16_bounds_lt_strong

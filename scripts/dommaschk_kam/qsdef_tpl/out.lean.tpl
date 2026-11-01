@@ -14,7 +14,7 @@ public import PlasmaLean.Design.DommaschkKamCAdm
 The certified values of the QA-defect chain of Dommaschk torus C (`Design/DommaschkKamCQSDefChain`)
 expressed through the straight-line program of the QA-defect numerator (N-34 §4,
 `Design/DommaschkKamCQSPoly`) at the low-resolution surrogate torus `(xA 4, xA 5)` of the
-admissibility chain (oracle angle `ψₒ = 2φ`, `24 × 28`, scale `2^{−64}`), all in the strip norm
+admissibility chain (oracle angle `ψₒ = 2φ`, `@@NAv@@ × @@MAv@@`, scale `2^{−64}`), all in the strip norm
 `ρ = 0` (`ℓ¹` of the Fourier coefficients, which bounds the supremum).
 
 **The program on a leaf vector** (`qsQ`, …, `qsNg`; `l : Fin 13 → A` in the order of the fields of
@@ -247,7 +247,7 @@ theorem Gq_eq : Gq = xQ @@iqG@@ * qsNg lS iotaqF (xA 6) (xA 7) := by
   have h2 : algebraMap ℂ FA ((2 : ℂ) ^ 128)⁻¹ * algebraMap ℂ FA ((340282366920938463463374607431768211456 : ℤ) : ℂ) = 1 := by
     rw [← map_mul]; norm_num
   have hi : algebraMap ℂ FA (((-((Iqc : ℝ) / 2 ^ Qc)) : ℝ) : ℂ) =
-      -(algebraMap ℂ FA ((2 : ℂ) ^ 128)⁻¹ * algebraMap ℂ FA ((82229627956397544609921576118836816763 : ℤ) : ℂ)) := by
+      -(algebraMap ℂ FA ((2 : ℂ) ^ 128)⁻¹ * algebraMap ℂ FA ((@@Iqc@@ : ℤ) : ℂ)) := by
     rw [← map_mul, ← map_neg]; congr 1; simp [Iqc, Qc]; ring
   rw [hi]
   linear_combination (xQ @@iqG@@ * qsN0 lS) * h2
@@ -337,7 +337,7 @@ theorem avg_xQ_F : avg (xQ @@iF@@) = ((((@@mFc@@ : ℚ) : ℚ) : ℂ)) := by
   rw [coeff_ctr_grid]
   simp only [abs_zero, Nat.cast_nonneg, and_self, ↓reduceIte, zero_add, Int.toNat_natCast, NA, MA,
     SA]
-  rw [show gQ @@iF@@ 24 28 = @@Fc@@ from gQ_F_centre]
+  rw [show gQ @@iF@@ @@NAv@@ @@MAv@@ = @@Fc@@ from gQ_F_centre]
   push_cast
   simp [Complex.I_sq]; ring
 

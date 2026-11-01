@@ -30,8 +30,13 @@ Also the L2(J) integrand F = G^2 (R^8 qD) (nodes GG, H8, F; its mean is read off
 The transfer to every mu-close torus (D5, `certify`) and all constants of the Out/Transfer modules
 (`EmitQ.out_values`, templates in qsdef_tpl/) are recomputed here in exact rational arithmetic.
 
+Torus A (`--tag A`, `dk_torus.py`): the same chain on the torus-A admissibility chain (surrogate
+32 x 32, modules `DommaschkKamAQSDef*`, `DommaschkKamAQSTransfer`, namespace `DommaschkKamA`); every
+generated text passes through `dk_torus.retarget` (the identity for torus C, so the C outputs are
+byte-identical), with the torus-independent `QSData`/`QSPoly` modules kept.
+
 (needs numpy and gmpy2, e.g. the venv /tmp/dqa-venv; run with -I; about 5 s)
-usage: python emit_qsdef.py [--emit [--only data,env,trees,checks,rel,chain,out]]
+usage: python emit_qsdef.py [--emit [--only data,env,trees,checks,rel,chain,out]] [--tag C|A] [--out-dir DIR]
 """
 import argparse
 import math
@@ -45,10 +50,30 @@ sys.path.insert(0, HERE)
 
 import adm_ball as AB                                         # noqa: E402
 import emit_adm as EA                                         # noqa: E402
+import dk_torus as DT                                         # noqa: E402
 
 CHUNK = 4
 KB = 32          # scale of the |B|^2 and D_min norm nodes: ||2^KB x - c||
 NADM = 195       # number of variables of the Adm chain
+# per torus: Adm surrogate size, the lower bound of |iota| used for kappa and the oracle ratio (Lean
+# rational and text), and the closed acceptance thresholds of `qsd_numbers` (delta, B_min, kappa, oracle)
+TQ = {
+    'C': dict(NL=24, ML=28, iolo=(Fr(6, 25), '6 / 25', '6/25'), thr=('21 / 1000', '1042 / 1000', '17 / 100', '66 / 10000'),
+              thr_txt=('0.021', '1.042', '0.17', '0.0066')),
+    'A': dict(NL=32, ML=32, iolo=(Fr(1193, 5000), '1193 / 5000', '1193/5000'),
+              thr=('32 / 1000', '1026 / 1000', '26 / 100', '1 / 100'), thr_txt=('0.032', '1.026', '0.26', '0.01')),
+}
+
+
+def tq():
+    return TQ[DT.TAG]
+
+
+def select(tag):
+    """Select the torus (C or A); `QSData`/`QSPoly` are torus independent."""
+    DT.select(tag)
+    if 'QSData' not in DT.GENERIC:
+        DT.GENERIC = DT.GENERIC + ('QSData', 'QSPoly')
 
 
 def chunks_of(p):
@@ -71,7 +96,7 @@ def chunks_of(p):
 
 
 def build(verbose=True):
-    pl, idx, norms, ctx = EA.build(24, 28, 64, verbose=False)
+    pl, idx, norms, ctx = EA.build(tq()['NL'], tq()['ML'], 64, verbose=False)
     assert pl.nvar == NADM
     # the new nodes: unit weights (rho = 0)
     pl.P, pl.E_EXP = 1, 0
@@ -260,7 +285,7 @@ def pe_size(e):
 
 
 def adm_consts():
-    src = EA.lean_src('DommaschkKamCAdmOut.lean')
+    src = EA.lean_src(DT.out_name('DommaschkKamCAdmOut') + '.lean')
     import re
     out = {}
     for m_ in re.finditer(r'def (\w+) : ℚ := \((-?\d+)(?: / (\d+)(?: \^ (\d+))?)? : ℚ\)', src):
@@ -287,7 +312,7 @@ def certify(pl, idx, norms, ctx, q, qn, verbose=True):
     PV = q['PV']
     var = {k: PV[k] for k in LEAVES if k != 'R'}
     var['R'] = idx['R']
-    a = [pl.B[var[k]] + pl.E[var[k]] for k in LEAVES] + [EA.IOTA_ABS_UP, pl.B[6], pl.B[7]]
+    a = [pl.B[var[k]] + pl.E[var[k]] for k in LEAVES] + [Fr(*DT.cfg()['iota_abs_up']), pl.B[6], pl.B[7]]
     b = [dl[k] for k in LEAVES] + [Fr(0), muq + tAU, muq + tAZ]
     out['a'], out['b'] = a, b
     T = pe_trees()
@@ -345,9 +370,9 @@ def certify(pl, idx, norms, ctx, q, qn, verbose=True):
             float(epsB), float(eB), float(b2), Bmin, float(Bmin)))
         print('  D >= %.6g' % float(cD - eD))
         print('  delta_inf <= d1/(2 B_min) = %.6g' % float(delta))
-        iota = 0.241651
+        iota = 0.241651 if DT.TAG == 'C' else 0.2386075
         print('  kappa = 2 delta/(B_min |iota|) <= %.4g;  delta/|iota| %.4g' % (
-            2 * float(delta) / (float(Bmin) * 0.24165), float(delta) / 0.24165))
+            2 * float(delta) / (float(Bmin) * iota), float(delta) / iota))
         print('  L2: <F> %.6g (+E %.3g +dF %.3g) eps_D %.3g -> delta_2 <= %.6g' % (
             float(mF), float(pl.E[F]), float(dF), float(epsD), float(delta2)))
         print('  oracle-normalised defect/|iota| <= sqrt2/N delta_2/(B_min |iota|) = %.5g; via sup %.5g' % (
@@ -361,7 +386,13 @@ def main():
     ap.add_argument('--only', default='')
     ap.add_argument('--ndata', type=int, default=2)
     ap.add_argument('--ncheck', type=int, default=4)
+    ap.add_argument('--tag', default='C', help='torus (C, or A: modules DommaschkKamA*, see dk_torus.py)')
+    ap.add_argument('--out-dir', default='', help='output directory (default PlasmaLean/Design)')
     args = ap.parse_args()
+    global OUT
+    select(args.tag)
+    if args.out_dir:
+        OUT = args.out_dir
     import time
     t0 = time.time()
     pl, idx, norms, ctx, q, qn = build()
@@ -407,12 +438,19 @@ class EmitQ:
         self.newvars = list(range(NADM, self.nvar))
         self.files = []
         self.checkload = []
-        self.build_note = ('8 CPU-min', '3.3 GB')
+        self.build_note = ('8 CPU-min', '3.3 GB') if DT.TAG == 'C' else ('15 CPU-min', '4.3 GB')
 
     def nm(self, i):
         return self.pl.names[i]
 
     def write(self, mod, text):
+        mod, text = DT.out_name(mod), DT.retarget(text)
+        if DT.TAG != 'C':     # the `Qp` clash remark is about the torus-C namespace
+            text = text.replace('both declare `DommaschkKamA.Qp`', 'both declare `DommaschkKamC.Qp`')
+            # longer rationals of torus A: allow the long line of `qsd_heB`
+            text = text.replace('include hU in\n/-- **The approximate inverse of `R¹⁶` at the torus.** -/',
+                                'set_option linter.style.longLine false in\ninclude hU in\n'
+                                '/-- **The approximate inverse of `R¹⁶` at the torus.** -/')
         open(os.path.join(OUT, mod + '.lean'), 'w').write(text)
         self.files.append(mod)
 
@@ -467,7 +505,7 @@ namespace %s
 # The ball environment of the torus-C QA-defect chain (N-34, D4)
 
 The QA-defect chain of Dommaschk torus C extends the low-resolution admissibility chain
-(`Design/DommaschkKamCAdmEnv`, variables `0, …, %d`, layout `24 × 28`, scale `2^{−64}`, oracle
+(`Design/DommaschkKamCAdmEnv`, variables `0, …, %d`, layout `%d × %d`, scale `2^{−64}`, oracle
 angle `ψₒ = 2φ`) by %d variables: the `φ`-derivative leaves `D_φ`, `n_{R,φ}`, `n_{z,φ}` (`polyT`
 chunks of the R-form polynomials `polyQ k`), the straight-line program of the QA-defect numerator,
 the approximate inverses `qG ≈ 1/(Q R¹⁷)`, `qB ≈ 1/R¹⁶` (data) and the `L²(J)` integrand. The
@@ -483,7 +521,7 @@ noncomputable section
 namespace %s
 
 %s
-''' % (NADM - 1, NV - NADM, NS, OPEN))
+''' % (NADM - 1, self.N, self.M, NV - NADM, NS, OPEN))
         for i in self.newvars:
             p = self.pl.W[i][2]
             out.append('/-- Grid of the centre `%s`. -/\ndef gQ_%s : ℕ → ℕ → ℤ :=\n  symGrid NA MA ((-1) ^ %d) (halfGridR %d NA datQ_%s)\n\n'
@@ -1038,10 +1076,12 @@ theorem nQ_%s : Bd 0 (Ex.eval XQ trQ_%s) ((%s : ℚ) : ℝ) :=
         d22 = mFq / (4 * (1 - epsGq) ** 2 * (1 - epsDq))
         delta2 = AB.up(Fr(math.isqrt(int(d22 * 10 ** 16)) + 1, 10 ** 8), 4)
         assert delta2 ** 2 >= d22
-        kappa = 2 * delta / (Bmin * Fr(6, 25))
-        oracle = Fr(7072, 10000) * delta2 / (Bmin * Fr(6, 25))
-        assert delta <= Fr(21, 1000) and Bmin >= Fr(1042, 1000) and kappa <= Fr(17, 100)
-        assert 0 < Dmin and oracle <= Fr(66, 10000)
+        iolo = tq()['iolo'][0]
+        kappa = 2 * delta / (Bmin * iolo)
+        oracle = Fr(7072, 10000) * delta2 / (Bmin * iolo)
+        thd, thB, thk, tho = (Fr(*map(int, x.split(' / '))) for x in tq()['thr'])
+        assert delta <= thd and Bmin >= thB and kappa <= thk
+        assert 0 < Dmin and oracle <= tho
         ql = qlean
         V = dict(iqG=iqG, iG=iG, iqB=iqB, iF=iF, pF=pF, pG=pG, Gb=ql(Gb), eGb=ql(bnd('eG')), GIb=ql(bnd('GI')),
                  eBb=ql(bnd('eB')), bBb=ql(bnd('bB')), dMb=ql(bnd('dM')), cBi=q['cB'], cDi=q['cD'], Fc=Fc,
@@ -1055,7 +1095,11 @@ theorem nQ_%s : Bd 0 (Ex.eval XQ trQ_%s) ((%s : ℚ) : ℝ) :=
                  mF='%.4g' % float(mFq), epsD='%.3g' % float(epsDq), d1='%.6g' % float(d1q),
                  Dmin_f='%.4g' % float(Dmin), Bmin_f='%.6g' % float(Bmin), delta_f='%.5g' % float(delta),
                  delta2_f='%.5g' % float(delta2), kappa='%.4g' % float(kappa),
-                 dioa='%.4g' % float(delta / Fr(6, 25)), oracle='%.4g' % float(oracle),
+                 dioa='%.4g' % float(delta / iolo), oracle='%.4g' % float(oracle),
+                 NAv=N, MAv=M, Iqc=self.ctx['Iqc'], ioup='%d / %d' % DT.cfg()['iota_abs_up'],
+                 iolo=tq()['iolo'][1], iolo_txt=tq()['iolo'][2], thd=tq()['thr'][0], thB=tq()['thr'][1],
+                 thk=tq()['thr'][2], tho=tq()['thr'][3], thd_txt=tq()['thr_txt'][0], thB_txt=tq()['thr_txt'][1],
+                 thk_txt=tq()['thr_txt'][2], tho_txt=tq()['thr_txt'][3],
                  BUILD=self.build_note[0], PEAK=self.build_note[1],
                  Gb_f='%.6g' % float(Gb), eGb_f='%.3g' % float(bnd('eG')), GIb_f='%.4g' % float(bnd('GI')),
                  eBb_f='%.3g' % float(bnd('eB')), mFb_f='%.4g' % float(mFb))

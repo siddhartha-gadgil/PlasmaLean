@@ -2508,6 +2508,12 @@
     "text": "a nested certified region for the dommaschk field (q-16), 2 november 2026 implementation plan"
   },
   {
+    "title": "Q-16 vacuum criterion met on a nested pair of certified tori, 2 November 2026",
+    "section": "Implementation plan",
+    "url": "implementation-plan.html#q-16-vacuum-criterion-met-on-a-nested-pair-of-certified-tori-2-november-2026",
+    "text": "q-16 vacuum criterion met on a nested pair of certified tori, 2 november 2026 implementation plan"
+  },
+  {
     "title": "M0 · Exact symmetric equilibria: slab, screw pinch, Solov'ev, helical",
     "section": "Implementation plan · Lean verified — exact slab, screw-pinch, Solov'ev and helical equilibria with kernel force balance, all-time field-line/orbit confinement, Suydam both ways and screw-pinch Newcomb stability for every m ≠ 0 (reduced form supplied; idealized symmetric models).",
     "url": "implementation-plan.html",

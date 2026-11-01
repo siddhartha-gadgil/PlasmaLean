@@ -975,3 +975,62 @@ Build: `lake build PlasmaLean.Design.DommaschkKamNested` (stale dependencies one
   #print axioms PlasmaLean.Design.DommaschkKamA.gaugeA_gt
   #print axioms PlasmaLean.Design.DommaschkKamA.pos_of_sq_mul
   ```
+
+## N-34 D4–D7 on torus A and the vacuum Q-16 statement on {C, A} (1 November 2026) — complete
+
+**Results** (all on-demand, standard axioms, no `sorry`/`decide`, zero warnings; checked together with
+`import PlasmaLean`, `DommaschkKamCQSL2`, `DommaschkKamAQSL2`, `DommaschkKamQ16`: no name clashes).
+- `DommaschkKamA.qsd_bounds` (`Design/DommaschkKamAQSTransfer`): every torus `Close ρ ι_A … u₀A z₀A μ`
+  (`μ ≤ 10⁻¹²`) satisfies `QSDefBounds`; `qsd_numbers`: **`δ_∞ = 0.031258`** (≤ 0.032), **`B_min =
+  1.02656`**, `D_min = 0.11161 > 0` (`B^φ > 0`), `κ = 2δ_∞/(B_min · 1193/5000) ≤ 0.2552`, **`δ₂ =
+  0.0031112`**; `surr_G_ne` (rejected: the `(0, 6)` coefficient of the surrogate numerator is 1.05e-3).
+- `ExactTorusA.torusQADefect_eq`, `torusQADefectLe_delta`, `torusQADefectLe_032`, `Bmin_le`,
+  `boozerChartHyp'`, `oracleDefect_le` (`Design/DommaschkKamAQSIdent`, the D6 argument on `ExactTorusA`).
+- `Design/DommaschkKamAQSL2`: `dommaschkA_C1_qaDefect` (unconditional, sup route), `dommaschkA_oracleDefect`
+  (`≤ √2 δ_∞/(2B_min) < 0.0216`), **`dommaschkA_oracleDefect_L2`** (`≤ (√2/2) δ₂/B_min`) and
+  `oracleDefectA_L2_num`: `< 0.0022`, `≤ (1/100)(1193/5000)`, **`≤ 0.0090 |ι_A|`** (strong tier). Untrusted
+  (`qs_defect.py` on the 96×80 A torus): defect/|ι_A| = 0.00213, sup|g| = 0.0147, sharp L² route 0.0076.
+- **`DommaschkKamQ16.dommaschk_Q16_vacuum`** (`Design/DommaschkKamQ16`): from one pair of exact tori C, A,
+  two `SurfaceData` with `IotaOnTorus` (ι_C, ι_A), `NestedTori` about the common reference curve,
+  `|ι| ≥ 1193/5000` on both, `∀ μ₀ > 0, CurrentFreeTransform μ₀ B {s_C, s_A} 0 (1193/5000)` (C1 on the
+  same two tori, `nested_C1_of_exact`), `TorusQADefectLe` 0.021 (C) / 0.032 (A), `|B| ≥ 1.04259` /
+  `1.02656`, and for every finite set of half-lattice off-QA modes `oracleDefect ≤ 0.0063 |ι_C|` on C and
+  `≤ 0.0090 |ι_A|` on A. `dommaschk_Q16_strong`: `≤ 0.01 |ι|` on both (strong tier). Scope: two thin
+  surfaces, no C2 (AC-1).
+
+**Generator.** `emit_qsdef.py --tag A --ncheck 6` (`dk_torus.retarget`, `QSData`/`QSPoly` kept generic; A
+surrogate 32 × 32 from the A Adm chain; per-torus thresholds `TQ`); templates take the surrogate size, `Iqc`,
+`|ι|` bounds and thresholds as parameters. **All 12 regenerated C modules are byte-identical.** The
+handwritten `AQSIdent`/`AQSL2` are the C modules with the torus renamed (`ExactTorusA`, `lvA`, `qsDefA`) and
+the A numbers.
+
+**Modules and build** (laptop, sequential, user CPU / peak RSS): `AQSDefData1–2` 3 s / 0.73 GB; `Env` 5.5 s /
+1.46 GB; `Trees` 2 s / 1.4 GB; `Rel` 6 s / 1.5 GB; `AQSDefCheck1–6` 112 / 128 / 151 / 133 / 184 / 159 s,
+3.4 / 3.3 / 3.7 / 3.7 / **4.27** / 3.7 GB; `Chain` 7 s / 1.6 GB; `Out` 8 s / 2.1 GB; `AQSTransfer` 9 s / 2.0 GB;
+`AQSIdent` 6.5 s / 1.7 GB; `AQSL2` 4 s / 1.6 GB; `Q16` 2.3 s / 1.6 GB. Total ≈ 15 CPU-min.
+Build: `lake build PlasmaLean.Design.DommaschkKamQ16` (stale dependencies one at a time).
+
+**Shared files (owner to add).**
+- `PlasmaLean.lean`: none (all on demand).
+- `scripts/check_axioms_heavy.lean`:
+  ```
+  import PlasmaLean.Design.DommaschkKamQ16
+  #print axioms PlasmaLean.Design.DommaschkKamQ16.dommaschk_Q16_vacuum
+  #print axioms PlasmaLean.Design.DommaschkKamQ16.dommaschk_Q16_strong
+  #print axioms PlasmaLean.Design.DommaschkKamQ16.nested_C1_of_exact
+  #print axioms PlasmaLean.Design.DommaschkKamQ16.q16_bounds_lt_strong
+  #print axioms PlasmaLean.Design.DommaschkKamQ16.not_q16_C_tiny
+  #print axioms PlasmaLean.Design.DommaschkKamA.dommaschkA_oracleDefect_L2
+  #print axioms PlasmaLean.Design.DommaschkKamA.oracleDefectA_L2_num
+  #print axioms PlasmaLean.Design.DommaschkKamA.dommaschkA_C1_qaDefect
+  #print axioms PlasmaLean.Design.DommaschkKamA.dommaschkA_oracleDefect
+  #print axioms PlasmaLean.Design.DommaschkKamA.l2_numbers
+  #print axioms PlasmaLean.Design.DommaschkKamA.not_l2_tiny
+  #print axioms PlasmaLean.Design.DommaschkKamA.ExactTorusA.torusQADefect_eq
+  #print axioms PlasmaLean.Design.DommaschkKamA.ExactTorusA.torusQADefectLe_delta
+  #print axioms PlasmaLean.Design.DommaschkKamA.ExactTorusA.weightedL2Sq_le_mF
+  #print axioms PlasmaLean.Design.DommaschkKamA.qsd_bounds
+  #print axioms PlasmaLean.Design.DommaschkKamA.qsd_numbers
+  #print axioms PlasmaLean.Design.DommaschkKamA.qsd_not_tiny
+  #print axioms PlasmaLean.Design.DommaschkKamA.surr_G_ne
+  ```

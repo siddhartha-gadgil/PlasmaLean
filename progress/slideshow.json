@@ -1614,8 +1614,8 @@
    "cards": [
     {
      "title": "1 · Dommaschk QA fit",
-     "text": "An explicit vacuum field (current-free by construction) fitted to a quasi-axisymmetric target (Q-16): a two-period, purely rational Dommaschk field. Verified in Lean: two certified invariant tori, nested, with |ι| ≥ 0.2386 and zero net toroidal current (C1, dommaschk_nested_C1), and a strong-tier quasi-axisymmetry defect on the inner torus, ≤ 0.0063 |ι| (dommaschk_C1_oracleDefect_L2). Open: the defect on the outer torus, and C2.",
-     "status": "C1 on nested tori · QA defect certified on torus C · C2 next",
+     "text": "An explicit vacuum field (current-free by construction) fitted to a quasi-axisymmetric target (Q-16): a two-period, purely rational Dommaschk field. Verified in Lean (dommaschk_Q16_vacuum): two certified nested invariant tori with |ι| ≥ 0.2386 and zero net toroidal current (C1), and a certified strong-tier quasi-axisymmetry defect on both (≤ 0.0063 |ι| and ≤ 0.0090 |ι|), which is the vacuum Q-16 criterion. Open: C2.",
+     "status": "Q-16 vacuum criterion verified · C2 next",
      "kind": "checked"
     },
     {

@@ -823,6 +823,13 @@ are proved nested about a common reference curve (`DommaschkKamNested.dommaschk_
 `dommaschk_nested_C1`: C1 on {C, A} with ι_min = 0.2386). With the certified QA defect on C (§29, N-34),
 this meets the vacuum Q-16 criterion on a nested pair of tori. The QA defect on A is not yet certified.
 
+### 32. Q-16 vacuum criterion met on a nested pair (2 November 2026; verified)
+
+`DommaschkKamQ16.dommaschk_Q16_vacuum` / `dommaschk_Q16_strong` combine both tori. C and A are nested,
+with |ι| ≥ 0.2386 and zero net current. The certified QA defect is ≤ 0.0063 |ι_C| and ≤ 0.0090 |ι_A|
+(strong tier on both). The untrusted fit gave ≈ 0.002 |ι| on both, so the certified bounds are about 3–4×
+the estimates. Open: more surfaces (a continuum is impossible exactly for this non-integrable field), C2.
+
 ## Claims and evidence
 
 1. **Complete mathematical proof (symbolic, sympy).** The basis potentials are harmonic and

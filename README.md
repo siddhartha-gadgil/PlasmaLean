@@ -72,9 +72,9 @@ together, and those only in vacuum.
   - ε_eff is not in Lean.
   - Weak quasisymmetry is defined. Neither Landreman family is weakly quasisymmetric on any
     region containing its magnetic axis, for any potential critical on the axis.
-  - On the certified C1 torus of the Dommaschk field, the quasi-axisymmetry defect is **certified**
-    (2 November 2026, `DommaschkKamC.dommaschk_C1_oracleDefect_L2`, on demand): the off-QA Boozer
-    spectral defect is ≤ 0.0063 |ι|, strong tier. This is one thin torus. It is not a C2 result:
+  - On both certified tori of the Dommaschk field the quasi-axisymmetry defect is **certified**
+    (2 November 2026, `DommaschkKamQ16.dommaschk_Q16_vacuum`, on demand): the off-QA Boozer spectral
+    defect is ≤ 0.0063 |ι| (torus C) and ≤ 0.0090 |ι| (torus A), strong tier, on a nested pair. This is one thin torus. It is not a C2 result:
     the omnigeneity contract is not yet tied to the physical field (audit AC-1), and a volume Boozer
     chart does not exist exactly for this field.
   - The alpha results below concern 3.5 MeV alphas, mostly passing orbits, which is one part of
