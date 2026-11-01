@@ -398,6 +398,14 @@ run_cmd do
 #print axioms PlasmaLean.Design.DommaschkKamC.iotaqC_close
 #print axioms PlasmaLean.Design.DommaschkKamC.dkFieldTC
 #print axioms PlasmaLean.Design.DommaschkKamC.rotψ_ne_id
+#print axioms PlasmaLean.Design.DommaschkKamC.dDf_eq
+#print axioms PlasmaLean.Design.DommaschkKamC.substR_dnRhf
+#print axioms PlasmaLean.Design.DommaschkKamC.qsDefectSq_eq
+#print axioms PlasmaLean.Design.DommaschkKamC.qsDefect_eq_real
+#print axioms PlasmaLean.Design.DommaschkKamC.boozerJ_flow
+#print axioms PlasmaLean.Design.DommaschkKamC.pd_Qp_U
+#print axioms PlasmaLean.Design.DommaschkKamC.phiD_Qp
+#print axioms PlasmaLean.Design.DommaschkKamC.qsDefectSq_needs_invariance
 #print axioms PlasmaLean.Fields.QSLinear.fieldDiv_fqsGen
 #print axioms PlasmaLean.Fields.QSLinear.JetHyp.jet_obstruction_curl
 #print axioms PlasmaLean.Fields.QSLinear.jet_obstruction_eta

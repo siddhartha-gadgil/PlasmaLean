@@ -311,6 +311,8 @@ public import PlasmaLean.Design.DommaschkKamDioC
 public import PlasmaLean.Design.DommaschkKamCData
 public import PlasmaLean.Design.DommaschkKamCTorus
 public import PlasmaLean.Design.DommaschkKamCJet
+public import PlasmaLean.Design.DommaschkKamCQSData
+public import PlasmaLean.Design.DommaschkKamCQSPoly
 public import PlasmaLean.Design.QSJetExample
 public import PlasmaLean.Design.RationalStellaratorJetObstruction
 
