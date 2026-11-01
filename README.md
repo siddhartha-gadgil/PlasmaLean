@@ -49,8 +49,10 @@ together, and those only in vacuum.
     rational field (`DommaschkQA2R`). It has a KAM-certified invariant torus with |ι| ≥ 0.24
     (ι = −(85+√5)/361), from an a posteriori theorem with a 96 × 80 torus whose certified initial
     error is ≤ 1.2 × 10⁻²⁷, and zero net toroidal current.
-  - Not yet proved: confinement inside that torus, nested families of certified surfaces, or any
-    current-free equilibrium at finite β.
+  - A second certified torus A (|ι| ≥ 0.2386) is proved nested around torus C
+    (`DommaschkKamNested.dommaschk_nested_C1`, 2 November 2026).
+  - Not yet proved: confinement inside the tori, a continuum of nested surfaces, or any current-free
+    equilibrium at finite β.
   - The C1 current is the Ampère circulation μ₀⁻¹∮B·dl around each confining torus's own
     poloidal loop, with |ι| ≥ ι_min. This was audit fix AR-H1, 31 October: an earlier section-based
     clause could be satisfied vacuously.

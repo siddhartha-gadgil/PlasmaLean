@@ -7,8 +7,12 @@ Design/DommaschkKamCAdmOut.lean), the Taylor majorants `½ PolyExpr.majD2` of `r
 of Design/DommaschkKamCJet.lean), and asserts every inequality the Lean module proves, for the
 error budget `e0qDK` and for the largest budget claimed admissible (1.15e-23).
 
-usage: python3 check_consts.py
+Torus A (`--tag A`): the same checks for Design/DommaschkKamAConsts.lean (constants parsed from
+Design/DommaschkKamAAdmOut.lean, split Diophantine data of `dkIotaA_period_split`).
+
+usage: python3 check_consts.py [--tag C|A]
 """
+import argparse
 import os
 import re
 from fractions import Fraction as F
@@ -22,6 +26,10 @@ CKB, CLB, C2 = F(30496), F(930856), F(40797 * 10**8)
 AC = F(68553, 2**16)
 RHO, D0, GAM, DLOW, E1, P = F(9, 200), F(9, 1400), F(2671, 10000), F(1208, 10000), F(2718, 1000), 7
 MUQ = F(1, 10**12)
+KAPB, E0MAX, TAG = F(40798 * 10**8), F(115, 10**25), 'C'
+# the choices of Design/DommaschkKamAConsts.lean (torus A)
+TORUS_A = dict(E0Q=F(1, 10**25), CKB=F(33193), CLB=F(1342931), C2=F(87900 * 10**8), GAM=F(3645, 10000),
+               DLOW=F(1193, 10000), KAPB=F(87901 * 10**8), E0MAX=F(55, 10**25))
 
 
 def polys():
@@ -36,7 +44,7 @@ def polys():
 
 
 def certified():
-    src = open(os.path.join(DES, 'DommaschkKamCAdmOut.lean'), encoding='utf8').read()
+    src = open(os.path.join(DES, f'DommaschkKam{TAG}AdmOut.lean'), encoding='utf8').read()
     out = {}
     for m in re.finditer(r'def (\w+) : ℚ := \((.*?) : ℚ\)', src):
         out[m.group(1)] = eval(re.sub(r'(\d+)', r'F(\1)', m.group(2).replace('^', '**')))
@@ -91,7 +99,7 @@ def check(e0, pol, K, verbose):
     c2Z = c2q(pol, A0, A1, AC, CKB, CKB, aLz + Tq*CLB, CLB, 'dnZ')
     facts = {
         'tau_prime > 0': taup > 0, 'cK <= cKb': cK <= CKB, 'cL <= cLb': cL <= CLB,
-        'C2R': c2R <= C2, 'C2Z': c2Z <= C2, 'kap <= 4.0798e12': kap <= 40798 * 10**8,
+        'C2R': c2R <= C2, 'C2Z': c2Z <= C2, 'kap <= KAPB': kap <= KAPB,
         'small': 32*kap*e0/D0**4 <= 1, 'muK': 2*cK*e0/D0**2 <= MUQ,
         'mut': 2*(cK/E1)*e0/D0**3 <= MUQ, 'muL': 2*cL*e0/D0**2 <= MUQ,
         'small fails at 1e-22': 32*kap*F(1, 10**22)/D0**4 > 1, 'rho6': 6*D0 < RHO,
@@ -108,8 +116,15 @@ def check(e0, pol, K, verbose):
 
 
 def main():
+    ap = argparse.ArgumentParser()
+    ap.add_argument('--tag', default='C')
+    args = ap.parse_args()
+    if args.tag == 'A':
+        global TAG
+        TAG = 'A'
+        globals().update(TORUS_A)
     pol, K = polys(), certified()
-    for e0 in (E0Q, F(115, 10**25)):
+    for e0 in (E0Q, E0MAX):
         check(e0, pol, K, True)
     print('all checks pass')
 

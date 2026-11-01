@@ -1794,3 +1794,19 @@ Gate E1 (§11.2, §11.4) and the "sanity theorem or counterexample" promised in 
   `OmnigeneityContract B Ω c κ := ∃ F, BoozerModelOf B Ω c F ∧ BoozerModelOmnigeneity F c κ`. The old
   predicate is renamed `BoozerModelOmnigeneity` (model level). `exactQA`/`reactorQA` results are Boozer-model
   statements. Field-level C2 instance so far: ∇φ (vacuous, ι = 0). Axiom audit passed (50,921 declarations).
+
+### A nested certified region for the Dommaschk field (Q-16), 2 November 2026
+
+- Torus A certified (on-demand `Design/DommaschkKamA*`, emitters generalised with `--tag`, torus-C outputs
+  byte-identical): `DommaschkKamA.dommaschkA_C1_unconditional` (C1 with ι_min = 0.2386; 6/25 is impossible for
+  A, `not_C1_iotaMin_A`), `dommaschkA_iotaOnTorus_unconditional`; κ ≤ 8.79 × 10¹², certified e₀ = 6.2 × 10⁻²⁶
+  against a requirement ≤ 6.07 × 10⁻²⁴ (margin ≈ 98); same field instance and moving centre as torus C.
+- Nesting (`Design/DommaschkKamNested`): `NestedTori` (both tori have a poloidal angle about one reference
+  curve, and along every ray C comes strictly before A; consequences `disjoint`, `inside`); `nested_of_exact`,
+  **`dommaschk_nested`** (two certified invariant tori, ι_C and ι_A, nested) and **`dommaschk_nested_C1`**
+  (C1 on the family {C, A} with ι_min = 0.2386). Certified by positivity via squared approximate inverses and a
+  common quadratic gauge (G < 1 near C, G > 1 near A). 77 on-demand modules, ≈ 70 min on the laptop, peak
+  5.77 GB. Standard axioms.
+- Q-16 vacuum criterion for the Dommaschk target: certified tori on a nested region (C inside A), |ι| ≥ 0.2386
+  on both, and a certified strong-tier QA defect on torus C (A's defect not yet certified). Open: the defect
+  on A, and C2.

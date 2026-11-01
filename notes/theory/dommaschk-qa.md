@@ -816,6 +816,13 @@ torus and the QS ⇒ omnigeneity bridge, is the next step towards C2.
 - **Torus B** (ι = −0.2321, r ≈ 0.057, near the 3/13 chain): flow error 2.5 × 10⁻²⁰, θ-decay only
   0.417 per mode, FHL tolerance 2.2 × 10⁷. Not recommended for certification at this resolution.
 
+### 31. Nested certified region (2 November 2026; verified)
+
+Torus A is certified exactly like torus C (`DommaschkKamA.dommaschkA_C1_unconditional`). The two tori
+are proved nested about a common reference curve (`DommaschkKamNested.dommaschk_nested`,
+`dommaschk_nested_C1`: C1 on {C, A} with ι_min = 0.2386). With the certified QA defect on C (§29, N-34),
+this meets the vacuum Q-16 criterion on a nested pair of tori. The QA defect on A is not yet certified.
+
 ## Claims and evidence
 
 1. **Complete mathematical proof (symbolic, sympy).** The basis potentials are harmonic and

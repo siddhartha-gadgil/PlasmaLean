@@ -25,7 +25,7 @@ in Fractions from the emitted rationals, and the generated trees of the sparse p
 Lean functions `polyT`/`termT` (the Lean kernel re-evaluates them).
 
 (needs numpy and gmpy2, e.g. the venv /tmp/dqa-venv; run with -I)
-usage: python emit_adm.py [--NL 24 --ML 28 --SL 64] [--report] [--emit]
+usage: python emit_adm.py [--NL 24 --ML 28 --SL 64] [--report] [--emit] [--tag C|A] [--out-dir DIR]
 """
 import argparse
 import json
@@ -40,13 +40,14 @@ REPO = os.path.abspath(os.path.join(HERE, '..', '..'))
 sys.path.insert(0, HERE)
 
 import adm_ball as AB                                         # noqa: E402
+import dk_torus as DT                                         # noqa: E402
 
 P_EXP, E_EXP = 68553, 16          # e^{9/200} <= 68553 / 2^16
 NORING = {'W0', 'DD', 'G1', 'G2', 'G3', 'YR', 'YZ', 'P', 'qD2', 'qD3', 'qW2', 'qDW', 'Y'}
 CHUNK = 4                         # distinct monomials per polynomial chunk node
 R0 = Fr(29, 32)
 MU = Fr(1, 10 ** 12)
-IOTA_ABS_UP = Fr(2417, 10000)     # |iota_C| = (85 + sqrt 5)/361 = 0.24165... <= 0.2417
+IOTA_ABS_UP = Fr(2417, 10000)     # |iota_C| = (85 + sqrt 5)/361 = 0.24165... <= 0.2417 (torus A: dk_torus)
 
 
 # ------------------------------------------------------------------ Lean data parsing
@@ -173,12 +174,13 @@ def low_grid(gfull, Nc, Mc, Sc, NL, ML, SL, p):
 
 def build(NL, ML, SL, verbose=True):
     import numpy as np
-    cdata = lean_src('DommaschkKamCData.lean')
+    cdata = lean_src(DT.data_module())
     Nc, Mc, Sc, Fc = (parse_nat(cdata, x) for x in ('Nc', 'Mc', 'Sc', 'Fc'))
     Iqc, Qc = parse_nat(cdata, 'Iqc'), parse_nat(cdata, 'Qc')
     gU = full_grid_from_rows(parse_rows(cdata, 'datU'), Nc, Mc, Fc, 0)
     gZ = full_grid_from_rows(parse_rows(cdata, 'datZ'), Nc, Mc, Fc, 1)
-    cenR, cenZ = parse_sp(cdata, 'cenR'), parse_sp(cdata, 'cenZ')
+    csrc = lean_src('DommaschkKamCData.lean')      # the moving centre (shared by tori C and A)
+    cenR, cenZ = parse_sp(csrc, 'cenR'), parse_sp(csrc, 'cenZ')
     fd = lean_src('DommaschkKamFieldData.lean')
     dDR, dnRh, dnZR = parse_sp(fd, 'dDR'), parse_sp(fd, 'dnRh'), parse_sp(fd, 'dnZR')
     dD, dnR, dnZ = parse_sp(fd, 'dD'), parse_sp(fd, 'dnR'), parse_sp(fd, 'dnZ')
@@ -426,6 +428,7 @@ def certify(pl, idx, norms, ctx, tails, verbose=True):
     tau = mY - nY * (zN - 1)
     out.update(dR7=dR7, dPR=dPR, dY=dY, meanY=meanY, nY=nY, mY=mY, zN=zN, tT=AB.up(tT, 5), tau=AB.down(tau, 5))
     # torus norms
+    IOTA_ABS_UP = Fr(*DT.cfg()['iota_abs_up'])
     io = Fr(1, 2 ** ctx['Qc'])
     LUb = norms['LU']['bound'] / 2 ** ctx['Qc'] + io * nA
     LZb = norms['LZ']['bound'] / 2 ** ctx['Qc'] + io * nB
@@ -467,7 +470,7 @@ def kappa(V, r=0.045):
     import kam_constants as KC
     pol = KC.lean_polys()
     p = 7
-    gam, dlow = 0.2671, 0.1208
+    gam, dlow = DT.cfg()['gam'], DT.cfg()['dlow']
     E1 = 2.718
     d0 = r / 7
     e0 = 1e-28
@@ -547,7 +550,13 @@ def main():
     ap.add_argument('--ndata', type=int, default=4)
     ap.add_argument('--ncheck', type=int, default=8)
     ap.add_argument('--only', default='', help='comma-separated modules to write (data,env,trees,checks,rel,chain,tail,out)')
+    ap.add_argument('--tag', default='C', help='torus (C, or A: modules DommaschkKamA*, see dk_torus.py)')
+    ap.add_argument('--out-dir', default='', help='output directory (default PlasmaLean/Design)')
     args = ap.parse_args()
+    global OUT
+    DT.select(args.tag)
+    if args.out_dir:
+        OUT = args.out_dir
     import time
     t0 = time.time()
     pl, idx, norms, ctx = build(args.NL, args.ML, args.SL)
@@ -739,6 +748,7 @@ class Emit:
         return self.pl.kind[i] in ('data', 'node', 'grid')
 
     def write(self, mod, text):
+        mod, text = DT.out_name(mod), DT.retarget(text)
         open(os.path.join(OUT, mod + '.lean'), 'w').write(text)
         self.files.append(mod)
 
@@ -1784,11 +1794,11 @@ theorem avg_xA_Y : avg (xA %d) = ((%s : ℚ) : ℂ) := by
   rw [coeff_ctr_grid]
   simp only [abs_zero, Nat.cast_nonneg, and_self, ↓reduceIte, zero_add, Int.toNat_natCast, NA, MA,
     SA]
-  rw [show gA %d 24 28 = %d from gA_Y_centre]
+  rw [show gA %d %d %d = %d from gA_Y_centre]
   push_cast
   %s
 
-""" % (iY, g, iY, qlean(meanY), p, iY, iY, g,
+""" % (iY, g, iY, qlean(meanY), p, iY, iY, self.N, self.M, g,
        'ring' if p == 0 else 'simp [Complex.I_sq]; ring'))
         consts = dict(muq=MU, tU=self.tailrec['U']['bound'], tZ=self.tailrec['Z']['bound'],
                       tAU=self.tailrec['AU']['bound'], tAZ=self.tailrec['AZ']['bound'],

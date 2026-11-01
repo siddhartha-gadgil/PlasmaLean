@@ -50,8 +50,23 @@ R0 = Fraction(29, 32)
 CENTRE_ALPHA = [Fraction(9187, 10000), Fraction(592, 10000), Fraction(-108, 10000), Fraction(-30, 10000)]
 CENTRE_BETA = [Fraction(0), Fraction(-604, 10000), Fraction(107, 10000), Fraction(29, 10000)]
 
-# The exact rotation number of torus C: iota_C = -(85 + sqrt 5)/361, |iota|/2 = [0; 8, 3, 1, 1, ...].
+# The exact rotation numbers: iota_C = -(85 + sqrt 5)/361, |iota|/2 = [0; 8, 3, 1, 1, ...] (the first
+# certification torus) and iota_A = -(19 + sqrt 5)/89, |iota|/2 = [0; 8, 2, 1, 1, ...] (the outer torus of
+# the nested certified region).  The torus is selected by the `tag` of the exported JSON; the Lean
+# module prefix and namespace are DommaschkKam<tag>.  Torus A reuses the moving centre of torus C (same
+# magnetic axis), so its data module refers to `DommaschkKamC.cenR`/`cenZ` instead of redefining them.
+TORI = {
+    'C': dict(ia=85, ib=361, iota_txt='−(85 + √5)/361 ≈ −0.2416512', own_centre=True),
+    'A': dict(ia=19, ib=89, iota_txt='−(19 + √5)/89 ≈ −0.2386075', own_centre=False),
+}
 IOTA_A, IOTA_B = 85, 361
+TAG = 'C'
+
+
+def set_torus(tag):
+    global IOTA_A, IOTA_B, TAG
+    TAG = tag
+    IOTA_A, IOTA_B = TORI[tag]['ia'], TORI[tag]['ib']
 
 
 # ----------------------------------------------------------------------------------------- input
@@ -291,19 +306,31 @@ def emit_data(t, S, F, Q, Iq, rowsU, rowsZ, cR, cZ, alpha, beta, info, out):
     src = os.path.relpath(os.path.abspath(t['path']), REPO)
     if src.startswith('..'):
         src = os.path.basename(t['path']) + ' (development torus, outside the repository)'
-    lines = [HEADER, 'public import PlasmaLean.Design.DommaschkKamPoly\n\n']
+    T_ = TAG
+    own = TORI[T_]['own_centre']
+    imp = ('public import PlasmaLean.Design.DommaschkKamPoly\n\n' if own
+           else 'public import PlasmaLean.Design.DommaschkKamCData\n\n')
+    lines = [HEADER, imp]
+    if own:
+        cen_txt = (f'''harmonics of the traced magnetic axis, rounded to `10⁻⁴`, written in `c = cos 2φ`, `s = sin 2φ` as the
+harmonic polynomials `Re`, `Im (c + i s)ⁿ` (`cenR`, `cenZ`: angle-only `DkPoly.SP`, the arguments
+`aR aZ` of `DommaschkKam.dkFieldC`).''')
+    else:
+        cen_txt = (f'''harmonics of the traced magnetic axis, rounded to `10⁻⁴`: the centre of torus C, reused unchanged
+(`DommaschkKamC.cenR`, `DommaschkKamC.cenZ`, not redefined here), so both tori live in the same
+`FlowFieldG` instance `DommaschkKamC.dkFieldTC`.''')
     lines.append(wrap_doc(f'''/-!
-# Data of Dommaschk torus C for the KAM certificate (generated file)
+# Data of Dommaschk torus {T_} for the KAM certificate (generated file)
 
 **Generated** by `scripts/dommaschk_kam/emit_torus.py` from `{src}`
 (sha256 `{t['file_sha'][:16]}…`; candidate sha256 `{t['sha'][:16]}…`; oracle `{N} × {M}` modes, refined
 to {t['dps']} digits). Do not edit by hand. Nothing here is trusted: the data only *define* the
-approximate torus; its properties are proved elsewhere (`Design/DommaschkKamCTorus`, and the
+approximate torus; its properties are proved elsewhere (`Design/DommaschkKam{T_}Torus`, and the
 residual and admissibility chains of N-33 items 7, 8).
 
 **Torus** (oracle angle `ψₒ = 2φ`, `φ` the cylindrical angle): `R = Σ a_km cos(kθ + mψₒ)`,
 `z = Σ b_km sin(kθ + mψₒ)`, `|k| ≤ {N}`, `|m| ≤ {M}`, rotational transform
-`ι_C = −(85 + √5)/361 ≈ −0.2416512`. Stored in the ball-chain format of `Certificates/KronBallGrid`:
+`ι_{T_} = {TORI[T_]['iota_txt']}`. Stored in the ball-chain format of `Certificates/KronBallGrid`:
 packed half grids (`halfGridR`: one literal per row `i − N`, `i = N … 2N`, rows of `2M + 1` fields of
 width `{F}` bits, offset `2^{F - 1}`), to be completed by `symGrid N M ((-1) ^ p)` with `p = 0` for
 `U = R − R₀` (`R₀ = 29/32`) and `p = 1` for `z`; the centre `g(N + k, M + m)` is `2^{S}` times the
@@ -311,20 +338,18 @@ complex coefficient of `e^{{i(kθ + mψₒ)}}` times `iᵖ`. Coefficients are ro
 (error at most `2^{{−{S}}}` per complex coefficient; weighted `ℓ¹` rounding error
 `{info['err045'][0]:.1e}` (`U`), `{info['err045'][1]:.1e}` (`z`) at `r = 0.045`).
 
-**Rotational transform**: `ι_q = −Iqc/2^Qc`, `|ι_q − ι_C| ≤ 2^{{−Qc}}` (checked by the generator;
-proved in `Design/DommaschkKamCTorus`, `iotaqC_close`).
+**Rotational transform**: `ι_q = −Iqc/2^Qc`, `|ι_q − ι_{T_}| ≤ 2^{{−Qc}}` (checked by the generator;
+proved in `Design/DommaschkKam{T_}Torus`, `iotaq{T_}_close`).
 
 **Moving frame centre** (N-33 (O1)): `A(ψₒ) = (R₀ + a_R, a_z)` with
 `A_R = {' '.join(trig_terms(alpha, 'cos'))}`, `A_z = {' '.join(trig_terms(beta, 'sin'))}`: the first three
-harmonics of the traced magnetic axis, rounded to `10⁻⁴`, written in `c = cos 2φ`, `s = sin 2φ` as the
-harmonic polynomials `Re`, `Im (c + i s)ⁿ` (`cenR`, `cenZ`: angle-only `DkPoly.SP`, the arguments
-`aR aZ` of `DommaschkKam.dkFieldC`). On the torus the winding form `W₀ = ∂_θK × (K − A)` lies in
+{cen_txt} On the torus the winding form `W₀ = ∂_θK × (K − A)` lies in
 `[{info['W0'][0]:.3e}, {info['W0'][1]:.3e}]` (generator, float check on a 256 × 256 grid; untrusted).
 -/
 ''') + f'''
 @[expose] public section
 
-namespace PlasmaLean.Design.DommaschkKamC
+namespace PlasmaLean.Design.DommaschkKam{T_}
 
 open PlasmaLean.Design.DommaschkKam.DkPoly
 
@@ -338,7 +363,7 @@ def Sc : ℕ := {S}
 def Fc : ℕ := {F}
 /-- Exponent of the dyadic rotational transform `ι_q = −Iqc/2^Qc`. -/
 def Qc : ℕ := {Q}
-/-- Numerator of `|ι_q| = Iqc/2^Qc ≈ (85 + √5)/361`. -/
+/-- Numerator of `|ι_q| = Iqc/2^Qc ≈ ({IOTA_A} + √5)/{IOTA_B}`. -/
 def Iqc : ℕ := {Iq}
 
 ''')
@@ -346,12 +371,13 @@ def Iqc : ℕ := {Iq}
         lines.append('set_option linter.style.longLine false in\n')
         lines.append(f'/-- Packed half grid of {what} (one literal per row `i − N`). -/\n')
         lines.append(f'def {nm} : List ℕ := [\n' + ',\n'.join('  0x%x' % v for v in rows) + ']\n\n')
-    lines.append('/-- The radial part `a_R = A_R − R₀` of the moving frame centre (angle only). -/\n')
-    lines.append(f'def cenR : SP := {sp_lean(cR)}\n\n')
-    lines.append('/-- The vertical part `a_z = A_z` of the moving frame centre (angle only). -/\n')
-    lines.append(f'def cenZ : SP := {sp_lean(cZ)}\n\n')
-    lines.append('end PlasmaLean.Design.DommaschkKamC\n')
-    path = os.path.join(out, 'DommaschkKamCData.lean')
+    if own:
+        lines.append('/-- The radial part `a_R = A_R − R₀` of the moving frame centre (angle only). -/\n')
+        lines.append(f'def cenR : SP := {sp_lean(cR)}\n\n')
+        lines.append('/-- The vertical part `a_z = A_z` of the moving frame centre (angle only). -/\n')
+        lines.append(f'def cenZ : SP := {sp_lean(cZ)}\n\n')
+    lines.append(f'end PlasmaLean.Design.DommaschkKam{T_}\n')
+    path = os.path.join(out, f'DommaschkKam{T_}Data.lean')
     open(path, 'w').write(''.join(lines))
     return path
 
@@ -366,6 +392,7 @@ def main():
     ap.add_argument('--refit', action='store_true', help='re-trace the axis and compare the centre')
     args = ap.parse_args()
     t = load_torus(args.torus)
+    set_torus(t['tag'])
     import dfield
     assert t['sha'] == dfield.ExactField().sha, 'candidate hash mismatch'
     S = args.S or min(128, int(t['dps'] * math.log2(10)) - 8)
@@ -380,7 +407,7 @@ def main():
     lo, hi = Fraction(-(IOTA_A * 2 ** P2 + s5 + 1), IOTA_B * 2 ** P2), Fraction(-(IOTA_A * 2 ** P2 + s5), IOTA_B * 2 ** P2)
     dev = max(abs(t['iota'] - lo), abs(t['iota'] - hi))
     assert dev < Fraction(1, 10 ** (t['dps'])), float(dev)
-    print(f"iota_q = -Iq/2^{Q}, |iota_q - iota_C| <= 2^-{Q} (t = {tq}); |oracle iota - iota_C| <= {float(dev):.1e}")
+    print(f"iota_q = -Iq/2^{Q}, |iota_q - iota_{TAG}| <= 2^-{Q} (t = {tq}); |oracle iota - iota_{TAG}| <= {float(dev):.1e}")
     # grids
     hU, hZ = half_grids(t, S)
     F = max(abs(v).bit_length() for h in (hU, hZ) for v in h.values()) + 2

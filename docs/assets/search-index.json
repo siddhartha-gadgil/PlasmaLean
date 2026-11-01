@@ -2502,6 +2502,12 @@
     "text": "audit fix ac-1: c2 tied to the physical field, 2 november 2026 implementation plan"
   },
   {
+    "title": "A nested certified region for the Dommaschk field (Q-16), 2 November 2026",
+    "section": "Implementation plan",
+    "url": "implementation-plan.html#a-nested-certified-region-for-the-dommaschk-field-q-16-2-november-2026",
+    "text": "a nested certified region for the dommaschk field (q-16), 2 november 2026 implementation plan"
+  },
+  {
     "title": "M0 · Exact symmetric equilibria: slab, screw pinch, Solov'ev, helical",
     "section": "Implementation plan · Lean verified — exact slab, screw-pinch, Solov'ev and helical equilibria with kernel force balance, all-time field-line/orbit confinement, Suydam both ways and screw-pinch Newcomb stability for every m ≠ 0 (reduced form supplied; idealized symmetric models).",
     "url": "implementation-plan.html",

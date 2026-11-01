@@ -105,7 +105,9 @@ def run_scg(args):
     iota = float(d['iota'])
     summary = json.load(open(args.summary)) if args.summary else None
     R0 = float(ET.R0); p = 7
-    gam, dlow, Klow = 0.2671, 0.1208, 1          # Design/DommaschkKamDioC (dkIotaC_period_split)
+    # split Diophantine data: Design/DommaschkKamDioC (dkIotaC_period_split), Design/DommaschkKamDio
+    # (dkIotaA_period_split)
+    gam, dlow, Klow = {'C': (0.2671, 0.1208, 1), 'A': (0.3645, 0.1193, 1)}[d['tag']]
     E1 = 2.718
     g = T.Galerkin(ev, N, M, iota, Nt=args.grid, Np=args.grid)
     R, z, Rth, Rps, zth, zps = g.fields(a, b)

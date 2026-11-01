@@ -883,3 +883,95 @@ half-lattice off-QA modes, `oracleDefect 2 ι_C (V∘K) (|B|∘K) S ≤ (√2/2)
   #print axioms PlasmaLean.Design.DommaschkKamC.not_l2_tiny
   #print axioms PlasmaLean.Design.DommaschkKamC.torusAvg_eval_psi_one
   ```
+
+## Nested certified region (1 November 2026): torus A certified, C ⊂ A nested — complete
+
+**Results** (all on-demand, standard axioms, no `sorry`/`decide`, zero warnings; checked together with
+`import PlasmaLean`, `DommaschkKamCFinal`, `DommaschkKamCQSL2`: no name clashes).
+- `DommaschkKamA.dommaschkA_C1_unconditional` (`Design/DommaschkKamAFinal`): `∀ μ₀ > 0, ∃ S,
+  CurrentFreeTransform μ₀ (field candidate) S 0 (1193/5000)`; `dommaschkA_iotaOnTorus_unconditional`
+  (transform `ι_A = −(19 + √5)/89`). **`|ι_A| = 0.238608 < 0.24`**: `ι_min = 6/25` is impossible for A
+  (`not_C1_iotaMin_A`); `0.2386` is used (`iotaA_ge`).
+- `DommaschkKamNested.dommaschk_nested` (`Design/DommaschkKamNested`): two `FieldTorus` of the exact field
+  (`ι_C`, `ι_A`) that are `NestedTori` about a common reference curve; `dommaschk_nested_C1`: C1 on the
+  two-surface family `{C, A}` with `I_max = 0`, `ι_min = 0.2386`, plus the nesting
+  (`not_nested_C1_quarter`: `6/25` fails for any family containing A).
+- **`NestedTori RC zC RA zA R₀ z₀ ΘC ΘA`**: both tori have `PoloidalAngle`s about the same curve
+  `(R₀, z₀)`, and *ray order*: `ΘC θ φ = ΘA θ' φ + 2πk → |K_C(θ,φ) − ref(φ)|² < |K_A(θ',φ) − ref(φ)|²`.
+  Consequences `NestedTori.disjoint` (cross-sections disjoint) and `NestedTori.inside` (every point of C is
+  `ref + s (K_A(θ',φ) − ref)` with `0 ≤ s < 1`; A meets every ray by the winding of `Θ_A`). Fixtures:
+  `nestedTori_circles` (accepted), `not_nestedTori_swap` (rejected).
+
+**Torus A chain** (same field instance `dkFieldTC`: the moving centre of C is reused, `W₀ ∈
+[−1.13e-3, −7.5e-4]` on A; strip `r = 0.045`, `δ₀ = 9/1400`, `γ = 0.3645`, `dlow = 0.1193`).
+- Emitters generalised by `scripts/dommaschk_kam/dk_torus.py` (`--tag A`; `retarget` is the identity for
+  C — **all regenerated C modules are byte-identical**: `CData`, 24 Adm modules, 28 Res modules).
+  `emit_torus.py` (tag from the JSON), `emit_adm.py`, `emit_res.py` (`--tag`, `--out-dir`),
+  `kam_constants.py`, `check_consts.py --tag A`.
+- **Admissibility surrogate `32 × 32`** (the C size `24 × 28` leaves tails `3.6e-10` on A and `τ ≈ 1.7`):
+  tails `1.0e-12`/`7.3e-13`, `sD 4.148`, `sR 1.256`, `sW 1709.9`, `tT 2201.9`, `τ 13.994`.
+- Constants (`DommaschkKamAConsts`, `check_consts.py --tag A`): `cK = 33192.2`, `cL = 1342926`,
+  `C₂ ≤ 8.79e12`, **`κ ≤ 8.7901e12`**; largest admissible `e₀`: `6.07e-24` (smallness, binding),
+  `1.09e-23` (`hμt`); budget `e0qDK = 10⁻²⁵` (smallness `0.0165`).
+- Residual (`DommaschkKamARes`): certified **`e₀ = 6.2e-26`** (oracle `‖E‖_{0.045} ≈ 2.9e-27`; rounding of
+  the `2^{-128}` product nodes dominates); **margin ≈ 98** against `6.07e-24`.
+- Kam-constants estimate (untrusted, 96×80): κ ≈ 8.70e12, required `e₀ = 6.1e-24`, margin `2.1e3` vs the
+  oracle residual.
+
+**Common reference curve and radial conditions.** `ℓ¹` radial criteria fail for A (about its own average:
+tail `0.0322 > c₀ = 0.0310`). The reference is the `θ`-average of the **C surrogate** (`rU`, `rZ`;
+contract form `Rref`, `Zref`), and positivity of `Rad_T = X_T cos θ + Y_T sin θ` is certified by
+**squared approximate inverses**: real `q` data with `‖q² F − 1‖₀ ≤ ε < 1` ⇒ `F > 0` pointwise
+(`pos_of_sq_mul`; no connectivity argument needed). `ExactTorusA.poloidalAngle`,
+`ExactTorusC'.poloidalAngle` (torus C about the same curve), via `poloidalAngle_ref`.
+
+**Nesting certificate.** Quadratic gauge `G(ψₒ; X, Y) = aX² + 2bXY + dY²` (`a, d` even, `b` odd dyadic
+trigonometric polynomials of degree 4 in `ψₒ`, fitted from the first `θ`-harmonics of C so that the
+ellipse lies between the cross-sections; per-`ψ` log margin `0.032`). `gaugeC_lt : G < 1` on every real torus
+`10⁻¹⁰`-close to the C surrogate, `gaugeA_gt : G > 1` near the A surrogate (surrogate minima of `1 − G`,
+`G − 1`: `0.055`, `0.064`; `ε_FC = 0.0025`, `ε_FA = 0.080`, `ε_RC = 2.5e-10`, `ε_RA = 9.9e-9`). Homogeneity
+`G(re) = r²G(e)` gives the ray order directly (`nested_of_exact`). The exact tori are within `μ + tail ≤ 2e-12`
+of the surrogates (`osc_close`).
+- Nesting chain (`emit_nest.py`): the A Adm chain extended by 27 variables with unit weights (C surrogate
+  embedded by `embedGrid`, no new data; `cos θ`, `sin θ` expression grids; 4 radial/gauge functions, 4
+  `q` data, 4 squares, 4 norm nodes). Modules `DommaschkKamANestData/Env/Trees/Check1–4/Rel/Chain`,
+  handwritten `DommaschkKamANest` (identifications `xN_XC`, …, `pos_of_sq_mul`, `radA_pos`, `radC_pos`,
+  `gaugeC_lt`, `gaugeA_gt`).
+
+**Modules and build** (laptop, sequential, wall / peak RSS):
+`DommaschkKamAData` + `ATorus` 14 s / 1.4 GB; `AAdmData1–8`, `Env`, `Trees` 20 s; `AAdmCheck1–14` 120–210 s
+each (≈ 40 min) / 3.2–3.6 GB; `AAdmRel`, `Chain` 29 s, 15 s; `AAdmTailCheck`, `…Z` 169 s, 157 s / **5.2 GB**;
+`AAdmTail`, `Out`, `AAdm` 6/6/18 s; `AConsts` 13 s / 2.5 GB; `ANest*` (Check1–4 ≈ 45 s each / 3.5 GB) ≈ 4 min;
+`AResData1–9` 13–23 s / 0.8 GB; `AResEqU/Z` 20 s / 2.2 GB; `AResCheck1–14` 34–58 s / 4.3–5.3 GB, **Check14
+95 s / 5.77 GB** (closest to the 6 GB limit); `AResChain`, `ARes` 7 s; `AContract`, `AFinal`, `Nested` ≈ 6 s
+each. Total ≈ 70 min wall.
+Build: `lake build PlasmaLean.Design.DommaschkKamNested` (stale dependencies one at a time).
+
+**Shared files (owner to add).**
+- `PlasmaLean.lean`: none (all on demand).
+- `scripts/check_axioms_heavy.lean`:
+  ```
+  import PlasmaLean.Design.DommaschkKamNested
+  #print axioms PlasmaLean.Design.DommaschkKamNested.dommaschk_nested
+  #print axioms PlasmaLean.Design.DommaschkKamNested.dommaschk_nested_C1
+  #print axioms PlasmaLean.Design.DommaschkKamNested.nested_of_exact
+  #print axioms PlasmaLean.Design.DommaschkKamNested.NestedTori.disjoint
+  #print axioms PlasmaLean.Design.DommaschkKamNested.NestedTori.inside
+  #print axioms PlasmaLean.Design.DommaschkKamNested.nestedTori_circles
+  #print axioms PlasmaLean.Design.DommaschkKamNested.not_nestedTori_swap
+  #print axioms PlasmaLean.Design.DommaschkKamNested.not_nested_C1_quarter
+  #print axioms PlasmaLean.Design.DommaschkKamA.dommaschkA_C1_unconditional
+  #print axioms PlasmaLean.Design.DommaschkKamA.dommaschkA_iotaOnTorus_unconditional
+  #print axioms PlasmaLean.Design.DommaschkKamA.not_C1_iotaMin_A
+  #print axioms PlasmaLean.Design.DommaschkKamA.dk_adm
+  #print axioms PlasmaLean.Design.DommaschkKamA.dk_globalHG
+  #print axioms PlasmaLean.Design.DommaschkKamA.dk_e0R
+  #print axioms PlasmaLean.Design.DommaschkKamA.dk_e0Z
+  #print axioms PlasmaLean.Design.DommaschkKamA.iotaqA_close
+  #print axioms PlasmaLean.Design.DommaschkKamA.iotaqA_ne_iotaqC
+  #print axioms PlasmaLean.Design.DommaschkKamA.radA_pos
+  #print axioms PlasmaLean.Design.DommaschkKamA.radC_pos
+  #print axioms PlasmaLean.Design.DommaschkKamA.gaugeC_lt
+  #print axioms PlasmaLean.Design.DommaschkKamA.gaugeA_gt
+  #print axioms PlasmaLean.Design.DommaschkKamA.pos_of_sq_mul
+  ```

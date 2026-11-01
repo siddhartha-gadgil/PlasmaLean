@@ -27,7 +27,8 @@ recomputes every node with gmpy2 integers exactly as the Lean kernel quantities 
 Fractions from the emitted rationals.
 
 (needs numpy and gmpy2, e.g. the venv /tmp/dqa-venv; run with -I)
-usage: python emit_res.py [--emit] [--only data,env,trees,checks,eq,rel,chain,top] [--ncheck 12]
+usage: python emit_res.py [--emit] [--only data,env,trees,checks,eq,rel,chain,top] [--ncheck 12] [--tag C|A]
+       [--out-dir DIR]
 """
 import argparse
 import os
@@ -42,6 +43,7 @@ sys.path.insert(0, HERE)
 
 import adm_ball as AB                                         # noqa: E402
 import emit_adm as EA                                         # noqa: E402
+import dk_torus as DT                                         # noqa: E402
 
 P_EXP, E_EXP = 68553, 16          # e^{9/200} <= 68553 / 2^16
 P1_EXP = 68897                    # e^{1/20}  <= 68897 / 2^16 (the strip of the derivative bound)
@@ -231,7 +233,7 @@ def hcoef(p, a):
 
 
 def build(verbose=True):
-    cdata = EA.lean_src('DommaschkKamCData.lean')
+    cdata = EA.lean_src(DT.data_module())
     Nc, Mc, Sc, Fc = (EA.parse_nat(cdata, x) for x in ('Nc', 'Mc', 'Sc', 'Fc'))
     Iqc, Qc = EA.parse_nat(cdata, 'Iqc'), EA.parse_nat(cdata, 'Qc')
     gU = EA.full_grid_from_rows(EA.parse_rows(cdata, 'datU'), Nc, Mc, Fc, 0)
@@ -364,6 +366,7 @@ class Emit:
         return self.pl.names[i]
 
     def write(self, mod, text):
+        mod, text = DT.out_name(mod), DT.retarget(text)
         open(os.path.join(OUT, mod + '.lean'), 'w').write(text)
         self.files.append(mod)
 
@@ -1133,7 +1136,7 @@ public import PlasmaLean.Design.DommaschkKamCAdmFrame
 (`dkFieldTC`) at the rotational transform `ι_C = −(85 + √5)/361` satisfy
 `Bd (9/200) (dkFieldTC.resR ι_C u₀C z₀C) e0q` and the same for `resZ`, with
 `e0q = %s`
-(`≈ %.2e`; the oracle value of `‖E‖_{0.045}` is `5.9e-29`): exactly the fields
+(`≈ %.2e`; the oracle value of `‖E‖_{0.045}` is `%s`): exactly the fields
 `e0R`, `e0Z` of `FlowFieldG.KamHG` (`Design/KamFlowIterationG`) for strips `c.ρ = 9/200`.
 
 **Proof.** The residuals are `rotψ` of the oracle-frame residuals `D 𝓛U − n_R`, `D 𝓛z − n_z`
@@ -1331,7 +1334,7 @@ theorem dk_e0Z :
   exact Bd_rotψ resO_Z
 
 end %s
-""" % (qlean(cert['e0q']), float(cert['e0q']), NS, OPEN, qlean(cert['e0q']),
+""" % (qlean(cert['e0q']), float(cert['e0q']), DT.cfg()['oracle_e'], NS, OPEN, qlean(cert['e0q']),
             chD['top'], chG['top'], chF['top'], D, chD['top'], G, chG['top'], F, chF['top'],
             qlean(c1U['Bq']), c1U['b'], c1U['W'], c1U['dc'], c1U['dr'], c1U['Ki'], c1U['Kj'], c1U['K'],
             qlean(c1U['Bq']),
@@ -1350,7 +1353,13 @@ def main():
     ap.add_argument('--ncheck', type=int, default=12)
     ap.add_argument('--perdata', type=int, default=7)
     ap.add_argument('--plan', default='', help='write the module list (dependency order) to this file')
+    ap.add_argument('--tag', default='C', help='torus (C, or A: modules DommaschkKamA*, see dk_torus.py)')
+    ap.add_argument('--out-dir', default='', help='output directory (default PlasmaLean/Design)')
     args = ap.parse_args()
+    global OUT
+    DT.select(args.tag)
+    if args.out_dir:
+        OUT = args.out_dir
     t0 = time.time()
     pl, idx, norms, ctx = build()
     print('chain built: %d variables, %d steps, %.1f s' % (pl.nvar, len(pl.steps), time.time() - t0))
@@ -1380,6 +1389,7 @@ def main():
         em.emit_top()
     mods = (['DommaschkKamCResKron'] + em.datamods + ['DommaschkKamCResEnv', 'DommaschkKamCResTrees'] +
             em.eqmods + em.checkmods + ['DommaschkKamCResRel', 'DommaschkKamCResChain', 'DommaschkKamCRes'])
+    mods = [DT.out_name(m) for m in mods]
     print('modules:', ' '.join(mods))
     if args.plan:
         open(args.plan, 'w').write('\n'.join('PlasmaLean.Design.' + m for m in mods) + '\n')
