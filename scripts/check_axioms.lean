@@ -416,6 +416,16 @@ run_cmd do
 #print axioms PlasmaLean.Fields.VacuumBoozer.boozerAngles_bijective
 #print axioms PlasmaLean.Fields.VacuumBoozer.torusQADefect_circle
 #print axioms PlasmaLean.Fields.VacuumBoozer.torusQADefect_ripple_ne_zero
+#print axioms PlasmaLean.Fields.VacuumBoozer.integral_jacX
+#print axioms PlasmaLean.Fields.VacuumBoozer.torusAvg_jac_boozerMode
+#print axioms PlasmaLean.Fields.VacuumBoozer.boozerCoeff_chartDefect
+#print axioms PlasmaLean.Fields.VacuumBoozer.BoozerChartHyp.sum_normSq_boozerCoeff_le
+#print axioms PlasmaLean.Fields.VacuumBoozer.BoozerChartHyp.tsum_normSq_boozerCoeff_le
+#print axioms PlasmaLean.Fields.VacuumBoozer.BoozerChartHyp.oracleDefect_le
+#print axioms PlasmaLean.Fields.VacuumBoozer.torus_oracleDefect_le
+#print axioms PlasmaLean.Fields.VacuumBoozer.torus_tsum_normSq_boozerCoeff_le
+#print axioms PlasmaLean.Fields.VacuumBoozer.singleMode_bound_attained
+#print axioms PlasmaLean.Fields.VacuumBoozer.not_oracleDefect_le_of_lt_sqrt_two
 #print axioms PlasmaLean.Fields.QSLinear.fieldDiv_fqsGen
 #print axioms PlasmaLean.Fields.QSLinear.JetHyp.jet_obstruction_curl
 #print axioms PlasmaLean.Fields.QSLinear.jet_obstruction_eta

@@ -440,3 +440,8 @@ arithmetic before any Lean is written.
 4. Over-reading: a per-torus defect and `κ < 1` are not omnigeneity. The bridge is a worst-case
    per-bounce bound in a supplied model (N-29). Even a full chain would cover only
    `r_eff ≲ 0.02–0.05`.
+
+## Update (1 November 2026): A1, A2, D3 formalised
+
+A1 `Theory/Fields/VacuumBoozerTorus`, A2 `Theory/Fields/BoozerWirtinger` (`torus_oracleDefect_le`, full spectrum, sharp constant √2/N; sign correction c_mn(g) = −inN c_mn(f)) and D3 `Design/DommaschkKamCQSPoly` are in the default build. Remaining: D4/D5 (ball chain, in progress), D6 (identification on `ExactTorusC`, including B^φ > 0 and 2π/N periodicity for `BoozerChartHyp.of_torus`), D7.
+

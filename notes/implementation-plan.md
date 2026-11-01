@@ -1746,3 +1746,15 @@ Gate E1 (§11.2, §11.4) and the "sanity theorem or counterexample" promised in 
   torus of ∇φ (defect 0), a rippled toroidal field (defect ≠ 0; not a vacuum field), normalisations.
   Axiom audit passed (50,609 declarations).
 
+### N-34 A2: spectral bound for the Boozer QA defect, 1 November 2026
+
+- `Theory/Fields/BoozerWirtinger` (default build): in the KAM chart, with no change of variables:
+  orthonormality of the Boozer modes in L²(J) via a divergence identity (`torusAvg_jac_boozerMode`, no
+  irrationality of ι needed), `boozerCoeff_chartDefect` (c_mn(∂_{φ_B}|B|) = −inN c_mn(|B|)), Bessel for a
+  positive functional, hence the **full off-QA spectrum** bound `tsum_normSq_boozerCoeff_le` and the
+  oracle-normalised `torus_oracleDefect_le`: oracle defect ≤ √2 δ/(N B_min) (and the L²(J) form
+  `oracleDefect_le`). Sharp (`singleMode_bound_attained`; `not_oracleDefect_le_of_lt_sqrt_two`).
+  Not formalised: the oracle's field-line Birkhoff mean equals the grid mean (unique ergodicity).
+  Concrete tori supply `BoozerChartHyp.of_torus` (C² potential, C¹ |B|, 2π/N periodicity, B^φ > 0).
+  Axiom audit passed (50,789 declarations).
+
