@@ -551,3 +551,62 @@ contract link (`Theory/Contract`) from the flow-form torus.
 - `scripts/check_axioms_heavy.lean`: `import PlasmaLean.Design.DommaschkKamCConsts`, and
   `#print axioms PlasmaLean.Design.DommaschkKamC.dk_globalHG`, `….dk_kamHG`, `….dk_exact_of_res`,
   `….cDK_ok`, `….dk_small_fails`; build note `lake build PlasmaLean.Design.DommaschkKamCConsts`.
+
+## Item 10 (1 November 2026): the contract link for torus C — complete (conditional on e0R/e0Z)
+
+**Result.** `DommaschkKamC.dommaschk_C1 (e0R) (e0Z) {μ₀} (hμ : 0 < μ₀) : ∃ S, CurrentFreeTransform μ₀
+(DommaschkQA2R.field candidate) S 0 (6/25)` (`Design/DommaschkKamCContract`, on-demand), and
+`dommaschk_iotaOnTorus (e0R) (e0Z) : ∃ R z, IotaOnTorus (field candidate) R z ι_C`. The only hypotheses
+are the two initial residual bounds of `dk_exact_of_res` (`Bd 0.045 (resR/resZ ι_C u₀C z₀C) e0qDK`,
+the high-resolution residual chain). No further fact about the torus is assumed: everything else comes
+from `dk_exact_of_res`, `dk_hadmC` and one new small certificate. Standard axioms only; no
+`sorry`/`decide`; zero warnings; checked together with `import PlasmaLean` (no name clashes).
+
+**Construction** (`ExactTorusC u z`: the conclusion of `dk_exact_of_res` as a structure).
+- *Torus*: `R(θ, φ) = 29/32 + Re u(θ, ψ(φ))` (`RofC`), `z(θ, φ) = Re z(θ, ψ(φ))` (`KamNewton.Zof`),
+  `ψ = 2φ − π/2` (`KamTorusA.psi`, the strip convention `cS = −sin ψ = cos 2φ`). `C²`, periodic.
+- *`FieldTorus`* (`ExactTorusC.fieldTorus`): `resR = 0` evaluated at `(θ, ψ(φ))`, with
+  `eval_xB_pt` (the strip variables are `DommaschkKam.ptC R φ z`) and `Dp_ident`/`nRp_ident`/`nZp_ident`,
+  gives `R⁷B_φ (∂_φR + ι∂_θR) = R⁸B_R` and the `z` analogue (`inv_R`, `inv_Z`). `B_φ ≠ 0` because
+  `D(K)` is a unit of the strip algebra (`AdmBoundsG.frame.unit_D` at the exact torus, `dk_hadmC` on
+  the strip `9/1400`; `Bphi_ne`). Velocity of the line image `= (R/B_φ) • B`. `R > 0` from
+  `‖u‖ ≤ au = 0.1377` (`AdmBoundsG.hu`).
+- *Reference curve*: the `θ`-average of the exact torus, `R̄(φ) = 29/32 + Re ū(0, ψ(φ))`,
+  `z̄(φ) = Re z̄(0, ψ(φ))` (`R0refC`, `Z0refC`; `thProj` = the `k = 0` Fourier modes, new in
+  `Design/DommaschkKamCRadial`). Not `cenR/cenZ`: about the KAM-frame centre the `ℓ¹` criterion below
+  fails (float: tail 0.0282 > c₀ 0.0232); the contract allows any continuous periodic curve.
+- *Angle*: `Θ = angF θ (R − R̄) (z − z̄)` (`ΘC`, the rational-field lift), valid because of the
+  **radial condition** `(R − R̄) cos θ + (z − z̄) sin θ ≥ 0.002` (`radial_ge_of_close`):
+  `= Re(Q e^{iθ})` with `Q = (u − ū) − i(z − z̄)` (`radQ`, `re_radQ`), and `‖Q − c₀e^{−iθ}‖₁ ≤ c₀ − 0.002`
+  where for the Adm surrogate `(xA 4, xA 5)` `Q − c₀e^{−iθ}` is the grid centre of `hQ` (`radQ_surr`,
+  `c₀ = 427595792228986440/2⁶⁴ = 0.023180`), `ℓ¹ = 390457790055713542/2⁶⁴ = 0.021167` (`tk_rad`, one
+  `kron2_proof` digit sum, unit weights, `24 × 28`), plus the existing tail bounds `Bd_tg_U/Z`
+  (`9.4e-13`, `2.8e-16`) and `μ = 10⁻¹²` twice. `wind_θ` from `angF` + periodicity, `wind_φ = 0` from
+  `π`-periodicity in `φ`.
+- *C1*: `dommaschk_C1_of_exact` via `candidate_currentFreeTransform` on `{surfaceC u z}` (loop at
+  `φ = 0`), `ι_min = 6/25 ≤ |ι_C| = 0.24165` (`iotaC_ge`).
+
+**Sanity.** `thProj_one`, `thProj_mode`, `RofC_zero` (degenerate), `c0Q_pos`, `radMargin_pos`,
+`iotaC_ge`, `iotaC_lt` (concrete), `radQ_surr_ne` and `not_C1_iotaMin` (rejected: `ι_min = 1/4`).
+
+**Build** (laptop, sequential): `DommaschkKamCRadial` 3 s user / 2.1 GB; `DommaschkKamCContract`
+3 s user / 1.7 GB (after `DommaschkKamCConsts`). `lake build PlasmaLean.Design.DommaschkKamCContract`.
+
+**Remaining for an unconditional C1.** Only `e0R`, `e0Z` (item 7, `Design/DommaschkKamCRes*`); then
+`dommaschk_C1 e0R e0Z`.
+
+**Shared files (owner to add).**
+- `PlasmaLean.lean`: none (both modules on-demand; `Radial` imports the Adm tail checks).
+- `scripts/check_axioms_heavy.lean`:
+  ```
+  import PlasmaLean.Design.DommaschkKamCContract
+  #print axioms PlasmaLean.Design.DommaschkKamC.dommaschk_C1
+  #print axioms PlasmaLean.Design.DommaschkKamC.dommaschk_iotaOnTorus
+  #print axioms PlasmaLean.Design.DommaschkKamC.dommaschk_C1_of_exact
+  #print axioms PlasmaLean.Design.DommaschkKamC.ExactTorusC.iotaOnTorus
+  #print axioms PlasmaLean.Design.DommaschkKamC.not_C1_iotaMin
+  #print axioms PlasmaLean.Design.DommaschkKamC.radial_ge_of_close
+  #print axioms PlasmaLean.Design.DommaschkKamC.Bd_radQ_surr
+  #print axioms PlasmaLean.Design.DommaschkKamC.radQ_surr_ne
+  #print axioms PlasmaLean.Design.DommaschkKamC.thProj_mode
+  ```

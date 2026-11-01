@@ -1681,3 +1681,16 @@ Gate E1 (§11.2, §11.4) and the "sanity theorem or counterexample" promised in 
   analytic invariant torus of `dkFieldTC` within μ = 10⁻¹² of torus C. Remaining: the residual chain
   (in progress) and item 10 (contract link). Axioms standard.
 
+### Certification step 2: item 10, contract link (C1 conditional on the residual bounds), 1 November 2026
+
+- On-demand `Design/DommaschkKamCRadial` and `Design/DommaschkKamCContract`
+  (`lake build PlasmaLean.Design.DommaschkKamCContract`): **`dommaschk_C1`**: given the initial residual
+  bounds `e0R`, `e0Z` (‖resR‖, ‖resZ‖ ≤ 10⁻²⁴ at ρ = 0.045), for every μ₀ > 0 there is a family S with
+  `CurrentFreeTransform μ₀ (DommaschkQA2R.field candidate) S 0 (6/25)`: contract clause C1 with zero net
+  toroidal current and |ι| ≥ 0.24 for the exact Dommaschk field. Also `dommaschk_iotaOnTorus`,
+  `dommaschk_C1_of_exact`. Construction: the exact flow-form torus mapped to cylindrical (R, z) with
+  ψ = 2φ − π/2; `FieldTorus` from the invariance equations and `Dp/nRp/nZp_ident` (B_φ ≠ 0 from the
+  admissibility frame); poloidal angle about the θ-average of the exact torus (a continuous periodic
+  reference curve), radial positivity certified by one Kronecker digit sum (`radial_ge_of_close`).
+  Rejected fixture `not_C1_iotaMin` (ι_min = 1/4 fails). Only the residual chain remains.
+
