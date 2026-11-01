@@ -1,0 +1,3 @@
+{"task": "dommaschk-kam", "description": "Dommaschk KAM flow-torus oracle (tori C, N 80, M 64, dps 50): invariance error, twist, FHL ratio; untrusted", "stamp": "20261101T015808Z", "base_commit": "5fa8a07",
+ "host": "hornbill", "os": "Linux x86_64", "cpus": 24, "jobs": 24,
+ "mode": "workstation", "target": "default"}
