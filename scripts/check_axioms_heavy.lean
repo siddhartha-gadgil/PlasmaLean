@@ -3,7 +3,8 @@ Axiom check for heavy certificates kept out of the default build (on-demand top 
 Build the top modules first, `lake build PlasmaLean.Design.RationalStellaratorGCEwFamily`,
 `lake build PlasmaLean.Design.RationalStellaratorGCMuWide`,
 `lake build PlasmaLean.Design.RationalStellaratorGCMuQuarter` and
-`lake build PlasmaLean.Design.CoilKamCert` (bounded, dependencies first),
+`lake build PlasmaLean.Design.CoilKamCert`, `lake build PlasmaLean.Design.DommaschkKamCAdm`
+(bounded, dependencies first),
 then run `lake env lean scripts/check_axioms_heavy.lean`.
 
 Like `scripts/check_axioms.lean`, this script **fails** if any declaration owned by a
@@ -19,6 +20,7 @@ import PlasmaLean.Design.RationalStellaratorGCMu5Confined
 import PlasmaLean.Design.RationalStellaratorGCMuQuarter
 import PlasmaLean.Design.CoilKamCert
 import Lean.Util.CollectAxioms
+import PlasmaLean.Design.DommaschkKamCAdm
 
 /-! Audit all declarations owned by project modules in the import closure (the on-demand top
 modules and everything they import). Fails on any non-standard axiom. -/
@@ -56,3 +58,10 @@ run_cmd do
 #print axioms PlasmaLean.Design.RationalStellaratorGC.alpha_gc_passing_confined_forever_quarter
 #print axioms PlasmaLean.Design.CoilKam.coilTorus_resR_Bd
 #print axioms PlasmaLean.Design.CoilKam.coilTorus_resZ_Bd
+#print axioms PlasmaLean.Design.DommaschkKamC.dk_adm
+#print axioms PlasmaLean.Design.DommaschkKamC.dk_hadm
+#print axioms PlasmaLean.Design.DommaschkKamC.AdmO.toG
+#print axioms PlasmaLean.Design.DommaschkKamC.ballA_all
+#print axioms PlasmaLean.Design.DommaschkKamC.eval_polyT
+#print axioms PlasmaLean.Design.DommaschkKamC.polyT_reject
+#print axioms PlasmaLean.Design.DommaschkKamC.consts_sharp

@@ -432,3 +432,85 @@ analytic `μ`-close `(u, z)`, with `cDK.p = 7`, `dlow = 1208/10000`, `γ = 2671/
   #print axioms PlasmaLean.Design.DommaschkKamC.dkFieldTC
   #print axioms PlasmaLean.Design.DommaschkKamC.rotψ_ne_id
   ```
+
+## Item 8 (1 November 2026): the low-resolution admissibility chain of torus C — complete
+
+**Result.** `DommaschkKamC.dk_adm` (`Design/DommaschkKamCAdm`): every analytic torus `(u, z)` that is
+`μ`-close (`μ ≤ 10⁻¹²`, `Close`) to the data torus `(u₀C, z₀C)` on a strip `0 < ρ ≤ 0.045` satisfies
+**all** of `dkFieldTC.AdmBoundsG c ι_C ρ u z` (frame: units and analytic inverses of `D`, `R`, `W₀`;
+torus, field, inverse bounds; torsion; twist) for every `c : SCG` with `ConstsOK c` (`c` dominates
+the certified constants `auC … tauC` of `Design/DommaschkKamCAdmOut`). `dk_hadm` is the `hadm` field of
+`FlowFieldG.KamHG` in the exact form required (strips `[c.ρ − 6δ₀, c.ρ]`, `c.ρ ≤ 0.045`).
+Standard axioms only; no `sorry`/`decide`; zero warnings. Not imported by `PlasmaLean.lean`
+(on-demand; checked together with `import PlasmaLean`: no name clashes).
+
+**Architecture.**
+- *Surrogate.* The data torus truncated to `24 × 28` (the tail is dominated by `ψ`-modes: `‖U − U₂₄ₓ₂₈‖ =
+  9.4e-13`, `‖∂_θ‖ 7.2e-12`, `‖∂_ψ‖ 2.3e-11` at `r = 0.045`) and rounded to `2⁻⁶⁴`, oracle angle `ψₒ`.
+  The chain is evaluated at this **fixed** torus (inputs exact, radius 0), so radii are only node
+  truncation/rounding; closeness of the data torus is six full-layout (`96 × 80`) Kronecker checks
+  (`…TailCheck`, `…TailCheckZ`), and the transfer to every `μ`-close torus is analytic
+  (`admO_near`): u-form Lipschitz majorants of the field polynomials (`Bd_ev_sub`, rational `lipQ`,
+  kernel-checked), product rules for `W₀`, `PolyExpr.majD` of the 13-variable torsion structure `Qp`
+  for `P`, perturbed approximate inverses (`inv_of_approx`), `T₀ = Y·Z`, `Y = R⁷P qD³qW²`,
+  `Z = (qD D)⁻³(qW W₀)⁻²` (`torsion_bounds`). The strip frame is reached by `rotψ`/`rotψi`
+  (`AdmO.toG`, `Design/DommaschkKamCAdmFrame`).
+- *Chain (195 variables).* `R = R₀ + U`; `R², …, R¹⁸`, `z², …, z⁵`, 65 monomials `Rᵃzᵇ`; the nine
+  field polynomials in **R-form** (`dDR`, `R·dnRh`, `dnZR` and their `dU`, `dZ`; identified with
+  the u-form by `substR` kernel checks) as `polyT` trees, split into chunks of ≤ 4 monomials (the
+  kernel cost of one check grows quadratically with the number of distinct grid images, ≈ 0.25 n² s);
+  `V₀_R`, `V₀_z`, `W₀`, `a_R'`, `a_z'`, `D²`, `G₁…G₃`, `Y_R`, `Y_z`, `P`; approximate inverses
+  `qD`, `qW`, `qR` (rounded truncated FFT of `1/D`, `1/W₀`, `1/R` at the surrogate; norm nodes
+  `‖qD D − 1‖ ≤ 4.7e-9`, `‖qW W₀ − 1‖ ≤ 2.8e-8`, `‖qR R − 1‖ ≤ 3.2e-13`); `R⁷P`, `qD³qW²`, `Y`;
+  `ι_q`-transport norms. Strip weights `68553^s 2^{16(K−s)}` (`e^{0.045} ≤ 68553/2¹⁶`,
+  `exp_dk_le`) via the general-weight steps of `Design/DommaschkKamCKronW` (`node_fullw`, …).
+- *Generator* `scripts/dommaschk_kam/emit_adm.py` (+ `adm_ball.py`, the gmpy2 ball engine mirroring
+  `nodeKw/normKw/centerKw` and `polyT` exactly): `--emit [--only …]`; prints certified vs sharp
+  bounds and `κ`.
+
+**Certified bounds (r = 0.045) vs the estimator's sharp values.** `au 0.137725 (0.1377)`,
+`az 0.118681`, `avR 0.053167`, `avZ 0.045596`, `aR 1.04398`, `aRt 0.054587`, `azt 0.052711`,
+`aLR 0.25366`, `aLz 0.25224`, `bD 1.15079`, `bDu 6.4764`, `bDz 0.53067`, `bnR 0.153693`,
+`bnRu 1.54491`, `bnRz 2.2273`, `bnZ 0.173819`, `bnZu 1.55634`, `bnZz 1.78304`, **`sD 3.8196`
+(3.82)**, **`sR 1.2376` (1.238)**, **`sW 2741.5` (2741)**, **`tT 2746.9` (2747)**, **`τ 14.162`
+(14.26)**; all within 0.02 % of sharp except `τ` (0.7 %, from the `Y`-node radius 0.075 and
+`δY = 0.017`). `kam_constants` formulas with these: `κ = 4.08e12` (sharp 4.05e12), required
+`e₀ = 1.31e-23`; with the exported `‖E‖ = 5.9e-29` the margin is `2.2e5`.
+
+**Modules** (laptop, sequential, user CPU / peak RSS):
+
+| Module | Content | CPU | RSS |
+| --- | --- | --- | --- |
+| `DommaschkKamCKronW` | general-weight steps, oracle constants, `polyT`/`eval_polyT` | 3 s | 1.6 GB |
+| `DommaschkKamCAdmData1–6` | packed half grids (187 centres, 4.1 MB source) | 2.5 s each | 0.73 GB |
+| `DommaschkKamCAdmEnv`, `…Trees` | environment, trees | 12 s, 3 s | 1.6, 1.4 GB |
+| `DommaschkKamCAdmCheck1–10` | `kron2_proof` checks (191 centres, 182 nodes, 5 norm nodes) | 97–133 s each, ≈ 19 min total | ≤ 2.9 GB |
+| `DommaschkKamCAdmRel`, `…Chain` | honest values, node identities; the ball chain | 20 s, 14 s | 1.8, 1.7 GB |
+| `DommaschkKamCAdmTailCheck`, `…TailCheckZ` | six full-layout tail checks | 105 s, 95 s | **5.1 GB** each |
+| `DommaschkKamCAdmTail`, `…Out` | tail lemmas; indices, constants, `⟨Y⟩` | 3 s, 2 s | 1.5 GB |
+| `DommaschkKamCAdmFrame` | `rotψi`, oracle frame, `AdmO`, Lipschitz/inverse/torsion lemmas | 10 s | 1.6 GB |
+| `DommaschkKamCAdm` | transfer and `dk_adm`, `dk_hadm` | 24 s | 2.3 GB |
+
+Total ≈ 26 CPU-min, private oleans 30 MB. Laptop-buildable; the tail checks are the peak (one
+`193 × 161` image per declaration, 5.1 GB — within 6 GB but the closest to the limit).
+
+**Remaining for item 9.** Define `cDK : SCG` with `ρ = 9/200`, `δ₀ = 9/1400`, `γ = 2671/10000`,
+`dlow = 1208/10000`, `Klow = 1`, `p = 7`, `θ = e₀/δ₀⁴` (`e₀ = 10⁻²⁸`), the constants `auC … tauC`
+(then `ConstsOK cDK` is `le_refl` throughout), `C2` (`PolyExpr.majD2` of `resRp`/`resZp` at
+`avec + Tq • mvec`: a DkPoly-level rational mirror like `lipQ`), `E1`, `cKb`, `cLb`, and prove the closed
+facts `hτ'`, `hC2R/Z`, `hac`, `hE1`, `hcb`, `hκ`, `hsmall`, `hcK`, `hcL`, `hμK/t/L`. Item 7's
+high-resolution residual chain (`e0R`, `e0Z`) is still needed for `KamHG`.
+
+**Shared files (owner to add).**
+- `PlasmaLean.lean`: none (on-demand top module `Design/DommaschkKamCAdm`).
+- `scripts/check_axioms_heavy.lean`:
+  ```
+  import PlasmaLean.Design.DommaschkKamCAdm
+  #print axioms PlasmaLean.Design.DommaschkKamC.dk_adm
+  #print axioms PlasmaLean.Design.DommaschkKamC.dk_hadm
+  #print axioms PlasmaLean.Design.DommaschkKamC.AdmO.toG
+  #print axioms PlasmaLean.Design.DommaschkKamC.ballA_all
+  #print axioms PlasmaLean.Design.DommaschkKamC.eval_polyT
+  #print axioms PlasmaLean.Design.DommaschkKamC.polyT_reject
+  #print axioms PlasmaLean.Design.DommaschkKamC.consts_sharp
+  ```
