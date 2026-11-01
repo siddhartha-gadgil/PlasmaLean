@@ -808,6 +808,14 @@ admissibility chain, constants, residual chain (e₀ ≤ 1.23 × 10⁻²⁷), co
 defect (≤ 0.5 % of ι) is still untrusted numerics; certifying it, with Boozer angles on the certified
 torus and the QS ⇒ omnigeneity bridge, is the next step towards C2.
 
+### 30. Tori A and B at 96 × 80 (2 November 2026; untrusted)
+
+- **Torus A** (ι = −0.2386, r ≈ 0.037, outside C): flow error 1.1 × 10⁻²⁸, weighted norm at the
+  working strip ≈ 3 × 10⁻²⁷, FHL tolerance 1.3 × 10¹⁶, twist +0.147. It is the second torus for a nested
+  certified region (certification chain and nesting in progress).
+- **Torus B** (ι = −0.2321, r ≈ 0.057, near the 3/13 chain): flow error 2.5 × 10⁻²⁰, θ-decay only
+  0.417 per mode, FHL tolerance 2.2 × 10⁷. Not recommended for certification at this resolution.
+
 ## Claims and evidence
 
 1. **Complete mathematical proof (symbolic, sympy).** The basis potentials are harmonic and
