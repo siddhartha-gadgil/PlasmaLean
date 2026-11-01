@@ -878,3 +878,5 @@ the N-29 bridge also needs κ < 1.
   workstation runs pending".
 - N-31 row in the research graph.
 - An edge N-30 → N-31 → Q-16.
+
+*Correction (1 November 2026, N-34):* the κ values reported from the oracle's "Lean-form δ" keep only Boozer modes m, |n| ≤ 8 and are about 2× optimistic (torus C: true sup of ∂_{φ_B}|B| is 0.0090 against 0.0051). The spectral defect/ι values are unaffected.

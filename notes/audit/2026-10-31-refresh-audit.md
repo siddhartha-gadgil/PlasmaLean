@@ -274,3 +274,11 @@ The `DommaschkQA2R` docstring claim "C1 reduces to certified tori" holds only af
   keeps cos Θ > 0. Fixtures: `wander_poloidalAngle`, `wander_not_poloidalAngle_const` (a fixed
   point is insufficient) and `twistTorus_not_iotaOnTorus`.
 
+## New item AC-1 (1 November 2026, from N-34)
+
+`Contract.OmnigeneityContract F c κ` constrains a `BoozerField` F, but nothing ties F to the physical
+field B: a constant Boozer model satisfies it for any candidate, while the normative specification
+asks for a proved chart. Severity: medium (no C2 claim for an actual field is made); high as soon as
+one is. Fix: a `BoozerModelOf B Ω F` predicate (chart diffeomorphic onto the region, Φ∘x = φ_B,
+invariant surfaces carrying F.ι and the toroidal flux, F.B = |B|∘x) required in C2.
+
