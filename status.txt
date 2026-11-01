@@ -1,5 +1,8 @@
 host: hornbill
-time: 2026-11-01T11:44:20Z
+time: 2026-11-01T11:44:22Z
 main: 6defe72
 batch: 2026-11-02-idle-1
-state: running
+state: finished, exit 0 after 0 min
+--- last 40 lines of the batch log ---
+Nothing to do (2 November 2026): tori A and B are computed (N-31 §30); the torus-A
+certification chain and the nesting certificate are being built on the laptop.
