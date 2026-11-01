@@ -143,6 +143,16 @@ def run_torus(spec, args, ex, ev, tr, axis):
                       b=[str(x) for x in bm], hist=hist, dps=args.dps, seconds=time.time() - t0)
             jdump(Mx, pm)
         out['mp'] = dict(dps=args.dps, galerkin_history=Mx['hist'], seconds=Mx['seconds'])
+        # export the refined torus for the Lean emitter (committed with the results)
+        Is, Iz = T.index_sets(N, M)
+        tor = dict(tag=tag, iota=mpmath.nstr(iota_mp, args.dps + 10), N=N, M=M, fac=args.fac,
+                   dps=args.dps, candidate_sha256=ex.sha,
+                   convention='R = sum_{(k,m) in idx_R} a cos(k theta + m psi), z = sum_{(k,m) in '
+                              'idx_z} b sin(k theta + m psi), psi = 2 phi (scripts/dommaschk_kam/torus.py); '
+                              'idx_R = (0, 0..M) then k = 1..N, m = -M..M; idx_z = idx_R without (0, 0)',
+                   idx_R=Is.tolist(), idx_z=Iz.tolist(),
+                   a=[str(x) for x in Mx['a']], b=[str(x) for x in Mx['b']])
+        jdump(tor, os.path.join(args.results, f'torus_{tag}_N{N}_M{M}.json'))
         log(f"  mp refinement (dps {args.dps}): |F_galerkin| {Mx['hist'][0]:.1e} -> {Mx['hist'][-1]:.1e}, "
             f"{Mx['seconds']:.0f}s")
         pe = os.path.join(W, f'err_{tag}_N{N}_M{M}_f{args.fac}_d{args.dps}_o{args.over}.json')
