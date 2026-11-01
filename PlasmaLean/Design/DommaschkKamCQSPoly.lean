@@ -39,8 +39,9 @@ defect function on the exact torus (module D6).
   `torusQADefect = N_g/(2Q√Q R⁹)`.
 * `normSq_flow`, `boozerJ_flow`, `boozerA_flow`: `|B|² = Q/R¹⁶`, `B·𝓛K = Q/(R⁸D)`,
   `B·∂_θK = (n_R u_θ + n_z z_θ)/R⁸` from the flow-form relations.
-* The polynomial leaves: `Qp` (the polynomial expression of `Q` in `(u, z, c, s)`) with
-  `eval_Qp`, `pd_Qp_U`, `pd_Qp_Z`, `phiD_Qp` (`∂_u Q = Q_u`, `∂_z Q = Q_z`, `∂_φQ = Q_φ` at the
+* The polynomial leaves: `QpQS` (the polynomial expression of `Q` in `(u, z, c, s)`) with
+  `eval_QpQS`, `pd_QpQS_U`, `pd_QpQS_Z`, `phiD_QpQS`
+  (`∂_u Q = Q_u`, `∂_z Q = Q_z`, `∂_φQ = Q_φ` at the
   leaves `leavesAt x`), the leaf identities `pd_Dp_U`, …, `phiD_Dp`, …, and `dkFieldTC_polys`
   (the field polynomials of `dkFieldTC` are `Dp, nRp, nZp`).
 * Kernel checks (`kernel_fact`) of the generated `φ`-derivative data of `DommaschkKamCQSData`:
@@ -281,7 +282,7 @@ noncomputable def leavesAt (x : Fin 6 → A) : QSLeaves A where
 noncomputable def Rp : PolyExpr ℂ (Fin 6) := toPE Rl
 
 /-- `Q = n_R² + R²D² + n_z²` as a polynomial expression in `(u, z, c, s)` (not expanded). -/
-noncomputable def Qp : PolyExpr ℂ (Fin 6) :=
+noncomputable def QpQS : PolyExpr ℂ (Fin 6) :=
   .add (.add (.mul nRp nRp) (.mul (.mul Rp Rp) (.mul Dp Dp))) (.mul nZp nZp)
 
 /-- `∂_u D` at the leaves. -/
@@ -333,23 +334,23 @@ theorem pd_add (x : Fin 6 → A) (i : Fin 6) (p q : PolyExpr ℂ (Fin 6)) :
     pd x i (.add p q) = pd x i p + pd x i q := rfl
 
 /-- **`Q` at the leaves.** -/
-theorem eval_Qp (x : Fin 6 → A) : PolyExpr.eval x Qp = (leavesAt x).Q := by
+theorem eval_QpQS (x : Fin 6 → A) : PolyExpr.eval x QpQS = (leavesAt x).Q := by
   obtain ⟨h1, h2, h3, h4⟩ := eval_leaves x
-  simp only [Qp, PolyExpr.eval, h1, h2, h3, h4, QSLeaves.Q]
+  simp only [QpQS, PolyExpr.eval, h1, h2, h3, h4, QSLeaves.Q]
   ring
 
 /-- **`∂_u Q = Q_u`** at the leaves (the product rule of the straight-line program). -/
-theorem pd_Qp_U (x : Fin 6 → A) : pd x 0 Qp = (leavesAt x).Qu := by
+theorem pd_QpQS_U (x : Fin 6 → A) : pd x 0 QpQS = (leavesAt x).Qu := by
   obtain ⟨h1, h2, h3, h4⟩ := eval_leaves x
-  simp only [Qp, pd_add, pd_mul, PolyExpr.eval, h1, h2, h3, h4,
+  simp only [QpQS, pd_add, pd_mul, PolyExpr.eval, h1, h2, h3, h4,
     pd_Dp_U, pd_nRp_U, pd_nZp_U, pd_Rp_U,
     QSLeaves.Qu]
   ring
 
 /-- **`∂_z Q = Q_z`** at the leaves. -/
-theorem pd_Qp_Z (x : Fin 6 → A) : pd x 1 Qp = (leavesAt x).Qz := by
+theorem pd_QpQS_Z (x : Fin 6 → A) : pd x 1 QpQS = (leavesAt x).Qz := by
   obtain ⟨h1, h2, h3, h4⟩ := eval_leaves x
-  simp only [Qp, pd_add, pd_mul, PolyExpr.eval, h1, h2, h3, h4,
+  simp only [QpQS, pd_add, pd_mul, PolyExpr.eval, h1, h2, h3, h4,
     pd_Dp_Z, pd_nRp_Z, pd_nZp_Z, pd_Rp_Z,
     QSLeaves.Qz]
   ring
@@ -365,9 +366,9 @@ theorem phiD_add (x : Fin 6 → A) (p q : PolyExpr ℂ (Fin 6)) :
   simp only [phiD, pd_add]; ring
 
 /-- **`∂_φQ = Q_φ`** at the leaves. -/
-theorem phiD_Qp (x : Fin 6 → A) : phiD x Qp = (leavesAt x).Qf := by
+theorem phiD_QpQS (x : Fin 6 → A) : phiD x QpQS = (leavesAt x).Qf := by
   obtain ⟨h1, h2, h3, h4⟩ := eval_leaves x
-  simp only [Qp, phiD_add, phiD_mul, PolyExpr.eval, h1, h2, h3, h4,
+  simp only [QpQS, phiD_add, phiD_mul, PolyExpr.eval, h1, h2, h3, h4,
     phiD_Dp, phiD_nRp, phiD_nZp, phiD_Rp,
     QSLeaves.Qf]
   ring

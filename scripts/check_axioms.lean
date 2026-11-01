@@ -403,8 +403,8 @@ run_cmd do
 #print axioms PlasmaLean.Design.DommaschkKamC.qsDefectSq_eq
 #print axioms PlasmaLean.Design.DommaschkKamC.qsDefect_eq_real
 #print axioms PlasmaLean.Design.DommaschkKamC.boozerJ_flow
-#print axioms PlasmaLean.Design.DommaschkKamC.pd_Qp_U
-#print axioms PlasmaLean.Design.DommaschkKamC.phiD_Qp
+#print axioms PlasmaLean.Design.DommaschkKamC.pd_QpQS_U
+#print axioms PlasmaLean.Design.DommaschkKamC.phiD_QpQS
 #print axioms PlasmaLean.Design.DommaschkKamC.qsDefectSq_needs_invariance
 #print axioms PlasmaLean.Fields.VacuumBoozer.boozerJac_eq_normSq_div
 #print axioms PlasmaLean.Fields.VacuumBoozer.boozerPhiVec_eq_field

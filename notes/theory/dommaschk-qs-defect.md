@@ -445,3 +445,11 @@ arithmetic before any Lean is written.
 
 A1 `Theory/Fields/VacuumBoozerTorus`, A2 `Theory/Fields/BoozerWirtinger` (`torus_oracleDefect_le`, full spectrum, sharp constant √2/N; sign correction c_mn(g) = −inN c_mn(f)) and D3 `Design/DommaschkKamCQSPoly` are in the default build. Remaining: D4/D5 (ball chain, in progress), D6 (identification on `ExactTorusC`, including B^φ > 0 and 2π/N periodicity for `BoozerChartHyp.of_torus`), D7.
 
+## Update (2 November 2026): D4–D7 done (sup route)
+
+`dommaschk_C1_qaDefect`, `dommaschk_C1_oracleDefect` (on-demand `Design/DommaschkKamCQS`): certified
+δ_∞ = 0.020642, B_min = 1.04259, κ ≤ 0.165, oracle defect ≤ 0.0141 (≈ 0.058 |ι|). The certified
+δ₂ = 0.00224 (L² route, ≈ 0.0063 |ι|, strong tier) awaits two identities: 4g²J = F/((q_G Q R¹⁷)²(q_D D))
+pointwise, and the torus average as the strip `avg`. Remaining risk statement unchanged: one thin
+torus; no C2 (AC-1).
+

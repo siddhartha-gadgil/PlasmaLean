@@ -667,3 +667,181 @@ the smallness `32 κ e₀/δ₀⁴ ≈ 9.4e-5`.
   #print axioms PlasmaLean.Design.DommaschkKamC.e0q_not_tiny
   #print axioms PlasmaLean.Design.DommaschkKamC.fldZ_reject
   ```
+
+## N-34 module D3 (1 November 2026): polynomial form of the QA defect on torus C — complete
+
+**Formula** (flow form `D = R⁷B_φ`, `n_{R,z} = R⁸B_{R,z}`, `R = R₀ + u`; invariance `D𝓛u = n_R`,
+`D𝓛z = n_z`): `∂_{φ_B}|B|² = N_g/(Q R¹⁷)`, `torusQADefect = ∂_{φ_B}|B| = N_g/(2Q√Q R⁹)`, with the
+straight-line program `QSLeaves` (leaves: values of `D, n_R, n_z`, their `∂_u, ∂_z, ∂_φ`, and `R`):
+`Q = n_R² + R²D² + n_z²`, `Q_u, Q_z, Q_φ` (product rule), `P_L = Q_u n_R + Q_z n_z + D Q_φ`,
+`M_L = R P_L − 16 Q n_R`, `N₀ = R⁸M_L`, `N₁ = n_R M_L − Q(RQ_u − 16Q)`, `N₂ = n_z M_L − RQQ_z`,
+`N_g = N₀ + ι(N₁u_θ + N₂z_θ)` (as in N-34 §4). Expanded, `N₁, N₂` have ≈ 44 000 terms in
+`(u, z, c, s)` (17 000 in `(R, z, c, s)`), degree 72 in `u`, 550-bit denominators, so the chain (D4)
+should evaluate the program node by node (≈ 30 products), not expanded polynomials.
+
+**Generator** `scripts/dommaschk_kam/emit_qs.py` (venv, `-I`, 15 s; `--sizes-u` 140 s): sympy
+derivation from `|B|² = Σ B_i²` with unknown `D, n_R, n_z` (8 identities, incl. the `|B|` form of the
+A1 definition); exact Fraction checks at rational points against the expanded `Q` (u- and R-form);
+torus C (256²): `max|g_poly − g_est| = 5.7e-9` (`qs_defect.py`, FD step 1e-6), 1.0e-9 at step 1e-5,
+7.5e-8 at 1e-4 (the estimator's FD error); `sup|g| = 0.009002`, `ℓ¹(g) = 0.01981`,
+`ℓ¹(∂_{φ_B}|B|²)/(2B_min) = 0.02051`, `B_min = 1.04886`, `D_min = 0.279`, `Q ∈ [0.054, 0.947]`.
+
+**Lean** (default-build-capable: imports only default modules; not yet in `PlasmaLean.lean`):
+`Design/DommaschkKamCQSData` (generated `φ`-derivatives `dDf, dnRf, dnZf`, R-form `dDRf, dnRhf,
+dnZRf`; 3 s, 1.5 GB) and `Design/DommaschkKamCQSPoly` (8 s, 2.0 GB): kernel checks `dDf_eq`, …,
+`substR_dDRf`, …; `QSLeaves` with `Q, Qu, Qz, Qf, PL, ML, N0, N1, N2, Ng`; `leavesAt x`; `Qp` with
+`eval_Qp`, `pd_Qp_U`, `pd_Qp_Z`, `phiD_Qp`; leaf lemmas `pd_Dp_U`, …, `phiD_Dp`, …, `pd_Rp_U`,
+`eval_leaves`, `dkFieldTC_polys`; field identities `normSq_flow`, `boozerJ_flow`, `boozerA_flow`,
+`qsDefectSq_eq`, `qsDefect_eq_of_sq`, `qsDefect_eq_real`; sanity `Ng_toroidal`, `qs_instance(_lhs)`,
+`qsDefectSq_needs_invariance`, `dDf_ne`. Standard axioms.
+
+**What D6 needs from D3** (at a torus point `(θ, φ)` of `ExactTorusC`, pointwise in ℝ):
+1. Leaves: `l := leavesAt (ptC R φ z)` read in ℝ (`ev_ofReal`); `D = R⁷B_φ`, `n = R⁸B` by
+   `Dp_ident`/`nRp_ident`/`nZp_ident` (`eval_leaves`); `R > 0` (`R_pos`), `D ≠ 0` (`Bphi_ne`),
+   `Q > 0` (from `D ≠ 0`).
+2. `boozerA B K = (n_R u_θ + n_z z_θ)/R⁸` (`boozerA_flow`, after writing `∂_θK = u_θ e_R + z_θ e_z`)
+   and `boozerJac B ι K = Q/(R⁸D)` (`boozerJ_flow`, `𝓛K = 𝓛u e_R + R e_φ + 𝓛z e_z`, invariance
+   from `inv_R`/`inv_Z`).
+3. `modB B K = √Q/R⁸` (`normSq_flow`, `sqrtQ_sq`) and the chain rule along the torus:
+   `2|B|·𝓛|B| = (Q_u𝓛u + Q_z𝓛z + Q_φ)/R¹⁶ − 16Q𝓛u/R¹⁷`, `2|B|·∂_θ|B| = (Q_u u_θ + Q_z z_θ)/R¹⁶ −
+   16Q u_θ/R¹⁷`, where `Q_u, Q_z, Q_φ` are identified with the partials of `Qp` by `pd_Qp_U`,
+   `pd_Qp_Z`, `phiD_Qp` (e.g. via `dTh_evalB`/`Lt_evalB` and `eval`, or real `HasDerivAt`).
+4. Then **`qsDefect_eq_real`** gives exactly `boozerDeriv ι a J f_θ f_𝓛 = l.Ng ι u_θ z_θ /
+   (2 Q √Q R⁹)`, the A1 `torusQADefect` (its `boozerDeriv` has the same shape
+   `((1 + ιa)f_𝓛 − ιJf_θ)/J`).
+
+**Shared files (owner to add).**
+- `PlasmaLean.lean` (if default build is wanted; ≈ 11 s, 2 GB together):
+  ```
+  public import PlasmaLean.Design.DommaschkKamCQSData
+  public import PlasmaLean.Design.DommaschkKamCQSPoly
+  ```
+- `scripts/check_axioms.lean` (or `_heavy` if kept on demand):
+  ```
+  #print axioms PlasmaLean.Design.DommaschkKamC.dDf_eq
+  #print axioms PlasmaLean.Design.DommaschkKamC.substR_dnRhf
+  #print axioms PlasmaLean.Design.DommaschkKamC.qsDefectSq_eq
+  #print axioms PlasmaLean.Design.DommaschkKamC.qsDefect_eq_real
+  #print axioms PlasmaLean.Design.DommaschkKamC.boozerJ_flow
+  #print axioms PlasmaLean.Design.DommaschkKamC.pd_Qp_U
+  #print axioms PlasmaLean.Design.DommaschkKamC.phiD_Qp
+  #print axioms PlasmaLean.Design.DommaschkKamC.qsDefectSq_needs_invariance
+  ```
+
+## N-34 module D6 (1 November 2026): identification of the QA defect on the exact torus C — complete
+
+**Result.** `Design/DommaschkKamCQSIdent` (on demand; imports `DommaschkKamCContract` and
+`DommaschkKamCQSTransfer`). For every `ExactTorusC u z`, with `K = cylTorus (RofC u) (Zof z)`,
+`B = field candidate`, `V = potential candidate`, `ι = ι_C`:
+- `ExactTorusC.torusQADefect_eq : torusQADefect B ι_C K θ φ = qsDefC u z θ φ`, where
+  `qsDefC = qsNg (lvC u z θ φ) ι_C (∂_θR) (∂_θz) / (2 Q √Q R⁹)`, `Q = qsQ (lvC …)`, `R = lvC … 12`,
+  and `lvC u z θ φ i = Re (lvI u z i)(θ, ψ(φ))`; `lvI = lvS` of D5 (`lvS_eq_lvI`, `rfl`). Strip form:
+  `eval_Ng` (`eval (qsNg (lvI u z) ι (dTh u) (dTh z)) θ (psi φ) = N_g`), `eval_Q`, `eval_leaf`.
+- `vacuumPotentialOn`, `normSq_eq` (`|B|² = Q/R¹⁶`), `modB_eq`, `boozerA_eq`, `toroidalComp_eq`
+  (`B^φ = B_φ/R`), `boozerJac_eq` (`J = Q/(R⁸D)`), `lvC_D/nR/nZ/R`, `Q_pos`.
+- Chart hypotheses: `contDiff_torusPot` (C², via `CylAlgebra.contDiffAt_eval`), `contDiff_torusModB`
+  (C¹, `√Q/R⁸`), `torusPeriodic_torusPot` / `torusPeriodic_torusModB` (`2π`, `π`);
+  `boozerChartHyp (hD : ∀ θ φ, 0 < lvC u z θ φ 0)` and, with D5, `boozerChartHyp'`.
+- With D5 (`qsDefBounds := qsd_bounds … h.close`): `Dmin_le`/`D_pos` (`D ≥ 0.1578`), hence
+  `Bphi_pos`, `toroidalComp_pos'`, `boozerJac_pos`; `torusQADefectLe_delta`
+  (`TorusQADefectLe B ι_C K 0.020642`), `torusQADefectLe_021`, `Bmin_le` (`|B| ≥ 1.04259`),
+  `oracleDefect_le` (`≤ √2 δ_∞/(2 B_min)`, sup route); `dommaschk_qaDefect (e0R) (e0Z)`: ∃ torus
+  with `IotaOnTorus`, defect `≤ 0.021`, `|B| ≥ B_min`, `B^φ > 0`, `BoozerChartHyp 2`.
+
+**Notes.** (1) `π`-periodicity of `V∘K` without the field-period symmetry of `V`: `w = v(·+π) − v`
+has zero derivative (`v_θ = a`, `v_φ = J − 1 − ιa`, both `π`-periodic flow-form expressions), so
+`w ≡ c`, and `2c = 0` by `2π`-periodicity (`torusPot_add_pi`). (2) **Name clash (pre-existing):**
+`DommaschkKamCQSPoly.Qp` (now in `PlasmaLean.lean`) collides with `DommaschkKamCAdmFrame.Qp`, so
+`import PlasmaLean` can no longer be combined with any Adm-chain module (Contract, D5, D6). D6
+therefore does not import QSPoly; it re-proves the leaf-vector form `qsi_eq_real` and the partials
+of its own `QpI` (three `kernel_fact` checks `qsi_dD/nR/nZf_eq`). Fix for the owner: rename
+`Qp` in `DommaschkKamCQSPoly` (e.g. `QpQS`). (3) L² route (`δ₂`, `hF` of `QSDefBounds`) left to D7.
+
+**Build.** `lake build PlasmaLean.Design.DommaschkKamCQSIdent`: ≈ 7 s user / 1.7–2.0 GB (after D5).
+Standard axioms; no `sorry`/`decide`; zero warnings; no clashes with the default build minus
+`DommaschkKamCQSPoly`.
+
+**Shared files (owner to add).**
+- `PlasmaLean.lean`: none (on demand).
+- `scripts/check_axioms_heavy.lean`:
+  ```
+  import PlasmaLean.Design.DommaschkKamCQSIdent
+  #print axioms PlasmaLean.Design.DommaschkKamC.ExactTorusC.torusQADefect_eq
+  #print axioms PlasmaLean.Design.DommaschkKamC.ExactTorusC.boozerChartHyp'
+  #print axioms PlasmaLean.Design.DommaschkKamC.ExactTorusC.torusQADefectLe_delta
+  #print axioms PlasmaLean.Design.DommaschkKamC.ExactTorusC.oracleDefect_le
+  #print axioms PlasmaLean.Design.DommaschkKamC.ExactTorusC.torusPot_add_pi
+  #print axioms PlasmaLean.Design.DommaschkKamC.dommaschk_qaDefect
+  #print axioms PlasmaLean.Design.DommaschkKamC.not_torusPeriodic_four
+  ```
+
+## N-34 modules D4–D5 (1 November 2026): certified QA defect of torus C on every close torus — complete
+
+**Result.** `DommaschkKamC.qsd_bounds` (`Design/DommaschkKamCQSTransfer`, on demand): every analytic
+torus `(u, z)` with `Close ρ ι_C u z u₀C z₀C μ` (`ρ ≥ 0`, `μ ≤ 10⁻¹²`; only `u, z, ∂_θu, ∂_θz` used)
+satisfies `QSDefBounds u z` (strip frame, `Bd 0` = `ℓ¹` of the Fourier coefficients), for the leaf
+vector `lvS u z` (`= leavesAt (xB u z)` fieldwise, `rfl`), `N_g = qsNg (lvS u z) iotaF (dTh u) (dTh z)`
+(`qsNg` = `QSLeaves.Ng` with the leaves as a `Fin 13` vector) and fixed rotated approximate inverses
+`qGs ≈ 1/(QR¹⁷)`, `qBs ≈ 1/R¹⁶`, `qDs ≈ 1/D`:
+`‖qGs N_g‖ ≤ η_G = 0.0430419`, `‖qGs QR¹⁷ − 1‖ ≤ 2.49e-6`, `‖Q qBs − c_B‖ ≤ 0.06506` (`c_B = 1.15206`),
+`‖qBs R¹⁶ − 1‖ ≤ 1.52e-9`, `‖D − c_D‖ ≤ 0.4797` (`c_D = 0.637578`), `|⟨(qGs N_g)² R⁸ qDs⟩| ≤ 2.014e-5`,
+`‖qDs D − 1‖ ≤ 5.18e-9`. `QSDefBounds.pointwise`: at every `(θ, ψ)`, `QR¹⁷ ≠ 0`,
+`|N_g/(QR¹⁷)| ≤ d₁ = 0.0430421`; `R¹⁶ ≠ 0`, `|Q/R¹⁶ − c_B| ≤ e_B' = 0.065061`; `|D − c_D| ≤ e_D`.
+`qsd_defect_real` (real algebra) and `qsd_numbers`: **`δ_∞ ≤ d₁/(2B_min) = 0.020642`** (target
+0.021, sharp sup 0.0090, sharp `ℓ¹(∂|B|²)/(2B_min)` 0.0205), **`B_min = 1.04259`** (target 1.042,
+true 1.0489), `D ≥ 0.1578` (`B_φ > 0`), `κ = 2δ_∞/(B_min·6/25) ≤ 0.165`, `δ_∞/|ι| ≤ 0.0860`;
+`L²(J)`: `⟨g²J⟩ ≤ m_F/(4(1−ε_G)²(1−ε_D)) ≤ δ₂²`, **`δ₂ = 0.002244`** (target 2.13e-3, sharp 2.115e-3),
+hence oracle-normalised defect `≤ (√2/2)δ₂/(B_min·6/25) ≤ 0.00634` (strong tier; the pointwise
+identity `4g²J = F/((qG QR¹⁷)²(qD D))` and the torus average = strip `avg` are for D6/D7).
+Rejected fixture `surr_G_ne`: the surrogate numerator is nonzero (`(0, 6)` coefficient 1.17e-3 ≫
+radius 1.2e-5). Standard axioms; no `sorry`/`decide`; zero warnings.
+
+**Architecture (D4).** The Adm chain (195 variables, `24 × 28`, `2⁻⁶⁴`, oracle angle) extended by 50
+variables with **unit weights** (`ρ = 0`, kernel `P = 1, E = 0`; Adm balls reused at `ρ = 0`):
+`polyT` chunks (≤ 4 monomials) of the R-form `φ`-derivatives `dDRf`, `R·dnRhf`, `dnZRf` (28 nodes);
+products `D D_u, D D_z, D D_φ, Q, Q_u/2, Q_z/2, Q_φ/2, P_L/2, M_L, R Q_u/2, N₁, RQ, N₂, N₁u_θ+N₂z_θ,
+QR¹⁷` (15); data `qG ≈ 1/(QR¹⁷)` (`‖qG‖ = 500`) with norm node `eG`, `qG8 = qG R⁸`, the node
+`G = 2^128·qG8·M_L − Iqc·qG·N12` (`c = 2^128`, honest value `qG N_g(ι_q)`), norm `GI = ‖qG N12‖`;
+data `qB ≈ 1/R¹⁶` with norms `eB`, `bB = ‖2³²Q qB − c_B‖`; `dM = ‖2³²D − c_D‖`; `GG, H8 = R⁸qD,
+F` (mean read off the centre). **Radius growth**: the field leaves inherit Adm radii ~1e-9; `M_L`
+1e-7 (cancellation, `‖M_L‖ = 0.016`); multiplying by `qG` directly gave `E_G = 5.3e-5` (`500 × 1e-7`);
+multiplying `M_L` by `qG8 = qG R⁸` (`‖qG8‖ = 106`) gives `E_G = 1.2e-5` (0.03 % of `‖G‖ = 0.043`),
+`E_F = 1.1e-6` (5 % of `⟨F⟩ = 1.79e-5`, the limiting term for `δ₂`). **Transfer (D5)**: Lipschitz
+majorants `lipQ` of the 12 field leaves (`fld_D…`, new `fld_Df/nRf/nZf`), the majorant derivative of
+the program as a `PolyExpr ℚ (Fin 16)` (`peNg`, 385 nodes; rational mirror `qsdMj`, `qsdMj_spec`,
+kernel-checked: `dNg ≤ 2.72e-8`, `dQ ≤ 4.71e-10`), `approx_near`, `ι_C − ι_q ≤ 2⁻¹²⁸`, `rotψ`.
+Transfer adds `1.4e-5` to `‖qG N_g‖` and `1.2e-6` to `m_F`.
+
+**Generator** `scripts/dommaschk_kam/emit_qsdef.py` (+ templates `qsdef_tpl/out.lean.tpl`,
+`transfer.lean.tpl`; reuses `emit_adm.build`, `adm_ball`): 5 s, deterministic; every emitted bound
+is recomputed in exact rationals (`certify`, `EmitQ.out_values`).
+
+**Modules** (laptop, sequential, user CPU / peak RSS): `DommaschkKamCQSDefData1–2` 2.4 s / 0.72 GB;
+`…QSDefEnv` 5.6 s / 1.46 GB; `…QSDefTrees` 2 s / 1.4 GB; `…QSDefCheck1–4` 75 / 112 / 137 / 104 s,
+2.7 / 3.0 / **3.3** / 2.7 GB; `…QSDefRel` 6 s / 1.5 GB; `…QSDefChain` 7.5 s / 1.6 GB; `…QSDefOut`
+8 s / 2.2 GB; `DommaschkKamCQSTransfer` 7 s / 2.1 GB. Total ≈ 8 CPU-min after the Adm chain.
+`lake build PlasmaLean.Design.DommaschkKamCQSTransfer`.
+
+**Name clash (blocks `import PlasmaLean` + any Adm module):** `DommaschkKamCQSPoly.Qp` (default
+build) vs `DommaschkKamCAdmFrame.Qp`; rename the former (`QSPoly` lines 42, 284, 336, 338, 342, 344,
+350, 352, 368, 370 and its `check_axioms` entries `pd_Qp_U`, `phiD_Qp` keep their names). It is the
+only clash of `QSPoly` with the on-demand closure; my 779 new names do not clash with the default build.
+
+**Shared files (owner to add).**
+- `PlasmaLean.lean`: none (on demand).
+- `scripts/check_axioms_heavy.lean`:
+  ```
+  import PlasmaLean.Design.DommaschkKamCQSTransfer
+  #print axioms PlasmaLean.Design.DommaschkKamC.qsd_bounds
+  #print axioms PlasmaLean.Design.DommaschkKamC.QSDefBounds.pointwise
+  #print axioms PlasmaLean.Design.DommaschkKamC.qsd_defect_real
+  #print axioms PlasmaLean.Design.DommaschkKamC.qsd_numbers
+  #print axioms PlasmaLean.Design.DommaschkKamC.qsd_near
+  #print axioms PlasmaLean.Design.DommaschkKamC.qsdMj_spec
+  #print axioms PlasmaLean.Design.DommaschkKamC.ballQ_all
+  #print axioms PlasmaLean.Design.DommaschkKamC.surr_G
+  #print axioms PlasmaLean.Design.DommaschkKamC.surr_F
+  #print axioms PlasmaLean.Design.DommaschkKamC.surr_G_ne
+  #print axioms PlasmaLean.Design.DommaschkKamC.qsNg_instance
+  #print axioms PlasmaLean.Design.DommaschkKamC.qsd_not_tiny
+  ```

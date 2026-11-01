@@ -2484,6 +2484,12 @@
     "text": "n-34 a2: spectral bound for the boozer qa defect, 1 november 2026 implementation plan"
   },
   {
+    "title": "N-34 D4–D7: certified QA defect on the C1 torus, 2 November 2026",
+    "section": "Implementation plan",
+    "url": "implementation-plan.html#n-34-d4d7-certified-qa-defect-on-the-c1-torus-2-november-2026",
+    "text": "n-34 d4–d7: certified qa defect on the c1 torus, 2 november 2026 implementation plan"
+  },
+  {
     "title": "M0 · Exact symmetric equilibria: slab, screw pinch, Solov'ev, helical",
     "section": "Implementation plan · Lean verified — exact slab, screw-pinch, Solov'ev and helical equilibria with kernel force balance, all-time field-line/orbit confinement, Suydam both ways and screw-pinch Newcomb stability for every m ≠ 0 (reduced form supplied; idealized symmetric models).",
     "url": "implementation-plan.html",

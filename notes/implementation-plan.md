@@ -1758,3 +1758,20 @@ Gate E1 (§11.2, §11.4) and the "sanity theorem or counterexample" promised in 
   Concrete tori supply `BoozerChartHyp.of_torus` (C² potential, C¹ |B|, 2π/N periodicity, B^φ > 0).
   Axiom audit passed (50,789 declarations).
 
+### N-34 D4–D7: certified QA defect on the C1 torus, 2 November 2026
+
+- D4/D5: on-demand `Design/DommaschkKamCQSDef*` and `DommaschkKamCQSTransfer` (≈ 8 CPU-min on top of the
+  admissibility chain, peak 3.3 GB; generator `scripts/dommaschk_kam/emit_qsdef.py`): on every μ-close
+  torus, sup |∂_{φ_B}|B|| ≤ δ_∞ = 0.020642, |B| ≥ 1.04259, D ≥ 0.1578, κ = 2δ_∞/(B_min|ι|) ≤ 0.165, and
+  the L²(J) quantity δ₂ ≤ 0.00224; the surrogate is not exactly QA (`surr_G_ne`).
+- D6: on-demand `Design/DommaschkKamCQSIdent`: on the exact torus, `VacuumPotentialOn`, **B^φ > 0**,
+  regularity and π-periodicity (`BoozerChartHyp`), `torusQADefect_eq` (the D3 formula), hence
+  `torusQADefectLe … (21/1000)`, `Bmin_le`, `oracleDefect_le`.
+- D7: on-demand `Design/DommaschkKamCQS`: **`dommaschk_C1_qaDefect`** (unconditional: the C1 torus of the
+  exact Dommaschk field carries per-torus QA defect ≤ 0.021, |B| ≥ 1.04259, B^φ > 0) and
+  **`dommaschk_C1_oracleDefect`** (off-QA Boozer spectral defect, oracle normalisation, ≤ √2 δ/(2B_min)
+  < 0.0141, i.e. ≈ 0.058 |ι|: sup route, just outside the moderate tier). The L² route (≈ 0.0063 |ι|,
+  strong tier) needs the pointwise identity for F and the torus/strip average identification (open).
+- Fix: `DommaschkKamCQSPoly.Qp` renamed `QpQS` (it clashed with `DommaschkKamCAdmFrame.Qp`, so the default
+  build could not be combined with the on-demand chain). Standard axioms throughout.
+
