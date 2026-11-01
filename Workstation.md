@@ -262,17 +262,17 @@ laptop with a small parameter setting, then commit it to `main` before running i
 
 Kept up to date from the laptop after every review ("update from workstation"). The same
 commands are in [`scripts/workstation/next.sh`](scripts/workstation/next.sh), with `NEXT_ID` =
-`2026-11-01-kam-export`, which the poller runs by itself (see "Unattended polling").
+`2026-11-02-kam-A-96`, which the poller runs by itself (see "Unattended polling").
 
-**Status (1 November 2026): queued for the poller.** This batch exports the refined coefficients
-of the certification torus C at 80 × 64 and 96 × 80 into the committed results
-(`torus_C_N*_M*.json`, new in `run.py`). The Lean data module needs them (N-33 item 6). Both runs
-are cached in the work directory, so only the export runs.
+**Status (2 November 2026): queued for the poller.** C1 and a certified strong-tier QA defect now
+hold on torus C (N-34). The next goal is a nested certified region, which needs a second torus.
+This batch runs torus A (outside C) at 96 × 80 with 60 digits, plus the coefficient export, then
+torus B for comparison. About 5–10 min each, peak about 16 GB.
 
 ```bash
 cd PlasmaLean && git pull
-DKAM_TORI=C DKAM_N=80 DKAM_M=64 DKAM_DPS=50 scripts/workstation/run.sh dommaschk-kam
-DKAM_TORI=C DKAM_N=96 DKAM_M=80 DKAM_DPS=60 scripts/workstation/run.sh dommaschk-kam
+DKAM_TORI=A DKAM_N=96 DKAM_M=80 DKAM_DPS=60 scripts/workstation/run.sh dommaschk-kam
+DKAM_TORI=B DKAM_N=96 DKAM_M=80 DKAM_DPS=60 scripts/workstation/run.sh dommaschk-kam
 ```
 
 **On-demand olean transfer: resolved (30 October 2026).** The MuQuarter and EwFamily archive is
