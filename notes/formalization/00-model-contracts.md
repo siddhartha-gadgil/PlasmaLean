@@ -66,10 +66,12 @@ axioms only). Module `PlasmaLean/Theory/Contract/StellaratorContract.lean`, name
   `iota_eq_zero_of_purelyToroidal` (purely toroidal field, e.g. vacuum axisymmetric
   `B = (μ₀I/2πR) e_φ` ⇒ ι = 0) and `not_currentFreeTransform_of_purelyToroidal`.
 - C1 predicate: `SurfaceData`, `SurfaceData.Spans` (section spans the poloidal loop of the torus),
-  `CurrentFreeTransform μ₀ B S I_max ι_min`; `currentFreeTransform_of_vacuum`,
-  `not_currentFreeTransform_of_current`, `CurrentFreeTransform.mono`.
+  `CurrentFreeTransform μ₀ B S I_max ι_min`; `not_currentFreeTransform_of_current`,
+  `CurrentFreeTransform.mono`. (There is no general vacuum lemma for the loop form; vacuum
+  candidates prove C1 per certified torus, e.g. `rationalStellarator_currentFreeTransform`,
+  `DommaschkKamC.dommaschk_C1_unconditional`. The section form has `currentFree_of_vacuum`.)
 - C2: `OmnigeneityContract F c κ_max` (`ApproxOmnigenousOn` of `Theory/Kinetic/Omnigeneity`; `κ_max
-  = 0` is `OmnigenousOn`, `omnigeneityContract_zero_iff`), scope: the vacuum Boozer guiding-centre
+  = 0` is `OmnigenousOn`, `boozerModelOmnigeneity_zero_iff`), scope: the vacuum Boozer guiding-centre
   model (supplied), all species, μ and energies. `BoozerAxisymmetric`; axisymmetric ⇒ omnigenous
   (`omnigenousOn_of_axisymmetric`, ι ≥ ι_min > 0; `omnigenousOn_of_axisymmetric_iota_zero`, ι = 0,
   vacuously); `constField_omnigeneityContract`; counterexample

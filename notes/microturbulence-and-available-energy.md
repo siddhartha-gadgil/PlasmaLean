@@ -1,6 +1,25 @@
 
 # Formalization Note: Microturbulent Transport, the Maximum-$J$ Property, and Available Energy ($\mathcal{A}$)
 
+## Metadata
+
+| Field | Value |
+| --- | --- |
+| ID | `N-20` |
+| Title | Microturbulent transport, the maximum-J property and available energy (Â) |
+| Kind | source synthesis / formalization plan (small-kernel specification), with corrections |
+| Addresses | `G-2`, `Q-15`; related `G-10` (omnigeneity, C2) and `Q-21` |
+| Depends on | Helander–Mackenbach available-energy papers (formula not yet extracted, §1.5); N-1 and `notes/theory/toroidal-min-b-obstruction.md` for the min-B correction |
+| Dependency requirement | the Â formula, its weight and normalisation must be extracted from the source before any bound is stated (§2 correction); differentiation under the bounce integral needs a stated integrability lemma |
+| Produces | definitions of the bounce action and maximum-J; the available-energy kernel and its zero set; the refutation of the opposite-sign vanishing claim; the Â bound as a claim to extract |
+| Difficulty | research: the Â bound is a sourced result with an unchecked formula; the kernel lemmas are routine |
+| Status | stated: kernel lemmas verified; opposite-sign claim refuted; Â bound stated (formula unchecked) |
+| Lean evidence | `Theory/Kinetic/AvailableEnergy` (`availableEnergyKernel`, `availableEnergyKernel_eq_zero_iff_between`, `availableEnergyKernel_pos_of_opposite_signs` (the refutation), `NormalizedBounceAction`, `BounceActionRadialDeriv`, `bounceActionRadialDeriv_neg`), default build. Related C2 definitions: `Theory/Kinetic/Omnigeneity` (`OmnigenousOn`, `ApproxOmnigenousOn`, `bounceAvgDrift`), default build. Planned, not present: `Kernel/TurbulenceContracts.lean`, `TrappingWell`, `BounceWellProfile`, `SatisfiesMaximumJ`, module `PlasmaLean.Transport.AvailableEnergy`, `availableEnergyKernel_eq_zero_of_opposing_precession` (refuted) |
+| Audit evidence | 30 October docs audit (exposition slide 9): Â bounds available energy, not turbulent transport; this note states the bound as a claim to extract. 31 October refresh audit AR-M2: `OmnigenousOn` is stronger than leading-order omnigeneity (affects item 1 of §1) |
+| Last updated | 3 November 2026: metadata added |
+
+**Current state (3 November 2026).** The omnigeneity half of §1 item 1 now has kernel-level definitions (`OmnigenousOn`, `bounceAvgDrift`, C2 contract in `Theory/Contract/BoozerModel`), in the vacuum Boozer guiding-centre model; maximum-J (∂_ψ J < 0) and Â are not in Lean. Under the contract of 30 October, anomalous transport in C5 is a stated supplied scaling (ISS04 or an Â bound), so the next step is still extracting the Helander–Mackenbach formula (§1.5).
+
 **Workstream:** `particles-and-transport` / `geometry-and-fields`  
 **Status:** Blueprint & Small-Kernel Specification  
 **Target Module:** `PlasmaLean.Transport.AvailableEnergy`

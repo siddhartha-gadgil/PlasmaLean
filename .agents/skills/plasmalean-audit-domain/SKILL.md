@@ -128,6 +128,12 @@ particular:
   pressure; an all-time bound for supplied solutions does not prove their existence.
 - Positive measure in velocity space is not physical robustness unless the energy and pitch ranges
   are physically meaningful.
+- Generic hazards (LeanTheory list): a global structure inferred from a local one; a degenerate case
+  silently excluded or included (zero field, vanishing denominator); a necessary condition or
+  diagnostic presented as sufficient; a truncated or finite-dimensional result presented as a
+  statement about the continuum model; a source-specific or asymptotic result stated as universal;
+  example constants from one source (reactor studies, `notes/Stellerator.md`) treated as universal
+  thresholds.
 - Source engineering thresholds from the chosen machine and material instead of treating example
   distances as universal constants.
 

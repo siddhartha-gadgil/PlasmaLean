@@ -1,0 +1,4 @@
+interface:
+  display_name: "Develop PlasmaLean theory"
+  short_description: "Coordinate goals, questions, research notes and Lean validity gates"
+  default_prompt: "Use $plasmalean-develop-theory to start: strictly audit the repository, summarise work, and offer ready choices."

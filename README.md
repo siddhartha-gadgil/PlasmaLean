@@ -177,13 +177,21 @@ notes/                     Plan, research notes and specifications (see "Notes a
   theory/                  Research notes N-*, one file each, indexed in theory/README.md
   formalization/           Model contracts (00, normative) and topic specifications 01–09
   audit/                   Strict audit records with finding IDs
+  goals/                   How to state goals (method.md); goal proposals N-22
+  design/                  Design notes (vacuum demonstrator, N-23)
   note-template.md         Template every research note follows
 progress/                  Dated evidence, task status and slideshow content
-docs/                      Static website, illustrated landing page and slides
+docs/                      Static website, slides, and GettingStarted.md (the workflow)
 scripts/                   Setup, axiom audit, website generation, oracles and workstation pipeline
+.agents/skills/            Agent skills (`.claude` is a symlink to `.agents`)
 ```
 
 ## Getting started
+
+The workflow for users and agents (the [LeanTheory](https://github.com/siddhartha-gadgil/LeanTheory)
+method, which was extracted from this project, with the stellarator domain filled in) is described in
+[docs/GettingStarted.md](docs/GettingStarted.md): the project graph, the architecture, a work unit
+from setup to the validity gate, the ways to interact, and copy-paste prompts for agents.
 
 On Linux or macOS, the idempotent setup script installs `elan` if needed (the Lean version is the
 one pinned in `lean-toolchain`), fetches the Mathlib cache and builds the default library:
@@ -193,6 +201,9 @@ scripts/setup.sh --check-axioms     # also run the axiom audit
 scripts/setup.sh --no-build         # only elan and the Mathlib cache
 scripts/setup.sh --python --no-build && source .venv-ws/bin/activate   # Python for oracle scripts
 ```
+
+Request the Python environment only when a task needs it, and activate `.venv-ws` in every new shell
+rather than installing project packages globally.
 
 The default build is large (several hundred certificate modules); keep each Lean process within
 about 6 GB and build stale heavy modules one at a time (see
@@ -242,9 +253,12 @@ All planning and theory development is recorded in `notes/`, in a fixed structur
   - the stellarator contract;
   - the research graph: a goal registry (RG.1, `G-*`), a question registry (RG.2, `Q-*`) and a note
     registry with dependency edges (RG.3, `N-*`);
-  - the strict-audit status (RG.4) and the work-selection rules (RG.5);
+  - the strict-audit status (RG.4), the work-selection rules (RG.5) and the definition of done
+    with the evidence gates (RG.6);
   - dated progress logs (§9, §10, §13).
-- **Research notes** live in [notes/theory/](notes/theory/README.md), one file per note.
+- **Research notes** live in [notes/theory/](notes/theory/README.md), one file per note. A few
+  topic notes (N-18 to N-21, N-25), the goal proposals (`notes/goals/`, N-22) and the design note
+  (`notes/design/`, N-23) sit elsewhere in `notes/`, indexed in [notes/README.md](notes/README.md).
   - Each note has a stable ID `N-k`, a row in RG.3 and a line in the index `notes/theory/README.md`.
   - Each note starts with the metadata table of [notes/note-template.md](notes/note-template.md):
     kind, what it addresses, dependencies, difficulty, status, Lean evidence, audit evidence, last
@@ -255,6 +269,9 @@ All planning and theory development is recorded in `notes/`, in a fixed structur
     observation (untrusted), sourced theorem, or compiled Lean theorem with its declaration name.
 - **Specifications** live in [notes/formalization/](notes/formalization/00-model-contracts.md).
   `00-model-contracts.md` is normative: model contracts, and C1–C5 in Lean form.
+- **Goals.** [notes/goals/method.md](notes/goals/method.md) explains how to choose and state goals
+  and questions: outputs before methods, kinds of uncertainty, checkable obligations, shared
+  scenario records, activation rules.
 - **Audit records** live in [notes/audit/](notes/audit/). Findings have IDs, such as AR-H1 and
   AC-1, with severity and resolution.
 - **Implemented notes keep their content.** A note that is wholly or partially implemented in Lean
@@ -272,6 +289,28 @@ All planning and theory development is recorded in `notes/`, in a fixed structur
   implementation is rewritten to its current state rather than appended to indefinitely. No note
   file exists without registration. The agents follow this through the skills
   `plasmalean-develop-theory`, `plasmalean-add-note` and `plasmalean-modify-notes`.
+
+## Policies
+
+- **No `decide` of any kind** (`decide`, `decide +kernel`, `decide_cbv`, `native_decide`) in new
+  code. Use `norm_num` or `rfl` for a few closed facts, `kernel_fact`, `bool_cert` or `eval_cert`
+  for medium checks, and explicit proof-term certificates (the SubsetSum pattern, Kronecker
+  certificates) for large ones. The remaining `decide +kernel` lines are legacy, being removed
+  under Phase 16.
+- **Standard axioms only:** `scripts/check_axioms.lean` (default build) and
+  `scripts/check_axioms_heavy.lean` (on-demand modules) report only `propext`, `Classical.choice`
+  and `Quot.sound`. No `sorry`, `admit` or `axiom`; model laws are typeclass hypotheses.
+- **Zero warnings** in `lake build`, including the 100-character line linter.
+- **At most 6 GB per Lean process:** split large certificates over several modules, and build
+  stale heavy modules one at a time. First builds of very heavy certificates go to the workstation.
+- Every module, definition and theorem has a docstring. Every new law has the sanity triad
+  (degenerate case, instance, counterexample) plus risk-specific checks. Every certificate format
+  has accepted and rejected fixtures.
+- **Strict audits include previous code:** on `start`, every kernel declaration is inventoried and
+  red-teamed, the build and axiom audit run, and the audited commit is recorded. Every defect found
+  gets a compiled regression check.
+- **Lean is the validity gate,** and implemented notes keep their content (see "Notes and the
+  research graph").
 
 ## Build and audit
 

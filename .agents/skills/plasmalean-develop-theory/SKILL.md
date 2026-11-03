@@ -12,10 +12,14 @@ theory, the note graph and the plan in a better state, not only a new design num
 
 Read first:
 
+- `docs/GettingStarted.md`: the workflow for users and agents (the LeanTheory method with the
+  PlasmaLean domain), the ways to interact and the agent prompts.
+
 - `notes/implementation-plan.md`: the plan of record. Its "Research graph" part holds the goal,
   question and note registries, the strict-audit status and the work-selection rules; §9, §10 and
   §13 are the dated logs.
-- `notes/note-template.md`: metadata and sections of a research note.
+- `notes/note-template.md`: metadata and sections of a research note; `notes/goals/method.md`:
+  how to choose and state goals and questions.
 - `notes/domain-libraries.md`: the run protocol (kernel, sanity, library; progress report, slides,
   site regeneration after every run).
 - `notes/formalization/00-model-contracts.md`: separate contract predicates and the corrections.
@@ -52,6 +56,10 @@ as verified under the workstation policy of 25 October 2026: built and axiom-che
 upstream change.
 
 ## Interpret user requests
+
+Treat the phrases below as explicit invocations of this skill, not as generic conversational
+requests.
+
 
 - **`start`**: run `plasmalean-audit-domain` strictly before ordinary work. If the plan's audit
   table has no audited commit, do a full strict audit of existing code, especially every kernel
@@ -129,7 +137,10 @@ arithmetic before writing Lean.
    - `plasmalean-design-stellarator`: a stellarator candidate, its gates and composed certificates;
    - `plasmalean-model-materials`: coils, walls, blanket and other engineering constraints;
    - `plasmalean-lean-proofs`: whenever Lean is written;
-   - `plasmalean-workstation-update`: integrating workstation runs.
+   - `plasmalean-workstation-update`: integrating workstation runs;
+   - `plasmalean-add-note`: recording a result, failure, source or decision as a registered note;
+   - `plasmalean-modify-notes`: changing what notes say (in place only for notes with no
+     implementation; method or patch notes otherwise).
 3. Develop, test or formalize the result. Failed approaches and counterexamples are outputs:
    record the barrier they establish.
 4. Compile and audit Lean output in proportion to the claim, within the resource rules. Record

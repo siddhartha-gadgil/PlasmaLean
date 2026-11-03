@@ -1,5 +1,24 @@
 # Vacuum demonstrator: from a calibration fixture to a stellarator
 
+## Metadata
+
+| Field | Value |
+| --- | --- |
+| ID | `N-23` |
+| Title | Vacuum demonstrator: a tolerance-aware two-loop calibration fixture and the path to a stellarator |
+| Kind | design / certificate (calibration fixture) |
+| Addresses | `G-5`, `G-8`; work packages VD1–VD5 |
+| Depends on | Biot–Savart filament fields and their derivatives; CNT design references (Kremer et al. 2003, Hammond et al. 2016) |
+| Dependency requirement | the perturbation, derivative and tube-clearance theorems compiled (they are); tolerances are invented exact test inputs, not supplier data |
+| Produces | the fixture margins (field error, probe direction, derivative bound, envelope clearance); the probe-escape sanity theorem; reusable perturbation interfaces; VD1–VD5 |
+| Difficulty | routine (elementary perturbation bounds); VD3–VD5 need finite-conductor and engineering models |
+| Status | verified (fixture): the calibration fixture and its margins; VD1, VD3–VD5 open; not a confinement design |
+| Lean evidence | `Theory/Fields/CoilPerturbation` (`filamentField_perturbation`, `filamentField_sub_current`), `Theory/Fields/FieldDerivative` (`filamentField_derivative`, `filamentField_derivative_bound`), `Theory/Geometry/CoilTube` (`tube_clearance`, `tubes_disjoint`, `perturbed_tube_subset`), `Theory/Geometry/PlacedCircle` (`placedCircle_derivative`, `placedCircle_position_error`, `placedCircle_tangent_error`, `placedCircle_injective_on_turn`), `Design/VacuumPair`, `Design/VacuumTolerance` (`placed_circle_within_tolerance`, `combined_field_error`, `robust_probe_field`, `manufactured_tube_clearance`), `Design/VacuumDerivative` (`actual_speed_bounds`, `manufactured_field_derivative`, `zero_current_derivative`), `Sanity/ProbeEscape` (`bounded_observable_duration`, `probe_fieldLine_duration`, `no_forever_probe_fieldLine`); all default build |
+| Audit evidence | 30 October docs audit (vacuum-demonstrator page): VD4 text misses all-time confinement in the non-symmetric rational vacuum field, which is the C1 witness; fix: a C1 paragraph (below). Kernel audit V-1 re-audit list includes `VacuumPairVolumeError` |
+| Last updated | 3 November 2026: metadata and a current-state paragraph (docs-audit VD4 item) added |
+
+**Current state (3 November 2026).** VD4 ("declared confinement property") is met for analytic current-free fields, not yet for a coil-produced one. The rational vacuum field is the C1 witness (`rationalStellarator_currentFreeTransform`, default build) with all-time field-line confinement inside a KAM-certified torus (`rationalStellarator_confined_forever_exists`, default build); the Dommaschk QA field has C1 on nested certified tori (`dommaschk_C1_unconditional`, `dommaschk_Q16_vacuum`, on demand). For coils, the best result is 52 transits with field-line existence assumed (`coil_stellarator_confined_concrete_N`, G-5); all-time coil confinement is blocked on Q-2.
+
 ## What we are building
 
 The selected first product is a small vacuum-field demonstrator, not a fusion reactor. The present Lean-certified geometry is a two-loop **calibration fixture**. It checks continuous field calculations, differentiation, metrology budgets and finite-thickness clearance envelopes. It is not a toroidal confinement design.

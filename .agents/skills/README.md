@@ -2,9 +2,12 @@
 
 Agent skills for PlasmaLean, a theory-development and verification project for stellarator design
 (`.claude` is a symlink to `.agents`, so these are also the Claude Code skills). The entry point is
-`plasmalean-develop-theory`: it interprets `start`, `work status` / `summarise work`, `work on …` and `keep working`, keeps
-the research graph (`G-*`, `Q-*`, `N-*` in `notes/implementation-plan.md`) and routes work to the
-other skills.
+`plasmalean-develop-theory`: it interprets `start`, `work status` / `summarise work`, `work on …` and `keep working`
+(exact phrases, treated as explicit invocations), keeps the research graph (`G-*`, `Q-*`, `N-*` in
+`notes/implementation-plan.md`) and routes work to the other skills. The workflow follows the
+[LeanTheory](https://github.com/siddhartha-gadgil/LeanTheory) template; see
+[docs/GettingStarted.md](../../docs/GettingStarted.md). Each skill may have an `agents/openai.yaml`
+with its display name and default prompt.
 
 | Skill | Use when |
 | --- | --- |

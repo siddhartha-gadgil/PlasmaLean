@@ -1,5 +1,24 @@
 # Formalization Note: Roadmap for Rigorous PDE Bounds, Comparison Theorems, and A Posteriori Certificates
 
+## Metadata
+
+| Field | Value |
+| --- | --- |
+| ID | `N-18` |
+| Title | Roadmap for rigorous PDE bounds, comparison theorems and a posteriori certificates (Stages 1–7, Milestones A–G) |
+| Kind | research approach (roadmap) / formalization plan |
+| Addresses | `G-1`, `G-2`, `G-7`; feeds `Q-7`–`Q-11`, `Q-15`; tracks T1 (vacuum bounds), stability and transport tracks |
+| Depends on | the vacuum-fixture chain (N-23); Stage 5 (available energy) on N-20; Stage 6 (commuted energy) on N-19 §1 corrections |
+| Dependency requirement | vacuum Biot–Savart and tolerance results compiled (they are); each later milestone needs its own sourced theorem (Sturm–Picone, SBP, Nagumo comparison, Newton–Kantorovich) stated with hypotheses |
+| Produces | the oracle-plus-small-kernel architecture; Milestones A–G with target statements; historical Lean sketches (fenced, not the library API); the refuted Stage 6 wall-clearance certificate |
+| Difficulty | research overall: A–D moderate (implemented), E needs the unchecked Â formula, G (3-D finite-β MHS by radii polynomials) and F are research |
+| Status | stated (roadmap): Milestone A verified (T1); B–D have compiled counterparts under other names; E partial (kernel lemmas only); F refuted; G open (abstract radii-polynomial theorem only) |
+| Lean evidence | A: `Theory/Fields/Subharmonic` (`VacuumField.normSq_le_of_frontier`, `VacuumField.not_strict_local_max_normSq`, `exists_vacuum_strict_interior_min`); B: `Theory/Stability/Ballooning` (`BartaCertificate`, `BartaCertificate.energy_pos`); C: `Certificates/SBP`, `Certificates/SBPGeneral` (`sbpGen_identity`, `sbpGen_energy_hasDerivAt`); D: `Theory/Transport/Comparison` (`IsLowerBarrier`, `IsStrictLowerBarrier`, `mem_Icc_of_barriers`); G: `Certificates/RadiiPolynomial` (`radiiPoly`, `radii_polynomial_fixedPoint`, `radii_polynomial_zero`) with concrete uses in `Design/ValidatedSlabEquilibrium`, `Design/ValidatedBVP`; all default build. Planned, not present: `vacuum_field_norm_sq_max_on_boundary`, `ballooning_energy_pos_of_certificate`, `sbp_discrete_energy_identity`, `TransportLowerBarrierCertificate`, `SatisfiesMaximumJ`, `AvailableEnergyFluxTube`, `exists_unique_solution_of_radii_polynomial`, modules `PlasmaLean.Numerics.RadiiPolynomial`, `PlasmaLean.Stability.SturmComparison`, `PlasmaLean.Transport.BarrierCertificates`, `PlasmaLean.Stability.CommutedEnergy`; `CommutedWallClearanceCertificate` refuted |
+| Audit evidence | not audited as a note; the 30 October repository audit found the Subharmonic results present (N-1 row, stale note name L-7 elsewhere); kernel audit V-1 lists `Theory/Fields/Subharmonic` for a nonempty-region check |
+| Last updated | 3 November 2026: metadata added |
+
+**Current state (3 November 2026).** Milestones A–D exist in Lean under the names in the Lean evidence row, not those of the §9 table. Under the stellarator contract of 30 October the vacuum bounds of Stage 1 serve the current-free candidates (the rational field and the Dommaschk field, C1 verified, N-10 and N-33); Stage 4 barriers exist on cylinder, helical and Solov'ev geometries only (Q-15), and Stage 7 (3-D finite-β MHS) is the missing finite-β current-free equilibrium of G-1.
+
 **Workstream:** `verified-numerics` / `plasma-models-and-equilibrium` / `mhd-stability`  
 **Status:** Forward Roadmap (Post-Vacuum Demonstrator)  
 **Target Modules:** `PlasmaLean.Numerics.RadiiPolynomial`, `PlasmaLean.Stability.SturmComparison`, `PlasmaLean.Transport.BarrierCertificates`, `PlasmaLean.Stability.CommutedEnergy`

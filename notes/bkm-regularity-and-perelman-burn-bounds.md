@@ -1,5 +1,24 @@
 # MHD continuation, symmetry, thermal bounds, and verified evolution
 
+## Metadata
+
+| Field | Value |
+| --- | --- |
+| ID | `N-19` |
+| Title | MHD continuation, symmetry, thermal bounds and verified evolution: the corrected evolution specification |
+| Kind | research approach / source synthesis / formalization plan (plan §11) |
+| Addresses | `G-7`; `Q-7`, `Q-8`, `Q-9`, `Q-10` (gates E1–E6), with `Q-11`; plan §1.3, §11 |
+| Depends on | plan §1.3 and §11; sources: Caflisch–Klapper–Steele 1997, Pizzocchero–Tassi 2019 Prop. 4.3, Kozono–Shimizu–Yanagisawa 2025, Burby et al. 2025; N-2 and N-6 for the transport and entropy gates |
+| Dependency requirement | published theorems read with their hypotheses (§5 extraction policy); the MHD Riccati inequality (R3) is not known and enters only as a hypothesis |
+| Produces | the separation of existence, continuation, stability, confinement and burn claims; the QS-is-not-a-PDE-symmetry result (E1); the a posteriori evolution target (§2.3, first theorem Q-7); the bounded-domain route (§2.4); corrected thermal and burn-bound statements (§3) |
+| Difficulty | research: E2–E3 need validated PDE enclosures, E4 Hodge theory on a toroidal domain, Q-9 is open mathematics |
+| Status | stated (corrected plan): E1 verified; the conditional Riccati comparison verified; E2–E8 not started |
+| Lean evidence | `Sanity/QuasisymmetryNotSymmetry.quasisymmetry_not_pde_symmetry`, `Theory/Fields/LieGradient.lieBracket_gradient_of_contDiffAt`, `Theory/Stability/RiccatiComparison` (`riccati_le_initial`, `riccati_exp_decay`; the inequality is a hypothesis); all default build. Planned, not present (§2.3): `Kernel/IncompressibleMHD.lean`, `Theory/Evolution/MHDEnergy.lean`, `Theory/Evolution/ControlInequality.lean`, `Theory/Evolution/MHDValidation.lean`, `Certificates/MHDTrajectory.lean`, `Sanity/MHDEvolution.lean` |
+| Audit evidence | 30 October repository audit, headline-claims trace: E1 (`quasisymmetry_not_pde_symmetry`, `lieBracket_gradient_of_contDiffAt`) accurate; conditional Riccati accurate, "conditional" stated |
+| Last updated | 3 November 2026: metadata added |
+
+**Current state (3 November 2026).** E1 and the conditional Riccati comparison are the only compiled parts; Q-7 (§2.3, Pizzocchero–Tassi on the periodic benchmark) is the first open target. Under the stellarator contract of 30 October, G-7 is for a candidate satisfying C1: the Solov'ev examples are tokamak models (technique test beds only), and the current-free candidates with verified C1 (the rational field, N-10; the Dommaschk field, N-33, N-35) are vacuum fields, so a finite-β current-free equilibrium is needed before a reactor-relevant evolution gate (E8).
+
 **Workstreams:** mhd-stability / particles-and-transport / verified-numerics
 **Status:** corrected research plan, 24 October 2026; not a claim of new Lean theorems.
 **Baseline reviewed:** `c46501d9f1f0bce189b8510b31dba1579c67346e`.

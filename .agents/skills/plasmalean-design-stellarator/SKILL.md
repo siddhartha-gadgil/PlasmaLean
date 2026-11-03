@@ -19,6 +19,25 @@ Record the intended machine class, plasma species, major/minor scale, pressure/d
 
 Record fixed/free plasma boundary, conducting/resistive wall, coil-current model, finite conductor geometry, maintenance access, and shielding/blanket budget. Treat transport and stability targets separately. Permit quasi-isodynamic/omnigenous designs as well as quasisymmetric designs.
 
+## Name the verification level
+
+Name the level a candidate has reached precisely; never round up. This generic ladder from the
+LeanTheory template complements the roadmap gates P0–P9 (`08-roadmap.md`) and the contract clauses
+C1–C5. A candidate may be at different levels for different clauses.
+
+| Level | Meaning | Evidence |
+| --- | --- | --- |
+| L0 Specification | the design problem is stated as Lean predicates on decoded parameters | `Design/` definitions with docstrings; the sanity triad for the laws used |
+| L1 Candidate | a concrete candidate exists with exact (rational) data and provenance | data `def`s; source commit, solver and version; data hash (e.g. `DommaschkQA2R.candidate`, from the recorded workstation run) |
+| L2 Pointwise certificate | the target properties hold at the nominal candidate | kernel-checked certificates (`plasmalean-certify-numerics`) |
+| L3 Envelope certificate | they hold for every state in the operating envelope or every member of a family | coverage plus between-sample bounds, or a family certificate (e.g. every B₀R₀ in an interval) |
+| L4 Robust certificate | they hold with margins over the whole tolerance set | margins propagated through every certificate, with the same uncertainty parameters |
+| L5 Composed design theorem | one theorem in `Design/` concludes all target predicates for the candidate from the stated law instances only | `#print axioms` clean; listed in `scripts/check_axioms.lean` or `check_axioms_heavy.lean` |
+
+Example: the Dommaschk field is at L2 for C1 and for the vacuum Q-16 criterion, on two certified
+tori (`DommaschkKamQ16.dommaschk_Q16_vacuum`). It is at L0 at most for C2, and unaddressed for C3
+and C5.
+
 ## Explore, then certify
 
 1. Choose the next achievable gate in `08-roadmap.md`.
@@ -37,6 +56,15 @@ Do not require a proof of global optimality to certify one useful feasible desig
 Ensure all certificates refer to the same decoded geometry, fields, profiles, material state, operating interval, and uncertainty parameters. Preserve correlations between inputs. Compose implications only when one theorem's conclusion supplies the next theorem's hypotheses in the correct norm.
 
 Distinguish `∀ parameter, ∃ nearby equilibrium` from one state valid for every parameter. Distinguish fixed-boundary linear stability from free-boundary stability and from nonlinear or kinetic claims. Use a design record containing the exact predicates proved and their evidence rather than a single ambiguous `Stable` flag.
+
+## Tradeoff and tolerance studies
+
+- State tradeoffs as families: a certified bound as a function of the design parameter, certified on
+  boxes covering the range, rather than a few sampled points.
+- For tolerances, certify the property on the whole uncertainty box and report the margin. Report
+  the largest box you could certify, not the one you hoped for.
+- A failure to certify is an open item, not evidence that the design fails; an exact
+  counterexample is.
 
 ## Deliver a usable milestone
 

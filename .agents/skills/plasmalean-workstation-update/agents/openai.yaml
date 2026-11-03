@@ -1,0 +1,4 @@
+interface:
+  display_name: "Update from workstation"
+  short_description: "Re-check, merge and record PlasmaLean workstation runs"
+  default_prompt: "Use $plasmalean-workstation-update to review pending workstation runs and merge the ones that pass."

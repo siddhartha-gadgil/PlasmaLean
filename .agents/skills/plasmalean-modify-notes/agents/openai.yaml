@@ -1,0 +1,4 @@
+interface:
+  display_name: "Modify PlasmaLean notes"
+  short_description: "Change notes in place only where nothing is implemented; patch or method notes otherwise"
+  default_prompt: "Use $plasmalean-modify-notes to apply these changes to the notes, respecting what is implemented in Lean."

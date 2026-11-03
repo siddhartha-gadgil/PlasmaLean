@@ -206,13 +206,13 @@ superseded; mixed notes list the status of their parts. "Lean" names compiled ev
 | `N-15` | `notes/theory/robust-alpha-confinement.md`: intervals of ρ, v∥ < 0, μ > 0 | G-6 | N-14 | hard | verified (`alpha_gc_confined_forever_robust`, `alpha_gc_confined_forever_pm`, on-demand `alpha_gc_passing_confined_forever_quarter`) | Q-4, Q-5 |
 | `N-16` | `notes/theory/coil-kam-status.md`: coil-field KAM stages | G-5, Q-2 | N-10, N-13 | research | stage-1 tools verified (default build); stage-2 certificate vacuous (on-demand `CoilKamCert`); blocked | stage-1 sharpening (complex sup bound) |
 | `N-17` | `notes/theory/trapped-alpha-status.md`: trapped alphas, Phase 12 | G-6, Q-1 | N-4, N-7 | research | partly verified (`reference_kick_osc`, `exactQA_kick_osc`); blocked on the per-bounce remainder; contract: the alpha part of C2 | after Q-21: restate the kick as a bounce-averaged drift defect; then conserved-quantity comparison (route a) |
-| `N-18` | `notes/pde-bounds-and-verification-roadmap.md`: Stages 1–7, Milestones A–G | G-1, G-2, G-7 | — | research | Milestone A verified (T1); others stated | link stages to Q-7–Q-11 |
+| `N-18` | `notes/pde-bounds-and-verification-roadmap.md`: Stages 1–7, Milestones A–G | G-1, G-2, G-7 | — | research | Milestone A verified (T1); B–D compiled under other names (`BartaCertificate.energy_pos`, `sbpGen_identity`, `mem_Icc_of_barriers`); E partial; F refuted; G abstract only (`radii_polynomial_fixedPoint`) | link stages to Q-7–Q-11 |
 | `N-19` | `notes/bkm-regularity-and-perelman-burn-bounds.md`: corrected evolution specification (§11) | G-7, Q-7–Q-10 | §1.3, §11 | research | E1 verified (`quasisymmetry_not_pde_symmetry`, `lieBracket_gradient_of_contDiffAt`); conditional Riccati verified; rest stated | Q-7 (first theorem, §11.3) |
 | `N-20` | `notes/microturbulence-and-available-energy.md`: available energy, Â | G-2, Q-15 | sources | research | kernel lemmas verified (`Theory/Kinetic/AvailableEnergy`); opposite-sign claim refuted; Â bound stated | extract the Helander–Mackenbach Â formula (§1.5) |
 | `N-21` | `notes/holomorphic-bundles-kym-wick-rotations.md`: exploratory geometry (T10) | G-7 | §1.2, §1.4 | research | exploratory; flux degree corrected to 0; refuted contract sketches fenced; direct KYM coupling and holomorphic QS generator closed by N-32 | verdict note before any Lean (T10 rule) |
 | `N-22` | `notes/goals/` (overview, probabilistic, deterministic, milestones) | G-3 | §12 | research | stated (proposals); D/K cross-references unresolved | choose one N1 observable |
 | `N-23` | `notes/design/vacuum-demonstrator.md`: tolerance-aware vacuum fixture | G-5, G-8 | — | routine | verified fixture (`Design/VacuumPair`, `Design/VacuumTolerance`) | none |
-| `N-24` | `notes/formalization/00`–`09`: model contracts and topic specifications | all, G-11, Q-21 | — | — | active specifications (00 contracts is normative); C1/C2 entries added 30 October 2026 (`CurrentFreeTransform`, `BounceAveragedDrift`, `Omnigenous`, `EffectiveRippleBound`; not yet in Lean) | Q-21: Lean definitions and the sanity triad |
+| `N-24` | `notes/formalization/00`–`09`: model contracts and topic specifications | all, G-11, Q-21 | — | — | active specifications (00 contracts is normative); C1/C2 definitions in Lean (`CurrentFreeTransform`, `OmnigeneityContract`, `OmnigenousOn`, `ApproxOmnigenousOn`, `bounceAvgDrift`); `EffectiveRippleBound` (ε_eff) and C5 not in Lean | Q-21: Lean definitions and the sanity triad |
 | `N-25` | `notes/Stellerator.md`: original design basis | G-8 | — | — | historical (illustrative distances are not universal limits) | none |
 | `N-26` | `notes/theory/orbit-existence.md`: existence of the orbits the confinement theorems quantify over | G-1, G-6, MA-M1, MA-M2 | N-8, N-14; `FieldLineExistence` | hard | Lorentz part verified (`lorentzOrbit_exists`, `reactor_alpha_born_confined`, `reactor_alpha_confined_nonvacuous_35MeV`); Boozer part: band of births to 0.05 s and, for the original class, the explicit horizon r₀/285000 s with r₀ = √(2ψ₀/B₀) (at most 1.49 μs, shrinking to 0 at the axis) (`alpha_band_orbit_exists_005`, `alpha_orbit_exists_explicit`); proved limits of the band method `Dpsi_gt_psiStart`, `band_empty_Tav` (AR-M5, AR-M6) | coordinates through the axis (user decision); uniqueness |
 | `N-27` | `notes/theory/quasisymmetric-solution.md`: routes to a quasisymmetric solution (Q-16; re-aimed at C1 + C2 by the contract) | Q-16, G-1, G-10, G-4, G-6 | N-4, N-12; Landreman `field_axis` theorems; KAM pipeline | research | stated; route (iii) a proved barrier (`family1_not_weakQS`, `family2_not_weakQS`, with `WeakQS`/`qsDefect` in `Theory/Fields/WeakQuasisymmetry`) | first priority under the contract: Dommaschk QA fit (current-free by construction) with torus, ι and Boozer/ε_QS diagnostics; the same Boozer pipeline for Q-19 on the rational field |
@@ -342,6 +342,32 @@ Earlier ready choices (29 October 2026, superseded by the order above): the star
 (RG.4, step 2, done); Q-6 (profile one `tipCell`); N-2 → formalize the 1-D relative-entropy
 identity (done); Q-7 (Pizzocchero–Tassi Proposition 4.3); Q-4 on the workstation.
 
+
+### RG.6 Definition of done and evidence gates
+
+(Adopted from the LeanTheory template, 3 November 2026; §8 below remains the per-cycle checklist.)
+
+- **A research note** is done when its claims and evidence are classified, its dependencies and
+  barriers are current, its outputs are recorded, and the next readiness-changing action is
+  explicit. Implemented notes keep their content; changes go into method or patch notes (skill
+  `plasmalean-modify-notes`).
+- **A verified result** is done when:
+  - its declarations compile with docstrings and sanity theorems, with zero warnings;
+  - the axiom audit passes (`scripts/check_axioms.lean`, or `check_axioms_heavy.lean` for on-demand
+    modules);
+  - semantic audit findings are resolved;
+  - its entry points are registered;
+  - its note gives an honest scope statement.
+
+  Kernel laws have the sanity triad plus risk-specific checks.
+- **A goal** is done when all required contract clauses hold for one compatible witness and model,
+  and every claimed dependency is backed by the recorded level of evidence. A formal theorem alone
+  does not validate the physical model.
+- **Evidence gates.** The contract clauses that must hold for the same witness are C1–C5 (part "The
+  stellarator contract"); the roadmap gates are P0–P9 (`notes/formalization/08-roadmap.md`), and
+  the design verification levels L0–L5 are in the skill `plasmalean-design-stellarator`. The
+  assumption ledger is §1 (corrections) and the kernel docstrings (§2.1); guidance on stating goals
+  is `notes/goals/method.md`.
 ---
 
 ## 0. The two goals, and where we are
@@ -1860,3 +1886,37 @@ Gate E1 (§11.2, §11.4) and the "sanity theorem or counterexample" promised in 
   N-35 (a status log) reads `check`, and the rest read `partial` or `whole`.
 - **Updated to match:** the template (new kinds and optional rows), add-note, develop-theory, the
   skills index and README.md.
+
+### Metadata for the topic notes N-18–N-25, 3 November 2026
+
+- The template metadata table now heads N-18–N-21, N-23 and N-25; the groups N-22 and N-24 carry one
+  table each in `notes/goals/README.md` and `notes/formalization/README.md` (chapter files unchanged).
+- Lean evidence was grepped in `PlasmaLean/` (all cited modules are in the default build); planned but
+  absent names are listed as such. Audit evidence comes from the 30–31 October records.
+- "Current state" paragraphs were added to N-18, N-19, N-20, N-22, N-23 (the docs-audit VD4 item: the
+  rational field is the C1 witness) and N-24. `notes/README.md` gained the N-IDs in its index lines.
+
+### Alignment with the LeanTheory template, 3 November 2026
+
+The LeanTheory template (github.com/siddhartha-gadgil/LeanTheory) was extracted from this project
+and then gained structural additions. They are now incorporated here.
+
+- **Docs.** `docs/GettingStarted.md` covers the workflow: the project graph, the architecture, the
+  six steps from setup to reporting, the ways to interact, and the agent prompts. It is linked from
+  README.md, CONTRIBUTING.md, `notes/README.md` and the skills.
+- **Notes.**
+  - `notes/goals/method.md`: generic goal-stating guidance with PlasmaLean examples.
+  - RG.6: the definition of done for notes, verified results and goals, and the evidence gates.
+  - Metadata for N-18–N-25.
+  - RG.3 rows N-18 and N-24 corrected: B–D are compiled under other names, and the C1/C2
+    definitions are in Lean.
+  - Two stale names in `00-model-contracts.md` fixed: `omnigeneityContract_zero_iff` →
+    `boozerModelOmnigeneity_zero_iff`; the nonexistent `currentFreeTransform_of_vacuum` replaced by
+    per-torus C1 witnesses.
+- **Skills.**
+  - Every LeanTheory skill already had a PlasmaLean counterpart (`domain-design` =
+    `plasmalean-design-stellarator`).
+  - Added: the L0–L5 verification ladder and the tradeoff/tolerance section (design); the generic
+    hazard list (audit); the exact-phrase rule and reading list (develop-theory).
+  - `agents/openai.yaml` added for develop-theory, workstation-update, add-note and modify-notes.
+- **README.** New Policies section.

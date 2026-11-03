@@ -1,0 +1,4 @@
+interface:
+  display_name: "Add a PlasmaLean note"
+  short_description: "Record a result, failure, source or decision as a registered research note"
+  default_prompt: "Use $plasmalean-add-note to record the outcome of this discussion as a registered research note."

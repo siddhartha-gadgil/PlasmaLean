@@ -1182,6 +1182,12 @@
     "text": "vacuum demonstrator checked tolerance-aware calibration fixture, the cnt reference direction, and the remaining boundary to a practical stellarator."
   },
   {
+    "title": "Metadata",
+    "section": "Vacuum demonstrator",
+    "url": "vacuum-demonstrator.html#metadata",
+    "text": "metadata vacuum demonstrator"
+  },
+  {
     "title": "What we are building",
     "section": "Vacuum demonstrator",
     "url": "vacuum-demonstrator.html#what-we-are-building",
@@ -1744,6 +1750,12 @@
     "section": "Implementation plan",
     "url": "implementation-plan.html#rg5-work-selection",
     "text": "rg.5 work selection implementation plan"
+  },
+  {
+    "title": "RG.6 Definition of done and evidence gates",
+    "section": "Implementation plan",
+    "url": "implementation-plan.html#rg6-definition-of-done-and-evidence-gates",
+    "text": "rg.6 definition of done and evidence gates implementation plan"
   },
   {
     "title": "0. The two goals, and where we are",
@@ -2530,6 +2542,18 @@
     "section": "Implementation plan",
     "url": "implementation-plan.html#implemented-notes-keep-their-content-the-modify-notes-skill-3-november-2026",
     "text": "implemented notes keep their content: the modify-notes skill, 3 november 2026 implementation plan"
+  },
+  {
+    "title": "Metadata for the topic notes N-18–N-25, 3 November 2026",
+    "section": "Implementation plan",
+    "url": "implementation-plan.html#metadata-for-the-topic-notes-n-18n-25-3-november-2026",
+    "text": "metadata for the topic notes n-18–n-25, 3 november 2026 implementation plan"
+  },
+  {
+    "title": "Alignment with the LeanTheory template, 3 November 2026",
+    "section": "Implementation plan",
+    "url": "implementation-plan.html#alignment-with-the-leantheory-template-3-november-2026",
+    "text": "alignment with the leantheory template, 3 november 2026 implementation plan"
   },
   {
     "title": "M0 · Exact symmetric equilibria: slab, screw pinch, Solov'ev, helical",

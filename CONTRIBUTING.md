@@ -28,6 +28,12 @@ computation or cited result as checked). Human contributions enter the same grap
 paper proof, a counterexample or a source can be recorded as a note or question and picked up by
 an agent or a person.
 
+The step-by-step workflow, the ways to talk to the agents and copy-paste prompts are in
+[docs/GettingStarted.md](docs/GettingStarted.md). To record a contribution as a note, say
+**`add a note`**. To change existing notes, say **`modify notes`**: notes with no Lean
+implementation are edited in place, while implemented ones get a new method or patch note, so that
+the specification behind compiled code is never silently rewritten.
+
 ## Three reading paths
 
 ### 1. Understand what a verified statement means

@@ -1,5 +1,22 @@
 # Formalization Note: Holomorphic Foliations, Kähler–Yang–Mills Moment Maps, and Para-Kähler Wick Rotations in PlasmaLean
 
+## Metadata
+
+| Field | Value |
+| --- | --- |
+| ID | `N-21` |
+| Title | Holomorphic foliations, Kähler–Yang–Mills moment maps and para-Kähler Wick rotations (exploratory geometry) |
+| Kind | research approach (exploratory geometry, track T10), with refuted contract sketches |
+| Addresses | `G-7`; plan §1.2, §1.4; track T10 |
+| Depends on | plan §1.2, §1.4; N-32 (assessment that closes two routes) |
+| Dependency requirement | none usable as an established premise: every proposed contract is refuted or vacuous; T10 rule: a verdict note before any Lean |
+| Produces | the corrections (flux degree 0, vacuous Futaki contract); the Elsasser identities (implemented separately); closed routes: direct KYM coupling and holomorphic QS generator (N-32) |
+| Difficulty | research (no theorem that would feed a stellarator goal has been identified) |
+| Status | exploratory: flux degree corrected to 0; refuted contract sketches fenced; direct KYM coupling and holomorphic QS generator closed by N-32 |
+| Lean evidence | `Theory/Stability/Elsasser` (`energy_identity`, `cross_helicity_identity`, `elsasser_energy_hasDerivAt_zero`), default build; these replace the superseded §4 sketch. Planned, not present: `HolomorphicFluxFamily`, `flux_degree`, `holomorphicSectionDim`, `holomorphicSectionDim_deformation_invariant`, `FutakiObstructionCertificate`, `no_equilibrium_of_futaki_obstruction`, `ElsasserParaKahlerState`, `Challenge6_ConformalTorusModulus`, modules `PlasmaLean.Geometry.HolomorphicFoliation`, `PlasmaLean.Equilibrium.KYMMomentMap`, `PlasmaLean.Stability.ParaKahlerWick` |
+| Audit evidence | not audited as a note; the 30 October repository audit L-7 records `Challenge6_ConformalTorusModulus` as a nonexistent declaration (cited elsewhere) |
+| Last updated | 3 November 2026: metadata added |
+
 **Workstream:** `geometry-and-fields` / `plasma-models-and-equilibrium` / `mhd-stability`  
 **Status:** Blueprint & Advanced Algebraic-Geometric Specifications  
 **Target Modules:**  
