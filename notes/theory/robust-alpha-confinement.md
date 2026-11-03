@@ -1,5 +1,24 @@
 # Making the alpha guiding-centre result robust: intervals of ρ, v∥ < 0, μ > 0
 
+## Metadata
+
+| Field | Value |
+| --- | --- |
+| ID | `N-15` |
+| Title | Making the alpha guiding-centre result robust: intervals of ρ (energy, B₀R₀), v∥ < 0, μ > 0 |
+| Kind | research approach / computation (untrusted) / formalization plan |
+| Addresses | `G-6`, `Q-4`, `Q-5` |
+| Depends on | N-14 (`alpha_gc_confined_forever` and its pipeline); Littlejohn model (supplied); `scripts/gc_kam/` |
+| Dependency requirement | the compiled GC KAM pipeline; the Littlejohn equations as a supplied model |
+| Produces | the ranking (v∥ < 0 with ι_B; Chebyshev-in-ρ torus families; μ > 0 via a modified field); modules M1–M6 (M1–M4 carried out) |
+| Difficulty | hard (certificate cost per ρ cell; node validity) |
+| Status | verified: ρ interval (B₀R₀ ∈ [67.95, 69.99], v∥ > 0) and v∥ < 0 at the design B₀R₀, μ > 0 (N-14); open: v∥ < 0 over the B₀R₀ range (audit M-1), Q-4, Q-5 |
+| Lean evidence | `Theory/KAM/DiophantineB.iotaB_period_diophantine`, `Design/RationalStellaratorGCNegTorusExact.gc_exact_torus_neg`, `Design/RationalStellaratorGCNegForever.rationalStellarator_gc_field_confined_forever_neg`, `Design/RationalStellaratorGCNegConfined.alpha_gc_confined_forever_pm`, `Theory/Fields/CurlProduct.curl_fderiv_smul`, `Theory/Kinetic/GuidingCentrePassing` (`modFieldFn`, `littlejohn_passing_isFieldLine`, `littlejohn_passing_confined`), `Design/RationalStellaratorGCFamExact.gc_family_torus`, `Design/RationalStellaratorGCFamConfined.alpha_gc_confined_forever_robust`: default build; `alpha_gc_passing_confined_forever_quarter` on demand. M5 (`kamH_of_rho_near`) was not built |
+| Audit evidence | 30 October repository audit M-1 (overclaim in README: `robust` covers v∥ > 0 only, `pm` only at the design B₀R₀, so v∥ < 0 over the range is not proved); model audit MA-L2 |
+| Last updated | 3 November 2026: metadata added |
+
+**Current state (3 November 2026).** Despite the "nothing compiled" line below, modules M1–M4 are compiled (default build): v∥ < 0 at the design B₀R₀ (`alpha_gc_confined_forever_pm`), the Littlejohn passing reduction (`littlejohn_passing_isFieldLine`) and the Chebyshev-in-ρ family (`alpha_gc_confined_forever_robust`, B₀R₀ ∈ [67.95, 69.99] T m, v∥ > 0). μ > 0 is in N-14. Open: v∥ < 0 over the B₀R₀ range (audit M-1), the energy window (Q-4) and λ > 1/4 (Q-5).
+
 Lane-A discovery note, written after progress report 9 (`alpha_gc_confined_forever`). **Nothing here is a compiled
 Lean theorem.** Tags: **[Lean]** compiled and sorry-free; **[num]** untrusted double-precision numerics;
 **[plan]** proposal.

@@ -1,5 +1,24 @@
 # Guiding-centre KAM for the rational stellarator: status
 
+## Metadata
+
+| Field | Value |
+| --- | --- |
+| ID | `N-14` |
+| Title | Guiding-centre KAM for the rational stellarator: status log (passing alphas with μ = 0 and μ > 0, energy window, velocity sets) |
+| Kind | status log / formalization / certificate |
+| Addresses | `G-6`, `Q-4` (and `Q-5`); `G-1` (guiding centres, reduction named); target 3 of N-13 |
+| Depends on | N-10 (KAM theorem), N-13 (reduction); Littlejohn GC model (`LittlejohnOrbit`, supplied); `Theory/KAM/InvSqrt` |
+| Dependency requirement | the compiled flow-form KAM theorem; the Littlejohn equations are a supplied model (non-relativistic, collisionless, static vacuum model field) |
+| Produces | GC tori and all-time confinement theorems; λ cells [0, 1/16], [1/16, 1/8] and up to 1/4 (on demand); the ±0.4 eV energy window; positive-measure velocity sets; build costs |
+| Difficulty | hard (certificate size within the 6 GB budget; node validity of the expansion) |
+| Status | verified (passing alphas at one energy and B₀R₀, λ ∈ [0, 1/16], default build; wider λ and the energy window on demand); open: Q-4 (wider window), Q-5 (λ > 1/4) |
+| Lean evidence | default build: `gc_exact_torus`, `gc_exact_torus_real`, `rationalStellarator_gc_field_confined_forever`, `alpha_gc_confined_forever` (`Design/RationalStellaratorGC*`), `alpha_gc_passing_confined_forever`, `gc_mu_passing_confined_forever_SI` (`Design/RationalStellaratorGCMuConfined`), `alphaBoxVel` (`Design/RationalStellaratorGCBoxConfined`); on demand: `alpha_gc_passing_confined_forever_wide` (`…GCMuWide`), `alpha_gc_passing_confined_forever_quarter` (`…GCMuQuarter`), `alpha_gc_confined_forever_energy_window`, `alphaEwVel_volume_pos`, `alpha_gc_ew_confined_forever_velocity_set` (`…GCEwConfined`) |
+| Audit evidence | 30 October repository audit: λ ∈ [0, 1/16] accurate; wide, quarter and energy-window results accurate (on demand); velocity set accurate, with L-5 (texts omit "starting within 0.03 R₀ of the axis"); model audit MA-L2 (`LittlejohnOrbit` uses the totalised (B*_∥)⁻¹) |
+| Last updated | 3 November 2026: metadata added |
+
+**Current state (3 November 2026).** Sections 1–6 are the Phase 11b record; the items §6 lists as remaining (cylindrical `gcField`, trapping, guiding centres) were done, and the modules are now imported by `PlasmaLean.lean` (`alpha_gc_confined_forever`, default build). Later sections add μ > 0 (§7, default), the velocity box (§8), the energy window (§9, on demand) and wider λ (§10, on demand). Robustness in B₀R₀ and v∥ < 0 are recorded in N-15.
+
 Phase 11b, target 3 of `notes/theory/after-kam.md`. Goal: all-time confinement of passing (`μ = 0`)
 guiding-centre orbits in the exact rational stellarator field `B = field (1/4)`, by applying the
 verified KAM theorem to the modified field `B̃ = B + ρ ∇×b` (`b = B/|B|`, `ρ = ρ_s` in model units).

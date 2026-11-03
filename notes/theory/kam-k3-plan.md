@@ -1,5 +1,24 @@
 # K3: an explicit a posteriori KAM theorem for torus A (plan after stage K3a)
 
+## Metadata
+
+| Field | Value |
+| --- | --- |
+| ID | `N-11` |
+| Title | K3: plan for an explicit a posteriori KAM theorem for torus A (written after stage K3a) |
+| Kind | research approach (formalization plan), with a record of the compiled stage K3a |
+| Addresses | `G-1`; stage K3 of the N-10 plan; track T7 |
+| Depends on | N-10 (§§2.2–2.5, §5), K2 (`Design/KamTorusA*`), the oracle `scripts/kam_oracle/`; FHL 2017 Thm 2.5 / Lemma 2.8, ELP-S 2025 Thm 6.2 |
+| Dependency requirement | the K2 residual certificate compiled; FHL and ELP-S as published templates for the explicit constants |
+| Produces | the K3a record (Diophantine constants, cohomological estimates); the proposed K3 theorem in flow form; the constant budget for torus A; the lemma list (§4) |
+| Difficulty | research (explicit constants, weighted ℓ¹(ℤ²) Banach algebra, Neumann composition) |
+| Status | superseded (K3 done in Phase 10: `torusA_exact`) |
+| Lean evidence | K3a: `Theory/KAM/Diophantine` (`Diophantine`, `goldenMean_diophantine`, `torusA_rotation_diophantine`, `torusA_period_diophantine`), `Theory/KAM/Cohomological` (`cohSol_estimate`, `cohSol_estimate_one`, `hasDerivAt_fourierSum_cohSol`); outcome: `Theory/KAM/KamSequence.kam_sequence`, `Theory/KAM/WeightedEll1Z2` (`WEll1Z2`), `kam_step` (`Design/KamNewtonStep`), `kam_flow_torus` (`Design/KamIteration`, `Design/KamFlowIteration`), `Design/KamTorusAExact.torusA_exact`; all default build. The proposed `flux_average` does not exist under that name |
+| Audit evidence | not audited separately; its outcome `torusA_exact` feeds `rationalStellarator_confined_forever_exists`, judged accurate by the 30 October repository audit |
+| Last updated | 3 November 2026: metadata added |
+
+**Current state (3 November 2026).** Superseded: the lemma list of §4 was carried out in Phase 10. The KAM step and iteration are `kam_step`/`kam_flow_torus`, the weighted algebra is `Theory/KAM/WeightedEll1Z2`, and the exact torus is `KamTorusAExact.torusA_exact`, used by `rationalStellarator_confined_forever_exists` (N-10). The generalised interface for other fields is `KamFlow*G` (N-33, N-35).
+
 Status: plan. Stage K3a is compiled. Everything in §2–§4 is a proposal and is **not** a Lean theorem.
 Input: `kam-route.md` §2.2–2.5 and §5 (FHL 2017 Thm 2.5 / Lemma 2.8; ELP-S 2025 Thm 6.2), K2
 (`Design/KamTorusA*.lean`), the oracle (`scripts/kam_oracle/`).

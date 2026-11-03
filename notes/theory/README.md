@@ -42,6 +42,13 @@ Phase 8 (kam-route.md, finite-beta-stellarator.md):
   Run the untrusted multiprecision FHL check (K2′) before starting the KAM theorem (K3, 4–8 weeks).
 - Finite β: `Design/LandremanStretched` (`force_balance`, `field_transport`, `fieldLine_closed`,
   `fieldLine_confined`; ≈ 1–2 agent-days). Stepped pressure on the rational field only after K3.
+- [`guiding-centre-averaging.md`](guiding-centre-averaging.md) (N-8): guiding-centre averaging (oscillatory integration by parts, gyro-integrated Noether identity) and all-time 3.5 MeV alpha confinement on the rescaled Solov'ev field (a tokamak model); verified (`reactor_alpha_confined`, `gyroNoether_band`, `osc_ibp_drift`, `alpha_trapped_reactorQA_averaged`).
+- [`kam-k3-plan.md`](kam-k3-plan.md) (N-11): plan for the explicit a posteriori KAM theorem for torus A after stage K3a; superseded (K3 done: `torusA_exact`).
+- [`after-kam.md`](after-kam.md) (N-13): after the KAM theorem: guiding-centre KAM (done, N-14), coil-field KAM (blocked, Q-2) and stepped pressure (lead, Q-14), ranked.
+- [`gc-kam-status.md`](gc-kam-status.md) (N-14): status log of the guiding-centre KAM for the rational stellarator: passing alphas for all time in the Littlejohn model (`alpha_gc_confined_forever`, `alpha_gc_passing_confined_forever`; energy window and wider λ on demand).
+- [`robust-alpha-confinement.md`](robust-alpha-confinement.md) (N-15): robustness of the alpha guiding-centre result: B₀R₀ interval (`alpha_gc_confined_forever_robust`), v∥ < 0 at the design B₀R₀ (`alpha_gc_confined_forever_pm`), μ > 0; open: Q-4, Q-5.
+- [`coil-kam-status.md`](coil-kam-status.md) (N-16): status of the coil-field KAM: analytic tools verified, the on-demand `CoilKamCert` residual bound vacuous; blocked (Q-2).
+- [`trapped-alpha-status.md`](trapped-alpha-status.md) (N-17): trapped 3.5 MeV alphas in near-axis QA (Phase 12): exact-QA all-time result, re-anchored scheme, certified kick amplitude (`reference_kick_osc`); per-bounce remainders open, Q-1 parked.
 - [`orbit-existence.md`](orbit-existence.md) (N-26): existence of Lorentz and Boozer guiding-centre orbits; Lorentz part verified, Boozer part local.
 - [`quasisymmetric-solution.md`](quasisymmetric-solution.md) (N-27): routes to a quasisymmetric solution (Q-16); exact QS in a volume is open; exact families obstructed; validated explicit vacuum field recommended.
 - [`grad-conjecture.md`](grad-conjecture.md) (N-28): Grad's conjecture, the 2026 counterexamples (Gómez-Serrano–Liehr–Taylor with a Lean proof, Landreman, Issan et al.) and their use here.

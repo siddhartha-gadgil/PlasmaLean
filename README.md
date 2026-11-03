@@ -38,61 +38,55 @@ Heavy numerics and large certificate builds can be offloaded to a workstation; s
 
 ## Progress
 
-**Against the contract (1 November 2026), honestly:** no candidate satisfies more than C1 and C4
-together, and those only in vacuum.
+**Against the contract (3 November 2026), honestly:** one stellarator candidate now has verified
+C1 together with a certified quasisymmetry defect, in vacuum. C2–C5 are open for it.
 
-- **C1 (partial, vacuum only):**
-  - An exact non-axisymmetric *vacuum* field (no plasma current) has a KAM-certified invariant
-    torus with rotation number ι ≈ 0.137 that confines its field lines for all time.
-  - **C1 holds for the exact Dommaschk quasi-axisymmetric vacuum field** (1 November 2026,
-    `DommaschkKamC.dommaschk_C1_unconditional`, on-demand modules). This is a two-period, purely
-    rational field (`DommaschkQA2R`). It has a KAM-certified invariant torus with |ι| ≥ 0.24
-    (ι = −(85+√5)/361), from an a posteriori theorem with a 96 × 80 torus whose certified initial
-    error is ≤ 1.2 × 10⁻²⁷, and zero net toroidal current.
-  - A second certified torus A (|ι| ≥ 0.2386) is proved nested around torus C
-    (`DommaschkKamNested.dommaschk_nested_C1`, 2 November 2026).
-  - Not yet proved: confinement inside the tori, a continuum of nested surfaces, or any current-free
-    equilibrium at finite β.
-  - The C1 current is the Ampère circulation μ₀⁻¹∮B·dl around each confining torus's own
-    poloidal loop, with |ι| ≥ ι_min. This was audit fix AR-H1, 31 October: an earlier section-based
-    clause could be satisfied vacuously.
-  - Landreman family 2 fails C1 (`family2_not_currentFreeTransform`), via a Stokes theorem for
-    regular sections (`netToroidalCurrent_eq_lineIntegral_div`) and positive section current
-    (`family2_net_current_pos`).
-- **C2 (partial, guiding-centre model):**
-  - Omnigeneity and the bounce-averaged drift are defined in the Boozer guiding-centre model
-    (`OmnigenousOn`, `bounceAvgDrift`). Since audit fix AC-1 (2 November), C2 is a property of the
-    physical field: it needs a proved Boozer chart (`Contract.BoozerModelOf`). The `exactQA`/`reactorQA`
-    results are statements about a supplied Boozer model.
-  - Quasisymmetry ⇒ omnigeneity is proved there, exactly and with a per-bounce defect bound
-    (`omnigenousOn_of_exactQS`, `approxOmnigenousOn_of_defect_le`).
-    - `OmnigenousOn` asks for exact return of the guiding-centre flux label after each bounce,
-      which is stronger than leading-order omnigeneity. Quasi-isodynamic fields are expected to
-      meet only the approximate form.
-  - ε_eff is not in Lean.
-  - Weak quasisymmetry is defined. Neither Landreman family is weakly quasisymmetric on any
-    region containing its magnetic axis, for any potential critical on the axis.
-  - On both certified tori of the Dommaschk field the quasi-axisymmetry defect is **certified**
-    (2 November 2026, `DommaschkKamQ16.dommaschk_Q16_vacuum`, on demand): the off-QA Boozer spectral
-    defect is ≤ 0.0063 |ι| (torus C) and ≤ 0.0090 |ι| (torus A), strong tier, on a nested pair. This is one thin torus. It is not a C2 result:
-    the omnigeneity contract is not yet tied to the physical field (audit AC-1), and a volume Boozer
-    chart does not exist exactly for this field.
-  - The alpha results below concern 3.5 MeV alphas, mostly passing orbits, which is one part of
-    C2 at most.
+- **The lead candidate: an exact Dommaschk quasi-axisymmetric vacuum field.** It is a purely
+  rational field with two field periods (`Design/DommaschkQA2R`). It was found by untrusted
+  workstation numerics and then certified in Lean through on-demand modules, standard axioms only
+  ([N-31](notes/theory/dommaschk-qa.md), [N-33](notes/theory/dommaschk-kam-certificate.md),
+  [N-34](notes/theory/dommaschk-qs-defect.md)). Main theorem:
+  `DommaschkKamQ16.dommaschk_Q16_vacuum`.
+  - **Exact field:** a vacuum field, `DommaschkQA2R.candidate_vacuum`, in the default build.
+  - **Certified tori:** two exact invariant tori C and A, with ι_C = −(85+√5)/361 and
+    ι_A = −(19+√5)/89, from an a posteriori KAM theorem applied to 96 × 80 Fourier tori. The tori
+    are proved nested (`DommaschkKamNested.dommaschk_nested`).
+  - **C1:** zero net toroidal current and |ι| ≥ 0.2386 on both tori
+    (`DommaschkKamNested.dommaschk_nested_C1`).
+  - **Quasi-axisymmetry:** on both tori the off-QA Boozer spectral defect is certified at
+    ≤ 0.0063 |ι| (C) and ≤ 0.0090 |ι| (A), the strong tier. This meets the decided vacuum criterion
+    of question Q-16 on a nested pair.
+  - **Not proved:** confinement of field lines inside the tori, more than two surfaces (an exact
+    continuum is impossible for this non-integrable field), C2 (no Boozer chart of the field over a
+    volume, see audit AC-1), and finite β, C3 and C5.
+- **C1 elsewhere:** the earlier rational stellarator vacuum field has a KAM-certified torus with
+  ι ≈ 0.137 that confines its field lines for all time. The C1 current is the Ampère circulation
+  μ₀⁻¹∮B·dl around each torus's own poloidal loop; this is audit fix AR-H1, since an earlier
+  section-based clause could be satisfied vacuously. Landreman family 2 fails C1
+  (`family2_not_currentFreeTransform`).
+- **C2:**
+  - **Contract:** since audit fix AC-1, C2 is a property of the physical field. It requires a proved
+    Boozer chart (`Contract.BoozerModelOf`); the only field-level instance so far is the vacuous
+    ∇φ fixture.
+  - **The bridge:** in the Boozer guiding-centre model, quasisymmetry implies omnigeneity, exactly
+    and with a per-bounce defect bound (`omnigenousOn_of_exactQS`, `approxOmnigenousOn_of_defect_le`).
+    The `exactQA`/`reactorQA` results are statements about a supplied Boozer model.
+  - **Not in Lean:** ε_eff.
+  - **Alphas:** the alpha results below concern 3.5 MeV alphas, mostly passing orbits, which is at
+    most one part of C2.
 - **C3 (test beds only):** Mercier stability on a band of Landreman family 2 (current-carrying),
-  and Mercier and ballooning stability of a Solov'ev tokamak equilibrium. Nothing for a
-  current-free equilibrium.
-- **C4:** the vacuum fields inside their certified torus. Finite-β exact equilibria exist only for
+  and Mercier and ballooning stability of a Solov'ev tokamak equilibrium. Nothing for a current-free
+  equilibrium.
+- **C4:** the vacuum fields inside their certified tori. Finite-β exact equilibria exist only for
   symmetric models and the current-carrying Landreman families.
 - **C5 (tokamak model and 0-D only):** a burn-temperature band holds on a Solov'ev (tokamak) field
-  for every *supplied* transport solution. On stellarator parameters there are only 0-D windows
-  and proved obstructions at measured confinement factors.
+  for every *supplied* transport solution. On stellarator parameters there are only 0-D windows and
+  proved obstructions at measured confinement factors.
 
-The next priorities:
-- a nested certified region for the Dommaschk field (a second torus); a Boozer model tied to the field
-  (audit AC-1) and a C2-type statement;
+The next priorities (choices for the maintainer):
+- C2 for the actual field: an approximate Boozer chart with a certified defect, or another route;
 - ε_eff in Lean;
-- a current-free finite-β equilibrium.
+- a current-free finite-β equilibrium near the certified vacuum tori.
 
 The earliest checked results (14 October 2026) are source-free Maxwell identities for closed
 filament fields; the Suydam interchange criterion in both directions; Newcomb/Riccati
@@ -105,8 +99,9 @@ confinement is certified.
 
 On 20 October an [implementation plan](notes/implementation-plan.md) was fixed. It cycles
 between theory, certificate techniques and a ladder of successively realistic models, targeting
-both confinement and keeping the plasma hot. Ten phases are complete, and Phases 11, 14, 15 and 16 are in progress.
-The results by topic, with their role under the contract:
+both confinement and keeping the plasma hot. Ten phases are complete, and Phases 11, 14, 15 and 16 are in progress. Since 30 October the work has
+been organized by the stellarator contract and the research graph (below), which led to the Dommaschk
+certification above. The earlier results by topic, with their role under the contract:
 
 - **one field with a pressure-budget band (a tokamak model for C5, not a candidate):** one exact Solov'ev field satisfies force balance with
   the offset pressure p_eq + 40 kPa; every 3.5 MeV alpha orbit born in the core stays confined for all time
@@ -176,7 +171,13 @@ PlasmaLean/
   Certificates/            Exact arithmetic and proved numerical checkers
   Bridge/                  Common-candidate and witness contracts
   Design/                  Vacuum fixture, exact equilibria and confinement/stability examples
-notes/                     Design basis and formalization plans
+notes/                     Plan, research notes and specifications (see "Notes and the research graph")
+  implementation-plan.md   Plan of record: the contract, the research graph (goals, questions, notes),
+                           audit status, work selection, dated logs
+  theory/                  Research notes N-*, one file each, indexed in theory/README.md
+  formalization/           Model contracts (00, normative) and topic specifications 01–09
+  audit/                   Strict audit records with finding IDs
+  note-template.md         Template every research note follows
 progress/                  Dated evidence, task status and slideshow content
 docs/                      Static website, illustrated landing page and slides
 scripts/                   Setup, axiom audit, website generation, oracles and workstation pipeline
@@ -212,6 +213,12 @@ skills (`.agents/skills/`, entry point `plasmalean-develop-theory`) understand a
   the notes and the plan.
 - **`keep working`**: autonomous mode; the agent repeatedly picks the most valuable ready item and
   continues until a user decision is needed or nothing useful is ready.
+- **`add a note`** (or **`make a note`**, **`record this`**): record the outcome of a discussion, result,
+  failure, source assessment or design decision as a registered research note (skill
+  `plasmalean-add-note`), or update an existing note to its current state.
+- **`update from workstation`**: review, re-check and merge workstation runs (skill
+  `plasmalean-workstation-update`); the workstation can run an unattended poller that executes the
+  commands the laptop queues in `scripts/workstation/next.sh`.
 
 The **research graph** lives in [notes/implementation-plan.md](notes/implementation-plan.md): goals
 (`G-*`), questions (`Q-*`) and research notes (`N-*`, written with
@@ -222,6 +229,34 @@ conditional. The workflow guards against two failure modes: **research drift** (
 lose the motivating question, repeat abandoned approaches or silently change definitions) and
 **validity drift** (a plausible argument, sampled computation or cited result treated as if it
 had been checked under the exact hypotheses needed downstream).
+
+## Notes and the research graph
+
+All planning and theory development is recorded in `notes/`, in a fixed structure.
+
+- **The plan of record,** [notes/implementation-plan.md](notes/implementation-plan.md), holds:
+  - the stellarator contract;
+  - the research graph: a goal registry (RG.1, `G-*`), a question registry (RG.2, `Q-*`) and a note
+    registry with dependency edges (RG.3, `N-*`);
+  - the strict-audit status (RG.4) and the work-selection rules (RG.5);
+  - dated progress logs (§9, §10, §13).
+- **Research notes** live in [notes/theory/](notes/theory/README.md), one file per note.
+  - Each note has a stable ID `N-k`, a row in RG.3 and a line in the index `notes/theory/README.md`.
+  - Each note starts with the metadata table of [notes/note-template.md](notes/note-template.md):
+    kind, what it addresses, dependencies, difficulty, status, Lean evidence, audit evidence, last
+    update.
+  - The body follows the template's sections: purpose and scope, dependencies, sources, theory
+    development, claims and evidence, barriers and readiness, outputs.
+  - Every claim carries exactly one status: conjecture, proof sketch, complete proof, numerical
+    observation (untrusted), sourced theorem, or compiled Lean theorem with its declaration name.
+- **Specifications** live in [notes/formalization/](notes/formalization/00-model-contracts.md).
+  `00-model-contracts.md` is normative: model contracts, and C1–C5 in Lean form.
+- **Audit records** live in [notes/audit/](notes/audit/). Findings have IDs, such as AR-H1 and
+  AC-1, with severity and resolution.
+- **Workflow.** Notes are updated after every work unit, including failures. A note is rewritten to
+  its current state rather than appended to indefinitely. No note file exists without
+  registration. The agents follow this through the skills `plasmalean-develop-theory` and
+  `plasmalean-add-note`.
 
 ## Build and audit
 

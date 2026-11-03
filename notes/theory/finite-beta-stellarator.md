@@ -1,5 +1,24 @@
 # A finite-β, non-axisymmetric equilibrium with proofs: which route?
 
+## Metadata
+
+| Field | Value |
+| --- | --- |
+| ID | `N-12` |
+| Title | Routes to a finite-β non-axisymmetric equilibrium with proofs: Landreman families, near-axis, small pressure, stepped pressure |
+| Kind | source synthesis / research approach / formalization (families 1 and 2) / computation (untrusted ballooning search) |
+| Addresses | `G-4` (C1 + C3 + C4), `Q-3`, `Q-14`, `Q-17`, `Q-18`, `Q-20`; rungs M3, M5 |
+| Depends on | Landreman arXiv:2609.26742, Gómez-Serrano–Liehr–Taylor arXiv:2609.24739, Issan et al. arXiv:2610.07304 (preprints), ELP-S JEMS 27 (2025); N-10 (KAM torus for stepped pressure); Mercier formula (Landreman–Jorge) and ballooning line reduction as supplied model laws |
+| Dependency requirement | preprint identities re-proved in Lean; the Mercier index and the ballooning reduction are supplied; stepped pressure needs a compiled KAM torus (available: `torusA_exact`) plus Hamilton–Jacobi on T² and Cauchy–Kovalevskaya (not available) |
+| Produces | verdict and route ranking; family 1 and family 2 in Lean; family-2 labels derived from the field (§8); ballooning reduced to one certificate and a search (§§9–10) |
+| Difficulty | research (stepped pressure is KAM-class twice over; the ballooning certificate needs ≈ 100–200 CPU-h) |
+| Status | family 1 verified (force balance, Mercier unstable, Grad counterexample); family-2 Mercier band verified with derived labels; ballooning reduced, no certificate found (Q-3 open); both families carry net toroidal current (Q-18), so they are C3 test beds, not candidates; stepped pressure (Q-14) a lead, plan only |
+| Lean evidence | `Design/LandremanEquilibrium.force_balance`, `Design/LandremanMercier.family1_mercier_unstable`, `Design/LandremanGradCounterexample.family1_grad_counterexample`, `Design/LandremanFamily2MercierStable.family2_mercier_stable`, `Design/LandremanFamily2MercierDerived.family2_mercier_stable_derived`, `Design/LandremanFamily2Ballooning.family2_stable_of_cert`, `Design/LandremanFamily2BallooningSecular.family2_stable_of_secular_cert`, `Design/LandremanNotQS` (`family1_not_weakQS`, `family2_not_weakQS`), `Design/LandremanNetCurrent.family2_loopCurrent_pos`; all default build |
+| Audit evidence | 30 October repository audit: Mercier results and the ballooning reduction accurate, L-6 (Mercier formula supplied); §3 lists this note's planned names (`rationalStellarator_stepped`, `weak_forceBalance`) as plans; 31 October refresh audit AR-H1 (C1 current clause vacuous; affects the "family 2 fails C1" claims, re-established 31 October with the loop current), AR-M7 and AR-M8 (not-weakly-QS and Grad headlines need their hypotheses) |
+| Last updated | 3 November 2026: metadata added |
+
+**Current state (3 November 2026).** Stages F1 and F2 were carried out (§§8–10 and the Lean list above). Under the contract both Landreman families carry net toroidal current (Q-18: `family2_loopCurrent_pos`), so they are C3 technique test beds, not current-free candidates; the family-2 ballooning certificate (Q-3) is open. The current-free finite-β route is stepped pressure across the certified torus (Q-14 → Q-20), still at the plan stage (§4 and `after-kam.md` §3).
+
 Lane-A discovery note (Phase 8 input). Status tags follow `README.md`. **Nothing here is a compiled Lean
 theorem.** Symbolic checks: sympy in `/tmp/laneA7/scripts/landreman1.py` and `landreman1b.py`. The literature
 was checked on 20 October 2026, and three of the most relevant papers are preprints from September–October 2026.

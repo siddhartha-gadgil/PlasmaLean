@@ -1,5 +1,24 @@
 # Why exact minimum-B / maximum-J is restricted in toroidal fields
 
+## Metadata
+
+| Field | Value |
+| --- | --- |
+| ID | `N-1` |
+| Title | Why exact minimum-B / maximum-J is restricted in toroidal fields: subharmonicity, the curvature identity and the closed-axis obstruction |
+| Kind | proof (informal, sympy-checked) / source synthesis (published Theorems D–F) / conjecture (G) |
+| Addresses | `G-1` (legacy G1); design implication for `G-10` (QS is not max-J); tracks T1, T8; correction of plan §1.1 |
+| Depends on | plan §1.1 (the false "no interior minimum" claim); Helander 2014 (Eq. 24, §§3.3, 3.7), Rodríguez–Helander–Goodman 2024, Cary–Shasharina 1997; kernel `Vacuum.VacuumField` |
+| Dependency requirement | Theorem A–Corollary C need only a C² vacuum field (or ∇p = 0 at the point); D–F are cited as published (E formal asymptotic) and are not premises of any Lean result |
+| Produces | counterexamples to the old claim; Theorem A, Corollaries B and C; Conjecture G; Lean targets (§2), since carried out under other names |
+| Difficulty | moderate (weak maximum principle, field-curvature identity); finite-β version and Conjecture G: research |
+| Status | verified (core: no strict interior maximum of ‖B‖², min-B counterexample, curvature identity, closed-axis obstruction); finite-β version stated, not done (T1 ○); G conjectured; Hall–McNamara lead |
+| Lean evidence | `Theory/Fields/Subharmonic` (`VacuumField.not_strict_local_max_normSq`, `exists_vacuum_strict_interior_min`) and `Theory/Fields/CurvatureObstruction` (`curvature_zero_of_normSq_critical`, `VacuumField.curvature_zero_of_isLocalMin`, `VacuumField.not_closed_fieldLine_minB`), sanity cases in `Sanity/CurvatureObstruction`; all default build |
+| Audit evidence | 30 October repository audit (`notes/audit/2026-10-30-repository-audit.md` §§2–3): declarations exist; finding L-7 (stale names in this note: `vacuum_normSq_no_strict_interior_max` in §0, §2 targets still marked "ready now") |
+| Last updated | 3 November 2026: metadata added |
+
+**Current state (3 November 2026).** The core results are compiled (default build) under names other than those proposed: no strict interior maximum `VacuumField.not_strict_local_max_normSq`, the counterexample `exists_vacuum_strict_interior_min`, Corollary B `curvature_zero_of_normSq_critical` and Corollary C `VacuumField.not_closed_fieldLine_minB`. The name `vacuum_normSq_no_strict_interior_max` in §0 and the target names in §2 do not exist (audit L-7). Open: the finite-β version and Conjecture G.
+
 **Lane:** A (theory discovery), Cycle 1, track T1/T8. **Date:** 2026-10-20.
 **Replaces:** the false "subharmonic ⇒ no interior minimum of |B|" claim (implementation plan §1.1).
 **Scratch computations:** `/tmp/lanea/minb.py` (sympy, outside the repo; reproduced inline below).

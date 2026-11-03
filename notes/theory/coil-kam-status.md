@@ -1,5 +1,22 @@
 # Coil-field KAM (target 1, option (a)): status
 
+## Metadata
+
+| Field | Value |
+| --- | --- |
+| ID | `N-16` |
+| Title | Coil-field KAM (target 1, option (a)): status of the analytic infrastructure, the refit and the coarse residual certificate |
+| Kind | status log / formalization / certificate |
+| Addresses | `G-5`, `Q-2` |
+| Depends on | N-10, N-13 (§§2.2–2.4); `Theory/KAM/Diophantine` (ι_A); coil set `PolygonCoilCubicData` |
+| Dependency requirement | a compiled KAM step for an analytic (non-polynomial) flow field is needed and is not built (stage 4) |
+| Produces | stage-1 analytic tools, the stage-2 pipeline and a coarse (vacuous) certificate, the cost extrapolation (≈ 4 CPU-days), the list of blockers |
+| Difficulty | research (cancellation-aware complex sup bound of the coil field, anisotropic strips, high-precision refit) |
+| Status | blocked: stage-1 tools verified (default build); stage-2 certificate vacuous (on-demand `CoilKamCert`: ≈ 10⁹ against ≈ 10⁻³⁰ needed); stages 3–4 not started |
+| Lean evidence | default build: `Theory/KAM/StripPaleyWiener`, `Theory/Fields/BiotSavartComplex`, `Theory/KAM/AnalyticComposition` (`comp_taylor`, `bd_comp_taylor`), `Theory/KAM/CauchyTwoVar`, `Theory/KAM/FourierSumHolo`, `Theory/KAM/TorusFieldAna`, `Design/CoilFieldComplex`, `Theory/KAM/AnalyticCompositionLip`, `Theory/KAM/SampledBound` (`Bd_of_sample_sum`), `Design/CoilKamResidual` (`norm_resCR_le`); on demand: `Design/CoilKamCert` (`coilTorus_resR_Bd`, `coilTorus_resZ_Bd`). The goal `PolygonCoilKam.coilStellarator_confined_forever` does not exist |
+| Audit evidence | 30 October docs audit (generated pages omitted the vacuous `CoilKamCert` and Q-2); 30 October repository audit §3 (planned names in this note listed as plans); not otherwise audited |
+| Last updated | 3 November 2026: metadata added |
+
 Goal: `PolygonCoilKam.coilStellarator_confined_forever`, i.e. all-time field-line confinement for
 the coil field `tfField + polyCoilFieldC`, obtained by refitting a KAM torus to the coil field
 (`after-kam.md` §2.2–2.4). The ι_A Diophantine certificate is reused.

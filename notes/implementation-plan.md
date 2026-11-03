@@ -1836,3 +1836,11 @@ Gate E1 (§11.2, §11.4) and the "sanity theorem or counterexample" promised in 
   N-33 and N-34 added to `notes/theory/README.md` and their metadata brought to the current state; N-31
   gained a current-state summary.
 
+### Metadata for the older theory notes, 3 November 2026
+
+- Metadata added to the 15 older theory notes; all notes in notes/theory/ now follow the template.
+  The notes were N-1, N-4–N-17 (all already registered in RG.3, so no new IDs). Each table gives the
+  current status from RG.1–RG.3, Lean evidence with names grepped in `PlasmaLean/` (default build or
+  on demand), and audit findings from the 30–31 October records. Where a body was outdated, a short
+  "Current state" paragraph follows the table (all except N-16, whose integration note is current).
+  `notes/theory/README.md` gained index lines for N-8, N-11 and N-13–N-17.

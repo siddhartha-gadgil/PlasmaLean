@@ -1,5 +1,24 @@
 # Transport–MHD coupling: one plasma for the G1 and G2 chains
 
+## Metadata
+
+| Field | Value |
+| --- | --- |
+| ID | `N-6` |
+| Title | Transport–MHD coupling: one plasma (one field with force balance, alpha confinement and a consistent transport band) on the reactor Solov'ev equilibrium |
+| Kind | research approach / proof (informal) / computation (untrusted candidates) / formalization specification |
+| Addresses | `G-2` (C5, as a model), `G-1` (legacy), `Q-10`; tracks M2/M3, T3 |
+| Depends on | N-8 (`SolovevAlpha.reactor_alpha_confined`); kernel change K2 (quasilinear D(ψ, T)); `Theory/Transport/FluxGeometry`; `BoschHaleDT` |
+| Dependency requirement | compiled alpha confinement on the Solov'ev field; transport solutions are supplied (existence not proved); Bosch–Hale reactivity supplied |
+| Produces | consistency conditions, density weighting `G.weight n`, offset equilibrium, the 0-D ordered-band obstruction, rungs C0–C3, the proposed `solovev_one_plasma` |
+| Difficulty | moderate (two-sided barrier certificates; quasilinear kernel change) |
+| Status | verified in budget form (two-sided band and pressure ≤ p_eq + offset) on the Solov'ev field, **a tokamak model** (re-labelled 30 October 2026: a model for G-2 and a technique test bed, not a candidate); existence of the transport solution and pressure equality (rung C3) open (Q-10) |
+| Lean evidence | `Design/SolovevBand` (`IsSolovevGeometry`, `solovev_one_plasma`), `Design/SolovevFluxGeometry.solovev_one_plasma_actual`, `Design/SolovevCoarea.solovev_one_plasma_actual_coarea`, `Design/SolovevBandHighQ.solovev_one_plasma_highQ_actual`, `Design/SolovevBandIgnited.solovev_one_plasma_ignited_actual`, `Theory/Transport/FluxGeometry` (`FluxGeometry.weight_laws`); all default build. The proposed names `SolovevBurn`, `ordered_pair_gain_bound` were not used |
+| Audit evidence | 30 October repository audit: `solovev_one_plasma_*` accurate; L-7 (this note's "nothing compiled" status line is stale), L-9 (stale coarea docstrings); model audit MA-M2 (alpha conjunct non-vacuous only at zero energy; resolved 30 October by `reactor_alpha_born_confined`) and MA-L8 (`FluxGeometry.Laws` admits g ≤ 0) |
+| Last updated | 3 November 2026: metadata added |
+
+**Current state (3 November 2026).** Despite the "nothing compiled" line below, rungs C1–C2 are compiled (default build): `solovev_one_plasma_actual` (with the coarea step derived, `solovev_one_plasma_actual_coarea`), `solovev_one_plasma_highQ_actual` and `solovev_one_plasma_ignited_actual`, for every supplied transport solution, with the pressure kept below p_eq + offset. Under the contract this is a tokamak model for G-2; transfer to a C1 geometry is Q-15/Q-22, and existence plus pressure equality is Q-10.
+
 Lane A note, 20 October 2026, against `e647fdb`. Tracks: M2/M3 coupling (Phase 4, item 3 of the progress-4 "Next
 boundary"). **Nothing here is a compiled Lean theorem.** Status tags as in [README](README.md).
 

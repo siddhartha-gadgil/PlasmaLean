@@ -1,5 +1,24 @@
 # After the KAM theorem: coil-produced confinement, stepped pressure, guiding centres
 
+## Metadata
+
+| Field | Value |
+| --- | --- |
+| ID | `N-13` |
+| Title | After the KAM theorem: guiding-centre KAM, coil-field KAM and stepped pressure, ranked |
+| Kind | research approach (ranking and plans) / proof (informal: passing guiding centres are field lines of B̃) / computation (untrusted) |
+| Addresses | `G-5`, `G-6`, `Q-2`, `Q-14` (and `Q-20`); `G-1` |
+| Depends on | N-10 (`rationalStellarator_confined_forever_exists`, `KamTorusAExact` constants); Littlejohn GC model (supplied); coil set `PolygonCoilCubicData`; ELP-S JEMS 27 (2025), Bruno–Laurence CPAM 49 (1996) |
+| Dependency requirement | the compiled KAM theorem for the polynomial flow field; the Littlejohn equations as a supplied model |
+| Produces | the ranking; the target-3 reduction B̃ = B + ρ_s∇×b; robustness option 1(b) rejected (≈ 14 orders of magnitude); coil-field torus numbers; the stepped-pressure assessment (interface term sign-indefinite); the Phase 11 order, leading to N-14 and N-16 |
+| Difficulty | research |
+| Status | target 3 verified (N-14, N-15); target 1 blocked (Q-2, N-16); target 2 a lead, plan only (Q-14); the `FlowField` interface (Phase 11a) done |
+| Lean evidence | `Design/KamFlowField` (`FlowField`); target 3: `Design/RationalStellaratorGCTorusExact.gc_exact_torus`, `Design/RationalStellaratorGCConfined.alpha_gc_confined_forever`, `Design/RationalStellaratorGCMuConfined.alpha_gc_passing_confined_forever` (default build); target 1: `Design/CoilKamCert` (`coilTorus_resR_Bd`, `coilTorus_resZ_Bd`; on demand, vacuous bound); target 2: none. The planned `coilStellarator_confined_forever`, `coilTorus_exact`, `rationalStellarator_stepped` do not exist |
+| Audit evidence | 30 October repository audit §3 (planned names in §§2.3, 3.2 listed as plans); 30 October docs audit (generated pages omitted the coil KAM status and Q-2); otherwise not audited |
+| Last updated | 3 November 2026: metadata added |
+
+**Current state (3 November 2026).** Target 3 (rank 1) was carried out: passing alpha guiding centres are confined for all time in the Littlejohn model (N-14: `alpha_gc_confined_forever`, `alpha_gc_passing_confined_forever`; N-15: `alpha_gc_confined_forever_robust`, `alpha_gc_confined_forever_pm`). Target 1 is blocked (Q-2): the on-demand `CoilKamCert` gives only a vacuous residual bound (N-16). Target 2 (stepped pressure, Q-14) is a plan only.
+
 Lane-A discovery note (input for Phase 11). Status tags follow `README.md`. **Nothing here is a compiled Lean
 theorem.**
 - Numerics (untrusted, double precision): numpy/scipy in `/tmp/k2venv`, scripts in `/tmp/laneA8`:

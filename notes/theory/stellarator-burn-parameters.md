@@ -1,5 +1,24 @@
 # Stellarator burn parameters for M1/M2 instances (ISS04, reactor studies, profile peaking)
 
+## Metadata
+
+| Field | Value |
+| --- | --- |
+| ID | `N-5` |
+| Title | Stellarator burn parameters for M1/M2 instances: ISS04 and f_ren, reactor-study parameters, 0-D window and profile-peaking gain |
+| Kind | source synthesis / computation (untrusted 0-D numerics) / design (recommended Lean instance) |
+| Addresses | `G-2` (clause C5), `Q-13`; track T4, rungs M1, M2, M4 |
+| Depends on | Bosch–Hale (NF 32 (1992) 611) and ISS04 as supplied model laws (`Kernel/Fusion`: `BoschHaleDT`, `PowerBalance`; scaling classes in Theory); reactor studies ARIES-CS, HELIAS 5-B, Stellaris (arXiv:2507.12681) |
+| Dependency requirement | reactivity, power balance and confinement scaling are supplied model laws (kernel classes), not theorems; reactor parameters are published values; f_ren ∈ [1.55, 1.75] is an assumption above measured values |
+| Produces | the Stellaris-scale synthetic instance (f_ren ∈ [1.55, 1.75], P_aux ∈ [50, 70] MW, window [10, 22] keV, margins +6.5 / −11.2 MW), the profile-peaking estimate, the M4 confinement assumption; feeds Q-13, Q-15 |
+| Difficulty | routine (0-D arithmetic with rational enclosures) |
+| Status | verified (0-D window and the measured-f_ren obstructions compiled); parameters published; 1-D and profile figures numerical observation; the 1-D route on stellarator geometry is open (Q-13, Q-15) |
+| Lean evidence | `Design/BurnWindowStellarator` (`stellaris_coeff_bounds`, `stellaris_window_steady`, `stellaris_window_loss`, `stellaris_measured_fren_no_access_steady`, `stellaris_measured_fren_no_access_loss`), default build; related `Design/BurnWindow.m1_burn_window` (default) |
+| Audit evidence | 30 October repository audit (ISS04 windows and Stellaris obstruction: accurate, 0-D); kernel audit F-1 (`PhysicalPlasma` did not link Z_eff to the fuel fraction; fixed, verified in the 31 October refresh) concerns the carbon composition used here; model audit MA-L9 (`ConfinementLaw.tau` at P = 0, guarded by `P_pos`) |
+| Last updated | 3 November 2026: metadata added |
+
+**Current state (3 November 2026).** Despite the "no Lean theorem" line below, the recommended instance of §5 is compiled in `Design/BurnWindowStellarator` (`stellaris_window_steady`, `stellaris_window_loss`), together with the obstructions at measured renormalisation (`stellaris_measured_fren_no_access_steady`, `…_loss`: f_ren ≤ 1.3, P_aux ≤ 70 MW ⇒ T ≤ 10 keV). The question whether profile peaking removes the obstruction is Q-13; on stellarator geometry with C2-derived losses it is Q-15/Q-22.
+
 Track: T4 (0-D burn window), M1/M2 stellarator instance, and the M4 confinement assumption. Lane A. **No Lean theorem
 here.** All computed figures are **numerical observations** (floating point, `/tmp/laneA3/pb*.py`). They use the
 same model as `PlasmaLean/Kernel/Fusion.lean`:

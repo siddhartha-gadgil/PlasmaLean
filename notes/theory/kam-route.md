@@ -1,5 +1,24 @@
 # From finite-length to all-time field-line confinement in the rational stellarator: the KAM route
 
+## Metadata
+
+| Field | Value |
+| --- | --- |
+| ID | `N-10` |
+| Title | The KAM route from finite-length to all-time field-line confinement in the rational stellarator |
+| Kind | research approach / source synthesis / proof (informal topological half) / computation (untrusted) |
+| Addresses | `G-1` (C1 + C4 in vacuum); feeds `G-5`, `G-6`, `Q-14`, `Q-19`; rungs M4/M5, track T7 |
+| Depends on | N-9 (field and finite-length result); FHL 2017 Thm 2.5, ELP-S 2025 Thm 6.2, Haro–Canadell–Figueras–Luque–Mondelo 2016 |
+| Dependency requirement | `field_vacuum` compiled; the KAM theorems are published (ELP-S with implicit constants) and had to be re-proved with explicit constants in Lean (K3) |
+| Produces | "one torus suffices" (Theorem B, Grönwall barrier), the four Diophantine tori and their numbers, the smallness estimate, the plan K0–K4 (carried out); N-11 |
+| Difficulty | research (an explicit a posteriori KAM theorem in Lean) |
+| Status | verified (K0–K4 carried out, Phase 10): all-time confinement inside a KAM-certified exact torus with ι = (75+√5)/562 ≈ 0.137; open for this field: ι ≥ ι_min on a nested family of certified tori (done for the Dommaschk target, N-33, N-35) |
+| Lean evidence | K0 `Theory/Fields/InvariantBarrier.invariantBarrier_forever`; K1 `Theory/Fields/TorusTrapping.rationalStellarator_confined_forever_of_torus`; K2 `Design/KamTorusA` (`torusA_flow_error`), `Design/KamTorusAWeighted`; K3 `Theory/KAM/Diophantine.torusA_rotation_diophantine`, `Theory/KAM/Cohomological.cohSol_estimate_one`, `Theory/KAM/KamSequence.kam_sequence`, `Design/KamTorusAExact.torusA_exact`; K4 `Design/RationalStellaratorConfinedForever.rationalStellarator_confined_forever`, `Design/RationalStellaratorFieldLines.rationalStellarator_confined_forever_exists`; C1 `Design/RationalStellaratorContract.rationalStellarator_currentFreeTransform`; all default build |
+| Audit evidence | 30 October repository audit: `rationalStellarator_confined_forever_exists` accurate; §3 lists this note's planned names (`InvariantTorusTrap.lean`, `RationalStellaratorTorus.lean`, `Certificates/WeightedEll1Z2.lean`) as plans; 31 October refresh audit AR-H1 (C1 current clause vacuous) does not affect the vacuum witness `rationalStellarator_currentFreeTransform` |
+| Last updated | 3 November 2026: metadata added |
+
+**Current state (3 November 2026).** The plan K0–K4 below was carried out (Phase 10), under names other than those proposed in §5: `invariantBarrier_forever` (K0), `rationalStellarator_confined_forever_of_torus` (K1), `Design/KamTorusA*` (K2), `torusA_exact` (K3) and `rationalStellarator_confined_forever_exists` (K4). Together with `field_vacuum` and `rationalStellarator_currentFreeTransform`, this is the C1 + C4 evidence for the vacuum field on one torus. The K3 plan is N-11; the follow-on targets are in N-13.
+
 Lane-A discovery note (Phase 8 input). Status tags follow `README.md`. **Nothing here is a compiled Lean
 theorem.**
 - Numerics: Python/numpy/scipy/sympy (venv `/tmp/laneA6/venv`) in `/tmp/laneA7/scripts`: `fieldmap.py`,

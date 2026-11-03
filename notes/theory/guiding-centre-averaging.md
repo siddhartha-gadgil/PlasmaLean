@@ -1,5 +1,24 @@
 # Guiding-centre averaging and exact-symmetry alpha confinement (M4, T8)
 
+## Metadata
+
+| Field | Value |
+| --- | --- |
+| ID | `N-8` |
+| Title | Guiding-centre averaging (oscillatory integration by parts, gyro-integrated Noether identity) and all-time 3.5 MeV alpha confinement in an exactly symmetric Solov'ev field |
+| Kind | source synthesis / proof (informal, sympy-checked) / computation (untrusted) |
+| Addresses | `G-6`, `G-1` (legacy; the Solov'ev field is a tokamak model under the contract); tracks M4, T8 |
+| Depends on | N-4 (Boozer GC model, near-axis QA model); `Theory/Kinetic/GuidingCentre`, `Theory/Kinetic/Noether` (`noether_orbit_trapped_until`), `Solovev.orbit_confined` |
+| Dependency requirement | compiled Lorentz-orbit Noether band and Solov'ev confinement; for the near-QA estimates the Boozer orbits are supplied |
+| Produces | Lemma A, Theorem B, the rescaled Solov'ev instance (L = 10 m, A = 7/4 T, F = 50 T m), birth-fraction and averaging numbers, Lean targets (i)–(iii) (carried out) |
+| Difficulty | hard (rigorous averaging needs a-priori bounds along orbits; trapped particles are not covered) |
+| Status | verified: all-time 3.5 MeV alpha confinement on the Solov'ev field (a tokamak model), Theorem B and Lemma A, and the near-QA passing bound for 0.19 s (orbits supplied); longer near-QA times and trapped particles open |
+| Lean evidence | `Design/SolovevAlpha` (`reactor_alpha_confined`, `alpha35_rigidity`, `reactor_alpha_confined_nonvacuous`), `Design/SolovevAlphaExistence.reactor_alpha_born_confined`, `Theory/Kinetic/GyroNoether` (`gyro_defect_identity`, `gyroNoether_hasDerivAt`, `gyroNoether_band`, `gyroNoether_trapped_until`), `Theory/Kinetic/OscillatoryAveraging` (`osc_ibp_drift`, `osc_ibp_drift_iter`), `Design/NearAxisQAAveraged.alpha_trapped_reactorQA_averaged` (a passing-alpha bound despite its name); all default build |
+| Audit evidence | 30 October repository audit L-10 (`reactor_alpha_confined` is ambiguous; here it is `Design.SolovevAlpha`) and L-4 (the averaged result is about passing alphas); model audit MA-M2 (non-vacuity at 3.5 MeV; resolved 30 October by `reactor_alpha_born_confined`) and MA-M1 (near-QA orbits supplied); refresh audit AR-L8 |
+| Last updated | 3 November 2026: metadata added |
+
+**Current state (3 November 2026).** Despite the "nothing compiled" line below, all three recommended targets are compiled (default build): (i) `SolovevAlpha.reactor_alpha_confined`, with existence of the 3.5 MeV orbits `reactor_alpha_born_confined`; (ii) Theorem B in `Theory/Kinetic/GyroNoether`; (iii) Lemma A `osc_ibp_drift`. The near-QA averaging became `alpha_trapped_reactorQA_averaged` (passing alphas, 0.19 s, supplied orbits). The Solov'ev field is a tokamak model under the contract.
+
 Track: M4/T8 (implementation plan §4–§6, Cycle 3). Lane A (discovery), 20 Oct 2026. **Nothing in this note is a
 compiled Lean theorem.** Status tags follow `README.md`: **published** (with locator), **proved informally**
 (sympy-checked where stated), **numerical observation**, **conjectured**, **lead**.

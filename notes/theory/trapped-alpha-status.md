@@ -1,5 +1,24 @@
 # Trapped (banana) 3.5 MeV alphas: status
 
+## Metadata
+
+| Field | Value |
+| --- | --- |
+| ID | `N-17` |
+| Title | Trapped (banana) 3.5 MeV alphas in near-axis QA (Phase 12): exact-QA all-time result, re-anchored bounce scheme, certified kick amplitude, remaining per-bounce remainders |
+| Kind | status log / formalization / certificate |
+| Addresses | `G-6`, `Q-1` (the alpha component of C2, `G-10`) |
+| Depends on | N-4 (Boozer GC model), N-7 (formulation); `Theory/Kinetic/BoozerGuidingCentre`, `Design/NearAxisQA` (`reactorQA`, `exactQA`) |
+| Dependency requirement | Boozer GC model supplied; orbits and exact-QA references supplied, not constructed |
+| Produces | exact-QA all-time trapped confinement; near-QA unconditional short-time bounds; Abel summation with shears; a conditional N-bounce bound; certified bounce period, constructed references and kick amplitude ≤ 0.0816 T m²; a precise list of what remains |
+| Difficulty | research (one-bounce remainders: Lipschitz–Grönwall gives e^{29000}; shears needed at the 10⁻³ level) |
+| Status | partly verified; blocked on the per-bounce remainders R, e, δP and the shears; parked (Q-1): to be restated as a bounce-averaged drift defect after Q-21 |
+| Lean evidence | all default build, orbits supplied: `Theory/Kinetic/BounceShear` (`abs_sum_shear_le`, `reanchored_drift_le`), `Design/NearAxisQATrappedReanchor` (`exactQA_trapped_confined_forever`, `reactorQA_trapped_confined_until`, `reactorQA_trapped_band_until`, `reference_kick_decomp`, `reactorQA_trapped_reanchored`, `crude_amplitude_exceeds_window`), `Design/NearAxisQATrappedOscCover` (`reference_kick_osc`, `exactQA_kick_osc`, `conserved_quantity_insufficient`) |
+| Audit evidence | 30 October repository audit (kick amplitude ≤ 0.0816 T m²: accurate); model audit MA-M1 (supplied Boozer orbits; affects `reference_kick_osc`, `exactQA_kick_osc` through `Setup.orbit`); 31 October refresh audit AR-M3 (no `TrappedBounce` constructed for `exactQA`/`reactorQA`) |
+| Last updated | 3 November 2026: metadata added |
+
+**Current state (3 November 2026).** The modules described below as "not yet imported" are now in the default build. The certified kick amplitude (`reference_kick_osc` ≤ 0.0816 T m²) is the last advance. The one-bounce remainders and the shears are open, and the conserved-quantity comparison is insufficient (`conserved_quantity_insufficient`). Q-1 is parked under the contract: after the C2 definitions (Q-21), the kick should be restated as a bounce-averaged drift defect.
+
 Phase 12 note, 21 October 2026. Companion to [near-qa-trapped-particles.md](near-qa-trapped-particles.md) and
 [robust-alpha-confinement.md](robust-alpha-confinement.md) §3. Everything below is about **models**: the vacuum Boozer
 guiding-centre equations (`Kinetic.BoozerGuidingCentre`) in the reactor near-axis QA family (`reactorQA`, with

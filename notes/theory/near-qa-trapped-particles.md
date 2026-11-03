@@ -1,5 +1,24 @@
 # Trapped (banana) alphas in near-quasi-axisymmetric fields: what can be proved
 
+## Metadata
+
+| Field | Value |
+| --- | --- |
+| ID | `N-7` |
+| Title | Trapped (banana) alphas in near-quasi-axisymmetric fields: loss mechanisms, the single-well property of `reactorQA`, and the averaged-first-integral formulation |
+| Kind | source synthesis / research approach / proof (single well, informal) |
+| Addresses | `G-6`, `Q-1` (the alpha component of C2, `G-10`); tracks M4, T8 |
+| Depends on | N-4 (Boozer GC model, `boozerGC_trapped`), N-8 (`osc_ibp_drift`); `Design/NearAxisQA.reactorQA` |
+| Dependency requirement | compiled Boozer GC identities in the supplied model; the published loss mechanisms are context, not premises |
+| Produces | list of obstructions; the single-well fact; targets T1–T4 (T1–T3 carried out; T4 became the Phase 12 work of N-17) |
+| Difficulty | research (no uniform averaging theorem exists for trapped orbits; the per-bounce remainder is the barrier) |
+| Status | superseded for status by N-17; mechanisms published; T1–T3 verified; T4 open (Q-1, parked) |
+| Lean evidence | `Theory/Kinetic/TrappedOrbits` (`bounce_psip_step`, `band_of_approx_first_integral`), `Design/NearAxisQATrapped` (`reactorQA_single_well`, `reactorQA_single_well_minmax`), `Theory/Kinetic/AvailableEnergy.bounceActionRadialDeriv_neg`, `Theory/Kinetic/OscillatoryAveraging.osc_ibp_drift_iter`; all default build |
+| Audit evidence | 30 October model audit MA-M1 (supplied Boozer orbits; applies to the near-QA trapped results); 31 October refresh audit AR-M3 (no `TrappedBounce` constructed for `exactQA` or `reactorQA`) |
+| Last updated | 3 November 2026: metadata added |
+
+**Current state (3 November 2026).** Targets T1–T3 are compiled (default build): `bounce_psip_step`, `reactorQA_single_well`, `band_of_approx_first_integral`. T4, the 3.5 MeV banana instance, became Phase 12; its status (certified kick amplitude, open per-bounce remainders, Q-1 parked) is kept in N-17 (`trapped-alpha-status.md`).
+
 Lane A note, 20 October 2026, against `e647fdb`. Tracks: M4, T8. Companion to
 [near-axis-quasisymmetry.md](near-axis-quasisymmetry.md) and [guiding-centre-averaging.md](guiding-centre-averaging.md).
 **Nothing here is a compiled Lean theorem.**

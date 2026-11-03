@@ -1,5 +1,24 @@
 # Near-axis quasisymmetry for rung M4: a formalization-ready specification
 
+## Metadata
+
+| Field | Value |
+| --- | --- |
+| ID | `N-4` |
+| Title | Near-axis quasisymmetry for rung M4: Garren–Boozer construction, Boozer guiding-centre Noether identity, explicit QA model and its defect bound |
+| Kind | source synthesis / formalization specification / proof (informal, sympy-checked) / computation (untrusted) |
+| Addresses | `G-1`, `G-6`; background for `G-10` and `Q-16` (route (i), near-axis); rung M4, tracks T7, T8 |
+| Depends on | sources Garren–Boozer 1991, Landreman–Sengupta 2018/2019, Landreman–Sengupta–Plunk 2019, Landreman–Paul 2022 (pyQSC); pattern `Kinetic.Noether.noether_orbit_trapped_until` |
+| Dependency requirement | the construction is published and formal asymptotic (no rigorous remainder); the Boozer guiding-centre model (R1) is a supplied reduced model, so its theorems say nothing directly about a Maxwell-exact field |
+| Produces | the three-representation comparison (R1–R3); Boozer GC Noether identity and trapping theorem; the polynomial QA model with ε_QS = 2‖b₁‖r²; alpha time estimates; Lean targets (§7); feeds N-8 and N-17 |
+| Difficulty | hard (the link between the Boozer model and a Maxwell-exact field is formal asymptotic only; useful alpha times need averaging) |
+| Status | construction: published / formal asymptotic; GC identity and trapping: verified in the supplied Boozer model; alpha times: numerical observation; R2 substrate realised by N-9 and N-31 |
+| Lean evidence | `Theory/Kinetic/BoozerGuidingCentre` (`BoozerGCOrbit`, `helicalMomentum_hasDerivAt`, `helicalMomentum_drift_le`, `boozerGC_trapped_until`, `boozerGC_trapped`) and `Design/NearAxisQA` (`nearAxis_epsQS`, `preciseQA_epsQS`, `reactorQA_epsQS_edge`, `alpha_trapped_reactorQA`), default build; local existence `Theory/Kinetic/BoozerGCExistence.boozerGCOrbitOn_exists_local` (default). The proposed `boozerGC_energy_conserved` and `Theory/Fields/ToroidalHarmonic` do not exist |
+| Audit evidence | 30 October repository audit (row "N-4 Boozer GC": exists, supplied Boozer GC model); 30 October model audit MA-M1 (Boozer orbits supplied, axis excluded by hypothesis; affects `alpha_trapped_reactorQA`) and MA-L3 (`BoozerField` admits G = 0) |
+| Last updated | 3 November 2026: metadata added |
+
+**Current state (3 November 2026).** Despite the "nothing compiled" line below, §7 targets 1–2 are compiled (default build): `boozerGC_trapped_until`, `boozerGC_trapped`, `helicalMomentum_hasDerivAt`, `nearAxis_epsQS`, `alpha_trapped_reactorQA`. The sub-ms worst-case bound is superseded for passing alphas by the averaged 0.19 s bound (`alpha_trapped_reactorQA_averaged`, N-8), and the exact-QS case feeds the QS ⇒ omnigeneity bridge (N-29). Boozer orbits remain supplied (local existence only; audit MA-M1). The R2 substrate became the rational vacuum field (N-9) and the Dommaschk QA target (N-31, N-34).
+
 Track: M4 (implementation plan §5), with T7/T8 dependencies. Lane A (discovery). **Nothing in this note is a compiled
 Lean theorem.** Status tags follow `README.md`: **published**, **formal asymptotic**, **proved informally**
 (sympy-checked where stated), **numerical observation**, **conjectured**.

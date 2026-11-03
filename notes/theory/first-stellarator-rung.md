@@ -1,5 +1,24 @@
 # The first genuinely stellarator rung: an exact rational vacuum field with rotational transform
 
+## Metadata
+
+| Field | Value |
+| --- | --- |
+| ID | `N-9` |
+| Title | The first genuinely stellarator rung: an exact rational vacuum field with rotational transform, a finite-length confinement route, and coil transfer |
+| Kind | definition / proof (informal, sympy-checked) / computation (untrusted) / formalization specification |
+| Addresses | `G-1` (C1 in vacuum), `G-5`, `Q-19`; rungs M4/M5, tracks T1, T7 |
+| Depends on | kernel `Vacuum.VacuumField`; the pattern `Fields.fieldLine_confined_of_defect`; KAM sources (FHL 2017) as a lead |
+| Dependency requirement | none beyond the kernel: the field identities are proved directly; KAM was a long-term lead (carried out in N-10) |
+| Produces | the field `RationalStellarator.field (1/4)` (vacuum, two periods, stellarator-symmetric, exact circular axis, ι₀ = 1 − √3/2), Poincaré numerics, the approximate-first-integral route, a coil-perturbation sketch |
+| Difficulty | moderate (polynomial box-cover certificate) |
+| Status | verified (field identities, axis monodromy, 95-transit confinement); superseded by N-10 for all-time confinement; C2 fails numerically (Q-19, N-30) |
+| Lean evidence | `Design/RationalStellarator` (`field_vacuum`, `axis_fieldLine`, `field_rotPi`, `field_stellSym`, `field_not_axisymmetric`), `Design/RationalStellaratorAxis` (`iota0`, `monodromy_trace`), `Design/RationalStellaratorConfined.rationalStellarator_confined` (95 transits), coil transfer `Design/PolygonCoilCubicCover.coil_stellarator_confined_concrete_N` (52 transits, field-line existence assumed); all default build |
+| Audit evidence | 30 October repository audit: `rationalStellarator_confined` accurate (superseded by the all-time result); coil result accurate, with L-5 (existence assumed, idealised TF return loop); §3 lists this note's planned module names as plans |
+| Last updated | 3 November 2026: metadata added |
+
+**Current state (3 November 2026).** Despite the "nothing compiled" line below, the field and its exact properties are compiled (`RationalStellarator.field_vacuum`, `axis_fieldLine`, `field_stellSym`, `monodromy_trace`), and route (a) gave `rationalStellarator_confined` (95 transits). Route (b), KAM, was carried out (N-10: `rationalStellarator_confined_forever_exists`). The coil transfer gave 52 transits with existence assumed (`coil_stellarator_confined_concrete_N`); all-time coil confinement is Q-2. C2 fails numerically for this planar-axis family (Q-19, N-30).
+
 Lane-A discovery note (Phase 6 input). Status tags follow `README.md`. **Nothing here is a compiled Lean
 theorem.** Numerical work: Python/numpy/scipy/sympy in a scratch venv (`/tmp/laneA6`; scripts `cand.py`,
 `fam.py`, `fine3.py`, `wba3.py`, `local.py`, `invfit.py`, `inveval2.py`, `feas.py`, `tf.py`). pyQSC/simsopt were
