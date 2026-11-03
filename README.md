@@ -38,27 +38,32 @@ Heavy numerics and large certificate builds can be offloaded to a workstation; s
 
 ## Progress
 
-**Against the contract (31 October 2026), honestly:** no candidate satisfies more than C1 and C4
+**Against the contract (1 November 2026), honestly:** no candidate satisfies more than C1 and C4
 together, and those only in vacuum.
 
 - **C1 (partial, vacuum only):**
   - An exact non-axisymmetric *vacuum* field (no plasma current) has a KAM-certified invariant
     torus with rotation number ι ≈ 0.137 that confines its field lines for all time.
-  - An exact Dommaschk vacuum field with three field periods is in Lean
-    (`DommaschkQA3.candidate_vacuum`), together with zero net current.
-  - Not yet proved: ι ≥ ι_min on a nested family of certified surfaces of that field, or any
-    current-free equilibrium at finite β.
+  - **C1 holds for the exact Dommaschk quasi-axisymmetric vacuum field** (1 November 2026,
+    `DommaschkKamC.dommaschk_C1_unconditional`, on-demand modules). This is a two-period, purely
+    rational field (`DommaschkQA2R`). It has a KAM-certified invariant torus with |ι| ≥ 0.24
+    (ι = −(85+√5)/361), from an a posteriori theorem with a 96 × 80 torus whose certified initial
+    error is ≤ 1.2 × 10⁻²⁷, and zero net toroidal current.
+  - A second certified torus A (|ι| ≥ 0.2386) is proved nested around torus C
+    (`DommaschkKamNested.dommaschk_nested_C1`, 2 November 2026).
+  - Not yet proved: confinement inside the tori, a continuum of nested surfaces, or any current-free
+    equilibrium at finite β.
   - The C1 current is the Ampère circulation μ₀⁻¹∮B·dl around each confining torus's own
     poloidal loop, with |ι| ≥ ι_min. This was audit fix AR-H1, 31 October: an earlier section-based
     clause could be satisfied vacuously.
-  - For the Dommaschk field the current clause holds for every poloidal loop
-    (`DommaschkQA3.candidate_currentFreeTransform`); only the tori remain to be certified.
   - Landreman family 2 fails C1 (`family2_not_currentFreeTransform`), via a Stokes theorem for
     regular sections (`netToroidalCurrent_eq_lineIntegral_div`) and positive section current
     (`family2_net_current_pos`).
 - **C2 (partial, guiding-centre model):**
   - Omnigeneity and the bounce-averaged drift are defined in the Boozer guiding-centre model
-    (`OmnigenousOn`, `bounceAvgDrift`).
+    (`OmnigenousOn`, `bounceAvgDrift`). Since audit fix AC-1 (2 November), C2 is a property of the
+    physical field: it needs a proved Boozer chart (`Contract.BoozerModelOf`). The `exactQA`/`reactorQA`
+    results are statements about a supplied Boozer model.
   - Quasisymmetry ⇒ omnigeneity is proved there, exactly and with a per-bounce defect bound
     (`omnigenousOn_of_exactQS`, `approxOmnigenousOn_of_defect_le`).
     - `OmnigenousOn` asks for exact return of the guiding-centre flux label after each bounce,
@@ -67,8 +72,11 @@ together, and those only in vacuum.
   - ε_eff is not in Lean.
   - Weak quasisymmetry is defined. Neither Landreman family is weakly quasisymmetric on any
     region containing its magnetic axis, for any potential critical on the axis.
-  - The Dommaschk quasi-axisymmetric candidates have small quasisymmetry defects and ε_eff ≈ 0.1 %
-    in untrusted numerics only.
+  - On both certified tori of the Dommaschk field the quasi-axisymmetry defect is **certified**
+    (2 November 2026, `DommaschkKamQ16.dommaschk_Q16_vacuum`, on demand): the off-QA Boozer spectral
+    defect is ≤ 0.0063 |ι| (torus C) and ≤ 0.0090 |ι| (torus A), strong tier, on a nested pair. This is one thin torus. It is not a C2 result:
+    the omnigeneity contract is not yet tied to the physical field (audit AC-1), and a volume Boozer
+    chart does not exist exactly for this field.
   - The alpha results below concern 3.5 MeV alphas, mostly passing orbits, which is one part of
     C2 at most.
 - **C3 (test beds only):** Mercier stability on a band of Landreman family 2 (current-carrying),
@@ -81,8 +89,8 @@ together, and those only in vacuum.
   and proved obstructions at measured confinement factors.
 
 The next priorities:
-- certify invariant tori with ι ≥ ι_min, and the quasisymmetry defect, for a Dommaschk
-  quasi-axisymmetric vacuum field;
+- a nested certified region for the Dommaschk field (a second torus); a Boozer model tied to the field
+  (audit AC-1) and a C2-type statement;
 - ε_eff in Lean;
 - a current-free finite-β equilibrium.
 

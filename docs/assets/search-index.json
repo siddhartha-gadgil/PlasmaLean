@@ -2436,6 +2436,84 @@
     "text": "certification step 2: items 6–7 (centre, torus data, small divisors, constants), 1 november 2026 implementation plan"
   },
   {
+    "title": "Certification step 2: item 8, admissibility chain for torus C, 1 November 2026",
+    "section": "Implementation plan",
+    "url": "implementation-plan.html#certification-step-2-item-8-admissibility-chain-for-torus-c-1-november-2026",
+    "text": "certification step 2: item 8, admissibility chain for torus c, 1 november 2026 implementation plan"
+  },
+  {
+    "title": "Certification step 2: item 9, constants and the conditional exact torus, 1 November 2026",
+    "section": "Implementation plan",
+    "url": "implementation-plan.html#certification-step-2-item-9-constants-and-the-conditional-exact-torus-1-november-2026",
+    "text": "certification step 2: item 9, constants and the conditional exact torus, 1 november 2026 implementation plan"
+  },
+  {
+    "title": "Certification step 2: item 10, contract link (C1 conditional on the residual bounds), 1 November 2026",
+    "section": "Implementation plan",
+    "url": "implementation-plan.html#certification-step-2-item-10-contract-link-c1-conditional-on-the-residual-bounds-1-november-2026",
+    "text": "certification step 2: item 10, contract link (c1 conditional on the residual bounds), 1 november 2026 implementation plan"
+  },
+  {
+    "title": "Certification step 2 complete: C1 for the exact Dommaschk field, 1 November 2026",
+    "section": "Implementation plan",
+    "url": "implementation-plan.html#certification-step-2-complete-c1-for-the-exact-dommaschk-field-1-november-2026",
+    "text": "certification step 2 complete: c1 for the exact dommaschk field, 1 november 2026 implementation plan"
+  },
+  {
+    "title": "N-34: design of the certified QA defect, and an audit item on C2, 1 November 2026",
+    "section": "Implementation plan",
+    "url": "implementation-plan.html#n-34-design-of-the-certified-qa-defect-and-an-audit-item-on-c2-1-november-2026",
+    "text": "n-34: design of the certified qa defect, and an audit item on c2, 1 november 2026 implementation plan"
+  },
+  {
+    "title": "N-34 D3: polynomial form of the QA defect for the Dommaschk field, 1 November 2026",
+    "section": "Implementation plan",
+    "url": "implementation-plan.html#n-34-d3-polynomial-form-of-the-qa-defect-for-the-dommaschk-field-1-november-2026",
+    "text": "n-34 d3: polynomial form of the qa defect for the dommaschk field, 1 november 2026 implementation plan"
+  },
+  {
+    "title": "N-34 A1: vacuum Boozer angles on an invariant torus, 1 November 2026",
+    "section": "Implementation plan",
+    "url": "implementation-plan.html#n-34-a1-vacuum-boozer-angles-on-an-invariant-torus-1-november-2026",
+    "text": "n-34 a1: vacuum boozer angles on an invariant torus, 1 november 2026 implementation plan"
+  },
+  {
+    "title": "N-34 A2: spectral bound for the Boozer QA defect, 1 November 2026",
+    "section": "Implementation plan",
+    "url": "implementation-plan.html#n-34-a2-spectral-bound-for-the-boozer-qa-defect-1-november-2026",
+    "text": "n-34 a2: spectral bound for the boozer qa defect, 1 november 2026 implementation plan"
+  },
+  {
+    "title": "N-34 D4–D7: certified QA defect on the C1 torus, 2 November 2026",
+    "section": "Implementation plan",
+    "url": "implementation-plan.html#n-34-d4d7-certified-qa-defect-on-the-c1-torus-2-november-2026",
+    "text": "n-34 d4–d7: certified qa defect on the c1 torus, 2 november 2026 implementation plan"
+  },
+  {
+    "title": "N-34 complete: strong-tier certified QA defect on the C1 torus, 2 November 2026",
+    "section": "Implementation plan",
+    "url": "implementation-plan.html#n-34-complete-strong-tier-certified-qa-defect-on-the-c1-torus-2-november-2026",
+    "text": "n-34 complete: strong-tier certified qa defect on the c1 torus, 2 november 2026 implementation plan"
+  },
+  {
+    "title": "Audit fix AC-1: C2 tied to the physical field, 2 November 2026",
+    "section": "Implementation plan",
+    "url": "implementation-plan.html#audit-fix-ac-1-c2-tied-to-the-physical-field-2-november-2026",
+    "text": "audit fix ac-1: c2 tied to the physical field, 2 november 2026 implementation plan"
+  },
+  {
+    "title": "A nested certified region for the Dommaschk field (Q-16), 2 November 2026",
+    "section": "Implementation plan",
+    "url": "implementation-plan.html#a-nested-certified-region-for-the-dommaschk-field-q-16-2-november-2026",
+    "text": "a nested certified region for the dommaschk field (q-16), 2 november 2026 implementation plan"
+  },
+  {
+    "title": "Q-16 vacuum criterion met on a nested pair of certified tori, 2 November 2026",
+    "section": "Implementation plan",
+    "url": "implementation-plan.html#q-16-vacuum-criterion-met-on-a-nested-pair-of-certified-tori-2-november-2026",
+    "text": "q-16 vacuum criterion met on a nested pair of certified tori, 2 november 2026 implementation plan"
+  },
+  {
     "title": "M0 · Exact symmetric equilibria: slab, screw pinch, Solov'ev, helical",
     "section": "Implementation plan · Lean verified — exact slab, screw-pinch, Solov'ev and helical equilibria with kernel force balance, all-time field-line/orbit confinement, Suydam both ways and screw-pinch Newcomb stability for every m ≠ 0 (reduced form supplied; idealized symmetric models).",
     "url": "implementation-plan.html",

@@ -224,3 +224,5 @@ and `‖θ-θ₀‖≤R` for every `θ∈U`, then `LR<c` yields the robust margi
 5. Define an abstract symmetric energy form and prove the elementary conservation/coercivity theorem before implementing the continuum MHD bridge.
 
 Continue through [08-roadmap.md](08-roadmap.md). Consult [09-literature.md](09-literature.md) for primary sources and an extraction protocol.
+
+**C2 in Lean (2 November 2026, audit AC-1):** `Contract.OmnigeneityContract B Ω c κ` = `∃ F, BoozerModelOf B Ω c F ∧ BoozerModelOmnigeneity F c κ` (`Theory/Contract/BoozerModel`). The chart requirement of the specification is `BoozerChart` (vacuum Boozer form). The previous predicate, constraining only the Boozer model, is `BoozerModelOmnigeneity`; results about `exactQA`/`reactorQA` are model-level, not C2 for a field.

@@ -12,7 +12,7 @@ public import Mathlib.LinearAlgebra.CrossProduct
 public import Mathlib.Topology.Order.IntermediateValue
 
 /-!
-# Stellarator contract, clauses C1 and C2 (definitions and sanity triad; Q-21)
+# Stellarator contract: clause C1 and the model-level part of C2 (definitions, sanity; Q-21)
 
 Normative specification: `notes/formalization/00-model-contracts.md`, section "Stellarator
 contract: C1, C2 and C5"; plan question Q-21, goal G-11.
@@ -86,7 +86,7 @@ Witnesses and instances in `Design/RationalStellaratorContract` (the rational st
 field with the KAM torus A, and the circular torus of the field `∇φ` with `ι = 0`) and
 `Design/DommaschkQA3` (zero circulation around every poloidal loop off the axis).
 
-## C2: omnigeneity in the Boozer guiding-centre model
+## C2: omnigeneity in the Boozer guiding-centre model (model level)
 
 Model scope: the vacuum Boozer guiding-centre **model** of `Theory/Kinetic/BoozerGuidingCentre`
 (supplied equations of motion and orbits, chart `ψ > 0`; `B` and `ι` are independent inputs, so
@@ -94,9 +94,16 @@ the model does not itself enforce Maxwell's equations). `OmnigenousOn` quantifie
 species (`m > 0`, `q ≠ 0`), every `μ ≥ 0` and every energy, so it covers thermal ions and
 electrons as well as alphas.
 
-* `OmnigeneityContract F c κ_max` (clause C2): `0 < c`, `0 ≤ κ_max` and
+**This file only has the model-level notion.** `BoozerModelOmnigeneity F c κ_max` constrains a
+supplied `BoozerField` and is not tied to any physical field (a constant model satisfies it,
+`constField_boozerModelOmnigeneity`). The contract clause C2 for a field `B` is
+`Contract.OmnigeneityContract B Ω c κ_max` of `Theory/Contract/BoozerModel`: some Boozer model
+`F` with a proved Boozer chart of `B` onto `Ω` (`BoozerModelOf B Ω c F`) satisfies
+`BoozerModelOmnigeneity F c κ_max` (audit item AC-1, 1 November 2026).
+
+* `BoozerModelOmnigeneity F c κ_max` (model-level C2 condition): `0 < c`, `0 ≤ κ_max` and
   `ApproxOmnigenousOn F c κ_max` (per-bounce radial displacement `≤ κ_max (H/|q|) τ`);
-  `κ_max = 0` is exact omnigeneity (`omnigeneityContract_zero_iff`).
+  `κ_max = 0` is exact omnigeneity (`boozerModelOmnigeneity_zero_iff`).
 * `BoozerAxisymmetric F`: `∂_φ B = 0` on the chart.
 
 Sanity (C2):
@@ -106,12 +113,13 @@ Sanity (C2):
   omnigenous (vacuously: `ρ̇ = 0`, so there are no trapped bounces); together with the tokamak
   exclusion this is the consistency check "an axisymmetric current-free field passes C2 and fails
   C1";
-* degenerate: `constField_omnigeneityContract`; counterexample:
-  `driftMirror_not_omnigeneityContract`.
+* degenerate: `constField_boozerModelOmnigeneity`; counterexample:
+  `driftMirror_not_boozerModelOmnigeneity`.
 
 **Not covered (open):** the effective ripple `ε_eff` (Nemov et al. 1999) and the link to `1/ν`
 transport; the bounce-averaged drift as a function on velocity space; trapped-orbit existence for
-a given field; the identification of the Boozer model with a Cartesian field; the theorem
+a given field; the existence of a Boozer chart for a given field (the chart predicate is
+`BoozerModelOf` of `Theory/Contract/BoozerModel`); the theorem
 "axisymmetric, current-free, nested surfaces ⇒ purely toroidal" (needs the maximum principle for
 `Δ*ψ = 0`); section-independence of the section flux; Stokes' theorem for loops that do not bound a
 coordinate section.
@@ -874,7 +882,8 @@ theorem CurrentFreeTransform.mono {Imax' ιmin' : ℝ} (h : CurrentFreeTransform
 
 end C1
 
-/-! ## Clause C2 (Boozer guiding-centre model) -/
+/-! ## Clause C2, model level (Boozer guiding-centre model; the field-level clause is in
+`Theory/Contract/BoozerModel`) -/
 
 open PlasmaLean.Kinetic PlasmaLean.Kinetic.Boozer
 
@@ -882,10 +891,13 @@ open PlasmaLean.Kinetic PlasmaLean.Kinetic.Boozer
 @[expose] def BoozerAxisymmetric (F : BoozerField) : Prop :=
   ∀ x θ φ, 0 < x → F.Bφ x θ φ = 0
 
-/-- **Contract clause C2** on the region `0 < ψ ≤ c` in the vacuum Boozer guiding-centre model:
-for every species, magnetic moment and energy, the radial displacement per trapped bounce is at
-most `κ_max (H/|q|) τ` (`ApproxOmnigenousOn`); `κ_max = 0` is exact omnigeneity. -/
-structure OmnigeneityContract (F : BoozerField) (c κmax : ℝ) : Prop where
+/-- **Model-level C2 condition** on the region `0 < ψ ≤ c` of a supplied vacuum Boozer
+guiding-centre model `F`: for every species, magnetic moment and energy, the radial displacement
+per trapped bounce is at most `κ_max (H/|q|) τ` (`ApproxOmnigenousOn`); `κ_max = 0` is exact
+omnigeneity. It is a statement about `F` only, **not tied to a physical field**; the contract
+clause C2 for a field is `Contract.OmnigeneityContract` (`Theory/Contract/BoozerModel`), which
+requires a Boozer chart linking `F` to the field. -/
+structure BoozerModelOmnigeneity (F : BoozerField) (c κmax : ℝ) : Prop where
   /-- The region is nonempty. -/
   region_pos : 0 < c
   /-- The drift constant is nonnegative. -/
@@ -896,9 +908,10 @@ structure OmnigeneityContract (F : BoozerField) (c κmax : ℝ) : Prop where
 section C2
 variable {F : BoozerField}
 
-/-- With `κ_max = 0`, C2 is exact omnigeneity (`OmnigenousOn`) on a nonempty region. -/
-theorem omnigeneityContract_zero_iff {c : ℝ} :
-    OmnigeneityContract F c 0 ↔ 0 < c ∧ OmnigenousOn F c := by
+/-- With `κ_max = 0`, the model-level condition is exact omnigeneity (`OmnigenousOn`) on a
+nonempty region. -/
+theorem boozerModelOmnigeneity_zero_iff {c : ℝ} :
+    BoozerModelOmnigeneity F c 0 ↔ 0 < c ∧ OmnigenousOn F c := by
   rw [omnigenousOn_iff_approx_zero]
   exact ⟨fun h => ⟨h.region_pos, h.drift⟩, fun h => ⟨h.1, le_rfl, h.2⟩⟩
 
@@ -936,16 +949,17 @@ theorem omnigenousOn_of_axisymmetric_iota_zero (hax : BoozerAxisymmetric F) {c :
     mul_zero] at h
   exact lt_irrefl _ h
 
-/-- **Degenerate case**: a constant field strength satisfies C2 with `κ_max = 0`. -/
-theorem constField_omnigeneityContract {B₀ ι₀ G c : ℝ} (hG : G ≠ 0) (hc : 0 < c) :
-    OmnigeneityContract (constField B₀ ι₀ G) c 0 :=
-  omnigeneityContract_zero_iff.2 ⟨hc, constField_omnigenousOn hG c⟩
+/-- **Degenerate case**: a constant Boozer model satisfies the model-level condition with
+`κ_max = 0` (this is why the model-level condition alone cannot be clause C2). -/
+theorem constField_boozerModelOmnigeneity {B₀ ι₀ G c : ℝ} (hG : G ≠ 0) (hc : 0 < c) :
+    BoozerModelOmnigeneity (constField B₀ ι₀ G) c 0 :=
+  boozerModelOmnigeneity_zero_iff.2 ⟨hc, constField_omnigenousOn hG c⟩
 
-/-- **Counterexample**: the drift-mirror field `B = 1 + φ² + k sin θ` (`0 < k ≤ 1/2`) fails C2
-with `κ_max = 0` on every region `c ≥ 11`. -/
-theorem driftMirror_not_omnigeneityContract {k c : ℝ} (hk0 : 0 < k) (hk : k ≤ 1 / 2)
-    (hc : 11 ≤ c) : ¬ OmnigeneityContract (driftMirror k) c 0 :=
-  fun h => driftMirror_not_omnigenous hk0 hk hc (omnigeneityContract_zero_iff.1 h).2
+/-- **Counterexample**: the drift-mirror Boozer model `B = 1 + φ² + k sin θ` (`0 < k ≤ 1/2`)
+fails the model-level condition with `κ_max = 0` on every region `c ≥ 11`. -/
+theorem driftMirror_not_boozerModelOmnigeneity {k c : ℝ} (hk0 : 0 < k) (hk : k ≤ 1 / 2)
+    (hc : 11 ≤ c) : ¬ BoozerModelOmnigeneity (driftMirror k) c 0 :=
+  fun h => driftMirror_not_omnigenous hk0 hk hc (boozerModelOmnigeneity_zero_iff.1 h).2
 
 end C2
 

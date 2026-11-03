@@ -676,3 +676,16 @@ low- and high-resolution chains, contract). See `kamflow-g-status.md` for what e
 - **Remaining.** Items 6–10: torus data and centre, constants, the low- and high-resolution
   chains, the contract link. They need the high-resolution oracle runs on the workstation.
 
+## Update (1 November 2026): certification complete (C1)
+
+Items 6–10 and the residual chain are done:
+- data and centre: `DommaschkKamCData`, `CTorus`, `DioC`;
+- admissibility: `DommaschkKamCAdm` (`dk_adm`);
+- constants: `DommaschkKamCConsts` (`cDK`, κ ≤ 4.08 × 10¹², `dk_exact_of_res`);
+- initial error: `DommaschkKamCRes` (`dk_e0R`, `dk_e0Z`: e₀ ≤ 1.23 × 10⁻²⁷);
+- contract link: `DommaschkKamCRadial` and `DommaschkKamCContract` (`dommaschk_C1`);
+- final assembly: `DommaschkKamCFinal` (`dommaschk_C1_unconditional`).
+
+All modules are on demand, build on the laptop and use standard axioms. Every Lean process stays
+≤ 5.4 GB.
+

@@ -171,7 +171,7 @@ that carry net toroidal current (Q-18).
 | `Q-13` | Is the 0-D / 1-D burn obstruction at nominal confinement removable by profile peaking on stellarator geometry (ISS04 needs f_ren above measured values)? *Contract (C5):* this is the C5 obstruction for supplied anomalous scaling; with Q-22 the same question must be asked with C2-derived neoclassical losses added (poor omnigeneity can make burn inaccessible) | G-2 (C5), N-5 | open | Proved obstructions: `stellaris_measured_fren_no_access_steady`, `stellaris_measured_fren_no_access_loss`; the 1-D route on stellarator geometry is Q-15 |
 | `Q-14` | **Stepped pressure across the exact KAM torus** (Phase 14 route A): a finite-β equilibrium glued across the certified torus of the rational field. Under the contract this is the lead route to Q-20 (current-free finite β), provided the net toroidal part of the sheet currents is controlled | G-4, Q-20, N-12, N-13 | open (lead) | plan only (`after-kam.md` §3, `finite-beta-stellarator.md`) |
 | `Q-15` | Transport barriers (T ≥ 10 keV in the core) on a **non-axisymmetric** validated geometry, with χ bounds from Â or neoclassical theory stated as supplied scalings; under the contract the geometry should satisfy C1 and the neoclassical χ comes from C2 (Q-22) | G-2, Q-22 | open | Barriers exist on the cylinder, helical and Solov'ev geometries only |
-| `Q-16` | **A quasisymmetric solution**, *re-aimed at C1 + C2 (contract, 30 October 2026)*: the target is a current-free field with ι ≥ ι_min > 0 (C1) that is omnigenous in the quasisymmetric form (C2). The decided vacuum criterion below already fits the contract (vacuum ⇒ I_tor = 0; ι ≥ ι_min; small ε_QS relative to ι). The finite-β criterion is now decided by the contract: **zero (bootstrap-level) net toroidal current**, ‖I_tor‖ ≤ I_max, replacing the alternative non-Killing bound on ξ. Decided criterion (user, 30 October 2026), vacuum version: an explicit or validated **vacuum** field with certified invariant tori on a nested region, rotational transform ι ≥ ι_min > 0 on them, and a certified quasisymmetry defect ε_QS small **relative to ι** (both numbers reported; in vacuum an axisymmetric field has ι = 0, so ι ≥ ι_min excludes trivially near-axisymmetric fields). The finite-β version needs a separate criterion (plasma current gives ι > 0 to near-tokamak fields): zero net toroidal current or a non-Killing bound on the generator ξ, to be decided | G-1, G-10, G-4, G-6 | open (research); the strong form (exact QS in a volume) is open mathematics | See N-27. Exact QS on a volume: neither existence nor non-existence is known (Constantin–Drivas–Ginsberg, arXiv:2009.08860; Burby–Kallinikos–MacKay, arXiv:1912.06468). Route (i), near-axis remainder, not recommended (the vacuum expansion is ill-posed without regularization, Ruth–Jorge–Bindel arXiv:2411.04352). Route (iii) negative: QS with a generator nonvanishing on the axis forces constant ‖B‖ on the axis, and both Landreman families have non-constant axis ‖B‖ for every ε ≠ 0 (compiled: `family1_not_weakQS`, `family2_not_weakQS`). Recommended: route (ii) as an explicit vacuum field (finite Dommaschk sum fitted to a QA target, exact by identity) + KAM-certified invariant tori + Boozer angles by one more cohomological equation + certified non-QS ℓ¹ part of ‖B‖. Criterion decided: vacuum version as stated (ratio form) |
+| `Q-16` | **A quasisymmetric solution** (*2 November 2026: **vacuum criterion met on a nested pair** of certified tori of the Dommaschk target, `DommaschkKamQ16.dommaschk_Q16_vacuum` (C1, |ι| ≥ 0.2386, strong-tier certified QA defect ≤ 0.009 |ι| on both); C2 open*), *re-aimed at C1 + C2 (contract, 30 October 2026)*: the target is a current-free field with ι ≥ ι_min > 0 (C1) that is omnigenous in the quasisymmetric form (C2). The decided vacuum criterion below already fits the contract (vacuum ⇒ I_tor = 0; ι ≥ ι_min; small ε_QS relative to ι). The finite-β criterion is now decided by the contract: **zero (bootstrap-level) net toroidal current**, ‖I_tor‖ ≤ I_max, replacing the alternative non-Killing bound on ξ. Decided criterion (user, 30 October 2026), vacuum version: an explicit or validated **vacuum** field with certified invariant tori on a nested region, rotational transform ι ≥ ι_min > 0 on them, and a certified quasisymmetry defect ε_QS small **relative to ι** (both numbers reported; in vacuum an axisymmetric field has ι = 0, so ι ≥ ι_min excludes trivially near-axisymmetric fields). The finite-β version needs a separate criterion (plasma current gives ι > 0 to near-tokamak fields): zero net toroidal current or a non-Killing bound on the generator ξ, to be decided | G-1, G-10, G-4, G-6 | open (research); the strong form (exact QS in a volume) is open mathematics | See N-27. Exact QS on a volume: neither existence nor non-existence is known (Constantin–Drivas–Ginsberg, arXiv:2009.08860; Burby–Kallinikos–MacKay, arXiv:1912.06468). Route (i), near-axis remainder, not recommended (the vacuum expansion is ill-posed without regularization, Ruth–Jorge–Bindel arXiv:2411.04352). Route (iii) negative: QS with a generator nonvanishing on the axis forces constant ‖B‖ on the axis, and both Landreman families have non-constant axis ‖B‖ for every ε ≠ 0 (compiled: `family1_not_weakQS`, `family2_not_weakQS`). Recommended: route (ii) as an explicit vacuum field (finite Dommaschk sum fitted to a QA target, exact by identity) + KAM-certified invariant tori + Boozer angles by one more cohomological equation + certified non-QS ℓ¹ part of ‖B‖. Criterion decided: vacuum version as stated (ratio form) |
 | `Q-17` | **A Lean statement of a Grad counterexample** (*re-labelled, contract 30 October 2026: mathematical infrastructure, not design progress*; non-symmetry is a consequence of C1, and both Landreman families carry net toroidal current, Q-18): for Landreman family 1 (and family 2), one theorem giving smooth fields on a toroidal domain with nested toroidal flux surfaces, non-constant pressure, force balance, and no continuous Euclidean symmetry (axial, helical or reflection); then the non-stellarator-symmetric τ-extension of Issan–Citrin–Landreman–Tracey (arXiv:2610.07304) | G-4, N-28 | family 1 verified (`family1_grad_counterexample`); family 2 and τ-extension open | `family1_grad_counterexample`: smooth B, J, p on 𝒰; ∇·B = 0 and force balance with the gradient of p = (2δ − 2ψ)/μ₀; ψ a first integral with compact nested sublevel sets, each level set ψ = c ∈ (0, δ] homeomorphic to Circle × Circle (`torusMap`); p non-constant; no rotation, translation or screw-motion symmetry (`killing_trivial_of_axis`); contrast `axisymmetric_limit_lie_zero` at ε = 0. Not covered: plane reflections; family 1 has ι ≡ 2 (closed field lines), so family 2 (sheared ι) is the stronger target |
 | `Q-18` | **Net toroidal current of the Landreman families** (contract C1): compute I_tor(ψ) for families 1 and 2 and compare it with the field-producing current (B₀R₀·2π/μ₀) and with a bootstrap-level bound. If it is not small, the families are tokamak-like under C1 (ι comes from plasma current) | G-1, G-4, Q-16, Q-17 | answered for family 2: fails C1 (re-established 31 October with the intrinsic loop current) | `family2_loopCurrent_pos` (loop current > 0 around `loop2 λ k₀`, 0 < k₀ < 19/20) via `torCurrent_eq_lineIntegral` (Stokes, `SectionStokes.netToroidalCurrent_eq_lineIntegral_div`) and `family2_net_current_pos`; `family2_not_currentFreeTransform(_zero)` for any surface whose loop is `loop2 λ k₀`; λ-independent bound `family2_net_current_ge`. Family 1 open |
 | `Q-19` | **Bounce-averaged drift / ε_eff for the rational stellarator vacuum field** (contract C2): on the certified surfaces of `RationalStellarator.field (1/4)`, compute (numerically first, as an untrusted oracle) the bounce-averaged radial drift of trapped particles and ε_eff, then decide whether a certified bound is reachable | G-10, G-1 | answered numerically (untrusted, 30 October): fails C2 | N-30: ι from 0.134 on the axis (1 − √3/2) to 0.169 at r = 0.40, matching the KAM torus (ι_A = 0.13743); best helicity QA (1, 0) with defect ≈ 26 % of the ‖B‖ variation (defect/ι ≈ 0.27, not shrinking toward the axis); ε_eff ≈ 0.2 r_eff (2.7 % at torus A, ≈ 10 % at r = 0.36), classical-stellarator level. Informal obstruction: for this planar-axis family the non-QA first-order ‖B‖ variation equals √(ι₀/N) (Garren–Boozer: a planar axis in vacuum admits no QS with ι ≠ 0), so adding harmonics cannot help. Lean target: `rotatingEllipse_firstOrder_QA_defect`. Consequence: the Dommaschk route (Q-16) needs a non-planar axis |
@@ -222,6 +222,7 @@ superseded; mixed notes list the status of their parts. "Lean" names compiled ev
 | `N-31` | `notes/theory/dommaschk-qa.md`: Dommaschk quasi-axisymmetric vacuum fit with a non-planar axis (workstation task `dommaschk-qa`) | Q-16, G-10, G-1 | N-27, N-29, N-30 | research | exact NFP-3 field verified in Lean (`DommaschkQA3.candidate_vacuum`, `candidate_currentFree`); numerics untrusted: smoke test defect/ι 0.014–0.029 (ι_min 0.15, r ≤ 0.045); medium workstation run (24 coefficients, ι_min 0.2, r ≤ 0.06) missed the moderate tier (best defect/ι 0.12, nested to r = 0.032, ε_eff 4.5 %) ; diagnostic run (ι_min 0.15, r ≤ 0.045): moderate tier on the nested region (defect/ι 0.021–0.038, ε_eff 0.6–1.0 %, |ι| ≈ 0.24), volume limited by the ι = 2/9 island chain (r_eff ≈ 0.019) ; second diagnostic (ι_min 0.2): same picture, best defect/ι 0.020–0.051 at |ι| ≈ 0.25, middle surface on the ι = 1/4 resonance ; **nmax 3 (42 coefficients): moderate tier**, defect/ι 0.009/0.015/0.023 at |ι| 0.246–0.235 (low shear, inside (2/9, 1/4)), ε_eff 0.08–0.13 %, κ 0.11–0.37, regular to r_eff ≈ 0.037 (untrusted) ; nmax 4 (62 coefficients): no improvement (best start fails the high-resolution check: 2/9 island, nested only to r = 0.015) ; windowed run at r ≤ 0.06: worse (defect/ι ≥ 0.08; the window cannot stop ι reaching 2/9 at r ≈ 0.048) ; high-ι windowed run failed (2/48 regular, |ι| below the window) ; **NFP 3, nmax 2 (24 coefficients): first `candidate_for_certification`**: defect/ι 0.007/0.013/0.020 at |ι| 0.29–0.27, ε_eff 0.13–0.47 %, κ ≤ 0.40, regular to r_eff ≈ 0.025 (N-31 §15) ; NFP 3 nmax 3: worse (crosses 1/3 and 3/10) ; **strong tier reached, purely rational** (certification target, N-31 §22: NFP 2, defect/ι ≤ 0.0035 at |ι| ≈ 0.235, ε_eff ≤ 0.018 %, nested to r_eff ≈ 0.052; untrusted) and a purely rational moderate-tier NFP-3 field (N-31 §21); **certification step 1 verified**: `DommaschkQA3.candidate_vacuum`, `field_vacuum` (all coefficients), `candidate_currentFree` (C1 current clause), `field_stellSym`, on the reusable `CylAlgebra.gradField_vacuum` | KAM tori and ι for the NFP-3 candidate (C1 transform clause), Boozer angles, certified QA defect; warm-start refinement on the workstation; certification path: exact field in Lean, KAM tori, Boozer angles, certified QA defect relative to ι, N-29 drift bound |
 | `N-32` | `notes/theory/holomorphic-qs-brief.md`: assessment of the colleague's holomorphic strong-QS brief | Q-24, Q-25, Q-16; closes N-21 routes | N-21, N-27, N-30, N-31 | routine (assessment) | assessment complete; explicit numbers verified in sympy; KYM and holomorphic-generator routes of N-21 closed (brief Props 5.1–5.2, checked by hand); Boozer moment Ψ' = Mι − N links QA nondegeneracy to C1's ι ≠ 0 | Q-25 (a)–(b) in Lean, then (c) on the rational and Dommaschk fields |
 | `N-33` | `notes/theory/dommaschk-kam-certificate.md`: design of the Lean KAM certificate for the Dommaschk target (step 2) | Q-16, G-1, C1 | N-31, `kam_flow_torus`, KronBall | hard | conditional go: KronBall residual chain (≈ 90 modules, 45–85 CPU-min, ≤ 5 GB per module), `FlowFieldG` generalisation, exact low small divisors; contract blocker resolved (AR-L4: `PoloidalAngle` about a moving reference curve); remaining: `FlowFieldG`, exact low small divisors, a high-resolution oracle (≈ 104 × 84 modes) | workstation runs at 80 × 64 / 96 × 80; then `FlowFieldG` |
+| `N-34` | `notes/theory/dommaschk-qs-defect.md`: certified QA defect on the certified torus C, and the path to C2 | Q-16, Q-23, G-10 | N-29, N-30, N-31, N-33 | hard | design: GO for the per-torus defect (vacuum Boozer angles explicit on the torus; defect ∂_{φ_B}\|B\|; ~20 on-demand modules, 15–20 CPU-min, laptop); strong tier needs the Wirtinger bound (A2), otherwise ≈ 0.059; NO-GO for C2 claims on the actual field until a `BoozerModelOf` link exists | A1 `VacuumBoozerTorus`, then D3–D7 and A2 |
 
 Main dependency edges: N-9 → N-10 → N-14 → N-15 → (Q-4, Q-5); N-10 → N-13 → (N-16 → Q-2, Q-14);
 N-4 → (N-8, N-7 → N-17 → Q-1); N-12 → (Q-3, Q-14, Q-16) → G-4; N-4 → Q-16 → G-6; N-2, N-6 → Q-10 → G-2, G-7;
@@ -1658,3 +1659,168 @@ Gate E1 (§11.2, §11.4) and the "sanity theorem or counterexample" promised in 
   error). Next: item 8 (low-resolution admissibility chain, near-sharp inverses). Axiom audit passed
   (50,270 declarations).
 
+### Certification step 2: item 8, admissibility chain for torus C, 1 November 2026
+
+- On-demand top module `Design/DommaschkKamCAdm` (`lake build PlasmaLean.Design.DommaschkKamCAdm`, ≈ 26
+  CPU-min on the laptop, peak 5.1 GB): `DommaschkKamC.dk_adm` gives all of `dkFieldTC.AdmBoundsG` (frame
+  units and inverses of D, R, W₀, torus and field bounds, torsion, twist) for every analytic torus
+  μ-close (μ ≤ 10⁻¹²) to the data torus, on every strip 0 < ρ ≤ 0.045; `dk_hadm` is the `hadm` field of
+  `KamHG`. KronBall chain on the 24 × 28 surrogate with near-sharp approximate inverses (qD, qW, qR);
+  certified bounds within 0.02 % of sharp except the twist (14.16 vs 14.26). With them κ ≈ 4.08 × 10¹²,
+  required e₀ ≈ 1.31 × 10⁻²³, margin ≈ 2.2 × 10⁵ for the 96 × 80 torus. 27 modules (generated by
+  `scripts/dommaschk_kam/emit_adm.py` with the ball engine `adm_ball.py`). Axioms standard (scratch
+  check). Remaining: item 9 (`cDK : SCG`, C₂, closed numeric facts) and the high-resolution residual
+  chain (initial error e₀), then item 10 (contract link).
+
+### Certification step 2: item 9, constants and the conditional exact torus, 1 November 2026
+
+- `Design/DommaschkKamCJet` (default build; second-order majorant jets with a kernel-checked rational
+  mirror) and on-demand `Design/DommaschkKamCConsts` (`lake build PlasmaLean.Design.DommaschkKamCConsts`):
+  `cDK : SCG` (`cDK_ok`), certified κ ≤ 4.0798 × 10¹², C₂ = 4.0797 × 10¹², `dk_globalHG`, all closed `KamHG`
+  fields, `dk_kamHG` and **`dk_exact_of_res`**: given the two initial residual bounds
+  ‖resR‖, ‖resZ‖ ≤ e0qDK (= 10⁻²⁴; admissible up to 1.15 × 10⁻²³) at ρ = 0.045, there is an exact real
+  analytic invariant torus of `dkFieldTC` within μ = 10⁻¹² of torus C. Remaining: the residual chain
+  (in progress) and item 10 (contract link). Axioms standard.
+
+### Certification step 2: item 10, contract link (C1 conditional on the residual bounds), 1 November 2026
+
+- On-demand `Design/DommaschkKamCRadial` and `Design/DommaschkKamCContract`
+  (`lake build PlasmaLean.Design.DommaschkKamCContract`): **`dommaschk_C1`**: given the initial residual
+  bounds `e0R`, `e0Z` (‖resR‖, ‖resZ‖ ≤ 10⁻²⁴ at ρ = 0.045), for every μ₀ > 0 there is a family S with
+  `CurrentFreeTransform μ₀ (DommaschkQA2R.field candidate) S 0 (6/25)`: contract clause C1 with zero net
+  toroidal current and |ι| ≥ 0.24 for the exact Dommaschk field. Also `dommaschk_iotaOnTorus`,
+  `dommaschk_C1_of_exact`. Construction: the exact flow-form torus mapped to cylindrical (R, z) with
+  ψ = 2φ − π/2; `FieldTorus` from the invariance equations and `Dp/nRp/nZp_ident` (B_φ ≠ 0 from the
+  admissibility frame); poloidal angle about the θ-average of the exact torus (a continuous periodic
+  reference curve), radial positivity certified by one Kronecker digit sum (`radial_ge_of_close`).
+  Rejected fixture `not_C1_iotaMin` (ι_min = 1/4 fails). Only the residual chain remains.
+
+### Certification step 2 complete: C1 for the exact Dommaschk field, 1 November 2026
+
+- Residual chain (N-33 item 7): on-demand `Design/DommaschkKamCRes` (29 modules, generated by
+  `scripts/dommaschk_kam/emit_res.py`; hand-written `DommaschkKamCResKron` with salted packed rows and
+  divide-and-conquer Kronecker images; ≈ 12 min on the laptop, peak 5.4 GB): `dk_e0R`, `dk_e0Z`
+  certify the initial invariance error ≤ 1.23 × 10⁻²⁷ at ρ = 9/200 for the 96 × 80 torus C.
+  Workstation task `dommaschk-res` exists but is not needed.
+- Final assembly: on-demand `Design/DommaschkKamCFinal`
+  (`lake build PlasmaLean.Design.DommaschkKamCFinal`): **`dommaschk_C1_unconditional`**: for every
+  μ₀ > 0, `∃ S, CurrentFreeTransform μ₀ (DommaschkQA2R.field candidate) S 0 (6/25)`, and
+  `dommaschk_iotaOnTorus_unconditional` (certified invariant torus with ι_C = −(85+√5)/361). Standard
+  axioms. **Contract clause C1 is proved for the exact strong-tier quasi-axisymmetric Dommaschk vacuum
+  field.** Not certified: confinement inside the torus, nested families, the QS defect, C2.
+
+### N-34: design of the certified QA defect, and an audit item on C2, 1 November 2026
+
+- `notes/theory/dommaschk-qs-defect.md` (N-34): on an invariant vacuum torus the Boozer angles are
+  explicit (φ_B = Φ∘K, θ_B = θ + ι(φ_B − φ)); the QA defect is ∂_{φ_B}|B|, which is exactly the
+  bridge's `symmetryDefect` on one surface and bounds the oracle's Boozer spectral defect
+  (defect·B00 ≤ (√2/N)‖g‖_{L²(J)}). Untrusted: on torus C defect/|ι| = 0.0019 (spectral), sup of the
+  defect 0.0090. Correction: the N-31 κ figures are about 2× optimistic (mode truncation). Plan:
+  A1 `Theory/Fields/VacuumBoozerTorus`, A2 `BoozerWirtinger` (needed for the strong tier), D3–D7 the
+  ball chain and identification (on demand, laptop). Prototype `Design/DommaschkQSProto` (on demand).
+- **Audit item AC-1 (medium; high as soon as C2 is claimed for an actual field):**
+  `OmnigeneityContract F c κ` is not tied to the physical field (a trivial Boozer model satisfies it
+  for any candidate). Proposed fix: `∃ F, BoozerModelOf B Ω F ∧ OmnigeneityContract F …` with a proved
+  chart. No C2 claim for the Dommaschk field is made until then.
+
+### N-34 D3: polynomial form of the QA defect for the Dommaschk field, 1 November 2026
+
+- `Design/DommaschkKamCQSData` (generated by `scripts/dommaschk_kam/emit_qs.py`) and
+  `Design/DommaschkKamCQSPoly` (default build): torusQADefect = ∂_{φ_B}|B| = N_g/(2Q√Q R⁹) with
+  Q = n_R² + R²D² + n_z² (= R¹⁶|B|²) and N_g = N₀ + ι(N₁u_θ + N₂z_θ) evaluated as a program of products
+  (`QSLeaves`; expanded N₁ would have 45k terms). Kernel-checked φ-derivative and R-form data; field
+  identities `normSq_flow`, `boozerJ_flow`, `boozerA_flow`, `qsDefectSq_eq`, `qsDefect_eq_real`;
+  rejected fixture `qsDefectSq_needs_invariance`. Validated on torus C (256² grid): agrees with the
+  estimator to its finite-difference error (5.7e-9); sup of the defect 0.009002. Axiom audit passed
+  (50,460 declarations).
+
+### N-34 A1: vacuum Boozer angles on an invariant torus, 1 November 2026
+
+- `Theory/Fields/VacuumBoozerTorus` (default build): `torusQADefect` (= ∂_{φ_B}|B| on a torus),
+  `boozerJac_eq_normSq_div` (J = ‖B‖²/B^φ on a `FieldTorus`), vacuum angle facts (straight field lines in
+  (θ_B, φ_B)), the Boozer direction `boozerPhiVec_eq_field`, the QA characterisation in both directions
+  (`torusQADefect_eq_zero_of_qa`, `exists_qa_of_torusQADefect_eq_zero` without the implicit function
+  theorem), `boozerAngles_bijective` (J > 0 and a bounded potential), links `qsError_eq_torusQADefect`,
+  `WeakQSDefect.torusQADefectLe` (the torus defect is the trace of the δ₂ component of `WeakQSDefect`) and
+  `symmetryDefect_eq_torusQADefect_vacuum` (the bridge's hypothesis on one surface). Sanity: the circular
+  torus of ∇φ (defect 0), a rippled toroidal field (defect ≠ 0; not a vacuum field), normalisations.
+  Axiom audit passed (50,609 declarations).
+
+### N-34 A2: spectral bound for the Boozer QA defect, 1 November 2026
+
+- `Theory/Fields/BoozerWirtinger` (default build): in the KAM chart, with no change of variables:
+  orthonormality of the Boozer modes in L²(J) via a divergence identity (`torusAvg_jac_boozerMode`, no
+  irrationality of ι needed), `boozerCoeff_chartDefect` (c_mn(∂_{φ_B}|B|) = −inN c_mn(|B|)), Bessel for a
+  positive functional, hence the **full off-QA spectrum** bound `tsum_normSq_boozerCoeff_le` and the
+  oracle-normalised `torus_oracleDefect_le`: oracle defect ≤ √2 δ/(N B_min) (and the L²(J) form
+  `oracleDefect_le`). Sharp (`singleMode_bound_attained`; `not_oracleDefect_le_of_lt_sqrt_two`).
+  Not formalised: the oracle's field-line Birkhoff mean equals the grid mean (unique ergodicity).
+  Concrete tori supply `BoozerChartHyp.of_torus` (C² potential, C¹ |B|, 2π/N periodicity, B^φ > 0).
+  Axiom audit passed (50,789 declarations).
+
+### N-34 D4–D7: certified QA defect on the C1 torus, 2 November 2026
+
+- D4/D5: on-demand `Design/DommaschkKamCQSDef*` and `DommaschkKamCQSTransfer` (≈ 8 CPU-min on top of the
+  admissibility chain, peak 3.3 GB; generator `scripts/dommaschk_kam/emit_qsdef.py`): on every μ-close
+  torus, sup |∂_{φ_B}|B|| ≤ δ_∞ = 0.020642, |B| ≥ 1.04259, D ≥ 0.1578, κ = 2δ_∞/(B_min|ι|) ≤ 0.165, and
+  the L²(J) quantity δ₂ ≤ 0.00224; the surrogate is not exactly QA (`surr_G_ne`).
+- D6: on-demand `Design/DommaschkKamCQSIdent`: on the exact torus, `VacuumPotentialOn`, **B^φ > 0**,
+  regularity and π-periodicity (`BoozerChartHyp`), `torusQADefect_eq` (the D3 formula), hence
+  `torusQADefectLe … (21/1000)`, `Bmin_le`, `oracleDefect_le`.
+- D7: on-demand `Design/DommaschkKamCQS`: **`dommaschk_C1_qaDefect`** (unconditional: the C1 torus of the
+  exact Dommaschk field carries per-torus QA defect ≤ 0.021, |B| ≥ 1.04259, B^φ > 0) and
+  **`dommaschk_C1_oracleDefect`** (off-QA Boozer spectral defect, oracle normalisation, ≤ √2 δ/(2B_min)
+  < 0.0141, i.e. ≈ 0.058 |ι|: sup route, just outside the moderate tier). The L² route (≈ 0.0063 |ι|,
+  strong tier) needs the pointwise identity for F and the torus/strip average identification (open).
+- Fix: `DommaschkKamCQSPoly.Qp` renamed `QpQS` (it clashed with `DommaschkKamCAdmFrame.Qp`, so the default
+  build could not be combined with the on-demand chain). Standard axioms throughout.
+
+### N-34 complete: strong-tier certified QA defect on the C1 torus, 2 November 2026
+
+- On-demand `Design/DommaschkKamCQSL2`: **`dommaschk_C1_oracleDefect_L2`**: on the certified C1 torus of
+  the exact Dommaschk field, the off-QA Boozer spectral defect (oracle normalisation, every finite set of
+  off-QA modes, hence the full spectrum) is ≤ (√2/2) δ₂/B_min < 0.0016, i.e. ≤ 0.0063 |ι|
+  (`oracleDefect_L2_num`): **strong tier** of the Q-16 criterion (≤ 0.01 |ι|), certified. Key lemmas:
+  `torusAvg_eval_psi` (torus box average of a strip element = its constant Fourier coefficient),
+  `four_mul_sqJ_eq` and `weightedL2Sq_le_mF`. Standard axioms.
+- Q-16 status: for the Dommaschk target, C1 and a strong-tier certified QA defect hold on **one**
+  certified torus (thin core, r_eff ≈ 0.02). Open: a nested region (a second certified torus and a
+  nesting certificate), and C2 (AC-1, a Boozer model tied to the field; a volume Boozer chart does not
+  exist exactly for this non-integrable field).
+
+### Audit fix AC-1: C2 tied to the physical field, 2 November 2026
+
+- `Theory/Contract/BoozerModel` (default build): `BoozerChart`, `BoozerModelOf`; C2 =
+  `OmnigeneityContract B Ω c κ := ∃ F, BoozerModelOf B Ω c F ∧ BoozerModelOmnigeneity F c κ`. The old
+  predicate is renamed `BoozerModelOmnigeneity` (model level). `exactQA`/`reactorQA` results are Boozer-model
+  statements. Field-level C2 instance so far: ∇φ (vacuous, ι = 0). Axiom audit passed (50,921 declarations).
+
+### A nested certified region for the Dommaschk field (Q-16), 2 November 2026
+
+- Torus A certified (on-demand `Design/DommaschkKamA*`, emitters generalised with `--tag`, torus-C outputs
+  byte-identical): `DommaschkKamA.dommaschkA_C1_unconditional` (C1 with ι_min = 0.2386; 6/25 is impossible for
+  A, `not_C1_iotaMin_A`), `dommaschkA_iotaOnTorus_unconditional`; κ ≤ 8.79 × 10¹², certified e₀ = 6.2 × 10⁻²⁶
+  against a requirement ≤ 6.07 × 10⁻²⁴ (margin ≈ 98); same field instance and moving centre as torus C.
+- Nesting (`Design/DommaschkKamNested`): `NestedTori` (both tori have a poloidal angle about one reference
+  curve, and along every ray C comes strictly before A; consequences `disjoint`, `inside`); `nested_of_exact`,
+  **`dommaschk_nested`** (two certified invariant tori, ι_C and ι_A, nested) and **`dommaschk_nested_C1`**
+  (C1 on the family {C, A} with ι_min = 0.2386). Certified by positivity via squared approximate inverses and a
+  common quadratic gauge (G < 1 near C, G > 1 near A). 77 on-demand modules, ≈ 70 min on the laptop, peak
+  5.77 GB. Standard axioms.
+- Q-16 vacuum criterion for the Dommaschk target: certified tori on a nested region (C inside A), |ι| ≥ 0.2386
+  on both, and a certified strong-tier QA defect on torus C (A's defect not yet certified). Open: the defect
+  on A, and C2.
+
+### Q-16 vacuum criterion met on a nested pair of certified tori, 2 November 2026
+
+- Torus-A QA-defect chain (on-demand `Design/DommaschkKamAQS*`; `emit_qsdef.py --tag`, C outputs
+  byte-identical): δ_∞ ≤ 0.032, δ₂ = 0.0031, B_min ≥ 1.02656, B^φ > 0;
+  `dommaschkA_oracleDefect_L2` ≤ 0.0090 |ι_A| (strong tier).
+- **`DommaschkKamQ16.dommaschk_Q16_vacuum`** (on-demand `Design/DommaschkKamQ16`,
+  `lake build PlasmaLean.Design.DommaschkKamQ16`): the exact Dommaschk vacuum field has two certified
+  invariant tori C and A, **nested**, with |ι| ≥ 0.2386 on both, zero net toroidal current (C1 on {C, A}),
+  per-torus QA defect ≤ 0.021 / 0.032, |B| ≥ 1.0426 / 1.0266, and certified off-QA Boozer spectral defect
+  ≤ 0.0063 |ι_C| and ≤ 0.0090 |ι_A|; `dommaschk_Q16_strong` (≤ 0.01 |ι| on both). This meets the decided
+  vacuum Q-16 criterion (certified tori on a nested region, ι ≥ ι_min, defect small relative to ι, strong
+  tier) for a nested pair. Scope: two thin surfaces (r_eff ≈ 0.02, 0.037); not omnigeneity of a region (no
+  C2; AC-1 requires a Boozer chart of the field). Standard axioms.

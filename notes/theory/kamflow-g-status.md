@@ -432,3 +432,605 @@ analytic `μ`-close `(u, z)`, with `cDK.p = 7`, `dlow = 1208/10000`, `γ = 2671/
   #print axioms PlasmaLean.Design.DommaschkKamC.dkFieldTC
   #print axioms PlasmaLean.Design.DommaschkKamC.rotψ_ne_id
   ```
+
+## Item 8 (1 November 2026): the low-resolution admissibility chain of torus C — complete
+
+**Result.** `DommaschkKamC.dk_adm` (`Design/DommaschkKamCAdm`): every analytic torus `(u, z)` that is
+`μ`-close (`μ ≤ 10⁻¹²`, `Close`) to the data torus `(u₀C, z₀C)` on a strip `0 < ρ ≤ 0.045` satisfies
+**all** of `dkFieldTC.AdmBoundsG c ι_C ρ u z` (frame: units and analytic inverses of `D`, `R`, `W₀`;
+torus, field, inverse bounds; torsion; twist) for every `c : SCG` with `ConstsOK c` (`c` dominates
+the certified constants `auC … tauC` of `Design/DommaschkKamCAdmOut`). `dk_hadm` is the `hadm` field of
+`FlowFieldG.KamHG` in the exact form required (strips `[c.ρ − 6δ₀, c.ρ]`, `c.ρ ≤ 0.045`).
+Standard axioms only; no `sorry`/`decide`; zero warnings. Not imported by `PlasmaLean.lean`
+(on-demand; checked together with `import PlasmaLean`: no name clashes).
+
+**Architecture.**
+- *Surrogate.* The data torus truncated to `24 × 28` (the tail is dominated by `ψ`-modes: `‖U − U₂₄ₓ₂₈‖ =
+  9.4e-13`, `‖∂_θ‖ 7.2e-12`, `‖∂_ψ‖ 2.3e-11` at `r = 0.045`) and rounded to `2⁻⁶⁴`, oracle angle `ψₒ`.
+  The chain is evaluated at this **fixed** torus (inputs exact, radius 0), so radii are only node
+  truncation/rounding; closeness of the data torus is six full-layout (`96 × 80`) Kronecker checks
+  (`…TailCheck`, `…TailCheckZ`), and the transfer to every `μ`-close torus is analytic
+  (`admO_near`): u-form Lipschitz majorants of the field polynomials (`Bd_ev_sub`, rational `lipQ`,
+  kernel-checked), product rules for `W₀`, `PolyExpr.majD` of the 13-variable torsion structure `Qp`
+  for `P`, perturbed approximate inverses (`inv_of_approx`), `T₀ = Y·Z`, `Y = R⁷P qD³qW²`,
+  `Z = (qD D)⁻³(qW W₀)⁻²` (`torsion_bounds`). The strip frame is reached by `rotψ`/`rotψi`
+  (`AdmO.toG`, `Design/DommaschkKamCAdmFrame`).
+- *Chain (195 variables).* `R = R₀ + U`; `R², …, R¹⁸`, `z², …, z⁵`, 65 monomials `Rᵃzᵇ`; the nine
+  field polynomials in **R-form** (`dDR`, `R·dnRh`, `dnZR` and their `dU`, `dZ`; identified with
+  the u-form by `substR` kernel checks) as `polyT` trees, split into chunks of ≤ 4 monomials (the
+  kernel cost of one check grows quadratically with the number of distinct grid images, ≈ 0.25 n² s);
+  `V₀_R`, `V₀_z`, `W₀`, `a_R'`, `a_z'`, `D²`, `G₁…G₃`, `Y_R`, `Y_z`, `P`; approximate inverses
+  `qD`, `qW`, `qR` (rounded truncated FFT of `1/D`, `1/W₀`, `1/R` at the surrogate; norm nodes
+  `‖qD D − 1‖ ≤ 4.7e-9`, `‖qW W₀ − 1‖ ≤ 2.8e-8`, `‖qR R − 1‖ ≤ 3.2e-13`); `R⁷P`, `qD³qW²`, `Y`;
+  `ι_q`-transport norms. Strip weights `68553^s 2^{16(K−s)}` (`e^{0.045} ≤ 68553/2¹⁶`,
+  `exp_dk_le`) via the general-weight steps of `Design/DommaschkKamCKronW` (`node_fullw`, …).
+- *Generator* `scripts/dommaschk_kam/emit_adm.py` (+ `adm_ball.py`, the gmpy2 ball engine mirroring
+  `nodeKw/normKw/centerKw` and `polyT` exactly): `--emit [--only …]`; prints certified vs sharp
+  bounds and `κ`.
+
+**Certified bounds (r = 0.045) vs the estimator's sharp values.** `au 0.137725 (0.1377)`,
+`az 0.118681`, `avR 0.053167`, `avZ 0.045596`, `aR 1.04398`, `aRt 0.054587`, `azt 0.052711`,
+`aLR 0.25366`, `aLz 0.25224`, `bD 1.15079`, `bDu 6.4764`, `bDz 0.53067`, `bnR 0.153693`,
+`bnRu 1.54491`, `bnRz 2.2273`, `bnZ 0.173819`, `bnZu 1.55634`, `bnZz 1.78304`, **`sD 3.8196`
+(3.82)**, **`sR 1.2376` (1.238)**, **`sW 2741.5` (2741)**, **`tT 2746.9` (2747)**, **`τ 14.162`
+(14.26)**; all within 0.02 % of sharp except `τ` (0.7 %, from the `Y`-node radius 0.075 and
+`δY = 0.017`). `kam_constants` formulas with these: `κ = 4.08e12` (sharp 4.05e12), required
+`e₀ = 1.31e-23`; with the exported `‖E‖ = 5.9e-29` the margin is `2.2e5`.
+
+**Modules** (laptop, sequential, user CPU / peak RSS):
+
+| Module | Content | CPU | RSS |
+| --- | --- | --- | --- |
+| `DommaschkKamCKronW` | general-weight steps, oracle constants, `polyT`/`eval_polyT` | 3 s | 1.6 GB |
+| `DommaschkKamCAdmData1–6` | packed half grids (187 centres, 4.1 MB source) | 2.5 s each | 0.73 GB |
+| `DommaschkKamCAdmEnv`, `…Trees` | environment, trees | 12 s, 3 s | 1.6, 1.4 GB |
+| `DommaschkKamCAdmCheck1–10` | `kron2_proof` checks (191 centres, 182 nodes, 5 norm nodes) | 97–133 s each, ≈ 19 min total | ≤ 2.9 GB |
+| `DommaschkKamCAdmRel`, `…Chain` | honest values, node identities; the ball chain | 20 s, 14 s | 1.8, 1.7 GB |
+| `DommaschkKamCAdmTailCheck`, `…TailCheckZ` | six full-layout tail checks | 105 s, 95 s | **5.1 GB** each |
+| `DommaschkKamCAdmTail`, `…Out` | tail lemmas; indices, constants, `⟨Y⟩` | 3 s, 2 s | 1.5 GB |
+| `DommaschkKamCAdmFrame` | `rotψi`, oracle frame, `AdmO`, Lipschitz/inverse/torsion lemmas | 10 s | 1.6 GB |
+| `DommaschkKamCAdm` | transfer and `dk_adm`, `dk_hadm` | 24 s | 2.3 GB |
+
+Total ≈ 26 CPU-min, private oleans 30 MB. Laptop-buildable; the tail checks are the peak (one
+`193 × 161` image per declaration, 5.1 GB — within 6 GB but the closest to the limit).
+
+**Remaining for item 9.** Define `cDK : SCG` with `ρ = 9/200`, `δ₀ = 9/1400`, `γ = 2671/10000`,
+`dlow = 1208/10000`, `Klow = 1`, `p = 7`, `θ = e₀/δ₀⁴` (`e₀ = 10⁻²⁸`), the constants `auC … tauC`
+(then `ConstsOK cDK` is `le_refl` throughout), `C2` (`PolyExpr.majD2` of `resRp`/`resZp` at
+`avec + Tq • mvec`: a DkPoly-level rational mirror like `lipQ`), `E1`, `cKb`, `cLb`, and prove the closed
+facts `hτ'`, `hC2R/Z`, `hac`, `hE1`, `hcb`, `hκ`, `hsmall`, `hcK`, `hcL`, `hμK/t/L`. Item 7's
+high-resolution residual chain (`e0R`, `e0Z`) is still needed for `KamHG`.
+
+**Shared files (owner to add).**
+- `PlasmaLean.lean`: none (on-demand top module `Design/DommaschkKamCAdm`).
+- `scripts/check_axioms_heavy.lean`:
+  ```
+  import PlasmaLean.Design.DommaschkKamCAdm
+  #print axioms PlasmaLean.Design.DommaschkKamC.dk_adm
+  #print axioms PlasmaLean.Design.DommaschkKamC.dk_hadm
+  #print axioms PlasmaLean.Design.DommaschkKamC.AdmO.toG
+  #print axioms PlasmaLean.Design.DommaschkKamC.ballA_all
+  #print axioms PlasmaLean.Design.DommaschkKamC.eval_polyT
+  #print axioms PlasmaLean.Design.DommaschkKamC.polyT_reject
+  #print axioms PlasmaLean.Design.DommaschkKamC.consts_sharp
+  ```
+
+## Item 9 (1 November 2026): the constants `cDK` of torus C — complete
+
+**Result.** `Design/DommaschkKamCConsts` (on-demand, imports `DommaschkKamCAdm`):
+`cDK : SCG` with `ρ = 9/200`, `δ₀ = 9/1400`, `γ = 0.2671`, `dlow = 0.1208`, `Klow = 1`, `p = 7`,
+`θ = e0qDK/δ₀⁴` (error budget `e0qDK = 10⁻²⁴`, a definition), the certified constants
+`auC … tauC` (`cDK_ok : ConstsOK cDK` by `le_rfl`), `ac = 68553/2¹⁶`, `E1 = 2.718`,
+`cKb = 30496`, `cLb = 930856`, `C₂ = 4.0797e12`.
+- `dk_globalHG : dkFieldTC.GlobalHG cDK ι_C` (all fields; `dio` from `dkIotaC_period_split`,
+  `hlow` from `dkC_low_δ0`, `hac` from `exp_dk_le`);
+- all closed numeric fields of `KamHG … e0qDK muq` (`dk_small`, `dk_μK/t/L`, …) and
+  `dk_hadmC` (from `dk_hadm`); `dk_kamHG (e0R) (e0Z) : KamHG dkFieldTC cDK ι_C u₀C z₀C e0qDK muq`
+  and `dk_exact_of_res` (exact torus on the strip `9/1400`, `10⁻¹²`-close), conditional only on
+  the initial residual bounds `Bd (9/200) (resR/resZ ι_C u₀C z₀C) e0qDK`.
+- *Taylor constant.* `Design/DommaschkKamCJet` (default build): `maj`, `majD`, `majD2` form a
+  second-order jet (Leibniz rule `jmul`); kernel-computable rational mirror `jTm`/`jSP` of the
+  DkPoly data, bridge `rj_toPE`, and `majD2_resRp/Z`: `½ majD2` of the residual polynomials is
+  `c2Q …` (rational), bounded by `kernel_fact` (`½P̂''`: `4.05556e12` (R), `4.07969e12` (z)).
+
+**Certified values** (exact recomputation `scripts/dommaschk_kam/check_consts.py`; agree with
+`kam_constants.py`): `cK = 30495.72`, `cL = 930855.43`, `τ' = 14.1623`, **`κ = 4.07970e12`**,
+`32κe₀/δ₀⁴ = 0.0764` at `e₀ = 10⁻²⁴`. Largest admissible `e₀`: `1.308e-23` (smallness),
+`1.184e-23` (`hμt` with `μ = 10⁻¹²`, binding), `2.22e-23` (`hμL`). Any `e0qDK ≤ 1.15e-23` passes
+with unchanged `cKb`, `cLb`, `C₂` (edit `e0qDK`, rebuild; the script checks both ends).
+
+**Build.** `DommaschkKamCJet` 7 s / 1.4 GB; `DommaschkKamCConsts` 11 s / 2.5 GB (kernel C₂ checks
+included). Standard axioms only; no `sorry`/`decide`; zero warnings.
+
+**Remaining (item 10).** The residual chain: `Bd (9/200) (dkFieldTC.resR ι_C u₀C z₀C) e` with
+`e ≤ e0qDK` (then `Bd.le`), same for `resZ`; then `dk_exact_of_res` gives the exact torus; the
+contract link (`Theory/Contract`) from the flow-form torus.
+
+**Shared files (owner to add).**
+- `PlasmaLean.lean`: `public import PlasmaLean.Design.DommaschkKamCJet` (after `DommaschkKamCTorus`).
+- `scripts/check_axioms_heavy.lean`: `import PlasmaLean.Design.DommaschkKamCConsts`, and
+  `#print axioms PlasmaLean.Design.DommaschkKamC.dk_globalHG`, `….dk_kamHG`, `….dk_exact_of_res`,
+  `….cDK_ok`, `….dk_small_fails`; build note `lake build PlasmaLean.Design.DommaschkKamCConsts`.
+
+## Item 10 (1 November 2026): the contract link for torus C — complete (conditional on e0R/e0Z)
+
+**Result.** `DommaschkKamC.dommaschk_C1 (e0R) (e0Z) {μ₀} (hμ : 0 < μ₀) : ∃ S, CurrentFreeTransform μ₀
+(DommaschkQA2R.field candidate) S 0 (6/25)` (`Design/DommaschkKamCContract`, on-demand), and
+`dommaschk_iotaOnTorus (e0R) (e0Z) : ∃ R z, IotaOnTorus (field candidate) R z ι_C`. The only hypotheses
+are the two initial residual bounds of `dk_exact_of_res` (`Bd 0.045 (resR/resZ ι_C u₀C z₀C) e0qDK`,
+the high-resolution residual chain). No further fact about the torus is assumed: everything else comes
+from `dk_exact_of_res`, `dk_hadmC` and one new small certificate. Standard axioms only; no
+`sorry`/`decide`; zero warnings; checked together with `import PlasmaLean` (no name clashes).
+
+**Construction** (`ExactTorusC u z`: the conclusion of `dk_exact_of_res` as a structure).
+- *Torus*: `R(θ, φ) = 29/32 + Re u(θ, ψ(φ))` (`RofC`), `z(θ, φ) = Re z(θ, ψ(φ))` (`KamNewton.Zof`),
+  `ψ = 2φ − π/2` (`KamTorusA.psi`, the strip convention `cS = −sin ψ = cos 2φ`). `C²`, periodic.
+- *`FieldTorus`* (`ExactTorusC.fieldTorus`): `resR = 0` evaluated at `(θ, ψ(φ))`, with
+  `eval_xB_pt` (the strip variables are `DommaschkKam.ptC R φ z`) and `Dp_ident`/`nRp_ident`/`nZp_ident`,
+  gives `R⁷B_φ (∂_φR + ι∂_θR) = R⁸B_R` and the `z` analogue (`inv_R`, `inv_Z`). `B_φ ≠ 0` because
+  `D(K)` is a unit of the strip algebra (`AdmBoundsG.frame.unit_D` at the exact torus, `dk_hadmC` on
+  the strip `9/1400`; `Bphi_ne`). Velocity of the line image `= (R/B_φ) • B`. `R > 0` from
+  `‖u‖ ≤ au = 0.1377` (`AdmBoundsG.hu`).
+- *Reference curve*: the `θ`-average of the exact torus, `R̄(φ) = 29/32 + Re ū(0, ψ(φ))`,
+  `z̄(φ) = Re z̄(0, ψ(φ))` (`R0refC`, `Z0refC`; `thProj` = the `k = 0` Fourier modes, new in
+  `Design/DommaschkKamCRadial`). Not `cenR/cenZ`: about the KAM-frame centre the `ℓ¹` criterion below
+  fails (float: tail 0.0282 > c₀ 0.0232); the contract allows any continuous periodic curve.
+- *Angle*: `Θ = angF θ (R − R̄) (z − z̄)` (`ΘC`, the rational-field lift), valid because of the
+  **radial condition** `(R − R̄) cos θ + (z − z̄) sin θ ≥ 0.002` (`radial_ge_of_close`):
+  `= Re(Q e^{iθ})` with `Q = (u − ū) − i(z − z̄)` (`radQ`, `re_radQ`), and `‖Q − c₀e^{−iθ}‖₁ ≤ c₀ − 0.002`
+  where for the Adm surrogate `(xA 4, xA 5)` `Q − c₀e^{−iθ}` is the grid centre of `hQ` (`radQ_surr`,
+  `c₀ = 427595792228986440/2⁶⁴ = 0.023180`), `ℓ¹ = 390457790055713542/2⁶⁴ = 0.021167` (`tk_rad`, one
+  `kron2_proof` digit sum, unit weights, `24 × 28`), plus the existing tail bounds `Bd_tg_U/Z`
+  (`9.4e-13`, `2.8e-16`) and `μ = 10⁻¹²` twice. `wind_θ` from `angF` + periodicity, `wind_φ = 0` from
+  `π`-periodicity in `φ`.
+- *C1*: `dommaschk_C1_of_exact` via `candidate_currentFreeTransform` on `{surfaceC u z}` (loop at
+  `φ = 0`), `ι_min = 6/25 ≤ |ι_C| = 0.24165` (`iotaC_ge`).
+
+**Sanity.** `thProj_one`, `thProj_mode`, `RofC_zero` (degenerate), `c0Q_pos`, `radMargin_pos`,
+`iotaC_ge`, `iotaC_lt` (concrete), `radQ_surr_ne` and `not_C1_iotaMin` (rejected: `ι_min = 1/4`).
+
+**Build** (laptop, sequential): `DommaschkKamCRadial` 3 s user / 2.1 GB; `DommaschkKamCContract`
+3 s user / 1.7 GB (after `DommaschkKamCConsts`). `lake build PlasmaLean.Design.DommaschkKamCContract`.
+
+**Remaining for an unconditional C1.** Only `e0R`, `e0Z` (item 7, `Design/DommaschkKamCRes*`); then
+`dommaschk_C1 e0R e0Z`.
+
+**Shared files (owner to add).**
+- `PlasmaLean.lean`: none (both modules on-demand; `Radial` imports the Adm tail checks).
+- `scripts/check_axioms_heavy.lean`:
+  ```
+  import PlasmaLean.Design.DommaschkKamCContract
+  #print axioms PlasmaLean.Design.DommaschkKamC.dommaschk_C1
+  #print axioms PlasmaLean.Design.DommaschkKamC.dommaschk_iotaOnTorus
+  #print axioms PlasmaLean.Design.DommaschkKamC.dommaschk_C1_of_exact
+  #print axioms PlasmaLean.Design.DommaschkKamC.ExactTorusC.iotaOnTorus
+  #print axioms PlasmaLean.Design.DommaschkKamC.not_C1_iotaMin
+  #print axioms PlasmaLean.Design.DommaschkKamC.radial_ge_of_close
+  #print axioms PlasmaLean.Design.DommaschkKamC.Bd_radQ_surr
+  #print axioms PlasmaLean.Design.DommaschkKamC.radQ_surr_ne
+  #print axioms PlasmaLean.Design.DommaschkKamC.thProj_mode
+  ```
+
+## Item 7 (1 November 2026): the high-resolution residual chain of torus C — complete
+
+**Result.** `DommaschkKamC.dk_e0R`, `dk_e0Z` (`Design/DommaschkKamCRes`, on demand):
+`Bd (9/200) (dkFieldTC.resR ι_C u₀C z₀C) e0q` and the same for `resZ`, with `e0q = 123/10^29`
+(`1.23e-27`; oracle `‖E‖_{0.045} = 5.9e-29`; the constants need `≲ 1.3e-23`, margin `≈ 1.06e4`).
+These are exactly the fields `e0R`, `e0Z` of `FlowFieldG.KamHG` for `c.ρ = 9/200`, `e₀ = e0q`.
+Standard axioms only; no `sorry`/`decide`; zero warnings; checked together with `import PlasmaLean`
+and `Design/DommaschkKamCAdm` (no name clashes).
+
+**Architecture.**
+- *Layout* = the data box `96 × 80`, scale `2^{−128}`, oracle angle, strip weights `68553^s 2^{16(K−s)}`
+  (intermediates truncated to the data box; truncation and rounding are read off the node images).
+- *Chain (66 variables, 60 nodes, 2 norm nodes).* Data `U`, `Z` and the exact
+  `LUx = 2^{Q}𝓛_{ι_q}U`, `LZx` (identity with `Design/DommaschkKamCData` checked entry by entry,
+  `…EqU/EqZ`); `R = R₀ + U` (exact), `s = R²`, `z²…z⁵`, `LU = LUx/2^Q`, `LZ`; Horner in `s` of the R-form
+  polynomials `dDR`, `dnRh` (`n_R = R G`), `dnZR/R²`: coefficient nodes `Pc_k = h_k(z, cos ψₒ, sin ψₒ)`
+  (`polyT` trees, no product, `≈ 6` Mbit images) and product nodes `H_k = s H_{k+1} + Pc_k`
+  (`≈ 34` Mbit images); norm nodes `D LU − R G`, `D LZ − s F`. The `R`-form polynomials are identified with
+  `dD`, `dnR`, `dnZ` by `subst_D/nR/nZ` and the list identity `horH … = dDR` (Horner regrouping).
+  `𝓛_{ι_C} − 𝓛_{ι_q} = (ι_C − ι_q)∂_θ` is bounded by `2^{−128}‖D‖·75‖x‖_{1/20}` (Cauchy, centre checks on
+  `e^r ≤ 68897/2^16`). Node-centre norms are tree majorants (`Bd_ctr_of_node`), not centre checks.
+- *Kernel engineering (`Design/DommaschkKamCResKron`).* Grids are **salted packed rows** `(lo, cnt, F, x)`
+  (per-row width, trimmed; a random 64-bit salt in the low word) with divide-and-conquer Kronecker images
+  `imgR` (`kron_gridR`). Two measured findings: (1) entry-by-entry `packGridNM` of a `193 × 161` grid costs
+  ≈ 26 s and 5 GB; (2) the kernel's caches degrade quadratically when many big literals share their low
+  64 bits (Nat literals hash by their low word; grids with vanishing corner coefficients produce them):
+  an unsalted spread of 80 rows took 21 s, salted 0.26 s. With both fixes one product node is ≈ 11 s
+  kernel, ≈ 3.3 GB above the imports. A node combining the product with a `polyT` sum exceeded 6 GB,
+  hence the split into coefficient and product nodes.
+- *Generator* `scripts/dommaschk_kam/emit_res.py` (+ `adm_ball.py`): exact gmpy2 mirror of `nodeKw`,
+  `normKw`, `centerKw`, row encodings decoded and compared, rationals rounded outward; ≈ 25 s.
+
+**Modules** (laptop, sequential `lake build`, wall per module / peak RSS): `…ResKron` 4 s / 1.5 GB;
+`…ResData1–9` 8–15 s each / 0.8 GB (22 MB source in total, 2.3–3.5 MB each); `…ResEnv` 5 s, `…ResTrees` 1 s,
+`…ResRel` 4 s / 1.5 GB; `…ResEqU`, `…ResEqZ` 15 s / 2.1 GB; `…ResCheck1–12` 34–46 s each (`Check12`, with
+the two norm nodes, 99 s) / **4.5–5.4 GB**; `…ResChain` 11 s / 1.6 GB; `DommaschkKamCRes` 3 s / 1.5 GB.
+Total ≈ 12 min wall (laptop-buildable as a separate top module; peak 5.40 GB in `Check12`); private
+oleans 15 MB. Workstation task `scripts/workstation/tasks/dommaschk-res.sh` (verdict target `separate`;
+`DRES_PARTIAL=1` builds a reduced pipeline) for rebuilds elsewhere.
+
+**For item 9.** Use `e₀ = e0q = 123/10^29` (`dk_e0R`, `dk_e0Z`); with `κ ≈ 4.1e12`, `δ₀ = 9/1400`,
+the smallness `32 κ e₀/δ₀⁴ ≈ 9.4e-5`.
+
+**Shared files (owner to add).**
+- `PlasmaLean.lean`: none (on-demand top module `Design/DommaschkKamCRes`).
+- `scripts/check_axioms_heavy.lean`:
+  ```
+  import PlasmaLean.Design.DommaschkKamCRes
+  #print axioms PlasmaLean.Design.DommaschkKamC.dk_e0R
+  #print axioms PlasmaLean.Design.DommaschkKamC.dk_e0Z
+  #print axioms PlasmaLean.Design.DommaschkKamC.ballH_all
+  #print axioms PlasmaLean.Design.DommaschkKamC.kron_gridR
+  #print axioms PlasmaLean.Design.DommaschkKamC.Bd_ctr_of_node
+  #print axioms PlasmaLean.Design.DommaschkKamC.e0q_not_tiny
+  #print axioms PlasmaLean.Design.DommaschkKamC.fldZ_reject
+  ```
+
+## N-34 module D3 (1 November 2026): polynomial form of the QA defect on torus C — complete
+
+**Formula** (flow form `D = R⁷B_φ`, `n_{R,z} = R⁸B_{R,z}`, `R = R₀ + u`; invariance `D𝓛u = n_R`,
+`D𝓛z = n_z`): `∂_{φ_B}|B|² = N_g/(Q R¹⁷)`, `torusQADefect = ∂_{φ_B}|B| = N_g/(2Q√Q R⁹)`, with the
+straight-line program `QSLeaves` (leaves: values of `D, n_R, n_z`, their `∂_u, ∂_z, ∂_φ`, and `R`):
+`Q = n_R² + R²D² + n_z²`, `Q_u, Q_z, Q_φ` (product rule), `P_L = Q_u n_R + Q_z n_z + D Q_φ`,
+`M_L = R P_L − 16 Q n_R`, `N₀ = R⁸M_L`, `N₁ = n_R M_L − Q(RQ_u − 16Q)`, `N₂ = n_z M_L − RQQ_z`,
+`N_g = N₀ + ι(N₁u_θ + N₂z_θ)` (as in N-34 §4). Expanded, `N₁, N₂` have ≈ 44 000 terms in
+`(u, z, c, s)` (17 000 in `(R, z, c, s)`), degree 72 in `u`, 550-bit denominators, so the chain (D4)
+should evaluate the program node by node (≈ 30 products), not expanded polynomials.
+
+**Generator** `scripts/dommaschk_kam/emit_qs.py` (venv, `-I`, 15 s; `--sizes-u` 140 s): sympy
+derivation from `|B|² = Σ B_i²` with unknown `D, n_R, n_z` (8 identities, incl. the `|B|` form of the
+A1 definition); exact Fraction checks at rational points against the expanded `Q` (u- and R-form);
+torus C (256²): `max|g_poly − g_est| = 5.7e-9` (`qs_defect.py`, FD step 1e-6), 1.0e-9 at step 1e-5,
+7.5e-8 at 1e-4 (the estimator's FD error); `sup|g| = 0.009002`, `ℓ¹(g) = 0.01981`,
+`ℓ¹(∂_{φ_B}|B|²)/(2B_min) = 0.02051`, `B_min = 1.04886`, `D_min = 0.279`, `Q ∈ [0.054, 0.947]`.
+
+**Lean** (default-build-capable: imports only default modules; not yet in `PlasmaLean.lean`):
+`Design/DommaschkKamCQSData` (generated `φ`-derivatives `dDf, dnRf, dnZf`, R-form `dDRf, dnRhf,
+dnZRf`; 3 s, 1.5 GB) and `Design/DommaschkKamCQSPoly` (8 s, 2.0 GB): kernel checks `dDf_eq`, …,
+`substR_dDRf`, …; `QSLeaves` with `Q, Qu, Qz, Qf, PL, ML, N0, N1, N2, Ng`; `leavesAt x`; `Qp` with
+`eval_Qp`, `pd_Qp_U`, `pd_Qp_Z`, `phiD_Qp`; leaf lemmas `pd_Dp_U`, …, `phiD_Dp`, …, `pd_Rp_U`,
+`eval_leaves`, `dkFieldTC_polys`; field identities `normSq_flow`, `boozerJ_flow`, `boozerA_flow`,
+`qsDefectSq_eq`, `qsDefect_eq_of_sq`, `qsDefect_eq_real`; sanity `Ng_toroidal`, `qs_instance(_lhs)`,
+`qsDefectSq_needs_invariance`, `dDf_ne`. Standard axioms.
+
+**What D6 needs from D3** (at a torus point `(θ, φ)` of `ExactTorusC`, pointwise in ℝ):
+1. Leaves: `l := leavesAt (ptC R φ z)` read in ℝ (`ev_ofReal`); `D = R⁷B_φ`, `n = R⁸B` by
+   `Dp_ident`/`nRp_ident`/`nZp_ident` (`eval_leaves`); `R > 0` (`R_pos`), `D ≠ 0` (`Bphi_ne`),
+   `Q > 0` (from `D ≠ 0`).
+2. `boozerA B K = (n_R u_θ + n_z z_θ)/R⁸` (`boozerA_flow`, after writing `∂_θK = u_θ e_R + z_θ e_z`)
+   and `boozerJac B ι K = Q/(R⁸D)` (`boozerJ_flow`, `𝓛K = 𝓛u e_R + R e_φ + 𝓛z e_z`, invariance
+   from `inv_R`/`inv_Z`).
+3. `modB B K = √Q/R⁸` (`normSq_flow`, `sqrtQ_sq`) and the chain rule along the torus:
+   `2|B|·𝓛|B| = (Q_u𝓛u + Q_z𝓛z + Q_φ)/R¹⁶ − 16Q𝓛u/R¹⁷`, `2|B|·∂_θ|B| = (Q_u u_θ + Q_z z_θ)/R¹⁶ −
+   16Q u_θ/R¹⁷`, where `Q_u, Q_z, Q_φ` are identified with the partials of `Qp` by `pd_Qp_U`,
+   `pd_Qp_Z`, `phiD_Qp` (e.g. via `dTh_evalB`/`Lt_evalB` and `eval`, or real `HasDerivAt`).
+4. Then **`qsDefect_eq_real`** gives exactly `boozerDeriv ι a J f_θ f_𝓛 = l.Ng ι u_θ z_θ /
+   (2 Q √Q R⁹)`, the A1 `torusQADefect` (its `boozerDeriv` has the same shape
+   `((1 + ιa)f_𝓛 − ιJf_θ)/J`).
+
+**Shared files (owner to add).**
+- `PlasmaLean.lean` (if default build is wanted; ≈ 11 s, 2 GB together):
+  ```
+  public import PlasmaLean.Design.DommaschkKamCQSData
+  public import PlasmaLean.Design.DommaschkKamCQSPoly
+  ```
+- `scripts/check_axioms.lean` (or `_heavy` if kept on demand):
+  ```
+  #print axioms PlasmaLean.Design.DommaschkKamC.dDf_eq
+  #print axioms PlasmaLean.Design.DommaschkKamC.substR_dnRhf
+  #print axioms PlasmaLean.Design.DommaschkKamC.qsDefectSq_eq
+  #print axioms PlasmaLean.Design.DommaschkKamC.qsDefect_eq_real
+  #print axioms PlasmaLean.Design.DommaschkKamC.boozerJ_flow
+  #print axioms PlasmaLean.Design.DommaschkKamC.pd_Qp_U
+  #print axioms PlasmaLean.Design.DommaschkKamC.phiD_Qp
+  #print axioms PlasmaLean.Design.DommaschkKamC.qsDefectSq_needs_invariance
+  ```
+
+## N-34 module D6 (1 November 2026): identification of the QA defect on the exact torus C — complete
+
+**Result.** `Design/DommaschkKamCQSIdent` (on demand; imports `DommaschkKamCContract` and
+`DommaschkKamCQSTransfer`). For every `ExactTorusC u z`, with `K = cylTorus (RofC u) (Zof z)`,
+`B = field candidate`, `V = potential candidate`, `ι = ι_C`:
+- `ExactTorusC.torusQADefect_eq : torusQADefect B ι_C K θ φ = qsDefC u z θ φ`, where
+  `qsDefC = qsNg (lvC u z θ φ) ι_C (∂_θR) (∂_θz) / (2 Q √Q R⁹)`, `Q = qsQ (lvC …)`, `R = lvC … 12`,
+  and `lvC u z θ φ i = Re (lvI u z i)(θ, ψ(φ))`; `lvI = lvS` of D5 (`lvS_eq_lvI`, `rfl`). Strip form:
+  `eval_Ng` (`eval (qsNg (lvI u z) ι (dTh u) (dTh z)) θ (psi φ) = N_g`), `eval_Q`, `eval_leaf`.
+- `vacuumPotentialOn`, `normSq_eq` (`|B|² = Q/R¹⁶`), `modB_eq`, `boozerA_eq`, `toroidalComp_eq`
+  (`B^φ = B_φ/R`), `boozerJac_eq` (`J = Q/(R⁸D)`), `lvC_D/nR/nZ/R`, `Q_pos`.
+- Chart hypotheses: `contDiff_torusPot` (C², via `CylAlgebra.contDiffAt_eval`), `contDiff_torusModB`
+  (C¹, `√Q/R⁸`), `torusPeriodic_torusPot` / `torusPeriodic_torusModB` (`2π`, `π`);
+  `boozerChartHyp (hD : ∀ θ φ, 0 < lvC u z θ φ 0)` and, with D5, `boozerChartHyp'`.
+- With D5 (`qsDefBounds := qsd_bounds … h.close`): `Dmin_le`/`D_pos` (`D ≥ 0.1578`), hence
+  `Bphi_pos`, `toroidalComp_pos'`, `boozerJac_pos`; `torusQADefectLe_delta`
+  (`TorusQADefectLe B ι_C K 0.020642`), `torusQADefectLe_021`, `Bmin_le` (`|B| ≥ 1.04259`),
+  `oracleDefect_le` (`≤ √2 δ_∞/(2 B_min)`, sup route); `dommaschk_qaDefect (e0R) (e0Z)`: ∃ torus
+  with `IotaOnTorus`, defect `≤ 0.021`, `|B| ≥ B_min`, `B^φ > 0`, `BoozerChartHyp 2`.
+
+**Notes.** (1) `π`-periodicity of `V∘K` without the field-period symmetry of `V`: `w = v(·+π) − v`
+has zero derivative (`v_θ = a`, `v_φ = J − 1 − ιa`, both `π`-periodic flow-form expressions), so
+`w ≡ c`, and `2c = 0` by `2π`-periodicity (`torusPot_add_pi`). (2) **Name clash (pre-existing):**
+`DommaschkKamCQSPoly.Qp` (now in `PlasmaLean.lean`) collides with `DommaschkKamCAdmFrame.Qp`, so
+`import PlasmaLean` can no longer be combined with any Adm-chain module (Contract, D5, D6). D6
+therefore does not import QSPoly; it re-proves the leaf-vector form `qsi_eq_real` and the partials
+of its own `QpI` (three `kernel_fact` checks `qsi_dD/nR/nZf_eq`). Fix for the owner: rename
+`Qp` in `DommaschkKamCQSPoly` (e.g. `QpQS`). (3) L² route (`δ₂`, `hF` of `QSDefBounds`) left to D7.
+
+**Build.** `lake build PlasmaLean.Design.DommaschkKamCQSIdent`: ≈ 7 s user / 1.7–2.0 GB (after D5).
+Standard axioms; no `sorry`/`decide`; zero warnings; no clashes with the default build minus
+`DommaschkKamCQSPoly`.
+
+**Shared files (owner to add).**
+- `PlasmaLean.lean`: none (on demand).
+- `scripts/check_axioms_heavy.lean`:
+  ```
+  import PlasmaLean.Design.DommaschkKamCQSIdent
+  #print axioms PlasmaLean.Design.DommaschkKamC.ExactTorusC.torusQADefect_eq
+  #print axioms PlasmaLean.Design.DommaschkKamC.ExactTorusC.boozerChartHyp'
+  #print axioms PlasmaLean.Design.DommaschkKamC.ExactTorusC.torusQADefectLe_delta
+  #print axioms PlasmaLean.Design.DommaschkKamC.ExactTorusC.oracleDefect_le
+  #print axioms PlasmaLean.Design.DommaschkKamC.ExactTorusC.torusPot_add_pi
+  #print axioms PlasmaLean.Design.DommaschkKamC.dommaschk_qaDefect
+  #print axioms PlasmaLean.Design.DommaschkKamC.not_torusPeriodic_four
+  ```
+
+## N-34 modules D4–D5 (1 November 2026): certified QA defect of torus C on every close torus — complete
+
+**Result.** `DommaschkKamC.qsd_bounds` (`Design/DommaschkKamCQSTransfer`, on demand): every analytic
+torus `(u, z)` with `Close ρ ι_C u z u₀C z₀C μ` (`ρ ≥ 0`, `μ ≤ 10⁻¹²`; only `u, z, ∂_θu, ∂_θz` used)
+satisfies `QSDefBounds u z` (strip frame, `Bd 0` = `ℓ¹` of the Fourier coefficients), for the leaf
+vector `lvS u z` (`= leavesAt (xB u z)` fieldwise, `rfl`), `N_g = qsNg (lvS u z) iotaF (dTh u) (dTh z)`
+(`qsNg` = `QSLeaves.Ng` with the leaves as a `Fin 13` vector) and fixed rotated approximate inverses
+`qGs ≈ 1/(QR¹⁷)`, `qBs ≈ 1/R¹⁶`, `qDs ≈ 1/D`:
+`‖qGs N_g‖ ≤ η_G = 0.0430419`, `‖qGs QR¹⁷ − 1‖ ≤ 2.49e-6`, `‖Q qBs − c_B‖ ≤ 0.06506` (`c_B = 1.15206`),
+`‖qBs R¹⁶ − 1‖ ≤ 1.52e-9`, `‖D − c_D‖ ≤ 0.4797` (`c_D = 0.637578`), `|⟨(qGs N_g)² R⁸ qDs⟩| ≤ 2.014e-5`,
+`‖qDs D − 1‖ ≤ 5.18e-9`. `QSDefBounds.pointwise`: at every `(θ, ψ)`, `QR¹⁷ ≠ 0`,
+`|N_g/(QR¹⁷)| ≤ d₁ = 0.0430421`; `R¹⁶ ≠ 0`, `|Q/R¹⁶ − c_B| ≤ e_B' = 0.065061`; `|D − c_D| ≤ e_D`.
+`qsd_defect_real` (real algebra) and `qsd_numbers`: **`δ_∞ ≤ d₁/(2B_min) = 0.020642`** (target
+0.021, sharp sup 0.0090, sharp `ℓ¹(∂|B|²)/(2B_min)` 0.0205), **`B_min = 1.04259`** (target 1.042,
+true 1.0489), `D ≥ 0.1578` (`B_φ > 0`), `κ = 2δ_∞/(B_min·6/25) ≤ 0.165`, `δ_∞/|ι| ≤ 0.0860`;
+`L²(J)`: `⟨g²J⟩ ≤ m_F/(4(1−ε_G)²(1−ε_D)) ≤ δ₂²`, **`δ₂ = 0.002244`** (target 2.13e-3, sharp 2.115e-3),
+hence oracle-normalised defect `≤ (√2/2)δ₂/(B_min·6/25) ≤ 0.00634` (strong tier; the pointwise
+identity `4g²J = F/((qG QR¹⁷)²(qD D))` and the torus average = strip `avg` are for D6/D7).
+Rejected fixture `surr_G_ne`: the surrogate numerator is nonzero (`(0, 6)` coefficient 1.17e-3 ≫
+radius 1.2e-5). Standard axioms; no `sorry`/`decide`; zero warnings.
+
+**Architecture (D4).** The Adm chain (195 variables, `24 × 28`, `2⁻⁶⁴`, oracle angle) extended by 50
+variables with **unit weights** (`ρ = 0`, kernel `P = 1, E = 0`; Adm balls reused at `ρ = 0`):
+`polyT` chunks (≤ 4 monomials) of the R-form `φ`-derivatives `dDRf`, `R·dnRhf`, `dnZRf` (28 nodes);
+products `D D_u, D D_z, D D_φ, Q, Q_u/2, Q_z/2, Q_φ/2, P_L/2, M_L, R Q_u/2, N₁, RQ, N₂, N₁u_θ+N₂z_θ,
+QR¹⁷` (15); data `qG ≈ 1/(QR¹⁷)` (`‖qG‖ = 500`) with norm node `eG`, `qG8 = qG R⁸`, the node
+`G = 2^128·qG8·M_L − Iqc·qG·N12` (`c = 2^128`, honest value `qG N_g(ι_q)`), norm `GI = ‖qG N12‖`;
+data `qB ≈ 1/R¹⁶` with norms `eB`, `bB = ‖2³²Q qB − c_B‖`; `dM = ‖2³²D − c_D‖`; `GG, H8 = R⁸qD,
+F` (mean read off the centre). **Radius growth**: the field leaves inherit Adm radii ~1e-9; `M_L`
+1e-7 (cancellation, `‖M_L‖ = 0.016`); multiplying by `qG` directly gave `E_G = 5.3e-5` (`500 × 1e-7`);
+multiplying `M_L` by `qG8 = qG R⁸` (`‖qG8‖ = 106`) gives `E_G = 1.2e-5` (0.03 % of `‖G‖ = 0.043`),
+`E_F = 1.1e-6` (5 % of `⟨F⟩ = 1.79e-5`, the limiting term for `δ₂`). **Transfer (D5)**: Lipschitz
+majorants `lipQ` of the 12 field leaves (`fld_D…`, new `fld_Df/nRf/nZf`), the majorant derivative of
+the program as a `PolyExpr ℚ (Fin 16)` (`peNg`, 385 nodes; rational mirror `qsdMj`, `qsdMj_spec`,
+kernel-checked: `dNg ≤ 2.72e-8`, `dQ ≤ 4.71e-10`), `approx_near`, `ι_C − ι_q ≤ 2⁻¹²⁸`, `rotψ`.
+Transfer adds `1.4e-5` to `‖qG N_g‖` and `1.2e-6` to `m_F`.
+
+**Generator** `scripts/dommaschk_kam/emit_qsdef.py` (+ templates `qsdef_tpl/out.lean.tpl`,
+`transfer.lean.tpl`; reuses `emit_adm.build`, `adm_ball`): 5 s, deterministic; every emitted bound
+is recomputed in exact rationals (`certify`, `EmitQ.out_values`).
+
+**Modules** (laptop, sequential, user CPU / peak RSS): `DommaschkKamCQSDefData1–2` 2.4 s / 0.72 GB;
+`…QSDefEnv` 5.6 s / 1.46 GB; `…QSDefTrees` 2 s / 1.4 GB; `…QSDefCheck1–4` 75 / 112 / 137 / 104 s,
+2.7 / 3.0 / **3.3** / 2.7 GB; `…QSDefRel` 6 s / 1.5 GB; `…QSDefChain` 7.5 s / 1.6 GB; `…QSDefOut`
+8 s / 2.2 GB; `DommaschkKamCQSTransfer` 7 s / 2.1 GB. Total ≈ 8 CPU-min after the Adm chain.
+`lake build PlasmaLean.Design.DommaschkKamCQSTransfer`.
+
+**Name clash (blocks `import PlasmaLean` + any Adm module):** `DommaschkKamCQSPoly.Qp` (default
+build) vs `DommaschkKamCAdmFrame.Qp`; rename the former (`QSPoly` lines 42, 284, 336, 338, 342, 344,
+350, 352, 368, 370 and its `check_axioms` entries `pd_Qp_U`, `phiD_Qp` keep their names). It is the
+only clash of `QSPoly` with the on-demand closure; my 779 new names do not clash with the default build.
+
+**Shared files (owner to add).**
+- `PlasmaLean.lean`: none (on demand).
+- `scripts/check_axioms_heavy.lean`:
+  ```
+  import PlasmaLean.Design.DommaschkKamCQSTransfer
+  #print axioms PlasmaLean.Design.DommaschkKamC.qsd_bounds
+  #print axioms PlasmaLean.Design.DommaschkKamC.QSDefBounds.pointwise
+  #print axioms PlasmaLean.Design.DommaschkKamC.qsd_defect_real
+  #print axioms PlasmaLean.Design.DommaschkKamC.qsd_numbers
+  #print axioms PlasmaLean.Design.DommaschkKamC.qsd_near
+  #print axioms PlasmaLean.Design.DommaschkKamC.qsdMj_spec
+  #print axioms PlasmaLean.Design.DommaschkKamC.ballQ_all
+  #print axioms PlasmaLean.Design.DommaschkKamC.surr_G
+  #print axioms PlasmaLean.Design.DommaschkKamC.surr_F
+  #print axioms PlasmaLean.Design.DommaschkKamC.surr_G_ne
+  #print axioms PlasmaLean.Design.DommaschkKamC.qsNg_instance
+  #print axioms PlasmaLean.Design.DommaschkKamC.qsd_not_tiny
+  ```
+
+## N-34 D7 by the L² route (2 November 2026): strong-tier certified QA defect of the C1 torus — complete
+
+**Result.** `DommaschkKamC.dommaschk_C1_oracleDefect_L2` (on-demand `Design/DommaschkKamCQSL2`):
+the exact Dommaschk field has an invariant torus with `ι_C` on which, for every finite set of
+half-lattice off-QA modes, `oracleDefect 2 ι_C (V∘K) (|B|∘K) S ≤ (√2/2) δ₂/B_min`
+(`δ₂ = 0.002244`, `B_min = 1.04259`); `oracleDefect_L2_num`: this is `< 0.0016`,
+`≤ (1/100)(6/25)` and `≤ 0.0063 |ι_C|` (**strong tier**; sup route was 0.0141 ≈ 0.058 |ι|).
+
+**The two missing identities.**
+- *Torus average = strip average* (`torusAvg_eval_psi`: `torusAvg 2 (fun p => eval x p.1 (psi p.2))
+  = avg x`, via `integral_box_eval_psi`): Fubini (`setIntegral_prod_swap`, `setIntegral_prod`), the
+  substitution `ψ = 2φ − π/2` (`integral_comp_mul_sub`), `2π`-periodicity in `ψ`
+  (`Periodic.intervalIntegral_add_eq`) and `avg_eq_integral` (`Theory/KAM/StripEval`).
+- *Pointwise identity* (`ExactTorusC.four_mul_sqJ_eq`): `F = 4 g² J · (q_G Q R¹⁷)²(q_D D)` with
+  `F = qsFX u z = (q_G N_g)² R⁸ q_D`. The approximate inverses need not be real:
+  `Re((q_G QR¹⁷)²(q_D D)) ≥ c_L = 2 − (1+ε_G)²(1+ε_D)` (`re_sq_mul_ge`), so `4c_L g²J ≤ Re F`
+  (`sqJ_le`) and `⟨g²J⟩ ≤ |⟨F⟩|/(4c_L) ≤ m_F/(4c_L) ≤ δ₂²` (`weightedL2Sq_le_mF`, `l2_numbers`;
+  `c_L` is below `(1−ε_G)²(1−ε_D)` by ~1e-11, slack in `δ₂²` is 7e-6 relative).
+
+**Build.** `lake build PlasmaLean.Design.DommaschkKamCQSL2`: ≈ 3 s user / 1.6–1.8 GB (after
+`DommaschkKamCQS`). Standard axioms; no `sorry`/`decide`; zero warnings; no clashes with
+`import PlasmaLean`.
+
+**Shared files (owner to add).**
+- `PlasmaLean.lean`: none (on demand).
+- `scripts/check_axioms_heavy.lean`:
+  ```
+  import PlasmaLean.Design.DommaschkKamCQSL2
+  #print axioms PlasmaLean.Design.DommaschkKamC.dommaschk_C1_oracleDefect_L2
+  #print axioms PlasmaLean.Design.DommaschkKamC.oracleDefect_L2_num
+  #print axioms PlasmaLean.Design.DommaschkKamC.torusAvg_eval_psi
+  #print axioms PlasmaLean.Design.DommaschkKamC.ExactTorusC.four_mul_sqJ_eq
+  #print axioms PlasmaLean.Design.DommaschkKamC.ExactTorusC.weightedL2Sq_le_mF
+  #print axioms PlasmaLean.Design.DommaschkKamC.l2_numbers
+  #print axioms PlasmaLean.Design.DommaschkKamC.not_l2_tiny
+  #print axioms PlasmaLean.Design.DommaschkKamC.torusAvg_eval_psi_one
+  ```
+
+## Nested certified region (1 November 2026): torus A certified, C ⊂ A nested — complete
+
+**Results** (all on-demand, standard axioms, no `sorry`/`decide`, zero warnings; checked together with
+`import PlasmaLean`, `DommaschkKamCFinal`, `DommaschkKamCQSL2`: no name clashes).
+- `DommaschkKamA.dommaschkA_C1_unconditional` (`Design/DommaschkKamAFinal`): `∀ μ₀ > 0, ∃ S,
+  CurrentFreeTransform μ₀ (field candidate) S 0 (1193/5000)`; `dommaschkA_iotaOnTorus_unconditional`
+  (transform `ι_A = −(19 + √5)/89`). **`|ι_A| = 0.238608 < 0.24`**: `ι_min = 6/25` is impossible for A
+  (`not_C1_iotaMin_A`); `0.2386` is used (`iotaA_ge`).
+- `DommaschkKamNested.dommaschk_nested` (`Design/DommaschkKamNested`): two `FieldTorus` of the exact field
+  (`ι_C`, `ι_A`) that are `NestedTori` about a common reference curve; `dommaschk_nested_C1`: C1 on the
+  two-surface family `{C, A}` with `I_max = 0`, `ι_min = 0.2386`, plus the nesting
+  (`not_nested_C1_quarter`: `6/25` fails for any family containing A).
+- **`NestedTori RC zC RA zA R₀ z₀ ΘC ΘA`**: both tori have `PoloidalAngle`s about the same curve
+  `(R₀, z₀)`, and *ray order*: `ΘC θ φ = ΘA θ' φ + 2πk → |K_C(θ,φ) − ref(φ)|² < |K_A(θ',φ) − ref(φ)|²`.
+  Consequences `NestedTori.disjoint` (cross-sections disjoint) and `NestedTori.inside` (every point of C is
+  `ref + s (K_A(θ',φ) − ref)` with `0 ≤ s < 1`; A meets every ray by the winding of `Θ_A`). Fixtures:
+  `nestedTori_circles` (accepted), `not_nestedTori_swap` (rejected).
+
+**Torus A chain** (same field instance `dkFieldTC`: the moving centre of C is reused, `W₀ ∈
+[−1.13e-3, −7.5e-4]` on A; strip `r = 0.045`, `δ₀ = 9/1400`, `γ = 0.3645`, `dlow = 0.1193`).
+- Emitters generalised by `scripts/dommaschk_kam/dk_torus.py` (`--tag A`; `retarget` is the identity for
+  C — **all regenerated C modules are byte-identical**: `CData`, 24 Adm modules, 28 Res modules).
+  `emit_torus.py` (tag from the JSON), `emit_adm.py`, `emit_res.py` (`--tag`, `--out-dir`),
+  `kam_constants.py`, `check_consts.py --tag A`.
+- **Admissibility surrogate `32 × 32`** (the C size `24 × 28` leaves tails `3.6e-10` on A and `τ ≈ 1.7`):
+  tails `1.0e-12`/`7.3e-13`, `sD 4.148`, `sR 1.256`, `sW 1709.9`, `tT 2201.9`, `τ 13.994`.
+- Constants (`DommaschkKamAConsts`, `check_consts.py --tag A`): `cK = 33192.2`, `cL = 1342926`,
+  `C₂ ≤ 8.79e12`, **`κ ≤ 8.7901e12`**; largest admissible `e₀`: `6.07e-24` (smallness, binding),
+  `1.09e-23` (`hμt`); budget `e0qDK = 10⁻²⁵` (smallness `0.0165`).
+- Residual (`DommaschkKamARes`): certified **`e₀ = 6.2e-26`** (oracle `‖E‖_{0.045} ≈ 2.9e-27`; rounding of
+  the `2^{-128}` product nodes dominates); **margin ≈ 98** against `6.07e-24`.
+- Kam-constants estimate (untrusted, 96×80): κ ≈ 8.70e12, required `e₀ = 6.1e-24`, margin `2.1e3` vs the
+  oracle residual.
+
+**Common reference curve and radial conditions.** `ℓ¹` radial criteria fail for A (about its own average:
+tail `0.0322 > c₀ = 0.0310`). The reference is the `θ`-average of the **C surrogate** (`rU`, `rZ`;
+contract form `Rref`, `Zref`), and positivity of `Rad_T = X_T cos θ + Y_T sin θ` is certified by
+**squared approximate inverses**: real `q` data with `‖q² F − 1‖₀ ≤ ε < 1` ⇒ `F > 0` pointwise
+(`pos_of_sq_mul`; no connectivity argument needed). `ExactTorusA.poloidalAngle`,
+`ExactTorusC'.poloidalAngle` (torus C about the same curve), via `poloidalAngle_ref`.
+
+**Nesting certificate.** Quadratic gauge `G(ψₒ; X, Y) = aX² + 2bXY + dY²` (`a, d` even, `b` odd dyadic
+trigonometric polynomials of degree 4 in `ψₒ`, fitted from the first `θ`-harmonics of C so that the
+ellipse lies between the cross-sections; per-`ψ` log margin `0.032`). `gaugeC_lt : G < 1` on every real torus
+`10⁻¹⁰`-close to the C surrogate, `gaugeA_gt : G > 1` near the A surrogate (surrogate minima of `1 − G`,
+`G − 1`: `0.055`, `0.064`; `ε_FC = 0.0025`, `ε_FA = 0.080`, `ε_RC = 2.5e-10`, `ε_RA = 9.9e-9`). Homogeneity
+`G(re) = r²G(e)` gives the ray order directly (`nested_of_exact`). The exact tori are within `μ + tail ≤ 2e-12`
+of the surrogates (`osc_close`).
+- Nesting chain (`emit_nest.py`): the A Adm chain extended by 27 variables with unit weights (C surrogate
+  embedded by `embedGrid`, no new data; `cos θ`, `sin θ` expression grids; 4 radial/gauge functions, 4
+  `q` data, 4 squares, 4 norm nodes). Modules `DommaschkKamANestData/Env/Trees/Check1–4/Rel/Chain`,
+  handwritten `DommaschkKamANest` (identifications `xN_XC`, …, `pos_of_sq_mul`, `radA_pos`, `radC_pos`,
+  `gaugeC_lt`, `gaugeA_gt`).
+
+**Modules and build** (laptop, sequential, wall / peak RSS):
+`DommaschkKamAData` + `ATorus` 14 s / 1.4 GB; `AAdmData1–8`, `Env`, `Trees` 20 s; `AAdmCheck1–14` 120–210 s
+each (≈ 40 min) / 3.2–3.6 GB; `AAdmRel`, `Chain` 29 s, 15 s; `AAdmTailCheck`, `…Z` 169 s, 157 s / **5.2 GB**;
+`AAdmTail`, `Out`, `AAdm` 6/6/18 s; `AConsts` 13 s / 2.5 GB; `ANest*` (Check1–4 ≈ 45 s each / 3.5 GB) ≈ 4 min;
+`AResData1–9` 13–23 s / 0.8 GB; `AResEqU/Z` 20 s / 2.2 GB; `AResCheck1–14` 34–58 s / 4.3–5.3 GB, **Check14
+95 s / 5.77 GB** (closest to the 6 GB limit); `AResChain`, `ARes` 7 s; `AContract`, `AFinal`, `Nested` ≈ 6 s
+each. Total ≈ 70 min wall.
+Build: `lake build PlasmaLean.Design.DommaschkKamNested` (stale dependencies one at a time).
+
+**Shared files (owner to add).**
+- `PlasmaLean.lean`: none (all on demand).
+- `scripts/check_axioms_heavy.lean`:
+  ```
+  import PlasmaLean.Design.DommaschkKamNested
+  #print axioms PlasmaLean.Design.DommaschkKamNested.dommaschk_nested
+  #print axioms PlasmaLean.Design.DommaschkKamNested.dommaschk_nested_C1
+  #print axioms PlasmaLean.Design.DommaschkKamNested.nested_of_exact
+  #print axioms PlasmaLean.Design.DommaschkKamNested.NestedTori.disjoint
+  #print axioms PlasmaLean.Design.DommaschkKamNested.NestedTori.inside
+  #print axioms PlasmaLean.Design.DommaschkKamNested.nestedTori_circles
+  #print axioms PlasmaLean.Design.DommaschkKamNested.not_nestedTori_swap
+  #print axioms PlasmaLean.Design.DommaschkKamNested.not_nested_C1_quarter
+  #print axioms PlasmaLean.Design.DommaschkKamA.dommaschkA_C1_unconditional
+  #print axioms PlasmaLean.Design.DommaschkKamA.dommaschkA_iotaOnTorus_unconditional
+  #print axioms PlasmaLean.Design.DommaschkKamA.not_C1_iotaMin_A
+  #print axioms PlasmaLean.Design.DommaschkKamA.dk_adm
+  #print axioms PlasmaLean.Design.DommaschkKamA.dk_globalHG
+  #print axioms PlasmaLean.Design.DommaschkKamA.dk_e0R
+  #print axioms PlasmaLean.Design.DommaschkKamA.dk_e0Z
+  #print axioms PlasmaLean.Design.DommaschkKamA.iotaqA_close
+  #print axioms PlasmaLean.Design.DommaschkKamA.iotaqA_ne_iotaqC
+  #print axioms PlasmaLean.Design.DommaschkKamA.radA_pos
+  #print axioms PlasmaLean.Design.DommaschkKamA.radC_pos
+  #print axioms PlasmaLean.Design.DommaschkKamA.gaugeC_lt
+  #print axioms PlasmaLean.Design.DommaschkKamA.gaugeA_gt
+  #print axioms PlasmaLean.Design.DommaschkKamA.pos_of_sq_mul
+  ```
+
+## N-34 D4–D7 on torus A and the vacuum Q-16 statement on {C, A} (1 November 2026) — complete
+
+**Results** (all on-demand, standard axioms, no `sorry`/`decide`, zero warnings; checked together with
+`import PlasmaLean`, `DommaschkKamCQSL2`, `DommaschkKamAQSL2`, `DommaschkKamQ16`: no name clashes).
+- `DommaschkKamA.qsd_bounds` (`Design/DommaschkKamAQSTransfer`): every torus `Close ρ ι_A … u₀A z₀A μ`
+  (`μ ≤ 10⁻¹²`) satisfies `QSDefBounds`; `qsd_numbers`: **`δ_∞ = 0.031258`** (≤ 0.032), **`B_min =
+  1.02656`**, `D_min = 0.11161 > 0` (`B^φ > 0`), `κ = 2δ_∞/(B_min · 1193/5000) ≤ 0.2552`, **`δ₂ =
+  0.0031112`**; `surr_G_ne` (rejected: the `(0, 6)` coefficient of the surrogate numerator is 1.05e-3).
+- `ExactTorusA.torusQADefect_eq`, `torusQADefectLe_delta`, `torusQADefectLe_032`, `Bmin_le`,
+  `boozerChartHyp'`, `oracleDefect_le` (`Design/DommaschkKamAQSIdent`, the D6 argument on `ExactTorusA`).
+- `Design/DommaschkKamAQSL2`: `dommaschkA_C1_qaDefect` (unconditional, sup route), `dommaschkA_oracleDefect`
+  (`≤ √2 δ_∞/(2B_min) < 0.0216`), **`dommaschkA_oracleDefect_L2`** (`≤ (√2/2) δ₂/B_min`) and
+  `oracleDefectA_L2_num`: `< 0.0022`, `≤ (1/100)(1193/5000)`, **`≤ 0.0090 |ι_A|`** (strong tier). Untrusted
+  (`qs_defect.py` on the 96×80 A torus): defect/|ι_A| = 0.00213, sup|g| = 0.0147, sharp L² route 0.0076.
+- **`DommaschkKamQ16.dommaschk_Q16_vacuum`** (`Design/DommaschkKamQ16`): from one pair of exact tori C, A,
+  two `SurfaceData` with `IotaOnTorus` (ι_C, ι_A), `NestedTori` about the common reference curve,
+  `|ι| ≥ 1193/5000` on both, `∀ μ₀ > 0, CurrentFreeTransform μ₀ B {s_C, s_A} 0 (1193/5000)` (C1 on the
+  same two tori, `nested_C1_of_exact`), `TorusQADefectLe` 0.021 (C) / 0.032 (A), `|B| ≥ 1.04259` /
+  `1.02656`, and for every finite set of half-lattice off-QA modes `oracleDefect ≤ 0.0063 |ι_C|` on C and
+  `≤ 0.0090 |ι_A|` on A. `dommaschk_Q16_strong`: `≤ 0.01 |ι|` on both (strong tier). Scope: two thin
+  surfaces, no C2 (AC-1).
+
+**Generator.** `emit_qsdef.py --tag A --ncheck 6` (`dk_torus.retarget`, `QSData`/`QSPoly` kept generic; A
+surrogate 32 × 32 from the A Adm chain; per-torus thresholds `TQ`); templates take the surrogate size, `Iqc`,
+`|ι|` bounds and thresholds as parameters. **All 12 regenerated C modules are byte-identical.** The
+handwritten `AQSIdent`/`AQSL2` are the C modules with the torus renamed (`ExactTorusA`, `lvA`, `qsDefA`) and
+the A numbers.
+
+**Modules and build** (laptop, sequential, user CPU / peak RSS): `AQSDefData1–2` 3 s / 0.73 GB; `Env` 5.5 s /
+1.46 GB; `Trees` 2 s / 1.4 GB; `Rel` 6 s / 1.5 GB; `AQSDefCheck1–6` 112 / 128 / 151 / 133 / 184 / 159 s,
+3.4 / 3.3 / 3.7 / 3.7 / **4.27** / 3.7 GB; `Chain` 7 s / 1.6 GB; `Out` 8 s / 2.1 GB; `AQSTransfer` 9 s / 2.0 GB;
+`AQSIdent` 6.5 s / 1.7 GB; `AQSL2` 4 s / 1.6 GB; `Q16` 2.3 s / 1.6 GB. Total ≈ 15 CPU-min.
+Build: `lake build PlasmaLean.Design.DommaschkKamQ16` (stale dependencies one at a time).
+
+**Shared files (owner to add).**
+- `PlasmaLean.lean`: none (all on demand).
+- `scripts/check_axioms_heavy.lean`:
+  ```
+  import PlasmaLean.Design.DommaschkKamQ16
+  #print axioms PlasmaLean.Design.DommaschkKamQ16.dommaschk_Q16_vacuum
+  #print axioms PlasmaLean.Design.DommaschkKamQ16.dommaschk_Q16_strong
+  #print axioms PlasmaLean.Design.DommaschkKamQ16.nested_C1_of_exact
+  #print axioms PlasmaLean.Design.DommaschkKamQ16.q16_bounds_lt_strong
+  #print axioms PlasmaLean.Design.DommaschkKamQ16.not_q16_C_tiny
+  #print axioms PlasmaLean.Design.DommaschkKamA.dommaschkA_oracleDefect_L2
+  #print axioms PlasmaLean.Design.DommaschkKamA.oracleDefectA_L2_num
+  #print axioms PlasmaLean.Design.DommaschkKamA.dommaschkA_C1_qaDefect
+  #print axioms PlasmaLean.Design.DommaschkKamA.dommaschkA_oracleDefect
+  #print axioms PlasmaLean.Design.DommaschkKamA.l2_numbers
+  #print axioms PlasmaLean.Design.DommaschkKamA.not_l2_tiny
+  #print axioms PlasmaLean.Design.DommaschkKamA.ExactTorusA.torusQADefect_eq
+  #print axioms PlasmaLean.Design.DommaschkKamA.ExactTorusA.torusQADefectLe_delta
+  #print axioms PlasmaLean.Design.DommaschkKamA.ExactTorusA.weightedL2Sq_le_mF
+  #print axioms PlasmaLean.Design.DommaschkKamA.qsd_bounds
+  #print axioms PlasmaLean.Design.DommaschkKamA.qsd_numbers
+  #print axioms PlasmaLean.Design.DommaschkKamA.qsd_not_tiny
+  #print axioms PlasmaLean.Design.DommaschkKamA.surr_G_ne
+  ```

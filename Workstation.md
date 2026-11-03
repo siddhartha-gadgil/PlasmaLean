@@ -261,19 +261,13 @@ laptop with a small parameter setting, then commit it to `main` before running i
 ## Next Commands
 
 Kept up to date from the laptop after every review ("update from workstation"). The same
-commands are in [`scripts/workstation/next.sh`](scripts/workstation/next.sh), with `NEXT_ID` =
-`2026-11-01-kam-export`, which the poller runs by itself (see "Unattended polling").
+commands are in [`scripts/workstation/next.sh`](scripts/workstation/next.sh), which the poller runs
+by itself (see "Unattended polling").
 
-**Status (1 November 2026): queued for the poller.** This batch exports the refined coefficients
-of the certification torus C at 80 × 64 and 96 × 80 into the committed results
-(`torus_C_N*_M*.json`, new in `run.py`). The Lean data module needs them (N-33 item 6). Both runs
-are cached in the work directory, so only the export runs.
-
-```bash
-cd PlasmaLean && git pull
-DKAM_TORI=C DKAM_N=80 DKAM_M=64 DKAM_DPS=50 scripts/workstation/run.sh dommaschk-kam
-DKAM_TORI=C DKAM_N=96 DKAM_M=80 DKAM_DPS=60 scripts/workstation/run.sh dommaschk-kam
-```
+**Status (2 November 2026, after the torus A/B runs): nothing to run.** `next.sh` =
+`2026-11-02-idle-1` only prints a message. Torus A is ready for certification; torus B is too weak
+at this resolution (N-31 §30). The torus-A chain and the nesting certificate are being built on the
+laptop.
 
 **On-demand olean transfer: resolved (30 October 2026).** The MuQuarter and EwFamily archive is
 installed on the laptop via `oleans.py retrace` (see "Sharing compiled files"). The pack step can

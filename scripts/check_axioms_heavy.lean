@@ -3,7 +3,11 @@ Axiom check for heavy certificates kept out of the default build (on-demand top 
 Build the top modules first, `lake build PlasmaLean.Design.RationalStellaratorGCEwFamily`,
 `lake build PlasmaLean.Design.RationalStellaratorGCMuWide`,
 `lake build PlasmaLean.Design.RationalStellaratorGCMuQuarter` and
-`lake build PlasmaLean.Design.CoilKamCert` (bounded, dependencies first),
+`lake build PlasmaLean.Design.CoilKamCert`, `lake build PlasmaLean.Design.DommaschkKamCAdm`, `lake build PlasmaLean.Design.DommaschkKamCConsts`,
+`lake build PlasmaLean.Design.DommaschkKamCContract`,
+`lake build PlasmaLean.Design.DommaschkKamCRes`, `lake build PlasmaLean.Design.DommaschkKamCFinal`,
+`lake build PlasmaLean.Design.DommaschkKamCQSTransfer`, `lake build PlasmaLean.Design.DommaschkKamCQSIdent`, `lake build PlasmaLean.Design.DommaschkKamCQS`, `lake build PlasmaLean.Design.DommaschkKamCQSL2`, `lake build PlasmaLean.Design.DommaschkKamNested`, `lake build PlasmaLean.Design.DommaschkKamQ16`
+(bounded, dependencies first),
 then run `lake env lean scripts/check_axioms_heavy.lean`.
 
 Like `scripts/check_axioms.lean`, this script **fails** if any declaration owned by a
@@ -19,6 +23,17 @@ import PlasmaLean.Design.RationalStellaratorGCMu5Confined
 import PlasmaLean.Design.RationalStellaratorGCMuQuarter
 import PlasmaLean.Design.CoilKamCert
 import Lean.Util.CollectAxioms
+import PlasmaLean.Design.DommaschkKamCAdm
+import PlasmaLean.Design.DommaschkKamCConsts
+import PlasmaLean.Design.DommaschkKamCContract
+import PlasmaLean.Design.DommaschkKamCRes
+import PlasmaLean.Design.DommaschkKamCFinal
+import PlasmaLean.Design.DommaschkKamCQSTransfer
+import PlasmaLean.Design.DommaschkKamCQSIdent
+import PlasmaLean.Design.DommaschkKamCQS
+import PlasmaLean.Design.DommaschkKamCQSL2
+import PlasmaLean.Design.DommaschkKamNested
+import PlasmaLean.Design.DommaschkKamQ16
 
 /-! Audit all declarations owned by project modules in the import closure (the on-demand top
 modules and everything they import). Fails on any non-standard axiom. -/
@@ -56,3 +71,103 @@ run_cmd do
 #print axioms PlasmaLean.Design.RationalStellaratorGC.alpha_gc_passing_confined_forever_quarter
 #print axioms PlasmaLean.Design.CoilKam.coilTorus_resR_Bd
 #print axioms PlasmaLean.Design.CoilKam.coilTorus_resZ_Bd
+#print axioms PlasmaLean.Design.DommaschkKamC.dk_adm
+#print axioms PlasmaLean.Design.DommaschkKamC.dk_hadm
+#print axioms PlasmaLean.Design.DommaschkKamC.AdmO.toG
+#print axioms PlasmaLean.Design.DommaschkKamC.ballA_all
+#print axioms PlasmaLean.Design.DommaschkKamC.eval_polyT
+#print axioms PlasmaLean.Design.DommaschkKamC.polyT_reject
+#print axioms PlasmaLean.Design.DommaschkKamC.consts_sharp
+#print axioms PlasmaLean.Design.DommaschkKamC.dk_globalHG
+#print axioms PlasmaLean.Design.DommaschkKamC.dk_kamHG
+#print axioms PlasmaLean.Design.DommaschkKamC.dk_exact_of_res
+#print axioms PlasmaLean.Design.DommaschkKamC.cDK_ok
+#print axioms PlasmaLean.Design.DommaschkKamC.dk_small_fails
+#print axioms PlasmaLean.Design.DommaschkKamC.dommaschk_C1
+#print axioms PlasmaLean.Design.DommaschkKamC.dommaschk_iotaOnTorus
+#print axioms PlasmaLean.Design.DommaschkKamC.dommaschk_C1_of_exact
+#print axioms PlasmaLean.Design.DommaschkKamC.ExactTorusC.iotaOnTorus
+#print axioms PlasmaLean.Design.DommaschkKamC.not_C1_iotaMin
+#print axioms PlasmaLean.Design.DommaschkKamC.radial_ge_of_close
+#print axioms PlasmaLean.Design.DommaschkKamC.Bd_radQ_surr
+#print axioms PlasmaLean.Design.DommaschkKamC.radQ_surr_ne
+#print axioms PlasmaLean.Design.DommaschkKamC.thProj_mode
+#print axioms PlasmaLean.Design.DommaschkKamC.dk_e0R
+#print axioms PlasmaLean.Design.DommaschkKamC.dk_e0Z
+#print axioms PlasmaLean.Design.DommaschkKamC.ballH_all
+#print axioms PlasmaLean.Design.DommaschkKamC.kron_gridR
+#print axioms PlasmaLean.Design.DommaschkKamC.Bd_ctr_of_node
+#print axioms PlasmaLean.Design.DommaschkKamC.e0q_not_tiny
+#print axioms PlasmaLean.Design.DommaschkKamC.fldZ_reject
+#print axioms PlasmaLean.Design.DommaschkKamC.dommaschk_C1_unconditional
+#print axioms PlasmaLean.Design.DommaschkKamC.dommaschk_iotaOnTorus_unconditional
+#print axioms PlasmaLean.Design.DommaschkKamC.qsd_bounds
+#print axioms PlasmaLean.Design.DommaschkKamC.QSDefBounds.pointwise
+#print axioms PlasmaLean.Design.DommaschkKamC.qsd_defect_real
+#print axioms PlasmaLean.Design.DommaschkKamC.qsd_numbers
+#print axioms PlasmaLean.Design.DommaschkKamC.qsd_near
+#print axioms PlasmaLean.Design.DommaschkKamC.qsdMj_spec
+#print axioms PlasmaLean.Design.DommaschkKamC.ballQ_all
+#print axioms PlasmaLean.Design.DommaschkKamC.surr_G
+#print axioms PlasmaLean.Design.DommaschkKamC.surr_F
+#print axioms PlasmaLean.Design.DommaschkKamC.surr_G_ne
+#print axioms PlasmaLean.Design.DommaschkKamC.qsNg_instance
+#print axioms PlasmaLean.Design.DommaschkKamC.qsd_not_tiny
+#print axioms PlasmaLean.Design.DommaschkKamC.ExactTorusC.torusQADefect_eq
+#print axioms PlasmaLean.Design.DommaschkKamC.ExactTorusC.boozerChartHyp'
+#print axioms PlasmaLean.Design.DommaschkKamC.ExactTorusC.torusQADefectLe_delta
+#print axioms PlasmaLean.Design.DommaschkKamC.ExactTorusC.oracleDefect_le
+#print axioms PlasmaLean.Design.DommaschkKamC.ExactTorusC.torusPot_add_pi
+#print axioms PlasmaLean.Design.DommaschkKamC.dommaschk_qaDefect
+#print axioms PlasmaLean.Design.DommaschkKamC.not_torusPeriodic_four
+#print axioms PlasmaLean.Design.DommaschkKamC.dommaschk_C1_qaDefect
+#print axioms PlasmaLean.Design.DommaschkKamC.dommaschk_C1_oracleDefect
+#print axioms PlasmaLean.Design.DommaschkKamC.oracleDefect_bound_num
+#print axioms PlasmaLean.Design.DommaschkKamC.dommaschk_C1_oracleDefect_L2
+#print axioms PlasmaLean.Design.DommaschkKamC.oracleDefect_L2_num
+#print axioms PlasmaLean.Design.DommaschkKamC.torusAvg_eval_psi
+#print axioms PlasmaLean.Design.DommaschkKamC.ExactTorusC.four_mul_sqJ_eq
+#print axioms PlasmaLean.Design.DommaschkKamC.ExactTorusC.weightedL2Sq_le_mF
+#print axioms PlasmaLean.Design.DommaschkKamC.l2_numbers
+#print axioms PlasmaLean.Design.DommaschkKamC.not_l2_tiny
+#print axioms PlasmaLean.Design.DommaschkKamC.torusAvg_eval_psi_one
+#print axioms PlasmaLean.Design.DommaschkKamA.dk_adm
+#print axioms PlasmaLean.Design.DommaschkKamA.dk_e0R
+#print axioms PlasmaLean.Design.DommaschkKamA.dk_e0Z
+#print axioms PlasmaLean.Design.DommaschkKamA.dk_globalHG
+#print axioms PlasmaLean.Design.DommaschkKamA.dommaschkA_C1_unconditional
+#print axioms PlasmaLean.Design.DommaschkKamA.dommaschkA_iotaOnTorus_unconditional
+#print axioms PlasmaLean.Design.DommaschkKamA.gaugeA_gt
+#print axioms PlasmaLean.Design.DommaschkKamA.gaugeC_lt
+#print axioms PlasmaLean.Design.DommaschkKamA.iotaqA_close
+#print axioms PlasmaLean.Design.DommaschkKamA.iotaqA_ne_iotaqC
+#print axioms PlasmaLean.Design.DommaschkKamA.not_C1_iotaMin_A
+#print axioms PlasmaLean.Design.DommaschkKamA.pos_of_sq_mul
+#print axioms PlasmaLean.Design.DommaschkKamA.radA_pos
+#print axioms PlasmaLean.Design.DommaschkKamA.radC_pos
+#print axioms PlasmaLean.Design.DommaschkKamNested.dommaschk_nested
+#print axioms PlasmaLean.Design.DommaschkKamNested.dommaschk_nested_C1
+#print axioms PlasmaLean.Design.DommaschkKamNested.nested_of_exact
+#print axioms PlasmaLean.Design.DommaschkKamNested.nestedTori_circles
+#print axioms PlasmaLean.Design.DommaschkKamNested.NestedTori.disjoint
+#print axioms PlasmaLean.Design.DommaschkKamNested.NestedTori.inside
+#print axioms PlasmaLean.Design.DommaschkKamNested.not_nested_C1_quarter
+#print axioms PlasmaLean.Design.DommaschkKamNested.not_nestedTori_swap
+#print axioms PlasmaLean.Design.DommaschkKamA.ExactTorusA.torusQADefectLe_delta
+#print axioms PlasmaLean.Design.DommaschkKamA.ExactTorusA.torusQADefect_eq
+#print axioms PlasmaLean.Design.DommaschkKamA.ExactTorusA.weightedL2Sq_le_mF
+#print axioms PlasmaLean.Design.DommaschkKamA.dommaschkA_C1_qaDefect
+#print axioms PlasmaLean.Design.DommaschkKamA.dommaschkA_oracleDefect
+#print axioms PlasmaLean.Design.DommaschkKamA.dommaschkA_oracleDefect_L2
+#print axioms PlasmaLean.Design.DommaschkKamA.l2_numbers
+#print axioms PlasmaLean.Design.DommaschkKamA.not_l2_tiny
+#print axioms PlasmaLean.Design.DommaschkKamA.oracleDefectA_L2_num
+#print axioms PlasmaLean.Design.DommaschkKamA.qsd_bounds
+#print axioms PlasmaLean.Design.DommaschkKamA.qsd_not_tiny
+#print axioms PlasmaLean.Design.DommaschkKamA.qsd_numbers
+#print axioms PlasmaLean.Design.DommaschkKamA.surr_G_ne
+#print axioms PlasmaLean.Design.DommaschkKamQ16.dommaschk_Q16_strong
+#print axioms PlasmaLean.Design.DommaschkKamQ16.dommaschk_Q16_vacuum
+#print axioms PlasmaLean.Design.DommaschkKamQ16.nested_C1_of_exact
+#print axioms PlasmaLean.Design.DommaschkKamQ16.not_q16_C_tiny
+#print axioms PlasmaLean.Design.DommaschkKamQ16.q16_bounds_lt_strong
