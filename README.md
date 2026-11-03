@@ -216,6 +216,10 @@ skills (`.agents/skills/`, entry point `plasmalean-develop-theory`) understand a
 - **`add a note`** (or **`make a note`**, **`record this`**): record the outcome of a discussion, result,
   failure, source assessment or design decision as a registered research note (skill
   `plasmalean-add-note`), or update an existing note to its current state.
+- **`modify notes`** (or **`add notes`**): change what the notes say. The agent surveys the notes
+  and their metadata, edits in place only notes with no Lean implementation, and records every
+  other change as a new note: a *method note* for an additional approach, or a *patch note* for a
+  change to a wholly or partially implemented note (skill `plasmalean-modify-notes`).
 - **`update from workstation`**: review, re-check and merge workstation runs (skill
   `plasmalean-workstation-update`); the workstation can run an unattended poller that executes the
   commands the laptop queues in `scripts/workstation/next.sh`.
@@ -253,10 +257,21 @@ All planning and theory development is recorded in `notes/`, in a fixed structur
   `00-model-contracts.md` is normative: model contracts, and C1–C5 in Lean form.
 - **Audit records** live in [notes/audit/](notes/audit/). Findings have IDs, such as AR-H1 and
   AC-1, with severity and resolution.
-- **Workflow.** Notes are updated after every work unit, including failures. A note is rewritten to
-  its current state rather than appended to indefinitely. No note file exists without
-  registration. The agents follow this through the skills `plasmalean-develop-theory` and
-  `plasmalean-add-note`.
+- **Implemented notes keep their content.** A note that is wholly or partially implemented in Lean
+  is the specification its code was built against, so it is not rewritten.
+  - It only gets bookkeeping: implementation progress in its Status and Lean evidence rows, and
+    pointers to later notes.
+  - A changed method, target, statement or plan becomes a new note that depends on it: a *method
+    note* (an additional or alternative approach) or a *patch note* (with a `Patches` row naming
+    the changed sections, and the effect on the existing declarations).
+  - A note is read as the original plus its patches. Many patches are consolidated into a new
+    note.
+  - `scripts/notes/implementation_status.py` classifies notes from their metadata as `none`,
+    `partial` or `whole`.
+- **Workflow.** Notes are updated after every work unit, including failures. A note without
+  implementation is rewritten to its current state rather than appended to indefinitely. No note
+  file exists without registration. The agents follow this through the skills
+  `plasmalean-develop-theory`, `plasmalean-add-note` and `plasmalean-modify-notes`.
 
 ## Build and audit
 

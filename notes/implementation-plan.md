@@ -1844,3 +1844,19 @@ Gate E1 (§11.2, §11.4) and the "sanity theorem or counterexample" promised in 
   on demand), and audit findings from the 30–31 October records. Where a body was outdated, a short
   "Current state" paragraph follows the table (all except N-16, whose integration note is current).
   `notes/theory/README.md` gained index lines for N-8, N-11 and N-13–N-17.
+
+### Implemented notes keep their content: the modify-notes skill, 3 November 2026
+
+- **New skill `plasmalean-modify-notes`** (triggers "modify notes", "add notes"). It surveys the
+  notes and their metadata, edits in place only notes with no Lean implementation, and records every
+  change to a wholly or partially implemented note as a new note.
+  - A *method note* (Kind `method`) records an additional or alternative approach.
+  - A *patch note* (Kind `patch`) has a `Patches` row and states its effect on the existing
+    declarations.
+  - Implemented notes get bookkeeping edits only: real implementation progress and a
+    `Patched by / Alternatives` row.
+- **Classifier.** `scripts/notes/implementation_status.py` classifies notes as `none`, `partial`,
+  `whole` or `check`. On 3 November every registered note has some implementation:
+  N-35 (a status log) reads `check`, and the rest read `partial` or `whole`.
+- **Updated to match:** the template (new kinds and optional rows), add-note, develop-theory, the
+  skills index and README.md.

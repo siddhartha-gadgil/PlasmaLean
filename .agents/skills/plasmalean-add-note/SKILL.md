@@ -21,6 +21,11 @@ Read first: `notes/note-template.md` (the structure), the RG.1–RG.3 tables of
   section so they state the *current* state; put the history in a short dated paragraph or in the
   plan's §13 log, not as an ever-growing tail of appended sections. If a note already has a long
   appended history, add or refresh a "Current state" summary right after the metadata table.
+- **Implemented notes are not rewritten.** If the existing note is wholly or partially implemented
+  in Lean (`python3 scripts/notes/implementation_status.py <file>`), record a changed method,
+  target, statement or plan as a new method or patch note (skill `plasmalean-modify-notes`, §3).
+  Editing an implemented note is limited to bookkeeping: recording real implementation progress in
+  Status, Lean evidence and Last updated, and pointers to its patches.
 - **New** when the content is a substantial unit of its own: a new question or route, a source
   assessment, a design study, a proof or obstruction, a computation campaign. Small facts belong in
   an existing note or in the plan's §13 log instead.

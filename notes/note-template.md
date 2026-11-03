@@ -2,7 +2,9 @@
 
 Copy this template for each substantial unit of PlasmaLean theory development. Use stable `N-*`,
 `G-*` and `Q-*` identifiers from the "Research graph" part of `notes/implementation-plan.md`.
-Remove guidance text after filling it in.
+Remove guidance text after filling it in. The last two metadata rows are optional; use them for
+patch and method notes and their originals (skill `plasmalean-modify-notes`). A note that is wholly
+or partially implemented in Lean is not rewritten: changes go into new method or patch notes.
 
 Discovery notes live in `notes/theory/` (kebab-case file names, indexed in
 `notes/theory/README.md`); formalization specifications live in `notes/formalization/`. New notes
@@ -16,7 +18,7 @@ and get the metadata table below when they are next substantially edited.
 | --- | --- |
 | ID | `N-...` |
 | Title | ‹short descriptive title› |
-| Kind | ‹source synthesis / definition / conjecture / research approach / proof / counterexample / computation / formalization / certificate / design› |
+| Kind | ‹source synthesis / definition / conjecture / research approach / method / patch / proof / counterexample / computation / formalization / certificate / design / status log› |
 | Addresses | ‹`G-*`, `Q-*`; plan track (T1–T10), rung (M0–M6) or gate (E0–E8) if relevant› |
 | Depends on | ‹note IDs and Lean declaration names› |
 | Dependency requirement | ‹what exact statement/status is needed from each dependency› |
@@ -26,6 +28,8 @@ and get the metadata table below when they are next substantially edited.
 | Lean evidence | ‹module and declaration names (default build or on-demand), or `none`› |
 | Audit evidence | ‹audited commit and finding IDs, or `not audited`› |
 | Last updated | ‹date and summary› |
+| Patches | ‹only for a patch note: the patched note ID and the sections or claims it changes› |
+| Patched by / Alternatives | ‹on an implemented note: IDs of its patch and method notes, if any› |
 
 ## Purpose and scope
 

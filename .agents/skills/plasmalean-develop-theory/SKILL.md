@@ -168,7 +168,10 @@ table, a row in RG.3 and a line in `notes/theory/README.md`; sub-agents must not
 note files. Running logs of a multi-step build either get an ID (Kind: status log) or go in the
 plan's §13 log. When updating a note, rewrite its metadata and claims to the current state instead
 of only appending dated sections. Use the skill `plasmalean-add-note` for the procedure (triggers:
-"add a note", "make a note", "record this").
+"add a note", "make a note", "record this"). **Implemented notes keep their content:** a note that
+is wholly or partially implemented in Lean gets only bookkeeping edits; changes of method, target,
+statement or plan go into new method or patch notes (skill `plasmalean-modify-notes`, triggers
+"modify notes", "add notes").
 
 Create auxiliary notes or questions when discovery requires them, but do not silently replace a
 top-level goal or make a materially new commitment (a new kernel law, a large disk or CPU budget).
