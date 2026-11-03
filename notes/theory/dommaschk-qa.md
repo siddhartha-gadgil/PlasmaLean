@@ -12,10 +12,28 @@
 | Dependency requirement | Harmonicity of the basis: exact symbolic identity (checked here in sympy; in Lean, a polynomial normal-form check). Boozer facts for B = ∇Φ: proved informally (N-30 §2). Everything optimised or measured here: **untrusted numerics** |
 | Produces | Scripts `scripts/dommaschk_qa/`; the workstation task `dommaschk-qa`; a candidate format (exact rational coefficients plus an explicit potential); success tiers for the decided Q-16 criterion; a smoke-test candidate |
 | Difficulty | moderate (numerics), hard (certification of the low-shear tori, barrier B2 of N-27) |
-| Status | **C1 certified in Lean** for the §24 target (`dommaschk_C1_unconditional`, §29); strong-tier candidate found (§21, NFP 2, defect/ι ≤ 0.0043, untrusted); purely rational moderate-tier candidate (§21, NFP 3); exploratory: pipeline validated, smoke test done; medium workstation run (ι_min 0.2, r ≤ 0.06) missed the moderate tier; diagnostic run at r ≤ 0.045 reaches the moderate tier on the nested region (defect/ι 0.021–0.038, ε_eff 0.6–1.0 %, |ι| ≈ 0.24) but nesting stops at the ι = 2/9 island chain (r_eff ≈ 0.019); nmax 3 (42 coefficients) reaches the **moderate tier**: defect/ι 0.009–0.023 at |ι| ≈ 0.24 with low shear inside (2/9, 1/4), ε_eff 0.08–0.13 %, regular to r_eff ≈ 0.037 (§10) |
-| Lean evidence | certification step 1 for the NFP-3 candidate (§17): `PlasmaLean.Design.DommaschkQA3.candidate_vacuum`, `field_vacuum` (every coefficient vector), `candidate_netToroidalCurrent_eq_zero`, `candidate_currentFree`, `field_stellSym`; reusable `PlasmaLean.Fields.CylAlgebra.gradField_vacuum` (default build, standard axioms) |
+| Status | **Q-16 vacuum criterion verified in Lean** for the target of §24 on a nested pair of certified tori (§32, `DommaschkKamQ16.dommaschk_Q16_vacuum`); the search history is §§6–28 |
+| Lean evidence | on demand: `DommaschkKamQ16.dommaschk_Q16_vacuum`, `DommaschkKamNested.dommaschk_nested_C1`, `DommaschkKamC.dommaschk_C1_unconditional`, `DommaschkKamC.dommaschk_C1_oracleDefect_L2`; exact field `DommaschkQA2R.candidate_vacuum` (default build); earlier NFP-3 candidate `DommaschkQA3` (default build) |
 | Audit evidence | not audited |
-| Last updated | 30 October 2026: created (pipeline, validation, smoke test, workstation commands); medium workstation run reviewed (§7) |
+| Last updated | 3 November 2026: current-state summary added; §§1–32 are the dated record |
+
+## Current state (3 November 2026)
+
+- **Target.** The NFP-2, purely rational Dommaschk vacuum field of §24
+  (`scripts/dommaschk_qa/results/20261031T092522Z/candidate.json`; Lean: `DommaschkQA2R`).
+- **Verified in Lean** (on-demand modules, standard axioms; design N-33/N-34, build log N-35):
+  - two certified invariant tori C and A (ι_C = −(85+√5)/361, ι_A = −(19+√5)/89), proved nested;
+  - zero net toroidal current, i.e. C1 on {C, A} with ι_min = 0.2386;
+  - certified off-QA Boozer spectral defect ≤ 0.0063 |ι_C| and ≤ 0.0090 |ι_A| (strong tier);
+  - the main theorem is `DommaschkKamQ16.dommaschk_Q16_vacuum`.
+- **Untrusted numerics.** The fit's defect is ≈ 0.002 |ι| and ε_eff ≲ 0.04 % (§§24–27).
+- **Open.**
+  - More certified surfaces: an exact continuum is impossible for this non-integrable field.
+  - C2: needs a Boozer chart of the field, audit AC-1.
+  - Finite β (C3/C4) and C5.
+- **History.** §§6–28 record the search (tiers, the resonances that limit volume, the re-rank fix,
+  warm starts, the no-log fields), §§17, 23 and 29 the Lean steps, and §§30–32 the second torus and
+  nesting.
 
 ## Purpose and scope
 

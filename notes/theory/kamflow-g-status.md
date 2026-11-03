@@ -1,5 +1,28 @@
 # KamFlow*G: status of the generalised KAM interface (N-33 module plan item 3)
 
+## Metadata
+
+| Field | Value |
+| --- | --- |
+| ID | `N-35` |
+| Title | Status log of the Dommaschk certification chain (generalised KAM interface, C1, QA defect, torus A, nesting) |
+| Kind | status log (build record kept during multi-agent work; numbers, design choices, pitfalls, shared-file lines) |
+| Addresses | `Q-16`, `G-1`, `G-10`; contract clause C1; N-33 items 3–10, N-34 D3–D7 |
+| Depends on | N-31 (target and oracle), N-33 (certificate design), N-34 (QA-defect design) |
+| Dependency requirement | none (records results; the design and the claims live in N-33/N-34, the plan and the Lean modules) |
+| Produces | build and cost records, interface specifications between modules, the lists of heavy axiom checks |
+| Difficulty | — (log) |
+| Status | active log; current results: C1 on nested tori C ⊂ A and certified strong-tier QA defect on both (`DommaschkKamQ16.dommaschk_Q16_vacuum`) |
+| Lean evidence | see the sections below (all modules named there are compiled; on-demand modules spot-checked) |
+| Audit evidence | not audited |
+| Last updated | 3 November 2026: registered as N-35 (previously an unregistered status file) |
+
+**Current state (3 November 2026).** The generalised KAM interface (`KamFlow*G`, default build), the
+Dommaschk flow-field instance, and on-demand certificate chains for two tori C and A of the purely
+rational NFP-2 target give: C1 on the nested pair (`DommaschkKamNested.dommaschk_nested_C1`), and
+certified off-QA Boozer spectral defect ≤ 0.0063 |ι_C|, ≤ 0.0090 |ι_A|
+(`DommaschkKamQ16.dommaschk_Q16_vacuum`). The sections below are the chronological build record.
+
 Last updated: 31 October 2026 (milestone 3). Companion to `dommaschk-kam-certificate.md` (N-33), §2.2 (O1, O2)
 and §6 item 3.
 

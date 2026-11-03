@@ -12,10 +12,10 @@
 | Dependency requirement | The compiled generic KAM theorem for polynomial flow forms (`kam_flow_torus`, standard axioms) and the ball-arithmetic certificate machinery (`KronBall*`, `kron2_proof`) are used as they are. The oracle numbers of N-31 §25 and everything computed here are **untrusted numerics**. |
 | Produces | This design; the untrusted estimator `scripts/dommaschk_kam/kam_constants.py`; the on-demand cost prototype `PlasmaLean/Design/DommaschkKamProto.lean` (not imported by `PlasmaLean.lean`); three structural findings (§2.2), one of them at contract level; a module plan (§6) and a list of gaps (§7) |
 | Difficulty | hard: no new analysis is needed, but the KAM interface must be generalised in three places, one contract definition must change, and the residual certificate is about 10× the guiding-centre certificate per node |
-| Status | proof-ready design (conditional go, §8) |
-| Lean evidence | prototype only: `PlasmaLean.Design.DommaschkKamProto.protoBig`, `protoSmall` (on demand, not imported; axioms `[propext]`) |
+| Status | verified: the design was carried out. C1 for the Dommaschk target is compiled (`DommaschkKamC.dommaschk_C1_unconditional`); torus A and nesting followed (N-31 §§31–32) |
+| Lean evidence | on demand: `Design/DommaschkKamCFinal` (`dommaschk_C1_unconditional`, `dommaschk_iotaOnTorus_unconditional`), with the chain `KamFlow*G` (default build), `DommaschkKamField`/`Ident`, `DommaschkKamC{Data,Torus,DioC,Adm*,Consts,Res*,Radial,Contract}`; torus A: `DommaschkKamA*`, `DommaschkKamNested`; the build log and numbers are in N-35 (`kamflow-g-status.md`) |
 | Audit evidence | not audited; §2.2 (O3) is a candidate audit finding for `Theory/Contract/StellaratorContract` |
-| Last updated | 31 October 2026: created |
+| Last updated | 3 November 2026: metadata brought to the current state (the "Update" sections below record the history) |
 
 ## Purpose and scope
 

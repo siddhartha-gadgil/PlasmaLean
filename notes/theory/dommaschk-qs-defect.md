@@ -12,10 +12,10 @@
 | Dependency requirement | C1 chain: compiled (on demand, standard axioms). Bridge: compiled (default build) **in the supplied Boozer GC model**. Everything numerical here: untrusted |
 | Produces | The recommended definition (§2); the untrusted estimator `scripts/dommaschk_kam/qs_defect.py`; the prototype `PlasmaLean/Design/DommaschkQSProto.lean` (on demand, not imported); a cost estimate (§4); a C2 assessment with one audit finding (§5); a module plan (§6) |
 | Difficulty | per-torus defect: moderate (routine certificate on existing infrastructure, plus about 1 kLOC of new torus geometry); oracle-normalised spectral bound: moderate (weighted Wirtinger on T²); C2 for the actual field: research (no volume Boozer chart exists for a non-integrable field) |
-| Status | proof-ready design for the per-torus defect (go); C2: blocked on a contract decision and on new theory |
+| Status | verified per torus: certified strong-tier QA defect on tori C and A (`DommaschkKamQ16.dommaschk_Q16_vacuum`); C2 for the actual field open (needs a Boozer chart, AC-1 now enforces this) |
 | Lean evidence | A1 `Theory/Fields/VacuumBoozerTorus` (`torusQADefect`, `boozerJac_eq_normSq_div`, `exists_qa_of_torusQADefect_eq_zero`, `boozerAngles_bijective`, `symmetryDefect_eq_torusQADefect_vacuum`) and D3 `Design/DommaschkKamCQSPoly` (`qsDefect_eq_real`), default build; earlier: | prototype only: `PlasmaLean.Design.DommaschkQSProto.{boozerX_thetaB, boozerX_phiB, boozerX_apply, boozerX_qa, boozerVec_eq, bijective_of_strictMono_bdd, coeff_sq_le}` (on demand, not imported; standard axioms; 1.5 s, 1.3 GB) |
 | Audit evidence | not audited. §5.1 is a candidate audit finding (C2 has no link between `BoozerField` and the physical field) |
-| Last updated | 1 November 2026: created |
+| Last updated | 3 November 2026: metadata brought to the current state (history in the "Update" sections below) |
 
 ## Purpose and scope
 

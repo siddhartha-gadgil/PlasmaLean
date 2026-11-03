@@ -67,7 +67,8 @@ upstream change.
   prerequisites and work on one only when that is the closest in-scope way forward. Recommend
   sub-agents when independent strands can produce concrete inputs in parallel.
 - **Discussion**: engage with the mathematics, physics or source. Record durable conclusions,
-  objections, sources and new subquestions in the graph when they affect future work.
+  objections, sources and new subquestions in the graph when they affect future work (skill
+  `plasmalean-add-note`).
 - **`keep working`**: autonomous mode. Continue across work units without asking the user to pick
   after each one. Use sub-agents for independent ready tasks or independent attacks on a hard
   question when this improves progress.
@@ -161,6 +162,13 @@ than mechanically:
 Keep G-1 and G-2 both moving, and keep theory and design interleaved: a design gate that needs new
 mathematics becomes a question and a note, not an ever-larger computation. Re-planning trigger
 (plan §6): an approach that failed twice is downgraded or turned into an obstruction study.
+
+**Notes are always registered.** Every file in `notes/theory/` has an `N-*` ID, a template metadata
+table, a row in RG.3 and a line in `notes/theory/README.md`; sub-agents must not create unregistered
+note files. Running logs of a multi-step build either get an ID (Kind: status log) or go in the
+plan's §13 log. When updating a note, rewrite its metadata and claims to the current state instead
+of only appending dated sections. Use the skill `plasmalean-add-note` for the procedure (triggers:
+"add a note", "make a note", "record this").
 
 Create auxiliary notes or questions when discovery requires them, but do not silently replace a
 top-level goal or make a materially new commitment (a new kernel law, a large disk or CPU budget).

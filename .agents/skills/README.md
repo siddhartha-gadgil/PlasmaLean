@@ -16,6 +16,7 @@ other skills.
 | `plasmalean-design-stellarator` | advancing a stellarator candidate through verified gates with composed certificates; coil or boundary optimization, tradeoffs, tolerance studies |
 | `plasmalean-model-materials` | coils, tape strain, quench, thermal and mechanical loads, plasma-facing materials, neutronics, lifetime and maintenance constraints |
 | `plasmalean-lean-proofs` | writing or repairing any Lean code: tactic choice, concrete checks with `kernel_fact`/`bool_cert`/`eval_cert`/`fiv_cert` and the Kronecker certificates, the SubsetSum proof-term pattern, memory rules; no `decide` of any kind in new code |
+| `plasmalean-add-note` | recording a note after a discussion, result, failure, source assessment or design decision ("add a note", "make a note", "record this"): new vs update, template, ID, registration in the research graph and index, publish |
 | `plasmalean-workstation-update` | fetching, re-checking, merging and recording workstation runs (`workstation/*` branches; `Workstation.md`) |
 
 Shared rules: Lean declarations are the validity gate (only compiled declarations count as
