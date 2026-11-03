@@ -1,0 +1,4 @@
+interface:
+  display_name: "Update notes from sources"
+  short_description: "Analyse theory source files and update the notes, respecting what is implemented in Lean"
+  default_prompt: "Use $plasmalean-update-notes-from to analyse these source files and update the notes accordingly."

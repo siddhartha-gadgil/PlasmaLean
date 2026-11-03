@@ -1920,3 +1920,18 @@ and then gained structural additions. They are now incorporated here.
     hazard list (audit); the exact-phrase rule and reading list (develop-theory).
   - `agents/openai.yaml` added for develop-theory, workstation-update, add-note and modify-notes.
 - **README.** New Policies section.
+
+### The update-notes-from skill, 3 November 2026
+
+New skill `plasmalean-update-notes-from` ("update notes from <files>"), the source-driven variant
+of "update notes" (`plasmalean-modify-notes`, which now also answers to "update notes"). It works in
+five steps:
+1. acquire the sources safely and record provenance with a SHA-256 hash;
+2. read each source in full and build an extraction table (claim, locator, kind, hypotheses,
+   relevance);
+3. check each claim against the compiled Lean code, the notes and the audits, and re-derive
+   explicit content where cheap;
+4. write one source-assessment note (as N-32 did);
+5. update the notes under the in-place versus method or patch rule.
+
+README.md, `docs/GettingStarted.md`, CONTRIBUTING.md, the skills index and develop-theory updated.

@@ -227,10 +227,15 @@ skills (`.agents/skills/`, entry point `plasmalean-develop-theory`) understand a
 - **`add a note`** (or **`make a note`**, **`record this`**): record the outcome of a discussion, result,
   failure, source assessment or design decision as a registered research note (skill
   `plasmalean-add-note`), or update an existing note to its current state.
-- **`modify notes`** (or **`add notes`**): change what the notes say. The agent surveys the notes
+- **`update notes`** (or **`modify notes`**, **`add notes`**): change what the notes say. The agent surveys the notes
   and their metadata, edits in place only notes with no Lean implementation, and records every
   other change as a new note: a *method note* for an additional approach, or a *patch note* for a
   change to a wholly or partially implemented note (skill `plasmalean-modify-notes`).
+- **`update notes from <files>`**: the same, with the changes coming from given theory sources
+  (papers, a colleague's brief, drafts, Lean files from elsewhere). The agent reads them in full,
+  extracts each claim with its kind and locator, checks it against the compiled Lean code and the
+  notes (re-deriving explicit formulas where cheap), records a source-assessment note, and then
+  updates the notes by the same rule (skill `plasmalean-update-notes-from`).
 - **`update from workstation`**: review, re-check and merge workstation runs (skill
   `plasmalean-workstation-update`); the workstation can run an unattended poller that executes the
   commands the laptop queues in `scripts/workstation/next.sh`.
@@ -288,7 +293,8 @@ All planning and theory development is recorded in `notes/`, in a fixed structur
 - **Workflow.** Notes are updated after every work unit, including failures. A note without
   implementation is rewritten to its current state rather than appended to indefinitely. No note
   file exists without registration. The agents follow this through the skills
-  `plasmalean-develop-theory`, `plasmalean-add-note` and `plasmalean-modify-notes`.
+  `plasmalean-develop-theory`, `plasmalean-add-note`, `plasmalean-modify-notes` and
+  `plasmalean-update-notes-from`.
 
 ## Policies
 

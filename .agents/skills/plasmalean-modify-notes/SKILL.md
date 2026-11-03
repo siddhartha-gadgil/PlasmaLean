@@ -1,6 +1,6 @@
 ---
 name: plasmalean-modify-notes
-description: Change PlasmaLean research notes without rewriting history that Lean already implements. Use for "modify notes", "add notes", "change the notes", "revise the notes", "update the notes with …", "amend the plan in the notes" (and close variants), whenever the request is to change what notes say (methods, targets, plans, statements) rather than to record one new result. Surveys the present notes and their metadata, edits in place only notes with no implementation, and records every other desired change as a new note: a method note (an additional or alternative approach) or a patch note (a change to a wholly or partially implemented note). Registration and publishing follow plasmalean-add-note.
+description: Change PlasmaLean research notes without rewriting history that Lean already implements. Use for "update notes", "modify notes", "add notes", "change the notes", "revise the notes", "update the notes with …", "amend the plan in the notes" (and close variants), whenever the request is to change what notes say (methods, targets, plans, statements) rather than to record one new result. Surveys the present notes and their metadata, edits in place only notes with no implementation, and records every other desired change as a new note: a method note (an additional or alternative approach) or a patch note (a change to a wholly or partially implemented note). Registration and publishing follow plasmalean-add-note. When the changes come from given source files ("update notes from …"), use plasmalean-update-notes-from instead.
 ---
 
 # Modify or add PlasmaLean notes, respecting implementation
@@ -12,6 +12,9 @@ records. So changes are split:
 - a note with **no implementation** is edited in place;
 - a note that is **wholly or partially implemented** keeps its content. A desired change becomes a
   **new note** that depends on it.
+
+When the changes come from given theory source files ("update notes from …"), use the variant
+`plasmalean-update-notes-from`, which first analyses and checks the sources.
 
 `plasmalean-add-note` stays the procedure for recording a single new result or discussion. This
 skill decides *where* each requested change goes, then uses add-note for allocating IDs, the

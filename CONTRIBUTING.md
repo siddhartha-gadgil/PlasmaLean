@@ -30,7 +30,8 @@ an agent or a person.
 
 The step-by-step workflow, the ways to talk to the agents and copy-paste prompts are in
 [docs/GettingStarted.md](docs/GettingStarted.md). To record a contribution as a note, say
-**`add a note`**. To change existing notes, say **`modify notes`**: notes with no Lean
+**`add a note`**. To change existing notes, say **`update notes`** (or **`update notes from <files>`** to work from
+papers or drafts): notes with no Lean
 implementation are edited in place, while implemented ones get a new method or patch note, so that
 the specification behind compiled code is never silently rewritten.
 

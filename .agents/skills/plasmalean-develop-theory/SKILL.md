@@ -140,7 +140,8 @@ arithmetic before writing Lean.
    - `plasmalean-workstation-update`: integrating workstation runs;
    - `plasmalean-add-note`: recording a result, failure, source or decision as a registered note;
    - `plasmalean-modify-notes`: changing what notes say (in place only for notes with no
-     implementation; method or patch notes otherwise).
+     implementation; method or patch notes otherwise);
+   - `plasmalean-update-notes-from`: the same, driven by given theory source files.
 3. Develop, test or formalize the result. Failed approaches and counterexamples are outputs:
    record the barrier they establish.
 4. Compile and audit Lean output in proportion to the claim, within the resource rules. Record

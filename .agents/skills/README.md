@@ -20,7 +20,8 @@ with its display name and default prompt.
 | `plasmalean-model-materials` | coils, tape strain, quench, thermal and mechanical loads, plasma-facing materials, neutronics, lifetime and maintenance constraints |
 | `plasmalean-lean-proofs` | writing or repairing any Lean code: tactic choice, concrete checks with `kernel_fact`/`bool_cert`/`eval_cert`/`fiv_cert` and the Kronecker certificates, the SubsetSum proof-term pattern, memory rules; no `decide` of any kind in new code |
 | `plasmalean-add-note` | recording a note after a discussion, result, failure, source assessment or design decision ("add a note", "make a note", "record this"): new vs update, template, ID, registration in the research graph and index, publish |
-| `plasmalean-modify-notes` | changing what notes say ("modify notes", "add notes"): surveys notes and their metadata (`scripts/notes/implementation_status.py`), edits in place only notes with no Lean implementation, and records changes to wholly or partially implemented notes as new method or patch notes |
+| `plasmalean-modify-notes` | changing what notes say ("update notes", "modify notes", "add notes"): surveys notes and their metadata (`scripts/notes/implementation_status.py`), edits in place only notes with no Lean implementation, and records changes to wholly or partially implemented notes as new method or patch notes |
+| `plasmalean-update-notes-from` | "update notes from <files>": analysing given theory sources (papers, briefs, drafts, external Lean files) claim by claim, checking them against compiled Lean and the notes, writing a source-assessment note, then updating notes as in `plasmalean-modify-notes` |
 | `plasmalean-workstation-update` | fetching, re-checking, merging and recording workstation runs (`workstation/*` branches; `Workstation.md`) |
 
 Shared rules: Lean declarations are the validity gate (only compiled declarations count as

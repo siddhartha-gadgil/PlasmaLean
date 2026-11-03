@@ -284,9 +284,13 @@ preferred over generic requests, so that the agent reliably selects the project 
   dependency edges.
 - **`add a note`** / **`make a note`** / **`record this`**: record a result, failure, source
   assessment or decision as a registered note (skill `plasmalean-add-note`).
-- **`modify notes`** / **`add notes`**: change what the notes say. Notes without implementation
+- **`update notes`** / **`modify notes`** / **`add notes`**: change what the notes say. Notes without implementation
   are edited in place; implemented notes get method or patch notes (skill
   `plasmalean-modify-notes`).
+- **`update notes from <files>`**: the same, driven by theory source files. The agent analyses
+  them claim by claim, checks each claim against the compiled code and the notes, writes a
+  source-assessment note, then updates the notes by the same rule (skill
+  `plasmalean-update-notes-from`).
 - **`keep working`**: autonomous mode. The agent repeatedly chooses the highest-value ready item,
   develops or formalizes it, updates the graph and continues, with concise progress updates. It
   stops when a real user decision is needed, nothing useful is ready, authorization is needed, or
