@@ -1,5 +1,7 @@
 # Assessment of the holomorphic strong-QS research brief
 
+Patched by N-37 (summary item 5: orientation of the anti-self-dual lift).
+
 ## Metadata
 
 | Field | Value |
@@ -16,6 +18,7 @@
 | Lean evidence | `PlasmaLean.Fields.QSLinear.fieldDiv_fqsGen`, `FQSAt.strongQSAt`, `jet_obstruction_eta`, `strongQS_jet_obstruction`; `PlasmaLean.Design.QSJetExample.strongQS_obstruction` (default build, standard axioms) |
 | Audit evidence | the brief's explicit computations re-derived in sympy (below); the other claims checked by hand |
 | Last updated | 30 October 2026: created |
+| Patched by / Alternatives | patched by `N-37` (orientation of the lift, summary item 5) |
 
 ## Source
 

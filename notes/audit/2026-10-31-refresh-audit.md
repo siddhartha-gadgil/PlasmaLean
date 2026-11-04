@@ -294,3 +294,21 @@ model-level predicate is `BoozerModelOmnigeneity` (renames: `boozerModelOmnigene
 `not_omnigeneityContract_zero`; bridge corollaries `omnigeneityContract_of_exactQS`, `_of_qa`,
 `_of_defect_le`. Open: non-vacuum Boozer forms (I, K ≠ 0), smoothness of the inverse chart, no exact
 chart for non-integrable fields.
+
+## Items AK-1–AK-3 (4 November 2026, from N-36)
+
+Source assessment of the kinetic plasma and coils brief (`notes/theory/kinetic-coil-brief.md`). No
+proof is affected; these are unnamed modelling assumptions and one prose convention.
+- **AK-1 (low, open).** `Kernel/Fusion` `DTPlasma.alphaPower = (E_α/4)(f_fuel n)²⟨σv⟩V` with
+  E_α = 3.5 MeV is full, prompt, local alpha deposition. The module docstring lists the slowing-down
+  delay as neglected, but G-2 claims built on it (`Design/BurnWindowStellarator`,
+  `solovev_one_plasma_*`) do not name f_dep = 1 in their scope. Fix: name the assumption, or carry
+  an explicit deposition fraction (Q-26 d, N-38).
+- **AK-2 (low, open).** The same models hold the densities fixed, which implicitly assumes
+  refuelling and ash removal (the docstring lists burn-up and ash dilution as neglected). With
+  finite fuel and no source, a reaction rate bounded below for all time is impossible (N-36 claim
+  41; Q-26 b). G-2's "(or forever)" variant must name a fuelling model.
+- **AK-3 (low, resolved by N-37).** N-32 states that ℱ = β + dt ∧ α is anti-self-dual without an
+  orientation; for dt ∧ vol₃ it is self-dual (exact check, `scripts/kinetic_brief/check_brief.py`).
+  No declaration is affected.
+

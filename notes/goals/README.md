@@ -8,14 +8,14 @@
 | Title | Goal proposals of 24 October 2026: model adequacy and probabilistic goals (overview, probabilistic, deterministic, milestones) |
 | Kind | goal proposals (research approach) |
 | Addresses | `G-3`; plan §12; supports `G-1`, `G-2`, `G-8` |
-| Depends on | plan §0, §11, §12; N-19 (evolution gates) for the N1 error bounds |
+| Depends on | plan §0, §11, §12; N-19 (evolution gates) for the N1 error bounds; N-36 (kinetic/coil brief, §12) |
 | Dependency requirement | none compiled; the cross-references "§12 D0–D4, K0–K6" point to a plan version that was not supplied and remain unresolved |
 | Produces | probabilistic goals P1–P4, deterministic goals N1–N3, implementation milestones and stopping criteria (local labels, not roadmap gates or `N-*` IDs) |
 | Difficulty | research (N1 needs a finite-time observable error bound on a named model; P1 a certified loss fraction) |
 | Status | stated (proposals); D/K cross-references unresolved; no Lean results |
 | Lean evidence | none. Planned, not present: `ObservableErrorBound`, `ProjectedModelDefect`, `ModifiedEnergyBound`, `DecisionMarginCertificate`, `ErrorRadiusBound`, `EvolutionResidualBound` |
 | Audit evidence | not audited |
-| Last updated | 3 November 2026: metadata added |
+| Last updated | 4 November 2026: acceptance criteria, rejection tests and the proposed finite-horizon goal added from the kinetic/coil brief (N-36); 3 November 2026: metadata added |
 
 **Current state (3 November 2026).** These proposals use the legacy goal meanings. Since the stellarator contract of 30 October, G-1 is current-free confinement (C1 + C4), stability is G-4 (C3), omnigeneity G-10 (C2) and thermal performance G-2 (C5); "G1: confinement and stability" below should be read accordingly. G-3 remains proposed with no Lean evidence; the next step is to choose one N1 observable on a contract candidate.
 
@@ -35,6 +35,37 @@ core.
   omitted effect on a design observable, a minimal activated correction, decision infrastructure)
   and transferable techniques.
 - [`implementation-milestones.md`](implementation-milestones.md): reviewable outputs.
+
+## Acceptance criteria from the kinetic/coil brief (4 November 2026)
+
+Source: `sources/PlasmaLean_Kinetic_Coil_Research_Brief.pdf` §12, assessed in
+[N-36](../theory/kinetic-coil-brief.md). These criteria are adopted as a checklist for G-3 and G-8
+claims; they are proposals, not results.
+
+| Claim | Evidence it needs |
+| --- | --- |
+| Coil realizability | actual closed finite windings with all returns, engineering bounds, a certified field error |
+| Magnetic confinement | surfaces / field topology of the actual field, orbit-model applicability, particle-loss estimates |
+| Kinetic stability | a norm or observable bound for the permitted perturbations of a specified coupled equation |
+| Temperature maintenance | local or stated averaged temperature bounds with transport, deposition, radiation, fuelling and exhaust |
+| Fusion performance | reaction-rate and deposition bounds, the gain definition (scientific Q ≠ plant gain), input powers |
+| Physical reliability | regime justification, benchmark or experimental evidence, a model-discrepancy allowance (N1) |
+
+Rejection tests every contract must detect:
+1. a small scalar entropy with a boundary layer that makes the wall heat flux large;
+2. a symmetric steady ansatz that is unstable to a non-symmetric mode;
+3. a vacuum field with good guiding-centre confinement whose finite-β modes or electron-scale
+   turbulence spoil thermal performance.
+
+**Proposed goal, not registered** (user decision, 4 November 2026: record only). A maintained
+operating state on a finite horizon, on one candidate:
+- a realizable coil set;
+- a self-consistent reference with a documented continuum residual;
+- a kinetic or turbulent flux bound with an uncertainty budget;
+- a coupled thermal, fuel, alpha and radiation balance.
+
+An all-time driven state is a later, stronger target, and it needs fuelling (Q-26 (b)). The
+ingredients are tracked as Q-26, Q-27 and Q-28 under G-2, G-7 and G-8.
 
 P1–P4 and N1–N3 are local labels: not the roadmap gates P0–P9 and not research-note IDs `N-*`. The
 references to "§12 D0–D4, K0–K6" point to a plan version that was not supplied and remain

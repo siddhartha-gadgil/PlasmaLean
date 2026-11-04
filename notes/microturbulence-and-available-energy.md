@@ -1,6 +1,8 @@
 
 # Formalization Note: Microturbulent Transport, the Maximum-$J$ Property, and Available Energy ($\mathcal{A}$)
 
+Alternative method: N-40 (kinetic model contract, free-energy route to a turbulent flux bound).
+
 ## Metadata
 
 | Field | Value |
@@ -17,6 +19,7 @@
 | Lean evidence | `Theory/Kinetic/AvailableEnergy` (`availableEnergyKernel`, `availableEnergyKernel_eq_zero_iff_between`, `availableEnergyKernel_pos_of_opposite_signs` (the refutation), `NormalizedBounceAction`, `BounceActionRadialDeriv`, `bounceActionRadialDeriv_neg`), default build. Related C2 definitions: `Theory/Kinetic/Omnigeneity` (`OmnigenousOn`, `ApproxOmnigenousOn`, `bounceAvgDrift`), default build. Planned, not present: `Kernel/TurbulenceContracts.lean`, `TrappingWell`, `BounceWellProfile`, `SatisfiesMaximumJ`, module `PlasmaLean.Transport.AvailableEnergy`, `availableEnergyKernel_eq_zero_of_opposing_precession` (refuted) |
 | Audit evidence | 30 October docs audit (exposition slide 9): Â bounds available energy, not turbulent transport; this note states the bound as a claim to extract. 31 October refresh audit AR-M2: `OmnigenousOn` is stronger than leading-order omnigeneity (affects item 1 of §1) |
 | Last updated | 3 November 2026: metadata added |
+| Patched by / Alternatives | method note `N-40` (kinetic contract and turbulent flux) |
 
 **Current state (3 November 2026).** The omnigeneity half of §1 item 1 now has kernel-level definitions (`OmnigenousOn`, `bounceAvgDrift`, C2 contract in `Theory/Contract/BoozerModel`), in the vacuum Boozer guiding-centre model; maximum-J (∂_ψ J < 0) and Â are not in Lean. Under the contract of 30 October, anomalous transport in C5 is a stated supplied scaling (ISS04 or an Â bound), so the next step is still extracting the Helander–Mackenbach formula (§1.5).
 

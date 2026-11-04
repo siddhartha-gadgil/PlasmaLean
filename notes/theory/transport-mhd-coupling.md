@@ -1,5 +1,7 @@
 # Transport–MHD coupling: one plasma for the G1 and G2 chains
 
+Alternative method: N-38 (burn dynamics, fuel depletion, kinetic yield, alpha deposition).
+
 ## Metadata
 
 | Field | Value |
@@ -16,6 +18,7 @@
 | Lean evidence | `Design/SolovevBand` (`IsSolovevGeometry`, `solovev_one_plasma`), `Design/SolovevFluxGeometry.solovev_one_plasma_actual`, `Design/SolovevCoarea.solovev_one_plasma_actual_coarea`, `Design/SolovevBandHighQ.solovev_one_plasma_highQ_actual`, `Design/SolovevBandIgnited.solovev_one_plasma_ignited_actual`, `Theory/Transport/FluxGeometry` (`FluxGeometry.weight_laws`); all default build. The proposed names `SolovevBurn`, `ordered_pair_gain_bound` were not used |
 | Audit evidence | 30 October repository audit: `solovev_one_plasma_*` accurate; L-7 (this note's "nothing compiled" status line is stale), L-9 (stale coarea docstrings); model audit MA-M2 (alpha conjunct non-vacuous only at zero energy; resolved 30 October by `reactor_alpha_born_confined`) and MA-L8 (`FluxGeometry.Laws` admits g ≤ 0) |
 | Last updated | 3 November 2026: metadata added |
+| Patched by / Alternatives | method note `N-38` (burn dynamics and kinetic yield) |
 
 **Current state (3 November 2026).** Despite the "nothing compiled" line below, rungs C1–C2 are compiled (default build): `solovev_one_plasma_actual` (with the coarea step derived, `solovev_one_plasma_actual_coarea`), `solovev_one_plasma_highQ_actual` and `solovev_one_plasma_ignited_actual`, for every supplied transport solution, with the pressure kept below p_eq + offset. Under the contract this is a tokamak model for G-2; transfer to a C1 geometry is Q-15/Q-22, and existence plus pressure equality is Q-10.
 

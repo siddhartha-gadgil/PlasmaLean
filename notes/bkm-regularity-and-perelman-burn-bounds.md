@@ -1,5 +1,7 @@
 # MHD continuation, symmetry, thermal bounds, and verified evolution
 
+Alternative method: N-39 (additive-residual comparison, inward radii, norm-to-observable step).
+
 ## Metadata
 
 | Field | Value |
@@ -16,6 +18,7 @@
 | Lean evidence | `Sanity/QuasisymmetryNotSymmetry.quasisymmetry_not_pde_symmetry`, `Theory/Fields/LieGradient.lieBracket_gradient_of_contDiffAt`, `Theory/Stability/RiccatiComparison` (`riccati_le_initial`, `riccati_exp_decay`; the inequality is a hypothesis); all default build. Planned, not present (§2.3): `Kernel/IncompressibleMHD.lean`, `Theory/Evolution/MHDEnergy.lean`, `Theory/Evolution/ControlInequality.lean`, `Theory/Evolution/MHDValidation.lean`, `Certificates/MHDTrajectory.lean`, `Sanity/MHDEvolution.lean` |
 | Audit evidence | 30 October repository audit, headline-claims trace: E1 (`quasisymmetry_not_pde_symmetry`, `lieBracket_gradient_of_contDiffAt`) accurate; conditional Riccati accurate, "conditional" stated |
 | Last updated | 3 November 2026: metadata added |
+| Patched by / Alternatives | method note `N-39` (residual-based invariant neighbourhoods) |
 
 **Current state (3 November 2026).** E1 and the conditional Riccati comparison are the only compiled parts; Q-7 (§2.3, Pizzocchero–Tassi on the periodic benchmark) is the first open target. Under the stellarator contract of 30 October, G-7 is for a candidate satisfying C1: the Solov'ev examples are tokamak models (technique test beds only), and the current-free candidates with verified C1 (the rational field, N-10; the Dommaschk field, N-33, N-35) are vacuum fields, so a finite-β current-free equilibrium is needed before a reactor-relevant evolution gate (E8).
 

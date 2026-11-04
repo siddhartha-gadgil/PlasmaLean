@@ -1,5 +1,7 @@
 # Stellarator burn parameters for M1/M2 instances (ISS04, reactor studies, profile peaking)
 
+Alternative method: N-38 (burn dynamics, fuel depletion, kinetic yield, alpha deposition).
+
 ## Metadata
 
 | Field | Value |
@@ -16,6 +18,7 @@
 | Lean evidence | `Design/BurnWindowStellarator` (`stellaris_coeff_bounds`, `stellaris_window_steady`, `stellaris_window_loss`, `stellaris_measured_fren_no_access_steady`, `stellaris_measured_fren_no_access_loss`), default build; related `Design/BurnWindow.m1_burn_window` (default) |
 | Audit evidence | 30 October repository audit (ISS04 windows and Stellaris obstruction: accurate, 0-D); kernel audit F-1 (`PhysicalPlasma` did not link Z_eff to the fuel fraction; fixed, verified in the 31 October refresh) concerns the carbon composition used here; model audit MA-L9 (`ConfinementLaw.tau` at P = 0, guarded by `P_pos`) |
 | Last updated | 3 November 2026: metadata added |
+| Patched by / Alternatives | method note `N-38` (burn dynamics and kinetic yield) |
 
 **Current state (3 November 2026).** Despite the "no Lean theorem" line below, the recommended instance of §5 is compiled in `Design/BurnWindowStellarator` (`stellaris_window_steady`, `stellaris_window_loss`), together with the obstructions at measured renormalisation (`stellaris_measured_fren_no_access_steady`, `…_loss`: f_ren ≤ 1.3, P_aux ≤ 70 MW ⇒ T ≤ 10 keV). The question whether profile peaking removes the obstruction is Q-13; on stellarator geometry with C2-derived losses it is Q-15/Q-22.
 
