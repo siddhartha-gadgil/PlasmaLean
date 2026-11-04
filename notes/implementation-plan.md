@@ -1988,3 +1988,20 @@ peak above 3 GB. Up to 3 light modules may build at once within the total. This 
 - **Rebuild method:** stale modules are rebuilt by frontier, i.e. the modules that
   `lake build --no-build PlasmaLean` lists, each with its own `lake build <M>`. They are never
   rebuilt through one `lake build` of a top module.
+
+### Default build rebuilt and axiom-checked, 4 November 2026
+
+- **Rebuild:** `lake build --no-build PlasmaLean` showed 53 stale modules at the first frontier.
+  The modules were rebuilt by frontier on the laptop (WSL2): first one at a time, then under the
+  12 GB budget (heavy modules alone, up to 3 light ones at once).
+  - **Result:** 747 modules in 33 rounds, no failures, zero warnings, about 562 summed
+    module-minutes. It ends at `All targets up-to-date (3888 jobs)`.
+- **Peak memory above 6 GB:** `Design/RationalStellaratorGCMuFlow` 9.40 GB and
+  `Design/KamTorusAWeightedCheck` 9.05 GB, both within the 12 GB budget and above the old 6 GB
+  rule. Twenty more modules peaked at 5.0–5.7 GB: the Solov'ev ballooning cells,
+  `GCTorusCheck`/`GCNegTorusCheck` H1/H7/H8/H14, `KamTorusACheck`, `KamTorusATwist`,
+  `NearAxisQAAveragedAmp3`, `RationalStellaratorConfinedFaces` and `LandremanFamily2Cert1`.
+- **Axiom check:** `lake env lean scripts/check_axioms.lean` passed (84 s, peak 5.7 GB). All 426
+  entry points depend only on `propext`, `Classical.choice` and `Quot.sound` (423 on all three,
+  1 on `propext` and `Quot.sound`, 2 on `propext` alone).
+- **Not run:** on-demand top modules, which are outside `PlasmaLean.lean`.
