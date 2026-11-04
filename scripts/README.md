@@ -43,9 +43,9 @@ generator here; see the module docstrings and the implementation plan.
 
 At the first Lean use, run `scripts/setup.sh --check-axioms` (or `--no-build` on a machine that
 should not build everything); it installs `elan` when Lean is missing and selects the pinned
-toolchain. Do not substitute an unrelated system Lean. The full default build is heavy: keep each
-Lean process within about 6 GB, build stale heavy modules one at a time (`lake build --no-build
-<Top>` lists them), and send first builds of large certificates to the workstation.
+toolchain. Do not substitute an unrelated system Lean. The full default build is heavy: use at most
+12 GB of Lean memory at a time, build stale heavy modules alone and at most 3 light ones at once
+(`lake build --no-build <Top>` lists the stale frontier), and send first builds of large certificates to the workstation.
 
 Create the Python environment only when a script needs it, and activate it in each shell:
 

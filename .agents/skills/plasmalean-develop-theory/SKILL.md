@@ -106,12 +106,18 @@ exceeds the likely gain.
 
 ## Resource rules (laptop)
 
-- Each Lean process stays within **6 GB** peak memory. The default build must stay within about
-  60 CPU-minutes and an on-demand top module within 240.
-- **Build stale dependencies one at a time** (or in small groups of light modules). `lake build
-  Top` starts every stale dependency in parallel; 14 certificate modules at once nearly exhausted
-  memory. Find stale modules with `lake build --no-build <Top>`, check `memory_pressure`, and wait
-  if free memory is below 40 %.
+- **Memory budget (4 November 2026): at most 12 GB of Lean memory in use at a time.** A heavy
+  module builds alone and may use up to 12 GB. Heavy means a certificate check (names with
+  Check, Cert, Kam, Kron, Adm, Chain, Ball, Cover, Weighted) or any module known to peak above
+  3 GB. Up to 3 light modules may build at once while their total stays within the budget. Source
+  size does not predict memory: `Design/KamTorusAWeightedCheck` (7.7 KB) peaks at 9.05 GB. The
+  default build must stay within about 60 CPU-minutes and an on-demand top module within 240.
+- **Never let `lake build Top` rebuild many stale dependencies at once.** It starts every stale
+  dependency in parallel; 14 certificate modules at once nearly exhausted memory. Find the stale
+  frontier with `lake build --no-build <Top>` (the listed modules have up-to-date dependencies),
+  build each with its own `lake build <M>` within the budget above, and repeat until nothing is
+  stale. Check free memory first (`grep MemAvailable /proc/meminfo` on Linux/WSL,
+  `memory_pressure` on macOS) and wait if it cannot hold the next job's expected peak.
 - Heavy numerics (KAM families, ballooning searches, Chebyshev families) and first builds of large
   certificates go to the **workstation** (`Workstation.md`, `scripts/workstation/run.sh`, task
   scripts in `scripts/workstation/tasks/`). Its job is to find *smaller* certificates; results

@@ -128,8 +128,9 @@ If a newly installed `lean` or `lake` is not visible in the current shell, open 
 `source "$HOME/.elan/env"`. Do not install another Lean version separately from the pinned
 toolchain.
 
-The default build is large. Keep each Lean process within about 6 GB, and build stale heavy modules
-one at a time. Heavy certificates are *on-demand top modules*, outside the default build. Each
+The default build is large. Use at most 12 GB of Lean memory at a time: build heavy (certificate)
+modules alone and up to 3 light modules at once, and rebuild stale modules by frontier
+(`lake build --no-build PlasmaLean` lists it), never through one `lake build` of a top module. Heavy certificates are *on-demand top modules*, outside the default build. Each
 module's docstring gives its build command.
 
 The first command to give the agent in a new or unfamiliar checkout is:

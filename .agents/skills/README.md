@@ -25,8 +25,9 @@ with its display name and default prompt.
 | `plasmalean-workstation-update` | fetching, re-checking, merging and recording workstation runs (`workstation/*` branches; `Workstation.md`) |
 
 Shared rules: Lean declarations are the validity gate (only compiled declarations count as
-established; on-demand modules are spot-checked under the workstation policy); ≤ 6 GB per Lean
-process and stale dependencies built one at a time; heavy numerics on the workstation; update the
+established; on-demand modules are spot-checked under the workstation policy); at most 12 GB of
+Lean memory at a time (heavy modules alone, up to 3 light ones at once; stale dependencies by
+frontier, never through one `lake build Top`); heavy numerics on the workstation; update the
 notes and the plan after every work unit, including failures.
 
 Worked references: `PlasmaLean/Kernel/Equilibrium.lean` with `PlasmaLean/Sanity/Equilibrium.lean`

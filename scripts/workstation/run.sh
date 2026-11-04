@@ -15,7 +15,7 @@
 #   --jobs N          parallelism exported to tasks as WS_JOBS (default: number of CPUs)
 # environment:
 #   WS_WORK                 scratch directory for large intermediate data (default ~/plasmalean-work)
-#   LAPTOP_MAX_RSS_GB       per-process peak memory allowed on the laptop (default 6)
+#   LAPTOP_MAX_RSS_GB       per-process peak memory allowed on the laptop (default 12; 4 Nov 2026)
 #   LAPTOP_DEFAULT_CPU_MIN  Lean CPU budget for the default build (default 60)
 #   LAPTOP_MAX_CPU_MIN      Lean CPU budget for an on-demand top module (default 240)
 #   LAPTOP_SLOWDOWN         laptop/workstation per-core time ratio applied to CPU time (default 1.0)

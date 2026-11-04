@@ -37,7 +37,7 @@ Define certificate data independently of the search algorithm. Prove a theorem o
 
 Generators validate every emitted bound with exact rational arithmetic before writing Lean (round outward, recompute, assert; see `scripts/gc_kam/lamcell/validate.py`).
 
-Test valid and invalid certificate fixtures, including missing coverage, zero denominators, altered coefficients, omitted tail bounds, and contradictory intervals. Build the affected modules one at a time (≤ 6 GB per process; record CPU, peak memory and private olean size) and inspect axioms of the public soundness theorem. Heavy searches and first builds go to the workstation (`Workstation.md`, `plasmalean-workstation-update`); the workstation's job is a smaller certificate, not a bigger proof.
+Test valid and invalid certificate fixtures, including missing coverage, zero denominators, altered coefficients, omitted tail bounds, and contradictory intervals. Build the affected modules within the laptop budget (at most 12 GB of Lean memory at a time; heavy modules alone; record CPU, peak memory and private olean size) and inspect axioms of the public soundness theorem. Heavy searches and first builds go to the workstation (`Workstation.md`, `plasmalean-workstation-update`); the workstation's job is a smaller certificate, not a bigger proof.
 
 Report certified quantities and margins, the assumptions supplied by other theorems or law instances, arithmetic/truncation uncertainty, physical-data uncertainty, and remaining model discrepancy. Attach the candidate's identity to the result so a later coil or profile change cannot reuse its certificate accidentally.
 

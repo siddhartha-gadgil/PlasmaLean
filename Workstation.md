@@ -12,12 +12,14 @@ measures each Lean module and reports a laptop verdict:
 
 | Verdict | Condition (defaults) | What happens |
 | --- | --- | --- |
-| laptop ok, default build | peak ≤ 6 GB per process and Lean CPU ≤ 60 min | imported by `PlasmaLean.lean` |
-| laptop ok, separate top module | peak ≤ 6 GB and Lean CPU ≤ 240 min | on-demand `lake build PlasmaLean.Design.<Top>` |
+| laptop ok, default build | peak ≤ 12 GB per process and Lean CPU ≤ 60 min | imported by `PlasmaLean.lean` |
+| laptop ok, separate top module | peak ≤ 12 GB and Lean CPU ≤ 240 min | on-demand `lake build PlasmaLean.Design.<Top>` |
 | TOO BIG / TOO SLOW FOR LAPTOP | otherwise | not merged; split the certificate or find a smaller one |
 
 The limits come from `LAPTOP_MAX_RSS_GB`, `LAPTOP_DEFAULT_CPU_MIN`, `LAPTOP_MAX_CPU_MIN` and
-`LAPTOP_SLOWDOWN`. The last one multiplies the workstation CPU time: set it, for example, to 1.5
+`LAPTOP_SLOWDOWN`. `LAPTOP_MAX_RSS_GB` defaults to 12 (raised from 6 on 4 November 2026: the
+laptop may use 12 GB of Lean memory at a time, with heavy modules built alone and up to 3 light
+modules at once). The last one multiplies the workstation CPU time: set it, for example, to 1.5
 if the workstation cores are faster than the laptop's.
 
 ## Requirements on the workstation
@@ -123,7 +125,7 @@ build of such a family is deferred until it is needed. Default-build results are
 here in full.
 
 `--verify-only` skips the installs, numerics and emission, and touches no git state. It builds the
-task's modules on the laptop one at a time with the same measurements, re-checks the axioms and
+task's modules on the laptop one at a time (the heavy ones must run alone) with the same measurements, re-checks the axioms and
 prints the verdict. Its records go to `$TMPDIR/plasmalean-verify`. If the verdict is "laptop ok",
 merge the branch into `main`:
 - for a default-build result, add the imports to `PlasmaLean.lean` and the entry points to
@@ -255,7 +257,7 @@ laptop with a small parameter setting, then commit it to `main` before running i
 - **Push rejected:** the branch name is unique per run, so this is an authentication problem.
   Check `git remote -v` and your ssh key.
 - **Generated Lean too big for the laptop:** the verdict says so and nothing should be merged.
-  Split the certificate over several modules (each ≤ 6 GB), use proof-term certificates (see
+  Split the certificate over several modules (each ≤ 12 GB, preferably much less), use proof-term certificates (see
   `.claude/skills/plasmalean-lean-proofs`), or ask the numerics for a smaller witness.
 
 ## Next Commands

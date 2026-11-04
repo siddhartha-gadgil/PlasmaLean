@@ -45,7 +45,8 @@ first, classify it from its verdicts:
 Preconditions:
 - `git status --porcelain --untracked-files=no` is empty;
 - you are on `main` and up to date (`git pull --ff-only`);
-- `memory_pressure | tail -1` shows enough free memory;
+- enough free memory for the 12 GB laptop budget (`grep MemAvailable /proc/meminfo` on
+  Linux/WSL, `memory_pressure | tail -1` on macOS);
 - no other agent is running a heavy Lean build. If one is, wait for it or tell the user.
 
 Untracked files left by running agents are fine: never `git add -A`.

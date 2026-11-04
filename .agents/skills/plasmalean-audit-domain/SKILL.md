@@ -55,8 +55,10 @@ Prioritize the kernel (`PlasmaLean/Kernel/`: `Equilibrium`, `Slab`, `ThermalSlab
    needs a matching named compiled declaration with compatible hypotheses; grep every cited name.
    Every advertised result (README, slides, progress) must match its declaration. Downgrade stale
    or unmatched claims.
-6. **Checks run.** Build the affected modules one at a time within the laptop budget (≤ 6 GB per
-   process; stale dependencies one at a time). For a startup or full audit, run `lake build` and
+6. **Checks run.** Build the affected modules within the laptop budget (at most 12 GB of Lean
+   memory at a time: heavy modules alone, up to 3 light ones at once; stale dependencies by
+   frontier, never through one `lake build Top`; skill `plasmalean-develop-theory`, resource
+   rules). For a startup or full audit, run `lake build` and
    `lake env lean scripts/check_axioms.lean` when the build budget permits, and
    `scripts/check_axioms_heavy.lean` for on-demand top modules that are built. On-demand modules
    follow the workstation policy (spot-checked; `workstation/REVIEWED.md`). Record exactly what

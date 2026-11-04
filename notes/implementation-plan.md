@@ -1971,3 +1971,20 @@ Pingali and the PlasmaLean agents; SHA-256 `0ab99948…d2ecdd`; inspected snapsh
 - **Audit:** AK-1 (full prompt alpha deposition unnamed in G-2 scope), AK-2 (fixed density implies fuelling; "or forever"),
   AK-3 (N-32 orientation, resolved by N-37), all low.
 - **Rows updated:** RG.1 G-1 (scope: low net current ≠ no current-driven modes), G-2, G-7, G-8.
+
+### Laptop build budget raised to 12 GB, 4 November 2026
+
+User decision: the laptop (WSL2, 22 cores, 23 GB RAM) may use **12 GB of Lean memory at a time**.
+Heavy modules build alone and may use up to 12 GB: certificate checks, or any module with a known
+peak above 3 GB. Up to 3 light modules may build at once within the total. This replaces the rule
+"≤ 6 GB per process, stale dependencies one at a time".
+- **Updated:** the skills (develop-theory, audit-domain, lean-proofs, formalize-theory,
+  certify-numerics, design-stellarator, workstation-update, skills README), `Workstation.md`,
+  `docs/GettingStarted.md`, README, `scripts/README.md` and `scripts/workstation/README.md`.
+- **Workstation verdict:** the default `LAPTOP_MAX_RSS_GB` is now 12 (`ws_helper.py`, `run.sh`,
+  `TEMPLATE.sh`).
+- **Memory is not predictable from source size:** `Design/KamTorusAWeightedCheck` (7.7 KB) peaked
+  at 9.05 GB in the 4 November rebuild, above the old 6 GB rule.
+- **Rebuild method:** stale modules are rebuilt by frontier, i.e. the modules that
+  `lake build --no-build PlasmaLean` lists, each with its own `lake build <M>`. They are never
+  rebuilt through one `lake build` of a top module.

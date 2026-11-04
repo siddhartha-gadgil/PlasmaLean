@@ -76,7 +76,7 @@ def axioms(log_path):
 
 def summary(task_dir):
     env = os.environ
-    max_rss = float(env.get("LAPTOP_MAX_RSS_GB", "6"))
+    max_rss = float(env.get("LAPTOP_MAX_RSS_GB", "12"))
     default_cpu = float(env.get("LAPTOP_DEFAULT_CPU_MIN", "60"))
     max_cpu = float(env.get("LAPTOP_MAX_CPU_MIN", "240"))
     slowdown = float(env.get("LAPTOP_SLOWDOWN", "1.0"))

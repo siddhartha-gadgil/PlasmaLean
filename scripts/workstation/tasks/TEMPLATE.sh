@@ -8,7 +8,7 @@
 TASK_DESC="one line: what is computed and certified"
 
 # Lean modules built (one at a time, measured), dependencies first. Their peak memory must fit
-# the laptop (LAPTOP_MAX_RSS_GB, default 6): split large certificates over several modules.
+# the laptop (LAPTOP_MAX_RSS_GB, default 12): split large certificates over several modules.
 TASK_MODULES="PlasmaLean.Design.ExampleData PlasmaLean.Design.ExampleCert"
 
 # Main theorems; #print axioms must show only propext, Classical.choice, Quot.sound.

@@ -205,8 +205,8 @@ scripts/setup.sh --python --no-build && source .venv-ws/bin/activate   # Python 
 Request the Python environment only when a task needs it, and activate `.venv-ws` in every new shell
 rather than installing project packages globally.
 
-The default build is large (several hundred certificate modules); keep each Lean process within
-about 6 GB and build stale heavy modules one at a time (see
+The default build is large (several hundred certificate modules); use at most 12 GB of Lean
+memory at a time, build stale heavy modules alone and at most 3 light ones at once (see
 [scripts/README.md](scripts/README.md) and [Workstation.md](Workstation.md)).
 
 ## Working with agents
@@ -307,8 +307,9 @@ All planning and theory development is recorded in `notes/`, in a fixed structur
   `scripts/check_axioms_heavy.lean` (on-demand modules) report only `propext`, `Classical.choice`
   and `Quot.sound`. No `sorry`, `admit` or `axiom`; model laws are typeclass hypotheses.
 - **Zero warnings** in `lake build`, including the 100-character line linter.
-- **At most 6 GB per Lean process:** split large certificates over several modules, and build
-  stale heavy modules one at a time. First builds of very heavy certificates go to the workstation.
+- **At most 12 GB of Lean memory at a time** (raised from 6 GB per process on 4 November 2026):
+  split large certificates over several modules, build stale heavy modules alone and at most 3
+  light ones at once. First builds of very heavy certificates go to the workstation.
 - Every module, definition and theorem has a docstring. Every new law has the sanity triad
   (degenerate case, instance, counterexample) plus risk-specific checks. Every certificate format
   has accepted and rejected fixtures.

@@ -16,7 +16,7 @@ skill `plasmalean-workstation-update`).
 | [`tasks/family2-ballooning.sh`](tasks/family2-ballooning.sh) | Family-2 ballooning certificate search (data only; no kernel checker yet) |
 | [`tasks/proofterm-migrate.sh`](tasks/proofterm-migrate.sh) | Phase 16 migration of on-demand KAM families to explicit proof terms |
 
-Laptop budget defaults: ≤ 6 GB peak per process, ≤ 60 Lean CPU-minutes for a default-build task,
+Laptop budget defaults (4 November 2026): ≤ 12 GB peak per process (a heavy module builds alone; up to 3 light modules at once within 12 GB in total), ≤ 60 Lean CPU-minutes for a default-build task,
 ≤ 240 for an on-demand top module (`LAPTOP_MAX_RSS_GB`, `LAPTOP_DEFAULT_CPU_MIN`,
 `LAPTOP_MAX_CPU_MIN`, `LAPTOP_SLOWDOWN`). After a phase that adds or changes heavy numerics or
 certificates, update the tasks here.

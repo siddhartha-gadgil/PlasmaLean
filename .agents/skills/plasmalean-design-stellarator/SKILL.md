@@ -47,7 +47,7 @@ and C5.
 5. Optimize physically meaningful objectives and retain hard constraints separately. An objective penalty or its optimum is not a proof of feasibility.
 6. Generate and check the exact geometric, equilibrium, stability, orbit, thermal, stress, magnet, and lifetime certificates needed at the selected gate.
 7. Propagate manufacturing and operating uncertainty through margins. Recompute dependent certificates after any geometry, profile, data, or model change.
-8. Use the workstation (`Workstation.md`, task scripts in `scripts/workstation/tasks/`) when a step needs heavy numerics or a first build would exceed the laptop budget (6 GB per Lean process; stale dependencies built one at a time). Heavy families can be on-demand top modules not imported by `PlasmaLean.lean`; bring results back with `plasmalean-workstation-update`.
+8. Use the workstation (`Workstation.md`, task scripts in `scripts/workstation/tasks/`) when a step needs heavy numerics or a first build would exceed the laptop budget (at most 12 GB of Lean memory at a time: heavy modules alone, up to 3 light ones at once; stale dependencies by frontier). Heavy families can be on-demand top modules not imported by `PlasmaLean.lean`; bring results back with `plasmalean-workstation-update`.
 
 Do not require a proof of global optimality to certify one useful feasible design. Claim an optimum only with a separate optimality certificate.
 
