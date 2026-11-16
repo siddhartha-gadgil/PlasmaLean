@@ -591,7 +591,7 @@ theorem reserve_ge (Mt Ms : List Bl) (dt ds : ℤ) (axis : Bool) {k : ℕ} (hk :
   calc _ = ((lk Mt k).mag * (dt * dt : ℤ) * (NS * NS : ℤ) +
         (lk Ms k).mag * (ds * ds : ℤ) * (if axis then (4 * NT * NT : ℤ) else (NT * NT : ℤ))) /
         (8 * (NT : ℝ) ^ 2 * (NS : ℝ) ^ 2) := by
-          split_ifs <;> (push_cast; field_simp; try ring)
+          split_ifs <;> (push_cast; field_simp)
     _ ≤ _ := hd
 
 /-! ## Soundness of the box checks -/

@@ -8,6 +8,7 @@ module
 public import PlasmaLean.Theory.Equilibrium.Slab
 public import Mathlib.Tactic.NormNum
 public import Mathlib.Tactic.Linarith
+public import Mathlib.Analysis.Calculus.Deriv.Pow
 
 /-!
 # Strict-audit checks for `Kernel/Equilibrium` and `Kernel/Slab` (audit of 30 October 2026)

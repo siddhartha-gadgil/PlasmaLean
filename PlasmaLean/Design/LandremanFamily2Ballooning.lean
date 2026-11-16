@@ -7,6 +7,7 @@ module
 
 public import PlasmaLean.Design.LandremanFamily2Coords
 public import PlasmaLean.Theory.Stability.BallooningSurface
+public import Mathlib.Analysis.Calculus.ContDiff.WithLp
 
 /-!
 # Ideal ballooning of Landreman's family 2: line data from the actual field and reduction

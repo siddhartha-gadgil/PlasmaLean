@@ -175,7 +175,7 @@ that carry net toroidal current (Q-18).
 | `Q-17` | **A Lean statement of a Grad counterexample** (*re-labelled, contract 30 October 2026: mathematical infrastructure, not design progress*; non-symmetry is a consequence of C1, and both Landreman families carry net toroidal current, Q-18): for Landreman family 1 (and family 2), one theorem giving smooth fields on a toroidal domain with nested toroidal flux surfaces, non-constant pressure, force balance, and no continuous Euclidean symmetry (axial, helical or reflection); then the non-stellarator-symmetric τ-extension of Issan–Citrin–Landreman–Tracey (arXiv:2610.07304) | G-4, N-28 | family 1 verified (`family1_grad_counterexample`); family 2 and τ-extension open | `family1_grad_counterexample`: smooth B, J, p on 𝒰; ∇·B = 0 and force balance with the gradient of p = (2δ − 2ψ)/μ₀; ψ a first integral with compact nested sublevel sets, each level set ψ = c ∈ (0, δ] homeomorphic to Circle × Circle (`torusMap`); p non-constant; no rotation, translation or screw-motion symmetry (`killing_trivial_of_axis`); contrast `axisymmetric_limit_lie_zero` at ε = 0. Not covered: plane reflections; family 1 has ι ≡ 2 (closed field lines), so family 2 (sheared ι) is the stronger target |
 | `Q-18` | **Net toroidal current of the Landreman families** (contract C1): compute I_tor(ψ) for families 1 and 2 and compare it with the field-producing current (B₀R₀·2π/μ₀) and with a bootstrap-level bound. If it is not small, the families are tokamak-like under C1 (ι comes from plasma current) | G-1, G-4, Q-16, Q-17 | answered for family 2: fails C1 (re-established 31 October with the intrinsic loop current) | `family2_loopCurrent_pos` (loop current > 0 around `loop2 λ k₀`, 0 < k₀ < 19/20) via `torCurrent_eq_lineIntegral` (Stokes, `SectionStokes.netToroidalCurrent_eq_lineIntegral_div`) and `family2_net_current_pos`; `family2_not_currentFreeTransform(_zero)` for any surface whose loop is `loop2 λ k₀`; λ-independent bound `family2_net_current_ge`. Family 1 open |
 | `Q-19` | **Bounce-averaged drift / ε_eff for the rational stellarator vacuum field** (contract C2): on the certified surfaces of `RationalStellarator.field (1/4)`, compute (numerically first, as an untrusted oracle) the bounce-averaged radial drift of trapped particles and ε_eff, then decide whether a certified bound is reachable | G-10, G-1 | answered numerically (untrusted, 30 October): fails C2 | N-30: ι from 0.134 on the axis (1 − √3/2) to 0.169 at r = 0.40, matching the KAM torus (ι_A = 0.13743); best helicity QA (1, 0) with defect ≈ 26 % of the ‖B‖ variation (defect/ι ≈ 0.27, not shrinking toward the axis); ε_eff ≈ 0.2 r_eff (2.7 % at torus A, ≈ 10 % at r = 0.36), classical-stellarator level. Informal obstruction: for this planar-axis family the non-QA first-order ‖B‖ variation equals √(ι₀/N) (Garren–Boozer: a planar axis in vacuum admits no QS with ι ≠ 0), so adding harmonics cannot help. Lean target: `rotatingEllipse_firstOrder_QA_defect`. Consequence: the Dommaschk route (Q-16) needs a non-planar axis |
-| `Q-20` | **A finite-β current-free equilibrium** (C1 + C4 at β > 0): stepped pressure across the certified torus of the rational field (Q-14), or a finite-β equilibrium near a Dommaschk QA vacuum field, with ‖I_tor‖ ≤ I_max proved | G-4, G-8 | open (research) | Q-14 is the lead (`after-kam.md` §3); stepped-pressure equilibria carry surface currents whose net toroidal part must be controlled |
+| `Q-20` | **A finite-β current-free equilibrium** (C1 + C4 at β > 0): stepped pressure across the certified torus of the rational field (Q-14), or a finite-β equilibrium near a Dommaschk QA vacuum field, with ‖I_tor‖ ≤ I_max proved | G-4, G-8 | open (research) | Q-14 is the lead (`after-kam.md` §3); stepped-pressure equilibria carry surface currents whose net toroidal part must be controlled **16 November 2026 (N-43):** an exact closed-form finite-β equilibrium with zero net toroidal current through every flux surface exists (Issan et al., arXiv:2611.07672, Family 1 with ρ_a = ρ₀; checked numerically, not in Lean), but it has ι = 0, so the open part of Q-20 is ι ≥ ι_min, not the current |
 | `Q-21` | **Definitions and model contracts for C1 and C2** (kernel-level): net toroidal current through a cross-section of a toroidal domain; ι of a field on a family of invariant tori; bounce-averaged radial drift (ψ̇ averaged over a bounce; zero for all trapped orbits iff ∂J/∂α = 0 for the second adiabatic invariant J); omnigeneity; ε_eff (Nemov et al. 1999). Each with the **sanity triad**: (1) axisymmetric ⇒ omnigenous (bounce-averaged radial drift zero); (2) current-free axisymmetric ⇒ ι = 0, hence no confining rotational transform (no confinement); (3) a generic 3-D field (an explicit one) is not omnigenous | G-11, G-10, G-1 | C1 and C2 definitions in Lean (30 October); ε_eff open | `Theory/Contract/StellaratorContract`: `netToroidalCurrent`, `CurrentFree`, `IotaOnTorus`, `CurrentFreeTransform` (C1); tokamak exclusion `iota_eq_zero_of_purelyToroidal`, `not_currentFreeTransform_of_purelyToroidal`; vacuum ⇒ current-free (`netToroidalCurrent_eq_zero_of_vacuum`, `currentFreeTransform_of_vacuum`); `OmnigeneityContract` (C2, Boozer GC model) with `omnigenousOn_of_axisymmetric` and counterexample. `rationalStellarator_currentFreeTransform`: the rational field satisfies C1 on KAM torus A. Open: ε_eff; current-free axisymmetric with nested surfaces ⇒ purely toroidal (maximum principle); section independence of the current |
 | `Q-22` | **Thermal-particle neoclassical transport bounds feeding G-2**: from a C2 bound (ε_eff or bounce-averaged drift), a stated neoclassical scaling (1/ν regime χ ∝ ε_eff^{3/2}, supplied as a model law) giving χ bounds for ions and electrons on stellarator geometry, used in the barrier theorems of Q-15 | G-2, G-10, Q-15 | open | none; the transport barriers exist on cylinder, helical and Solov'ev geometries with supplied χ |
 | `Q-23` | **Quasisymmetry ⇒ omnigeneity (the C2 bridge)**: (a) exact: weak quasisymmetry (`WeakQS`) implies zero bounce-averaged radial drift of trapped particles (omnigeneity); (b) quantitative: a quasisymmetry defect ≤ δ gives a bounce-averaged radial drift ≤ C·δ with explicit C, hence a bound on ε_eff and on 1/ν neoclassical transport feeding C5 | G-10, G-2, Q-16 | exact and per-bounce quantitative versions verified in the Boozer GC model (30 October); ε_eff link open | `omnigenousOn_of_exactQS` (exact QS + twist ⇒ ψ returns after every bounce), `approxOmnigenousOn_of_defect_le` / `bounce_psi_drift_le` (‖ξB‖ ≤ δ, B ≥ B_min, twist ι_min ⇒ ‖Δψ‖ ≤ 2H/(‖q‖ B_min ι_min)·δ·τ per bounce; linear in δ, sharp on an explicit counterexample); `exactQA` omnigenous; `reactorQA` worst-case drift ≤ 4182 T m²/s (not a transport estimate). Model scope: Boozer GC equations, orbits and bounce existence supplied; Boozer ξB not yet linked to `WeakQS`. Open: ε_eff and 1/ν, a sharp oscillation bound, the quasi-isodynamic route (N-29) |
@@ -184,6 +184,7 @@ that carry net toroidal current (Q-18).
 | `Q-26` | **Burn dynamics and kinetic yield for C5** (N-38, from N-36): (a) stable operating band: `PowerBalance` with G ≥ 0 below and G ≤ 0 above a certified T* keeps T in the band (`stable_band_of_sign_change`), and instability for G′(T*) > 0; (b) finite-fuel obstruction: without fuelling no reaction rate bounded below for all time (`no_sustained_burn_without_fuelling`); (c) kinetic yield perturbation |R(f) − R(F)| ≤ K_max(‖f_D − F_D‖₁‖f_T‖₁ + ‖F_D‖₁‖f_T − F_T‖₁) (`reactionRate_sub_le`); (d) explicit alpha deposition fraction f_dep in G-2 claims (AK-1) | G-2, G-8 | open (a)–(c) lean-ready | none in Lean; proofs elementary (N-38); the compiled windows (N-5) are the f_dep = 1, fixed-density case |
 | `Q-27` | **Residual-based invariant neighbourhood** (N-39, from N-36 §10): (a) scalar lemma: Y′ ≤ −λY + LY² + ϵ(t), 0 ≤ ϵ(t) ≤ ϵ, Y(0) ≤ r*, −λr* + Lr*² + ϵ < 0 ⇒ Y ≤ r* (`le_inward_radius`), and ∃ r > 0 inward ⇔ λ² ≥ 4Lϵ (`exists_inward_radius_iff`); (b) time-dependent supersolution on a closed horizon (scalar part of gate E3); (c) norm-to-observable lemmas (weighted L²_v with ℓ > 9/2 controls moments ≤ 3; T Lipschitz in moments for n ≥ n_min) | G-7, G-2 | open ((a) lean-ready) | `riccati_le_initial` covers only a multiplicative ε and no additive residual; algebra re-derived exactly (N-36 checks 9–10) |
 | `Q-28` | **Kinetic model contract and a turbulent flux bound** (N-40, from N-36): (a) lean-ready fixtures: Landau kernel U(z)z = 0 and PSD, pairwise conservation, energy-flux decomposition, non-constant Maxwellian not stationary, vacuum force balance ⇒ ∇p = 0, D–T reaction moments; (b) research: in local electrostatic gyrokinetics, |Q_s| ≤ C_Q W and Ẇ ≤ −λW + CW^{3/2} + ε with derived constants (brief Research target 1), or bounded turbulence with small mean flux; (c) research: a flux-divergence (operator-defect) bound so the barrier theorems can use a produced flux instead of a supplied D | G-2, G-11, G-3 | open ((a) lean-ready; (b), (c) research, after Q-20) | free-energy identity and fixtures re-derived exactly (N-36 checks 1–7); Â (N-20) remains a proxy |
+| `Q-29` | **A deformation complex for quasisymmetric equilibria** (N-42, speculative): is there a complex (dg Lie or L∞ algebra) attached to the weak-quasisymmetry and force-balance equations whose cohomology counts the free functions and the obstructions order by order, and explains why the near-axis expansion is solvable to second order and overdetermined from third order (Garren–Boozer)? | none (conceptual; would inform G-10) | open, exploratory, low priority | no formulation found in the literature search of 16 November 2026; the algebraic parts are compiled (`FormWeakQS`, `FormForceBalance`, `Kernel/Forms`) |
 
 ### RG.3 Note registry and dependency graph
 
@@ -232,6 +233,9 @@ superseded; mixed notes list the status of their parts. "Lean" names compiled ev
 | `N-38` | `notes/theory/burn-dynamics-kinetic-yield.md`: burn dynamics, fuel depletion, kinetic yield, alpha deposition | G-2, Q-26 | method for N-5, N-6; N-36 | routine–moderate | stated; (a)–(c) lean-ready | `no_sustained_burn_without_fuelling`, `stable_band_of_sign_change` |
 | `N-39` | `notes/theory/residual-invariant-neighbourhood.md`: additive-residual comparison, inward radii, norm-to-observable | G-7, Q-27 | method for N-19; N-36; `riccati_le_initial` | routine (a); research (producer) | stated; (a) lean-ready | `le_inward_radius`, `exists_inward_radius_iff` |
 | `N-40` | `notes/theory/kinetic-contract-turbulent-flux.md`: kinetic model contract and free-energy route to a turbulent flux bound | Q-28, G-2, G-11 | method for N-20; N-2, N-36 | routine (a); research (b, c) | stated; (a) lean-ready | kinetic fixtures module (Q-28 a) |
+| `N-41` | `notes/theory/differential-form-kernel.md`: differential-form language for the vacuum and force-balance kernel laws, with equivalences to the vector language | G-11 | `Kernel/Vacuum`, `Kernel/Equilibrium`; Mathlib `extDeriv` | routine–moderate | verified (`vacuumForm_flux_iff`, `vacuumField_fluxSymm_iff`, `formForceBalance_iff`, `forceBalance_iff`, `extDeriv_flat`, `extDeriv_flux`; `Sanity/Forms`; theory bridges `formFirstIntegralOn_flux_iff`, `formSymmetricFlux_iff`, `formWeakQS_flux_iff`, `formBeltramiOn_flat_iff`, `isContactAt_of_beltrami`) | audited 16 November 2026 (AF-*; `Sanity/AuditForms`); open: AF-L4, AF-L5 |
+| `N-42` | `notes/theory/sullivan-infinity-structures.md`: assessment of Sullivan's L∞ (combinatorial) and eigenspace fluid models for MHD and stellarators | G-9, G-11, Q-29 | `sources/SullivanFluids.pdf`; N-41; `Theory/Stability/Elsasser` | moderate | stated; Part 2 checked in Lean (`EulerianODE.energy_conserved`, `EulerianODE.helicity_conserved`, `rigidBody_eulerian`); no design consequence | none required; revisit if an implementation of the L∞ hierarchy is published |
+| `N-43` | `notes/theory/issan-arbitrary-field-periods.md`: assessment of the closed-form equilibria with any number of field periods (Issan et al., arXiv:2611.07672) | G-4, Q-17, Q-18, Q-20 | `sources/Non-AxisymmetricMHD.pdf`; N-28, N-27 | moderate | stated; 12 of 20 claims checked numerically (`scripts/issan_equilibria/`), none incorrect; nothing in Lean | optional Lean unit: Family 1 (ρ_a = ρ₀, N = 3) with zero loop current (Q-20) |
 
 Main dependency edges: N-9 → N-10 → N-14 → N-15 → (Q-4, Q-5); N-10 → N-13 → (N-16 → Q-2, Q-14);
 N-4 → (N-8, N-7 → N-17 → Q-1); N-12 → (Q-3, Q-14, Q-16) → G-4; N-4 → Q-16 → G-6; N-2, N-6 → Q-10 → G-2, G-7;
@@ -252,6 +256,24 @@ The canonical first command is `start` (skill `plasmalean-audit-domain`). Previo
 | Commands run | `lake build --no-build PlasmaLean` (current), `lake env lean scripts/check_axioms.lean` (122 entry points, standard axioms only), single-module builds of the new sanity modules, then `lake build PlasmaLean` (zero warnings) |
 | Open findings | kernel: 1 medium (F-1), 9 low; repository: 0 critical, 1 high (H-1), 5 medium; see below and [`notes/audit/2026-10-30-repository-audit.md`](https://github.com/siddhartha-gadgil/PlasmaLean/blob/main/notes/audit/2026-10-30-repository-audit.md) |
 | Missing sanity checks | added: 58 kernel theorems in `PlasmaLean/Sanity/Audit{Equilibrium, ThermalSlab, Vacuum, Transport, Fusion}.lean` and 54 model theorems (plus 7 definitions) in `PlasmaLean/Sanity/AuditModel{GuidingCentre, Stability, Transport}.lean` (triad, risk-specific and regression checks), all in the default build; model record [`notes/audit/2026-10-30-model-audit.md`](https://github.com/siddhartha-gadgil/PlasmaLean/blob/main/notes/audit/2026-10-30-model-audit.md) |
+
+**Partial audit of the differential-form modules (16 November 2026).** Audited commit `1e5d4f3`,
+scope `Kernel/Forms`, `Sanity/Forms`, `Theory/Fields/FormBridges` only; record
+[`notes/audit/2026-11-16-forms-audit.md`](https://github.com/siddhartha-gadgil/PlasmaLean/blob/main/notes/audit/2026-11-16-forms-audit.md).
+The rest of the work since `921a8c3` has **not** had a refresh audit.
+- No exported theorem was false; conventions (orientation, signs, `extDeriv` normalization) are
+  consistent.
+- **AF-H1 (high, documentation, resolved):** the `FormBridges` module doc claimed symmetric-flux
+  fixtures that did not exist.
+- **AF-M1 (resolved, definitions changed):** `IsBeltramiOn` and `FormBeltramiOn` had no
+  regularity clause, so a kinked field was Beltrami with λ = 0 at the kink. Both now require
+  differentiability. The predicate is the curl equation only (∇ · B = 0 is not part of it).
+- **AF-M2–M7 (resolved):** circular sanity checks; missing totalization regression for
+  `VacuumForm`; `FormSymmetricFlux` vacuous with free γ; incomplete triads; contact coverage;
+  missing `form_current_tangency`. Regressions are in `Sanity/AuditForms.lean` (29 theorems).
+- **AF-L1–L3 (resolved), AF-L4–L5 (low, open):** a global instance in the kernel file,
+  misplaced dot-notation names, doc nits; tautological sanity theorems kept; no Beltrami fixture
+  with non-constant λ.
 
 **Refresh-audit findings (31 October 2026).** The kernel is sound (only F-1 changed). No new
 forbidden tactics, `check_axioms.lean` passes, every new module is covered.
@@ -2005,3 +2027,148 @@ peak above 3 GB. Up to 3 light modules may build at once within the total. This 
   entry points depend only on `propext`, `Classical.choice` and `Quot.sound` (423 on all three,
   1 on `propext` and `Quot.sound`, 2 on `propext` alone).
 - **Not run:** on-demand top modules, which are outside `PlasmaLean.lean`.
+
+### TauCeti dependency and Lean v4.35.0, 16 November 2026
+
+User decision: PlasmaLean depends on [TauCeti](https://github.com/TauCetiProject/TauCeti) at tag
+`v4.35.0`; Mathlib is a transitive dependency at the commit TauCeti pins (`0740637`); Lean is
+`v4.35.0` (TauCeti has no `v4.34.1` tag). Branch `tauceti`.
+- **Fixes (15 Lean files, no statement changed):** ten files needed Mathlib imports that were no
+  longer reached transitively (`Deriv.Pow`, `Deriv.Comp`, `ContDiff.WithLp`, `FDeriv.WithLp`,
+  `SpecialFunctions.Sqrt`); four needed explicit binder types on `MapsTo` lambdas; one
+  `positivity` became an explicit `div_nonneg`; two tactics flagged by the unused-tactic linter
+  were removed.
+- **Build (workstation, 128 GB, plain parallel `lake build`):** default build 3933 jobs, zero
+  warnings; the 18 on-demand top modules of `check_axioms_heavy.lean` (933 modules, 38.5 min,
+  largest process 7.7 GB), zero warnings.
+- **Axiom checks:** `check_axioms.lean` and `check_axioms_heavy.lean` (115 entry points) passed,
+  standard axioms only.
+- **Docs:** README, `Workstation.md` and the `plasmalean-lean-proofs` skill name the new versions.
+
+### Differential-form kernel (N-41), 16 November 2026
+
+New kernel file `Kernel/Forms` and `Sanity/Forms` (25 theorems), added alongside the existing
+kernel (user decision: an addition, not a replacement; degrees of forms chosen naturally).
+- **Equivalences:** `flat : Euclid3 ≃ₗ Form 1`, `flux : Euclid3 ≃ₗ Form 2`,
+  `density : ℝ ≃ₗ Form 3`, `hodge : Form 2 ≃ₗ Form 1`. B and J are 2-forms, `dp` and `B♭`
+  1-forms, `∇ · B` a 3-form.
+- **Dictionary:** `extDeriv_flat` (`d(B♭) = flux (∇ × B)`), `extDeriv_flux`
+  (`d(ι_B vol) = (∇ · B) vol`), with no differentiability hypothesis.
+- **Laws:** `VacuumForm` (`dω = 0`, `d(⋆ω) = 0`) with `vacuumForm_flux_iff`,
+  `vacuumField_fluxSymm_iff`; `FormForceBalance` (`ι_B ω_J = dp`) with `formForceBalance_iff`,
+  `forceBalance_iff`; `form_field_tangency`.
+- **Sanity:** statements afresh in form language, proofs transported; V-1 and E-1 restated
+  (`vacuumForm_empty`, `formForceBalance_of_interior`).
+- **Build:** default build 3944 jobs, zero warnings; `check_axioms.lean` passed on 51,023
+  declarations.
+- **Rows updated:** RG.3 N-41. Not audited yet.
+- **Site:** a slide (`differential-form-kernel`) and the Rosetta-stone page and Markdown of the
+  exposition suite name the new declarations. No new progress report: the latest report stays
+  report 15, as for the other work since 30 October, because the slides link into its sections.
+
+### Rosetta-stone page extended from the literature, 16 November 2026
+
+The exposition page `docs/PlasmaLean_Exposition_Suite/rosetta-stone.html` and its Markdown copy
+now have 29 entries (was 14): 14 in the library, 12 partly, 3 illustrative sketches. No Lean
+change.
+- **New entries (15):** Clebsch representation; field lines as a Hamiltonian system; net toroidal
+  current as periods of `B♭` (C1); min-B and subharmonicity of `|B|²`; KAM persistence; stellarator
+  symmetry; Arnold's structure theorem and Grad's conjecture; Beltrami fields and contact forms;
+  helicity and Taylor relaxation (sketch); frozen-in flux (sketch); Noether momentum; Lorentz
+  orbits; omnigeneity and `J∥`; Suydam/Newcomb/ballooning as Jacobi criteria; flux-surface average
+  (coarea formula).
+- **Corrected entries:** rotational transform (the library has `IotaOnTorus`,
+  `IotaOnTorus.tendsto`) and Boozer coordinates (the library has `BoozerChart`, `BoozerModelOf`;
+  no existence theorem).
+- **Sources:** each entry lists its references. About 20 were confirmed by web search (MacKay 2020;
+  Burby–Kallinikos–MacKay 2020; Rodríguez–Helander–Bhattacharjee 2020;
+  Constantin–Drivas–Ginsberg 2021; Etnyre–Ghrist 2000; Cantarella–DeTurck–Gluck 2001, 2002;
+  Cary–Littlejohn 1983; Enciso–Luque–Peralta-Salas 2025; Bruno–Laurence 1996; and others). The
+  older classical references and two article numbers are cited from memory and are **not
+  checked** against the sources.
+- **Checks:** every cited module path and declaration name was grepped in the source; the page
+  script renders 29 cards; site checks pass.
+- **Open wording:** the Grad entry describes `family1_grad_counterexample` by its statement and
+  says Grad's conjecture for smooth fields in toroidal domains of ℝ³ remains open (to be
+  confirmed against Q-17).
+  **Corrected the same day (N-43):** that sentence was wrong. Grad's conjecture was disproved in
+  September 2026 (Gómez-Serrano–Liehr–Taylor, arXiv:2609.24739, with a Lean certification), as
+  N-28 records; the page now says so.
+- **Rows updated:** N-41 (pointer and further `Kernel/Forms` bridges: Beltrami predicate,
+  `SymmetricFlux`).
+
+### Theory-layer form bridges (N-41), 16 November 2026
+
+New module `Theory/Fields/FormBridges` (425 lines, default build), an addition: no existing
+declaration changed.
+- **Bridges (each an `iff` in both directions):** first integral (`formFirstIntegralOn_flux_iff`),
+  `Kinetic.SymmetricFlux` as `ι_K ω_B = -G♭` (`formSymmetricFlux_iff`), weak quasisymmetry
+  (`formWeakQS_flux_iff`), Beltrami fields `dβ = λ ⋆β` (`formBeltramiOn_flat_iff`; the
+  vector-language predicate `IsBeltramiOn` is new).
+- **Contact condition:** `wedge12`, `wedge12_apply` (it is the alternating product),
+  `IsContactAt`, `isContactAt_of_beltrami` (`β ∧ dβ = λ|B|² vol`), `VacuumField.not_isContactAt`.
+- **Fixtures:** `helicalField_beltrami`, `helicalField_contact`, `helicalField_not_beltrami_one`,
+  `const_beltrami`, `const_not_contact`, `formWeakQS_uniform`, `formWeakQS_screw`.
+- **Build:** default build 3945 jobs, zero warnings; `check_axioms.lean` passed on 51,094
+  declarations (seven entry points added).
+- **Site:** the Rosetta-stone entries for flux surfaces, the solenoidal field, quasisymmetry,
+  symmetry and Beltrami fields name the new declarations.
+- **Rows updated:** RG.3 N-41. Not audited yet.
+
+### Strict audit of the form modules, 16 November 2026
+
+Partial audit (skill `plasmalean-audit-domain`) of `Kernel/Forms`, `Sanity/Forms` and
+`Theory/Fields/FormBridges` at `1e5d4f3`, by the author's pass and an independent read-only
+sub-audit. Record: `notes/audit/2026-11-16-forms-audit.md`; summary in RG.4.
+- **Result:** no false theorem; 1 high (documentation), 7 medium, 5 low findings; all resolved
+  except AF-L4 and AF-L5 (low).
+- **Definitions changed:** `IsBeltramiOn`, `FormBeltramiOn` (differentiability clause).
+  **Renamed:** `not_isContactAt_of_vacuumField`, `vacuumForm_const_smul`. The kernel file's
+  global `Fact` instance is now local.
+- **Added:** `form_current_tangency`, `formGradient_zero_iff_force_free`, `flux_cross_apply`,
+  `FormSymmetricFlux.formFirstIntegralOn`, `isBeltramiOn_iff_curl`,
+  `IsBeltramiOn.formForceBalance`, `IsBeltramiOn.isContactAt_iff`; module `Sanity/AuditForms`
+  (29 theorems), including checks independent of the dictionary (`extDeriv_x_dy`,
+  `div_curl_eq_zero`, `wedge_eq_inner_hodge`).
+- **Build:** 3946 jobs, zero warnings; `check_axioms.lean` passed on 51,135 declarations.
+- **Still unaudited:** all other changes since `921a8c3`.
+
+### Assessment of Sullivan's fluid models (N-42), 16 November 2026
+
+Source `sources/SullivanFluids.pdf` (J. Differential Geom. 97 (2014) 141–148), assessed at the
+user's request with a literature search; note `notes/theory/sullivan-infinity-structures.md`.
+- **Result:** no design consequence. As a language, L∞ structures fit the induction equation
+  (`∂_t B = -[v, B]`) and the homological data (fluxes, net currents); as a numerical method there
+  is no implementation, stability or convergence theory, and the geometry is a periodic cubical
+  lattice. Of the five clauses C1–C5 only C1 is natural in these terms; C5 (thermal) is not
+  expressible at all, being dissipative transport and not ideal dynamics.
+- **Observation (proved in the note):** on the flat 3-torus the dg Lie algebra of multivector
+  fields is quasi-isomorphic to an abelian one, so homotopy invariance preserves only homology
+  classes; all dynamical accuracy depends on the chosen contraction (Lawrence–Ranade–Sullivan:
+  the (k+1)-th bracket is `O(h^k)`).
+- **Lean:** new module `Theory/Fluids/EulerianODE` (Part 2 of the source):
+  `EulerianODE.energy_conserved`, `EulerianODE.helicity_conserved` (not stated in the source),
+  `rigidBody_eulerian`, `eulerianODE_zero`, `not_eulerianODE_id`.
+- **Registry:** N-42 added; Q-29 opened (deformation complex for quasisymmetric equilibria,
+  speculative).
+
+### Assessment of Issan et al., equilibria with any number of field periods (N-43), 16 November 2026
+
+Source `sources/Non-AxisymmetricMHD.pdf` (arXiv:2611.07672v1), assessed at the user's request
+with a literature search and independent numerical checks; note
+`notes/theory/issan-arbitrary-field-periods.md`.
+- **Checks (untrusted numerics, `scripts/issan_equilibria/`):** for the three families,
+  N = 1, …, 5, both signs: the Cartesian equations `∇·B = 0`, `J × B = ∇p`, `B·∇ψ = 0` hold to
+  `10⁻³⁷` at random points; the linking number of a field line with the axis is 0 or ±N as the
+  paper states; the instability identities hold. 12 of 20 claims checked, none incorrect.
+- **Contract:** not candidates. C1 fails (ι = 0, or integer ι with net current), C3 fails (the
+  paper proves interchange instability), C4 holds as an exact model statement, C2 and C5 are not
+  addressed.
+- **For Q-20:** Family 1 with ρ_a = ρ₀ is an exact finite-β equilibrium with zero net toroidal
+  current through every surface, and ι = 0.
+- **Correction:** the Rosetta-stone page said Grad's conjecture remains open; it was disproved
+  in September 2026 (N-28). Page corrected.
+- **Leads found by the search:** arXiv:2611.16688 (an analytic equilibrium with trivial Euclidean
+  symmetry group), arXiv:2611.10786 (anisotropic equilibria with confined drift orbits); not read.
+- **Registry:** N-43 added; Q-20 and N-28 updated. No Lean change.
+

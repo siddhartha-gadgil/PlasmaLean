@@ -9,6 +9,7 @@ public import PlasmaLean.Kernel.Transport
 public import Mathlib.Analysis.SpecialFunctions.Trigonometric.Deriv
 public import Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic
 public import Mathlib.Analysis.Calculus.Deriv.Slope
+public import Mathlib.Analysis.Calculus.Deriv.Pow
 public import Mathlib.Analysis.SpecialFunctions.ExpDeriv
 public import Mathlib.Analysis.Calculus.Deriv.MeanValue
 public import Mathlib.Analysis.Calculus.LocalExtr.Basic
@@ -845,7 +846,8 @@ def OneSidedLipschitz (c : RadialCoefficients) (K : ℝ) : Prop :=
 /-- The perturbation `f − ε e^{μt}` of a regular profile is regular on every rectangle. -/
 theorem ProfileRegular.expShift_regular {f f' f'' : ℝ → ℝ} (h : ProfileRegular f f' f'')
     (ε μ τ : ℝ) : (RadialField.expShift f f' f'' ε μ).Regular τ where
-  cont := (h.continuousOn.comp continuousOn_fst (fun _ hp => hp.1)).sub
+  cont := (h.continuousOn.comp continuousOn_fst
+    (fun _ (hp : _ ∈ Icc (0 : ℝ) 1 ×ˢ Icc 0 τ) => hp.1)).sub
     (by fun_prop : Continuous fun p : ℝ × ℝ => ε * Real.exp (μ * p.2)).continuousOn
   deriv_ψ := fun _ _ ψ hψ => (h.deriv ψ hψ).sub_const _
   deriv_ψψ := fun _ _ ψ hψ => h.deriv2 ψ hψ
@@ -952,7 +954,7 @@ instance TransportLaws.neg (c : RadialCoefficients) [h : TransportLaws c] :
   D_axis_regular := fun hk T => h.D_axis_regular hk (-T)
   Tdom_open := h.Tdom_open.preimage continuous_neg
   R_cont := (h.R_cont.comp (continuous_fst.prodMk continuous_snd.neg).continuousOn
-    (fun _ hp => ⟨hp.1, hp.2⟩)).neg
+    (fun _ (hp : _ ∈ Icc (0 : ℝ) 1 ×ˢ (Neg.neg ⁻¹' c.Tdom)) => ⟨hp.1, hp.2⟩)).neg
 
 /-- `−T` is a classical solution for the mirrored coefficients and negated edge data. -/
 theorem ClassicalRadialSolution.neg {c : RadialCoefficients} {Tedge : ℝ → ℝ} {τ : ℝ}

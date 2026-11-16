@@ -28,7 +28,7 @@ if the workstation cores are faster than the laptop's.
   On Debian/Ubuntu: `sudo apt install git python3-venv build-essential`.
 - Push access to the GitHub repository **without typing a password** (see below). `run.sh` checks
   this before starting and stops at once if a push would prompt.
-- Lean set up once by hand in the clone: `elan` (Lean v4.34.1 from `lean-toolchain`),
+- Lean set up once by hand in the clone: `elan` (Lean v4.35.0 from `lean-toolchain`),
   `lake exe cache get` and `lake build`. This is already done on the workstation. The script only
   checks that `lake` is available. Later builds are incremental: each task builds only what changed.
 - The script installs the Python packages itself, into a venv `.venv-ws`, from
@@ -251,7 +251,7 @@ laptop with a small parameter setting, then commit it to `main` before running i
 ## Troubleshooting
 
 - **Lost connection:** always run inside `tmux` or `screen`.
-- **Mathlib or Lean version bumped on `main`:** run `lake exe cache get` (and `elan` picks up a
+- **Mathlib, TauCeti or Lean version bumped on `main`:** run `lake exe cache get` (and `elan` picks up a
   new `lean-toolchain` automatically) before the next run, or Mathlib will rebuild from source.
 - **Out of memory on the workstation:** lower `--jobs`. A task's numerics should respect `WS_JOBS`.
 - **Push rejected:** the branch name is unique per run, so this is an authentication problem.

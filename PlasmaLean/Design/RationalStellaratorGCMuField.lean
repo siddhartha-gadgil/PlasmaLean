@@ -164,13 +164,14 @@ def muRegion (lm : ℝ) : Set Space := {x | x ∈ gcRegion ∧ lm * ‖field (1 
 theorem isOpen_muRegion (lm : ℝ) : IsOpen (muRegion lm) := by
   have hc : ContinuousOn (fun x => lm * ‖field (1 / 4) x‖) gcRegion :=
     continuousOn_const.mul ((field_contDiffOn_n (1 / 4) 0).continuousOn.mono
-      (fun x hx => hx.1)).norm
+      (fun x (hx : x ∈ gcRegion) => hx.1)).norm
   exact hc.isOpen_inter_preimage isOpen_gcRegion isOpen_Iio
 
 /-- `|B|` is smooth on `gcRegion`. -/
 theorem normB_contDiffOn (n : WithTop ℕ∞) :
     ContDiffOn ℝ n (fun x => ‖field (1 / 4) x‖) gcRegion :=
-  ((field_contDiffOn_n (1 / 4) n).mono fun _ hx => hx.1).norm ℝ fun _ hx => hx.2
+  ((field_contDiffOn_n (1 / 4) n).mono fun x (hx : x ∈ gcRegion) => hx.1).norm ℝ
+    fun x (hx : x ∈ gcRegion) => hx.2
 
 /-- `F` is smooth on `muRegion λ`. -/
 theorem Fmu_contDiffOn (lm : ℝ) (n : WithTop ℕ∞) : ContDiffOn ℝ n (Fmu lm) (muRegion lm) := by

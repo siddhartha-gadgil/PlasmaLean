@@ -531,7 +531,7 @@ theorem vol_mul_op (hg : g.Valid) (Tedge : ℝ) (u : Fin N → ℝ) (i : Fin N) 
   have hext : ∀ j, N ≤ j → extend u Tedge j = Tedge := fun j hj => by
     simp [extend, not_lt.2 hj]
   simp only [Nat.add_sub_cancel, Nat.add_one_ne_zero, ite_false]
-  split_ifs <;> first | omega | contradiction |
+  split_ifs <;> first | omega |
     (rw [hext ((i : ℕ) + 1) (by omega)]; field_simp; ring) | (field_simp; ring)
 
 /-- **Discrete conservation.** The volume-weighted sum of the operator telescopes to the flux
