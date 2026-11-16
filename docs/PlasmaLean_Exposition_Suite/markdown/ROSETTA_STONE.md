@@ -335,11 +335,11 @@ theorem formForceBalance_iff :
 
 ## Existence of three-dimensional equilibria: Arnold's structure theorem and Grad's conjecture
 
-*Topology & Foliations.* Do smooth toroidal equilibria with nested flux surfaces and a pressure gradient exist without a continuous symmetry? Grad conjectured that they do not.
+*Topology & Foliations.* Do smooth toroidal equilibria with nested flux surfaces and a pressure gradient exist without a continuous symmetry? Grad conjectured that they do not; counterexamples were found in 2026.
 
-**Geometry.** Arnold: for a smooth equilibrium whose B and J are not everywhere parallel, the compact regular level sets of p are tori, B and J commute on them, and B is conjugate to a linear flow on each. Known existence results: axisymmetric and helical families (Grad–Shafranov); tori near axisymmetry with stepped pressure (Bruno–Laurence); piecewise-smooth equilibria in toroidal domains far from symmetry (Enciso–Luque–Peralta-Salas); and a generalized Grad–Shafranov equation expressing a hidden symmetry of smooth equilibria (Burby–Kallinikos–MacKay). Grad's conjecture for smooth fields in toroidal domains of ℝ³ remains open.
+**Geometry.** Arnold: for a smooth equilibrium whose B and J are not everywhere parallel, the compact regular level sets of p are tori, B and J commute on them, and B is conjugate to a linear flow on each. Known existence results: axisymmetric and helical families (Grad–Shafranov); tori near axisymmetry with stepped pressure (Bruno–Laurence); piecewise-smooth equilibria in toroidal domains far from symmetry (Enciso–Luque–Peralta-Salas); and a generalized Grad–Shafranov equation expressing a hidden symmetry of smooth equilibria (Burby–Kallinikos–MacKay). Grad's conjecture is now disproved: smooth equilibria on solid tori whose Euclidean symmetry group is only a finite cyclic group exist (Gómez-Serrano–Liehr–Taylor, 2026, with a Lean certification), and explicit closed-form non-symmetric families are known (Landreman; Issan et al.).
 
-**Sources.** Arnold, Ann. Inst. Fourier 16 (1966) 319; Arnold & Khesin, Topological Methods in Hydrodynamics (Springer, 1998); Grad, Phys. Fluids 10 (1967) 137; Bruno & Laurence, Comm. Pure Appl. Math. 49 (1996) 717; Enciso, Luque & Peralta-Salas, J. Eur. Math. Soc. 27 (2025) 2251, arXiv:2104.08149; Burby, Kallinikos & MacKay, Phys. Plasmas 27 (2020) 102504, arXiv:2005.13664.
+**Sources.** Arnold, Ann. Inst. Fourier 16 (1966) 319; Arnold & Khesin, Topological Methods in Hydrodynamics (Springer, 1998); Grad, Phys. Fluids 10 (1967) 137; Bruno & Laurence, Comm. Pure Appl. Math. 49 (1996) 717; Enciso, Luque & Peralta-Salas, J. Eur. Math. Soc. 27 (2025) 2251, arXiv:2104.08149; Burby, Kallinikos & MacKay, Phys. Plasmas 27 (2020) 102504, arXiv:2005.13664; Gómez-Serrano, Liehr & Taylor, arXiv:2609.24739 (2026); Landreman, arXiv:2609.26742 (2026); Issan, José, Landreman, Citrin & Tracey, arXiv:2611.07672 (2026).
 
 **Lean status: In the library.** Module: [`PlasmaLean/Design/LandremanGradCounterexample.lean`](https://github.com/siddhartha-gadgil/PlasmaLean/blob/main/PlasmaLean/Design/LandremanGradCounterexample.lean).
 
@@ -354,8 +354,8 @@ theorem family1_grad_counterexample {ε δ μ₀ : ℝ} (hε0 : 0 < ε) (hε1 : 
   -- 3. ψ is a first integral; level sets ≃ₜ Circle × Circle; the axis ≃ₜ Circle
   -- 4. the pressure is not constant
   -- 5. no nonzero Killing field (rotation, translation, screw) preserves the field
--- Scope: plane reflections are not excluded; see the note on Q-17 for how this
--- relates to the usual statement of Grad's conjecture.
+-- Scope: plane reflections are not excluded (note N-28). The first Lean-certified
+-- counterexample is that of Gómez-Serrano, Liehr and Taylor, in their own repository.
 
 -- Not in the library: Arnold's structure theorem; any general existence theorem.
 ```
