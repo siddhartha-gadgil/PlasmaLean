@@ -232,7 +232,7 @@ superseded; mixed notes list the status of their parts. "Lean" names compiled ev
 | `N-38` | `notes/theory/burn-dynamics-kinetic-yield.md`: burn dynamics, fuel depletion, kinetic yield, alpha deposition | G-2, Q-26 | method for N-5, N-6; N-36 | routine–moderate | stated; (a)–(c) lean-ready | `no_sustained_burn_without_fuelling`, `stable_band_of_sign_change` |
 | `N-39` | `notes/theory/residual-invariant-neighbourhood.md`: additive-residual comparison, inward radii, norm-to-observable | G-7, Q-27 | method for N-19; N-36; `riccati_le_initial` | routine (a); research (producer) | stated; (a) lean-ready | `le_inward_radius`, `exists_inward_radius_iff` |
 | `N-40` | `notes/theory/kinetic-contract-turbulent-flux.md`: kinetic model contract and free-energy route to a turbulent flux bound | Q-28, G-2, G-11 | method for N-20; N-2, N-36 | routine (a); research (b, c) | stated; (a) lean-ready | kinetic fixtures module (Q-28 a) |
-| `N-41` | `notes/theory/differential-form-kernel.md`: differential-form language for the vacuum and force-balance kernel laws, with equivalences to the vector language | G-11 | `Kernel/Vacuum`, `Kernel/Equilibrium`; Mathlib `extDeriv` | routine–moderate | verified (`vacuumForm_flux_iff`, `vacuumField_fluxSymm_iff`, `formForceBalance_iff`, `forceBalance_iff`, `extDeriv_flat`, `extDeriv_flux`; `Sanity/Forms`) | first-integral and weak-quasisymmetry bridges; strict audit of `Kernel/Forms` |
+| `N-41` | `notes/theory/differential-form-kernel.md`: differential-form language for the vacuum and force-balance kernel laws, with equivalences to the vector language | G-11 | `Kernel/Vacuum`, `Kernel/Equilibrium`; Mathlib `extDeriv` | routine–moderate | verified (`vacuumForm_flux_iff`, `vacuumField_fluxSymm_iff`, `formForceBalance_iff`, `forceBalance_iff`, `extDeriv_flat`, `extDeriv_flux`; `Sanity/Forms`; theory bridges `formFirstIntegralOn_flux_iff`, `formSymmetricFlux_iff`, `formWeakQS_flux_iff`, `formBeltramiOn_flat_iff`, `isContactAt_of_beltrami`) | strict audit of `Kernel/Forms` and `Theory/Fields/FormBridges` |
 
 Main dependency edges: N-9 → N-10 → N-14 → N-15 → (Q-4, Q-5); N-10 → N-13 → (N-16 → Q-2, Q-14);
 N-4 → (N-8, N-7 → N-17 → Q-1); N-12 → (Q-3, Q-14, Q-16) → G-4; N-4 → Q-16 → G-6; N-2, N-6 → Q-10 → G-2, G-7;
@@ -2072,4 +2072,22 @@ change.
   confirmed against Q-17).
 - **Rows updated:** N-41 (pointer and further `Kernel/Forms` bridges: Beltrami predicate,
   `SymmetricFlux`).
+
+### Theory-layer form bridges (N-41), 16 November 2026
+
+New module `Theory/Fields/FormBridges` (425 lines, default build), an addition: no existing
+declaration changed.
+- **Bridges (each an `iff` in both directions):** first integral (`formFirstIntegralOn_flux_iff`),
+  `Kinetic.SymmetricFlux` as `ι_K ω_B = -G♭` (`formSymmetricFlux_iff`), weak quasisymmetry
+  (`formWeakQS_flux_iff`), Beltrami fields `dβ = λ ⋆β` (`formBeltramiOn_flat_iff`; the
+  vector-language predicate `IsBeltramiOn` is new).
+- **Contact condition:** `wedge12`, `wedge12_apply` (it is the alternating product),
+  `IsContactAt`, `isContactAt_of_beltrami` (`β ∧ dβ = λ|B|² vol`), `VacuumField.not_isContactAt`.
+- **Fixtures:** `helicalField_beltrami`, `helicalField_contact`, `helicalField_not_beltrami_one`,
+  `const_beltrami`, `const_not_contact`, `formWeakQS_uniform`, `formWeakQS_screw`.
+- **Build:** default build 3945 jobs, zero warnings; `check_axioms.lean` passed on 51,094
+  declarations (seven entry points added).
+- **Site:** the Rosetta-stone entries for flux surfaces, the solenoidal field, quasisymmetry,
+  symmetry and Beltrami fields name the new declarations.
+- **Rows updated:** RG.3 N-41. Not audited yet.
 

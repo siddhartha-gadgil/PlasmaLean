@@ -1587,14 +1587,14 @@
      "kind": "checked"
     },
     {
-     "title": "Next",
-     "text": "The same pattern for the flux-surface first integral and weak quasisymmetry; a strict audit of the new kernel file. Rotation number, Boozer charts and conformal modulus need geometric objects that are not in the library.",
-     "status": "Infrastructure · next",
-     "kind": "next"
+     "title": "Theory-layer bridges",
+     "text": "The same pattern in the theory layer (Theory/Fields/FormBridges): first integrals, symmetric flux (ι_K ω_B = −dψ), weak quasisymmetry and Beltrami fields, each equivalent to the vector-language notion. A Beltrami field with λ ≠ 0 and B ≠ 0 has a contact form B♭ (isContactAt_of_beltrami); the helical field (cos z, sin z, 0) is the fixture.",
+     "status": "Theory infrastructure · Lean verified",
+     "kind": "checked"
     }
    ],
    "progress": "Default build with standard axioms only; 25 sanity theorems stated afresh in form language, with the law checks transported from the vector-language checks. The same run moved the library to Lean v4.35.0 with TauCeti as the direct dependency (Mathlib transitive).",
-   "boundary": "ℝ³ with the Euclidean metric only: no forms on manifolds, no integration, no cohomology. Not audited yet. No contract clause C1–C5 changed status.",
+   "boundary": "ℝ³ with the Euclidean metric only: no forms on manifolds, no integration, no cohomology, no Reeb fields. Not audited yet. No contract clause C1–C5 changed status. Rotation number, Boozer charts and conformal modulus need geometric objects that are not in the library.",
    "evidence": [
     {
      "label": "Implementation plan (dated log)",

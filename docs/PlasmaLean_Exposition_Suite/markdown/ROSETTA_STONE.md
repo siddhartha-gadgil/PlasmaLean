@@ -24,6 +24,13 @@ theorem fluxSurface_homeo_torus ... :
   ∃ h : Circle × Circle ≃ₜ {x : Space // x ∈ U a b ∧ psi a b x = c},
     ∀ p, (h p : Space) = torusMap a b c p.1 p.2
 -- (the level sets of Landreman family 1 are tori, via the explicit torusMap)
+
+-- In form language (ι_B dψ = 0, B the vector of the flux form ω):
+-- PlasmaLean/Theory/Fields/FormBridges.lean (namespace PlasmaLean.Forms)
+def FormFirstIntegralOn (ω : Space → Form 2) (ψ : Space → ℝ) (U : Set Space) : Prop :=
+  ∀ x ∈ U, DifferentiableAt ℝ ψ x ∧ formGrad ψ x ![flux.symm (ω x)] = 0
+theorem formFirstIntegralOn_flux_iff :
+    FormFirstIntegralOn (fluxField B) ψ U ↔ FirstIntegralOn B ψ U
 ```
 
 ## Clebsch representation B = ∇ψ × ∇α and flux coordinates
@@ -76,6 +83,10 @@ theorem magneticTwoForm_flux_surface ... :
 def flux : Euclid3 ≃ₗ[ℝ] Form 2            -- v ↦ ι_v vol, with explicit inverse
 theorem extDeriv_flux (B : Euclid3 → Euclid3) (x : Euclid3) :
     extDeriv (fun y => flux (B y)) x = density (fieldDiv B x)   -- dω_B = (∇ · B) vol
+
+-- PlasmaLean/Theory/Fields/FormBridges.lean (namespace PlasmaLean.Forms)
+theorem flux_apply_eq_magneticTwoForm (B u v : Space) :
+    flux B ![u, v] = magneticTwoForm B u v
 
 -- Not in the library: differential forms on a manifold other than ℝ³.
 ```
@@ -357,21 +368,38 @@ theorem family1_grad_counterexample {ε δ μ₀ : ℝ} (hε0 : 0 < ε) (hε1 : 
 
 **Sources.** Etnyre & Ghrist, Nonlinearity 13 (2000) 441, arXiv:dg-ga/9708011; Cardona, Miranda & Peralta-Salas, Phil. Trans. R. Soc. A 377 (2019) 20190034, arXiv:1902.00039; Enciso & Peralta-Salas, Ann. of Math. 175 (2012) 345; Arnold & Khesin, Topological Methods in Hydrodynamics (Springer, 1998).
 
-**Lean status: Partly in the library.** Module: [`PlasmaLean/Theory/Equilibrium/Slab.lean`](https://github.com/siddhartha-gadgil/PlasmaLean/blob/main/PlasmaLean/Theory/Equilibrium/Slab.lean).
+**Lean status: Partly in the library.** Module: [`PlasmaLean/Theory/Fields/FormBridges.lean`](https://github.com/siddhartha-gadgil/PlasmaLean/blob/main/PlasmaLean/Theory/Fields/FormBridges.lean).
 
 ```lean
--- One-dimensional (slab) Beltrami example and the algebraic force-free condition:
--- PlasmaLean/Theory/Equilibrium/Slab.lean (namespace PlasmaLean.Equilibrium)
-def helicalSlab (z : ℝ) : Vec3 := ![Real.cos z, Real.sin z, 0]
-theorem helicalSlab_curl (z : ℝ) : slabCurl helicalSlab z = -helicalSlab z
+-- PlasmaLean/Theory/Fields/FormBridges.lean (namespace PlasmaLean.Forms)
+def IsBeltramiOn (B : Space → Space) (lam : Space → ℝ) (U : Set Space) : Prop :=
+  ∀ x ∈ U, fieldCurl B x = lam x • B x
+def FormBeltramiOn (β : Space → Form 1) (lam : Space → ℝ) (U : Set Space) : Prop :=
+  ∀ x ∈ U, extDeriv β x = lam x • hodge.symm (β x)            -- dβ = λ ⋆β
+theorem formBeltramiOn_flat_iff :
+    FormBeltramiOn (fun x => flat (B x)) lam U ↔ IsBeltramiOn B lam U
+
+def wedge12 (a : Form 1) (b : Form 2) : Form 3 := density ⟪flat.symm a, flux.symm b⟫
+theorem wedge12_apply (a : Form 1) (b : Form 2) (u v w : Space) :
+    wedge12 a b ![u, v, w] =
+      a ![u] * b ![v, w] - a ![v] * b ![u, w] + a ![w] * b ![u, v]
+def IsContactAt (β : Space → Form 1) (x : Space) : Prop :=
+  wedge12 (β x) (extDeriv β x) ≠ 0                              -- β ∧ dβ ≠ 0
+theorem isContactAt_of_beltrami (h : IsBeltramiOn B lam U) (hx : x ∈ U)
+    (hl : lam x ≠ 0) (hB : B x ≠ 0) : IsContactAt (fun y => flat (B y)) x
+theorem VacuumField.not_isContactAt (hV : VacuumField Ω B) (hx : x ∈ Ω) :
+    ¬ IsContactAt (fun y => flat (B y)) x
+
+-- Example: (cos z, sin z, 0), the slab field Equilibrium.helicalSlab on ℝ³
+theorem helicalField_beltrami : IsBeltramiOn helicalField (fun _ => -1) Set.univ
+theorem helicalField_contact (x : Space) : IsContactAt (fun y => flat (helicalField y)) x
 
 -- PlasmaLean/Kernel/Equilibrium.lean
 theorem gradient_zero_iff_force_free (B J g : Vec3) [ForceBalance B J g] :
     g = 0 ↔ J ⨯₃ B = 0
 
--- Not in the library: a three-dimensional predicate curl B = λB, contact forms,
--- Reeb fields. With Kernel/Forms the predicate would read
---   extDeriv (fun y => flat (B y)) x = λ • flux (B x).
+-- Not in the library: the Reeb field; the converse (a metric making a given Reeb
+-- field Beltrami); contact topology; three-dimensional toroidal Beltrami fields.
 ```
 
 ## Magnetic helicity and Taylor relaxation
@@ -471,6 +499,16 @@ def qsDefect (B ξ : Space → Space) (T : Set Space) : ℝ≥0∞ :=
   ⨆ x ∈ T, ENNReal.ofReal |qsError B ξ x|
 
 -- PlasmaLean/Design/LandremanNotQS.lean: family1_not_weakQS, family2_not_weakQS
+
+-- In form language: d(ι_ξ vol) = 0, ι_ξ ω_B = −dψ, d|B|(ξ) = 0.
+-- PlasmaLean/Theory/Fields/FormBridges.lean (namespace PlasmaLean.Forms)
+structure FormWeakQS (ω : Space → Form 2) (ξ : Space → Space) (ψ : Space → ℝ)
+    (T : Set Space) : Prop where
+  ...
+  div_free : ∀ x ∈ T, extDeriv (fun y => flux (ξ y)) x = 0
+  interior : ∀ x ∈ T, (ω x).curryLeft (ξ x) = -formGrad ψ x
+  qs : ∀ x ∈ T, formGrad (fun y => ‖flux.symm (ω y)‖) x ![ξ x] = 0
+theorem formWeakQS_flux_iff : FormWeakQS (fluxField B) ξ ψ T ↔ WeakQS B ξ ψ T
 ```
 
 ## Continuous symmetry and the conserved canonical momentum
@@ -487,7 +525,7 @@ def qsDefect (B ξ : Space → Space) (T : Set Space) : ℝ≥0∞ :=
 -- PlasmaLean/Theory/Kinetic/Noether.lean (namespace PlasmaLean.Kinetic)
 structure IsKilling (K : Space → Space) (DK : Space → Space →L[ℝ] Space) : Prop
 def SymmetricFlux (B G K : Space → Space) : Prop :=
-  ∀ x v : Space, ⟪K x, cross v (B x)⟫ = -⟪G x, v⟫        -- ι_K ω_B = ± dψ, G = ∇ψ
+  ∀ x v : Space, ⟪K x, cross v (B x)⟫ = -⟪G x, v⟫        -- G = ∇ψ
 theorem noetherMomentum_conserved (h : LorentzOrbit m q (fun _ => 0) B x v)
     (hK : IsKilling K DK) (hψ : ∀ y, HasFDerivAt ψ (innerSL ℝ (G y)) y)
     (hB : SymmetricFlux B G K) (s t : ℝ) :
@@ -497,6 +535,13 @@ theorem noetherMomentum_conserved (h : LorentzOrbit m q (fun _ => 0) B x v)
 -- PlasmaLean/Theory/Kinetic/BoozerGuidingCentre.lean
 theorem helicalMomentum_conserved ... (h : BoozerGCOrbit F m q μ ψ θ φ ρ) (s t : ℝ) :
     helicalMomentum F q N M ψ ρ s = helicalMomentum F q N M ψ ρ t
+
+-- In form language: ι_K ω_B = −dψ.
+-- PlasmaLean/Theory/Fields/FormBridges.lean (namespace PlasmaLean.Forms)
+def FormSymmetricFlux (ω : Space → Form 2) (γ : Space → Form 1) (K : Space → Space) : Prop :=
+  ∀ x, (ω x).curryLeft (K x) = -γ x
+theorem formSymmetricFlux_iff :
+    FormSymmetricFlux (fluxField B) (fun x => flat (G x)) K ↔ Kinetic.SymmetricFlux B G K
 
 -- Not in the library: the symplectic form and the momentum map as such.
 ```

@@ -10,12 +10,12 @@
 | Addresses | `G-11` (contract infrastructure, kernel level); the "Rosetta stone" page of the exposition suite |
 | Depends on | `Kernel/Vacuum` (`VacuumField`, `fieldDiv`, `fieldCurl`), `Kernel/Equilibrium` (`ForceBalance`), Mathlib's `extDeriv` (`Mathlib.Analysis.Calculus.DifferentialForm.Basic`) |
 | Dependency requirement | the kernel laws as compiled; `extDeriv ω x = alternatizeUncurryFin (fderiv ℝ ω x)` (Mathlib definition) |
-| Produces | `PlasmaLean/Kernel/Forms.lean` (kernel file), `PlasmaLean/Sanity/Forms.lean` (25 sanity theorems) |
+| Produces | `PlasmaLean/Kernel/Forms.lean` (kernel file), `PlasmaLean/Sanity/Forms.lean` (25 sanity theorems), `PlasmaLean/Theory/Fields/FormBridges.lean` (theory-layer bridges) |
 | Difficulty | routine–moderate: finite-dimensional multilinear algebra; the care is in the choice of degrees and signs |
-| Status | verified (vacuum and force-balance laws); the first-integral and weak-quasisymmetry entries are lean-ready |
-| Lean evidence | default build: `PlasmaLean.Forms.flat`, `flux`, `density`, `hodge`, `extDeriv_flat`, `extDeriv_flux`, `VacuumForm`, `vacuumForm_flux_iff`, `vacuumField_fluxSymm_iff`, `FormForceBalance`, `formForceBalance_iff`, `forceBalance_iff`, `form_field_tangency`; `PlasmaLean.Sanity.Forms.*` |
+| Status | verified: vacuum and force-balance laws (kernel); first integral, symmetric flux, weak quasisymmetry, Beltrami fields and the contact condition (theory layer) |
+| Lean evidence | default build: `PlasmaLean.Forms.flat`, `flux`, `density`, `hodge`, `extDeriv_flat`, `extDeriv_flux`, `VacuumForm`, `vacuumForm_flux_iff`, `vacuumField_fluxSymm_iff`, `FormForceBalance`, `formForceBalance_iff`, `forceBalance_iff`, `form_field_tangency`; `PlasmaLean.Sanity.Forms.*`; in `Theory/Fields/FormBridges`: `formFirstIntegralOn_flux_iff`, `formSymmetricFlux_iff`, `formWeakQS_flux_iff`, `formBeltramiOn_flat_iff`, `wedge12_apply`, `isContactAt_of_beltrami`, `helicalField_contact` |
 | Audit evidence | not audited (new kernel file; audit findings V-1 and E-1 are restated as `vacuumForm_empty`, `formForceBalance_of_interior`) |
-| Last updated | 16 November 2026: created with the Lean modules; same day, pointer to the extended Rosetta-stone page (no change to claims) |
+| Last updated | 16 November 2026: created with the Lean modules; same day, pointer to the extended Rosetta-stone page, and the theory-layer bridges implemented (`Theory/Fields/FormBridges`) |
 
 ## Purpose and scope
 
@@ -135,3 +135,25 @@ All compiled Lean theorems, default build, standard axioms only (`scripts/check_
   Beltrami predicate `extDeriv (fun y => flat (B y)) x = λ • flux (B x)`, and
   `Kinetic.SymmetricFlux B G K` as `ι_K ω_B = ± dψ` (sign to be fixed by a fixture), besides the
   first integral and weak quasisymmetry listed above.
+- **Theory-layer bridges implemented (16 November 2026).** `PlasmaLean/Theory/Fields/FormBridges.lean`
+  (default build, standard axioms; it is a theory file, since the kernel does not import the theory
+  layer). All are compiled Lean theorems:
+  - `curryLeft_flux_cross` (`ι_w ι_v vol = (v × w)♭`), `flat_gradient` (`(∇ψ)♭ = dψ`, no
+    hypothesis), `flux_apply_eq_magneticTwoForm`.
+  - First integral: `FormFirstIntegralOn`, `formFirstIntegralOn_flux_iff`.
+  - Symmetric flux: `FormSymmetricFlux` (`ι_K ω = -γ`), `formSymmetricFlux_iff` with
+    `Kinetic.SymmetricFlux`. The sign is settled: `SymmetricFlux B G K` is `ι_K ω_B = -G♭`.
+  - Weak quasisymmetry: `FormWeakQS` (`d(ι_ξ vol) = 0`, `ι_ξ ω = -dψ`, `d|B|(ξ) = 0`),
+    `formWeakQS_flux_iff`; fixtures `formWeakQS_uniform`, `formWeakQS_screw` transported.
+  - Beltrami: `IsBeltramiOn` (new vector-language predicate `∇ × B = λB`), `FormBeltramiOn`
+    (`dβ = λ ⋆β`), `formBeltramiOn_flat_iff`.
+  - Contact condition: `wedge12` (defined through the equivalences, and proved to be the
+    alternating product in `wedge12_apply`), `IsContactAt` (`β ∧ dβ ≠ 0`),
+    `isContactAt_flat_iff` (`⟪B, ∇ × B⟫ ≠ 0`), `isContactAt_of_beltrami` (the pointwise half of
+    the Etnyre–Ghrist correspondence), `VacuumField.not_isContactAt`.
+  - Fixtures: the helical field `(cos z, sin z, 0)` is Beltrami with `λ = -1` and contact
+    everywhere (`helicalField_beltrami`, `helicalField_contact`; it is `Equilibrium.helicalSlab`
+    on `ℝ³`, `helicalField_eq_helicalSlab`); rejected `λ = 1`
+    (`helicalField_not_beltrami_one`); constant fields are Beltrami with `λ = 0` and not contact.
+  - Not covered: the Reeb field, the converse direction (a metric adapted to a contact form),
+    a wedge product of general degrees, toroidal Beltrami fields.
