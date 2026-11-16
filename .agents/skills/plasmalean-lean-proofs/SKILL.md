@@ -5,7 +5,7 @@ description: Write and repair Lean 4 proofs in PlasmaLean efficiently. Use whene
 
 # Lean proofs in PlasmaLean
 
-Toolchain: Lean `v4.34.1`, Mathlib `v4.34.1` (see `lean-toolchain`, `lakefile.toml`). Check a file with `lake env lean <path>` and the library with `lake build`. Before finishing, run `lake env lean scripts/check_axioms.lean`. It **fails** on any axiom other than `propext`, `Classical.choice` and `Quot.sound`, so `sorry`, `native_decide`, `Lean.ofReduceBool` and native `bv_decide` proofs are all rejected. Builds must have zero warnings. On-demand top modules (not imported by `PlasmaLean.lean`) are audited by `scripts/check_axioms_heavy.lean`.
+Toolchain: Lean `v4.35.0`; the direct dependency is TauCeti `v4.35.0`, and Mathlib comes in transitively at the commit TauCeti pins (see `lean-toolchain`, `lakefile.toml`, `lake-manifest.json`). A Mathlib lemma that is reported unknown often just needs an import of the Mathlib file that holds it. Check a file with `lake env lean <path>` and the library with `lake build`. Before finishing, run `lake env lean scripts/check_axioms.lean`. It **fails** on any axiom other than `propext`, `Classical.choice` and `Quot.sound`, so `sorry`, `native_decide`, `Lean.ofReduceBool` and native `bv_decide` proofs are all rejected. Builds must have zero warnings. On-demand top modules (not imported by `PlasmaLean.lean`) are audited by `scripts/check_axioms_heavy.lean`.
 
 ## 1. Prefer automation that gives short, clean proofs
 

@@ -150,6 +150,14 @@ run_cmd do
 #print axioms PlasmaLean.Sanity.Audit.slab_negative_pressure
 #print axioms PlasmaLean.Sanity.Audit.steadySlab_zero_thickness
 #print axioms PlasmaLean.Sanity.Audit.vacuumField_empty
+#print axioms PlasmaLean.Forms.vacuumForm_flux_iff
+#print axioms PlasmaLean.Forms.vacuumField_fluxSymm_iff
+#print axioms PlasmaLean.Forms.formForceBalance_iff
+#print axioms PlasmaLean.Forms.forceBalance_iff
+#print axioms PlasmaLean.Forms.extDeriv_flat
+#print axioms PlasmaLean.Forms.extDeriv_flux
+#print axioms PlasmaLean.Sanity.Forms.vacuumForm_empty
+#print axioms PlasmaLean.Sanity.Forms.formForceBalance_of_interior
 #print axioms PlasmaLean.Sanity.Audit.fakeField_not_solution
 #print axioms PlasmaLean.Sanity.Audit.solution_outside_Tdom
 #print axioms PlasmaLean.Sanity.Audit.inconsistentPlasma_not_physical

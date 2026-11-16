@@ -228,6 +228,12 @@
     "text": "a grad counterexample, a quasisymmetry barrier, and a current finding — infrastructure under the contract. new theory since the strict audit. under the contract these are mathematical infrastructure or barriers, not design progress: they establish non-symmetry or rule out a route, while c1 and c2 need current-free, omnigenous candidates. all in the default build with standard axioms only. next under the contract: a dommaschk qa vacuum fit (c1 by construction), drift and ε_eff diagnostics on the rational field, and lean definitions for c1 and c2."
   },
   {
+    "title": "The vacuum and force-balance laws in differential-form language, equivalent to the vector language in both directions.",
+    "section": "Progress slideshow",
+    "url": "slides.html#differential-form-kernel",
+    "text": "the vacuum and force-balance laws in differential-form language, equivalent to the vector language in both directions. a new kernel file states the two laws with forms on ℝ³: b and j are 2-forms, dp and b♭ are 1-forms, ∇·b is a 3-form. linear equivalences with explicit inverses relate it to the existing kernel. it is an addition, not a replacement, and changes no contract clause. default build with standard axioms only; 25 sanity theorems stated afresh in form language, with the law checks transported from the vector-language checks. the same run moved the library to lean v4.35.0 with tauceti as the direct dependency (mathlib transitive)."
+  },
+  {
     "title": "Working with the agents: start, work status, work on, keep working.",
     "section": "Progress slideshow",
     "url": "slides.html#working-with-agents",
@@ -2578,6 +2584,18 @@
     "section": "Implementation plan",
     "url": "implementation-plan.html#default-build-rebuilt-and-axiom-checked-4-november-2026",
     "text": "default build rebuilt and axiom-checked, 4 november 2026 implementation plan"
+  },
+  {
+    "title": "TauCeti dependency and Lean v4.35.0, 16 November 2026",
+    "section": "Implementation plan",
+    "url": "implementation-plan.html#tauceti-dependency-and-lean-v4350-16-november-2026",
+    "text": "tauceti dependency and lean v4.35.0, 16 november 2026 implementation plan"
+  },
+  {
+    "title": "Differential-form kernel (N-41), 16 November 2026",
+    "section": "Implementation plan",
+    "url": "implementation-plan.html#differential-form-kernel-n-41-16-november-2026",
+    "text": "differential-form kernel (n-41), 16 november 2026 implementation plan"
   },
   {
     "title": "M0 · Exact symmetric equilibria: slab, screw pinch, Solov'ev, helical",

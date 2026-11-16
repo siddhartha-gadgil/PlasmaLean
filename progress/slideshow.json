@@ -1563,6 +1563,46 @@
    ]
   },
   {
+   "id": "differential-form-kernel",
+   "eyebrow": "36b · 16 November: differential-form kernel",
+   "title": "The vacuum and force-balance laws in differential-form language, equivalent to the vector language in both directions.",
+   "lead": "A new kernel file states the two laws with forms on ℝ³: B and J are 2-forms, dp and B♭ are 1-forms, ∇·B is a 3-form. Linear equivalences with explicit inverses relate it to the existing kernel. It is an addition, not a replacement, and changes no contract clause.",
+   "cards": [
+    {
+     "title": "Equivalences",
+     "text": "flat (vector ↔ 1-form), flux (vector ↔ 2-form ι_v vol), density (scalar ↔ 3-form) and the Hodge star hodge, each a linear equivalence with an explicit inverse. The exterior derivative is curl and divergence with no differentiability hypothesis (extDeriv_flat, extDeriv_flux).",
+     "status": "Kernel infrastructure · Lean verified",
+     "kind": "checked"
+    },
+    {
+     "title": "Vacuum law",
+     "text": "VacuumForm: dω = 0 (Gauss) and d(⋆ω) = 0 (Ampère without current). Equivalent to VacuumField in both directions (vacuumForm_flux_iff, vacuumField_fluxSymm_iff).",
+     "status": "Kernel infrastructure · Lean verified",
+     "kind": "checked"
+    },
+    {
+     "title": "Force balance",
+     "text": "FormForceBalance: ι_B ω_J = dp. Equivalent to ForceBalance in both directions (formForceBalance_iff, forceBalance_iff). dp is supplied data, so audit finding E-1 carries over (formForceBalance_of_interior).",
+     "status": "Kernel infrastructure · Lean verified",
+     "kind": "checked"
+    },
+    {
+     "title": "Next",
+     "text": "The same pattern for the flux-surface first integral and weak quasisymmetry; a strict audit of the new kernel file. Rotation number, Boozer charts and conformal modulus need geometric objects that are not in the library.",
+     "status": "Infrastructure · next",
+     "kind": "next"
+    }
+   ],
+   "progress": "Default build with standard axioms only; 25 sanity theorems stated afresh in form language, with the law checks transported from the vector-language checks. The same run moved the library to Lean v4.35.0 with TauCeti as the direct dependency (Mathlib transitive).",
+   "boundary": "ℝ³ with the Euclidean metric only: no forms on manifolds, no integration, no cohomology. Not audited yet. No contract clause C1–C5 changed status.",
+   "evidence": [
+    {
+     "label": "Implementation plan (dated log)",
+     "href": "implementation-plan.html"
+    }
+   ]
+  },
+  {
    "id": "working-with-agents",
    "eyebrow": "37 · Working with agents",
    "title": "Working with the agents: start, work status, work on, keep working.",

@@ -64,3 +64,4 @@ Phase 8 (kam-route.md, finite-beta-stellarator.md):
 - [`burn-dynamics-kinetic-yield.md`](burn-dynamics-kinetic-yield.md) (N-38): method for N-5/N-6: stable burn bands, the finite-fuel obstruction, kinetic yield perturbation, alpha deposition fraction (Q-26).
 - [`residual-invariant-neighbourhood.md`](residual-invariant-neighbourhood.md) (N-39): method for N-19: additive-residual inward radii and the norm-to-observable step (Q-27).
 - [`kinetic-contract-turbulent-flux.md`](kinetic-contract-turbulent-flux.md) (N-40): method for N-20: kinetic model fixtures and the gyrokinetic free-energy route to a turbulent flux bound (Q-28).
+- [`differential-form-kernel.md`](differential-form-kernel.md) (N-41): the vacuum and force-balance kernel laws in differential-form language (`Kernel/Forms`), with linear equivalences `flat`, `flux`, `density`, `hodge` to the vector language and the laws proved equivalent in both directions; which Rosetta-stone entries the pattern covers.

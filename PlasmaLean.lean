@@ -76,6 +76,8 @@ public import PlasmaLean.Sanity.AuditModelGuidingCentre
 public import PlasmaLean.Sanity.AuditModelStability
 public import PlasmaLean.Sanity.AuditModelTransport
 public import PlasmaLean.Sanity.Vacuum
+public import PlasmaLean.Kernel.Forms
+public import PlasmaLean.Sanity.Forms
 public import PlasmaLean.Theory.Transport.PowerBalance
 public import PlasmaLean.Theory.Transport.Comparison
 public import PlasmaLean.Theory.Fields.Subharmonic

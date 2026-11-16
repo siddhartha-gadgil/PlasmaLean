@@ -232,6 +232,7 @@ superseded; mixed notes list the status of their parts. "Lean" names compiled ev
 | `N-38` | `notes/theory/burn-dynamics-kinetic-yield.md`: burn dynamics, fuel depletion, kinetic yield, alpha deposition | G-2, Q-26 | method for N-5, N-6; N-36 | routine–moderate | stated; (a)–(c) lean-ready | `no_sustained_burn_without_fuelling`, `stable_band_of_sign_change` |
 | `N-39` | `notes/theory/residual-invariant-neighbourhood.md`: additive-residual comparison, inward radii, norm-to-observable | G-7, Q-27 | method for N-19; N-36; `riccati_le_initial` | routine (a); research (producer) | stated; (a) lean-ready | `le_inward_radius`, `exists_inward_radius_iff` |
 | `N-40` | `notes/theory/kinetic-contract-turbulent-flux.md`: kinetic model contract and free-energy route to a turbulent flux bound | Q-28, G-2, G-11 | method for N-20; N-2, N-36 | routine (a); research (b, c) | stated; (a) lean-ready | kinetic fixtures module (Q-28 a) |
+| `N-41` | `notes/theory/differential-form-kernel.md`: differential-form language for the vacuum and force-balance kernel laws, with equivalences to the vector language | G-11 | `Kernel/Vacuum`, `Kernel/Equilibrium`; Mathlib `extDeriv` | routine–moderate | verified (`vacuumForm_flux_iff`, `vacuumField_fluxSymm_iff`, `formForceBalance_iff`, `forceBalance_iff`, `extDeriv_flat`, `extDeriv_flux`; `Sanity/Forms`) | first-integral and weak-quasisymmetry bridges; strict audit of `Kernel/Forms` |
 
 Main dependency edges: N-9 → N-10 → N-14 → N-15 → (Q-4, Q-5); N-10 → N-13 → (N-16 → Q-2, Q-14);
 N-4 → (N-8, N-7 → N-17 → Q-1); N-12 → (Q-3, Q-14, Q-16) → G-4; N-4 → Q-16 → G-6; N-2, N-6 → Q-10 → G-2, G-7;
@@ -2005,3 +2006,41 @@ peak above 3 GB. Up to 3 light modules may build at once within the total. This 
   entry points depend only on `propext`, `Classical.choice` and `Quot.sound` (423 on all three,
   1 on `propext` and `Quot.sound`, 2 on `propext` alone).
 - **Not run:** on-demand top modules, which are outside `PlasmaLean.lean`.
+
+### TauCeti dependency and Lean v4.35.0, 16 November 2026
+
+User decision: PlasmaLean depends on [TauCeti](https://github.com/TauCetiProject/TauCeti) at tag
+`v4.35.0`; Mathlib is a transitive dependency at the commit TauCeti pins (`0740637`); Lean is
+`v4.35.0` (TauCeti has no `v4.34.1` tag). Branch `tauceti`.
+- **Fixes (15 Lean files, no statement changed):** ten files needed Mathlib imports that were no
+  longer reached transitively (`Deriv.Pow`, `Deriv.Comp`, `ContDiff.WithLp`, `FDeriv.WithLp`,
+  `SpecialFunctions.Sqrt`); four needed explicit binder types on `MapsTo` lambdas; one
+  `positivity` became an explicit `div_nonneg`; two tactics flagged by the unused-tactic linter
+  were removed.
+- **Build (workstation, 128 GB, plain parallel `lake build`):** default build 3933 jobs, zero
+  warnings; the 18 on-demand top modules of `check_axioms_heavy.lean` (933 modules, 38.5 min,
+  largest process 7.7 GB), zero warnings.
+- **Axiom checks:** `check_axioms.lean` and `check_axioms_heavy.lean` (115 entry points) passed,
+  standard axioms only.
+- **Docs:** README, `Workstation.md` and the `plasmalean-lean-proofs` skill name the new versions.
+
+### Differential-form kernel (N-41), 16 November 2026
+
+New kernel file `Kernel/Forms` and `Sanity/Forms` (25 theorems), added alongside the existing
+kernel (user decision: an addition, not a replacement; degrees of forms chosen naturally).
+- **Equivalences:** `flat : Euclid3 ≃ₗ Form 1`, `flux : Euclid3 ≃ₗ Form 2`,
+  `density : ℝ ≃ₗ Form 3`, `hodge : Form 2 ≃ₗ Form 1`. B and J are 2-forms, `dp` and `B♭`
+  1-forms, `∇ · B` a 3-form.
+- **Dictionary:** `extDeriv_flat` (`d(B♭) = flux (∇ × B)`), `extDeriv_flux`
+  (`d(ι_B vol) = (∇ · B) vol`), with no differentiability hypothesis.
+- **Laws:** `VacuumForm` (`dω = 0`, `d(⋆ω) = 0`) with `vacuumForm_flux_iff`,
+  `vacuumField_fluxSymm_iff`; `FormForceBalance` (`ι_B ω_J = dp`) with `formForceBalance_iff`,
+  `forceBalance_iff`; `form_field_tangency`.
+- **Sanity:** statements afresh in form language, proofs transported; V-1 and E-1 restated
+  (`vacuumForm_empty`, `formForceBalance_of_interior`).
+- **Build:** default build 3944 jobs, zero warnings; `check_axioms.lean` passed on 51,023
+  declarations.
+- **Rows updated:** RG.3 N-41. Not audited yet.
+- **Site:** a slide (`differential-form-kernel`) and the Rosetta-stone page and Markdown of the
+  exposition suite name the new declarations. No new progress report: the latest report stays
+  report 15, as for the other work since 30 October, because the slides link into its sections.

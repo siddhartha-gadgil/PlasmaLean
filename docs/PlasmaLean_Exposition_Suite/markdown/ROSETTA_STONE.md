@@ -1,6 +1,6 @@
 # PlasmaLean Rosetta Stone: stellarator physics, geometry and Lean 4
 
-This reference maps magnetic-confinement terminology to topology, differential geometry and complex geometry, and says for each concept what exists in the `PlasmaLean` library. Every declaration named below was checked against the source (30 October 2026). Entries marked *not in the library* show an illustrative sketch (a proposed signature) that does not compile.
+This reference maps magnetic-confinement terminology to topology, differential geometry and complex geometry, and says for each concept what exists in the `PlasmaLean` library. Every declaration named below was checked against the source (30 October 2026). The `Kernel/Forms` declarations were added and checked on 16 November 2026. Entries marked *not in the library* show an illustrative sketch (a proposed signature) that does not compile.
 
 14 concepts. Status counts: in the library: 5, partly in the library: 8, not in the library: illustrative sketch: 1.
 
@@ -41,7 +41,12 @@ def magneticTwoForm (B u v : Space) : ℝ := ⟪B, cross u v⟫
 theorem magneticTwoForm_flux_surface ... :
     magneticTwoForm (B x) u v = 0
 
--- Not in the library: differential forms on a general manifold (only ℝ³ vectors).
+-- PlasmaLean/Kernel/Forms.lean (namespace PlasmaLean.Forms; added 16 November 2026)
+def flux : Euclid3 ≃ₗ[ℝ] Form 2            -- v ↦ ι_v vol, with explicit inverse
+theorem extDeriv_flux (B : Euclid3 → Euclid3) (x : Euclid3) :
+    extDeriv (fun y => flux (B y)) x = density (fieldDiv B x)   -- dω_B = (∇ · B) vol
+
+-- Not in the library: differential forms on a manifold other than ℝ³.
 ```
 
 ## Vacuum magnetic field (∇ · B = 0, ∇ × B = 0)
@@ -61,6 +66,17 @@ structure VacuumField (Ω : Set Euclid3) (B : Euclid3 → Euclid3) : Prop where
   curl_eq_zero : ∀ x ∈ Ω, fieldCurl B x = 0
 
 -- Audit V-1: VacuumField ∅ B holds for every B (Sanity/AuditVacuum.vacuumField_empty).
+
+-- The same law in form language, for the flux 2-form ω = ι_B vol (β = ⋆ω):
+-- PlasmaLean/Kernel/Forms.lean (kernel file, namespace PlasmaLean.Forms; 16 November 2026)
+structure VacuumForm (Ω : Set Euclid3) (ω : Euclid3 → Form 2) : Prop where
+  isOpen : IsOpen Ω
+  contDiffOn : ContDiffOn ℝ 2 ω Ω
+  closed : ∀ x ∈ Ω, extDeriv ω x = 0                              -- Gauss
+  coclosed : ∀ x ∈ Ω, extDeriv (fun y => hodge (ω y)) x = 0       -- Ampère, J = 0
+theorem vacuumForm_flux_iff : VacuumForm Ω (fluxField B) ↔ VacuumField Ω B
+theorem vacuumField_fluxSymm_iff : VacuumField Ω (fluxField.symm ω) ↔ VacuumForm Ω ω
+
 -- Not in the library: boundary conditions, Hodge decomposition.
 ```
 
@@ -104,6 +120,13 @@ theorem field_tangency (B J g : Vec3) [ForceBalance B J g] : B ⬝ᵥ g = 0
 -- g is supplied data. Audit E-1: ForceBalance B J (J ⨯₃ B) holds for any B, J,
 -- so a claim must also prove g = ∇p and J = (∇ × B)/μ₀, e.g.
 -- PlasmaLean/Design/ForceBalanceGradient.lean: solovev_force_balance_gradient
+
+-- The same law in form language (ω_B, ω_J flux 2-forms, dp a 1-form): ι_B ω_J = dp.
+-- PlasmaLean/Kernel/Forms.lean (kernel file, namespace PlasmaLean.Forms; 16 November 2026)
+class FormForceBalance (ωB ωJ : Form 2) (dp : Form 1) : Prop where
+  balance : ωJ.curryLeft (flux.symm ωB) = dp
+theorem formForceBalance_iff :
+    FormForceBalance (flux (vec B)) (flux (vec J)) (flat (vec g)) ↔ ForceBalance B J g
 ```
 
 ## Boozer coordinates (ψ, θ_B, φ_B)
