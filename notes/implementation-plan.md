@@ -2044,3 +2044,32 @@ kernel (user decision: an addition, not a replacement; degrees of forms chosen n
 - **Site:** a slide (`differential-form-kernel`) and the Rosetta-stone page and Markdown of the
   exposition suite name the new declarations. No new progress report: the latest report stays
   report 15, as for the other work since 30 October, because the slides link into its sections.
+
+### Rosetta-stone page extended from the literature, 16 November 2026
+
+The exposition page `docs/PlasmaLean_Exposition_Suite/rosetta-stone.html` and its Markdown copy
+now have 29 entries (was 14): 14 in the library, 12 partly, 3 illustrative sketches. No Lean
+change.
+- **New entries (15):** Clebsch representation; field lines as a Hamiltonian system; net toroidal
+  current as periods of `B♭` (C1); min-B and subharmonicity of `|B|²`; KAM persistence; stellarator
+  symmetry; Arnold's structure theorem and Grad's conjecture; Beltrami fields and contact forms;
+  helicity and Taylor relaxation (sketch); frozen-in flux (sketch); Noether momentum; Lorentz
+  orbits; omnigeneity and `J∥`; Suydam/Newcomb/ballooning as Jacobi criteria; flux-surface average
+  (coarea formula).
+- **Corrected entries:** rotational transform (the library has `IotaOnTorus`,
+  `IotaOnTorus.tendsto`) and Boozer coordinates (the library has `BoozerChart`, `BoozerModelOf`;
+  no existence theorem).
+- **Sources:** each entry lists its references. About 20 were confirmed by web search (MacKay 2020;
+  Burby–Kallinikos–MacKay 2020; Rodríguez–Helander–Bhattacharjee 2020;
+  Constantin–Drivas–Ginsberg 2021; Etnyre–Ghrist 2000; Cantarella–DeTurck–Gluck 2001, 2002;
+  Cary–Littlejohn 1983; Enciso–Luque–Peralta-Salas 2025; Bruno–Laurence 1996; and others). The
+  older classical references and two article numbers are cited from memory and are **not
+  checked** against the sources.
+- **Checks:** every cited module path and declaration name was grepped in the source; the page
+  script renders 29 cards; site checks pass.
+- **Open wording:** the Grad entry describes `family1_grad_counterexample` by its statement and
+  says Grad's conjecture for smooth fields in toroidal domains of ℝ³ remains open (to be
+  confirmed against Q-17).
+- **Rows updated:** N-41 (pointer and further `Kernel/Forms` bridges: Beltrami predicate,
+  `SymmetricFlux`).
+

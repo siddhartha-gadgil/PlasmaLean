@@ -15,7 +15,7 @@
 | Status | verified (vacuum and force-balance laws); the first-integral and weak-quasisymmetry entries are lean-ready |
 | Lean evidence | default build: `PlasmaLean.Forms.flat`, `flux`, `density`, `hodge`, `extDeriv_flat`, `extDeriv_flux`, `VacuumForm`, `vacuumForm_flux_iff`, `vacuumField_fluxSymm_iff`, `FormForceBalance`, `formForceBalance_iff`, `forceBalance_iff`, `form_field_tangency`; `PlasmaLean.Sanity.Forms.*` |
 | Audit evidence | not audited (new kernel file; audit findings V-1 and E-1 are restated as `vacuumForm_empty`, `formForceBalance_of_interior`) |
-| Last updated | 16 November 2026: created with the Lean modules |
+| Last updated | 16 November 2026: created with the Lean modules; same day, pointer to the extended Rosetta-stone page (no change to claims) |
 
 ## Purpose and scope
 
@@ -129,3 +129,9 @@ All compiled Lean theorems, default build, standard axioms only (`scripts/check_
   added to `scripts/check_axioms.lean`.
 - Next: the first-integral and weak-quasisymmetry bridges; a strict audit of the new kernel file
   (skill `plasmalean-audit-domain`).
+- **Rosetta-stone page extended (16 November 2026, after a literature search).** The page
+  `docs/PlasmaLean_Exposition_Suite/rosetta-stone.html` now has 29 entries (was 14), each with its
+  sources. It names further bridges that fit `Kernel/Forms`, none of them in Lean yet: the
+  Beltrami predicate `extDeriv (fun y => flat (B y)) x = λ • flux (B x)`, and
+  `Kinetic.SymmetricFlux B G K` as `ι_K ω_B = ± dψ` (sign to be fixed by a fixture), besides the
+  first integral and weak quasisymmetry listed above.
