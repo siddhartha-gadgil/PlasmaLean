@@ -184,6 +184,7 @@ that carry net toroidal current (Q-18).
 | `Q-26` | **Burn dynamics and kinetic yield for C5** (N-38, from N-36): (a) stable operating band: `PowerBalance` with G ≥ 0 below and G ≤ 0 above a certified T* keeps T in the band (`stable_band_of_sign_change`), and instability for G′(T*) > 0; (b) finite-fuel obstruction: without fuelling no reaction rate bounded below for all time (`no_sustained_burn_without_fuelling`); (c) kinetic yield perturbation |R(f) − R(F)| ≤ K_max(‖f_D − F_D‖₁‖f_T‖₁ + ‖F_D‖₁‖f_T − F_T‖₁) (`reactionRate_sub_le`); (d) explicit alpha deposition fraction f_dep in G-2 claims (AK-1) | G-2, G-8 | open (a)–(c) lean-ready | none in Lean; proofs elementary (N-38); the compiled windows (N-5) are the f_dep = 1, fixed-density case |
 | `Q-27` | **Residual-based invariant neighbourhood** (N-39, from N-36 §10): (a) scalar lemma: Y′ ≤ −λY + LY² + ϵ(t), 0 ≤ ϵ(t) ≤ ϵ, Y(0) ≤ r*, −λr* + Lr*² + ϵ < 0 ⇒ Y ≤ r* (`le_inward_radius`), and ∃ r > 0 inward ⇔ λ² ≥ 4Lϵ (`exists_inward_radius_iff`); (b) time-dependent supersolution on a closed horizon (scalar part of gate E3); (c) norm-to-observable lemmas (weighted L²_v with ℓ > 9/2 controls moments ≤ 3; T Lipschitz in moments for n ≥ n_min) | G-7, G-2 | open ((a) lean-ready) | `riccati_le_initial` covers only a multiplicative ε and no additive residual; algebra re-derived exactly (N-36 checks 9–10) |
 | `Q-28` | **Kinetic model contract and a turbulent flux bound** (N-40, from N-36): (a) lean-ready fixtures: Landau kernel U(z)z = 0 and PSD, pairwise conservation, energy-flux decomposition, non-constant Maxwellian not stationary, vacuum force balance ⇒ ∇p = 0, D–T reaction moments; (b) research: in local electrostatic gyrokinetics, |Q_s| ≤ C_Q W and Ẇ ≤ −λW + CW^{3/2} + ε with derived constants (brief Research target 1), or bounded turbulence with small mean flux; (c) research: a flux-divergence (operator-defect) bound so the barrier theorems can use a produced flux instead of a supplied D | G-2, G-11, G-3 | open ((a) lean-ready; (b), (c) research, after Q-20) | free-energy identity and fixtures re-derived exactly (N-36 checks 1–7); Â (N-20) remains a proxy |
+| `Q-29` | **A deformation complex for quasisymmetric equilibria** (N-42, speculative): is there a complex (dg Lie or L∞ algebra) attached to the weak-quasisymmetry and force-balance equations whose cohomology counts the free functions and the obstructions order by order, and explains why the near-axis expansion is solvable to second order and overdetermined from third order (Garren–Boozer)? | none (conceptual; would inform G-10) | open, exploratory, low priority | no formulation found in the literature search of 16 November 2026; the algebraic parts are compiled (`FormWeakQS`, `FormForceBalance`, `Kernel/Forms`) |
 
 ### RG.3 Note registry and dependency graph
 
@@ -233,6 +234,7 @@ superseded; mixed notes list the status of their parts. "Lean" names compiled ev
 | `N-39` | `notes/theory/residual-invariant-neighbourhood.md`: additive-residual comparison, inward radii, norm-to-observable | G-7, Q-27 | method for N-19; N-36; `riccati_le_initial` | routine (a); research (producer) | stated; (a) lean-ready | `le_inward_radius`, `exists_inward_radius_iff` |
 | `N-40` | `notes/theory/kinetic-contract-turbulent-flux.md`: kinetic model contract and free-energy route to a turbulent flux bound | Q-28, G-2, G-11 | method for N-20; N-2, N-36 | routine (a); research (b, c) | stated; (a) lean-ready | kinetic fixtures module (Q-28 a) |
 | `N-41` | `notes/theory/differential-form-kernel.md`: differential-form language for the vacuum and force-balance kernel laws, with equivalences to the vector language | G-11 | `Kernel/Vacuum`, `Kernel/Equilibrium`; Mathlib `extDeriv` | routine–moderate | verified (`vacuumForm_flux_iff`, `vacuumField_fluxSymm_iff`, `formForceBalance_iff`, `forceBalance_iff`, `extDeriv_flat`, `extDeriv_flux`; `Sanity/Forms`; theory bridges `formFirstIntegralOn_flux_iff`, `formSymmetricFlux_iff`, `formWeakQS_flux_iff`, `formBeltramiOn_flat_iff`, `isContactAt_of_beltrami`) | audited 16 November 2026 (AF-*; `Sanity/AuditForms`); open: AF-L4, AF-L5 |
+| `N-42` | `notes/theory/sullivan-infinity-structures.md`: assessment of Sullivan's L∞ (combinatorial) and eigenspace fluid models for MHD and stellarators | G-9, G-11, Q-29 | `sources/SullivanFluids.pdf`; N-41; `Theory/Stability/Elsasser` | moderate | stated; Part 2 checked in Lean (`EulerianODE.energy_conserved`, `EulerianODE.helicity_conserved`, `rigidBody_eulerian`); no design consequence | none required; revisit if an implementation of the L∞ hierarchy is published |
 
 Main dependency edges: N-9 → N-10 → N-14 → N-15 → (Q-4, Q-5); N-10 → N-13 → (N-16 → Q-2, Q-14);
 N-4 → (N-8, N-7 → N-17 → Q-1); N-12 → (Q-3, Q-14, Q-16) → G-4; N-4 → Q-16 → G-6; N-2, N-6 → Q-10 → G-2, G-7;
@@ -2126,4 +2128,23 @@ sub-audit. Record: `notes/audit/2026-11-16-forms-audit.md`; summary in RG.4.
   `div_curl_eq_zero`, `wedge_eq_inner_hodge`).
 - **Build:** 3946 jobs, zero warnings; `check_axioms.lean` passed on 51,135 declarations.
 - **Still unaudited:** all other changes since `921a8c3`.
+
+### Assessment of Sullivan's fluid models (N-42), 16 November 2026
+
+Source `sources/SullivanFluids.pdf` (J. Differential Geom. 97 (2014) 141–148), assessed at the
+user's request with a literature search; note `notes/theory/sullivan-infinity-structures.md`.
+- **Result:** no design consequence. As a language, L∞ structures fit the induction equation
+  (`∂_t B = -[v, B]`) and the homological data (fluxes, net currents); as a numerical method there
+  is no implementation, stability or convergence theory, and the geometry is a periodic cubical
+  lattice. Of the five clauses C1–C5 only C1 is natural in these terms; C5 (thermal) is not
+  expressible at all, being dissipative transport and not ideal dynamics.
+- **Observation (proved in the note):** on the flat 3-torus the dg Lie algebra of multivector
+  fields is quasi-isomorphic to an abelian one, so homotopy invariance preserves only homology
+  classes; all dynamical accuracy depends on the chosen contraction (Lawrence–Ranade–Sullivan:
+  the (k+1)-th bracket is `O(h^k)`).
+- **Lean:** new module `Theory/Fluids/EulerianODE` (Part 2 of the source):
+  `EulerianODE.energy_conserved`, `EulerianODE.helicity_conserved` (not stated in the source),
+  `rigidBody_eulerian`, `eulerianODE_zero`, `not_eulerianODE_id`.
+- **Registry:** N-42 added; Q-29 opened (deformation complex for quasisymmetric equilibria,
+  speculative).
 

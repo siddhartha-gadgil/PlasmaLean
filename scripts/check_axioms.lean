@@ -172,6 +172,9 @@ run_cmd do
 #print axioms PlasmaLean.Sanity.AuditForms.absField_not_beltrami
 #print axioms PlasmaLean.Sanity.AuditForms.formSymmetricFlux_of_interior
 #print axioms PlasmaLean.Sanity.AuditForms.not_formWeakQS_mirror
+#print axioms PlasmaLean.Fluids.EulerianODE.energy_conserved
+#print axioms PlasmaLean.Fluids.EulerianODE.helicity_conserved
+#print axioms PlasmaLean.Fluids.rigidBody_eulerian
 #print axioms PlasmaLean.Sanity.Audit.fakeField_not_solution
 #print axioms PlasmaLean.Sanity.Audit.solution_outside_Tdom
 #print axioms PlasmaLean.Sanity.Audit.inconsistentPlasma_not_physical
