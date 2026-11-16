@@ -321,7 +321,9 @@ All planning and theory development is recorded in `notes/`, in a fixed structur
 
 ## Build and audit
 
-Lean and Mathlib are pinned to v4.34.1. From the repository root:
+Lean is pinned to v4.35.0. The only direct dependency is
+[TauCeti](https://github.com/TauCetiProject/TauCeti) at tag `v4.35.0`; Mathlib comes in
+transitively, at the commit pinned by TauCeti. From the repository root:
 
 ```sh
 lake build
