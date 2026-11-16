@@ -292,7 +292,8 @@ theorem sol_opShiftControl (G : FluxGeometry) [hG : IsSolovevGeometry G] (sv : �
     hG.h_cont.comp continuous_fst.continuousOn (fun p hp => hp.1)
   have hPc : Continuous fun p : ℝ × ℝ => Pw p.1 := by unfold Pw; fun_prop
   have hdd : ContinuousOn (fun p : ℝ × ℝ => ddens p.1 / dens p.1) (Icc 0 1 ×ˢ Ioi 0) :=
-    (continuousOn_const.div hPc.continuousOn (fun p hp => (Pw_bounds hp.1).1.ne')).congr
+    (continuousOn_const.div hPc.continuousOn
+      (fun p (hp : p ∈ Icc (0:ℝ) 1 ×ˢ Ioi 0) => (Pw_bounds hp.1).1.ne')).congr
       (fun p hp => dlog_eq hp.1)
   have h1 := (kProf'_continuous F).comp (continuous_fst : Continuous (Prod.fst : ℝ × ℝ → ℝ))
   have h2 := (kProf''_continuous F).comp (continuous_fst : Continuous (Prod.fst : ℝ × ℝ → ℝ))

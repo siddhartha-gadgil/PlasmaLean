@@ -942,7 +942,8 @@ theorem mem_coshSmall {I : FIv} {x : ℝ} (h : I.Mem x) : (coshSmall I).Mem (Rea
       simp only [Bool.and_eq_true, not_and_or, Bool.not_eq_true] at c
       rcases c with c | c
       · have h0 : (0 : ℝ) ≤ I.lo := by exact_mod_cast nonneg_of_isNeg c
-        have hlo : 0 ≤ fxVal I.lo := by rw [fxVal]; positivity
+        have hlo : 0 ≤ fxVal I.lo := by
+          rw [fxVal]; exact div_nonneg h0 (by rw [fxScale_real]; norm_num)
         calc (m : ℝ) / sN ≤ (a : ℝ) / sN := div_le_div_of_nonneg_right hma' hS.le
           _ = fxVal I.lo := by rw [ha, abs_of_nonneg hlo]
           _ ≤ |x| := a1.trans (le_abs_self x)

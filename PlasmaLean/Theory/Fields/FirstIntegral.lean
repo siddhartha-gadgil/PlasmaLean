@@ -8,6 +8,7 @@ module
 public import PlasmaLean.Theory.Fields.BiotSavart
 public import PlasmaLean.Theory.Kinetic.ApproximateInvariant
 public import Mathlib.Analysis.Calculus.Gradient.Basic
+public import Mathlib.Analysis.Calculus.Deriv.Comp
 public import Mathlib.Analysis.InnerProductSpace.PiL2
 
 /-!
@@ -90,7 +91,7 @@ theorem firstIntegral_conserved {B : Space → Space} {ψ : Space → ℝ} {U : 
     ψ (γ t) = ψ (γ 0) := by
   have hd : ∀ s ∈ Set.Icc 0 T, HasDerivAt (fun u => ψ (γ u)) 0 s := by
     intro s hs
-    have h := ((hψ (γ s) (stays s hs)).1.hasFDerivAt).comp_hasDerivAt s (hγ s hs)
+    have h := HasFDerivAt.comp_hasDerivAt s (hψ (γ s) (stays s hs)).1.hasFDerivAt (hγ s hs)
     rwa [(hψ (γ s) (stays s hs)).2] at h
   exact Kinetic.exact_invariant hd (fun _ _ => by simp) ht
 

@@ -8,6 +8,7 @@ module
 public import PlasmaLean.Kernel.Vacuum
 public import PlasmaLean.Theory.Fields.Maxwell
 public import PlasmaLean.Theory.Kinetic.Omnigeneity
+public import Mathlib.Analysis.Calculus.ContDiff.WithLp
 public import Mathlib.LinearAlgebra.CrossProduct
 public import Mathlib.Topology.Order.IntermediateValue
 

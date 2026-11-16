@@ -10,6 +10,7 @@ public import Mathlib.MeasureTheory.Function.Jacobian
 public import Mathlib.MeasureTheory.Measure.Haar.InnerProductSpace
 public import Mathlib.MeasureTheory.Integral.Prod
 public import Mathlib.Analysis.SpecialFunctions.Trigonometric.InverseDeriv
+public import Mathlib.Analysis.Calculus.FDeriv.WithLp
 
 /-!
 # Landreman family 2: the flux coordinates `(k, χ, ζ) ↦ x` as a change of variables

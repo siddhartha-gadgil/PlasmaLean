@@ -7,6 +7,7 @@ module
 
 public import PlasmaLean.Design.ClebschTorus
 public import PlasmaLean.Theory.Fields.ClebschDivergence
+public import Mathlib.Analysis.Calculus.ContDiff.WithLp
 
 /-!
 # The Clebsch-torus field is divergence free but not a vacuum field

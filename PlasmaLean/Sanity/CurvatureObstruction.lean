@@ -8,6 +8,7 @@ module
 public import PlasmaLean.Sanity.Vacuum
 public import PlasmaLean.Theory.Fields.CurvatureObstruction
 public import Mathlib.Analysis.SpecialFunctions.Trigonometric.Deriv
+public import Mathlib.Analysis.Calculus.ContDiff.WithLp
 
 /-!
 # Sanity checks for the curvature obstruction
