@@ -32,7 +32,7 @@ written as either. The choice below follows what the object is integrated over.
 | Physics | Geometry | Lean |
 | --- | --- | --- |
 | scalar `p`, `ψ` | 0-form (function) | `Euclid3 → ℝ` |
-| gradient `∇p` | 1-form `dp` (integrated along curves) | `flat (∇p)`, `formGrad p` |
+| gradient `∇p` | 1-form `dp` (integrated along curves) | `formGrad p` |
 | field intensity `B♭` (Ampère) | 1-form `⋆ω_B` | `flat B = hodge (flux B)` |
 | magnetic field `B` (flux through surfaces) | 2-form `ω_B = ι_B vol` | `flux B` |
 | current density `J` (flux through surfaces) | 2-form `ω_J = ι_J vol` | `flux J` |
@@ -48,13 +48,20 @@ and `extDeriv_formGrad`.
 ## Laws
 
 * `VacuumForm Ω ω`: `ω` is a `C²` 2-form on the open set `Ω` with `dω = 0` (Gauss) and
-  `d(⋆ω) = 0` (Ampère with no current). `vacuumForm_flux_iff` and
+  `d(⋆ω) = 0` (Ampère with no current). The Hodge star is defined in one degree only
+  (`hodge : Form 2 ≃ₗ Form 1`); its inverse serves as the star on 1-forms, which is the usual
+  one because `⋆⋆ = 1` on `ℝ³`. `vacuumForm_flux_iff` and
   `vacuumField_fluxSymm_iff` identify it with `Vacuum.VacuumField` in both directions.
 * `FormForceBalance ωB ωJ dp`: `ι_B ω_J = dp`, where `B` is the vector of the flux form
   `ω_B`. `formForceBalance_iff` and `forceBalance_iff` identify it with `ForceBalance`.
 
 Not modelled: forms on a manifold other than `ℝ³`, a metric other than the Euclidean
-one, integration of forms, de Rham cohomology.
+one, integration of forms, de Rham cohomology, a wedge product (one case is in
+`Theory/Fields/FormBridges`), the gradient vector (`flat_gradient` is there too).
+
+Audit (16 November 2026, record `notes/audit/2026-11-16-forms-audit.md`): regression and
+independent checks are in `Sanity/AuditForms`. As for the vector laws, `VacuumForm ∅ ω` holds
+for every `ω`, and `FormForceBalance ωB ωJ (ι_B ω_J)` holds for every pair.
 -/
 
 public section
@@ -71,7 +78,9 @@ abbrev Form (k : ℕ) := Euclid3 [⋀^Fin k]→L[ℝ] ℝ
 /-- The standard orthonormal basis of `ℝ³`. -/
 abbrev stdBasis : OrthonormalBasis (Fin 3) ℝ Euclid3 := EuclideanSpace.basisFun (Fin 3) ℝ
 
-instance : Fact (finrank ℝ Euclid3 = 3) := ⟨by simp⟩
+/-- `ℝ³` has dimension three (needed by Mathlib's volume form). Local: a kernel file exports
+no instances (audit finding AF-L1). -/
+local instance : Fact (finrank ℝ Euclid3 = 3) := ⟨by simp⟩
 
 /-- The Euclidean volume form `dx ∧ dy ∧ dz` with the standard orientation. -/
 def volForm : Form 3 :=
@@ -431,5 +440,20 @@ theorem form_field_tangency (ωB ωJ : Form 2) (dp : Form 1) [h : FormForceBalan
   simp only [dotProduct, Fin.sum_univ_three, PiLp.inner_apply, vec] at this ⊢
   simp at this ⊢
   linarith
+
+/-- The current is tangent to the pressure surfaces: `dp(J) = 0`. This is
+`current_tangency` in form language. -/
+theorem form_current_tangency (ωB ωJ : Form 2) (dp : Form 1) [h : FormForceBalance ωB ωJ dp] :
+    dp ![flux.symm ωJ] = 0 := by
+  rw [← h.balance]
+  obtain ⟨J, rfl⟩ := flux.surjective ωJ
+  simp [flux_cons, volForm_vec]
+  ring
+
+/-- Zero pressure differential is equivalent to zero Lorentz force `ι_B ω_J = 0`. This is
+`gradient_zero_iff_force_free` in form language. -/
+theorem formGradient_zero_iff_force_free (ωB ωJ : Form 2) (dp : Form 1)
+    [h : FormForceBalance ωB ωJ dp] : dp = 0 ↔ ωJ.curryLeft (flux.symm ωB) = 0 := by
+  rw [h.balance]
 
 end PlasmaLean.Forms

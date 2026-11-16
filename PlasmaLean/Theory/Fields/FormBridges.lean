@@ -16,18 +16,21 @@ public import PlasmaLean.Theory.Equilibrium.Slab
 # Differential-form versions of theory-layer notions (bridges to `Kernel/Forms`)
 
 `Kernel/Forms` states the two kernel laws with differential forms on `ℝ³`. This module does
-the same for four notions of the theory layer. Each is stated afresh with forms, and proved
+the same for four notions of the theory layer, and adds one case of the wedge product and the
+contact condition. Each is stated afresh with forms, and proved
 equivalent to the existing vector-language notion; nothing existing is changed. Notation:
 `ω_B = flux B = ι_B vol`, `β = flat B = B♭`, `dψ = formGrad ψ`.
 
 * **First integral.** `FirstIntegralOn B ψ U` (`Dψ(B) = 0`) is `FormFirstIntegralOn ω ψ U`
   (`ι_B dψ = 0`, with `B` the vector of `ω`): `formFirstIntegralOn_flux_iff`.
 * **Symmetric flux.** `Kinetic.SymmetricFlux B G K` is `FormSymmetricFlux ω γ K`
-  (`ι_K ω = -γ`, with `γ = dψ`): `formSymmetricFlux_iff`.
+  (`ι_K ω = -γ`): `formSymmetricFlux_iff`. The 1-form `γ` is supplied data, as `G` is; the
+  law has content only when `γ = dψ` is proved separately.
 * **Weak quasisymmetry.** `WeakQS B ξ ψ T` is `FormWeakQS ω ξ ψ T` (`d(ι_ξ vol) = 0`,
   `ι_ξ ω = -dψ`, `d|B|(ξ) = 0`): `formWeakQS_flux_iff`.
-* **Beltrami fields.** `IsBeltramiOn B lam U` (`∇ × B = λB`, new here) is
-  `FormBeltramiOn β lam U` (`dβ = λ ⋆β`): `formBeltramiOn_flat_iff`.
+* **Beltrami fields.** `IsBeltramiOn B lam U` (`B` differentiable and `∇ × B = λB`, new here)
+  is `FormBeltramiOn β lam U` (`dβ = λ ⋆β`): `formBeltramiOn_flat_iff`. It is the curl equation
+  only: `∇ · B = 0` is **not** part of it, and the zero field satisfies it for every `λ`.
 
 Each bridge also has the converse form (`firstIntegralOn_fluxSymm_iff`, `symmetricFlux_iff`,
 `weakQS_fluxSymm_iff`, `isBeltramiOn_flatSymm_iff`).
@@ -51,9 +54,10 @@ alternating product `a(u) b(v,w) - a(v) b(u,w) + a(w) b(u,v)`. `IsContactAt β x
 * A constant field is Beltrami with `λ = 0` and its `B♭` is nowhere contact
   (`const_beltrami`, `const_not_contact`). A curl-free field is never contact
   (`not_isContactAt_of_curl_eq_zero`), so a vacuum field is not.
-* Weak quasisymmetry, first integrals and symmetric flux: the accepted fixtures of the vector
-  language are transported (`formWeakQS_uniform`, `formWeakQS_screw`,
-  `clebsch_formFirstIntegral_left`).
+* Weak quasisymmetry and first integrals: accepted fixtures of the vector language are
+  transported (`formWeakQS_uniform`, `formWeakQS_screw`, `clebsch_formFirstIntegral_left`).
+* Rejected fixtures, vacuity regressions and checks that do not go through the dictionary are in
+  `Sanity/AuditForms` (audit of 16 November 2026).
 
 Scope: `ℝ³` with the Euclidean metric. Not covered: the Reeb field, the converse direction of
 the Etnyre–Ghrist correspondence (a metric adapted to a contact form), contact topology.
@@ -111,6 +115,15 @@ theorem form1_apply (a : Form 1) (v : Space) : a ![v] = ⟪flat.symm a, v⟫ := 
   conv_lhs => rw [← flat.apply_symm_apply a]
   rfl
 
+/-- **`ι_{a♯ × b♯} vol = a ∧ b`** for 1-forms `a`, `b`: the flux form of a cross product is
+the wedge product of the two 1-forms, `(u, v) ↦ a(u) b(v) - a(v) b(u)`. -/
+theorem flux_cross_apply (a b : Form 1) (u v : Space) :
+    flux (cross (flat.symm a) (flat.symm b)) ![u, v] = a ![u] * b ![v] - a ![v] * b ![u] := by
+  obtain ⟨h0, h1, h2⟩ := cross_coords (flat.symm a) (flat.symm b)
+  rw [flux_apply, volForm_vec, form1_apply, form1_apply, form1_apply, form1_apply, h0, h1, h2]
+  simp only [inner_coords3]
+  ring
+
 /-! ## First integrals -/
 
 /-- **First integral in form language**: `ψ` is differentiable on `U` and `ι_B dψ = 0`,
@@ -128,8 +141,8 @@ theorem firstIntegralOn_fluxSymm_iff {ω : Space → Form 2} {ψ : Space → ℝ
     FirstIntegralOn (fluxField.symm ω) ψ U ↔ FormFirstIntegralOn ω ψ U := by
   rw [← formFirstIntegralOn_flux_iff, Equiv.apply_symm_apply]
 
-/-- Sanity (transported from `clebsch_firstIntegral_left`): for the Clebsch flux form
-`ω = dψ ∧ dχ`, i.e. the flux form of `∇ψ × ∇χ`, `ψ` is a first integral. -/
+/-- Sanity (transported from `clebsch_firstIntegral_left`): for the Clebsch flux form, the
+flux form of `∇ψ × ∇χ` (which is `dψ ∧ dχ` by `flux_cross_apply`), `ψ` is a first integral. -/
 theorem clebsch_formFirstIntegral_left (ψ χ : Space → ℝ) (U : Set Space)
     (hψ : ∀ x ∈ U, DifferentiableAt ℝ ψ x) :
     FormFirstIntegralOn (fluxField (clebschField ψ χ)) ψ U :=
@@ -137,9 +150,11 @@ theorem clebsch_formFirstIntegral_left (ψ χ : Space → ℝ) (U : Set Space)
 
 /-! ## Symmetric flux: `ι_K ω_B = -dψ` -/
 
-/-- **Symmetric flux in form language**: `ι_K ω = -γ`, where `γ` is the supplied
-differential of the flux function (`γ = dψ`). This is the statement that `K` is a
-Hamiltonian symmetry of the flux form with Hamiltonian `ψ`. -/
+/-- **Symmetric flux in form language**: `ι_K ω = -γ` at every point of space (as
+`Kinetic.SymmetricFlux`, it has no region argument). The 1-form `γ` is supplied data: with
+`γ = dψ` this says that `K` is a Hamiltonian symmetry of the flux form with Hamiltonian `ψ`,
+but for `γ := -ι_K ω` it holds for every `ω` and `K` (regression
+`Sanity/AuditForms.formSymmetricFlux_of_interior`). -/
 @[expose] def FormSymmetricFlux (ω : Space → Form 2) (γ : Space → Form 1) (K : Space → Space) :
     Prop :=
   ∀ x, (ω x).curryLeft (K x) = -γ x
@@ -171,11 +186,33 @@ theorem symmetricFlux_iff {ω : Space → Form 2} {γ : Space → Form 1} {K : S
   rw [← formSymmetricFlux_iff]
   simp [FormSymmetricFlux]
 
+/-- With `γ = dψ` and `ψ` differentiable, a symmetric flux makes `ψ` a first integral of the
+field (the form version of `SymmetricFlux.firstIntegral`): `dψ(B) = -ω(K, B) = ω(B, K)` and
+`ι_B ω = 0`. -/
+theorem FormSymmetricFlux.formFirstIntegralOn {ω : Space → Form 2} {K : Space → Space}
+    {ψ : Space → ℝ} (h : FormSymmetricFlux ω (formGrad ψ) K) (hψ : Differentiable ℝ ψ) :
+    FormFirstIntegralOn ω ψ Set.univ := by
+  intro x _
+  refine ⟨hψ x, ?_⟩
+  have hx := h x
+  rw [eq_neg_iff_add_eq_zero] at hx
+  have h1 := congrArg (fun a : Form 1 => a ![flux.symm (ω x)]) hx
+  obtain ⟨B, hB⟩ := flux.surjective (ω x)
+  rw [hB.symm, LinearEquiv.symm_apply_apply] at h1 ⊢
+  have h2 : (flux B).curryLeft (K x) ![B] = 0 := by
+    simp [flux_cons, volForm_vec]
+    ring
+  have h3 : (flux B).curryLeft (K x) ![B] + formGrad ψ x ![B] = 0 := h1
+  linarith
+
 /-! ## Weak quasisymmetry -/
 
 /-- **Weak quasisymmetry in form language** for a flux form `ω` (with `B` its vector), a
 generator `ξ` and a potential `ψ`, pointwise on `T`: `d(ι_ξ vol) = 0`, `ι_ξ ω = -dψ` and
-`d|B|(ξ) = 0`, with `|B|`, `ξ`, `ψ` differentiable and `ξ ≠ 0`. -/
+`d|B|(ξ) = 0`, with `|B|`, `ξ`, `ψ` differentiable and `ξ ≠ 0`. As in `WeakQS`, `ω` itself
+is not required to be closed or differentiable, `|B|` is the Euclidean norm of the vector of
+`ω`, and the zero form with a constant generator satisfies it
+(`Sanity/AuditForms.formWeakQS_zero`). -/
 structure FormWeakQS (ω : Space → Form 2) (ξ : Space → Space) (ψ : Space → ℝ) (T : Set Space) :
     Prop where
   /-- `|B|` is differentiable on `T`. -/
@@ -254,22 +291,48 @@ theorem FormWeakQS.formFirstIntegralOn {ω : Space → Form 2} {ξ : Space → S
 
 /-! ## Beltrami fields and contact forms -/
 
-/-- **Beltrami (force-free) field** on `U` with proportionality function `lam`:
-`∇ × B = λ B`. -/
-@[expose] def IsBeltramiOn (B : Space → Space) (lam : Space → ℝ) (U : Set Space) : Prop :=
-  ∀ x ∈ U, fieldCurl B x = lam x • B x
+/-- **Beltrami curl equation** on `U` with proportionality function `lam`: `B` is
+differentiable and `∇ × B = λ B` at each point of `U`.
 
-/-- **Beltrami 1-form**: `dβ = λ ⋆β`, where `⋆β = hodge.symm β` is the Hodge star of the
-1-form `β`. -/
+Scope (audit finding AF-M1). Differentiability is required because Lean's `fderiv` is `0` at
+a non-differentiable point, which would make every kinked field "Beltrami with `λ = 0`" there.
+The predicate is the curl equation only. It does **not** include `∇ · B = 0`, so a Beltrami
+field in this sense need not be a magnetic field (the field `B = x` has `λ = 0` and
+`∇ · B = 3`), and the zero field satisfies it for every `λ`. A force-free magnetic field is
+`IsBeltramiOn` together with `fieldDiv B x = 0`. -/
+@[expose] def IsBeltramiOn (B : Space → Space) (lam : Space → ℝ) (U : Set Space) : Prop :=
+  ∀ x ∈ U, DifferentiableAt ℝ B x ∧ fieldCurl B x = lam x • B x
+
+/-- **Beltrami 1-form**: `β` is differentiable and `dβ = λ ⋆β`, where `⋆β = hodge.symm β`
+is the Hodge star of the 1-form `β` (the inverse of `hodge`, since `⋆⋆ = 1` on `ℝ³`). -/
 @[expose] def FormBeltramiOn (β : Space → Form 1) (lam : Space → ℝ) (U : Set Space) : Prop :=
-  ∀ x ∈ U, extDeriv β x = lam x • hodge.symm (β x)
+  ∀ x ∈ U, DifferentiableAt ℝ β x ∧ extDeriv β x = lam x • hodge.symm (β x)
 
 /-- Vector language to form language. -/
 theorem formBeltramiOn_flat_iff {B : Space → Space} {lam : Space → ℝ} {U : Set Space} :
     FormBeltramiOn (fun x => flat (B x)) lam U ↔ IsBeltramiOn B lam U := by
-  refine forall₂_congr fun x _ => ?_
-  rw [extDeriv_flat, hodge_symm_flat, ← map_smul]
-  exact flux.injective.eq_iff
+  refine forall₂_congr fun x _ => and_congr ?_ ?_
+  · exact flat.toContinuousLinearEquiv.comp_differentiableAt_iff
+  · rw [extDeriv_flat, hodge_symm_flat, ← map_smul]
+    exact flux.injective.eq_iff
+
+/-- The Beltrami equation with the theory layer's `Fields.curl`. -/
+theorem isBeltramiOn_iff_curl {B : Space → Space} {lam : Space → ℝ} {U : Set Space} :
+    IsBeltramiOn B lam U ↔
+      ∀ x ∈ U, DifferentiableAt ℝ B x ∧ curl (fderiv ℝ B x) = lam x • B x := by
+  simp only [IsBeltramiOn, fieldCurl, curlOp_eq_curl]
+
+/-- **A Beltrami field is force-free in the sense of the kernel**: with the Ampère current
+form `ω_J = d(B♭)` (the flux form of `∇ × B`; the factor `1/μ₀` is omitted), force balance
+holds with zero pressure differential, `ι_B ω_J = 0`. -/
+theorem IsBeltramiOn.formForceBalance {B : Space → Space} {lam : Space → ℝ} {U : Set Space}
+    (h : IsBeltramiOn B lam U) {x : Space} (hx : x ∈ U) :
+    FormForceBalance (flux (B x)) (flux (fieldCurl B x)) 0 := by
+  refine ⟨?_⟩
+  rw [LinearEquiv.symm_apply_apply, curryLeft_flux_cross, (h x hx).2]
+  have : cross (lam x • B x) (B x) = 0 := by
+    apply space_ext <;> simp [cross]
+  rw [this, map_zero]
 
 /-- Form language to vector language. -/
 theorem isBeltramiOn_flatSymm_iff {β : Space → Form 1} {lam : Space → ℝ} {U : Set Space} :
@@ -323,8 +386,16 @@ theorem isContactAt_flat_iff (B : Space → Space) (x : Space) :
 theorem isContactAt_of_beltrami {B : Space → Space} {lam : Space → ℝ} {U : Set Space}
     (h : IsBeltramiOn B lam U) {x : Space} (hx : x ∈ U) (hl : lam x ≠ 0) (hB : B x ≠ 0) :
     IsContactAt (fun y => flat (B y)) x := by
-  rw [isContactAt_flat_iff, h x hx, inner_smul_right, real_inner_self_eq_norm_sq]
+  rw [isContactAt_flat_iff, (h x hx).2, inner_smul_right, real_inner_self_eq_norm_sq]
   exact mul_ne_zero hl (pow_ne_zero 2 (norm_ne_zero_iff.2 hB))
+
+/-- **Sharp form**: for a Beltrami field, `B♭` is a contact form at `x` exactly when
+`λ(x) ≠ 0` and `B(x) ≠ 0`. -/
+theorem IsBeltramiOn.isContactAt_iff {B : Space → Space} {lam : Space → ℝ} {U : Set Space}
+    (h : IsBeltramiOn B lam U) {x : Space} (hx : x ∈ U) :
+    IsContactAt (fun y => flat (B y)) x ↔ lam x ≠ 0 ∧ B x ≠ 0 := by
+  rw [isContactAt_flat_iff, (h x hx).2, inner_smul_right, real_inner_self_eq_norm_sq,
+    mul_ne_zero_iff, ne_eq (‖B x‖ ^ 2), pow_eq_zero_iff two_ne_zero, norm_eq_zero]
 
 /-- A curl-free field is never contact: `β ∧ dβ = 0` when `dβ = 0`. In particular a vacuum
 field is not contact. -/
@@ -334,7 +405,7 @@ theorem not_isContactAt_of_curl_eq_zero {B : Space → Space} {x : Space}
   exact fun h => h rfl
 
 /-- A vacuum field has no contact point in its region. -/
-theorem VacuumField.not_isContactAt {Ω : Set Euclid3} {B : Euclid3 → Euclid3}
+theorem not_isContactAt_of_vacuumField {Ω : Set Euclid3} {B : Euclid3 → Euclid3}
     (hV : VacuumField Ω B) {x : Euclid3} (hx : x ∈ Ω) :
     ¬ IsContactAt (fun y => flat (B y)) x :=
   not_isContactAt_of_curl_eq_zero (hV.curl_eq_zero x hx)
@@ -345,6 +416,7 @@ theorem VacuumField.not_isContactAt {Ω : Set Euclid3} {B : Euclid3 → Euclid3}
 theorem const_beltrami (B₀ : Space) (U : Set Space) :
     IsBeltramiOn (fun _ => B₀) (fun _ => 0) U := by
   intro x _
+  refine ⟨differentiableAt_const _, ?_⟩
   have : fderiv ℝ (fun _ : Space => B₀) x = 0 := fderiv_const_apply B₀
   rw [fieldCurl, this, zero_smul, curlOp_eq_zero_iff]
   simp
@@ -352,7 +424,7 @@ theorem const_beltrami (B₀ : Space) (U : Set Space) :
 /-- A constant field is nowhere contact. -/
 theorem const_not_contact (B₀ x : Space) : ¬ IsContactAt (fun _ => flat B₀) x := by
   apply not_isContactAt_of_curl_eq_zero (B := fun _ => B₀)
-  have := const_beltrami B₀ Set.univ x (Set.mem_univ x)
+  have := (const_beltrami B₀ Set.univ x (Set.mem_univ x)).2
   simpa using this
 
 /-- The helical field `(cos z, sin z, 0)` on `ℝ³`. -/
@@ -364,23 +436,30 @@ theorem const_not_contact (B₀ x : Space) : ¬ IsContactAt (fun _ => flat B₀)
 theorem helicalField_eq_helicalSlab (y : Space) :
     helicalField y = vec (Equilibrium.helicalSlab (y 2)) := rfl
 
-/-- The derivative of the helical field. -/
-theorem helicalField_fderiv_apply (x v : Space) :
-    fderiv ℝ helicalField x v =
-      WithLp.toLp 2 ![-Real.sin (x 2) * v 2, Real.cos (x 2) * v 2, 0] := by
-  have hp : HasFDerivAt (fun y : Space => y 2)
-      (EuclideanSpace.proj (2 : Fin 3) : Space →L[ℝ] ℝ) x :=
-    (EuclideanSpace.proj (2 : Fin 3) : Space →L[ℝ] ℝ).hasFDerivAt
-  have h : HasFDerivAt helicalField
+/-- The Fréchet derivative of the helical field. -/
+theorem helicalField_hasFDerivAt (x : Space) :
+    HasFDerivAt helicalField
       (((-Real.sin (x 2)) • (EuclideanSpace.proj (2 : Fin 3) : Space →L[ℝ] ℝ)).smulRight
           (basis 0) +
         ((Real.cos (x 2)) • (EuclideanSpace.proj (2 : Fin 3) : Space →L[ℝ] ℝ)).smulRight
           (basis 1)) x := by
-    have h0 := (hp.cos).smul_const (basis 0 : Space)
-    have h1 := (hp.sin).smul_const (basis 1 : Space)
-    refine (h0.add h1).congr_of_eventuallyEq (Filter.Eventually.of_forall fun y => ?_)
-    apply space_ext <;> simp [helicalField, basis]
-  rw [h.fderiv]
+  have hp : HasFDerivAt (fun y : Space => y 2)
+      (EuclideanSpace.proj (2 : Fin 3) : Space →L[ℝ] ℝ) x :=
+    (EuclideanSpace.proj (2 : Fin 3) : Space →L[ℝ] ℝ).hasFDerivAt
+  have h0 := (hp.cos).smul_const (basis 0 : Space)
+  have h1 := (hp.sin).smul_const (basis 1 : Space)
+  refine (h0.add h1).congr_of_eventuallyEq (Filter.Eventually.of_forall fun y => ?_)
+  apply space_ext <;> simp [helicalField, basis]
+
+/-- The helical field is differentiable. -/
+theorem helicalField_differentiableAt (x : Space) : DifferentiableAt ℝ helicalField x :=
+  (helicalField_hasFDerivAt x).differentiableAt
+
+/-- The derivative of the helical field, in components. -/
+theorem helicalField_fderiv_apply (x v : Space) :
+    fderiv ℝ helicalField x v =
+      WithLp.toLp 2 ![-Real.sin (x 2) * v 2, Real.cos (x 2) * v 2, 0] := by
+  rw [(helicalField_hasFDerivAt x).fderiv]
   apply space_ext <;> simp [basis]
 
 /-- `∇ × B = -B` for the helical field. -/
@@ -390,7 +469,7 @@ theorem helicalField_curl (x : Space) : fieldCurl helicalField x = (-1 : ℝ) �
 
 /-- Concrete instance: the helical field is Beltrami with `λ = -1` on all of space. -/
 theorem helicalField_beltrami : IsBeltramiOn helicalField (fun _ => -1) Set.univ :=
-  fun x _ => helicalField_curl x
+  fun x _ => ⟨helicalField_differentiableAt x, helicalField_curl x⟩
 
 /-- The same statement for the 1-form `β = cos z dx + sin z dy`: `dβ = -⋆β`. -/
 theorem helicalForm_beltrami :
@@ -417,7 +496,7 @@ theorem helicalField_contact (x : Space) : IsContactAt (fun y => flat (helicalFi
 /-- Rejected fixture: the helical field is not Beltrami with `λ = 1`. -/
 theorem helicalField_not_beltrami_one : ¬ IsBeltramiOn helicalField (fun _ => 1) Set.univ := by
   intro h
-  have h1 := h 0 (Set.mem_univ 0)
+  have h1 := (h 0 (Set.mem_univ 0)).2
   rw [helicalField_curl] at h1
   have h0 := congrArg (fun v : Space => v 0) h1
   simp [helicalField] at h0

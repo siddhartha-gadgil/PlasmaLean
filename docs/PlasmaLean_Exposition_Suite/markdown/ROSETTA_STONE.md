@@ -373,9 +373,10 @@ theorem family1_grad_counterexample {ε δ μ₀ : ℝ} (hε0 : 0 < ε) (hε1 : 
 ```lean
 -- PlasmaLean/Theory/Fields/FormBridges.lean (namespace PlasmaLean.Forms)
 def IsBeltramiOn (B : Space → Space) (lam : Space → ℝ) (U : Set Space) : Prop :=
-  ∀ x ∈ U, fieldCurl B x = lam x • B x
+  ∀ x ∈ U, DifferentiableAt ℝ B x ∧ fieldCurl B x = lam x • B x
+  -- the curl equation only: ∇ · B = 0 is not part of it
 def FormBeltramiOn (β : Space → Form 1) (lam : Space → ℝ) (U : Set Space) : Prop :=
-  ∀ x ∈ U, extDeriv β x = lam x • hodge.symm (β x)            -- dβ = λ ⋆β
+  ∀ x ∈ U, DifferentiableAt ℝ β x ∧ extDeriv β x = lam x • hodge.symm (β x)   -- dβ = λ ⋆β
 theorem formBeltramiOn_flat_iff :
     FormBeltramiOn (fun x => flat (B x)) lam U ↔ IsBeltramiOn B lam U
 
@@ -387,7 +388,9 @@ def IsContactAt (β : Space → Form 1) (x : Space) : Prop :=
   wedge12 (β x) (extDeriv β x) ≠ 0                              -- β ∧ dβ ≠ 0
 theorem isContactAt_of_beltrami (h : IsBeltramiOn B lam U) (hx : x ∈ U)
     (hl : lam x ≠ 0) (hB : B x ≠ 0) : IsContactAt (fun y => flat (B y)) x
-theorem VacuumField.not_isContactAt (hV : VacuumField Ω B) (hx : x ∈ Ω) :
+theorem IsBeltramiOn.formForceBalance (h : IsBeltramiOn B lam U) (hx : x ∈ U) :
+    FormForceBalance (flux (B x)) (flux (fieldCurl B x)) 0        -- force-free: ι_B ω_J = 0
+theorem not_isContactAt_of_vacuumField (hV : VacuumField Ω B) (hx : x ∈ Ω) :
     ¬ IsContactAt (fun y => flat (B y)) x
 
 -- Example: (cos z, sin z, 0), the slab field Equilibrium.helicalSlab on ℝ³

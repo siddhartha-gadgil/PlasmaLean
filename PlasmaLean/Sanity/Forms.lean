@@ -138,7 +138,7 @@ theorem vacuumForm_empty (ω : Euclid3 → Form 2) : VacuumForm ∅ ω :=
 
 /-- Scaling a vacuum form by a constant gives a vacuum form. Transported from
 `VacuumField.const_smul`. -/
-theorem VacuumForm.const_smul {Ω : Set Euclid3} {ω : Euclid3 → Form 2}
+theorem vacuumForm_const_smul {Ω : Set Euclid3} {ω : Euclid3 → Form 2}
     (h : VacuumForm Ω ω) (a : ℝ) : VacuumForm Ω (fun x => a • ω x) := by
   have h1 := Audit.VacuumField.const_smul (vacuumField_fluxSymm_iff.2 h) a
   have h2 := vacuumForm_flux_iff.2 h1

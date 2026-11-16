@@ -1594,7 +1594,7 @@
     }
    ],
    "progress": "Default build with standard axioms only; 25 sanity theorems stated afresh in form language, with the law checks transported from the vector-language checks. The same run moved the library to Lean v4.35.0 with TauCeti as the direct dependency (Mathlib transitive).",
-   "boundary": "ℝ³ with the Euclidean metric only: no forms on manifolds, no integration, no cohomology, no Reeb fields. Not audited yet. No contract clause C1–C5 changed status. Rotation number, Boozer charts and conformal modulus need geometric objects that are not in the library.",
+   "boundary": "ℝ³ with the Euclidean metric only: no forms on manifolds, no integration, no cohomology, no Reeb fields. Audited on 16 November (partial audit of these modules only): no false theorem; the Beltrami predicates gained a differentiability clause and are the curl equation only (∇·B = 0 is not included). No contract clause C1–C5 changed status. Rotation number, Boozer charts and conformal modulus need geometric objects that are not in the library.",
    "evidence": [
     {
      "label": "Implementation plan (dated log)",

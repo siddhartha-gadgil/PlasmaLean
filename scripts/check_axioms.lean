@@ -165,6 +165,13 @@ run_cmd do
 #print axioms PlasmaLean.Forms.wedge12_apply
 #print axioms PlasmaLean.Forms.isContactAt_of_beltrami
 #print axioms PlasmaLean.Forms.helicalField_contact
+#print axioms PlasmaLean.Forms.IsBeltramiOn.formForceBalance
+#print axioms PlasmaLean.Forms.form_current_tangency
+#print axioms PlasmaLean.Sanity.AuditForms.extDeriv_x_dy
+#print axioms PlasmaLean.Sanity.AuditForms.div_curl_eq_zero
+#print axioms PlasmaLean.Sanity.AuditForms.absField_not_beltrami
+#print axioms PlasmaLean.Sanity.AuditForms.formSymmetricFlux_of_interior
+#print axioms PlasmaLean.Sanity.AuditForms.not_formWeakQS_mirror
 #print axioms PlasmaLean.Sanity.Audit.fakeField_not_solution
 #print axioms PlasmaLean.Sanity.Audit.solution_outside_Tdom
 #print axioms PlasmaLean.Sanity.Audit.inconsistentPlasma_not_physical

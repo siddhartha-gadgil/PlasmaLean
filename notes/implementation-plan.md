@@ -232,7 +232,7 @@ superseded; mixed notes list the status of their parts. "Lean" names compiled ev
 | `N-38` | `notes/theory/burn-dynamics-kinetic-yield.md`: burn dynamics, fuel depletion, kinetic yield, alpha deposition | G-2, Q-26 | method for N-5, N-6; N-36 | routine–moderate | stated; (a)–(c) lean-ready | `no_sustained_burn_without_fuelling`, `stable_band_of_sign_change` |
 | `N-39` | `notes/theory/residual-invariant-neighbourhood.md`: additive-residual comparison, inward radii, norm-to-observable | G-7, Q-27 | method for N-19; N-36; `riccati_le_initial` | routine (a); research (producer) | stated; (a) lean-ready | `le_inward_radius`, `exists_inward_radius_iff` |
 | `N-40` | `notes/theory/kinetic-contract-turbulent-flux.md`: kinetic model contract and free-energy route to a turbulent flux bound | Q-28, G-2, G-11 | method for N-20; N-2, N-36 | routine (a); research (b, c) | stated; (a) lean-ready | kinetic fixtures module (Q-28 a) |
-| `N-41` | `notes/theory/differential-form-kernel.md`: differential-form language for the vacuum and force-balance kernel laws, with equivalences to the vector language | G-11 | `Kernel/Vacuum`, `Kernel/Equilibrium`; Mathlib `extDeriv` | routine–moderate | verified (`vacuumForm_flux_iff`, `vacuumField_fluxSymm_iff`, `formForceBalance_iff`, `forceBalance_iff`, `extDeriv_flat`, `extDeriv_flux`; `Sanity/Forms`; theory bridges `formFirstIntegralOn_flux_iff`, `formSymmetricFlux_iff`, `formWeakQS_flux_iff`, `formBeltramiOn_flat_iff`, `isContactAt_of_beltrami`) | strict audit of `Kernel/Forms` and `Theory/Fields/FormBridges` |
+| `N-41` | `notes/theory/differential-form-kernel.md`: differential-form language for the vacuum and force-balance kernel laws, with equivalences to the vector language | G-11 | `Kernel/Vacuum`, `Kernel/Equilibrium`; Mathlib `extDeriv` | routine–moderate | verified (`vacuumForm_flux_iff`, `vacuumField_fluxSymm_iff`, `formForceBalance_iff`, `forceBalance_iff`, `extDeriv_flat`, `extDeriv_flux`; `Sanity/Forms`; theory bridges `formFirstIntegralOn_flux_iff`, `formSymmetricFlux_iff`, `formWeakQS_flux_iff`, `formBeltramiOn_flat_iff`, `isContactAt_of_beltrami`) | audited 16 November 2026 (AF-*; `Sanity/AuditForms`); open: AF-L4, AF-L5 |
 
 Main dependency edges: N-9 → N-10 → N-14 → N-15 → (Q-4, Q-5); N-10 → N-13 → (N-16 → Q-2, Q-14);
 N-4 → (N-8, N-7 → N-17 → Q-1); N-12 → (Q-3, Q-14, Q-16) → G-4; N-4 → Q-16 → G-6; N-2, N-6 → Q-10 → G-2, G-7;
@@ -253,6 +253,24 @@ The canonical first command is `start` (skill `plasmalean-audit-domain`). Previo
 | Commands run | `lake build --no-build PlasmaLean` (current), `lake env lean scripts/check_axioms.lean` (122 entry points, standard axioms only), single-module builds of the new sanity modules, then `lake build PlasmaLean` (zero warnings) |
 | Open findings | kernel: 1 medium (F-1), 9 low; repository: 0 critical, 1 high (H-1), 5 medium; see below and [`notes/audit/2026-10-30-repository-audit.md`](https://github.com/siddhartha-gadgil/PlasmaLean/blob/main/notes/audit/2026-10-30-repository-audit.md) |
 | Missing sanity checks | added: 58 kernel theorems in `PlasmaLean/Sanity/Audit{Equilibrium, ThermalSlab, Vacuum, Transport, Fusion}.lean` and 54 model theorems (plus 7 definitions) in `PlasmaLean/Sanity/AuditModel{GuidingCentre, Stability, Transport}.lean` (triad, risk-specific and regression checks), all in the default build; model record [`notes/audit/2026-10-30-model-audit.md`](https://github.com/siddhartha-gadgil/PlasmaLean/blob/main/notes/audit/2026-10-30-model-audit.md) |
+
+**Partial audit of the differential-form modules (16 November 2026).** Audited commit `1e5d4f3`,
+scope `Kernel/Forms`, `Sanity/Forms`, `Theory/Fields/FormBridges` only; record
+[`notes/audit/2026-11-16-forms-audit.md`](https://github.com/siddhartha-gadgil/PlasmaLean/blob/main/notes/audit/2026-11-16-forms-audit.md).
+The rest of the work since `921a8c3` has **not** had a refresh audit.
+- No exported theorem was false; conventions (orientation, signs, `extDeriv` normalization) are
+  consistent.
+- **AF-H1 (high, documentation, resolved):** the `FormBridges` module doc claimed symmetric-flux
+  fixtures that did not exist.
+- **AF-M1 (resolved, definitions changed):** `IsBeltramiOn` and `FormBeltramiOn` had no
+  regularity clause, so a kinked field was Beltrami with λ = 0 at the kink. Both now require
+  differentiability. The predicate is the curl equation only (∇ · B = 0 is not part of it).
+- **AF-M2–M7 (resolved):** circular sanity checks; missing totalization regression for
+  `VacuumForm`; `FormSymmetricFlux` vacuous with free γ; incomplete triads; contact coverage;
+  missing `form_current_tangency`. Regressions are in `Sanity/AuditForms.lean` (29 theorems).
+- **AF-L1–L3 (resolved), AF-L4–L5 (low, open):** a global instance in the kernel file,
+  misplaced dot-notation names, doc nits; tautological sanity theorems kept; no Beltrami fixture
+  with non-constant λ.
 
 **Refresh-audit findings (31 October 2026).** The kernel is sound (only F-1 changed). No new
 forbidden tactics, `check_axioms.lean` passes, every new module is covered.
@@ -2090,4 +2108,22 @@ declaration changed.
 - **Site:** the Rosetta-stone entries for flux surfaces, the solenoidal field, quasisymmetry,
   symmetry and Beltrami fields name the new declarations.
 - **Rows updated:** RG.3 N-41. Not audited yet.
+
+### Strict audit of the form modules, 16 November 2026
+
+Partial audit (skill `plasmalean-audit-domain`) of `Kernel/Forms`, `Sanity/Forms` and
+`Theory/Fields/FormBridges` at `1e5d4f3`, by the author's pass and an independent read-only
+sub-audit. Record: `notes/audit/2026-11-16-forms-audit.md`; summary in RG.4.
+- **Result:** no false theorem; 1 high (documentation), 7 medium, 5 low findings; all resolved
+  except AF-L4 and AF-L5 (low).
+- **Definitions changed:** `IsBeltramiOn`, `FormBeltramiOn` (differentiability clause).
+  **Renamed:** `not_isContactAt_of_vacuumField`, `vacuumForm_const_smul`. The kernel file's
+  global `Fact` instance is now local.
+- **Added:** `form_current_tangency`, `formGradient_zero_iff_force_free`, `flux_cross_apply`,
+  `FormSymmetricFlux.formFirstIntegralOn`, `isBeltramiOn_iff_curl`,
+  `IsBeltramiOn.formForceBalance`, `IsBeltramiOn.isContactAt_iff`; module `Sanity/AuditForms`
+  (29 theorems), including checks independent of the dictionary (`extDeriv_x_dy`,
+  `div_curl_eq_zero`, `wedge_eq_inner_hodge`).
+- **Build:** 3946 jobs, zero warnings; `check_axioms.lean` passed on 51,135 declarations.
+- **Still unaudited:** all other changes since `921a8c3`.
 
