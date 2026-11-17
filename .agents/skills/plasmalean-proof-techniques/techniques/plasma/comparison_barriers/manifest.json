@@ -1,0 +1,6 @@
+{
+  "name": "Comparison principles, barriers and Gronwall/Riccati arguments",
+  "area": "Plasma physics",
+  "keywords": ["comparison principle", "maximum principle", "first crossing", "sub-solution", "super-solution", "barrier", "Gronwall", "Riccati", "invariant set", "approximate invariant", "confinement", "transport"],
+  "path": "techniques/plasma/comparison_barriers/TECHNIQUE.md"
+}

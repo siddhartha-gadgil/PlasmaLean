@@ -2024,3 +2024,13 @@ peak above 3 GB. Up to 3 light modules may build at once within the total. This 
   lean-proofs, add-note, modify-notes and update-notes-from (source study, techniques, examples and
   stress tests in a `notes/reasoning/…-source-…` folder) now use the new skills; README,
   GettingStarted, `notes/README.md` and the skills README document them.
+- **Plasma proof techniques** (same day): six techniques added under
+  `.agents/skills/plasmalean-proof-techniques/techniques/plasma/`, each with worked examples citing
+  compiled declarations (names grepped): energy principle and coercivity (`suydamForm_lower_bound`,
+  `picone_certificate`, `BartaCertificate.lower_bound`, `displacement_bound`); comparison, barriers
+  and Grönwall/Riccati (`le_of_lowerMargin_axisFree`, `fieldLine_sign_preserved`,
+  `riccati_le_initial`, `excludes_loss`); reduction to a finite certificate
+  (`radii_polynomial_fixedPoint`, `bool_cert`); perturbation margins (`filamentField_perturbation`);
+  local obstructions and necessity (`VacuumField.not_closed_fieldLine_minB`,
+  `quasisymmetry_not_pde_symmetry`, Sturm necessity); composition on a common witness
+  (`compose_branch`, `incompatible_witnesses`).

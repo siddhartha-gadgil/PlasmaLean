@@ -1,0 +1,6 @@
+{
+  "name": "Perturbation bounds and robust margins",
+  "area": "Plasma physics",
+  "keywords": ["perturbation", "tolerance", "Lipschitz", "margin", "robustness", "coil error", "uncertainty box", "parameter range", "stability of a bound", "Biot-Savart"],
+  "path": "techniques/plasma/perturbation_margins/TECHNIQUE.md"
+}
