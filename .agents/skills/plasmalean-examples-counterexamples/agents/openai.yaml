@@ -1,0 +1,4 @@
+interface:
+  display_name: "Examples and counterexamples"
+  short_description: "Construct examples, boundary cases and counterexamples to test a claim"
+  default_prompt: "Use $plasmalean-examples-counterexamples to test this statement for counterexamples."

@@ -1,0 +1,6 @@
+{
+  "name": "Algorithmic Correctness",
+  "area": "Algorithms/Logic/Discrete Math",
+  "keywords": ["algorithm", "termination", "correctness", "partial correctness", "total correctness", "loop invariant", "recursion"],
+  "path": "techniques/algorithms/correctness/TECHNIQUE.md"
+}

@@ -1,0 +1,6 @@
+{
+  "name": "Diagram Chase and Diagrammatic Reasoning",
+  "area": "Algebra/Topology/Geometry",
+  "keywords": ["diagram chase", "commutative diagram", "exact sequence", "kernel", "image", "geometric diagram", "diagrammatic proof"],
+  "path": "techniques/diagrammatic/diagram_chase/TECHNIQUE.md"
+}

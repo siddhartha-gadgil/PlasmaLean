@@ -1,0 +1,6 @@
+{
+  "name": "Generic Arguments",
+  "area": "General/Analysis/Geometry",
+  "keywords": ["baire category", "measure theory", "almost everywhere", "zariski topology", "dense open set", "scheme theory"],
+  "path": "techniques/generic_arguments/TECHNIQUE.md"
+}

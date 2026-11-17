@@ -1,0 +1,6 @@
+{
+  "name": "Density and Approximation",
+  "area": "Analysis/Topology",
+  "keywords": ["density", "approximation", "dense subset", "continuity", "limit passage", "simple functions", "smooth approximation"],
+  "path": "techniques/analysis/density_approximation/TECHNIQUE.md"
+}

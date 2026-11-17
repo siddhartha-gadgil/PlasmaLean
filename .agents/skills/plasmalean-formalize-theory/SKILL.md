@@ -13,7 +13,9 @@ Read `notes/domain-libraries.md`, the actual kernel modules, `notes/formalizatio
 
 ## Extract a source theorem before coding
 
-Retrieve the primary paper or book chapter, including corrigenda and relevant supplements. Record authors, title, stable identifier, version, theorem/equation locator, and retrieval date. Reconstruct the result in your own words. Identify every geometric, analytic, boundary, normalization, and model hypothesis. If only an abstract is available, record a literature lead; do not assert a theorem from the abstract.
+Retrieve the primary paper or book chapter, including corrigenda and relevant supplements. Record authors, title, stable identifier, version, theorem/equation locator, and retrieval date. Reconstruct the result in your own words. Identify every geometric, analytic, boundary, normalization, and model hypothesis. If only an abstract is available, record a literature lead; do not assert a theorem from the abstract. Follow `../plasmalean-reasoning-loop/phases/03-source-study.md` to map hypotheses to proof steps and find which hypotheses are essential before choosing the Lean statement.
+
+When the input is a reasoning task under `notes/reasoning/` (a `05_final_manuscript.md`, with Lean drafts in `lean/` when it ran in `WITH_LEAN` mode), start from its statement, step justifications and drafts, and record the task folder in the note's provenance.
 
 Distinguish published theorem, formal asymptotic calculation, numerical result, and empirical fit. Follow `09-literature.md`'s extraction protocol. Check signs, SI factors, Fourier conventions, and whether the conclusion is necessary, sufficient, local, or asymptotic.
 
@@ -24,7 +26,7 @@ Distinguish published theorem, formal asymptotic calculation, numerical result, 
 3. Choose the weakest adequate analytic interface: algebraic identities before PDE existence; an abstract quadratic form before the full MHD operator; a fixed boundary before a moving interface.
 4. State model laws as explicit hypotheses or typeclass arguments, following the project architecture.
 5. Choose spaces, measures, boundary traces, coordinate domains, and regularity. Explain any restricted theorem in its name and docstring.
-6. List missing mathematical lemmas as a dependency graph. Keep mathematical infrastructure in reusable modules rather than embedding it inside one design proof.
+6. List missing mathematical lemmas as a dependency graph. Keep mathematical infrastructure in reusable modules rather than embedding it inside one design proof. When a missing lemma has no proof in the sources, work out its argument first with `plasmalean-try-to-prove` (choosing techniques with `plasmalean-proof-techniques`) rather than searching for one inside Lean.
 
 Use Euclidean domains first when differential geometry would delay a useful result. Introduce a manifold bridge through a theorem when needed. Do not assume that anticipated Sobolev, trace, differential-form, spectral, or PDE APIs already exist in Mathlib or TauCeti.
 
@@ -38,7 +40,7 @@ Inspect `#print axioms` for certificate entry points and important public result
 
 ## Preserve the theorem's meaning
 
-Recheck the original informal statement against the final Lean declaration. Verify that a nonempty admissible class remains, that the chosen norm is the one advertised, and that boundary terms and symmetry modes have not disappeared through an unjustified restriction. A stability theorem on a finite subspace must retain that scope in its name.
+Recheck the original informal statement against the final Lean declaration. Verify that a nonempty admissible class remains (a concrete instance in `PlasmaLean/Sanity/`, found with `plasmalean-examples-counterexamples` when it is not obvious), that the chosen norm is the one advertised, and that boundary terms and symmetry modes have not disappeared through an unjustified restriction. A stability theorem on a finite subspace must retain that scope in its name.
 
 Deliver the source locator, declaration names, assumptions, compiled checks, useful sanity theorems, remaining dependencies, and the next target. Label sketches and unformalized source results separately from verified library code.
 

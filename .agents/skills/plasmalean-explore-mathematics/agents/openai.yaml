@@ -1,0 +1,4 @@
+interface:
+  display_name: "Explore a question"
+  short_description: "Find questions, examples and stress-tested conjectures on an open problem"
+  default_prompt: "Use $plasmalean-explore-mathematics to explore this question and write a research brief."

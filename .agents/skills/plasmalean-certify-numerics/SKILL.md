@@ -24,7 +24,7 @@ Parse decimal coefficients as exact rationals or explicitly bounded measurements
 - **KAM:** check nondegeneracy, regularity, residual, and all small denominators through a theorem. Use exact arithmetic structure for an infinite Diophantine statement; a finite resonance scan is insufficient.
 - **Materials:** bound empirical coefficients on their valid envelope and quantify every operating state in the claimed range.
 
-Use the inequalities and soundness targets in `05-verified-numerics.md`. Failure to close a bound is an unresolved certificate, not evidence of physical instability.
+Use the inequalities and soundness targets in `05-verified-numerics.md`. Failure to close a bound is an unresolved certificate, not evidence of physical instability. When a route needs an analytic lemma that is not yet available, such as a remainder bound, a contraction estimate or a coverage argument, work it out with `plasmalean-try-to-prove` before building the checker. When numerics suggest that the property fails, make the counterexample exact with `plasmalean-examples-counterexamples`.
 
 ## Build a small sound checker
 
@@ -37,7 +37,7 @@ Define certificate data independently of the search algorithm. Prove a theorem o
 
 Generators validate every emitted bound with exact rational arithmetic before writing Lean (round outward, recompute, assert; see `scripts/gc_kam/lamcell/validate.py`).
 
-Test valid and invalid certificate fixtures, including missing coverage, zero denominators, altered coefficients, omitted tail bounds, and contradictory intervals. Build the affected modules within the laptop budget (at most 12 GB of Lean memory at a time; heavy modules alone; record CPU, peak memory and private olean size) and inspect axioms of the public soundness theorem. Heavy searches and first builds go to the workstation (`Workstation.md`, `plasmalean-workstation-update`); the workstation's job is a smaller certificate, not a bigger proof.
+Test valid and invalid certificate fixtures, including missing coverage, zero denominators, altered coefficients, omitted tail bounds, and contradictory intervals (`plasmalean-examples-counterexamples` helps design the rejected ones). Build the affected modules within the laptop budget (at most 12 GB of Lean memory at a time; heavy modules alone; record CPU, peak memory and private olean size) and inspect axioms of the public soundness theorem. Heavy searches and first builds go to the workstation (`Workstation.md`, `plasmalean-workstation-update`); the workstation's job is a smaller certificate, not a bigger proof.
 
 Report certified quantities and margins, the assumptions supplied by other theorems or law instances, arithmetic/truncation uncertainty, physical-data uncertainty, and remaining model discrepancy. Attach the candidate's identity to the result so a later coil or profile change cannot reuse its certificate accidentally.
 

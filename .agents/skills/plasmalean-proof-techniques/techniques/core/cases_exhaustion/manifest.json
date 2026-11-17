@@ -1,0 +1,6 @@
+{
+  "name": "Cases and Exhaustion",
+  "area": "Core Logic",
+  "keywords": ["cases", "case split", "exhaustion", "finite cases", "parity", "residue classes", "sign cases"],
+  "path": "techniques/core/cases_exhaustion/TECHNIQUE.md"
+}

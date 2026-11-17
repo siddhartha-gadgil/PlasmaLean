@@ -1,0 +1,6 @@
+{
+  "name": "Induction, Minimal Counterexample, and Descent",
+  "area": "Induction/Well-Founded Reasoning",
+  "keywords": ["induction", "strong induction", "structural induction", "minimal counterexample", "infinite descent", "well-founded"],
+  "path": "techniques/induction/induction_and_descent/TECHNIQUE.md"
+}

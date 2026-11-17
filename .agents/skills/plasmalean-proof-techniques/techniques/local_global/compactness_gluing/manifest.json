@@ -1,0 +1,6 @@
+{
+  "name": "Compactness and Local-to-Global Gluing",
+  "area": "Topology/Geometry/Logic",
+  "keywords": ["compactness", "local-to-global", "gluing", "open cover", "finite subcover", "finite intersection property", "sheaf"],
+  "path": "techniques/local_global/compactness_gluing/TECHNIQUE.md"
+}

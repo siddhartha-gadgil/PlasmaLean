@@ -1,0 +1,33 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "InformalVerification",
+  "type": "object",
+  "properties": {
+    "is_sound": { "type": "boolean" },
+    "flaws_found": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "potential_flaw": { "type": "string" },
+          "severity": { "type": "string", "enum": ["minor", "major", "fatal"] },
+          "recommendation": { "type": "string" }
+        },
+        "required": ["potential_flaw", "severity"]
+      }
+    },
+    "sanity_check_passed": { "type": "boolean" },
+    "research_status": {
+      "type": "string",
+      "enum": ["supported", "refuted", "needs_hypotheses", "open"]
+    },
+    "examples_checked": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "counterexample_candidate": {
+      "type": "string"
+    }
+  },
+  "required": ["is_sound", "sanity_check_passed"]
+}

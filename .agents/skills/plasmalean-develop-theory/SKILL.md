@@ -77,6 +77,9 @@ requests.
 - **Discussion**: engage with the mathematics, physics or source. Record durable conclusions,
   objections, sources and new subquestions in the graph when they affect future work (skill
   `plasmalean-add-note`).
+- **`try to prove <claim>`** or **`explore <question>`**: use `plasmalean-try-to-prove` or
+  `plasmalean-explore-mathematics`. They run `plasmalean-reasoning-loop`, which writes its work to
+  a task folder under `notes/reasoning/` and registers the outcome in the graph at the end.
 - **`keep working`**: autonomous mode. Continue across work units without asking the user to pick
   after each one. Use sub-agents for independent ready tasks or independent attacks on a hard
   question when this improves progress.
@@ -87,7 +90,10 @@ Prefer sub-agents when at least two substantial tasks can proceed independently:
 review, counterexample search, Mathlib reconnaissance, numerical exploration (untrusted oracles),
 proof attempts, an independent kernel/specification audit (the plan's lane E). Give each a precise
 item ID, inputs, output format, the specialized skill to use, and a non-overlapping scope. The
-prompt template is in the plan, §7.
+prompt template is in the plan, §7. Independent proof attempts and explorations suit sub-agents
+well: give each its own `plasmalean-try-to-prove` or `plasmalean-explore-mathematics` task, so
+that each writes to its own task folder under `notes/reasoning/` (its own files, per the
+ownership rule below).
 
 - **File ownership.** All agents share the checkout. Assign each agent its own new files and
   namespace (`PlasmaLean.<X>`); no two agents edit the same file. Shared files (`PlasmaLean.lean`,
@@ -136,7 +142,10 @@ arithmetic before writing Lean.
 
 1. Verify the dependency status of the item and choose one coherent outcome.
 2. Route to the method:
-   - `plasmalean-discover-theory`: an open mathematical gap (conjecture, proof, counterexample);
+   - `plasmalean-discover-theory`: an open mathematical gap (conjecture, proof, counterexample),
+     with `plasmalean-reasoning-loop` (through `plasmalean-try-to-prove` or
+     `plasmalean-explore-mathematics`) for a structured proof attempt or conjecture search on one
+     claim;
    - `plasmalean-formalize-theory`: a complete sourced theorem or proof to put in Lean;
    - `plasmalean-audit-domain`: model and specification risk, kernel changes, claim review;
    - `plasmalean-certify-numerics`: a numerical candidate to turn into a certificate;
@@ -173,7 +182,8 @@ than mechanically:
 
 - a prerequisite that unlocks several important notes or questions;
 - a validity gap on the path to an active goal (an open audit finding, a supplied reduction);
-- an inexpensive counterexample test for a risky conjecture;
+- an inexpensive counterexample test for a risky conjecture, with
+  `plasmalean-examples-counterexamples`;
 - a lean-ready theorem that advances the verified frontier (theory before one-off certificates);
 - a research note likely to make a blocked question precise.
 

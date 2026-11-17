@@ -1,0 +1,38 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "ExploratoryProbe",
+  "type": "object",
+  "properties": {
+    "target_question": { "type": "string" },
+    "probe_type": {
+      "type": "string",
+      "enum": ["example_search", "counterexample_search", "specialization", "generalization", "analogy", "source_check"]
+    },
+    "cost": {
+      "type": "string",
+      "enum": ["low_cost", "medium_cost", "high_cost"]
+    },
+    "procedure": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "evidence": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "examples_constructed": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "counterexamples_constructed": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "tentative_conclusion": {
+      "type": "string",
+      "enum": ["supports", "refutes", "inconclusive", "needs_source_study", "yields_new_question"]
+    },
+    "next_probe": { "type": "string" }
+  },
+  "required": ["target_question", "probe_type", "cost", "procedure", "evidence", "tentative_conclusion"]
+}

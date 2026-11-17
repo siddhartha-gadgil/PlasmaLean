@@ -1,0 +1,4 @@
+interface:
+  display_name: "Try to prove a claim"
+  short_description: "Structured proof attempt on a precise claim with the reasoning loop"
+  default_prompt: "Use $plasmalean-try-to-prove to attempt a proof of this claim."

@@ -1,0 +1,42 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "ExampleCounterexampleConstruction",
+  "type": "object",
+  "properties": {
+    "target_statement": { "type": "string" },
+    "purpose": {
+      "type": "string",
+      "enum": ["theorem_sanity_check", "conjecture_testing", "hypothesis_necessity", "boundary_case", "definition_model", "counterexample_search"]
+    },
+    "constraints": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "examples": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": { "type": "string" },
+          "construction": { "type": "string" },
+          "classification": {
+            "type": "string",
+            "enum": ["supporting_example", "counterexample", "boundary_case", "sharpness_example", "inconclusive_test"]
+          },
+          "hypothesis_check": {
+            "type": "array",
+            "items": { "type": "string" }
+          },
+          "conclusion_check": { "type": "string" },
+          "lesson": { "type": "string" }
+        },
+        "required": ["name", "construction", "classification", "hypothesis_check", "conclusion_check", "lesson"]
+      }
+    },
+    "workflow_recommendation": {
+      "type": "string",
+      "enum": ["continue_proof", "revise_statement", "add_hypothesis", "switch_to_research", "abandon_false_statement", "run_more_examples"]
+    }
+  },
+  "required": ["target_statement", "purpose", "constraints", "examples", "workflow_recommendation"]
+}

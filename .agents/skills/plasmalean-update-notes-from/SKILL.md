@@ -83,6 +83,42 @@ For each relevant claim:
    - lean-ready or not;
    - novelty only as far as is known; do not overstate it.
 
+### Use the reasoning tools
+
+Analyse each substantive theorem, proof, conjecture or example with the discovery skills, rather
+than only summarizing it:
+
+- **Source study.** Follow `../plasmalean-reasoning-loop/phases/03-source-study.md` for each
+  important result: map which hypothesis justifies which step of the proof, find what breaks when
+  a key hypothesis is dropped, ask whether hypotheses can be weakened, state the core idea in one
+  to three sentences, and list the source's examples and counterexamples with the hypothesis each
+  tests.
+- **Techniques.** Identify the proof technique of each argument with
+  `plasmalean-proof-techniques`, and record it in the assessment note so that later proof attempts
+  can reuse it. If the source relies on a reusable technique missing from the registry, propose
+  adding it.
+- **Examples and counterexamples.** Use `plasmalean-examples-counterexamples` to check the
+  source's examples against the project's exact definitions and conventions (units, Fourier and
+  flux conventions, current orientation), and to test stated results on degenerate and boundary
+  cases before mapping them onto existing claims.
+- **Stress tests.** For a conjecture, a proof sketch, or a result whose hypotheses look incomplete
+  or differ from the project's model, run
+  `../plasmalean-reasoning-loop/phases/10-conjecture-stress-test.md` and record its
+  classification: `plausible`, `refuted`, `needs_extra_hypotheses`, `known_or_near_known` or
+  `open`.
+
+Keep this analysis in a task folder `notes/reasoning/<YYYY-MM-DD>-source-<slug>/`, with a
+`README.md` task card listing the sources, `02_literature_review.md`, and `02_examples.md` or
+`04_research_trace.md` when examples or stress tests were run, following the layout in
+`plasmalean-reasoning-loop`. The source-assessment note summarizes the conclusions and links to
+this folder for the detailed analysis. For a short source with only one or two claims, the
+analysis may go directly in the assessment note instead.
+
+Do not run full proof attempts or explorations as part of this workflow. When a source claim
+needs a proof, a repaired statement or further exploration, record it and offer it as a next
+choice: `plasmalean-try-to-prove` for a precise claim, `plasmalean-explore-mathematics` for an
+open direction.
+
 ## 4. Plan the note changes
 
 Always create a **source-assessment note** (Kind: `source assessment`), one per source or per
@@ -91,6 +127,8 @@ coherent batch. It contains:
 - a short summary of the source;
 - the extraction table;
 - the checks and their results;
+- the proof techniques, examples and stress-test classifications from the reasoning tools, with a
+  link to the analysis folder under `notes/reasoning/` when there is one;
 - a verdict per section or claim;
 - the resulting changes to the graph.
 
@@ -141,7 +179,10 @@ Then give the change table:
 The Result column is one of: edited in place, method note `N-…`, patch note `N-…`, new `Q-…`, or no
 change (with the reason).
 
-Finish with the commit hash and the ready next choices that the sources opened.
+Finish with the commit hash, the analysis folder, unresolved source gaps or disagreements, and the
+ready next choices that the sources opened, including suggested `plasmalean-try-to-prove` or
+`plasmalean-explore-mathematics` tasks. If the sources add nothing new, report that without
+manufacturing edits.
 
 ## Checklist
 
@@ -149,6 +190,8 @@ Finish with the commit hash and the ready next choices that the sources opened.
 - [ ] every source read in full; extraction table with kind and locator per claim
 - [ ] claims checked against compiled Lean, notes and audits; explicit content re-derived where
       cheap; contradictions investigated
+- [ ] source study, techniques, examples and stress tests for substantive claims; analysis folder
+      under `notes/reasoning/` linked
 - [ ] source-assessment note created
 - [ ] affected notes classified; in place only without implementation; method or patch notes
       otherwise

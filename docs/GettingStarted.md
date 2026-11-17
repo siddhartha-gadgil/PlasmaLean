@@ -281,6 +281,15 @@ preferred over generic requests, so that the agent reliably selects the project 
   active and blocked notes, open audit findings and ready choices.
 - **`work on N-…`**, **`work on G-…`** or **`work on Q-…`**: one work unit on that item. For a
   broad goal or question, the agent chooses and announces the nearest useful subnote.
+- **`try to prove …`**: a proof attempt on a precise claim, given in words, in LaTeX or as a
+  note or question (skill `plasmalean-try-to-prove`). It runs `plasmalean-reasoning-loop`:
+  deconstruction, triage, proof plans, execution with recursive sub-lemmas, verification in Lean
+  or informally, and metacognition, ending in a proof or a failure report with the precise
+  obstacle. Every artifact goes in a task folder under `notes/reasoning/`.
+- **`explore …`**: an open-ended question (skill `plasmalean-explore-mathematics`): ranked
+  research questions, probes, examples and counterexamples, and stress-tested conjectures, ending
+  in a research brief. It uses the same loop and task folders, and switches to a proof attempt
+  when a precise theorem emerges.
 - **`discuss …`**: explore an idea, source or objection. Durable outcomes become notes and
   dependency edges.
 - **`add a note`** / **`make a note`** / **`record this`**: record a result, failure, source
@@ -291,7 +300,9 @@ preferred over generic requests, so that the agent reliably selects the project 
 - **`update notes from <files>`**: the same, driven by theory source files. The agent analyses
   them claim by claim, checks each claim against the compiled code and the notes, writes a
   source-assessment note, then updates the notes by the same rule (skill
-  `plasmalean-update-notes-from`).
+  `plasmalean-update-notes-from`). The analysis uses the reasoning tools: source study of each
+  proof, the techniques it uses, checks of its examples and counterexamples, and stress tests of
+  conjectures, kept in a task folder under `notes/reasoning/`.
 - **`keep working`**: autonomous mode. The agent repeatedly chooses the highest-value ready item,
   develops or formalizes it, updates the graph and continues, with concise progress updates. It
   stops when a real user decision is needed, nothing useful is ready, authorization is needed, or

@@ -1,0 +1,62 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "ResearchSynthesis",
+  "type": "object",
+  "properties": {
+    "theme": { "type": "string" },
+    "established_facts": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "candidate_theorems": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "statement": { "type": "string" },
+          "status": {
+            "type": "string",
+            "enum": ["plausible", "needs_extra_hypotheses", "open", "known_or_near_known"]
+          },
+          "evidence": {
+            "type": "array",
+            "items": { "type": "string" }
+          },
+          "missing_obligations": {
+            "type": "array",
+            "items": { "type": "string" }
+          }
+        },
+        "required": ["statement", "status", "evidence", "missing_obligations"]
+      }
+    },
+    "refuted_candidates": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "example_ledger": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "example": { "type": "string" },
+          "role": {
+            "type": "string",
+            "enum": ["supporting_example", "counterexample", "boundary_case", "sharpness_example", "inconclusive_test"]
+          },
+          "lesson": { "type": "string" }
+        },
+        "required": ["example", "role", "lesson"]
+      }
+    },
+    "open_questions": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "recommended_next_steps": {
+      "type": "array",
+      "items": { "type": "string" }
+    }
+  },
+  "required": ["theme", "established_facts", "candidate_theorems", "open_questions", "recommended_next_steps"]
+}

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Mathematical reasoning loop"
+  short_description: "Deconstruct, plan, execute, verify and reflect on one proof or exploration"
+  default_prompt: "Use $plasmalean-reasoning-loop to run a structured proof attempt on this note."

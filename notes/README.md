@@ -26,6 +26,9 @@ notes (skills `plasmalean-add-note`, `plasmalean-modify-notes`;
 - [`goals/`](goals/README.md): [`method.md`](goals/method.md), how to choose and state goals and
   questions (generic guidance with PlasmaLean examples), and the G-3 proposals (model adequacy,
   probabilistic goals) (N-22).
+- [`reasoning/`](reasoning/README.md): one folder per proof attempt or exploration run by the
+  `plasmalean-try-to-prove` and `plasmalean-explore-mathematics` skills (and per source analysis
+  of `plasmalean-update-notes-from`).
 - [`design/`](design/vacuum-demonstrator.md): the vacuum demonstrator fixture and its boundary (N-23).
 - Active topic notes: `pde-bounds-and-verification-roadmap.md` (N-18, stages and milestones),
   `bkm-regularity-and-perelman-burn-bounds.md` (N-19, corrected evolution specification, plan §11),

@@ -2005,3 +2005,22 @@ peak above 3 GB. Up to 3 light modules may build at once within the total. This 
   entry points depend only on `propext`, `Classical.choice` and `Quot.sound` (423 on all three,
   1 on `propext` and `Quot.sound`, 2 on `propext` alone).
 - **Not run:** on-demand top modules, which are outside `PlasmaLean.lean`.
+
+### Reasoning-loop skills from LeanTheory, 17 November 2026
+
+- **New skills** (adapted from the LeanTheory template, commit `97e5862`): `plasmalean-try-to-prove`
+  (`try to prove …`) and `plasmalean-explore-mathematics` (`explore …`) run
+  `plasmalean-reasoning-loop` (deconstruct, triage, source study, strategy or probes, execute,
+  verify, metacognition, stress tests, synthesis), supported by
+  `plasmalean-examples-counterexamples` and `plasmalean-proof-techniques` (16 generic techniques;
+  plasma-specific ones such as energy principles, comparison/Riccati arguments and certificate
+  reductions are to be added as they recur).
+- **Task folders:** every attempt writes to `notes/reasoning/<YYYY-MM-DD>-<slug>/`; Lean drafts in
+  its `lean/` are checked within the 12 GB laptop budget. Outcomes are registered with
+  `plasmalean-add-note`; evidence states are unchanged (proof-ready, lean-ready; verified only after
+  promotion into `PlasmaLean/`).
+- **Wiring:** develop-theory (routing, sub-agents, autonomous selection), discover-theory,
+  formalize-theory, audit-domain (sanity triad witnesses), certify-numerics, design-stellarator,
+  lean-proofs, add-note, modify-notes and update-notes-from (source study, techniques, examples and
+  stress tests in a `notes/reasoning/…-source-…` folder) now use the new skills; README,
+  GettingStarted, `notes/README.md` and the skills README document them.

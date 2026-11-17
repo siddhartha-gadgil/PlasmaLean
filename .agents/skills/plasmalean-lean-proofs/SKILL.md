@@ -13,6 +13,7 @@ Toolchain: Lean `v4.34.1`, Mathlib `v4.34.1` (see `lean-toolchain`, `lakefile.to
 - **`fun_induction f args`** is the right induction whenever the goal mentions a recursive function `f`. It produces one case per branch of `f` (including `if`/`match` branches) with the branch hypotheses and induction hypotheses already in place. Name the cases with `with | case1 … | case2 x xs ih => …`, or use `rename_i`. Combine it with `grind`/`simp [f]` per case.
 - Other standard tactics: `simp`/`simp only [...]`, `norm_num [defs]`, `positivity`, `linarith`/`nlinarith [hints]`, `gcongr`, `field_simp`, `ring`, `bound`, `fun_prop` (continuity and differentiability), `exact?`/`apply?` for searching.
 - Before unfolding definitions by brute force, search for a conceptual lemma (`rg` in `.lake/packages/mathlib`, `exact?`). Keep proofs readable: a short `have` chain is better than a long opaque `simp` call that breaks easily.
+- When a proof is stuck because the mathematical argument is missing or unclear, rather than because of tactics or API, stop searching for tactics. Work out the argument with `plasmalean-try-to-prove` or pick a technique from `plasmalean-proof-techniques`, and test a doubtful intermediate claim with `plasmalean-examples-counterexamples`; a statement that is false in a small case cannot be proved in Lean.
 
 Worked example (`PlasmaLean/SubsetSum.lean`):
 

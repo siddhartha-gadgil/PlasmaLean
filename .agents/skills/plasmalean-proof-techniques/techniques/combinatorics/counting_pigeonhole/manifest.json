@@ -1,0 +1,6 @@
+{
+  "name": "Counting, Double Counting, and Pigeonhole",
+  "area": "Combinatorics",
+  "keywords": ["counting", "double counting", "pigeonhole", "finite set", "cardinality", "incidence", "combinatorics"],
+  "path": "techniques/combinatorics/counting_pigeonhole/TECHNIQUE.md"
+}

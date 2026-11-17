@@ -1,0 +1,22 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "LeanVerification",
+  "type": "object",
+  "properties": {
+    "lean_code": { 
+      "type": "string", 
+      "description": "The generated Lean 4 code block using declarative style." 
+    },
+    "compiler_status": { 
+      "type": "string", 
+      "enum": ["success", "error", "not_run"] 
+    },
+    "error_analysis": { 
+      "type": "string" 
+    },
+    "is_sound": { 
+      "type": "boolean" 
+    }
+  },
+  "required": ["lean_code", "compiler_status", "is_sound"]
+}

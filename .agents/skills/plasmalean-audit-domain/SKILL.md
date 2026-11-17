@@ -45,7 +45,9 @@ Prioritize the kernel (`PlasmaLean/Kernel/`: `Equilibrium`, `Slab`, `ThermalSlab
    0`); hidden classical choices; missing bounds; wrong quantifier order (`∀ parameter, ∃ state`
    versus `∃ state, ∀ parameter`); unit or normalization errors (SI versus model units, Fourier and
    flux conventions, current orientation); accidental weakening; a hypothesis equivalent to the
-   conclusion inside a law bundle.
+   conclusion inside a law bundle. Construct the witnesses explicitly with
+   `plasmalean-examples-counterexamples`: an object satisfying a contract that should fail it, or
+   a degenerate object that makes a law vacuous, is a finding.
 4. **Statements match claims.** Check that exported theorems state the advertised model, domain,
    regularity, boundary conditions, norm, parameter range and time horizon, and whether solutions
    are constructed or supplied (for example `solovev_one_plasma_actual` supplies the transport
@@ -157,7 +159,10 @@ magnetic axis, `R = 0`, vanishing `|B|`), boundary behaviour (degenerate axis, e
 data), symmetry or equivariance, conservation or monotonicity, dimensional scaling, parameter
 endpoints, quantifier order, nonempty domains, or another independent characterization. Expect more
 than one when the law has several hazards; never stop because a quota is met. **Add a compiled
-regression theorem for every defect found during an audit.**
+regression theorem for every defect found during an audit.** Use
+`plasmalean-examples-counterexamples` to find the degenerate case, instance, counterexample and
+adversarial witnesses; when a needed sanity theorem is mathematically non-trivial, work it out
+with `plasmalean-try-to-prove` before writing the Lean proof.
 
 For each new definition also prove characterizing properties and a meaningful limiting case. For
 each certificate format, an accepted and a rejected fixture. Diagnose inconsistent or vacuous

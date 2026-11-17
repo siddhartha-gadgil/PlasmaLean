@@ -222,6 +222,13 @@ skills (`.agents/skills/`, entry point `plasmalean-develop-theory`) understand a
 - **`work on G-…`, `Q-…`, `N-…`** or a topic: one coherent work unit on that item (literature,
   discovery, counterexample search, numerics, proof or Lean formalization), followed by an update of
   the notes and the plan.
+- **`try to prove <claim>`**: a structured proof attempt on a precise claim (skill
+  `plasmalean-try-to-prove`, running `plasmalean-reasoning-loop`), ending in a proof, checked in
+  Lean drafts where possible, or a failure report with the precise obstacle.
+- **`explore <question>`**: an open-ended investigation (skill `plasmalean-explore-mathematics`):
+  ranked questions, probes, examples and counterexamples, and stress-tested conjectures, ending
+  in a research brief. Both keep their work in a task folder under `notes/reasoning/`, supported by
+  `plasmalean-examples-counterexamples` and `plasmalean-proof-techniques`.
 - **`keep working`**: autonomous mode; the agent repeatedly picks the most valuable ready item and
   continues until a user decision is needed or nothing useful is ready.
 - **`add a note`** (or **`make a note`**, **`record this`**): record the outcome of a discussion, result,
@@ -234,8 +241,9 @@ skills (`.agents/skills/`, entry point `plasmalean-develop-theory`) understand a
 - **`update notes from <files>`**: the same, with the changes coming from given theory sources
   (papers, a colleague's brief, drafts, Lean files from elsewhere). The agent reads them in full,
   extracts each claim with its kind and locator, checks it against the compiled Lean code and the
-  notes (re-deriving explicit formulas where cheap), records a source-assessment note, and then
-  updates the notes by the same rule (skill `plasmalean-update-notes-from`).
+  notes (re-deriving explicit formulas where cheap) and with the reasoning tools (source study,
+  techniques, examples, stress tests), records a source-assessment note, and then updates the notes
+  by the same rule (skill `plasmalean-update-notes-from`).
 - **`update from workstation`**: review, re-check and merge workstation runs (skill
   `plasmalean-workstation-update`); the workstation can run an unattended poller that executes the
   commands the laptop queues in `scripts/workstation/next.sh`.

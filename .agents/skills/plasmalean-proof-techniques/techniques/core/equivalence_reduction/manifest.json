@@ -1,0 +1,6 @@
+{
+  "name": "Equivalence and Reduction",
+  "area": "Core Logic",
+  "keywords": ["equivalence", "iff", "if and only if", "reduction", "reduce to", "known theorem", "normal form"],
+  "path": "techniques/core/equivalence_reduction/TECHNIQUE.md"
+}
