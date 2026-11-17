@@ -42,7 +42,7 @@ and C5.
 
 1. Choose the next achievable gate in `08-roadmap.md`.
 2. Parameterize axis, surfaces, coils, currents, tape orientation, and operating profiles with explicit units and symmetry conventions.
-3. Use theory to reduce the search space and derive sufficient conditions. Prove a candidate sufficient condition with `plasmalean-try-to-prove`, and explore an open design question or a conjectured tradeoff with `plasmalean-explore-mathematics`. Use SIMSOPT, DESC, VMEC, SPEC, or another documented solver as a candidate generator appropriate to the model.
+3. Use theory to reduce the search space and derive sufficient conditions. Prove a candidate sufficient condition with `plasmalean-try-to-prove`, and explore an open design question or a conjectured tradeoff with `plasmalean-explore-mathematics`. When the design is exact data that must satisfy provable constraints while optimizing a figure of merit (a certified margin, a separation), search for it with `plasmalean-evolve-optimize`; its result is a candidate with exact data and proved constraints (at least L1), not a verified design until promoted into `PlasmaLean/Design/`. Use SIMSOPT, DESC, VMEC, SPEC, or another documented solver as a candidate generator appropriate to the model.
 4. Check implementation/version-specific conventions. Keep nested-surface and island/stepped-pressure models distinct; supply the finite-pressure plasma-current field when mapping coils to equilibrium.
 5. Optimize physically meaningful objectives and retain hard constraints separately. An objective penalty or its optimum is not a proof of feasibility.
 6. Generate and check the exact geometric, equilibrium, stability, orbit, thermal, stress, magnet, and lifetime certificates needed at the selected gate.

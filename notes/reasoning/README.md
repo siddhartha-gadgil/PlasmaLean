@@ -15,6 +15,11 @@ analysis of `plasmalean-update-notes-from` (`<YYYY-MM-DD>-source-<slug>/`). Fold
   `computations/`: exploratory scripts and their outputs; `subtasks/`: recursive loops on hard
   lemmas.
 
+Evolutionary searches (`plasmalean-evolve-optimize`) use folders `<YYYY-MM-DD>-evolve-<slug>/`,
+which also hold the files of `scripts/evolve/evolve.py`: `problem.json`, `context.lean`,
+`generations/` with the candidates, results, analyses and populations of each generation,
+`population.json`, `best/`, `archive.jsonl` and the cumulative `insights.md`.
+
 A task's outcome is linked into the research graph in `../implementation-plan.md` when it ends
 (skill `plasmalean-add-note`). Its evidence state follows `../note-template.md` and
 `../domain-libraries.md`: an informal proof is proof-ready, a checked Lean draft is lean-ready,

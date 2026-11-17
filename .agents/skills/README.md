@@ -19,8 +19,12 @@ with its display name and default prompt.
 | `plasmalean-try-to-prove` | `try to prove …`: a proof attempt on a precise claim, running `plasmalean-reasoning-loop` in problem-solving mode |
 | `plasmalean-explore-mathematics` | `explore …`: an open-ended question, running `plasmalean-reasoning-loop` in exploratory mode to find questions and stress-tested conjectures |
 | `plasmalean-reasoning-loop` | the reasoning loop behind both: deconstruct, triage, strategy or probes, execute, verify, metacognition and termination, with all artifacts in a task folder under `notes/reasoning/` |
-| `plasmalean-examples-counterexamples` | constructing examples, boundary cases and counterexamples to test statements, hypotheses, definitions and kernel laws (the sanity triad) |
+| `plasmalean-examples-counterexamples` | constructing examples, boundary cases, counterexamples and existence witnesses to test statements, hypotheses, definitions and kernel laws (the sanity triad); assesses whether an evolutionary search could find the object and launches one in parallel |
 | `plasmalean-proof-techniques` | a library of proof techniques with a registry and worked examples, used when planning proofs |
+| `plasmalean-evolve-optimize` | `evolve …` or `optimize … subject to …`: evolutionary search (AlphaEvolve pattern) for a term with proved constraints and an optimal measure, checked on the task server; population, analysis, generation by sub-agents, evaluation, selection |
+| `plasmalean-ensure-theory-server` | before using the task server: check that `theory_server` is running, start it (library up to date, memory free) and wait until it is ready |
+| `plasmalean-check-compilation` | checking whether Lean code compiles on the task server (task `check`) without changing its environment, for example search candidates |
+| `plasmalean-evaluate-on-server` | evaluating terms on the task server (task `eval`), optionally after defining functions, without changing its environment |
 | `plasmalean-certify-numerics` | turning a numerical candidate into a kernel-checked certificate (exact arithmetic, validated enclosures, remainder bounds, KAM hypotheses, quadrature) |
 | `plasmalean-design-stellarator` | advancing a stellarator candidate through verified gates with composed certificates; coil or boundary optimization, tradeoffs, tolerance studies |
 | `plasmalean-model-materials` | coils, tape strain, quench, thermal and mechanical loads, plasma-facing materials, neutronics, lifetime and maintenance constraints |
@@ -33,7 +37,8 @@ with its display name and default prompt.
 Shared rules: Lean declarations are the validity gate (only compiled declarations count as
 established; on-demand modules are spot-checked under the workstation policy); at most 12 GB of
 Lean memory at a time (heavy modules alone, up to 3 light ones at once; stale dependencies by
-frontier, never through one `lake build Top`); heavy numerics on the workstation; update the
+frontier, never through one `lake build Top`; the task server holds about 9 GB while it runs);
+heavy numerics on the workstation; update the
 notes and the plan after every work unit, including failures.
 
 Worked references: `PlasmaLean/Kernel/Equilibrium.lean` with `PlasmaLean/Sanity/Equilibrium.lean`

@@ -2034,3 +2034,27 @@ peak above 3 GB. Up to 3 light modules may build at once within the total. This 
   local obstructions and necessity (`VacuumField.not_closed_fieldLine_minB`,
   `quasisymmetry_not_pde_symmetry`, Sturm necessity); composition on a common witness
   (`compose_branch`, `incompatible_witnesses`).
+
+### Task server and evolutionary search from LeanTheory, 17 November 2026
+
+- **Lean:** `PlasmaLean/ResponseExt.lean` (`@[response "task"]` handlers), `PlasmaLean/Elaborate.lean`
+  (elaborating code from strings) and `PlasmaLean/TaskHandlers.lean` (tasks `check`, `eval`,
+  `assess`), from LeanTheory `72e8608`–`406a45b`, now in the default build (imported by
+  `PlasmaLean.lean`); executables `theory_loop` (JSON lines) and `theory_server` (HTTP on
+  127.0.0.1, web page with PlasmaLean examples such as `PlasmaLean.Transport.svFloorF 10`).
+  The executables import only `PlasmaLean.TaskHandlers` at build time and load `Mathlib` and the
+  built `PlasmaLean` at run time, so building them never rebuilds the library.
+- **Checks:** all three modules and both executables build on Lean v4.34.1 with no warnings;
+  `scripts/check_axioms.lean` passed (77 s, peak 5.9 GB); `check`, `eval`, `elab_term`,
+  `elab_defs`, `assess` and `/reset` tested on the server and on `theory_loop`; the toy
+  evolution example ran end to end (optimum 40 found, a `sorry` candidate rejected, a candidate
+  using a PlasmaLean function measured and validated).
+- **Memory:** the server holds 9.3 GB resident (7.2 GB memory-mapped oleans, 2.1 GB heap) and
+  is ready in about 50 s. It counts against the 12 GB laptop budget; `ensure_server.sh` refuses
+  a stale library (a stale root misses the task handlers) and checks free memory.
+- **Skills:** new `plasmalean-ensure-theory-server`, `plasmalean-check-compilation`,
+  `plasmalean-evaluate-on-server`, `plasmalean-evolve-optimize` (scripts `scripts/theory_server/`,
+  `scripts/evolve/evolve.py`); `plasmalean-examples-counterexamples`, the existence technique and
+  the strategy phase of the reasoning loop now assess and launch evolutionary witness searches;
+  develop-theory, design-stellarator, audit-domain and lean-proofs updated (resource rule for the
+  server; new libraries must reach the executables' `importModules`).

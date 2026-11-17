@@ -1,0 +1,4 @@
+interface:
+  display_name: "Evolve with proved constraints"
+  short_description: "Evolutionary search for a Lean term with proved constraints and an optimal measure"
+  default_prompt: "Use $plasmalean-evolve-optimize to search for a candidate optimizing this measure subject to these constraints."

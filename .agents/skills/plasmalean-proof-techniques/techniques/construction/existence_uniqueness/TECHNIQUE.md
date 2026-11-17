@@ -9,6 +9,7 @@
 2. **Construct or Source a Witness:**
    - Explicit construction: define the object.
    - Nonconstructive existence: identify the theorem, compactness, choice, counting, or contradiction argument that supplies it.
+   - Search for a witness: when the witness is a concrete object (finite data or a short program) and none is known, assess whether an evolutionary search could find one, following "Consider an evolutionary search" in the `plasmalean-examples-counterexamples` skill, and if so launch it with a sub-agent in parallel while pursuing a construction or a nonconstructive argument by hand. A witness found this way comes with Lean proofs of its properties.
 3. **Verify Properties:** Check each conjunct or defining property of the witness.
 4. **Uniqueness:** Assume two objects satisfy the property and prove they are equal or equivalent in the required sense.
 5. **Package the Result:** For `exists unique`, present existence first and uniqueness second.

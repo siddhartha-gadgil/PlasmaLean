@@ -17,6 +17,11 @@ current target.
    - example check: two or three examples or boundary cases that a plan must explain. If a
      counterexample appears valid, stop and recommend revising the statement instead of drafting
      a proof.
-4. **Draft Plan A and Plan B**, incorporating the selected technique fragments. Label every step
+4. **Witness searches.** If the goal is an existence statement, or a plan step needs a concrete
+   object (a witness, an extremal example or a counterexample), assess an evolutionary search as
+   in `plasmalean-examples-counterexamples` ("Consider an evolutionary search"). If it is
+   promising, launch it with a sub-agent in parallel, record it in `<task>/log.md`, and let the
+   plans proceed meanwhile; integrate its witness when it reports.
+5. **Draft Plan A and Plan B**, incorporating the selected technique fragments. Label every step
    `easy`, `standard` or `hard`. A `hard` step will become a subtask.
-5. Save to `<task>/03_strategy_plans.md`. See `04-strategy-examples.md` for the expected style.
+6. Save to `<task>/03_strategy_plans.md`. See `04-strategy-examples.md` for the expected style.

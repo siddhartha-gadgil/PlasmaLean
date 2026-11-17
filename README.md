@@ -229,6 +229,14 @@ skills (`.agents/skills/`, entry point `plasmalean-develop-theory`) understand a
   ranked questions, probes, examples and counterexamples, and stress-tested conjectures, ending
   in a research brief. Both keep their work in a task folder under `notes/reasoning/`, supported by
   `plasmalean-examples-counterexamples` and `plasmalean-proof-techniques`.
+- **`evolve <problem>`** (or **`optimize … subject to …`**): an evolutionary search, in the
+  AlphaEvolve pattern, for a Lean term (exact data such as coefficients or coil parameters) that
+  satisfies constraints proved in Lean and maximizes or minimizes a measure (skill
+  `plasmalean-evolve-optimize`). Candidates are checked and measured on the **task server**
+  `theory_server` (`lake exe theory_server`, a local HTTP server with Mathlib and PlasmaLean
+  loaded; `scripts/theory_server/ensure_server.sh`), which also serves quick `check` and `eval`
+  requests and a web page for trying them. It holds about 9 GB while running, so it counts against
+  the laptop budget.
 - **`keep working`**: autonomous mode; the agent repeatedly picks the most valuable ready item and
   continues until a user decision is needed or nothing useful is ready.
 - **`add a note`** (or **`make a note`**, **`record this`**): record the outcome of a discussion, result,

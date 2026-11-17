@@ -65,6 +65,11 @@ Prioritize the kernel (`PlasmaLean/Kernel/`: `Equilibrium`, `Slab`, `ThermalSlab
    `scripts/check_axioms_heavy.lean` for on-demand top modules that are built. On-demand modules
    follow the workstation policy (spot-checked; `workstation/REVIEWED.md`). Record exactly what
    ran, failures, warnings and resource limitations; do not claim a check that did not run.
+   Check that the root module of every `[[lean_lib]]` in `lakefile.toml` reaches the task
+   executables: `theory_loop.lean` and `theory_server.lean` import `PlasmaLean.TaskHandlers` at
+   the top (so building them never rebuilds the library) and list `PlasmaLean` in their
+   `importModules` calls (`PlasmaLeanMeta` reaches them through `PlasmaLean`); a further library
+   must be added to both `importModules` lists. Record a missing library as a finding and fix it.
 7. **Audit record.** Record findings by severity, corrections, affected downstream results and
    the audited commit in the strict-audit table of `notes/implementation-plan.md`. An unresolved
    kernel finding blocks claims that depend on it.
@@ -78,7 +83,9 @@ After any kernel correction, re-run its sanity suite and re-audit all dependent 
    instances as hypotheses; never add a project axiom or an unproved universal instance.
 3. Keep source-dependent material data and model-validity envelopes separate from mathematical
    consequences.
-4. Prove sanity checks in `Sanity` and derived results in `Theory`.
+4. Prove sanity checks in `Sanity` and derived results in `Theory`. A new `[[lean_lib]]` must
+   also be added to the task executables (`theory_loop.lean`, `theory_server.lean`; see
+   `plasmalean-lean-proofs`).
 5. Put coefficient decoding, interval checkers and candidate importers in `Certificates` or
    `Bridge`; keep heuristic solvers and oracles (`scripts/`) outside the trusted theorem path.
 

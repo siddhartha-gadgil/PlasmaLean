@@ -80,6 +80,10 @@ requests.
 - **`try to prove <claim>`** or **`explore <question>`**: use `plasmalean-try-to-prove` or
   `plasmalean-explore-mathematics`. They run `plasmalean-reasoning-loop`, which writes its work to
   a task folder under `notes/reasoning/` and registers the outcome in the graph at the end.
+- **`evolve <problem>`** or **`optimize … subject to …`**: use `plasmalean-evolve-optimize`, an
+  evolutionary search for a term with proved constraints that optimizes a measure, checked on the
+  task server (`plasmalean-ensure-theory-server`), with its run in a task folder under
+  `notes/reasoning/`.
 - **`keep working`**: autonomous mode. Continue across work units without asking the user to pick
   after each one. Use sub-agents for independent ready tasks or independent attacks on a hard
   question when this improves progress.
@@ -124,6 +128,11 @@ exceeds the likely gain.
   build each with its own `lake build <M>` within the budget above, and repeat until nothing is
   stale. Check free memory first (`grep MemAvailable /proc/meminfo` on Linux/WSL,
   `memory_pressure` on macOS) and wait if it cannot hold the next job's expected peak.
+- **The task server** (`theory_server`, skill `plasmalean-ensure-theory-server`) holds about
+  9.3 GB resident while it runs (about 7 GB of it reclaimable memory-mapped `.olean` files). Count
+  it against the budget: beside it, at most one or two light builds; stop it
+  (`scripts/theory_server/stop_server.sh`) before a heavy module or the axiom check. Only one
+  server, and only one evolutionary search, at a time.
 - Heavy numerics (KAM families, ballooning searches, Chebyshev families) and first builds of large
   certificates go to the **workstation** (`Workstation.md`, `scripts/workstation/run.sh`, task
   scripts in `scripts/workstation/tasks/`). Its job is to find *smaller* certificates; results

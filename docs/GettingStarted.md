@@ -290,6 +290,14 @@ preferred over generic requests, so that the agent reliably selects the project 
   research questions, probes, examples and counterexamples, and stress-tested conjectures, ending
   in a research brief. It uses the same loop and task folders, and switches to a proof attempt
   when a precise theorem emerges.
+- **`evolve …`**: an evolutionary search, in the AlphaEvolve pattern, for a term of a given type
+  that satisfies constraints proved in Lean and maximizes or minimizes a measure (skill
+  `plasmalean-evolve-optimize`). Candidates are packages of the term and its proofs, checked and
+  measured on the task server (`scripts/theory_server/ensure_server.sh`, then
+  `http://127.0.0.1:8080/` for the web page). Each generation analyses why the best candidates
+  score well and why their proofs work, generates many new candidates with sub-agents, evaluates
+  and selects. The run lives in a task folder under `notes/reasoning/`. The server holds about
+  9 GB while it runs: stop it (`scripts/theory_server/stop_server.sh`) before heavy builds.
 - **`discuss …`**: explore an idea, source or objection. Durable outcomes become notes and
   dependency edges.
 - **`add a note`** / **`make a note`** / **`record this`**: record a result, failure, source

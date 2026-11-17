@@ -17,6 +17,22 @@ rev = "v4.34.1"
 [[lean_lib]]
 name = "PlasmaLean"
 
+# Reads tasks as JSON lines and answers them with the `@[response]` handlers of `PlasmaLean`
+# (`PlasmaLean/ResponseExt.lean`, `PlasmaLean/Elaborate.lean`, `PlasmaLean/TaskHandlers.lean`):
+# `lake exe theory_loop`. The executables import only `PlasmaLean.TaskHandlers` at build time,
+# so building them never rebuilds the whole library; at run time they load `Mathlib` and the
+# already-built `PlasmaLean` (bring it up to date by frontier first; see Workstation.md budget).
+[[lean_exe]]
+name = "theory_loop"
+root = "theory_loop"
+supportInterpreter = true
+
+# The same tasks over HTTP, with a web page for trying them: `lake exe theory_server [port]`.
+[[lean_exe]]
+name = "theory_server"
+root = "theory_server"
+supportInterpreter = true
+
 # `meta` code of the certificate builders, compiled to native code (`eval_cert` runs ≈ 10×
 # faster than in the interpreter). Only depends on Lean; imported by `PlasmaLean.Certificates`.
 [[lean_lib]]
