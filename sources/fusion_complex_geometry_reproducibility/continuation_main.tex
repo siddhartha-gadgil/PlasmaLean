@@ -1,0 +1,79 @@
+\documentclass[11pt]{article}
+\usepackage{amsmath,amssymb,hyperref}
+\begin{document}
+
+\section{Outcome and the common-configuration requirement}
+
+This note continues the Fusion project by constructing large exact vacuum-field families, giving two geometric reformulations, and proving new ideal-MHD and particle-confinement estimates. It does not establish a complete hot, stable stellarator with self-consistent collisional kinetics and physical sources and boundaries. The distinction matters because the positive results below currently use different configurations and different evolution equations.
+
+The algebraic family starts from the project's exact Dommaschk vacuum field. The original exact weakly quasisymmetric field is a different seed, with the previously established equilibrium obstruction. The weak-QS particle theorem cannot simply be attached to an arbitrary member of the vacuum family. The stable free-boundary equilibrium constructed below is on a periodic cylinder, whose Euclidean torus extension remains a specific unfinished theorem.
+
+The main completed results are as follows.
+\begin{enumerate}
+\item The exact Dommaschk potential is a real Laurent polynomial on a complex algebraic threefold. A null-conic construction supplies all homogeneous harmonic polynomials, and hence arbitrarily large finite-dimensional families of exact vacuum perturbations. A KAM argument preserves two nested invariant tori for every sufficiently small coefficient vector, using the nonzero normal twist in the existing project source. The coefficient threshold has not been numerically bounded here.
+\item A vacuum field has an exact Abelian Hermitian--Yang--Mills lift to a complex surface with the physical product metric. A separate Euclidean log-determinant quantity is positive and subharmonic, with quantitative derivative bounds. Both identities are static and have explicitly stated boundary conditions.
+\item A periodic cylindrical plasma has positive pressure and a strictly positive complete ideal-MHD interface energy for every Fourier mode in an explicit parameter window. The estimate includes the unfavorable curvature term and the zero mode, and is uniform in axial period. A different field branch has an explicit unstable resonant mode.
+\item For weak QS, an explicit quadratic-in-velocity correction cancels the first full-orbit momentum defect. This gives a finite-time hot-core theorem with a genuinely absorbing boundary and Maxwellian tails, conditional on an explicit geometric buffer inequality. The orbit identity has an exact relativistic extension. Self-consistent fields, Coulomb collisions and heating are additional terms, not hidden assumptions.
+\end{enumerate}
+
+\paragraph{Verification status.}
+The new mathematical arguments are written out below and have been checked algebraically and by independent cross-review. Exact rational symbolic calculations verify the converted vacuum potential and its symmetries. A separate rational certificate verifies the numerical Maxwellian lower bounds. These checks are not formal proofs of the whole research note.
+
+For the seed tori, the pinned project source is commit \texttt{6312f1cc9c30b32798ad7b7540766152ef03e76f}. All 227 project modules transitively imported by its nesting theorem were retrieved and matched their Git blob hashes. The source audit found no project axiom declarations, \texttt{sorry}, \texttt{admit}, \texttt{mkSorry}, \texttt{ofReduceBool}, or actual use of \texttt{native\_decide} in that closure. Final theorem assemblies discharge the intermediate residual hypotheses. Witness-evaluation code was distinguished from kernel-checked constructor proof terms. The Lean build and a kernel axiom printout were not rerun here; external Lean and Mathlib dependencies were not independently audited. Consequently the geometric family theorem explicitly uses the reported source theorems as inputs.
+
+\section{The auxiliary-PDE idea and the sign it must preserve}
+
+The relevant part of the OpenAI manuscript is a fiberwise quaternionic Monge--Ampère equation coupled to a positive conserved lifted wave current $A$. Its potential satisfies a prescribed fiber determinant. A corrected fiber energy then obeys an identity of the form
+\[
+\Delta_{(T,\tau)}F+\int A:\Sigma
+=\text{controlled boundary flux},\qquad \Sigma\ge0.
+\]
+The determinant/cofactor calculation cancels a term without a favorable sign. The resulting inequality is elliptic in physical time and two auxiliary real coordinates; it is not a monotone functional of physical time alone. Sections 2--4 and Proposition 4.2 were examined for this mechanism, without claiming a complete audit of the manuscript or its formalization.\cite{wave}
+
+For plasma, the analogous construction must respect the physical momentum balance and the actual loss boundary. A positive particle moment tensor is available, but it has a Lorentz-force divergence. Adding Maxwell stress restores a total conservation law while introducing an indefinite spatial stress. Choosing an auxiliary determinant does not by itself reconcile these two properties. Likewise, the determinant of a phase-space flow is insufficient: a volume-preserving flow can have determinant one while stretching strongly in one direction and contracting in another.
+
+The calculations below pursue three concrete alternatives: an exact gauge lift of the vacuum equations, a determinant of the physical Hessian, and a corrected particle invariant together with covariant derivatives. Their equations are explicit enough to identify which terms a further auxiliary-PDE construction must control. The cylindrical calculation adds a global positive boundary operator that could serve as the starting point for a geometric stability argument.
+
+\input{continuation_family.tex}
+\input{continuation_geometry.tex}
+\input{continuation_stability.tex}
+\input{continuation_kinetic.tex}
+
+\section{A concrete parameter illustration and the next mathematical target}
+
+Within the cylindrical ideal-MHD theorem only, take equal electron and ion number densities $n_e=n_i=10^{20}\,\mathrm{m}^{-3}$ and temperatures in energy units $\Theta_e=\Theta_i=12.5\,\mathrm{keV}$. Their ideal-gas pressure is
+\[
+p=n_e\Theta_e+n_i\Theta_i\simeq4.00544\times10^5\,\mathrm{Pa}.
+\]
+Set $B_i=5\,\mathrm T$ and define the dimensionless parameter by the exact relation $s=8\mu_0p/B_i^2$. The resulting values are approximately
+\[
+s\simeq0.16107,\quad \beta_{\rm plasma}=s/4\simeq0.04027,
+\quad B_e\simeq4.6883\,\mathrm T,\quad B_\theta\simeq2.0067\,\mathrm T.
+\]
+The theorem allows any wall satisfying
+\[
+1<b/a\le1+s/16\simeq1.01007.
+\]
+The proof uses the exact symbolic relations and inequalities, not these rounded decimal displays. This is a consistent hot ideal-MHD benchmark with a close ideal wall and a substantial interface current. It is not a parameter certificate for an embedded stellarator, a cold absorbing reactor wall, kinetic stability, or net fusion power.
+
+There are now two concrete geometric ways to continue. One is to search the exact harmonic family for a toroidal interface satisfying the explicit curvature feasibility inequalities, or to bound the full boundary operator directly when those inequalities fail. The other is to solve the toroidal Bernoulli shape equation by continuing the positive cylindrical branch, with estimates uniform in the axial period. The latter branch is particularly informative: its transverse field is first order in a small amplitude, its axial-field decrease is second order, and its pressure is positive at second order. The resonant counterexample shows why a generic positive first-order pressure shift is not a stability argument.
+
+Neither geometric route completes the kinetic problem. The same final configuration must also admit a self-consistent distribution, collision and wall-loss estimates, bounded electromagnetic perturbations, a specified heating/fueling/ash model, and an actual coil realization with certified errors. The corrected invariant and covariant derivatives provide terms to estimate in such a proof; they do not permit these requirements to be assumed.
+
+\section{Reproducibility contents}
+
+The accompanying source bundle contains this note's LaTeX sources, the original rational candidate data, the converted 121-monomial Laurent potential, the exact symbolic verification script, the rational Maxwellian-bound certificate, and the pinned source-dependency audit. The seed potential is specified completely by \texttt{dommaschk\_complex\_laurent.json}: each record contributes $(a+ib)u^p v^q z^j$ with exact rational strings. Its physical field is the Euclidean restriction of
+\[
+\frac{1}{2i}\left(\frac{du}{u}-\frac{dv}{v}\right)+dF_0.
+\]
+The field-family formula and basis theorem in this note specify every perturbation without numerical fitting. Running \texttt{complex\_vacuum\_exact\_check.py} with SymPy reproduces the vacuum and symmetry identities. Running \texttt{verify\_hot\_core\_constants.py} requires only the Python standard library and verifies rational lower bounds using alternating-series enclosures and integer square roots. Neither script claims to certify KAM radii, the actual weak-QS loss time, a toroidal free-boundary spectrum, or a nonlinear plasma evolution.
+
+\begin{thebibliography}{99}
+\bibitem{wave} OpenAI, \emph{Local smoothing for the Euclidean wave equation}, 25 October 2026, Sections 2--4 and Proposition 4.2. Primary manuscript: \url{https://github.com/openai/math/tree/main/preprints/Local-smoothing-for-the-Euclidean-wave-equation-October-25-2026}.
+\bibitem{dlL} R. de la Llave, A. González, A. Jorba and J. Villanueva, \emph{KAM theory without action-angle variables}, Nonlinearity 18 (2005), 855--895, Theorem 1 and Definition 2. \url{https://doi.org/10.1088/0951-7715/18/2/020}.
+\bibitem{hitchin} N. Hitchin, \emph{Monopoles and geodesics}, Communications in Mathematical Physics 83 (1982), 579--602. \url{https://doi.org/10.1007/BF01208717}.
+\bibitem{walsh} J. L. Walsh, \emph{The approximation of harmonic functions by harmonic polynomials and by harmonic rational functions}, Bulletin of the AMS 35 (1929), 499--544. \url{https://doi.org/10.1090/S0002-9904-1929-04753-0}.
+\bibitem{elps} A. Enciso, A. Luque and D. Peralta-Salas, \emph{MHD equilibria with nonconstant pressure in nondegenerate toroidal domains}, Journal of the European Mathematical Society. \url{https://doi.org/10.4171/JEMS/1410}.
+\bibitem{plasmalean} PlasmaLean project, source commit \texttt{6312f1cc9c30b32798ad7b7540766152ef03e76f}, especially \texttt{DommaschkKamAFinal}, \texttt{DommaschkKamCFinal}, \texttt{DommaschkKamNested}, and the admissibility/frame modules. \url{https://github.com/siddhartha-gadgil/PlasmaLean}.
+\end{thebibliography}
+\end{document}

@@ -1,0 +1,271 @@
+\section{Exact algebraic vacuum families and moving confinement domains}\label{exact-algebraic-vacuum-families-and-moving-confinement-domains}
+
+The following construction produces arbitrary-dimensional families of exact vacuum fields with nearby invariant magnetic boundaries. It also supplies new inputs to the positive-pressure weak MHD construction. The algebraic identities were independently checked in exact arithmetic. The seed torus theorems were inspected at source level; their Lean proofs were not independently rebuilt. No hot kinetic stability conclusion is drawn from these geometric statements.
+
+\subsection{The actual complexification and its real structure}\label{the-actual-complexification-and-its-real-structure}
+
+Put
+
+\[
+u=x+iy,\quad v=x-iy,\qquad
+X=(\mathbb C^*)^2\times\mathbb C_z,
+\qquad q=du\,dv+dz^2.
+\]
+
+Here the symmetric bilinear metric has entries \(q_{uv}=q_{vu}=1/2\). Its volume form, compatible with the usual orientation on the real locus, is \((i/2)du\wedge dv\wedge dz\), and
+
+\[
+\Delta_q=4\partial_u\partial_v+\partial_z^2,
+\qquad \nabla_q F=2F_v\partial_u+2F_u\partial_v+F_z\partial_z.
+\]
+
+The antiholomorphic involution is
+
+\[
+\rho(u,v,z)=(\overline v,\overline u,\overline z).
+\]
+
+Its fixed locus is Euclidean three-space with the vertical axis removed. In particular, the real form is not obtained by taking all three complex coordinates to be real.
+
+The locally defined angular potential and its global differential are
+
+\[
+\vartheta=\frac{\log u-\log v}{2i},\qquad
+d\vartheta=\frac1{2i}\left(\frac{du}{u}-\frac{dv}{v}\right).
+\]
+
+The latter is an algebraic regular one-form on \(X\); its meromorphic extension across the deleted coordinate divisors is logarithmic. It is closed and co-closed for \(q\). Its period along a positive real toroidal longitude is \(2\pi\). In algebraic de Rham cohomology its class is \(([d\log u]-[d\log v])/(2i)\).
+
+Thus the precise algebraic class of our fields is
+
+\[
+\alpha_G=G\,d\vartheta+dF,\qquad
+F\in\mathbb C[u^{\pm1},v^{\pm1},z],\quad \Delta_qF=0.
+\]
+
+The physical field is the restriction of \(\alpha_G^{\sharp_q}\) to the fixed locus. It is real when \(G\in\mathbb R\) and \(F=F^*\), where
+
+\[
+F^*(u,v,z)=\overline{F(\overline v,\overline u,\overline z)}.
+\]
+
+For Laurent coefficients this says \(c_{pqj}=\overline{c_{qpj}}\). Closedness gives curl zero; co-closedness gives divergence zero. Multiplication does not preserve this solution space: \(u\) and \(v\) are harmonic but \(uv\) has Laplacian four.
+
+For the actual Dommaschk candidate, every active radial term has zero logarithmic power. The exact conversion is
+
+\[
+R^p\cos(m\phi)=\frac{u^{(p+m)/2}v^{(p-m)/2}+u^{(p-m)/2}v^{(p+m)/2}}2,
+\] \[
+R^p\sin(m\phi)=\frac{u^{(p+m)/2}v^{(p-m)/2}-u^{(p-m)/2}v^{(p+m)/2}}{2i}.
+\]
+
+All exponents are integers. The checked seed has 33 nonzero rational Dommaschk coefficients and 121 nonzero Laurent monomials after collection. The resulting \(F_0\) belongs to \(\mathbb Q(i)[u^{\pm1},v^{\pm1},z]\). Exact checks give
+
+\[
+\Delta_qF_0=0,\quad F_0^*=F_0,\quad
+F_0(-u,-v,z)=F_0(u,v,z),\quad
+F_0(v,u,-z)=-F_0(u,v,z).
+\]
+
+The last two identities encode two field periods and stellarator symmetry. The script \texttt{complex\_vacuum\_exact\_check.py} reproduces these algebraic checks; \texttt{dommaschk\_complex\_laurent.json} contains all 121 rational complex coefficients. The script also parses the pinned Lean rational potential data and verifies its exact equality to this Laurent polynomial. These checks are independent of the numerical optimiser metrics and do not certify the invariant tori by themselves.
+
+The Laurent coefficient of \(u^{-6}\) in \(F_0\) is
+\[
+-\frac{12674582344287}{143360000000000}\,i.
+\]
+It is nonzero and cannot be cancelled by adding Cartesian polynomials. Consequently the polynomial families below retain nonaxisymmetry about the stated toroidal axis.
+
+
+\subsection{A complete algebraic harmonic family from the null conic}\label{a-complete-algebraic-harmonic-family-from-the-null-conic}
+
+For \(\lambda\in\mathbb C\), define
+
+\[
+Q_\lambda=u+2\lambda z-\lambda^2v.
+\]
+
+Its differential is null: \(4(Q_\lambda)_u(Q_\lambda)_v+(Q_\lambda)_z^2=0\). Consequently every holomorphic function \(f(Q_\lambda)\) is harmonic wherever defined. Polynomial powers are entire; rational powers \((Q_\lambda-a)^{-m}\) are admissible on any plasma neighborhood avoiding their pole divisor. Real potentials are obtained by taking \((F+F^*)/2\) and \((F-F^*)/(2i)\).
+
+The map
+
+\[
+\lambda\longmapsto[1-\lambda^2:i(1+\lambda^2):2\lambda]
+\]
+
+parametrizes the null conic in the projective space of complex covectors. A point of complexified physical space determines the quadratic section \(Q_\lambda\) of \(\mathcal O(2)\to\mathbb{CP}^1\). This is the elementary minitwistor incidence construction \cite{hitchin}. The reality map on the corresponding total space is
+
+\[
+(\lambda,\eta)\longmapsto
+\left(-\frac1{\overline\lambda},-\frac{\overline\eta}{\overline\lambda^2}\right),
+\]
+
+as follows directly from \(\overline{Q_\lambda(\rho p)}=-\overline\lambda^2Q_{-1/\overline\lambda}(p)\). On real space \(Q_\lambda=a\) is a line of direction
+
+\[
+n_\lambda=\frac{(-2\Re\lambda,-2\Im\lambda,1-|\lambda|^2)}{1+|\lambda|^2}.
+\]
+
+All directions occur. This supplies direction-dependent harmonic building blocks without assuming any estimate from Kakeya theory. Physical Euclidean covectors have no nonzero real null directions; complexification is essential to this construction.
+
+\textbf{Proposition 1 (complete polynomial basis).} Write
+
+\[
+Q_\lambda^n=\sum_{k=0}^{2n}H_{n,k}(u,v,z)\lambda^k.
+\]
+
+Then the \(2n+1\) functions \(H_{n,k}\) form a complex basis of homogeneous harmonic polynomials of degree \(n\). Real harmonic polynomials of degrees at most \(N\), modulo constants, have dimension \(N(N+2)\).
+
+\textbf{Proof.} Every coefficient is harmonic. Under \((u,v,z)\mapsto(tu,t^{-1}v,z)\), coefficient \(H_{n,k}\) has weight \(n-k\); each coefficient is nonzero, so the coefficients are independent. Conversely, a homogeneous solution is determined by its Cauchy data \(P(u,v,0)\) and \(P_z(u,v,0)\), having respectively \(n+1\) and \(n\) coefficients. The equation recursively determines higher powers of \(z\). Therefore the dimension is at most \(2n+1\), proving completeness. The real fixed subspace has this real dimension; summing over \(n\) gives \((N+1)^2\), before quotienting constants. \(\square\)
+
+There is also a complete basis for the Laurent-polynomial class. Let \((p)_j=p(p-1)\cdots(p-j+1)\). For integers \(p,q\) not both negative, let \(M(p,q)\) be the smallest nonnegative member of \(\{p,q\}\), and put
+
+\[
+E_{pq}=\sum_{j=0}^{M(p,q)}\frac{(-4)^j(p)_j(q)_j}{(2j)!}u^{p-j}v^{q-j}z^{2j},
+\] \[
+O_{pq}=\sum_{j=0}^{M(p,q)}\frac{(-4)^j(p)_j(q)_j}{(2j+1)!}u^{p-j}v^{q-j}z^{2j+1}.
+\]
+
+\textbf{Proposition 2.} The \(E_{pq},O_{pq}\) form a basis of \(\ker\Delta_q\) in \(\mathbb C[u^{\pm1},v^{\pm1},z]\).
+
+\textbf{Proof.} Set \(D=\partial_u\partial_v\). Any solution has the unique formal expansion
+
+\[
+F=\sum_{j\ge0}\frac{(-4)^jz^{2j}}{(2j)!}D^jA
+ +\sum_{j\ge0}\frac{(-4)^jz^{2j+1}}{(2j+1)!}D^jB,
+\]
+
+where \(A=F|_{z=0}\), \(B=F_z|_{z=0}\). The sums terminate exactly when \(D\) is locally nilpotent on both data. A Laurent monomial has this property precisely when at least one exponent is nonnegative. Distinct monomials cannot cancel after applying a common power of \(D\). The stated basis follows from the monomial bases for the two data spaces. \(\square\)
+
+\subsection{Density of the polynomial family}\label{density-of-the-polynomial-family}
+
+\textbf{Proposition 3 (harmonic Runge approximation in the needed form \cite{walsh}).} If \(K\subset\mathbb R^3\) is compact with connected complement and \(h\) is harmonic near \(K\), then harmonic polynomials approximate \(h\) uniformly on \(K\). If \(K\) is the closure of a smooth solid torus and \(h\) is harmonic on a fixed larger neighborhood, approximation holds in every prescribed finite \(C^r(K)\) norm and uniformly on a sufficiently small common complex neighborhood of \(K\).
+
+\textbf{Proof.} A measure \(\mu\) annihilating all harmonic polynomials has Newton potential \(U=G*\mu\) identically zero outside a sufficiently large ball: the convergent multipole expansion there consists of harmonic polynomial moments of \(\mu\). Unique continuation and connectedness of \(\mathbb R^3\setminus K\) imply \(U=0\) throughout the complement. Take a cutoff \(\chi\) equal to one near \(K\), supported where \(h\) is harmonic. Distributionally,
+
+\[
+\langle\mu,h\rangle=\langle\Delta U,\chi h\rangle
+=\langle U,\Delta(\chi h)\rangle=0,
+\]
+
+up to the immaterial sign convention for the fundamental solution. The last integrand is supported away from \(K\). Hahn--Banach and Riesz representation give uniform approximation. Apply the result on a slightly thickened solid torus \(K'\) inside the harmonicity neighborhood; its complement is still connected. Interior elliptic estimates give \(C^r\) approximation on \(K\). Interior analytic derivative estimates, with constants depending only on the distance from \(K\) to \(\partial K'\), give uniform convergence of the complex Taylor extensions on a smaller common neighborhood. \(\square\)
+
+Any vacuum field near a solid torus with the same longitudinal circulation as \(B_0\) differs from \(B_0\) by a harmonic gradient: its dual difference is closed and has zero class in the one-dimensional first cohomology. Thus the polynomial construction is dense in the local fixed-circulation vacuum class after a possible shrink of the analytic neighborhood. This is not a claim that arbitrary fixed-domain boundary conditions are preserved.
+
+\subsection{The seed's normal twist is present in the source certificate}\label{the-seeds-normal-twist-is-present-in-the-source-certificate}
+
+The inspected project files at commit \texttt{6312f1cc9c30b32798ad7b7540766152ef03e76f} assert existence of exact analytic invariant parameterizations A and C. The source-to-geometric torus bridge is described below. The toroidal-angle field-line frequency ratios are
+
+\[
+\iota_A=-\frac{19+\sqrt5}{89},\qquad
+\iota_C=-\frac{85+\sqrt5}{361}.
+\]
+
+They are quadratic irrational and therefore satisfy the required Diophantine conditions. Both tori have nonzero \(B_\phi\), and the project nesting statement places C inside A.
+
+In \texttt{DommaschkKamAContract.lean}, \texttt{ExactTorusA.adm} provides \texttt{AdmBoundsG} for the exact torus; the corresponding C theorem is \texttt{ExactTorusC.adm}. The field \texttt{hτ} of this structure states
+
+\[
+\tau\leq\left|\operatorname{avg}T_{\rm alg}\right|.
+\]
+
+\texttt{DommaschkKamAConsts.lean} and \texttt{DommaschkKamCConsts.lean} take their constants equal to the rational admissibility bounds. The values are
+
+\[
+\tau_A=\frac{6997}{500},\qquad \tau_C=\frac{141623}{10000}.
+\]
+
+These are source-specific torsion bounds, not derivatives of rotational transform in an arbitrary engineering flux coordinate.
+
+To identify their meaning, use toroidal angle \(\phi\) as time and write \(X=(RB_R/B_\phi,RB_z/B_\phi)\) in the poloidal plane. The preserved time-dependent density is \(w=B_\phi\). Let \(E=K_\theta\). The source normal frame \(N\) is normalized by \(w\det(E,N)=1\), and \texttt{KamFlowFrameG.torsion\_coord} and the coordinate reconstruction identities give
+
+\[
+(\iota\partial_\theta+\partial_\phi)N-DX\,N=T E+S N.
+\]
+
+At exact invariance the error terms vanish, \(S=0\), and \(T=T_{\rm alg}\). A variation \(aE+bN\) then satisfies \(b'=0\), \(a'=-Tb\). Solving the Diophantine cohomological equation
+
+\[
+(\iota\partial_\theta+\partial_\phi)h=\langle T\rangle-T
+\]
+
+and replacing \(N\) by \(N+hE\) makes the torsion constant. The normal linearization of the full-turn return map is therefore
+
+\[
+(a,b)\longmapsto(a-2\pi\langle T\rangle b,b).
+\]
+
+In the project's phase convention \(\psi=2\phi-\pi/2\), the operator is instead written \(\iota\partial_\theta+2\partial_\psi\); the same conclusion follows. This proves the needed averaged twist is nonzero, using the reported exact torus and admissibility theorems. The certificate itself has not been rebuilt here.
+
+The source delivers invariant parameterizations and poloidal winding data. To obtain embedded tori, first note that positivity of the cylindrical radius and nonsingularity of the certified normal frame give an immersion. Equality of two image points fixes the toroidal angles modulo a full turn. Uniqueness of the field flow and density of the irrational torus orbit then make their poloidal parameter difference a global translation period. An irrational such period forces a constant poloidal loop; a rational period of order \(q>1\) makes its winding divisible by \(q\). Both contradict winding one. The compact injective immersion is therefore an embedding. The certified polar radial separation gives nesting of the resulting bounded solid tori. This geometric argument is supplied here, rather than represented as another rebuilt Lean certificate.
+
+\subsection{A family theorem with moving physical domains}\label{a-family-theorem-with-moving-physical-domains}
+
+\textbf{Theorem 4.} Assume the exact seed torus and admissibility theorems in the inspected project source. For every \(N\geq1\), choose a real basis \(P_1,\ldots,P_{N(N+2)}\) of harmonic polynomials of degree at most \(N\), modulo constants. There is \(\epsilon_N>0\) such that for every real coefficient vector \(|a|<\epsilon_N\),
+
+\[
+B_a=B_0+\nabla\left(\sum_j a_jP_j\right)
+\]
+
+is an exact analytic vacuum field and has two nearby nested analytic invariant tori \(\Sigma_{C,a}\subset\Omega_{A,a}\), \(\partial\Omega_{A,a}=\Sigma_{A,a}\), with the original rotation ratios \(\iota_C,\iota_A\). It has longitudinal circulation \(2\pi\), zero meridional circulation, and strictly positive toroidal magnetic flux. Field lines beginning in the closed outer solid torus stay there for all positive and negative field-line time. Distinct coefficient vectors produce distinct outer domains. The complex field remains an algebraic logarithmic form plus an exact rational harmonic form.
+
+\textbf{Proof.} Vacuum identities and periods follow immediately. Work on a fixed complex neighborhood of the two seed tori and a real solid-torus neighborhood of their interiors. Coefficient smallness makes the field perturbation small in a fixed analytic norm. Nonvanishing of \(B_\phi\) near each seed torus gives an analytic annular return map, close to the original map.
+
+The return map is \textbf{exact} symplectic, not merely area preserving. Indeed \(\beta_a=\iota_{B_a}\mathrm{vol}\) is closed and extends across the solid torus, whose second cohomology vanishes, so \(\beta_a=dA_a\). If \(P_a\) is a return map, \(T_a(x)\) its return time, and \(\lambda_a=A_a|_{\rm section}\), the homotopy formula gives
+
+\[
+P_a^*\lambda_a-\lambda_a=dS_a,\qquad
+S_a(x)=\int_0^{T_a(x)}A_a(B_a)(\Phi_t(x))\,dt.
+\]
+
+The term involving \(dA_a\) vanishes because \(\iota_{B_a}\beta_a=0\). One may change both signs to use the source area form \(B_\phi\,dR\wedge dz\). A smooth global primitive suffices for this cohomological argument; the analytic annular area form has a local analytic primitive, and its exactness property is the same because the return map acts trivially on the first cohomology of the annulus.
+
+The preceding section verifies nonzero averaged twist. The analytic a posteriori KAM theorem for exact symplectic maps, with prescribed Diophantine rotation \cite{dlL}, now gives a nearby invariant circle for each of the two return maps. The suspension yields analytic embedded tori. Taking perturbations sufficiently small preserves their embedding, separation, nesting, and toroidal winding. This works for every coefficient vector in an open small ball: the rotation numbers are fixed at the two Diophantine seed values while normal positions adjust. No Cantor restriction on the external coefficient vector is needed.
+
+Tangency to the compact outer boundary makes the closed solid torus invariant under the complete restricted field flow. To prove positive toroidal flux, cut the torus along a meridional disk. Integration by parts with a single-valued potential on the cut domain gives
+
+\[
+\int_{\Omega_{A,a}}|B_a|^2\,dx=\Gamma_a\Phi_a=2\pi\Phi_a>0.
+\]
+
+Finally, if two coefficient vectors gave the same domain, their difference would be the gradient of a harmonic function with zero normal derivative there. Green's identity forces that gradient to vanish. Polynomial independence modulo constants forces the coefficient vectors to coincide. \(\square\)
+
+The same construction works with arbitrary finite collections of the real Laurent or pole-free rational harmonic functions above. An infinite-dimensional analytic version follows by taking an absolutely convergent coefficient series in a weighted analytic norm on a fixed complex ball containing the plasma neighborhood and requiring its norm to be below the common KAM threshold. Infinite sums need not remain rational functions. No numerical lower bound for that threshold has been extracted here.
+
+If an exactly fixed magnetic flux \(\Phi_*\) is required, replace \(B_a\) by \((\Phi_*/\Phi_a)B_a\). This preserves vacuum, all field lines and invariant tori. It varies the longitudinal circulation. Fixed flux and fixed circulation are different requirements; the theorem does not silently identify them. The normalized family still has distinct domains by one-dimensional Hodge uniqueness.
+
+A symmetry-preserving infinite family is available by projecting harmonic polynomials under \(R(x,y,z)=(-x,-y,z)\) and \(S(x,y,z)=(x,-y,-z)\):
+
+\[
+P\mapsto\tfrac14(P+P\circ R-P\circ S-P\circ RS).
+\]
+
+For an explicit independent family, take
+
+\[
+h_m=\operatorname{Im}(x+iy)^{2m}\quad(m\geq1),\qquad
+k_m=z\operatorname{Re}(x+iy)^{2m}\quad(m\geq0).
+\]
+
+Both families are harmonic and have the required parity. Thus two field periods and stellarator symmetry can be retained without restricting to a finite set of perturbations. The physical vector-field laws are \(B(Rx)=RB(x)\) and \(B(Sx)=-SB(x)\): the latter is a reversing field-line symmetry. In cylindrical components, \(B_R(R,-\phi,-z)=-B_R(R,\phi,z)\), whereas \(B_\phi\) and \(B_z\) are even under the simultaneous reversal.
+
+\subsection{Connection to the positive-pressure construction and its limit}\label{connection-to-the-positive-pressure-construction-and-its-limit}
+
+The weak MHD framework is related to \cite{elps}. The toroidal-time parameterization of each perturbed torus satisfies \(B_a\circ K=f DK\omega\), with \(f=B_\phi/R>0\), \(\omega=(\iota,1)\). Nonvanishing gives a constant sign for \(f\); averaging \(K^*\alpha(\omega)=f|DK\omega|^2\) gives one because the angular circulation is \(2\pi\), proving that the sign is positive. It can be rectified to physical time: put \(m=\langle f^{-1}\rangle\), solve
+
+\[
+\omega\cdot\partial h=f^{-1}/m-1,
+\qquad F(\theta)=\theta+\omega h(\theta).
+\]
+
+The Jacobian determinant of \(F\) is \(f^{-1}/m>0\), so its degree-one map is a diffeomorphism. With \(K'=K\circ F^{-1}\), one gets \(DK'(\omega/m)=B_a\circ K'\). Consequently every member satisfies the analytic Diophantine boundary-flow hypotheses of the previously derived positive-pressure weak MHD lift. That lift uses an invariant graph of the boundary kinetic Hamiltonian, an analytic vacuum Cauchy extension, an edge current sheet and a supported exterior current sheet.
+
+This produces a much larger family of positive-pressure weak MHD equilibria. It does not prove free-boundary nonlinear stability, a smooth finite-beta pressure profile, coil manufacturability, kinetic confinement, collisional heating balance, or a high-norm continuation bound. In particular, invariant magnetic field lines do not trap every finite-Larmor-radius particle trajectory.
+
+\paragraph{Source pin and trust boundary}\label{source-pin-and-trust-boundary}
+
+The source snapshot is \href{https://github.com/siddhartha-gadgil/PlasmaLean/commit/6312f1cc9c30b32798ad7b7540766152ef03e76f}{commit 6312f1cc9c30b32798ad7b7540766152ef03e76f}, dated 17 November 2026. In the \texttt{Design} directory, \texttt{DommaschkKamAFinal.exists\_exactTorusA} closes the residual hypotheses using \texttt{DommaschkKamARes}; \texttt{DommaschkKamCFinal} closes the corresponding C hypotheses. \texttt{DommaschkKamNested.dommaschk\_nested} then constructs both parameterizations and the nesting data. \texttt{ExactTorusA.adm} and \texttt{ExactTorusC.adm} provide the admissibility bounds used above, including nonzero averaged torsion. These are source theorem assertions with supplied proof bodies, not additional uninstantiated hypotheses in the final statements. A successful rebuild and an explicit Lean axiom report remain separate verification steps.
+
+A further dependency audit fetched all 227 project modules in the transitive import closure of \texttt{DommaschkKamNested} at the stated commit and verified their Git blob hashes. No project axiom declaration, \texttt{sorry}, \texttt{admit}, \texttt{mkSorry}, \texttt{ofReduceBool}, or actual use of \texttt{native\_decide} was found. Six \texttt{unsafe} expressions occur in meta-level numerical witness evaluators in \texttt{KronProof} and \texttt{KronProof2D}; the proof builders construct ordinary constructor and reflexivity terms for subsequent kernel checking. The auxiliary \texttt{KernelFact} tactic likewise builds explicit proof terms. This audit supports the stated source trust boundary but is not a substitute for compiling the proof closure or auditing the external Lean and Mathlib dependencies.
+
+
+The exact original rational candidate is available at \url{https://raw.githubusercontent.com/siddhartha-gadgil/PlasmaLean/6312f1cc9c30b32798ad7b7540766152ef03e76f/scripts/dommaschk_qa/results/20261031T092522Z/candidate.json}. Its optimiser metadata is explicitly labelled untrusted; the algebraic field check and the later proof chain are distinct from that numerical fit.

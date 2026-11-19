@@ -1,0 +1,724 @@
+\section{Constructive kinetic bounds and their precise
+limits}\label{constructive-kinetic-bounds-and-their-precise-limits}
+
+This section proves a second-order correction to the full-orbit
+weak-quasisymmetry momentum and a finite-time, pointwise hot-core
+theorem for linear Vlasov transport in a prescribed field with an
+absorbing loss boundary. The theorem retains Maxwellian velocity tails
+and permits a quantitative perturbation of the initial distribution. It
+is not a result for self-consistent Vlasov--Maxwell--Landau. In
+particular, it does not repair the equilibrium obstruction of the
+original weak-QS seed. The new arbitrary harmonic vacuum-field
+construction does not automatically satisfy weak QS and cannot be
+substituted into the hypotheses without a separate proof.
+
+\subsection{A corrected flux for full Lorentz
+orbits}\label{a-corrected-flux-for-full-lorentz-orbits}
+
+\paragraph{Hypotheses and
+conventions}\label{hypotheses-and-conventions}
+
+Let \(\Omega\subset\mathbb R^3\) be a bounded domain with \(C^2\)
+boundary. Suppose \(B,u,\psi\) are \(C^3\) on a neighborhood of
+\(\overline\Omega\), \(B\) never vanishes, and
+
+\[
+\nabla\cdot B=\nabla\cdot u=0,\qquad
+B\times u=\nabla\psi,\qquad u\cdot\nabla |B|^2=0.
+\tag{Q1}
+\]
+
+Write \(\beta=|B|,\ b=B/\beta,\ P=I-bb^T\), and
+
+\[
+S=\operatorname{sym}\nabla u,\qquad
+K v=v\times b.
+\]
+
+Thus \(K^T=-K\) and \(K^2=-P\). All tensors and norms below are
+Euclidean tensors and norms in physical space, not coordinate-component
+norms in the embedded-torus chart.
+
+Taking curl in \(B\times u=\nabla\psi\), and using both divergence
+conditions, gives \([B,u]=0\). Consequently
+
+\[
+\operatorname{tr}S=0,\qquad
+b^TSb=\frac{B\cdot((B\cdot\nabla)u)}{\beta^2}
+     =\frac{u\cdot\nabla\beta^2}{2\beta^2}=0.
+\tag{Q2}
+\]
+
+No assumptions about closed \(u\)-orbits, dense \(B\)-orbits, or
+regularity of every interior flux level are required for the following
+algebra.
+
+\paragraph{Solving the gyrophase homological equation
+explicitly}\label{solving-the-gyrophase-homological-equation-explicitly}
+
+Put
+
+\[
+a=Sb,\qquad S_\perp=PSP,\qquad
+C=b(Ka)^T+(Ka)b^T-\frac12S_\perp K,\qquad D=C/\beta.
+\tag{Q3}
+\]
+
+Then \(a\perp b\), \(S_\perp\) has trace zero on \(b^\perp\), and
+
+\[
+C=C^T,\qquad [C,K]=CK-KC=S.
+\tag{Q4}
+\]
+
+\textbf{Proof.} Decompose
+
+\[
+S=S_\perp+ba^T+ab^T.
+\]
+
+On the two-dimensional plane \(b^\perp\), a symmetric trace-zero matrix
+anticommutes with the quarter-turn \(K\): \(S_\perp K+KS_\perp=0\). Thus
+\(S_\perp K\) is symmetric. If \(C_1=b(Ka)^T+(Ka)b^T\), direct
+multiplication using \(Kb=0\) and \(K^2a=-a\) gives
+\([C_1,K]=ba^T+ab^T\). The same identities give
+\([-\frac12S_\perp K,K]=S_\perp\). This proves both claims. In Frobenius
+norm,
+
+\[
+\|C\|_F^2=2|a|^2+\frac14\|S_\perp\|_F^2
+\le \|S\|_F^2.
+\]
+
+For any symmetric \(C\),
+
+\[
+\mathcal R_b(v^TCv)
+:=(v\times b)\cdot\nabla_v(v^TCv)
+=v^T(CK-KC)v.
+\]
+
+Therefore (Q4) is exactly the homological equation
+\(\mathcal R_b(v^TCv)=v^TSv\). It is globally tensorial and requires no
+choice of a gyroangle or frame. \(\square\)
+
+\paragraph{Exact full-orbit
+identity}\label{exact-full-orbit-identity}
+
+For a species of mass \(m>0\) and charge \(q\ne0\), write the signed
+quantity \(\varepsilon=m/q\). Define
+
+\[
+J(x,v)=\psi(x)-\varepsilon u(x)\cdot v
+               +\varepsilon^2v^TD(x)v.
+\tag{Q5}
+\]
+
+Consider prescribed-field Lorentz trajectories
+
+\[
+\dot x=v,\qquad
+\dot v=\varepsilon^{-1}v\times B(x).
+\tag{Q6}
+\]
+
+Then, exactly,
+
+\[
+\frac{d}{dt}J(x(t),v(t))
+ =\varepsilon^2
+   \sum_{i,j,k}v_i v_j v_k\,\partial_{x_k}D_{ij}(x(t)).
+\tag{Q7}
+\]
+
+\textbf{Proof.} The first two terms of (Q5) give
+
+\[
+\frac d{dt}(\psi-\varepsilon u\cdot v)
+ =v\cdot\nabla\psi-\varepsilon v^TSv-u\cdot(v\times B)
+ =-\varepsilon v^TSv.
+\]
+
+For the last term,
+
+\[
+\frac d{dt}\big(\varepsilon^2v^TDv\big)
+ =\varepsilon^2\sum_{ijk}v_iv_jv_k\partial_kD_{ij}
+  +\varepsilon\beta\,\mathcal R_b(v^TDv).
+\]
+
+Since \(D=C/\beta\), the last summand equals \(\varepsilon v^TSv\) by
+(Q4), and cancels the preceding defect. \(\square\)
+
+This improves the exact first-order weak-QS momentum defect by one
+order. It does not make \(J\) an exact invariant. The remainder is
+explicitly computable from the physical-space derivatives of the seed.
+
+\paragraph{A deterministic confinement
+certificate}\label{a-deterministic-confinement-certificate}
+
+Define
+
+\[
+U_0=\sup_{\overline\Omega}|u|,\qquad
+D_0=\sup_{\overline\Omega}\|D\|_{\rm op},\qquad
+D_1=\sup_{\substack{x\in\overline\Omega\\ |w|=1}}
+\left|\sum_{ijk}w_iw_jw_k\partial_kD_{ij}(x)\right|.
+\]
+
+For \(V>0\), set
+
+\[
+A(V)=|\varepsilon|U_0V+\varepsilon^2D_0V^2,\qquad
+R(V)=\varepsilon^2D_1V^3.
+\]
+
+For any trajectory segment remaining in \(\overline\Omega\), with
+\(|v|=V_*\le V\),
+
+\[
+|\psi(x(t))-\psi(x(s))|
+ \le 2A(V)+|t-s|R(V).
+\tag{Q8}
+\]
+
+Indeed, \(|J-\psi|\le A(V)\), and integrating (Q7) gives
+\(|J(t)-J(s)|\le |t-s|R(V)\). The speed is constant by (Q6). The same
+argument works forwards and backwards in time.
+
+Suppose in addition \(\psi=\psi_b\) on \(\partial\Omega\),
+\(\psi<\psi_b\) in \(\Omega\), and define a core
+
+\[
+\Omega_\Delta=\{x\in\Omega:\psi(x)\le\psi_b-\Delta\}.
+\]
+
+Interior critical points of \(\psi\), including a magnetic axis, are
+allowed. If
+
+\[
+\Delta>2A(V)+TR(V),
+\tag{Q9}
+\]
+
+then every characteristic through \(x\in\Omega_\Delta,\ |v|\le V\), at
+any time \(0\le t\le T\), remains inside \(\Omega\) when traced back to
+time zero. For otherwise stop at the first backward boundary hit and
+apply (Q8) on the segment before that hit. The change in \(\psi\) would
+be at least \(\Delta\), contradicting (Q9). The strict inequality also
+excludes a grazing boundary hit. The analogous forward no-hit assertion
+holds for initial points in the core.
+
+If \(R(V)>0\), this gives the explicit time
+
+\[
+T_{\rm cert}=\frac{\Delta-2A(V)}{R(V)}
+\]
+
+whenever its numerator is positive. If the numerator is nonpositive,
+this certificate gives no information; its failure is not an escape
+theorem. If \(R(V)=0\) and the numerator is positive, the algebraic
+certificate holds for arbitrary time in the prescribed-field model.
+
+\paragraph{Scaling}\label{scaling}
+
+Under \(B\mapsto\Lambda B,\ \psi\mapsto\Lambda\psi,\ u\mapsto u\), one
+has \(C\mapsto C,\ D\mapsto D/\Lambda\), while the geometric flux buffer
+scales by \(\Lambda\). Consequently the cubic accumulated drift relative
+to the flux buffer is of order \(T/\Lambda^2\). This is a precise
+strong-field gain in this orbit certificate, not a statement about
+self-consistent plasma stability at arbitrary field amplitude. No
+numerical pass at the project's 10 T budget has been established here:
+\(U_0,D_0,D_1\), and the physical flux buffer must first be bounded for
+the actual embedded geometry.
+
+\paragraph{Exact relativistic orbit
+extension}\label{exact-relativistic-orbit-extension}
+
+The orbit identity also has a direct relativistic version. Let \(w=p/m\), let
+\(c_{\rm light}\) denote the speed of light, and set
+\(\gamma(w)=(1+|w|^2/c_{\rm light}^2)^{1/2}\). For prescribed \(E=0\),
+\[
+\dot x=w/\gamma,\qquad
+\dot w=(\varepsilon\gamma)^{-1}w\times B.
+\] Both \(|w|\) and \(\gamma\) are constant. The vector field on
+\((x,w)\) is exactly \(1/\gamma(w)\) times the Newtonian vector field
+used in (Q6). Hence \[
+J_{\rm rel}=\psi-\varepsilon u\cdot w+\varepsilon^2w^TDw,\qquad
+\dot J_{\rm rel}=\frac{\varepsilon^2}{\gamma}
+\sum_{ijk}w_iw_jw_k\partial_kD_{ij}.
+\] On \(|w|\le W\), the endpoint bound is \(A(W)\), and the drift bound
+is \[
+R_{\rm rel}(W)=
+\frac{\varepsilon^2D_1W^3}
+{\sqrt{1+W^2/c_{\rm light}^2}}.
+\] The function \(r^3/\sqrt{1+r^2/c_{\rm light}^2}\) is increasing for
+\(r\ge0\), which justifies this uniform bound. The no-hit proof is
+unchanged. The Maxwellian temperature theorem below remains explicitly
+Newtonian; no identification of its scalar moment temperature with a
+relativistic Jüttner rest-frame temperature is made.
+
+\subsection{A pointwise hot-core theorem at an absorbing
+boundary}\label{a-pointwise-hot-core-theorem-at-an-absorbing-boundary}
+
+Consider the prescribed-field Vlasov equation
+
+\[
+\partial_t f+v\cdot\nabla_xf+
+\varepsilon^{-1}(v\times B)\cdot\nabla_vf=0
+\]
+
+on \(\Omega\times\mathbb R^3\), with zero incoming data at the loss
+boundary. Take
+
+\[
+f(0,x,v)=M(v)
+=n_0(2\pi\sigma^2)^{-3/2}e^{-|v|^2/(2\sigma^2)},
+\qquad \sigma^2=\Theta_0/m.
+\tag{H1}
+\]
+
+Here \(\Theta_0\) is temperature in energy units. The initial trace and
+zero incoming boundary data are not compatible at the time-zero corner;
+the assertion is about the standard mild solution defined by backward
+characteristics killed at their first boundary encounter, not a smooth
+solution up to that corner.
+
+Along a characteristic that reaches the initial surface, the value is
+\(M(v(0))=M(v)\), since speed is conserved. Along one killed at the
+boundary, the value is zero. Consequently
+
+\[
+0\le f(t,x,v)\le M(v)
+\quad\hbox{everywhere},
+\]
+
+and (Q9) gives the stronger equality
+
+\[
+f(t,x,v)=M(v)
+\quad\hbox{for }x\in\Omega_\Delta,\ |v|\le V,\ 0\le t\le T.
+\tag{H2}
+\]
+
+No compact velocity support has been assumed. High-velocity particles
+can be lost.
+
+Define the local density, mean velocity and scalar kinetic temperature
+by
+
+\[
+n=\int f\,dv,\quad U=n^{-1}\int vf\,dv,\quad
+\Theta=\frac{m}{3n}\int |v-U|^2f\,dv.
+\]
+
+Let \(c=V/\sigma\), and define
+
+\[
+a(c)=\operatorname{erf}(c/\sqrt2)
+       -\sqrt{2/\pi}\,c e^{-c^2/2},
+\] \[
+b(c)=\operatorname{erf}(c/\sqrt2)
+       -\sqrt{2/\pi}\,(c+c^3/3)e^{-c^2/2},
+\] \[
+d(c)=\sqrt{2/\pi}(c^2+2)e^{-c^2/2}.
+\]
+
+Equivalently \(a=\mathbb P(\chi_3\le c)\) and
+\(b=\mathbb P(\chi_5\le c)\). On the core and certified time interval,
+
+\[
+a(c)n_0\le n\le n_0,\qquad
+\boxed{\quad
+\frac{\Theta}{\Theta_0}
+\ge b(c)-\frac{d(c)^2}{3a(c)^2}.
+\quad}
+\tag{H3}
+\]
+
+\textbf{Proof.} Integrating (H2) proves the lower density bound and
+\(\int |v|^2f\ge3n_0\sigma^2b\); the global upper bound gives
+\(n\le n_0\). The truncated Maxwellian has zero first moment. Thus the
+entire mean-momentum contribution comes from the remaining tail, and
+
+\[
+\left|\int vf\,dv\right|
+\le\int_{|v|>V}|v|M\,dv=n_0\sigma d.
+\]
+
+Using \(\Theta=m(\int |v|^2f/n-|\int vf|^2/n^2)/3\) and the density
+bounds proves (H3). This explicitly allows the lost tail to be
+asymmetric, and therefore does not assume zero mean flow after losses.
+\(\square\)
+
+For \(c=2.8\), the numerical constants are
+
+\[
+a>0.95056321,\quad
+b-\frac{d^2}{3a^2}>0.82577125.
+\]
+
+Hence \(\Theta_0=12.5\,{\rm keV}\) implies \(\Theta>10.3221\,{\rm keV}\)
+and \(n>0.95056n_0\) on the certified core and interval. For \(c=3\),
+the temperature ratio is greater than \(0.88757292\). These strict
+rational lower bounds are independently checked by the accompanying
+alternating-series certificate. These are
+implications of (Q9), not a claim that (Q9) has passed for the actual
+device dimensions.
+
+\paragraph{Stability under initial distribution
+perturbations}\label{stability-under-initial-distribution-perturbations}
+
+Suppose instead \[
+(1-\delta)M\le f_0(x,v)\le(1+\delta)M,\qquad 0\le\delta<1.
+\]
+
+The same characteristic argument gives the same bounds for \(|v|\le V\)
+in the core, and \(0\le f\le(1+\delta)M\) globally. If
+\(d_0=2\sqrt{2/\pi}\), then
+
+\[
+n\ge(1-\delta)a n_0,\qquad
+\frac{\Theta}{\Theta_0}\ge
+\frac{1-\delta}{1+\delta}b
+-\frac{(d+\delta d_0)^2}{3(1-\delta)^2a^2}.
+\tag{H4}
+\]
+
+To prove the momentum bound used here, subtract the Maxwellian on the
+protected ball. Its perturbation contributes at most
+\(\delta n_0\sigma(d_0-d)\); the unprotected tail contributes at most
+\((1+\delta)n_0\sigma d\), whose sum is \(n_0\sigma(d+\delta d_0)\). The
+second-moment and density estimates are as before. At
+\(c=2.8,\delta=0.01\), (H4) gives
+\(\Theta/\Theta_0>0.80709315\), hence \(10.08866\,{\rm keV}\)
+from \(12.5\,{\rm keV}\).
+
+There is also a directional temperature bound, so this conclusion need
+not hide a cold direction behind a large scalar trace. Let \[
+\mathsf T=\frac mn\int(v-U)(v-U)^Tf\,dv.
+\] The protected Maxwellian ball has second-moment matrix
+\(n_0\sigma^2bI\). The same estimates therefore give \[
+\frac{\mathsf T}{\Theta_0}\ \ge\
+\left[\frac{1-\delta}{1+\delta}b
+-\frac{(d+\delta d_0)^2}{(1-\delta)^2a^2}\right]I
+\tag{H5}
+\] as a quadratic-form inequality. For \(c=2.8,\delta=0\), its
+coefficient is \(0.8078673232710732\), giving every directional
+temperature above \(10.0983\,{\rm keV}\) from \(12.5\,{\rm keV}\). For
+\(c=3,\delta=0.01\), its coefficient is \(0.8593547807238485\), giving
+\(10.7419\,{\rm keV}\).
+
+This is finite-time stability for an explicitly stated transport
+problem. Electromagnetic feedback, Coulomb collisions, fusion, alpha
+heating and fueling are absent from its hypotheses.
+
+\subsection{Electric fields, collisions, and sources: the exact
+additional
+terms}\label{electric-fields-collisions-and-sources-the-exact-additional-terms}
+
+Keep \(J\) constructed from the static reference weak-QS field \(B\).
+Let the actual Lorentz field be \(B+\delta B(t,x)\), and include
+\(E(t,x)\). Then
+
+\[
+\frac{dJ}{dt}
+=\varepsilon^2\sum v_iv_jv_k\partial_kD_{ij}
+ +(-u+2\varepsilon Dv)\cdot(E+v\times\delta B).
+\tag{P1}
+\]
+
+This is an exact identity. In particular an electrostatic field constant
+on flux surfaces need not annihilate the second-order term, even though
+\(u\cdot E=0\).
+
+The speed obeys \[
+|v(s)|\le |v(t)|+|\varepsilon|^{-1}
+\int_s^t\|E(r)\|_\infty\,dr
+\] backwards (and the corresponding forward bound). For a known bound
+\(V_*\) on the relevant speed range,
+
+\[
+|\dot J|\le
+\varepsilon^2D_1V_*^3+
+(U_0+2|\varepsilon|D_0V_*)
+\big(\|E\|_\infty+V_*\|\delta B\|_\infty\big).
+\tag{P2}
+\]
+
+Thus the orbit certificate survives with the integral of the right side
+and \(A(V_*)\). A self-consistent theorem still has to prove these field
+budgets from the initial data and actual sources; assuming them for all
+time would assume the missing part of stability. With \(E\ne0\), the
+Maxwellian bounds (H2)--(H4) also require accounting for the
+initial-to-final speed change; they do not follow unchanged merely from
+(P2).
+
+For a prescribed kinetic collision generator in backward-observable form
+\[
+\mathcal L_v\phi=\ell(x,v)\cdot\nabla_v\phi
+                 +a(x,v):D_v^2\phi,\qquad a\ge0,
+\] one has \[
+\mathcal L_vJ
+=\ell\cdot(-\varepsilon u+2\varepsilon^2Dv)
+ +2\varepsilon^2a:D.
+\tag{P3}
+\]
+
+In an equivalent diffusion representation with covariance \(2a\), the
+martingale part of \(J\) has quadratic-variation rate \[
+2(-\varepsilon u+2\varepsilon^2Dv)^T
+ a(-\varepsilon u+2\varepsilon^2Dv).
+\tag{P4}
+\]
+
+Therefore collisions do not preserve the corrected invariant or the
+deterministic protected-velocity ball. A stochastic first-exit estimate
+needs the actual drift, diffusion, and high-speed tail bounds. The full
+nonlinear Landau coefficients depend on the unknown distributions;
+replacing them by fixed Maxwellian coefficients is a different model.
+
+For completeness, there is a useful exact weak-form Landau estimate. For
+one-species Coulomb Landau with kernel
+\(a_C(w)=\kappa|w|^{-1}(I-\hat w\hat w^T)\), set \[
+\mathcal D(f)=\frac12\iint ff'
+(\nabla\log f-\nabla'\log f')^Ta_C(v-v')
+(\nabla\log f-\nabla'\log f')\,dv\,dv'.
+\] For a \(C^2\) observable \(\phi\) with
+\(\|D_v^2\phi\|_{\rm op}\le H\), \[
+\left|\int Q(f,f)\phi\,dv\right|
+\le \sqrt{\kappa}\,H\,
+n^{3/4}\left(\int|v|^2f\,dv\right)^{1/4}
+\sqrt{\mathcal D(f)}.
+\tag{P5}
+\]
+
+Indeed the weak form is minus one half of the pair integral of
+\(ff'(\nabla\log f-\nabla'\log f')^Ta_C(\nabla\phi-\nabla'\phi')\).
+Cauchy--Schwarz gives the square root of \(\mathcal D\) times the square
+root of \(\frac12\iint ff'Y^Ta_CY\). The Lipschitz bound
+\(|Y|\le H|v-v'|\) reduces the latter to
+\((\kappa H^2/2)\iint ff'|v-v'|\), and
+\(\iint ff'|v-v'|\le2n^{3/2}(\int|v|^2f)^{1/2}\).
+
+For \(\phi=J\), the Hessian is \(2\varepsilon^2D\), so the collision
+effect on the mean corrected flux is genuinely second order. First-order
+collision contributions vanish because self-collisions conserve local
+momentum. This is a mean-observable estimate, not an exit-probability or
+temperature theorem. Spatial integration of (P5) still needs a density
+bound (for example \(n\le N\)), or a substitute estimate. With that
+bound, total mass \(M\), and second moment \(E_2\), \[
+\left|\iint Q(f,f)\phi\,dv\,dx\right|
+\le \sqrt{\kappa}\,H\sqrt N\,(ME_2)^{1/4}
+       \sqrt{\int_\Omega\mathcal D(f)\,dx}.
+\] It is essential not to declare \(N\) controlled for the nonlinear
+open-boundary system without proving it. For multispecies collisions the
+individual species momentum is not conserved; the mass-weighted sum is,
+and the species-specific corrected fluxes do not automatically match
+those weights.
+
+For an added distribution source \(S_f\), the exact observable balance
+acquires \(\iint J S_f\); outgoing absorbing particles also carry the
+flux \(Jf(v\cdot n)\). Scalar heating power does not specify this source
+moment or its entropy cost.
+
+\subsection{Covariant derivatives and the remaining magnetic
+shear}\label{covariant-derivatives-and-the-remaining-magnetic-shear}
+
+For \(\mathcal R_a=(v\times a)\cdot\nabla_v\), one has \[
+[\mathcal R_a,\mathcal R_c]=\mathcal R_{a\times c}.
+\] Define \[
+a_i=(\partial_i b)\times b,\qquad
+\mathfrak D_i=\partial_{x_i}+\mathcal R_{a_i},\qquad
+\Omega_c=q\beta/m.
+\] The vector identity \(a_i\times b=-\partial_i b\) gives \[
+[\mathfrak D_i,\Omega_c\mathcal R_b]
+ =(\partial_i\Omega_c)\mathcal R_b.
+\tag{C1}
+\] Thus the derivative of the \textbf{direction} of the magnetic field
+cancels exactly. This removes its factor \(\beta\). It leaves the
+derivative of the cyclotron frequency.
+
+The remaining exact transport commutators are \[
+[\mathfrak D_i,v\cdot\nabla_x]
+ =(v\times a_i)\cdot\nabla_x
+   -\mathcal R_{(v\cdot\nabla_x)a_i},
+\tag{C2}
+\] \[
+[\mathfrak D_i,(q/m)E\cdot\nabla_v]
+ =(q/m)(\partial_iE+a_i\times E)\cdot\nabla_v.
+\tag{C3}
+\] In (C2), the last rotation parameter is itself linear in \(v\), so
+its coefficient before \(\nabla_v\) is quadratic in velocity. The
+reduction of a large field-direction coefficient is useful, but it does
+not eliminate geometric derivatives or velocity-weight requirements.
+
+For this particular minimal-rotation connection, \[
+[\mathfrak D_i,\mathfrak D_j]
+ =-[\,b\cdot(\partial_i b\times\partial_j b)\,]\mathcal R_b.
+\tag{C4}
+\] To check (C4), differentiate \(a_i=\partial_i b\times b\); the
+derivative part is \(-2\partial_i b\times\partial_j b\), and
+\(a_i\times a_j=\partial_i b\times\partial_j b\). The cross product is
+parallel to \(b\). One can modify the connection by adding
+\(\alpha_i b\). A full chosen orthonormal frame can give a flat
+connection locally; thus (C4) should not be advertised as an
+unconditional topological obstruction. The corresponding streaming
+connection terms remain, and (C1)'s magnitude derivative is unaffected
+by such a frame choice.
+
+Rotational covariance of the Coulomb kernel gives \[
+\mathfrak D_iQ(f,g)=Q(\mathfrak D_i f,g)+Q(f,\mathfrak D_i g).
+\tag{C5}
+\] For a spatially uniform isotropic Maxwellian reference, the
+linearized Landau operator therefore commutes with \(\mathfrak D_i\). It
+does not follow that a linearization around a spatially varying
+anisotropic reference commutes.
+
+The remaining magnitude shear cannot be removed by a smooth periodic
+gyroangle gauge. At fixed speed and pitch, write the rotation as
+\(\Omega_c(x)\partial_\vartheta\). A derivative
+\(\partial_i+\alpha(x,\vartheta)\partial_\vartheta\) would commute with
+it only if \[
+\partial_\vartheta\alpha=\partial_i\log|\Omega_c|.
+\] Integrating around the gyroangle circle forces
+\(\partial_i\Omega_c=0\). The pure rotation subproblem already exhibits
+the shear: \[
+g(t,x,\vartheta)=g_0(x,\vartheta-\Omega_c(x)t)
+\] has a spatial derivative containing
+\(-t(\partial_i\Omega_c)\partial_\vartheta g_0\). This is an obstruction
+to that proposed cancellation, not a theorem that the full collisional
+transport system is unstable. A time-dependent transported derivative
+can cancel the shear, but its coefficients grow in time and a uniformly
+equivalent norm still needs proof.
+
+\paragraph{A global rotating frame on the solid
+torus}\label{a-global-rotating-frame-on-the-solid-torus}
+
+On a solid torus the oriented two-plane bundle \(b^\perp\) is trivial:
+oriented two-plane bundles are classified by their Euler class in
+\(H^2(\Omega;\mathbb Z)=0\). Thus a smooth global \(R(x)\in SO(3)\) with
+\(R(x)e_3=b(x)\) exists. Put \[
+A_i=R^T\partial_iR,\qquad g(x,w)=f(x,Rw).
+\] Each \(A_i\) is skew. The prescribed transport becomes exactly \[
+\partial_tg+(Rw)\cdot\nabla_xg+
+\left[\Omega_c(w\times e_3)
+      -\sum_i(Rw)_iA_iw\right]\cdot\nabla_wg.
+\tag{C6}
+\] This follows by the chain rule:
+\(\partial_i f=\partial_i g-(A_iw)\cdot\nabla_wg\) at fixed physical
+velocity. The physical covariant derivatives corresponding to fixed
+\(w\) form a flat pure-gauge connection. Their rotation parameters equal
+\(\partial_i b\times b+\alpha_i b\) for suitable \(\alpha_i\), so they
+still commute with \(\mathcal R_b\).
+
+The streaming and connection terms in (C6) satisfy the exact divergence
+cancellation \[
+\nabla_x\cdot(Rw)
++\nabla_w\cdot\left(-\sum_i(Rw)_iA_iw\right)=0.
+\tag{C7}
+\] Indeed the first term is \(\sum_i(R^Te_i)^TA_iw\), and the second is
+its negative because \(\operatorname{tr}A_i=0\). Also \(w\cdot A_iw=0\).
+Every radial velocity weight is therefore invariant under the connection
+transport, and this transport is skew in weighted \(L^2(dx\,dw)\), up to
+the actual spatial boundary flux. The Jacobian of
+\((x,w)\mapsto(x,R(x)w)\) is one. Landau's rotational covariance
+preserves its collision form.
+
+Under \(B\mapsto\Lambda B\), \(R,A_i\) remain unchanged. Only
+\(\Omega_c\) is multiplied by \(\Lambda\). Differentiation still
+produces \((\partial_i\Omega_c)\mathcal R_{e_3}g\), derivatives of \(R\)
+multiplying \(|w|\nabla_xg\), and derivatives of \(A_i\) multiplying
+\(|w|^2\nabla_wg\). This global-frame formulation removes the
+field-direction large parameter at zero order and displays where
+weighted high-order estimates must still close.
+
+\paragraph{A non-tautological weighted estimate for a simpler
+collision
+operator}\label{a-non-tautological-weighted-estimate-for-a-simpler-collision-operator}
+
+There is a useful constructive check that the remaining frequency shear
+need not imply instability. Freeze spatial transport and use the
+normalized Ornstein--Uhlenbeck generator \(L=\Delta_w-w\cdot\nabla_w\)
+on Gaussian \(L^2(M\,dw)\): \[
+\partial_tg+\Omega_c(x)\mathcal R_{e_3}g=\nu Lg.
+\] For one spatial derivative put \(h=\partial_i g\),
+\(a(x)=1+|\partial_i\Omega_c|^2/\nu^2\), and \[
+\mathcal E_i=\int\big(|h|^2+a|\mathcal R_{e_3}g|^2\big)M\,dw\,dx.
+\] Commutation of \(L\) with rotations, Gaussian integration by parts,
+and Gaussian Poincare give \[
+\frac d{dt}\mathcal E_i
+\le-\nu\int|\nabla_wh|^2M
+    -\nu\int(a+1)|\nabla_w\mathcal R_{e_3}g|^2M.
+\tag{C8}
+\] To verify this, the only cross term is
+\(-2(\partial_i\Omega_c)\langle h,\mathcal R_{e_3}g\rangle_M\). The
+rotation has zero Gaussian mean. Subtract the Gaussian mean of \(h\),
+apply Poincare and Young, and then apply Poincare to
+\(\mathcal R_{e_3}g\). The cross term costs at most
+\(\nu\|\nabla_wh\|^2+\nu(a-1)\|\nabla_w\mathcal R_{e_3}g\|^2\), which
+yields (C8).
+
+This is an actual modified energy estimate, but only for the stated
+subproblem. Restoring spatial streaming differentiates \(a(x)\) and
+introduces the connection terms in (C6). Full Landau has momentum and
+energy null modes and weak high-velocity coercivity, so the two Gaussian
+Poincare substitutions do not give (C8) for that operator. Those are
+concrete missing estimates, not an inference that no such estimate can
+exist.
+
+For a vacuum field, \(\nabla\cdot B=\nabla\times B=0\) implies
+\(\Delta B=0\), hence \[
+\Delta |B|^2=2|\nabla B|^2.
+\] Consequently a vacuum field with constant magnitude is constant as a
+vector field. A nontrivial vacuum stellarator cannot generally evade
+(C1) by choosing a nonconstant field of constant magnitude.
+
+\subsection{What remains unproved}\label{what-remains-unproved}
+
+The finite-time transport theorem is a genuine consequence of explicit
+geometric bounds, provided its buffer inequality is satisfied. We have
+not certified that inequality for the project's actual embedded geometry
+and field budget. The common-temperature Maxwellian used here has no
+self-consistent field response, and the prescribed original weak-QS
+field has a separately established obstruction to the proposed
+equilibrium classes. Thus this construction is an orbit-level and
+kinetic-transport advance, not an externally coiled hot fusion
+equilibrium. Extending it requires actual collision and source
+estimates, electromagnetic feedback bounds, wall physics and a globally
+coercive continuation estimate. The covariant calculation removes the
+large field-direction commutator but leaves field-strength shear,
+spatial transport terms and velocity-weight requirements.
+
+\subsection{Primary sources and method
+provenance}\label{primary-sources-and-method-provenance}
+
+The explicit corrected flux and absorbing-core inequalities above are calculations made here. The following primary references delimit adjacent established results; the geometric inspiration is discussed earlier in this note.
+
+Karaki's arbitrary-smooth-field hypocoercivity result concerns a linear
+Fokker--Planck operator on the flat torus:
+
+\url{https://doi.org/10.3934/krm.2020011}
+
+Fan--Lei's full Vlasov--Maxwell--Landau result allows a strong uniform
+background magnetic field:
+
+\url{https://doi.org/10.1007/s10955-022-03030-1}
+
+Dong--Guo--Yastrzhembskiy's global bounded-domain relativistic
+Vlasov--Maxwell--Landau theorem is near Jüttner, with electromagnetic
+smallness and zero magnetic flux through toroidal cuts:
+
+\url{https://arxiv.org/abs/2401.00554}
+
+Ouyang--Wu's October 2026 preprint gives a global near-Maxwellian
+theorem for the Landau equation with inflow or diffuse reflection, but
+does not assert a full strong-variable-field Vlasov--Maxwell--Landau
+theorem:
+
+\url{https://arxiv.org/abs/2610.40517}
+
+Carrapatoso--Mischler give a near-equilibrium Landau theorem with
+Maxwell accommodation and quantitative convergence:
+
+\url{https://arxiv.org/abs/2407.09031}

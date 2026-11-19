@@ -1,0 +1,101 @@
+\section{A complex-surface lift that retains the Euclidean metric}
+
+The algebraic complexification above has complex dimension three. There is a different, exact construction on a complex surface: add one auxiliary circle to physical three-space. This is a static gauge-theoretic lift, not an identification of that circle with plasma evolution time.
+
+Let $\Omega$ be a smooth solid torus, let $B$ be a smooth real field on a neighborhood of its closure, and set
+\[
+\alpha=B^\flat,\qquad \beta=*_{3}\alpha,\qquad
+M=\Omega\times(\mathbb R/\ell\mathbb Z).
+\]
+Give $M$ the product Euclidean metric and orientation $dx\wedge dy\wedge dz\wedge dt$. Define the real two-form
+\[
+\mathcal F=\beta-\alpha\wedge dt.
+\]
+
+\paragraph{Proposition (exact Abelian Hermitian--Yang--Mills lift).}
+The field $B$ is vacuum if and only if $d\mathcal F=0$. The form $\mathcal F$ is anti-self-dual for every $B$. Consequently a vacuum field gives a closed primitive form of type $(1,1)$ for the complex coordinates
+\[
+u=x+iy,\qquad w=\exp(2\pi(z+it)/\ell).
+\]
+If $\Omega$ avoids the vertical axis, $M$ is a complex domain in $(\mathbb C^*)^2$. Its metric and Kähler form are
+\[
+g_4=|du|^2+\frac{\ell^2}{4\pi^2|w|^2}|dw|^2,
+\qquad
+\omega=\frac i2du\wedge d\bar u+
+\frac{i\ell^2}{8\pi^2|w|^2}dw\wedge d\bar w.
+\]
+In particular, the physical metric is not replaced by the standard flat Hermitian metric in the algebraic coordinates $(u,w)$.
+
+\paragraph{Proof.}
+The components of $d\mathcal F=d\beta-d\alpha\wedge dt$ with and without $dt$ vanish separately. Their vanishing says respectively $\operatorname{div}B=0$ and $\operatorname{curl}B=0$. The product Hodge star satisfies
+\[
+*_{4}\beta=\alpha\wedge dt,\qquad
+*_{4}(\alpha\wedge dt)=\beta.
+\]
+Thus $*_{4}\mathcal F=-\mathcal F$. On this Kähler surface, real anti-self-dual two-forms are precisely the real primitive $(1,1)$ forms. This last assertion can also be verified in the orthonormal coordinates $(x,y,z,t)$; no compactness or algebraic compactification is used. The metric formula follows by differentiating $w$. $\square$
+
+\paragraph{Integral periods and the holomorphic line bundle.}
+Let $\gamma$ generate the longitudinal first homology of $\Omega$, and write $\Gamma=\int_\gamma\alpha$. Since $H^2(\Omega;\mathbb R)=0$, the only possible nonzero period of $\mathcal F$ on $M$ is
+\[
+\frac{1}{2\pi}\int_{\gamma\times S^1_\ell}\mathcal F
+=-\frac{\Gamma\ell}{2\pi}.
+\]
+For the normalized seed, $\Gamma=2\pi$ and $\ell=1$ make this period integral. More generally one may choose the auxiliary period or an overall mathematical curvature normalization. This is not a physical flux-quantization assertion.
+
+Choose a global one-form $a$ on $\Omega$ with $da=\beta$. Locally write $\alpha=d\Phi_i$ and set $A_i=a-\Phi_i\,dt$. Then $dA_i=\mathcal F$. A potential branch change by $2\pi n$ changes $A_i$ by $-2\pi n\,dt$, which has the unitary transition $e^{2\pi int}$ when $\ell=1$. With convention $\nabla=d-iA$, the curvature is $-i\mathcal F$ and $c_1=[\mathcal F/(2\pi)]$. The type $(1,1)$ condition makes the $(0,1)$ part of this connection integrable, hence defines a holomorphic line bundle; the primitive condition is the Abelian Hermitian--Yang--Mills equation with zero Einstein constant. The domain need not be assumed Stein for this explicit construction.
+
+The logarithmic differential on the threefold is algebraic, but this line bundle on the surface need not be algebraic. The algebraic Picard group of $(\mathbb C^*)^2$ is zero: its coordinate ring is a Laurent polynomial unique factorization domain and is regular. A bundle with the nonzero Chern period above therefore cannot be the restriction of an algebraic line bundle on that ambient algebraic torus. This is a genuine distinction between the two constructions, not an inconsistency.
+
+\paragraph{A positive auxiliary energy and its exact scope.}
+For a vacuum field,
+\[
+\int_M|\mathcal F|^2=2\ell\int_\Omega|B|^2.
+\]
+If $a_1$ is a real one-form whose tangential trace on $\partial M$ vanishes, then $d*\mathcal F=0$ and integration by parts give
+\[
+\int_M|\mathcal F+da_1|^2-\int_M|\mathcal F|^2
+=\int_M|da_1|^2\ge0.
+\]
+Thus the lift minimizes the Abelian Yang--Mills energy against these fixed-boundary connection variations. A moving plasma boundary, plasma pressure, distribution functions, collisions, and source work are absent from this identity. It is not a plasma Lyapunov theorem.
+
+\section{A determinant quantity for vacuum geometry}
+
+Here is a separate elementary determinant construction that retains the physical Euclidean Hessian. It gives an exact positive identity and useful geometric control, although not a dynamical plasma estimate.
+
+\paragraph{Proposition (a subharmonic log-determinant).}
+Let $B$ be a smooth vacuum field on a neighborhood of the closure of a bounded smooth domain. Set $H=\nabla B$, choose $\lambda>0$, and suppose $\|H\|_{\mathrm{op}}\le\delta\lambda$ on the boundary, with $0<\delta<1$. Then throughout the domain
+\[
+A=I+\lambda^{-1}H>0,\qquad
+Q=-\log\det A\ge0,
+\]
+and
+\[
+\Delta Q=\sum_k\operatorname{tr}
+\big(A^{-1}(\partial_k A)A^{-1}(\partial_k A)\big)\ge0.
+\]
+Moreover,
+\[
+\frac{|H|_F^2}{2\lambda^2(1+\delta)^2}
+\le Q\le
+\frac{|H|_F^2}{2\lambda^2(1-\delta)^2},
+\qquad
+\Delta Q\ge\frac{|\nabla H|_F^2}{\lambda^2(1+\delta)^2}.
+\]
+
+\paragraph{Proof.}
+Vacuum implies $H^T=H$, $\operatorname{tr}H=0$, and $\Delta H=0$. For every fixed real vector $\xi$, the scalar $\xi^TH\xi$ is harmonic. The maximum principle therefore extends the boundary spectral bounds $-\delta\lambda I\le H\le\delta\lambda I$ throughout the domain. Differentiating $-\log\det A$, and using $\Delta A=0$, gives the displayed Laplacian identity. Each summand is the squared Frobenius norm of $A^{-1/2}(\partial_kA)A^{-1/2}$. For the comparison bounds, let $h_j$ be the eigenvalues of $H/\lambda$. Since $\sum_jh_j=0$,
+\[
+Q=\sum_j\big(h_j-\log(1+h_j)\big).
+\]
+The scalar function in parentheses has value and first derivative zero at the origin, and second derivative $(1+h)^{-2}$. Taylor's integral formula on $[-\delta,\delta]$ gives the two-sided bounds. The lower bound for $\Delta Q$ follows by the same spectral bounds on $A^{-1/2}$. $\square$
+
+Locally, $B=\nabla\Phi$ and $A$ is the Hessian of $|x|^2/2+\Phi/\lambda$. Different branches of the angular potential differ by constants, so $A$ and $Q$ remain globally well-defined. This is a real Monge--Ampère-type quantity with a fully checked sign. The maximum principle controls $Q$ from its boundary data. It does not require, or assert, a globally single-valued convex potential on the solid torus.
+
+The limitations are explicit. A general MHD or kinetic perturbation has current; then $\nabla B$ need not be symmetric and $\Delta\nabla B$ need not vanish. The displayed identity does not close a plasma evolution estimate. A successful auxiliary-PDE argument would have to include those terms and the physical boundary terms with controlled signs.
+
+\paragraph{A tempting simplification is impossible.}
+A nonzero smooth vacuum field tangent to the boundary of a bounded smooth domain cannot have constant strength on the entire boundary. To prove this, put $q=|B|^2$. Then $\Delta q=2|\nabla B|^2\ge0$. If $q=c>0$ on the boundary and is nonconstant inside, the maximum principle and Hopf lemma give $\partial_nq>0$ at every boundary point. Tangency and curl-freeness instead give
+\[
+\frac12\partial_nq=-\mathrm{II}(B,B),
+\]
+where $\mathrm{II}(v,w)=\langle D_vn,w\rangle$. At a point maximizing distance from a fixed interior point, comparison with the enclosing sphere gives $\mathrm{II}\ge R^{-1}g$ on the tangent plane. There $B\ne0$, so the last normal derivative is negative, a contradiction. If $q$ is constant throughout, the Bochner identity forces $\nabla B=0$; a nonzero constant vector cannot be tangent to the boundary of a bounded domain, as integrating $\operatorname{div}((B\cdot x)B)=|B|^2$ shows. The case $c=0$ forces $B=0$ by the maximum principle. This excludes that particular attempt to remove field-strength variation; it is not an instability theorem.
