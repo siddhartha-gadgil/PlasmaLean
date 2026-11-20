@@ -15,7 +15,7 @@
 | Status | stated; (a) lean-ready; (b), (c) open research |
 | Lean evidence | none yet |
 | Audit evidence | not audited |
-| Last updated | 4 November 2026: created from N-36 |
+| Last updated | 20 November 2026: hot-core moment fixtures added from N-42/N-43 (in place; no implementation) |
 | Patched by / Alternatives | method for N-20 (its compiled kernel lemmas and the unchecked-formula caveat stand) |
 
 ## Purpose and scope
@@ -78,6 +78,24 @@ the barrier theorems (`Theory/Transport/Comparison`). Either:
 Then the supplied D in `Kernel/Transport` is replaced by a produced flux. That closes the
 "supplied scaling" gap of C5 for anomalous transport; Q-22 does the same for neoclassical
 transport.
+
+## Hot-core moment fixtures (from N-42, 20 November 2026)
+
+The source assessed in N-42 (§9.2, claims S-28 and S-29; method note N-43) gives moment bounds
+that suit the fixtures of Q-28 (a). They are pure facts about Gaussians and do not depend on any
+plasma model. If `f` equals the Maxwellian `M` (density `n₀`, `σ² = Θ₀/m`) on the ball `|v| ≤ cσ`,
+and `0 ≤ f ≤ M` elsewhere, then
+
+- `n ≥ a(c)n₀`, with `a(c) = P(χ₃ ≤ c)`;
+- `Θ/Θ₀ ≥ b(c) − d(c)²/(3a(c)²)`, with `b(c) = P(χ₅ ≤ c)` and
+  `d(c) = √(2/π)(c² + 2)e^{−c²/2}`;
+- a directional (matrix) version with `d²/a²` in place of `d²/(3a²)`;
+- a `(1 ± δ)M` perturbed version.
+
+At `c = 2.8`: `a > 0.95056` and the temperature ratio is `> 0.82577`. Both were checked
+numerically in N-42. As a Lean fixture this is a lemma about truncated Gaussian moments
+(lean-ready, given `erf` bounds), so it belongs with (a). The confinement hypothesis
+`f = M` on the core is supplied by the certificate of N-43 (Q-29 (b)).
 
 ## Claims and evidence
 

@@ -142,3 +142,5 @@ Ranked pilots (each a run folder `notes/reasoning/<date>-evolve-<slug>/`):
 4. **Q-26 (a)/Q-13: burn operating window**: cheap; after `stable_band_of_sign_change` is in Lean.
 
 Registry: route added to Q-3, Q-12, Q-13, Q-24 and Q-26 (17 November 2026).
+
+**Pointer (20 November 2026):** N-42 / Q-32: the harmonic-polynomial perturbations of the Dommaschk seed (symmetric families `Im(x+iy)^{2m}`, `z Re(x+iy)^{2m}`) are a natural, complete and C1-preserving search space for a QS-improving search. Each candidate still needs its own torus certificate.

@@ -294,3 +294,5 @@ Grönwall estimate fails to provide.
 3. **Resolution of `M`.** `M = 0.0816` (target `Kn = 40`) against the simulated `0.023`:
    - smaller boxes give `0.077` (`Kn = 38`, 152 leaves) and `0.071` (`Kn = 35`, 207 leaves);
    - the cell floor is `≈ 0.04`, and finer cells cost proportionally more kernel time.
+
+**Pointer (20 November 2026):** method note N-43 (from N-42) gives a quadratic-in-velocity full-orbit corrector for an exact weak-QS field with a non-Killing generator, and a finite-time absorbing-core certificate (Q-29). It complements the gyro-Noether correction used here.

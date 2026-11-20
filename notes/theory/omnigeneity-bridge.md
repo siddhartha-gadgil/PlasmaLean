@@ -110,3 +110,5 @@ sharp bound, which would use bounce integrals of `ξB` rather than its sup.
 - A sharp bound via bounce integrals of `ξB` (oscillation), and the quasi-isodynamic route, are
   open. Quasi-isodynamic fields are omnigenous without QS, so the converse implication fails.
 - The plan registry entry for Q-23 should be updated (not edited here).
+
+**Pointer (20 November 2026):** method note N-43 (from N-42): the full-orbit analogue for exact weak QS. `J = ψ − εu·v + ε²vᵀDv` has a cubic `ε²` remainder, and a QS defect leaves a secular parallel term (Q-29 (c)).

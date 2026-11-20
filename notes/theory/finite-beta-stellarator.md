@@ -473,3 +473,5 @@ This settles the "next step" of §9: the secular part of the certificate is exac
    - One surface: about 2–11 CPU-h, i.e. 1–3 modules at the 240-min cap. Borderline.
    - The band `[0.7, 0.9]` adds a `k`-direction (20–50 cells): 50–500 CPU-h, beyond the laptop
      re-check budget.
+
+**Pointer (20 November 2026):** method note N-44 (from N-42) records a fully signed free-boundary ideal-MHD benchmark on a periodic cylinder. It has an explicit all-mode window, which needs a wall within about 5% of the minor radius, and an unstable branch. It also gives a first-order criterion for a positive interface term on a toroidal interface (Q-30, Q-31; relevant to Q-14 and Q-20).

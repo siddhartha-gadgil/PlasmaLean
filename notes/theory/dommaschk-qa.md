@@ -920,3 +920,5 @@ the N-29 bridge also needs κ < 1.
 - An edge N-30 → N-31 → Q-16.
 
 *Correction (1 November 2026, N-34):* the κ values reported from the oracle's "Lean-form δ" keep only Boozer modes m, |n| ≤ 8 and are about 2× optimistic (torus C: true sup of ∂_{φ_B}|B| is 0.0090 against 0.0051). The spectral defect/ι values are unaffected.
+
+**Pointer (20 November 2026):** N-42 (S-1, S-10, S-11): the candidate potential is an exact Laurent polynomial in `u = x+iy`, `v = x−iy`, `z` (121 monomials, checked from `candidate.json`). Small harmonic-polynomial perturbations keep two nested invariant tori by KAM persistence, with an unquantified radius. This parametrises a C1-preserving search space for better QS (Q-32).
