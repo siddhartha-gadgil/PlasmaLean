@@ -294,7 +294,7 @@ theorem FormWeakQS.formFirstIntegralOn {ω : Space → Form 2} {ξ : Space → S
 /-- **Beltrami curl equation** on `U` with proportionality function `lam`: `B` is
 differentiable and `∇ × B = λ B` at each point of `U`.
 
-Scope (audit finding AF-M1). Differentiability is required because Lean's `fderiv` is `0` at
+Scope (audit finding AD-M1). Differentiability is required because Lean's `fderiv` is `0` at
 a non-differentiable point, which would make every kinked field "Beltrami with `λ = 0`" there.
 The predicate is the curl equation only. It does **not** include `∇ · B = 0`, so a Beltrami
 field in this sense need not be a magnetic field (the field `B = x` has `λ = 0` and

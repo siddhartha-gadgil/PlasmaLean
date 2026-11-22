@@ -14,7 +14,7 @@
 | Difficulty | routine–moderate: finite-dimensional multilinear algebra; the care is in the choice of degrees and signs |
 | Status | verified: vacuum and force-balance laws (kernel); first integral, symmetric flux, weak quasisymmetry, Beltrami fields and the contact condition (theory layer) |
 | Lean evidence | default build: `PlasmaLean.Forms.flat`, `flux`, `density`, `hodge`, `extDeriv_flat`, `extDeriv_flux`, `VacuumForm`, `vacuumForm_flux_iff`, `vacuumField_fluxSymm_iff`, `FormForceBalance`, `formForceBalance_iff`, `forceBalance_iff`, `form_field_tangency`; `PlasmaLean.Sanity.Forms.*`; in `Theory/Fields/FormBridges`: `formFirstIntegralOn_flux_iff`, `formSymmetricFlux_iff`, `formWeakQS_flux_iff`, `formBeltramiOn_flat_iff`, `wedge12_apply`, `isContactAt_of_beltrami`, `helicalField_contact` |
-| Audit evidence | audited at `1e5d4f3` (16 November 2026): findings AF-H1, AF-M1–M7, AF-L1–L5, all resolved except AF-L4, AF-L5 (low); record `notes/audit/2026-11-16-forms-audit.md`; regressions in `Sanity/AuditForms` |
+| Audit evidence | audited at `1e5d4f3` (16 November 2026): findings AD-H1, AD-M1–M7, AD-L1–L5, all resolved except AD-L4, AD-L5 (low); record `notes/audit/2026-11-16-forms-audit.md`; regressions in `Sanity/AuditForms` |
 | Last updated | 16 November 2026: created with the Lean modules; same day, pointer to the extended Rosetta-stone page, and the theory-layer bridges implemented (`Theory/Fields/FormBridges`); strict audit and its corrections |
 
 ## Purpose and scope
@@ -158,11 +158,11 @@ All compiled Lean theorems, default build, standard axioms only (`scripts/check_
   - Not covered: the Reeb field, the converse direction (a metric adapted to a contact form),
     a wedge product of general degrees, toroidal Beltrami fields.
 - **Strict audit (16 November 2026).** Corrections that change what the bullets above say:
-  - `IsBeltramiOn` and `FormBeltramiOn` now require differentiability at each point (AF-M1). They
+  - `IsBeltramiOn` and `FormBeltramiOn` now require differentiability at each point (AD-M1). They
     are the curl equation only: `∇ · B = 0` is not included, and the zero field satisfies them
     for every `λ` (`zero_beltrami`, `id_beltrami_not_solenoidal`).
   - `FormSymmetricFlux` has content only when its datum `γ` is separately a differential
-    (`formSymmetricFlux_of_interior`, AF-M4); `FormSymmetricFlux.formFirstIntegralOn` is the
+    (`formSymmetricFlux_of_interior`, AD-M4); `FormSymmetricFlux.formFirstIntegralOn` is the
     form version of `SymmetricFlux.firstIntegral`.
   - New: `form_current_tangency`, `formGradient_zero_iff_force_free`, `flux_cross_apply`,
     `IsBeltramiOn.formForceBalance` (a Beltrami field has zero Lorentz force),

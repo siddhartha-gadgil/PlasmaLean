@@ -13,7 +13,7 @@ Skill: `plasmalean-audit-domain`, proof policy `plasmalean-lean-proofs`.
 ## Commands run
 
 - Scans of the three files for `sorry`, `admit`, `axiom`, `native_decide`, any `decide` variant,
-  `unsafe`, `instance`: no forbidden construct; one global instance (AF-L1).
+  `unsafe`, `instance`: no forbidden construct; one global instance (AD-L1).
 - `lake env lean` on each changed file during correction; `lake build` (3946 jobs, zero
   warnings) on the workstation with a plain parallel build.
 - `lake env lean scripts/check_axioms.lean`: passed, "Axiom audit passed for 51135 PlasmaLean
@@ -36,28 +36,28 @@ Skill: `plasmalean-audit-domain`, proof policy `plasmalean-lean-proofs`.
 | `fluxField` | equivalence of fields | correct |
 | `vec` | equivalence `Vec3 ≃ₗ Euclid3` | correct |
 | `FormForceBalance` | law (class, 1 field) | says `J × B = ∇p` with the kernel's sign (`curryLeft_flux`; direct determinant check `AuditForms.interior_pinch_direct`); vacuous for `dp := ι_B ω_J` (`formForceBalance_of_interior`, as E-1) |
-| `form_field_tangency`, `form_current_tangency`, `formGradient_zero_iff_force_free` | theorems | the last two were missing and are added (AF-M7) |
+| `form_field_tangency`, `form_current_tangency`, `formGradient_zero_iff_force_free` | theorems | the last two were missing and are added (AD-M7) |
 
 ## Findings
 
 No exported theorem was false. The sign, orientation and normalization conventions are mutually
-consistent. All findings except AF-L4 and AF-L5 are resolved in the same commit.
+consistent. All findings except AD-L4 and AD-L5 are resolved in the same commit.
 
 | ID | Severity | Location | Summary | Resolution |
 | --- | --- | --- | --- | --- |
-| AF-H1 | **high** (documentation) | `FormBridges.lean` module doc | The doc said symmetric-flux fixtures were transported; none existed | doc corrected; `formSymmetricFlux_uniform`, `not_formSymmetricFlux_uniform`, `formSymmetricFlux_zero` added |
-| AF-M1 | medium | `IsBeltramiOn`, `FormBeltramiOn` | No regularity clause: by totalized `fderiv` a field with a kink was "Beltrami with `λ = 0`" at the kink. The docstring said "force-free" although `∇ · B = 0` is not required and the zero field satisfies it for every `λ`. No link to the kernel's force balance | **definitions changed**: both now require differentiability at each point. Docstrings state the scope. `IsBeltramiOn.formForceBalance` (Beltrami ⇒ `ι_B ω_J = 0`), `isBeltramiOn_iff_curl`. Regressions `absField_curl_equation`, `absField_not_beltrami`, `zero_beltrami`, `id_beltrami_not_solenoidal`; `helicalField_div`, `helicalField_forceFree` |
-| AF-M2 | medium | `Sanity/Forms.lean` | Every `VacuumForm` and `FormForceBalance` check was transported through the dictionary under test, so a convention error shared by `flux` and the dictionary would pass | `extDeriv_x_dy` (from Mathlib's `extDeriv_apply`), `interior_pinch_direct`, `div_curl_eq_zero` (from `extDeriv_extDeriv`), `wedge_eq_inner_hodge`, `wedge12_dx_dydz`, `wedge12_dx_dzdx` |
-| AF-M3 | medium | `VacuumForm` | The totalization regression of the vector kernel (`absField`) was not carried over | `absField_form_closed_coclosed`, `absField_not_vacuumForm` |
-| AF-M4 | medium | `FormSymmetricFlux` | `γ` is free data, so `γ := -ι_K ω` always satisfies the law (the E-1 hazard); the module doc wrote "with `γ = dψ`"; no first-integral consequence | docstring and module doc corrected; regression `formSymmetricFlux_of_interior`; `FormSymmetricFlux.formFirstIntegralOn` |
-| AF-M5 | medium | `FormWeakQS`, `FormFirstIntegralOn` | Incomplete triads: no rejected fixture, no vacuity regression, one fixture for first integrals | `formWeakQS_zero`, `not_formWeakQS_mirror`, `formFirstIntegralOn_const`, `not_formFirstIntegralOn_x`, `not_formFirstIntegralOn_of_not_differentiableAt`; docstring states that `ω` need not be closed |
-| AF-M6 | medium | `IsContactAt`, `wedge12` | Every negative fixture had zero curl; no value check; only one direction of the Beltrami statement | `rotationField_not_contact` (curl `≠ 0`, not contact), `helicalField_wedge` (`β ∧ dβ = -vol`: a negative contact form), `IsBeltramiOn.isContactAt_iff` (sharp) |
-| AF-M7 | medium | `Kernel/Forms.lean` | Missing analogues of `current_tangency` and `gradient_zero_iff_force_free` | `form_current_tangency`, `formGradient_zero_iff_force_free`; `AuditForms.form_tangencies`, `form_force_free_nonvacuum` |
-| AF-L1 | low | `Kernel/Forms.lean` | A global `Fact (finrank ℝ Euclid3 = 3)` instance was exported from a kernel file | made `local` |
-| AF-L2 | low | `FormBridges.lean`, `Sanity/Forms.lean` | `VacuumField.not_isContactAt` and `VacuumForm.const_smul` were declared in the wrong namespace, so dot notation failed | renamed `not_isContactAt_of_vacuumField`, `vacuumForm_const_smul` |
-| AF-L3 | low | module docs | Unbacked statements: `flat (∇p)` in the kernel table; "Clebsch flux form `dψ ∧ dχ`"; "four notions"; the star on 1-forms | docs corrected; `flux_cross_apply` proves `ι_{a♯ × b♯} vol = a ∧ b` |
-| AF-L4 | low, **open** | `Sanity/Forms.lean` | `hodge_dydz`, `formPinch_tangency` and the three round-trip theorems hold by definition and test nothing | kept (harmless); superseded by `Sanity/AuditForms` |
-| AF-L5 | low, **open** | `FormBridges.lean` | Fixtures of the theory file are in the file itself and in the namespace `PlasmaLean.Forms`; no Beltrami fixture with non-constant `λ`; `forceBalance_smul_*` not transported; `wedge12` covers degrees (1,2) only; `‖flux v‖` is not related to `‖v‖`; no Reeb field | recorded; none blocks a claim |
+| AD-H1 | **high** (documentation) | `FormBridges.lean` module doc | The doc said symmetric-flux fixtures were transported; none existed | doc corrected; `formSymmetricFlux_uniform`, `not_formSymmetricFlux_uniform`, `formSymmetricFlux_zero` added |
+| AD-M1 | medium | `IsBeltramiOn`, `FormBeltramiOn` | No regularity clause: by totalized `fderiv` a field with a kink was "Beltrami with `λ = 0`" at the kink. The docstring said "force-free" although `∇ · B = 0` is not required and the zero field satisfies it for every `λ`. No link to the kernel's force balance | **definitions changed**: both now require differentiability at each point. Docstrings state the scope. `IsBeltramiOn.formForceBalance` (Beltrami ⇒ `ι_B ω_J = 0`), `isBeltramiOn_iff_curl`. Regressions `absField_curl_equation`, `absField_not_beltrami`, `zero_beltrami`, `id_beltrami_not_solenoidal`; `helicalField_div`, `helicalField_forceFree` |
+| AD-M2 | medium | `Sanity/Forms.lean` | Every `VacuumForm` and `FormForceBalance` check was transported through the dictionary under test, so a convention error shared by `flux` and the dictionary would pass | `extDeriv_x_dy` (from Mathlib's `extDeriv_apply`), `interior_pinch_direct`, `div_curl_eq_zero` (from `extDeriv_extDeriv`), `wedge_eq_inner_hodge`, `wedge12_dx_dydz`, `wedge12_dx_dzdx` |
+| AD-M3 | medium | `VacuumForm` | The totalization regression of the vector kernel (`absField`) was not carried over | `absField_form_closed_coclosed`, `absField_not_vacuumForm` |
+| AD-M4 | medium | `FormSymmetricFlux` | `γ` is free data, so `γ := -ι_K ω` always satisfies the law (the E-1 hazard); the module doc wrote "with `γ = dψ`"; no first-integral consequence | docstring and module doc corrected; regression `formSymmetricFlux_of_interior`; `FormSymmetricFlux.formFirstIntegralOn` |
+| AD-M5 | medium | `FormWeakQS`, `FormFirstIntegralOn` | Incomplete triads: no rejected fixture, no vacuity regression, one fixture for first integrals | `formWeakQS_zero`, `not_formWeakQS_mirror`, `formFirstIntegralOn_const`, `not_formFirstIntegralOn_x`, `not_formFirstIntegralOn_of_not_differentiableAt`; docstring states that `ω` need not be closed |
+| AD-M6 | medium | `IsContactAt`, `wedge12` | Every negative fixture had zero curl; no value check; only one direction of the Beltrami statement | `rotationField_not_contact` (curl `≠ 0`, not contact), `helicalField_wedge` (`β ∧ dβ = -vol`: a negative contact form), `IsBeltramiOn.isContactAt_iff` (sharp) |
+| AD-M7 | medium | `Kernel/Forms.lean` | Missing analogues of `current_tangency` and `gradient_zero_iff_force_free` | `form_current_tangency`, `formGradient_zero_iff_force_free`; `AuditForms.form_tangencies`, `form_force_free_nonvacuum` |
+| AD-L1 | low | `Kernel/Forms.lean` | A global `Fact (finrank ℝ Euclid3 = 3)` instance was exported from a kernel file | made `local` |
+| AD-L2 | low | `FormBridges.lean`, `Sanity/Forms.lean` | `VacuumField.not_isContactAt` and `VacuumForm.const_smul` were declared in the wrong namespace, so dot notation failed | renamed `not_isContactAt_of_vacuumField`, `vacuumForm_const_smul` |
+| AD-L3 | low | module docs | Unbacked statements: `flat (∇p)` in the kernel table; "Clebsch flux form `dψ ∧ dχ`"; "four notions"; the star on 1-forms | docs corrected; `flux_cross_apply` proves `ι_{a♯ × b♯} vol = a ∧ b` |
+| AD-L4 | low, **open** | `Sanity/Forms.lean` | `hodge_dydz`, `formPinch_tangency` and the three round-trip theorems hold by definition and test nothing | kept (harmless); superseded by `Sanity/AuditForms` |
+| AD-L5 | low, **open** | `FormBridges.lean` | Fixtures of the theory file are in the file itself and in the namespace `PlasmaLean.Forms`; no Beltrami fixture with non-constant `λ`; `forceBalance_smul_*` not transported; `wedge12` covers degrees (1,2) only; `‖flux v‖` is not related to `‖v‖`; no Reeb field | recorded; none blocks a claim |
 
 **Changed definitions.** `IsBeltramiOn` and `FormBeltramiOn` (introduced in `1e5d4f3`) now carry a
 differentiability clause. They had no users outside `FormBridges.lean`. Renamed declarations:
@@ -100,4 +100,4 @@ differentiability clause. They had no users outside `FormBridges.lean`. Renamed 
 ## Next
 
 - A refresh audit of everything else changed since `921a8c3`.
-- AF-L5: a Beltrami fixture with non-constant `λ`.
+- AD-L5: a Beltrami fixture with non-constant `λ`.

@@ -241,7 +241,7 @@ superseded; mixed notes list the status of their parts. "Lean" names compiled ev
 | `N-42` | `notes/theory/fusion-complex-geometry-assessment.md`: assessment of the complex vacuum fields and stability estimates research note (18 November 2026) | Q-16, Q-24, Q-3, Q-14, Q-20, Q-28; G-1, G-2, G-4, G-6, G-10; Q-29–Q-32 | N-1, N-12, N-17, N-29, N-31, N-32, N-33, N-37, N-40, N-41; `dommaschk_nested`, `AdmBoundsG`, `laplacian_normSqField`, `gyroNoether_hasDerivAt` | routine | assessment complete: 35 claims, 30 checked and correct, 0 incorrect, 5 unverified; scripts `scripts/fcg_source/`; analysis `notes/reasoning/2026-11-20-source-fusion-complex-geometry/`; audit item AF-1 | assess the earlier handoff `sources/complex_geometry_handoff.pdf`; lean-ready corollary: a vacuum field of constant \|B\| is constant (from `laplacian_normSqField`) |
 | `N-43` | `notes/theory/weak-qs-corrected-flux.md`: corrected full-orbit flux for exact weak QS, absorbing-core certificate, hot-core moments | Q-29, G-6, G-2; Q-1, Q-23, Q-28 | method for N-29, N-17; N-42; `WeakQS`, `GyroNoether` | routine–moderate (Lean); research (application) | stated; proof checked; (a), (b) lean-ready | Q-29 (a): the homological solution and the exact identity |
 | `N-44` | `notes/theory/cylinder-interface-stability.md`: fully signed free-boundary cylinder benchmark, toroidal interface criterion, transfer | Q-30, Q-31, G-4, Q-3, Q-14, Q-20 | method for N-12; N-42, N-13, N-33 | routine (Q-30 a); moderate (Q-31); research (Q-30 b) | stated; window checked numerically; (a) lean-ready | Q-30 (a); Q-31 numerics on torus A |
-| `N-45` | `notes/theory/differential-form-kernel.md`: differential-form language for the vacuum and force-balance kernel laws, with equivalences to the vector language | G-11 | `Kernel/Vacuum`, `Kernel/Equilibrium`; Mathlib `extDeriv` | routine–moderate | verified (`vacuumForm_flux_iff`, `vacuumField_fluxSymm_iff`, `formForceBalance_iff`, `forceBalance_iff`, `extDeriv_flat`, `extDeriv_flux`; `Sanity/Forms`; theory bridges `formFirstIntegralOn_flux_iff`, `formSymmetricFlux_iff`, `formWeakQS_flux_iff`, `formBeltramiOn_flat_iff`, `isContactAt_of_beltrami`) | audited 16 November 2026 (AF-*; `Sanity/AuditForms`); open: AF-L4, AF-L5 |
+| `N-45` | `notes/theory/differential-form-kernel.md`: differential-form language for the vacuum and force-balance kernel laws, with equivalences to the vector language | G-11 | `Kernel/Vacuum`, `Kernel/Equilibrium`; Mathlib `extDeriv` | routine–moderate | verified (`vacuumForm_flux_iff`, `vacuumField_fluxSymm_iff`, `formForceBalance_iff`, `forceBalance_iff`, `extDeriv_flat`, `extDeriv_flux`; `Sanity/Forms`; theory bridges `formFirstIntegralOn_flux_iff`, `formSymmetricFlux_iff`, `formWeakQS_flux_iff`, `formBeltramiOn_flat_iff`, `isContactAt_of_beltrami`) | audited 16 November 2026 (AD-*; `Sanity/AuditForms`); open: AD-L4, AD-L5 |
 | `N-46` | `notes/theory/sullivan-infinity-structures.md`: assessment of Sullivan's L∞ (combinatorial) and eigenspace fluid models for MHD and stellarators | G-9, G-11, Q-33 | `sources/SullivanFluids.pdf`; N-45; `Theory/Stability/Elsasser` | moderate | stated; Part 2 checked in Lean (`EulerianODE.energy_conserved`, `EulerianODE.helicity_conserved`, `rigidBody_eulerian`); no design consequence | none required; revisit if an implementation of the L∞ hierarchy is published |
 | `N-47` | `notes/theory/issan-arbitrary-field-periods.md`: assessment of the closed-form equilibria with any number of field periods (Issan et al., arXiv:2611.07672) | G-4, Q-17, Q-18, Q-20 | `sources/Non-AxisymmetricMHD.pdf`; N-28, N-27 | moderate | stated; 12 of 20 claims checked numerically (`scripts/issan_equilibria/`), none incorrect; nothing in Lean | optional Lean unit: Family 1 (ρ_a = ρ₀, N = 3) with zero loop current (Q-20) |
 
@@ -271,15 +271,15 @@ scope `Kernel/Forms`, `Sanity/Forms`, `Theory/Fields/FormBridges` only; record
 The rest of the work since `921a8c3` has **not** had a refresh audit.
 - No exported theorem was false; conventions (orientation, signs, `extDeriv` normalization) are
   consistent.
-- **AF-H1 (high, documentation, resolved):** the `FormBridges` module doc claimed symmetric-flux
+- **AD-H1 (high, documentation, resolved):** the `FormBridges` module doc claimed symmetric-flux
   fixtures that did not exist.
-- **AF-M1 (resolved, definitions changed):** `IsBeltramiOn` and `FormBeltramiOn` had no
+- **AD-M1 (resolved, definitions changed):** `IsBeltramiOn` and `FormBeltramiOn` had no
   regularity clause, so a kinked field was Beltrami with λ = 0 at the kink. Both now require
   differentiability. The predicate is the curl equation only (∇ · B = 0 is not part of it).
-- **AF-M2–M7 (resolved):** circular sanity checks; missing totalization regression for
+- **AD-M2–M7 (resolved):** circular sanity checks; missing totalization regression for
   `VacuumForm`; `FormSymmetricFlux` vacuous with free γ; incomplete triads; contact coverage;
   missing `form_current_tangency`. Regressions are in `Sanity/AuditForms.lean` (29 theorems).
-- **AF-L1–L3 (resolved), AF-L4–L5 (low, open):** a global instance in the kernel file,
+- **AD-L1–L3 (resolved), AD-L4–L5 (low, open):** a global instance in the kernel file,
   misplaced dot-notation names, doc nits; tautological sanity theorems kept; no Beltrami fixture
   with non-constant λ.
 
@@ -2132,7 +2132,7 @@ Partial audit (skill `plasmalean-audit-domain`) of `Kernel/Forms`, `Sanity/Forms
 `Theory/Fields/FormBridges` at `1e5d4f3`, by the author's pass and an independent read-only
 sub-audit. Record: `notes/audit/2026-11-16-forms-audit.md`; summary in RG.4.
 - **Result:** no false theorem; 1 high (documentation), 7 medium, 5 low findings; all resolved
-  except AF-L4 and AF-L5 (low).
+  except AD-L4 and AD-L5 (low).
 - **Definitions changed:** `IsBeltramiOn`, `FormBeltramiOn` (differentiability clause).
   **Renamed:** `not_isContactAt_of_vacuumField`, `vacuumForm_const_smul`. The kernel file's
   global `Fact` instance is now local.

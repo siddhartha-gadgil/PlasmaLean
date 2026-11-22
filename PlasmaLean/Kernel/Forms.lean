@@ -79,7 +79,7 @@ abbrev Form (k : ℕ) := Euclid3 [⋀^Fin k]→L[ℝ] ℝ
 abbrev stdBasis : OrthonormalBasis (Fin 3) ℝ Euclid3 := EuclideanSpace.basisFun (Fin 3) ℝ
 
 /-- `ℝ³` has dimension three (needed by Mathlib's volume form). Local: a kernel file exports
-no instances (audit finding AF-L1). -/
+no instances (audit finding AD-L1). -/
 local instance : Fact (finrank ℝ Euclid3 = 3) := ⟨by simp⟩
 
 /-- The Euclidean volume form `dx ∧ dy ∧ dz` with the standard orientation. -/

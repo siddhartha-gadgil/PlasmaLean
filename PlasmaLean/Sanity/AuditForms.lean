@@ -11,24 +11,24 @@ public import PlasmaLean.Theory.Fields.FormBridges
 /-!
 # Strict-audit checks for `Kernel/Forms` and `Theory/Fields/FormBridges`
 
-Audit of 16 November 2026 (record `notes/audit/2026-11-16-forms-audit.md`, findings `AF-*`).
+Audit of 16 November 2026 (record `notes/audit/2026-11-16-forms-audit.md`, findings `AD-*`).
 The sanity checks of `Sanity/Forms` are transported through the dictionary theorems
 (`vacuumForm_flux_iff`, `formForceBalance_iff`), so they cannot detect a convention error
 shared by the equivalences and the dictionary. This module adds:
 
-1. **Checks that do not use the dictionary** (finding AF-M2). `extDeriv_x_dy`: Mathlib's
+1. **Checks that do not use the dictionary** (finding AD-M2). `extDeriv_x_dy`: Mathlib's
    exterior derivative of `x dy`, computed from `extDeriv_apply`, is `1` on `(e₀, e₁)`.
    `interior_pinch_direct`: the pinch sign by a determinant. `div_curl_eq_zero`: `d ∘ d = 0`
    (Mathlib) read through both dictionary theorems gives `∇ · (∇ × B) = 0`, a cross-check of
    `extDeriv_flat` against `extDeriv_flux`. `wedge_eq_inner_hodge`: `a ∧ b = ⟪a, ⋆b⟫ vol`,
    an independent characterisation of the Hodge star.
-2. **Totalized derivatives** (AF-M1, AF-M3). The kink field of `Sanity/AuditVacuum` has
+2. **Totalized derivatives** (AD-M1, AD-M3). The kink field of `Sanity/AuditVacuum` has
    `dω = 0` and `d⋆ω = 0` at the kink but is not a vacuum form there; it satisfies the
    Beltrami curl equation with `λ = 0` at the kink but is not `IsBeltramiOn`.
-3. **Vacuity regressions** (AF-M1, AF-M4, AF-M5). The zero field is Beltrami for every `λ`;
+3. **Vacuity regressions** (AD-M1, AD-M4, AD-M5). The zero field is Beltrami for every `λ`;
    `B = x` is Beltrami with `λ = 0` but `∇ · B = 3`; `FormSymmetricFlux ω (-ι_K ω) K` always
    holds; the zero form is weakly quasisymmetric for a constant generator.
-4. **Missing triad members** (AF-M5, AF-M6). Accepted and rejected fixtures for
+4. **Missing triad members** (AD-M5, AD-M6). Accepted and rejected fixtures for
    `FormSymmetricFlux`, `FormFirstIntegralOn`, `FormWeakQS` (the mirror field) and
    `IsContactAt` (the rotation field: nonzero curl, not contact; the helical form has
    `β ∧ dβ = -vol`, a negative contact form).
@@ -45,7 +45,7 @@ namespace PlasmaLean.Sanity.AuditForms
 open PlasmaLean PlasmaLean.Vacuum PlasmaLean.Forms PlasmaLean.Fields PlasmaLean.Sanity
   PlasmaLean.Sanity.Audit PlasmaLean.Sanity.Forms Matrix
 
-/-! ### Checks that do not go through the dictionary (AF-M2) -/
+/-! ### Checks that do not go through the dictionary (AD-M2) -/
 
 /-- **`d(x dy) = dx ∧ dy`**, computed from Mathlib's formula `extDeriv_apply` and not from
 `extDeriv_flat`: the value on `(e₀, e₁)` is `1`. This fixes the normalization (no factor
@@ -119,7 +119,7 @@ theorem wedge12_dx_dzdx : wedge12 (flat (coordVec 0)) (flux (coordVec 1)) = 0 :=
   rw [wedge12_flat_flux]
   simp [coordVec, EuclideanSpace.inner_single_left]
 
-/-! ### Totalized derivatives (AF-M1, AF-M3) -/
+/-! ### Totalized derivatives (AD-M1, AD-M3) -/
 
 /-- **Totalization hazard in form language.** At the kink of `absField`, both `dω` and `d⋆ω`
 vanish by Lean's convention for `fderiv`. -/
@@ -138,12 +138,12 @@ theorem absField_not_vacuumForm {Ω : Set Euclid3} (h0 : (0 : Euclid3) ∈ Ω) :
     ¬ VacuumForm Ω (fluxField absField) :=
   fun h => absField_not_vacuum h0 (vacuumForm_flux_iff.1 h)
 
-/-- **Regression (AF-M1).** At the kink, `absField` satisfies the Beltrami curl equation with
+/-- **Regression (AD-M1).** At the kink, `absField` satisfies the Beltrami curl equation with
 `λ = 0`, by totalization. -/
 theorem absField_curl_equation : fieldCurl absField 0 = (0 : ℝ) • absField 0 := by
   rw [absField_fieldCurl_zero, zero_smul]
 
-/-- **Regression (AF-M1).** The differentiability clause of `IsBeltramiOn` excludes it. -/
+/-- **Regression (AD-M1).** The differentiability clause of `IsBeltramiOn` excludes it. -/
 theorem absField_not_beltrami : ¬ IsBeltramiOn absField (fun _ => 0) {0} := fun h =>
   absField_not_differentiableAt (h 0 rfl).1
 
@@ -153,7 +153,7 @@ theorem not_formFirstIntegralOn_of_not_differentiableAt {ω : Space → Form 2} 
     {x : Space} (h : ¬ DifferentiableAt ℝ ψ x) : ¬ FormFirstIntegralOn ω ψ {x} := fun hf =>
   h (hf x rfl).1
 
-/-! ### Beltrami: vacuity and scope (AF-M1) -/
+/-! ### Beltrami: vacuity and scope (AD-M1) -/
 
 /-- **Vacuity regression.** The zero field is Beltrami for every `λ` on every set. -/
 theorem zero_beltrami (lam : Space → ℝ) (U : Set Space) :
@@ -185,7 +185,7 @@ theorem helicalField_forceFree (x : Space) :
     FormForceBalance (flux (helicalField x)) (flux (fieldCurl helicalField x)) 0 :=
   helicalField_beltrami.formForceBalance (Set.mem_univ x)
 
-/-! ### Contact condition (AF-M6) -/
+/-! ### Contact condition (AD-M6) -/
 
 /-- **The helical form is a negative contact form**: `β ∧ dβ = -vol`. -/
 theorem helicalField_wedge (x : Space) :
@@ -207,7 +207,7 @@ theorem rotationField_not_contact (x : Space) :
   obtain ⟨-, -, h2⟩ := rotationField_coords x
   simp [h2, basis]
 
-/-! ### Force balance (AF-L3) -/
+/-! ### Force balance (AD-L3) -/
 
 /-- Both tangencies for generic data: under `FormForceBalance`, `dp(B) = 0` and
 `dp(J) = 0`. -/
@@ -224,7 +224,7 @@ theorem form_force_free_nonvacuum :
     simp [flux_apply, volForm_vec] at this
   exact ⟨_, _, parallelFormBalance (flux (coordVec 0)), hne, hne⟩
 
-/-! ### Symmetric flux (AF-M4) -/
+/-! ### Symmetric flux (AD-M4) -/
 
 /-- **Regression (vacuity hazard, as E-1).** Every flux form and every field `K` satisfy
 `FormSymmetricFlux` with the datum `γ := -ι_K ω`. The law has content only when `γ` is
@@ -260,7 +260,7 @@ theorem not_formSymmetricFlux_uniform :
   have h1 := congrArg (fun v : Space => v 1) (flat.injective hx)
   simp [cross, cross_apply, basis] at h1
 
-/-! ### First integrals and weak quasisymmetry (AF-M5) -/
+/-! ### First integrals and weak quasisymmetry (AD-M5) -/
 
 /-- Degenerate case: a constant is a first integral of every flux form. -/
 theorem formFirstIntegralOn_const (ω : Space → Form 2) (k : ℝ) (U : Set Space) :
