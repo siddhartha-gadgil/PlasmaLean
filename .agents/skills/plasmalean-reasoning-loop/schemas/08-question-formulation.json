@@ -1,0 +1,48 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "ResearchQuestionFormulation",
+  "type": "object",
+  "properties": {
+    "research_theme": { "type": "string" },
+    "variation_axes": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "questions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "question": { "type": "string" },
+          "motivation": { "type": "string" },
+          "expected_difficulty": {
+            "type": "string",
+            "enum": ["low", "medium", "high", "unknown"]
+          },
+          "first_probes": {
+            "type": "array",
+            "items": { "type": "string" }
+          },
+          "example_families": {
+            "type": "array",
+            "items": { "type": "string" }
+          },
+          "counterexample_families": {
+            "type": "array",
+            "items": { "type": "string" }
+          },
+          "status": {
+            "type": "string",
+            "enum": ["question", "conjecture_candidate", "known_result_candidate"]
+          }
+        },
+        "required": ["question", "motivation", "expected_difficulty", "first_probes", "status"]
+      }
+    },
+    "primary_questions": {
+      "type": "array",
+      "items": { "type": "string" }
+    }
+  },
+  "required": ["research_theme", "variation_axes", "questions", "primary_questions"]
+}

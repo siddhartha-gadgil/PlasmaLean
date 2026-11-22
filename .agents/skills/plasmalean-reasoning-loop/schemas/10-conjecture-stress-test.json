@@ -1,0 +1,45 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "ConjectureStressTest",
+  "type": "object",
+  "properties": {
+    "candidate_statement": { "type": "string" },
+    "hypotheses": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "boundary_checks": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "case": { "type": "string" },
+          "outcome": { "type": "string" }
+        },
+        "required": ["case", "outcome"]
+      }
+    },
+    "hypothesis_stress_tests": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "changed_hypothesis": { "type": "string" },
+          "result": { "type": "string" }
+        },
+        "required": ["changed_hypothesis", "result"]
+      }
+    },
+    "explicit_counterexamples": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "classification": {
+      "type": "string",
+      "enum": ["plausible", "refuted", "needs_extra_hypotheses", "known_or_near_known", "open"]
+    },
+    "proof_skeleton": { "type": "string" },
+    "next_action": { "type": "string" }
+  },
+  "required": ["candidate_statement", "hypotheses", "boundary_checks", "classification", "next_action"]
+}

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Proof techniques"
+  short_description: "Choose a proof technique from the registry with worked examples"
+  default_prompt: "Use $plasmalean-proof-techniques to choose a technique for this proof."

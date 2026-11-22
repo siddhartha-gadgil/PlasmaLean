@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Independent check of the closed-form equilibria of Issan, José, Landreman, Citrin, Tracey,
 "Non-axisymmetric MHD equilibria with an arbitrary number of field periods", arXiv:2611.07672
-(sources/Non-AxisymmetricMHD.pdf). Untrusted numerics (note N-43): nothing here is a proof.
+(sources/Non-AxisymmetricMHD.pdf). Untrusted numerics (note N-47): nothing here is a proof.
 
 The coordinate map (3), auxiliary functions (5)-(6), field (7) and flux/pressure (8) are typed
 from the paper. Derivatives are exact (sympy); residuals are evaluated with 40-digit arithmetic

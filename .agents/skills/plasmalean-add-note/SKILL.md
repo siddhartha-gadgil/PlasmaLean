@@ -48,6 +48,10 @@ Read first: `notes/note-template.md` (the structure), the RG.1–RG.3 tables of
      exact declaration names, their hypotheses (supplied model laws, solutions) and
      default-build/on-demand status. Grep each name before citing it.
    - Record user-contributed ideas and sources with provenance; do not overstate novelty.
+   - When the result comes from a reasoning task folder under `notes/reasoning/` (skills
+     `plasmalean-try-to-prove`, `plasmalean-explore-mathematics`), link the folder and summarize
+     its outcome and evidence state instead of copying its artifacts. A task registered as its own
+     note uses the task card `<task>/README.md` as the note file.
    - Keep untrusted numerics reproducible (scripts in `scripts/<family>/`, not only `/tmp`).
    - Record failed approaches and the barrier they establish.
    - State scope limits plainly (what is not proved, which contract clauses are not addressed).

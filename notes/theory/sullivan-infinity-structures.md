@@ -4,13 +4,13 @@
 
 | Field | Value |
 | --- | --- |
-| ID | `N-42` |
+| ID | `N-46` |
 | Title | Assessment of Sullivan's L∞ (combinatorial) and eigenspace models of 3D fluids for MHD and stellarator design |
 | Kind | source synthesis (source assessment) |
-| Addresses | `G-9`, `G-11` (infrastructure); `Q-29` (new); contract clauses C1–C5 as a test of expressiveness |
-| Depends on | `sources/SullivanFluids.pdf`; N-41 (`Kernel/Forms`, `Theory/Fields/FormBridges`); `Theory/Stability/Elsasser` |
+| Addresses | `G-9`, `G-11` (infrastructure); `Q-33` (new); contract clauses C1–C5 as a test of expressiveness |
+| Depends on | `sources/SullivanFluids.pdf`; N-45 (`Kernel/Forms`, `Theory/Fields/FormBridges`); `Theory/Stability/Elsasser` |
 | Dependency requirement | the source as published; the compiled declarations named below |
-| Produces | this assessment; `PlasmaLean/Theory/Fluids/EulerianODE.lean` (a check of Part 2 of the source); question `Q-29` |
+| Produces | this assessment; `PlasmaLean/Theory/Fluids/EulerianODE.lean` (a check of Part 2 of the source); question `Q-33` |
 | Difficulty | moderate (reading and comparison); the open items are research |
 | Status | stated (assessment complete); one claim of the source verified in Lean; no design consequence |
 | Lean evidence | default build: `PlasmaLean.Fluids.EulerianODE`, `EulerianODE.energy_conserved`, `EulerianODE.helicity_conserved`, `rigidBody_eulerian`, `eulerianODE_zero`, `not_eulerianODE_id` |
@@ -41,7 +41,7 @@ note is an assessment, not a formalization plan. Nothing here changes a contract
 - The source paper (published; its Part 1 is a programme with stated facts and two standard
   theorems of homotopical algebra, its Part 2 has one proposition with proof, one theorem with a
   proof sketch in which the word "follows" is in quotation marks, and a conjecture).
-- Compiled: `Kernel/Forms`, `Theory/Fields/FormBridges` (N-41); `Theory/Stability/Elsasser`
+- Compiled: `Kernel/Forms`, `Theory/Fields/FormBridges` (N-45); `Theory/Stability/Elsasser`
   (`IsSkewTransport`, conservation of the Elsässer energies under a supplied skew transport).
 
 ## Sources and prior work
@@ -242,7 +242,7 @@ cohomology groups of a complex attached to the equations. The quasisymmetric nea
 expansion is solvable to second order and overdetermined from third order. That is the typical
 shape of an obstructed deformation problem, and a complex whose cohomology counts the free
 functions and the constraints order by order would organize it. No such formulation was found in
-the literature search. It is recorded as question `Q-29`; nothing is claimed.
+the literature search. It is recorded as question `Q-33`; nothing is claimed.
 
 ### 6. Gains over the present numerics
 
@@ -278,7 +278,7 @@ the literature search. It is recorded as question `Q-29`; nothing is claimed.
 6. *Sourced, with the limits stated above:* the comparison with structure-preserving methods.
 7. *Literature observation (limited search):* no implementation of the L∞ fluid algorithm.
 8. *Conjecture (this assessment):* a deformation complex for quasisymmetric equilibria explains
-   the third-order overdetermination (`Q-29`).
+   the third-order overdetermination (`Q-33`).
 
 **Answers.**
 1. *Would infinity structures help in MHD?* As a language, partly: the induction equation is
@@ -288,7 +288,7 @@ the literature search. It is recorded as question `Q-29`; nothing is claimed.
    algebraic part while their content is analytic; C3 and C5 are not.
 3. *Gains over present numerics?* None demonstrated. The need that structure preservation serves
    in this field is met by methods with proofs and codes. The one speculative opening is
-   conceptual (`Q-29`).
+   conceptual (`Q-33`).
 
 ## Difficulty, barriers and readiness
 
@@ -303,6 +303,6 @@ the literature search. It is recorded as question `Q-29`; nothing is claimed.
 ## Outputs and next dependencies
 
 - New module `Theory/Fluids/EulerianODE` (default build).
-- New question `Q-29` (deformation complex for quasisymmetric equilibria; speculative, low
+- New question `Q-33` (deformation complex for quasisymmetric equilibria; speculative, low
   priority).
 - No change to goals. `sources/SullivanFluids.pdf` is assessed by this note.

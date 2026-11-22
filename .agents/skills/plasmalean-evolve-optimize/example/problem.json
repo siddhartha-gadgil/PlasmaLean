@@ -1,0 +1,15 @@
+{
+  "name": "distinct-bounded-sum",
+  "description": "Toy problem: a list of at most five distinct natural numbers, each at most 10, with the largest possible sum.",
+  "objective": "maximize",
+  "type": "List ℕ",
+  "measure": "candidate.sum",
+  "constraints": [
+    {"name": "bounded", "statement": "∀ x ∈ candidate, x ≤ 10", "description": "every entry is at most 10"},
+    {"name": "short", "statement": "candidate.length ≤ 5", "description": "at most five entries"},
+    {"name": "distinct", "statement": "candidate.Nodup", "description": "no entry repeats"}
+  ],
+  "context_file": "context.lean",
+  "population_size": 4,
+  "near_miss_size": 2
+}

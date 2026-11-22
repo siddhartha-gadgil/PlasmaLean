@@ -1,0 +1,6 @@
+{
+  "name": "Epsilon-Delta Proofs",
+  "area": "Analysis",
+  "keywords": ["epsilon delta", "limit", "continuity", "convergence", "metric space", "uniform continuity"],
+  "path": "techniques/analysis/epsilon_delta/TECHNIQUE.md"
+}

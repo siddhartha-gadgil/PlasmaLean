@@ -7,7 +7,7 @@ Skill: `plasmalean-audit-domain`, proof policy `plasmalean-lean-proofs`.
 | Previous audited commit | `921a8c3` (refresh audit, 31 October 2026) |
 | Audited commit | `1e5d4f3` (branch `tauceti`, 16 November 2026); corrections are in the commit that adds this record |
 | Toolchain | Lean `v4.35.0`; TauCeti `v4.35.0`; Mathlib transitive at `0740637` |
-| Scope | **partial audit**: `PlasmaLean/Kernel/Forms.lean` (new kernel file), `PlasmaLean/Sanity/Forms.lean`, `PlasmaLean/Theory/Fields/FormBridges.lean`, and the claims about them in note N-41, the plan and the Rosetta-stone page. Not in scope: everything else changed since `921a8c3` (the Dommaschk certification, the TauCeti migration and other work of 1–16 November), which still needs a refresh audit |
+| Scope | **partial audit**: `PlasmaLean/Kernel/Forms.lean` (new kernel file), `PlasmaLean/Sanity/Forms.lean`, `PlasmaLean/Theory/Fields/FormBridges.lean`, and the claims about them in note N-45, the plan and the Rosetta-stone page. Not in scope: everything else changed since `921a8c3` (the Dommaschk certification, the TauCeti migration and other work of 1–16 November), which still needs a refresh audit |
 | Method | the author's own pass plus an independent read-only sub-audit that was given the files and a red-team checklist, not the author's conclusions. Its scratch checks compiled; each finding below was re-checked against the source before it was accepted |
 
 ## Commands run

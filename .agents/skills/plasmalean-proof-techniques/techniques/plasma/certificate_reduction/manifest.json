@@ -1,0 +1,6 @@
+{
+  "name": "Reduction to a finite certificate",
+  "area": "Plasma physics",
+  "keywords": ["certificate", "checker", "soundness", "validated numerics", "interval arithmetic", "radii polynomial", "Newton-Kantorovich", "contraction", "covering", "remainder bound", "exact rational", "design claim"],
+  "path": "techniques/plasma/certificate_reduction/TECHNIQUE.md"
+}

@@ -1,0 +1,6 @@
+{
+  "name": "Direct, Contrapositive, and Contradiction Proofs",
+  "area": "Core Logic",
+  "keywords": ["direct proof", "implication", "contrapositive", "contradiction", "negation", "impossibility"],
+  "path": "techniques/core/direct_contrapositive_contradiction/TECHNIQUE.md"
+}

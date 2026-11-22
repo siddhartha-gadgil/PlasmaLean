@@ -1,0 +1,4 @@
+interface:
+  display_name: "Check compilation on the server"
+  short_description: "Check whether Lean code compiles without changing the server environment"
+  default_prompt: "Use $plasmalean-check-compilation to check whether this code compiles."

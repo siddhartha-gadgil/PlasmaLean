@@ -27,7 +27,7 @@ in this folder is trusted: oracles only propose certificate data, which the Lean
 | --- | --- |
 | [`kam_oracle/`](kam_oracle/) | KAM torus A of the rational stellarator field (`Design/KamTorusA*`) |
 | [`gc_kam/`](gc_kam/) | Guiding-centre KAM families: Torus/NegTorus, Fam, Mu cells (`lamcell/`, with `validate.py`), energy window (`ew_*`), low-memory and proof-term emitters (`lowmem/`, `proofterm/`) |
-| [`issan_equilibria/`](issan_equilibria/) | Independent checks of the closed-form equilibria of arXiv:2611.07672 (note N-43); nothing emitted to Lean |
+| [`issan_equilibria/`](issan_equilibria/) | Independent checks of the closed-form equilibria of arXiv:2611.07672 (note N-47); nothing emitted to Lean |
 | [`coil_kam_oracle/`](coil_kam_oracle/) | Coil-field KAM refit and residual certificate (`Design/CoilKam*`) |
 | [`rational_stellarator_oracle/`](rational_stellarator_oracle/), [`rational_stellarator_coils/`](rational_stellarator_coils/) | First-integral boxes of the rational field; polygonal and cubic coil sets and their certificates (`Design/PolygonCoil*`, `RationalStellaratorCoilsGrad`) |
 | [`solovev_band_oracle/`](solovev_band_oracle/), `solovev_ballooning_oracle.py`, `solovev_mercier_oracle.py`, `solovev_mercier_quadrature_oracle.py` | Solov'ev transport bands, ballooning cells and boxes, Mercier index and quadrature cells |

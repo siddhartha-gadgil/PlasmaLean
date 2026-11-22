@@ -1,0 +1,6 @@
+{
+  "name": "Bochner Technique",
+  "area": "Geometry",
+  "keywords": ["riemannian geometry", "manifolds", "curvature", "ricci", "harmonic forms"],
+  "path": "techniques/geometry/bochner_technique/TECHNIQUE.md"
+}

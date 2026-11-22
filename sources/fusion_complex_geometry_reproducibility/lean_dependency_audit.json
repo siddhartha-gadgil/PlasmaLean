@@ -1,0 +1,2043 @@
+{
+  "commit": "6312f1cc9c30b32798ad7b7540766152ef03e76f",
+  "roots": [
+    "PlasmaLean.Design.DommaschkKamNested"
+  ],
+  "modules": {
+    "PlasmaLean.Design.DommaschkKamNested": {
+      "path": "PlasmaLean/Design/DommaschkKamNested.lean",
+      "imports": [
+        "PlasmaLean.Design.DommaschkKamAFinal",
+        "PlasmaLean.Design.DommaschkKamCFinal"
+      ],
+      "bytes": 16660,
+      "git_blob": "b41b8266634aceabf1b92793cb97e3807804e2c7"
+    },
+    "PlasmaLean.Design.DommaschkKamAFinal": {
+      "path": "PlasmaLean/Design/DommaschkKamAFinal.lean",
+      "imports": [
+        "PlasmaLean.Design.DommaschkKamAContract",
+        "PlasmaLean.Design.DommaschkKamARes"
+      ],
+      "bytes": 3436,
+      "git_blob": "a84a40d7be55e4b8f2d937fa58a86142ea24dc2e"
+    },
+    "PlasmaLean.Design.DommaschkKamCFinal": {
+      "path": "PlasmaLean/Design/DommaschkKamCFinal.lean",
+      "imports": [
+        "PlasmaLean.Design.DommaschkKamCContract",
+        "PlasmaLean.Design.DommaschkKamCRes"
+      ],
+      "bytes": 3107,
+      "git_blob": "a7aef558d0b0d273be3c4bcf8ab06a95f9b863ba"
+    },
+    "PlasmaLean.Design.DommaschkKamCContract": {
+      "path": "PlasmaLean/Design/DommaschkKamCContract.lean",
+      "imports": [
+        "PlasmaLean.Design.DommaschkKamCRadial",
+        "PlasmaLean.Design.DommaschkKamCConsts",
+        "PlasmaLean.Design.DommaschkKamIdent",
+        "PlasmaLean.Theory.Contract.StellaratorContract",
+        "PlasmaLean.Design.DommaschkQA2R"
+      ],
+      "bytes": 21965,
+      "git_blob": "dbfa53e6cb398b5e9eca4e5d2bb51b3ec8910909"
+    },
+    "PlasmaLean.Design.DommaschkKamAContract": {
+      "path": "PlasmaLean/Design/DommaschkKamAContract.lean",
+      "imports": [
+        "PlasmaLean.Design.DommaschkKamANest",
+        "PlasmaLean.Design.DommaschkKamAConsts",
+        "PlasmaLean.Design.DommaschkKamCContract"
+      ],
+      "bytes": 22810,
+      "git_blob": "6134b8fcd1f7370b54348b9b9a3994138d7da3e2"
+    },
+    "PlasmaLean.Design.DommaschkKamCRes": {
+      "path": "PlasmaLean/Design/DommaschkKamCRes.lean",
+      "imports": [
+        "PlasmaLean.Design.DommaschkKamCResChain",
+        "PlasmaLean.Design.DommaschkKamCAdmFrame"
+      ],
+      "bytes": 12358,
+      "git_blob": "01c8f924a1776ed5aa4bb63e282b2ac75dd5b8ff"
+    },
+    "PlasmaLean.Design.DommaschkKamARes": {
+      "path": "PlasmaLean/Design/DommaschkKamARes.lean",
+      "imports": [
+        "PlasmaLean.Design.DommaschkKamAResChain",
+        "PlasmaLean.Design.DommaschkKamCAdmFrame"
+      ],
+      "bytes": 12438,
+      "git_blob": "92564d276dab98dba73c27244190a2ebd480a3ff"
+    },
+    "PlasmaLean.Design.DommaschkKamAConsts": {
+      "path": "PlasmaLean/Design/DommaschkKamAConsts.lean",
+      "imports": [
+        "PlasmaLean.Design.DommaschkKamAAdm",
+        "PlasmaLean.Design.DommaschkKamCJet"
+      ],
+      "bytes": 12866,
+      "git_blob": "98e5c5205837979430ec8055b2003909a68a31ed"
+    },
+    "PlasmaLean.Design.DommaschkKamCConsts": {
+      "path": "PlasmaLean/Design/DommaschkKamCConsts.lean",
+      "imports": [
+        "PlasmaLean.Design.DommaschkKamCAdm",
+        "PlasmaLean.Design.DommaschkKamCJet"
+      ],
+      "bytes": 12877,
+      "git_blob": "cf36323cb83f91635f513fa204f4f3041f144a8d"
+    },
+    "PlasmaLean.Design.DommaschkQA2R": {
+      "path": "PlasmaLean/Design/DommaschkQA2R.lean",
+      "imports": [
+        "PlasmaLean.Design.DommaschkQA2RDataCheck0",
+        "PlasmaLean.Design.DommaschkQA2RDataCheck1",
+        "PlasmaLean.Design.DommaschkQA2RDataCheck2",
+        "PlasmaLean.Design.RationalStellarator",
+        "PlasmaLean.Theory.Contract.StellaratorContract"
+      ],
+      "bytes": 17204,
+      "git_blob": "04ad8eb9765af070cf322f01f162a16ff89408cb"
+    },
+    "PlasmaLean.Theory.Contract.StellaratorContract": {
+      "path": "PlasmaLean/Theory/Contract/StellaratorContract.lean",
+      "imports": [
+        "PlasmaLean.Kernel.Vacuum",
+        "PlasmaLean.Theory.Fields.Maxwell",
+        "PlasmaLean.Theory.Kinetic.Omnigeneity"
+      ],
+      "bytes": 54568,
+      "git_blob": "78a7db40d4d896b88aa31128948670a1b73419c8"
+    },
+    "PlasmaLean.Design.DommaschkKamCRadial": {
+      "path": "PlasmaLean/Design/DommaschkKamCRadial.lean",
+      "imports": [
+        "PlasmaLean.Design.DommaschkKamCAdmTail",
+        "PlasmaLean.Design.RationalStellaratorConfinedForever",
+        "PlasmaLean.Certificates.KronProof2D",
+        "PlasmaLean.Design.DommaschkKamCAdmEnv"
+      ],
+      "bytes": 17816,
+      "git_blob": "5c52b9ebd90114faa681bef56f35d5ce2be2b792"
+    },
+    "PlasmaLean.Design.DommaschkKamIdent": {
+      "path": "PlasmaLean/Design/DommaschkKamIdent.lean",
+      "imports": [
+        "PlasmaLean.Design.DommaschkKamIdentCheckD",
+        "PlasmaLean.Design.DommaschkKamIdentCheckR",
+        "PlasmaLean.Design.DommaschkKamField",
+        "PlasmaLean.Design.DommaschkQA2R"
+      ],
+      "bytes": 19924,
+      "git_blob": "33f4ced7253b8bcc66b2a4eeda8aec1e87f05176"
+    },
+    "PlasmaLean.Design.DommaschkKamANest": {
+      "path": "PlasmaLean/Design/DommaschkKamANest.lean",
+      "imports": [
+        "PlasmaLean.Design.DommaschkKamANestChain",
+        "PlasmaLean.Design.DommaschkKamAAdmTail",
+        "PlasmaLean.Design.DommaschkKamCRadial"
+      ],
+      "bytes": 26924,
+      "git_blob": "0156f269ec1e4ddb75dcd1cb294c2ef3b191b9e8"
+    },
+    "PlasmaLean.Design.DommaschkKamCAdmFrame": {
+      "path": "PlasmaLean/Design/DommaschkKamCAdmFrame.lean",
+      "imports": [
+        "PlasmaLean.Design.DommaschkKamCKronW",
+        "PlasmaLean.Design.DommaschkKamIdentCheck",
+        "PlasmaLean.Design.KamFlowIterationG"
+      ],
+      "bytes": 22953,
+      "git_blob": "aaa4699911641f1c168ffd40626d9fd0b3b75884"
+    },
+    "PlasmaLean.Design.DommaschkKamAResChain": {
+      "path": "PlasmaLean/Design/DommaschkKamAResChain.lean",
+      "imports": [
+        "PlasmaLean.Design.DommaschkKamAResRel",
+        "PlasmaLean.Design.DommaschkKamAResEqU",
+        "PlasmaLean.Design.DommaschkKamAResEqZ",
+        "PlasmaLean.Design.DommaschkKamAResCheck1",
+        "PlasmaLean.Design.DommaschkKamAResCheck2",
+        "PlasmaLean.Design.DommaschkKamAResCheck3",
+        "PlasmaLean.Design.DommaschkKamAResCheck4",
+        "PlasmaLean.Design.DommaschkKamAResCheck5",
+        "PlasmaLean.Design.DommaschkKamAResCheck6",
+        "PlasmaLean.Design.DommaschkKamAResCheck7",
+        "PlasmaLean.Design.DommaschkKamAResCheck8",
+        "PlasmaLean.Design.DommaschkKamAResCheck9",
+        "PlasmaLean.Design.DommaschkKamAResCheck10",
+        "PlasmaLean.Design.DommaschkKamAResCheck11",
+        "PlasmaLean.Design.DommaschkKamAResCheck12",
+        "PlasmaLean.Design.DommaschkKamAResCheck13",
+        "PlasmaLean.Design.DommaschkKamAResCheck14"
+      ],
+      "bytes": 143004,
+      "git_blob": "47bd3b6267faacf108f8f96755b16c2f37d10277"
+    },
+    "PlasmaLean.Design.DommaschkKamCResChain": {
+      "path": "PlasmaLean/Design/DommaschkKamCResChain.lean",
+      "imports": [
+        "PlasmaLean.Design.DommaschkKamCResRel",
+        "PlasmaLean.Design.DommaschkKamCResEqU",
+        "PlasmaLean.Design.DommaschkKamCResEqZ",
+        "PlasmaLean.Design.DommaschkKamCResCheck1",
+        "PlasmaLean.Design.DommaschkKamCResCheck2",
+        "PlasmaLean.Design.DommaschkKamCResCheck3",
+        "PlasmaLean.Design.DommaschkKamCResCheck4",
+        "PlasmaLean.Design.DommaschkKamCResCheck5",
+        "PlasmaLean.Design.DommaschkKamCResCheck6",
+        "PlasmaLean.Design.DommaschkKamCResCheck7",
+        "PlasmaLean.Design.DommaschkKamCResCheck8",
+        "PlasmaLean.Design.DommaschkKamCResCheck9",
+        "PlasmaLean.Design.DommaschkKamCResCheck10",
+        "PlasmaLean.Design.DommaschkKamCResCheck11",
+        "PlasmaLean.Design.DommaschkKamCResCheck12"
+      ],
+      "bytes": 142765,
+      "git_blob": "7c984bc3f6a0005d5dfcb93fdf830703433c0eec"
+    },
+    "PlasmaLean.Design.DommaschkKamAAdm": {
+      "path": "PlasmaLean/Design/DommaschkKamAAdm.lean",
+      "imports": [
+        "PlasmaLean.Design.DommaschkKamAAdmOut",
+        "PlasmaLean.Design.DommaschkKamCAdmFrame"
+      ],
+      "bytes": 41853,
+      "git_blob": "bd30c4d1aeee1f4c7231dfe8ac9f8a96f841ab40"
+    },
+    "PlasmaLean.Design.DommaschkKamAResCheck8": {
+      "path": "PlasmaLean/Design/DommaschkKamAResCheck8.lean",
+      "imports": [
+        "PlasmaLean.Design.DommaschkKamAResTrees",
+        "PlasmaLean.Certificates.KronProof2D",
+        "PlasmaLean.Design.DommaschkKamAResTrees"
+      ],
+      "bytes": 8305,
+      "git_blob": "453edfa82b4c776ef9f5fe185c3c2baf738505de"
+    },
+    "PlasmaLean.Design.DommaschkKamAResCheck1": {
+      "path": "PlasmaLean/Design/DommaschkKamAResCheck1.lean",
+      "imports": [
+        "PlasmaLean.Design.DommaschkKamAResTrees",
+        "PlasmaLean.Certificates.KronProof2D",
+        "PlasmaLean.Design.DommaschkKamAResTrees"
+      ],
+      "bytes": 10911,
+      "git_blob": "554be31db8d5075d6d9d89ed223277273536f8b4"
+    },
+    "PlasmaLean.Design.DommaschkKamAResCheck11": {
+      "path": "PlasmaLean/Design/DommaschkKamAResCheck11.lean",
+      "imports": [
+        "PlasmaLean.Design.DommaschkKamAResTrees",
+        "PlasmaLean.Certificates.KronProof2D",
+        "PlasmaLean.Design.DommaschkKamAResTrees"
+      ],
+      "bytes": 9651,
+      "git_blob": "ed446a846106eabd37712be5cae790b14ce6c73c"
+    },
+    "PlasmaLean.Design.DommaschkKamAResCheck7": {
+      "path": "PlasmaLean/Design/DommaschkKamAResCheck7.lean",
+      "imports": [
+        "PlasmaLean.Design.DommaschkKamAResTrees",
+        "PlasmaLean.Certificates.KronProof2D",
+        "PlasmaLean.Design.DommaschkKamAResTrees"
+      ],
+      "bytes": 9658,
+      "git_blob": "12c0f24d63def62434f5874631d0f6b29a8abf9e"
+    },
+    "PlasmaLean.Design.DommaschkKamAResCheck12": {
+      "path": "PlasmaLean/Design/DommaschkKamAResCheck12.lean",
+      "imports": [
+        "PlasmaLean.Design.DommaschkKamAResTrees",
+        "PlasmaLean.Certificates.KronProof2D",
+        "PlasmaLean.Design.DommaschkKamAResTrees"
+      ],
+      "bytes": 8308,
+      "git_blob": "8836e3ab05f09cb8309866cbbdff39aad7bd2c83"
+    },
+    "PlasmaLean.Design.DommaschkKamCAdm": {
+      "path": "PlasmaLean/Design/DommaschkKamCAdm.lean",
+      "imports": [
+        "PlasmaLean.Design.DommaschkKamCAdmOut",
+        "PlasmaLean.Design.DommaschkKamCAdmFrame"
+      ],
+      "bytes": 41817,
+      "git_blob": "da302ce48aff068303bffaf4a83a6f1e2dafb9eb"
+    },
+    "PlasmaLean.Certificates.KronProof2D": {
+      "path": "PlasmaLean/Certificates/KronProof2D.lean",
+      "imports": [
+        "PlasmaLean.Certificates.Kronecker2DWeighted",
+        "PlasmaLean.Certificates.KronProof",
+        "PlasmaLean.Certificates.Kronecker2DWeighted",
+        "PlasmaLean.Certificates.KronProof"
+      ],
+      "bytes": 12450,
+      "git_blob": "ff630471dc3621988c23755934d771a885f0dcdc"
+    },
+    "PlasmaLean.Design.DommaschkKamAResCheck2": {
+      "path": "PlasmaLean/Design/DommaschkKamAResCheck2.lean",
+      "imports": [
+        "PlasmaLean.Design.DommaschkKamAResTrees",
+        "PlasmaLean.Certificates.KronProof2D",
+        "PlasmaLean.Design.DommaschkKamAResTrees"
+      ],
+      "bytes": 7776,
+      "git_blob": "7c9972d26a0dfaa8ba31b484c79fbbdb3a994af1"
+    },
+    "PlasmaLean.Design.DommaschkKamAResCheck13": {
+      "path": "PlasmaLean/Design/DommaschkKamAResCheck13.lean",
+      "imports": [
+        "PlasmaLean.Design.DommaschkKamAResTrees",
+        "PlasmaLean.Certificates.KronProof2D",
+        "PlasmaLean.Design.DommaschkKamAResTrees"
+      ],
+      "bytes": 8286,
+      "git_blob": "6f30a977c251eda8486334e1670497885ccf8d26"
+    },
+    "PlasmaLean.Design.DommaschkKamANestChain": {
+      "path": "PlasmaLean/Design/DommaschkKamANestChain.lean",
+      "imports": [
+        "PlasmaLean.Design.DommaschkKamANestRel",
+        "PlasmaLean.Design.DommaschkKamAAdmChain",
+        "PlasmaLean.Design.DommaschkKamANestCheck1",
+        "PlasmaLean.Design.DommaschkKamANestCheck2",
+        "PlasmaLean.Design.DommaschkKamANestCheck3",
+        "PlasmaLean.Design.DommaschkKamANestCheck4"
+      ],
+      "bytes": 25321,
+      "git_blob": "d79ae9d791bfd0defdf7fbb00aa2844eeaf614d3"
+    },
+    "PlasmaLean.Design.DommaschkKamAResCheck6": {
+      "path": "PlasmaLean/Design/DommaschkKamAResCheck6.lean",
+      "imports": [
+        "PlasmaLean.Design.DommaschkKamAResTrees",
+        "PlasmaLean.Certificates.KronProof2D",
+        "PlasmaLean.Design.DommaschkKamAResTrees"
+      ],
+      "bytes": 8309,
+      "git_blob": "cd3523f44e8a5f1f2290a01361ea26ad35ad5fe2"
+    },
+    "PlasmaLean.Design.DommaschkKamAResCheck14": {
+      "path": "PlasmaLean/Design/DommaschkKamAResCheck14.lean",
+      "imports": [
+        "PlasmaLean.Design.DommaschkKamAResTrees",
+        "PlasmaLean.Certificates.KronProof2D",
+        "PlasmaLean.Design.DommaschkKamAResTrees"
+      ],
+      "bytes": 18162,
+      "git_blob": "1e9c946e3ffb5e2eb63e698c5623160a3322ba43"
+    },
+    "PlasmaLean.Design.DommaschkKamAResCheck10": {
+      "path": "PlasmaLean/Design/DommaschkKamAResCheck10.lean",
+      "imports": [
+        "PlasmaLean.Design.DommaschkKamAResTrees",
+        "PlasmaLean.Certificates.KronProof2D",
+        "PlasmaLean.Design.DommaschkKamAResTrees"
+      ],
+      "bytes": 8311,
+      "git_blob": "e70e974b6eb9b9449ce9812f1fa8dadf51c0d783"
+    },
+    "PlasmaLean.Design.DommaschkKamAResCheck3": {
+      "path": "PlasmaLean/Design/DommaschkKamAResCheck3.lean",
+      "imports": [
+        "PlasmaLean.Design.DommaschkKamAResTrees",
+        "PlasmaLean.Certificates.KronProof2D",
+        "PlasmaLean.Design.DommaschkKamAResTrees"
+      ],
+      "bytes": 8915,
+      "git_blob": "700c27d75dfb4603c1dc7054e1424efe0a8702ff"
+    },
+    "PlasmaLean.Design.DommaschkKamAAdmTail": {
+      "path": "PlasmaLean/Design/DommaschkKamAAdmTail.lean",
+      "imports": [
+        "PlasmaLean.Design.DommaschkKamAAdmTailCheckZ"
+      ],
+      "bytes": 19758,
+      "git_blob": "8d81eb4ca2e317190187fe71b1484404a3f069e4"
+    },
+    "PlasmaLean.Design.DommaschkKamAResCheck4": {
+      "path": "PlasmaLean/Design/DommaschkKamAResCheck4.lean",
+      "imports": [
+        "PlasmaLean.Design.DommaschkKamAResTrees",
+        "PlasmaLean.Certificates.KronProof2D",
+        "PlasmaLean.Design.DommaschkKamAResTrees"
+      ],
+      "bytes": 8304,
+      "git_blob": "52e9740c9d19373c919ce5eaea2d5980185c7a81"
+    },
+    "PlasmaLean.Design.DommaschkKamAResCheck5": {
+      "path": "PlasmaLean/Design/DommaschkKamAResCheck5.lean",
+      "imports": [
+        "PlasmaLean.Design.DommaschkKamAResTrees",
+        "PlasmaLean.Certificates.KronProof2D",
+        "PlasmaLean.Design.DommaschkKamAResTrees"
+      ],
+      "bytes": 8293,
+      "git_blob": "aa332ab5e72073355e6d2f4b600a9d8c5995418a"
+    },
+    "PlasmaLean.Design.DommaschkKamAResEqU": {
+      "path": "PlasmaLean/Design/DommaschkKamAResEqU.lean",
+      "imports": [
+        "PlasmaLean.Design.DommaschkKamAResEnv"
+      ],
+      "bytes": 4608,
+      "git_blob": "ad20637a6b7a773d8f388a5b0a9925075c1a5a8e"
+    },
+    "PlasmaLean.Design.DommaschkKamAResCheck9": {
+      "path": "PlasmaLean/Design/DommaschkKamAResCheck9.lean",
+      "imports": [
+        "PlasmaLean.Design.DommaschkKamAResTrees",
+        "PlasmaLean.Certificates.KronProof2D",
+        "PlasmaLean.Design.DommaschkKamAResTrees"
+      ],
+      "bytes": 6951,
+      "git_blob": "15638418c5454e6d795c27a586f304938a7997e3"
+    },
+    "PlasmaLean.Design.DommaschkKamCKronW": {
+      "path": "PlasmaLean/Design/DommaschkKamCKronW.lean",
+      "imports": [
+        "PlasmaLean.Certificates.KronBallGrid",
+        "PlasmaLean.Design.DommaschkKamCTorus",
+        "PlasmaLean.Certificates.KernelFact"
+      ],
+      "bytes": 16997,
+      "git_blob": "570701e4e76de168bd5a5b2ef28c44d8e02aee8f"
+    },
+    "PlasmaLean.Design.DommaschkKamCResCheck2": {
+      "path": "PlasmaLean/Design/DommaschkKamCResCheck2.lean",
+      "imports": [
+        "PlasmaLean.Design.DommaschkKamCResTrees",
+        "PlasmaLean.Certificates.KronProof2D",
+        "PlasmaLean.Design.DommaschkKamCResTrees"
+      ],
+      "bytes": 10518,
+      "git_blob": "57a687e70d431d83d951d730b7552dfac3b7b841"
+    },
+    "PlasmaLean.Design.DommaschkKamAResEqZ": {
+      "path": "PlasmaLean/Design/DommaschkKamAResEqZ.lean",
+      "imports": [
+        "PlasmaLean.Design.DommaschkKamAResEnv"
+      ],
+      "bytes": 4608,
+      "git_blob": "766f2c7cd4c6764baf354ac7c9a3ebab4b679bdf"
+    },
+    "PlasmaLean.Design.DommaschkKamCResCheck10": {
+      "path": "PlasmaLean/Design/DommaschkKamCResCheck10.lean",
+      "imports": [
+        "PlasmaLean.Design.DommaschkKamCResTrees",
+        "PlasmaLean.Certificates.KronProof2D",
+        "PlasmaLean.Design.DommaschkKamCResTrees"
+      ],
+      "bytes": 9607,
+      "git_blob": "f5d82fca59800479338f0926d326914ada02e069"
+    },
+    "PlasmaLean.Design.DommaschkKamCResCheck11": {
+      "path": "PlasmaLean/Design/DommaschkKamCResCheck11.lean",
+      "imports": [
+        "PlasmaLean.Design.DommaschkKamCResTrees",
+        "PlasmaLean.Certificates.KronProof2D",
+        "PlasmaLean.Design.DommaschkKamCResTrees"
+      ],
+      "bytes": 8253,
+      "git_blob": "09a856036236eb5b165c8d686bff9e651b4c77ce"
+    },
+    "PlasmaLean.Design.DommaschkKamCResCheck1": {
+      "path": "PlasmaLean/Design/DommaschkKamCResCheck1.lean",
+      "imports": [
+        "PlasmaLean.Design.DommaschkKamCResTrees",
+        "PlasmaLean.Certificates.KronProof2D",
+        "PlasmaLean.Design.DommaschkKamCResTrees"
+      ],
+      "bytes": 13039,
+      "git_blob": "f39abbe08767c3159c898cb5c50fa39324d5749f"
+    },
+    "PlasmaLean.Design.DommaschkKamCResCheck5": {
+      "path": "PlasmaLean/Design/DommaschkKamCResCheck5.lean",
+      "imports": [
+        "PlasmaLean.Design.DommaschkKamCResTrees",
+        "PlasmaLean.Certificates.KronProof2D",
+        "PlasmaLean.Design.DommaschkKamCResTrees"
+      ],
+      "bytes": 8265,
+      "git_blob": "f4d9205e3bb85e7f54bb475400108bdda5626957"
+    },
+    "PlasmaLean.Design.DommaschkKamCJet": {
+      "path": "PlasmaLean/Design/DommaschkKamCJet.lean",
+      "imports": [
+        "PlasmaLean.Design.DommaschkKamCTorus"
+      ],
+      "bytes": 9018,
+      "git_blob": "c738c953787935f8fb7fb0d3ce8d10fff453ea13"
+    },
+    "PlasmaLean.Design.DommaschkKamCResCheck4": {
+      "path": "PlasmaLean/Design/DommaschkKamCResCheck4.lean",
+      "imports": [
+        "PlasmaLean.Design.DommaschkKamCResTrees",
+        "PlasmaLean.Certificates.KronProof2D",
+        "PlasmaLean.Design.DommaschkKamCResTrees"
+      ],
+      "bytes": 8248,
+      "git_blob": "48c58c086ab4d0198139aeb5ed91d099e1f787aa"
+    },
+    "PlasmaLean.Design.DommaschkKamCResCheck12": {
+      "path": "PlasmaLean/Design/DommaschkKamCResCheck12.lean",
+      "imports": [
+        "PlasmaLean.Design.DommaschkKamCResTrees",
+        "PlasmaLean.Certificates.KronProof2D",
+        "PlasmaLean.Design.DommaschkKamCResTrees"
+      ],
+      "bytes": 21614,
+      "git_blob": "aa3273087de01d5be5fb8d31f31304f578e8c3b6"
+    },
+    "PlasmaLean.Design.DommaschkKamCResCheck3": {
+      "path": "PlasmaLean/Design/DommaschkKamCResCheck3.lean",
+      "imports": [
+        "PlasmaLean.Design.DommaschkKamCResTrees",
+        "PlasmaLean.Certificates.KronProof2D",
+        "PlasmaLean.Design.DommaschkKamCResTrees"
+      ],
+      "bytes": 10949,
+      "git_blob": "947a07bda4c7a3afc36530c90133159a487459f6"
+    },
+    "PlasmaLean.Design.DommaschkKamAResRel": {
+      "path": "PlasmaLean/Design/DommaschkKamAResRel.lean",
+      "imports": [
+        "PlasmaLean.Design.DommaschkKamAResTrees"
+      ],
+      "bytes": 26126,
+      "git_blob": "de5ebdb4cbf26cdb4b26612d67c9b15d9609a377"
+    },
+    "PlasmaLean.Design.DommaschkKamCAdmTail": {
+      "path": "PlasmaLean/Design/DommaschkKamCAdmTail.lean",
+      "imports": [
+        "PlasmaLean.Design.DommaschkKamCAdmTailCheckZ"
+      ],
+      "bytes": 19730,
+      "git_blob": "665acfa1b465aab3823056cb914d79c342860eac"
+    },
+    "PlasmaLean.Design.KamFlowIterationG": {
+      "path": "PlasmaLean/Design/KamFlowIterationG.lean",
+      "imports": [
+        "PlasmaLean.Design.KamFlowStepG",
+        "PlasmaLean.Design.KamFlowIteration"
+      ],
+      "bytes": 36508,
+      "git_blob": "db8f3295687810954036649eaed281bc3e802242"
+    },
+    "PlasmaLean.Design.DommaschkKamCAdmEnv": {
+      "path": "PlasmaLean/Design/DommaschkKamCAdmEnv.lean",
+      "imports": [
+        "PlasmaLean.Design.DommaschkKamCKronW",
+        "PlasmaLean.Design.DommaschkKamCAdmData1",
+        "PlasmaLean.Design.DommaschkKamCAdmData2",
+        "PlasmaLean.Design.DommaschkKamCAdmData3",
+        "PlasmaLean.Design.DommaschkKamCAdmData4",
+        "PlasmaLean.Design.DommaschkKamCAdmData5",
+        "PlasmaLean.Design.DommaschkKamCAdmData6"
+      ],
+      "bytes": 91287,
+      "git_blob": "1e7336aafa197ef1d444aef5baed7a997ab26b57"
+    },
+    "PlasmaLean.Design.DommaschkQA2RDataCheck1": {
+      "path": "PlasmaLean/Design/DommaschkQA2RDataCheck1.lean",
+      "imports": [
+        "PlasmaLean.Design.DommaschkQA2RData",
+        "PlasmaLean.Certificates.KernelFact"
+      ],
+      "bytes": 6314,
+      "git_blob": "62b8c2f481bd0ecbf97f1d33792b496d5db053c3"
+    },
+    "PlasmaLean.Design.DommaschkKamCResEqZ": {
+      "path": "PlasmaLean/Design/DommaschkKamCResEqZ.lean",
+      "imports": [
+        "PlasmaLean.Design.DommaschkKamCResEnv"
+      ],
+      "bytes": 4570,
+      "git_blob": "21ae28401a5b9b8debb707af8c929f91b514d493"
+    },
+    "PlasmaLean.Design.DommaschkKamIdentCheckD": {
+      "path": "PlasmaLean/Design/DommaschkKamIdentCheckD.lean",
+      "imports": [
+        "PlasmaLean.Design.DommaschkKamIdentCheck"
+      ],
+      "bytes": 913,
+      "git_blob": "f2fb61123aa25503b1b8905911ad370c9f980bc0"
+    },
+    "PlasmaLean.Design.DommaschkQA2RDataCheck2": {
+      "path": "PlasmaLean/Design/DommaschkQA2RDataCheck2.lean",
+      "imports": [
+        "PlasmaLean.Design.DommaschkQA2RData",
+        "PlasmaLean.Certificates.KernelFact"
+      ],
+      "bytes": 6320,
+      "git_blob": "94b3b3fde1c452a8d85f4e3c31008fb56bba201a"
+    },
+    "PlasmaLean.Design.DommaschkKamCResCheck6": {
+      "path": "PlasmaLean/Design/DommaschkKamCResCheck6.lean",
+      "imports": [
+        "PlasmaLean.Design.DommaschkKamCResTrees",
+        "PlasmaLean.Certificates.KronProof2D",
+        "PlasmaLean.Design.DommaschkKamCResTrees"
+      ],
+      "bytes": 9613,
+      "git_blob": "51b35dc3751bbbcdb01569bfe0b840e11b9a8bee"
+    },
+    "PlasmaLean.Design.DommaschkKamCResRel": {
+      "path": "PlasmaLean/Design/DommaschkKamCResRel.lean",
+      "imports": [
+        "PlasmaLean.Design.DommaschkKamCResTrees"
+      ],
+      "bytes": 26088,
+      "git_blob": "e229b0f90e0f7e75f79ee52ac7279d6986e4971a"
+    },
+    "PlasmaLean.Design.DommaschkKamIdentCheckR": {
+      "path": "PlasmaLean/Design/DommaschkKamIdentCheckR.lean",
+      "imports": [
+        "PlasmaLean.Design.DommaschkKamIdentCheck"
+      ],
+      "bytes": 980,
+      "git_blob": "aa1f4e05b76691ec9c941738e425b9346523a6a7"
+    },
+    "PlasmaLean.Design.DommaschkQA2RDataCheck0": {
+      "path": "PlasmaLean/Design/DommaschkQA2RDataCheck0.lean",
+      "imports": [
+        "PlasmaLean.Design.DommaschkQA2RData",
+        "PlasmaLean.Certificates.KernelFact"
+      ],
+      "bytes": 6247,
+      "git_blob": "71cc28a70d9daa7acdd9978e5451e55844336f42"
+    },
+    "PlasmaLean.Design.DommaschkKamCResCheck8": {
+      "path": "PlasmaLean/Design/DommaschkKamCResCheck8.lean",
+      "imports": [
+        "PlasmaLean.Design.DommaschkKamCResTrees",
+        "PlasmaLean.Certificates.KronProof2D",
+        "PlasmaLean.Design.DommaschkKamCResTrees"
+      ],
+      "bytes": 9079,
+      "git_blob": "8e8f70008256642fd43e0a8f4add9d423998f48a"
+    },
+    "PlasmaLean.Design.RationalStellarator": {
+      "path": "PlasmaLean/Design/RationalStellarator.lean",
+      "imports": [
+        "PlasmaLean.Kernel.Vacuum",
+        "PlasmaLean.Theory.Fields.ClebschDivergence",
+        "PlasmaLean.Theory.Fields.FirstIntegral"
+      ],
+      "bytes": 23360,
+      "git_blob": "bb7326e299c07427a50b98308368cd62546c90d5"
+    },
+    "PlasmaLean.Design.DommaschkKamCResCheck9": {
+      "path": "PlasmaLean/Design/DommaschkKamCResCheck9.lean",
+      "imports": [
+        "PlasmaLean.Design.DommaschkKamCResTrees",
+        "PlasmaLean.Certificates.KronProof2D",
+        "PlasmaLean.Design.DommaschkKamCResTrees"
+      ],
+      "bytes": 9614,
+      "git_blob": "352df22616625c5becb1a070aea687f7ac2c31ce"
+    },
+    "PlasmaLean.Design.DommaschkKamCResCheck7": {
+      "path": "PlasmaLean/Design/DommaschkKamCResCheck7.lean",
+      "imports": [
+        "PlasmaLean.Design.DommaschkKamCResTrees",
+        "PlasmaLean.Certificates.KronProof2D",
+        "PlasmaLean.Design.DommaschkKamCResTrees"
+      ],
+      "bytes": 8260,
+      "git_blob": "68c9a359318eaed2807c18372ea1383528a27abf"
+    },
+    "PlasmaLean.Design.RationalStellaratorConfinedForever": {
+      "path": "PlasmaLean/Design/RationalStellaratorConfinedForever.lean",
+      "imports": [
+        "PlasmaLean.Design.KamTorusAExact",
+        "PlasmaLean.Design.RationalStellaratorForever",
+        "PlasmaLean.Theory.KAM.StripSmooth"
+      ],
+      "bytes": 11514,
+      "git_blob": "bf5a9e46e82316e9f6ea77c713863fb38f0facf9"
+    },
+    "PlasmaLean.Design.DommaschkKamIdentCheck": {
+      "path": "PlasmaLean/Design/DommaschkKamIdentCheck.lean",
+      "imports": [
+        "PlasmaLean.Design.DommaschkKamFieldCheck",
+        "PlasmaLean.Design.DommaschkQA2RData"
+      ],
+      "bytes": 7635,
+      "git_blob": "75e1224c7dd283dd652aae7f5d35de89ad463444"
+    },
+    "PlasmaLean.Design.DommaschkKamCResEqU": {
+      "path": "PlasmaLean/Design/DommaschkKamCResEqU.lean",
+      "imports": [
+        "PlasmaLean.Design.DommaschkKamCResEnv"
+      ],
+      "bytes": 4570,
+      "git_blob": "3ed5bf5a4af240e0db9028ff854d5493ca5571af"
+    },
+    "PlasmaLean.Design.DommaschkKamField": {
+      "path": "PlasmaLean/Design/DommaschkKamField.lean",
+      "imports": [
+        "PlasmaLean.Design.DommaschkKamFieldCheck",
+        "PlasmaLean.Design.KamFlowFieldG"
+      ],
+      "bytes": 16689,
+      "git_blob": "b6b5e5dbb9cabf71162032c0eef0f275ba5d3f4b"
+    },
+    "PlasmaLean.Kernel.Vacuum": {
+      "path": "PlasmaLean/Kernel/Vacuum.lean",
+      "imports": [],
+      "bytes": 4557,
+      "git_blob": "f06d50c98f69084fafe5ffb00c464d08932dc4b7"
+    },
+    "PlasmaLean.Theory.Fields.Maxwell": {
+      "path": "PlasmaLean/Theory/Fields/Maxwell.lean",
+      "imports": [
+        "PlasmaLean.Theory.Fields.FieldDerivative"
+      ],
+      "bytes": 17154,
+      "git_blob": "36b1204606e53a26b1bb8053ec5ba8ba92946413"
+    },
+    "PlasmaLean.Theory.Kinetic.Omnigeneity": {
+      "path": "PlasmaLean/Theory/Kinetic/Omnigeneity.lean",
+      "imports": [
+        "PlasmaLean.Theory.Kinetic.BoozerGuidingCentre"
+      ],
+      "bytes": 30369,
+      "git_blob": "2c7b904c496877a68df2dd3769f6511bfbdbdb95"
+    },
+    "PlasmaLean.Design.DommaschkKamAAdmOut": {
+      "path": "PlasmaLean/Design/DommaschkKamAAdmOut.lean",
+      "imports": [
+        "PlasmaLean.Design.DommaschkKamAAdmChain",
+        "PlasmaLean.Design.DommaschkKamAAdmTail"
+      ],
+      "bytes": 6826,
+      "git_blob": "ccf6cb2e5eb30031029076bdbebcc86ab320fc72"
+    },
+    "PlasmaLean.Design.DommaschkKamANestCheck4": {
+      "path": "PlasmaLean/Design/DommaschkKamANestCheck4.lean",
+      "imports": [
+        "PlasmaLean.Design.DommaschkKamANestTrees",
+        "PlasmaLean.Certificates.KronProof2D",
+        "PlasmaLean.Design.DommaschkKamANestTrees"
+      ],
+      "bytes": 6534,
+      "git_blob": "52116dd09b8cb2fcfe0379a32dddcef64de9c304"
+    },
+    "PlasmaLean.Design.DommaschkKamANestCheck1": {
+      "path": "PlasmaLean/Design/DommaschkKamANestCheck1.lean",
+      "imports": [
+        "PlasmaLean.Design.DommaschkKamANestTrees",
+        "PlasmaLean.Certificates.KronProof2D",
+        "PlasmaLean.Design.DommaschkKamANestTrees"
+      ],
+      "bytes": 4443,
+      "git_blob": "f45c4d27c6857622152bf45c9f5015c3327a68e2"
+    },
+    "PlasmaLean.Design.DommaschkKamAAdmTailCheckZ": {
+      "path": "PlasmaLean/Design/DommaschkKamAAdmTailCheckZ.lean",
+      "imports": [
+        "PlasmaLean.Design.DommaschkKamAAdmTailCheck",
+        "PlasmaLean.Certificates.KronProof2D",
+        "PlasmaLean.Design.DommaschkKamAAdmTailCheck"
+      ],
+      "bytes": 4630,
+      "git_blob": "80218f808b205585f0d82d22350e75f509d2f7e5"
+    },
+    "PlasmaLean.Design.DommaschkKamANestCheck3": {
+      "path": "PlasmaLean/Design/DommaschkKamANestCheck3.lean",
+      "imports": [
+        "PlasmaLean.Design.DommaschkKamANestTrees",
+        "PlasmaLean.Certificates.KronProof2D",
+        "PlasmaLean.Design.DommaschkKamANestTrees"
+      ],
+      "bytes": 6526,
+      "git_blob": "2b1853adbf147be9ced728ceb4bd18f09c98f895"
+    },
+    "PlasmaLean.Certificates.KernelFact": {
+      "path": "PlasmaLean/Certificates/KernelFact.lean",
+      "imports": [
+        "PlasmaLean.Certificates.KronProof",
+        "PlasmaLean.Certificates.KronProof"
+      ],
+      "bytes": 11788,
+      "git_blob": "e9c665793bac2c51b7799a3095d92ce758d38cf5"
+    },
+    "PlasmaLean.Certificates.KronBallGrid": {
+      "path": "PlasmaLean/Certificates/KronBallGrid.lean",
+      "imports": [
+        "PlasmaLean.Certificates.KronBall"
+      ],
+      "bytes": 33349,
+      "git_blob": "8056fe7eced8d261f2f545ee32db5f38d20bc1dd"
+    },
+    "PlasmaLean.Design.DommaschkKamCAdmOut": {
+      "path": "PlasmaLean/Design/DommaschkKamCAdmOut.lean",
+      "imports": [
+        "PlasmaLean.Design.DommaschkKamCAdmChain",
+        "PlasmaLean.Design.DommaschkKamCAdmTail"
+      ],
+      "bytes": 6819,
+      "git_blob": "b5d0772b48acf1817b43b4a1c85d15fdeef1be04"
+    },
+    "PlasmaLean.Design.DommaschkKamANestRel": {
+      "path": "PlasmaLean/Design/DommaschkKamANestRel.lean",
+      "imports": [
+        "PlasmaLean.Design.DommaschkKamANestTrees",
+        "PlasmaLean.Design.DommaschkKamAAdmRel"
+      ],
+      "bytes": 6655,
+      "git_blob": "ea05b90b0cff00efcf1dfddab01af9f3fd798386"
+    },
+    "PlasmaLean.Design.DommaschkKamANestCheck2": {
+      "path": "PlasmaLean/Design/DommaschkKamANestCheck2.lean",
+      "imports": [
+        "PlasmaLean.Design.DommaschkKamANestTrees",
+        "PlasmaLean.Certificates.KronProof2D",
+        "PlasmaLean.Design.DommaschkKamANestTrees"
+      ],
+      "bytes": 4810,
+      "git_blob": "35ce2c11f9ee83119d85b62799f4d43330e2e3da"
+    },
+    "PlasmaLean.Design.DommaschkKamAResTrees": {
+      "path": "PlasmaLean/Design/DommaschkKamAResTrees.lean",
+      "imports": [
+        "PlasmaLean.Design.DommaschkKamAResEnv"
+      ],
+      "bytes": 12139,
+      "git_blob": "033afd4af47fe11aa05116dadc109a1c910464a4"
+    },
+    "PlasmaLean.Design.DommaschkQA2RData": {
+      "path": "PlasmaLean/Design/DommaschkQA2RData.lean",
+      "imports": [
+        "PlasmaLean.Theory.Fields.CylAlgebra",
+        "PlasmaLean.Certificates.KernelFact"
+      ],
+      "bytes": 25808,
+      "git_blob": "dbca1daa8ddbf4e1405c55395f4842ece396f2c8"
+    },
+    "PlasmaLean.Design.KamFlowFieldG": {
+      "path": "PlasmaLean/Design/KamFlowFieldG.lean",
+      "imports": [
+        "PlasmaLean.Design.KamNewtonField"
+      ],
+      "bytes": 23316,
+      "git_blob": "5435471178c80c8c6cf1f8f8476923457826aa94"
+    },
+    "PlasmaLean.Certificates.Kronecker2DWeighted": {
+      "path": "PlasmaLean/Certificates/Kronecker2DWeighted.lean",
+      "imports": [
+        "PlasmaLean.Certificates.Kronecker2D",
+        "PlasmaLean.Theory.KAM.Cohomological"
+      ],
+      "bytes": 28572,
+      "git_blob": "91f27e313ba730bafe242b81b271c99626b02403"
+    },
+    "PlasmaLean.Design.KamFlowStepG": {
+      "path": "PlasmaLean/Design/KamFlowStepG.lean",
+      "imports": [
+        "PlasmaLean.Design.KamFlowFrameG",
+        "PlasmaLean.Design.KamFlowStep",
+        "PlasmaLean.Theory.KAM.CohomologicalLow"
+      ],
+      "bytes": 57033,
+      "git_blob": "9315f89fce064f1605d9880db159f14cbd580695"
+    },
+    "PlasmaLean.Design.DommaschkKamAResEnv": {
+      "path": "PlasmaLean/Design/DommaschkKamAResEnv.lean",
+      "imports": [
+        "PlasmaLean.Design.DommaschkKamCResKron",
+        "PlasmaLean.Design.DommaschkKamATorus",
+        "PlasmaLean.Design.DommaschkKamAResData1",
+        "PlasmaLean.Design.DommaschkKamAResData2",
+        "PlasmaLean.Design.DommaschkKamAResData3",
+        "PlasmaLean.Design.DommaschkKamAResData4",
+        "PlasmaLean.Design.DommaschkKamAResData5",
+        "PlasmaLean.Design.DommaschkKamAResData6",
+        "PlasmaLean.Design.DommaschkKamAResData7",
+        "PlasmaLean.Design.DommaschkKamAResData8",
+        "PlasmaLean.Design.DommaschkKamAResData9"
+      ],
+      "bytes": 11473,
+      "git_blob": "55c520f810c478502a48b79dc715e6639aadccee"
+    },
+    "PlasmaLean.Certificates.KronProof": {
+      "path": "PlasmaLean/Certificates/KronProof.lean",
+      "imports": [
+        "PlasmaLean.Certificates.KronLowMemCompute",
+        "PlasmaLean.Certificates.KronLowMemCompute"
+      ],
+      "bytes": 26081,
+      "git_blob": "15f87da3902306f635dbad6209e9efd675766114"
+    },
+    "PlasmaLean.Design.DommaschkKamCAdmData1": {
+      "path": "PlasmaLean/Design/DommaschkKamCAdmData1.lean",
+      "imports": [],
+      "bytes": 691820,
+      "git_blob": "dba7cdd7a997303d19c2563be77c7d1eff9ff328"
+    },
+    "PlasmaLean.Design.DommaschkKamCAdmData3": {
+      "path": "PlasmaLean/Design/DommaschkKamCAdmData3.lean",
+      "imports": [],
+      "bytes": 641089,
+      "git_blob": "9e25944b57d392c6bdcdeda5d5b63375f777077b"
+    },
+    "PlasmaLean.Design.DommaschkKamCAdmData2": {
+      "path": "PlasmaLean/Design/DommaschkKamCAdmData2.lean",
+      "imports": [],
+      "bytes": 616326,
+      "git_blob": "b32f56df04f5a40c333cf764fcab94b92a7a8b07"
+    },
+    "PlasmaLean.Design.DommaschkKamAAdmChain": {
+      "path": "PlasmaLean/Design/DommaschkKamAAdmChain.lean",
+      "imports": [
+        "PlasmaLean.Design.DommaschkKamAAdmRel",
+        "PlasmaLean.Design.DommaschkKamAAdmCheck1",
+        "PlasmaLean.Design.DommaschkKamAAdmCheck2",
+        "PlasmaLean.Design.DommaschkKamAAdmCheck3",
+        "PlasmaLean.Design.DommaschkKamAAdmCheck4",
+        "PlasmaLean.Design.DommaschkKamAAdmCheck5",
+        "PlasmaLean.Design.DommaschkKamAAdmCheck6",
+        "PlasmaLean.Design.DommaschkKamAAdmCheck7",
+        "PlasmaLean.Design.DommaschkKamAAdmCheck8",
+        "PlasmaLean.Design.DommaschkKamAAdmCheck9",
+        "PlasmaLean.Design.DommaschkKamAAdmCheck10",
+        "PlasmaLean.Design.DommaschkKamAAdmCheck11",
+        "PlasmaLean.Design.DommaschkKamAAdmCheck12",
+        "PlasmaLean.Design.DommaschkKamAAdmCheck13",
+        "PlasmaLean.Design.DommaschkKamAAdmCheck14"
+      ],
+      "bytes": 359624,
+      "git_blob": "be0d10d4ca2dd3bd2d318cbe82156777459683bb"
+    },
+    "PlasmaLean.Theory.Fields.ClebschDivergence": {
+      "path": "PlasmaLean/Theory/Fields/ClebschDivergence.lean",
+      "imports": [
+        "PlasmaLean.Theory.Fields.FirstIntegral",
+        "PlasmaLean.Theory.Fields.Maxwell"
+      ],
+      "bytes": 6870,
+      "git_blob": "fc5e2efb22840ec5b132e4eac9b7e2ebe711e65e"
+    },
+    "PlasmaLean.Design.KamTorusAExact": {
+      "path": "PlasmaLean/Design/KamTorusAExact.lean",
+      "imports": [
+        "PlasmaLean.Design.KamTorusAAdm"
+      ],
+      "bytes": 8078,
+      "git_blob": "4a2f502f1438feb33a19484165c6dafb43a77266"
+    },
+    "PlasmaLean.Design.DommaschkKamCResTrees": {
+      "path": "PlasmaLean/Design/DommaschkKamCResTrees.lean",
+      "imports": [
+        "PlasmaLean.Design.DommaschkKamCResEnv"
+      ],
+      "bytes": 12101,
+      "git_blob": "81dd089850f4f1217a62ea2042d1be910a8749d1"
+    },
+    "PlasmaLean.Design.DommaschkKamCAdmTailCheckZ": {
+      "path": "PlasmaLean/Design/DommaschkKamCAdmTailCheckZ.lean",
+      "imports": [
+        "PlasmaLean.Design.DommaschkKamCAdmTailCheck",
+        "PlasmaLean.Certificates.KronProof2D",
+        "PlasmaLean.Design.DommaschkKamCAdmTailCheck"
+      ],
+      "bytes": 4590,
+      "git_blob": "3fb9d4a040981f6fb22a0f721299c9d89bcabdae"
+    },
+    "PlasmaLean.Theory.KAM.StripSmooth": {
+      "path": "PlasmaLean/Theory/KAM/StripSmooth.lean",
+      "imports": [
+        "PlasmaLean.Theory.KAM.StripEval"
+      ],
+      "bytes": 8725,
+      "git_blob": "80cef19287a8107b5363846e800270ccbd75161a"
+    },
+    "PlasmaLean.Design.RationalStellaratorForever": {
+      "path": "PlasmaLean/Design/RationalStellaratorForever.lean",
+      "imports": [
+        "PlasmaLean.Design.RationalStellaratorForeverCert",
+        "PlasmaLean.Design.RationalStellaratorForeverCoords"
+      ],
+      "bytes": 35318,
+      "git_blob": "3c9dc2dab85542b1020456a9413d36799708a633"
+    },
+    "PlasmaLean.Theory.Fields.FieldDerivative": {
+      "path": "PlasmaLean/Theory/Fields/FieldDerivative.lean",
+      "imports": [
+        "PlasmaLean.Theory.Fields.CoilPerturbation"
+      ],
+      "bytes": 7962,
+      "git_blob": "4ca8da19672e6d7545de30984f577294814cd7e4"
+    },
+    "PlasmaLean.Design.KamFlowIteration": {
+      "path": "PlasmaLean/Design/KamFlowIteration.lean",
+      "imports": [
+        "PlasmaLean.Design.KamFlowStep",
+        "PlasmaLean.Theory.KAM.KamSequence"
+      ],
+      "bytes": 37626,
+      "git_blob": "da18de7e998cc20e65d5d175a766f4728635a11a"
+    },
+    "PlasmaLean.Theory.Fields.FirstIntegral": {
+      "path": "PlasmaLean/Theory/Fields/FirstIntegral.lean",
+      "imports": [
+        "PlasmaLean.Theory.Fields.BiotSavart",
+        "PlasmaLean.Theory.Kinetic.ApproximateInvariant"
+      ],
+      "bytes": 10929,
+      "git_blob": "7dbe455783ab20e0e2a9367589d82e4c6c2d522c"
+    },
+    "PlasmaLean.Design.DommaschkKamCResEnv": {
+      "path": "PlasmaLean/Design/DommaschkKamCResEnv.lean",
+      "imports": [
+        "PlasmaLean.Design.DommaschkKamCResKron",
+        "PlasmaLean.Design.DommaschkKamCResData1",
+        "PlasmaLean.Design.DommaschkKamCResData2",
+        "PlasmaLean.Design.DommaschkKamCResData3",
+        "PlasmaLean.Design.DommaschkKamCResData4",
+        "PlasmaLean.Design.DommaschkKamCResData5",
+        "PlasmaLean.Design.DommaschkKamCResData6",
+        "PlasmaLean.Design.DommaschkKamCResData7",
+        "PlasmaLean.Design.DommaschkKamCResData8",
+        "PlasmaLean.Design.DommaschkKamCResData9"
+      ],
+      "bytes": 11520,
+      "git_blob": "028a5d37729ef329af8d1dd5a63af96a67ad5808"
+    },
+    "PlasmaLean.Theory.Kinetic.BoozerGuidingCentre": {
+      "path": "PlasmaLean/Theory/Kinetic/BoozerGuidingCentre.lean",
+      "imports": [
+        "PlasmaLean.Theory.Kinetic.CanonicalMomentum"
+      ],
+      "bytes": 35453,
+      "git_blob": "c65d62721ef854602bd342550057a0a435074f58"
+    },
+    "PlasmaLean.Design.DommaschkKamCTorus": {
+      "path": "PlasmaLean/Design/DommaschkKamCTorus.lean",
+      "imports": [
+        "PlasmaLean.Certificates.KronBallGrid",
+        "PlasmaLean.Design.DommaschkKamCData",
+        "PlasmaLean.Design.DommaschkKamField",
+        "PlasmaLean.Design.DommaschkKamDioC"
+      ],
+      "bytes": 14222,
+      "git_blob": "d2d82e7e1d301604f73eee8d1859bdeacb2b7bf6"
+    },
+    "PlasmaLean.Design.DommaschkKamCAdmData4": {
+      "path": "PlasmaLean/Design/DommaschkKamCAdmData4.lean",
+      "imports": [],
+      "bytes": 762820,
+      "git_blob": "3d46bdec5ec5de81ebeb2ec594e9606d7b5b5b5f"
+    },
+    "PlasmaLean.Design.DommaschkKamFieldCheck": {
+      "path": "PlasmaLean/Design/DommaschkKamFieldCheck.lean",
+      "imports": [
+        "PlasmaLean.Design.DommaschkKamFieldData"
+      ],
+      "bytes": 3662,
+      "git_blob": "bfe11ba103b1b4f2d920d4e614473412e5da67e4"
+    },
+    "PlasmaLean.Design.DommaschkKamCAdmData6": {
+      "path": "PlasmaLean/Design/DommaschkKamCAdmData6.lean",
+      "imports": [],
+      "bytes": 626710,
+      "git_blob": "879e9da71963d05e631fd772be365ca645e8eb91"
+    },
+    "PlasmaLean.Design.DommaschkKamCAdmData5": {
+      "path": "PlasmaLean/Design/DommaschkKamCAdmData5.lean",
+      "imports": [],
+      "bytes": 766462,
+      "git_blob": "0f35d15e1adc948b6516527f139b34a388747fc2"
+    },
+    "PlasmaLean.Design.DommaschkKamAAdmCheck6": {
+      "path": "PlasmaLean/Design/DommaschkKamAAdmCheck6.lean",
+      "imports": [
+        "PlasmaLean.Design.DommaschkKamAAdmTrees",
+        "PlasmaLean.Certificates.KronProof2D",
+        "PlasmaLean.Design.DommaschkKamAAdmTrees"
+      ],
+      "bytes": 22468,
+      "git_blob": "1ab003b63e28a65616ee9f97a4b4a4a5d58fec66"
+    },
+    "PlasmaLean.Design.DommaschkKamAAdmCheck14": {
+      "path": "PlasmaLean/Design/DommaschkKamAAdmCheck14.lean",
+      "imports": [
+        "PlasmaLean.Design.DommaschkKamAAdmTrees",
+        "PlasmaLean.Certificates.KronProof2D",
+        "PlasmaLean.Design.DommaschkKamAAdmTrees"
+      ],
+      "bytes": 22577,
+      "git_blob": "e10fefef7b077f17a19600bb8b4f59c46dfb0e6b"
+    },
+    "PlasmaLean.Certificates.KronLowMemCompute": {
+      "path": "PlasmaLean/Certificates/KronLowMemCompute.lean",
+      "imports": [
+        "PlasmaLean.Certificates.KronChebCompute"
+      ],
+      "bytes": 11682,
+      "git_blob": "a0809e0a61d88ff0ce3723cb6472bfade8c8b182"
+    },
+    "PlasmaLean.Design.DommaschkKamAAdmCheck3": {
+      "path": "PlasmaLean/Design/DommaschkKamAAdmCheck3.lean",
+      "imports": [
+        "PlasmaLean.Design.DommaschkKamAAdmTrees",
+        "PlasmaLean.Certificates.KronProof2D",
+        "PlasmaLean.Design.DommaschkKamAAdmTrees"
+      ],
+      "bytes": 21174,
+      "git_blob": "e57e0034131c0e7088d6fb70e26985cc1ee5e2c9"
+    },
+    "PlasmaLean.Certificates.Kronecker2D": {
+      "path": "PlasmaLean/Certificates/Kronecker2D.lean",
+      "imports": [],
+      "bytes": 23305,
+      "git_blob": "522214f6239923e38094b4afaefd1cf805d1ad6d"
+    },
+    "PlasmaLean.Design.DommaschkKamAAdmCheck1": {
+      "path": "PlasmaLean/Design/DommaschkKamAAdmCheck1.lean",
+      "imports": [
+        "PlasmaLean.Design.DommaschkKamAAdmTrees",
+        "PlasmaLean.Certificates.KronProof2D",
+        "PlasmaLean.Design.DommaschkKamAAdmTrees"
+      ],
+      "bytes": 22527,
+      "git_blob": "77f180121ea9e69fae23a4d7fa2918dc85794b12"
+    },
+    "PlasmaLean.Design.DommaschkKamAAdmCheck5": {
+      "path": "PlasmaLean/Design/DommaschkKamAAdmCheck5.lean",
+      "imports": [
+        "PlasmaLean.Design.DommaschkKamAAdmTrees",
+        "PlasmaLean.Certificates.KronProof2D",
+        "PlasmaLean.Design.DommaschkKamAAdmTrees"
+      ],
+      "bytes": 22538,
+      "git_blob": "1ac8269a31d12f7a659e4b0fcdc405b7c45883b1"
+    },
+    "PlasmaLean.Design.DommaschkKamAAdmCheck12": {
+      "path": "PlasmaLean/Design/DommaschkKamAAdmCheck12.lean",
+      "imports": [
+        "PlasmaLean.Design.DommaschkKamAAdmTrees",
+        "PlasmaLean.Certificates.KronProof2D",
+        "PlasmaLean.Design.DommaschkKamAAdmTrees"
+      ],
+      "bytes": 22605,
+      "git_blob": "08809d77d350b423975219ed04fbf358f91a1c31"
+    },
+    "PlasmaLean.Design.DommaschkKamAAdmCheck7": {
+      "path": "PlasmaLean/Design/DommaschkKamAAdmCheck7.lean",
+      "imports": [
+        "PlasmaLean.Design.DommaschkKamAAdmTrees",
+        "PlasmaLean.Certificates.KronProof2D",
+        "PlasmaLean.Design.DommaschkKamAAdmTrees"
+      ],
+      "bytes": 20913,
+      "git_blob": "e8fe41c1c0c98b0e55b52f1efe383ba1a11c779f"
+    },
+    "PlasmaLean.Design.DommaschkKamAAdmCheck2": {
+      "path": "PlasmaLean/Design/DommaschkKamAAdmCheck2.lean",
+      "imports": [
+        "PlasmaLean.Design.DommaschkKamAAdmTrees",
+        "PlasmaLean.Certificates.KronProof2D",
+        "PlasmaLean.Design.DommaschkKamAAdmTrees"
+      ],
+      "bytes": 21903,
+      "git_blob": "8be794d88f0f4c8a307104800e2b53ae707f2410"
+    },
+    "PlasmaLean.Design.DommaschkKamAAdmCheck13": {
+      "path": "PlasmaLean/Design/DommaschkKamAAdmCheck13.lean",
+      "imports": [
+        "PlasmaLean.Design.DommaschkKamAAdmTrees",
+        "PlasmaLean.Certificates.KronProof2D",
+        "PlasmaLean.Design.DommaschkKamAAdmTrees"
+      ],
+      "bytes": 20664,
+      "git_blob": "343576db7a28357d0547d633905d015ffe067462"
+    },
+    "PlasmaLean.Design.DommaschkKamAAdmCheck4": {
+      "path": "PlasmaLean/Design/DommaschkKamAAdmCheck4.lean",
+      "imports": [
+        "PlasmaLean.Design.DommaschkKamAAdmTrees",
+        "PlasmaLean.Certificates.KronProof2D",
+        "PlasmaLean.Design.DommaschkKamAAdmTrees"
+      ],
+      "bytes": 22527,
+      "git_blob": "f903ea8f5327ab47d27d08cc5f2e1329946ebb91"
+    },
+    "PlasmaLean.Design.DommaschkKamAAdmCheck8": {
+      "path": "PlasmaLean/Design/DommaschkKamAAdmCheck8.lean",
+      "imports": [
+        "PlasmaLean.Design.DommaschkKamAAdmTrees",
+        "PlasmaLean.Certificates.KronProof2D",
+        "PlasmaLean.Design.DommaschkKamAAdmTrees"
+      ],
+      "bytes": 21100,
+      "git_blob": "17b4fe4428200f1172b59910e9189e2935bd28e1"
+    },
+    "PlasmaLean.Design.DommaschkKamAAdmCheck11": {
+      "path": "PlasmaLean/Design/DommaschkKamAAdmCheck11.lean",
+      "imports": [
+        "PlasmaLean.Design.DommaschkKamAAdmTrees",
+        "PlasmaLean.Certificates.KronProof2D",
+        "PlasmaLean.Design.DommaschkKamAAdmTrees"
+      ],
+      "bytes": 21840,
+      "git_blob": "981106aad53b3687c83120e4cf09744800da8d9e"
+    },
+    "PlasmaLean.Design.DommaschkKamAAdmCheck10": {
+      "path": "PlasmaLean/Design/DommaschkKamAAdmCheck10.lean",
+      "imports": [
+        "PlasmaLean.Design.DommaschkKamAAdmTrees",
+        "PlasmaLean.Certificates.KronProof2D",
+        "PlasmaLean.Design.DommaschkKamAAdmTrees"
+      ],
+      "bytes": 21128,
+      "git_blob": "27aec0274cf5d90f169c43bd66041433087100ce"
+    },
+    "PlasmaLean.Certificates.KronBall": {
+      "path": "PlasmaLean/Certificates/KronBall.lean",
+      "imports": [
+        "PlasmaLean.Certificates.KronExpr",
+        "PlasmaLean.Theory.KAM.StripAlgebra"
+      ],
+      "bytes": 24193,
+      "git_blob": "d1a5ca3b068236b6ee67b6a2a75480fae6c4b1aa"
+    },
+    "PlasmaLean.Design.DommaschkKamCAdmTailCheck": {
+      "path": "PlasmaLean/Design/DommaschkKamCAdmTailCheck.lean",
+      "imports": [
+        "PlasmaLean.Design.DommaschkKamCAdmEnv",
+        "PlasmaLean.Certificates.KronProof2D",
+        "PlasmaLean.Design.DommaschkKamCAdmEnv"
+      ],
+      "bytes": 5302,
+      "git_blob": "85343c79c0dc9ac4bbe0ef0daa6136567eddc780"
+    },
+    "PlasmaLean.Design.DommaschkKamANestTrees": {
+      "path": "PlasmaLean/Design/DommaschkKamANestTrees.lean",
+      "imports": [
+        "PlasmaLean.Design.DommaschkKamANestEnv"
+      ],
+      "bytes": 3960,
+      "git_blob": "a4f705f08d8a557536b157ff0712fe555031e88d"
+    },
+    "PlasmaLean.Design.DommaschkKamATorus": {
+      "path": "PlasmaLean/Design/DommaschkKamATorus.lean",
+      "imports": [
+        "PlasmaLean.Design.DommaschkKamAData",
+        "PlasmaLean.Design.DommaschkKamCTorus"
+      ],
+      "bytes": 5748,
+      "git_blob": "ee2ee4c7ed8ccf7143239a50f67b6b3f5ad80cec"
+    },
+    "PlasmaLean.Design.DommaschkKamAAdmRel": {
+      "path": "PlasmaLean/Design/DommaschkKamAAdmRel.lean",
+      "imports": [
+        "PlasmaLean.Design.DommaschkKamAAdmTrees"
+      ],
+      "bytes": 83969,
+      "git_blob": "557065f7e87b0086be1dc754f90273e1f87f5a99"
+    },
+    "PlasmaLean.Design.DommaschkKamCAdmChain": {
+      "path": "PlasmaLean/Design/DommaschkKamCAdmChain.lean",
+      "imports": [
+        "PlasmaLean.Design.DommaschkKamCAdmRel",
+        "PlasmaLean.Design.DommaschkKamCAdmCheck1",
+        "PlasmaLean.Design.DommaschkKamCAdmCheck2",
+        "PlasmaLean.Design.DommaschkKamCAdmCheck3",
+        "PlasmaLean.Design.DommaschkKamCAdmCheck4",
+        "PlasmaLean.Design.DommaschkKamCAdmCheck5",
+        "PlasmaLean.Design.DommaschkKamCAdmCheck6",
+        "PlasmaLean.Design.DommaschkKamCAdmCheck7",
+        "PlasmaLean.Design.DommaschkKamCAdmCheck8",
+        "PlasmaLean.Design.DommaschkKamCAdmCheck9",
+        "PlasmaLean.Design.DommaschkKamCAdmCheck10"
+      ],
+      "bytes": 331494,
+      "git_blob": "9262d2ce1162ea1a29d08363bd2adc13fe972e0a"
+    },
+    "PlasmaLean.Design.DommaschkKamAAdmTailCheck": {
+      "path": "PlasmaLean/Design/DommaschkKamAAdmTailCheck.lean",
+      "imports": [
+        "PlasmaLean.Design.DommaschkKamAAdmEnv",
+        "PlasmaLean.Certificates.KronProof2D",
+        "PlasmaLean.Design.DommaschkKamAAdmEnv"
+      ],
+      "bytes": 5340,
+      "git_blob": "07f115774542f5a9f76fe32aec952bb931401e06"
+    },
+    "PlasmaLean.Design.DommaschkKamAAdmCheck9": {
+      "path": "PlasmaLean/Design/DommaschkKamAAdmCheck9.lean",
+      "imports": [
+        "PlasmaLean.Design.DommaschkKamAAdmTrees",
+        "PlasmaLean.Certificates.KronProof2D",
+        "PlasmaLean.Design.DommaschkKamAAdmTrees"
+      ],
+      "bytes": 21860,
+      "git_blob": "66772b84a3d66a1bfe7d03af1416d50f64fca015"
+    },
+    "PlasmaLean.Design.DommaschkKamAResData9": {
+      "path": "PlasmaLean/Design/DommaschkKamAResData9.lean",
+      "imports": [],
+      "bytes": 3039188,
+      "git_blob": "a5c1105eff8b81aaa03103c9c867b06b5c200aef"
+    },
+    "PlasmaLean.Design.DommaschkKamAResData2": {
+      "path": "PlasmaLean/Design/DommaschkKamAResData2.lean",
+      "imports": [],
+      "bytes": 3176320,
+      "git_blob": "3cf43365c0825f4e79caa58300bf1fb68d3d090f"
+    },
+    "PlasmaLean.Design.DommaschkKamAResData8": {
+      "path": "PlasmaLean/Design/DommaschkKamAResData8.lean",
+      "imports": [],
+      "bytes": 3029498,
+      "git_blob": "f4968e1100febb7b109d0cb01510f9cad9e649cd"
+    },
+    "PlasmaLean.Design.DommaschkKamAResData4": {
+      "path": "PlasmaLean/Design/DommaschkKamAResData4.lean",
+      "imports": [],
+      "bytes": 3542920,
+      "git_blob": "5c35b263447f3ea8bcbd300ab5b8df2ef816b007"
+    },
+    "PlasmaLean.Design.DommaschkKamAResData7": {
+      "path": "PlasmaLean/Design/DommaschkKamAResData7.lean",
+      "imports": [],
+      "bytes": 3050554,
+      "git_blob": "25dbb47bd94da713205cf9fce635adbd15b6941d"
+    },
+    "PlasmaLean.Design.DommaschkKamAResData3": {
+      "path": "PlasmaLean/Design/DommaschkKamAResData3.lean",
+      "imports": [],
+      "bytes": 3550301,
+      "git_blob": "039ae7a5c579bfcaace53a320ddcdf281956be33"
+    },
+    "PlasmaLean.Design.DommaschkKamAResData5": {
+      "path": "PlasmaLean/Design/DommaschkKamAResData5.lean",
+      "imports": [],
+      "bytes": 3564957,
+      "git_blob": "c229520428b30106626d2827cbfc630a928f28c5"
+    },
+    "PlasmaLean.Design.KamFlowFrameG": {
+      "path": "PlasmaLean/Design/KamFlowFrameG.lean",
+      "imports": [
+        "PlasmaLean.Design.KamFlowFieldG",
+        "PlasmaLean.Design.KamFlowFrame"
+      ],
+      "bytes": 34997,
+      "git_blob": "157fe532ed6ccbdf10d593f85df5642d00cb9581"
+    },
+    "PlasmaLean.Design.DommaschkKamAResData1": {
+      "path": "PlasmaLean/Design/DommaschkKamAResData1.lean",
+      "imports": [],
+      "bytes": 4775170,
+      "git_blob": "25090a605b6454c5b20efed1c392e5f57650ca37"
+    },
+    "PlasmaLean.Design.DommaschkKamAResData6": {
+      "path": "PlasmaLean/Design/DommaschkKamAResData6.lean",
+      "imports": [],
+      "bytes": 3511201,
+      "git_blob": "de17a38718727747e566e031d35a43124322c0c7"
+    },
+    "PlasmaLean.Design.KamNewtonField": {
+      "path": "PlasmaLean/Design/KamNewtonField.lean",
+      "imports": [
+        "PlasmaLean.Design.KamFlowField"
+      ],
+      "bytes": 14631,
+      "git_blob": "0be29f50d92535fda99c3f2acd4676f2ab66e5c0"
+    },
+    "PlasmaLean.Design.KamTorusAAdm": {
+      "path": "PlasmaLean/Design/KamTorusAAdm.lean",
+      "imports": [
+        "PlasmaLean.Design.KamIteration",
+        "PlasmaLean.Design.KamTorusASurrogate"
+      ],
+      "bytes": 23798,
+      "git_blob": "b538dacd2ebd903020a86b1fbb2e598498b5e953"
+    },
+    "PlasmaLean.Design.DommaschkKamCResKron": {
+      "path": "PlasmaLean/Design/DommaschkKamCResKron.lean",
+      "imports": [
+        "PlasmaLean.Design.DommaschkKamCKronW",
+        "PlasmaLean.Design.DommaschkKamIdentCheck"
+      ],
+      "bytes": 21383,
+      "git_blob": "8c8350ee87af2eb9255818d5f11d8fc1c842bc1f"
+    },
+    "PlasmaLean.Design.KamFlowStep": {
+      "path": "PlasmaLean/Design/KamFlowStep.lean",
+      "imports": [
+        "PlasmaLean.Design.KamFlowFrame"
+      ],
+      "bytes": 52385,
+      "git_blob": "4a313de3ac4eb00e7033dc6c809e69765f5cd89b"
+    },
+    "PlasmaLean.Design.DommaschkKamFieldData": {
+      "path": "PlasmaLean/Design/DommaschkKamFieldData.lean",
+      "imports": [
+        "PlasmaLean.Design.DommaschkKamPoly"
+      ],
+      "bytes": 158877,
+      "git_blob": "1d1d7c1f6234e6270c5fca363542aa13637b54a6"
+    },
+    "PlasmaLean.Design.DommaschkKamDioC": {
+      "path": "PlasmaLean/Design/DommaschkKamDioC.lean",
+      "imports": [
+        "PlasmaLean.Design.DommaschkKamDio"
+      ],
+      "bytes": 10138,
+      "git_blob": "6eeec2795b2b214331e18ce9c52d562e6ebc3419"
+    },
+    "PlasmaLean.Design.DommaschkKamCResData8": {
+      "path": "PlasmaLean/Design/DommaschkKamCResData8.lean",
+      "imports": [],
+      "bytes": 2246852,
+      "git_blob": "99cb0ac76348c626f76f25cc50458e0dc7a334d3"
+    },
+    "PlasmaLean.Design.DommaschkKamCResData2": {
+      "path": "PlasmaLean/Design/DommaschkKamCResData2.lean",
+      "imports": [],
+      "bytes": 2313198,
+      "git_blob": "a9800afb40135e5a25c98768db09c58059f9673a"
+    },
+    "PlasmaLean.Design.DommaschkKamCResData3": {
+      "path": "PlasmaLean/Design/DommaschkKamCResData3.lean",
+      "imports": [],
+      "bytes": 2634057,
+      "git_blob": "22a195f555a6d0b57ed6af69419d363bdb1ceded"
+    },
+    "PlasmaLean.Design.DommaschkKamCData": {
+      "path": "PlasmaLean/Design/DommaschkKamCData.lean",
+      "imports": [
+        "PlasmaLean.Design.DommaschkKamPoly"
+      ],
+      "bytes": 981307,
+      "git_blob": "1b229f6c0d3b906c6ce75985ae58f4199f009749"
+    },
+    "PlasmaLean.Design.DommaschkKamCResData1": {
+      "path": "PlasmaLean/Design/DommaschkKamCResData1.lean",
+      "imports": [],
+      "bytes": 3490348,
+      "git_blob": "7a9093c4052e6f4ac56cbdb89d458e35b0bcd86d"
+    },
+    "PlasmaLean.Design.DommaschkKamCResData6": {
+      "path": "PlasmaLean/Design/DommaschkKamCResData6.lean",
+      "imports": [],
+      "bytes": 2606388,
+      "git_blob": "914a0f3670a117f733620b064ae434b26c40bad7"
+    },
+    "PlasmaLean.Design.DommaschkKamCResData9": {
+      "path": "PlasmaLean/Design/DommaschkKamCResData9.lean",
+      "imports": [],
+      "bytes": 2256423,
+      "git_blob": "942ab2c29587a4568d3839a6268f5263d7e87d08"
+    },
+    "PlasmaLean.Design.DommaschkKamCResData4": {
+      "path": "PlasmaLean/Design/DommaschkKamCResData4.lean",
+      "imports": [],
+      "bytes": 2629660,
+      "git_blob": "be3c3c24f192fb549c180053d4524d5b9dd8e3af"
+    },
+    "PlasmaLean.Design.DommaschkKamCResData7": {
+      "path": "PlasmaLean/Design/DommaschkKamCResData7.lean",
+      "imports": [],
+      "bytes": 2266432,
+      "git_blob": "9ebf3c1019dd82afa99fb407853bc1c7634adc77"
+    },
+    "PlasmaLean.Design.DommaschkKamCResData5": {
+      "path": "PlasmaLean/Design/DommaschkKamCResData5.lean",
+      "imports": [],
+      "bytes": 2646501,
+      "git_blob": "81be550632251d753a99a56a4e737a3c4fc547c2"
+    },
+    "PlasmaLean.Theory.Kinetic.ApproximateInvariant": {
+      "path": "PlasmaLean/Theory/Kinetic/ApproximateInvariant.lean",
+      "imports": [],
+      "bytes": 2182,
+      "git_blob": "05b084139b728754e7f19d54629862ad97f39e0c"
+    },
+    "PlasmaLean.Theory.Fields.CoilPerturbation": {
+      "path": "PlasmaLean/Theory/Fields/CoilPerturbation.lean",
+      "imports": [
+        "PlasmaLean.Theory.Fields.FieldVariation"
+      ],
+      "bytes": 6240,
+      "git_blob": "b6be68ab98896ed6f492a3ec96d2c629f238e17e"
+    },
+    "PlasmaLean.Theory.Fields.BiotSavart": {
+      "path": "PlasmaLean/Theory/Fields/BiotSavart.lean",
+      "imports": [],
+      "bytes": 5910,
+      "git_blob": "b9392fe4ec6b7f86b68a5929b69b8c72a0b4a566"
+    },
+    "PlasmaLean.Theory.KAM.KamSequence": {
+      "path": "PlasmaLean/Theory/KAM/KamSequence.lean",
+      "imports": [],
+      "bytes": 18143,
+      "git_blob": "4c3406b77df8ebc8fcf352b22066de538934eb92"
+    },
+    "PlasmaLean.Theory.KAM.CohomologicalLow": {
+      "path": "PlasmaLean/Theory/KAM/CohomologicalLow.lean",
+      "imports": [
+        "PlasmaLean.Theory.KAM.Cohomological",
+        "PlasmaLean.Theory.KAM.StripAlgebra"
+      ],
+      "bytes": 20768,
+      "git_blob": "126ee4062599b94e3ce01a3801daf500e5aa240d"
+    },
+    "PlasmaLean.Theory.Kinetic.CanonicalMomentum": {
+      "path": "PlasmaLean/Theory/Kinetic/CanonicalMomentum.lean",
+      "imports": [
+        "PlasmaLean.Theory.Kinetic.FullOrbit",
+        "PlasmaLean.Theory.Kinetic.ApproximateInvariant"
+      ],
+      "bytes": 16222,
+      "git_blob": "b4b191c95027f23095ccc07a5b1d8f6f578b99e0"
+    },
+    "PlasmaLean.Design.RationalStellaratorForeverCert": {
+      "path": "PlasmaLean/Design/RationalStellaratorForeverCert.lean",
+      "imports": [
+        "PlasmaLean.Design.KamTorusA"
+      ],
+      "bytes": 7612,
+      "git_blob": "006b35ecf1e99f62c13d62ed2537fc29fdc69110"
+    },
+    "PlasmaLean.Theory.KAM.StripEval": {
+      "path": "PlasmaLean/Theory/KAM/StripEval.lean",
+      "imports": [
+        "PlasmaLean.Theory.KAM.StripAlgebra"
+      ],
+      "bytes": 14356,
+      "git_blob": "263dfac888b3978c69e5829bccb1e83634453aa7"
+    },
+    "PlasmaLean.Design.RationalStellaratorForeverCoords": {
+      "path": "PlasmaLean/Design/RationalStellaratorForeverCoords.lean",
+      "imports": [
+        "PlasmaLean.Design.KamTorusA"
+      ],
+      "bytes": 22199,
+      "git_blob": "cdf7b08e3c59953f499c1519328225a298152933"
+    },
+    "PlasmaLean.Theory.KAM.Cohomological": {
+      "path": "PlasmaLean/Theory/KAM/Cohomological.lean",
+      "imports": [
+        "PlasmaLean.Theory.KAM.Diophantine"
+      ],
+      "bytes": 29119,
+      "git_blob": "0d784bf0e1ef8996d87c4f3121fb380e25654d37"
+    },
+    "PlasmaLean.Theory.Fields.CylAlgebra": {
+      "path": "PlasmaLean/Theory/Fields/CylAlgebra.lean",
+      "imports": [
+        "PlasmaLean.Kernel.Vacuum",
+        "PlasmaLean.Theory.Fields.ClebschDivergence"
+      ],
+      "bytes": 30565,
+      "git_blob": "3094d22a9e30ba1d5d10f3426658ac3ceaaf073d"
+    },
+    "PlasmaLean.Design.DommaschkKamCAdmCheck2": {
+      "path": "PlasmaLean/Design/DommaschkKamCAdmCheck2.lean",
+      "imports": [
+        "PlasmaLean.Design.DommaschkKamCAdmTrees",
+        "PlasmaLean.Certificates.KronProof2D",
+        "PlasmaLean.Design.DommaschkKamCAdmTrees"
+      ],
+      "bytes": 28017,
+      "git_blob": "fe3fb0f2371ad48bae8f64e5e3a51bc4fc9aa331"
+    },
+    "PlasmaLean.Design.DommaschkKamCAdmCheck5": {
+      "path": "PlasmaLean/Design/DommaschkKamCAdmCheck5.lean",
+      "imports": [
+        "PlasmaLean.Design.DommaschkKamCAdmTrees",
+        "PlasmaLean.Certificates.KronProof2D",
+        "PlasmaLean.Design.DommaschkKamCAdmTrees"
+      ],
+      "bytes": 28134,
+      "git_blob": "3c1bb27e910745b206f021c9a2bcf5dff60a127b"
+    },
+    "PlasmaLean.Design.DommaschkKamAAdmTrees": {
+      "path": "PlasmaLean/Design/DommaschkKamAAdmTrees.lean",
+      "imports": [
+        "PlasmaLean.Design.DommaschkKamAAdmEnv"
+      ],
+      "bytes": 37474,
+      "git_blob": "e7de82e795f742b78fd95747eb542c7200583581"
+    },
+    "PlasmaLean.Design.DommaschkKamDio": {
+      "path": "PlasmaLean/Design/DommaschkKamDio.lean",
+      "imports": [
+        "PlasmaLean.Theory.KAM.CohomologicalLow"
+      ],
+      "bytes": 10059,
+      "git_blob": "9aac86c53acf56f50d7feccfb33172d398f796f7"
+    },
+    "PlasmaLean.Design.DommaschkKamCAdmCheck7": {
+      "path": "PlasmaLean/Design/DommaschkKamCAdmCheck7.lean",
+      "imports": [
+        "PlasmaLean.Design.DommaschkKamCAdmTrees",
+        "PlasmaLean.Certificates.KronProof2D",
+        "PlasmaLean.Design.DommaschkKamCAdmTrees"
+      ],
+      "bytes": 27538,
+      "git_blob": "e64cc0822305ed5c340c92beeeb19b75a6acf993"
+    },
+    "PlasmaLean.Design.DommaschkKamAAdmEnv": {
+      "path": "PlasmaLean/Design/DommaschkKamAAdmEnv.lean",
+      "imports": [
+        "PlasmaLean.Design.DommaschkKamCKronW",
+        "PlasmaLean.Design.DommaschkKamATorus",
+        "PlasmaLean.Design.DommaschkKamAAdmData1",
+        "PlasmaLean.Design.DommaschkKamAAdmData2",
+        "PlasmaLean.Design.DommaschkKamAAdmData3",
+        "PlasmaLean.Design.DommaschkKamAAdmData4",
+        "PlasmaLean.Design.DommaschkKamAAdmData5",
+        "PlasmaLean.Design.DommaschkKamAAdmData6",
+        "PlasmaLean.Design.DommaschkKamAAdmData7",
+        "PlasmaLean.Design.DommaschkKamAAdmData8"
+      ],
+      "bytes": 91491,
+      "git_blob": "f993a34b9b9382c4be069577cc7bcb2f55f46a6f"
+    },
+    "PlasmaLean.Design.DommaschkKamCAdmCheck8": {
+      "path": "PlasmaLean/Design/DommaschkKamCAdmCheck8.lean",
+      "imports": [
+        "PlasmaLean.Design.DommaschkKamCAdmTrees",
+        "PlasmaLean.Certificates.KronProof2D",
+        "PlasmaLean.Design.DommaschkKamCAdmTrees"
+      ],
+      "bytes": 27512,
+      "git_blob": "dbdf3417a82cc7b4f1b37360d27ff987b6e9ee92"
+    },
+    "PlasmaLean.Design.DommaschkKamCAdmCheck3": {
+      "path": "PlasmaLean/Design/DommaschkKamCAdmCheck3.lean",
+      "imports": [
+        "PlasmaLean.Design.DommaschkKamCAdmTrees",
+        "PlasmaLean.Certificates.KronProof2D",
+        "PlasmaLean.Design.DommaschkKamCAdmTrees"
+      ],
+      "bytes": 26648,
+      "git_blob": "4f4324522785f8702659fad6643e10c5f29b34c3"
+    },
+    "PlasmaLean.Design.DommaschkKamCAdmCheck10": {
+      "path": "PlasmaLean/Design/DommaschkKamCAdmCheck10.lean",
+      "imports": [
+        "PlasmaLean.Design.DommaschkKamCAdmTrees",
+        "PlasmaLean.Certificates.KronProof2D",
+        "PlasmaLean.Design.DommaschkKamCAdmTrees"
+      ],
+      "bytes": 26215,
+      "git_blob": "626da06ed85c16f8b7e914263c65ca9557c8f8c2"
+    },
+    "PlasmaLean.Certificates.KronChebCompute": {
+      "path": "PlasmaLean/Certificates/KronChebCompute.lean",
+      "imports": [],
+      "bytes": 17336,
+      "git_blob": "39c9574563d2714c7c61c20198b9c84f3932675e"
+    },
+    "PlasmaLean.Certificates.KronExpr": {
+      "path": "PlasmaLean/Certificates/KronExpr.lean",
+      "imports": [
+        "PlasmaLean.Certificates.Kronecker2D"
+      ],
+      "bytes": 18527,
+      "git_blob": "0c821fa958f4c480af7d1f2ff3d8d4a6bdeaaed9"
+    },
+    "PlasmaLean.Design.DommaschkKamCAdmCheck1": {
+      "path": "PlasmaLean/Design/DommaschkKamCAdmCheck1.lean",
+      "imports": [
+        "PlasmaLean.Design.DommaschkKamCAdmTrees",
+        "PlasmaLean.Certificates.KronProof2D",
+        "PlasmaLean.Design.DommaschkKamCAdmTrees"
+      ],
+      "bytes": 27450,
+      "git_blob": "36c6f1088abc0181c030b7a576585adb6cb7bb0c"
+    },
+    "PlasmaLean.Design.DommaschkKamCAdmCheck6": {
+      "path": "PlasmaLean/Design/DommaschkKamCAdmCheck6.lean",
+      "imports": [
+        "PlasmaLean.Design.DommaschkKamCAdmTrees",
+        "PlasmaLean.Certificates.KronProof2D",
+        "PlasmaLean.Design.DommaschkKamCAdmTrees"
+      ],
+      "bytes": 27119,
+      "git_blob": "03af51e2e9e328b0aaaa010515f962e4844841b2"
+    },
+    "PlasmaLean.Design.DommaschkKamCAdmCheck9": {
+      "path": "PlasmaLean/Design/DommaschkKamCAdmCheck9.lean",
+      "imports": [
+        "PlasmaLean.Design.DommaschkKamCAdmTrees",
+        "PlasmaLean.Certificates.KronProof2D",
+        "PlasmaLean.Design.DommaschkKamCAdmTrees"
+      ],
+      "bytes": 27375,
+      "git_blob": "d7831eb88ace54c3ef3fc577a7209e648b16a535"
+    },
+    "PlasmaLean.Design.DommaschkKamANestEnv": {
+      "path": "PlasmaLean/Design/DommaschkKamANestEnv.lean",
+      "imports": [
+        "PlasmaLean.Design.DommaschkKamAAdmEnv",
+        "PlasmaLean.Design.DommaschkKamCAdmEnv",
+        "PlasmaLean.Design.DommaschkKamANestData"
+      ],
+      "bytes": 19630,
+      "git_blob": "c4231efe0bbba408693ce30715924d544e7dfd30"
+    },
+    "PlasmaLean.Design.DommaschkKamAData": {
+      "path": "PlasmaLean/Design/DommaschkKamAData.lean",
+      "imports": [
+        "PlasmaLean.Design.DommaschkKamCData"
+      ],
+      "bytes": 980692,
+      "git_blob": "2e2119585b60d324ec644148119732e44aa61c3b"
+    },
+    "PlasmaLean.Design.DommaschkKamCAdmCheck4": {
+      "path": "PlasmaLean/Design/DommaschkKamCAdmCheck4.lean",
+      "imports": [
+        "PlasmaLean.Design.DommaschkKamCAdmTrees",
+        "PlasmaLean.Certificates.KronProof2D",
+        "PlasmaLean.Design.DommaschkKamCAdmTrees"
+      ],
+      "bytes": 26787,
+      "git_blob": "c81e98940b13336ff60bfbd6509067e8dcba60af"
+    },
+    "PlasmaLean.Design.KamIteration": {
+      "path": "PlasmaLean/Design/KamIteration.lean",
+      "imports": [
+        "PlasmaLean.Design.KamFlowIteration",
+        "PlasmaLean.Design.KamNewtonStep"
+      ],
+      "bytes": 2530,
+      "git_blob": "2e09914f069a9375b83aa295b79e27c5ce84199c"
+    },
+    "PlasmaLean.Theory.Fields.FieldVariation": {
+      "path": "PlasmaLean/Theory/Fields/FieldVariation.lean",
+      "imports": [
+        "PlasmaLean.Theory.Fields.InverseCube"
+      ],
+      "bytes": 3486,
+      "git_blob": "bacddd441a84b598b9b934ed431338e0024997d7"
+    },
+    "PlasmaLean.Theory.KAM.StripAlgebra": {
+      "path": "PlasmaLean/Theory/KAM/StripAlgebra.lean",
+      "imports": [
+        "PlasmaLean.Theory.KAM.Composition",
+        "PlasmaLean.Certificates.Kronecker2DWeighted"
+      ],
+      "bytes": 38534,
+      "git_blob": "044957efd03ac9b88809114ce1fcbb651ff75c8b"
+    },
+    "PlasmaLean.Design.DommaschkKamCAdmRel": {
+      "path": "PlasmaLean/Design/DommaschkKamCAdmRel.lean",
+      "imports": [
+        "PlasmaLean.Design.DommaschkKamCAdmTrees"
+      ],
+      "bytes": 83931,
+      "git_blob": "1af51c33f45dacff62e18ecdd4e55c52dbaf220f"
+    },
+    "PlasmaLean.Theory.KAM.Diophantine": {
+      "path": "PlasmaLean/Theory/KAM/Diophantine.lean",
+      "imports": [],
+      "bytes": 16756,
+      "git_blob": "3845aed45499b5166c864320d2303ef25d48af80"
+    },
+    "PlasmaLean.Design.KamFlowFrame": {
+      "path": "PlasmaLean/Design/KamFlowFrame.lean",
+      "imports": [
+        "PlasmaLean.Design.KamFlowField"
+      ],
+      "bytes": 33773,
+      "git_blob": "63ff3032e4668960eca5373515ac41a5a8537b20"
+    },
+    "PlasmaLean.Design.DommaschkKamPoly": {
+      "path": "PlasmaLean/Design/DommaschkKamPoly.lean",
+      "imports": [
+        "PlasmaLean.Design.KamFlowField",
+        "PlasmaLean.Certificates.KernelFact"
+      ],
+      "bytes": 19228,
+      "git_blob": "1d0f91b119c94e9b80115187af1497422ce9e408"
+    },
+    "PlasmaLean.Theory.Kinetic.FullOrbit": {
+      "path": "PlasmaLean/Theory/Kinetic/FullOrbit.lean",
+      "imports": [
+        "PlasmaLean.Theory.Fields.BiotSavart"
+      ],
+      "bytes": 12115,
+      "git_blob": "268fde147544250e1fdbe98a5d9145909c3ca676"
+    },
+    "PlasmaLean.Design.KamFlowField": {
+      "path": "PlasmaLean/Design/KamFlowField.lean",
+      "imports": [
+        "PlasmaLean.Theory.KAM.StripEval"
+      ],
+      "bytes": 20539,
+      "git_blob": "6d6aefa68bac23884b4da15cda1c916ef53fe9d6"
+    },
+    "PlasmaLean.Design.KamTorusASurrogate": {
+      "path": "PlasmaLean/Design/KamTorusASurrogate.lean",
+      "imports": [
+        "PlasmaLean.Design.KamTorusASurrogateCheck",
+        "PlasmaLean.Design.KamTorusATwist",
+        "PlasmaLean.Design.KamTorusAStrip"
+      ],
+      "bytes": 47771,
+      "git_blob": "7067e4d9c78aa55edaaa567f6aabe44065ffedc4"
+    },
+    "PlasmaLean.Design.KamTorusA": {
+      "path": "PlasmaLean/Design/KamTorusA.lean",
+      "imports": [
+        "PlasmaLean.Design.KamTorusACheck",
+        "PlasmaLean.Theory.Fields.TorusTrapping"
+      ],
+      "bytes": 48141,
+      "git_blob": "c7904b4baf5d305737a29e8ca55da7191a794d57"
+    },
+    "PlasmaLean.Theory.Fields.InverseCube": {
+      "path": "PlasmaLean/Theory/Fields/InverseCube.lean",
+      "imports": [
+        "PlasmaLean.Theory.Fields.BiotSavart"
+      ],
+      "bytes": 3983,
+      "git_blob": "904ac9999fc118bf879a21c9914b8c1930bab181"
+    },
+    "PlasmaLean.Design.KamNewtonStep": {
+      "path": "PlasmaLean/Design/KamNewtonStep.lean",
+      "imports": [
+        "PlasmaLean.Design.KamFlowStep",
+        "PlasmaLean.Design.KamNewtonFrame"
+      ],
+      "bytes": 2631,
+      "git_blob": "d3ba7d7e652ced03f08e3f9cf7973a67563f4862"
+    },
+    "PlasmaLean.Design.KamTorusACheck": {
+      "path": "PlasmaLean/Design/KamTorusACheck.lean",
+      "imports": [
+        "PlasmaLean.Design.KamTorusAForms"
+      ],
+      "bytes": 4958,
+      "git_blob": "b06d85b7a9d7f1e65b2a1692f9753042ae3d32c5"
+    },
+    "PlasmaLean.Design.KamTorusATwist": {
+      "path": "PlasmaLean/Design/KamTorusATwist.lean",
+      "imports": [
+        "PlasmaLean.Design.KamTorusAFrame"
+      ],
+      "bytes": 37547,
+      "git_blob": "c4f7965eb1e4cc4d28bdd414e0c74b9af6e12904"
+    },
+    "PlasmaLean.Design.KamTorusAStrip": {
+      "path": "PlasmaLean/Design/KamTorusAStrip.lean",
+      "imports": [
+        "PlasmaLean.Design.KamNewtonField",
+        "PlasmaLean.Design.KamTorusAWeighted"
+      ],
+      "bytes": 14243,
+      "git_blob": "e585c81aaf58ea23274decd2eecf9c1b0865b4b2"
+    },
+    "PlasmaLean.Design.KamTorusASurrogateCheck": {
+      "path": "PlasmaLean/Design/KamTorusASurrogateCheck.lean",
+      "imports": [
+        "PlasmaLean.Design.KamTorusASurrogateData",
+        "PlasmaLean.Design.KamTorusAFrameCheck",
+        "PlasmaLean.Design.KamTorusAWeightedCheck"
+      ],
+      "bytes": 10557,
+      "git_blob": "7c3e6e1aa18e470e2bdfd9b93a0fe98491330c4a"
+    },
+    "PlasmaLean.Design.DommaschkKamCAdmTrees": {
+      "path": "PlasmaLean/Design/DommaschkKamCAdmTrees.lean",
+      "imports": [
+        "PlasmaLean.Design.DommaschkKamCAdmEnv"
+      ],
+      "bytes": 37436,
+      "git_blob": "d19893035102ab03548e4809be79be9bdb228b70"
+    },
+    "PlasmaLean.Design.DommaschkKamAAdmData3": {
+      "path": "PlasmaLean/Design/DommaschkKamAAdmData3.lean",
+      "imports": [],
+      "bytes": 692606,
+      "git_blob": "4b149f8e2589416ab8731ef3ea0d147c939a30ff"
+    },
+    "PlasmaLean.Design.DommaschkKamAAdmData2": {
+      "path": "PlasmaLean/Design/DommaschkKamAAdmData2.lean",
+      "imports": [],
+      "bytes": 699592,
+      "git_blob": "3e9f18b2dec652a3a6e7bf752b7cf170f8bbce6e"
+    },
+    "PlasmaLean.Design.DommaschkKamAAdmData7": {
+      "path": "PlasmaLean/Design/DommaschkKamAAdmData7.lean",
+      "imports": [],
+      "bytes": 852504,
+      "git_blob": "58910fc2a7ca75e3feef814c7aea2b7013eba4f6"
+    },
+    "PlasmaLean.Design.DommaschkKamANestData": {
+      "path": "PlasmaLean/Design/DommaschkKamANestData.lean",
+      "imports": [],
+      "bytes": 728598,
+      "git_blob": "c9619fdf1ba3201337b7e3e23d758f9caaebdc01"
+    },
+    "PlasmaLean.Design.DommaschkKamAAdmData1": {
+      "path": "PlasmaLean/Design/DommaschkKamAAdmData1.lean",
+      "imports": [],
+      "bytes": 805734,
+      "git_blob": "6d2eb1a815f74c3a8282ddf3d5594ab26ee5aa93"
+    },
+    "PlasmaLean.Design.DommaschkKamAAdmData6": {
+      "path": "PlasmaLean/Design/DommaschkKamAAdmData6.lean",
+      "imports": [],
+      "bytes": 859991,
+      "git_blob": "d5a2559b95b810db28b4f99dd815e09144b81bc6"
+    },
+    "PlasmaLean.Design.DommaschkKamAAdmData8": {
+      "path": "PlasmaLean/Design/DommaschkKamAAdmData8.lean",
+      "imports": [],
+      "bytes": 663616,
+      "git_blob": "3dc878fcd8386f7b2f9c194234e1e98c74b0e9f2"
+    },
+    "PlasmaLean.Design.DommaschkKamAAdmData5": {
+      "path": "PlasmaLean/Design/DommaschkKamAAdmData5.lean",
+      "imports": [],
+      "bytes": 866389,
+      "git_blob": "094a5244fba446948563202a979a18f5d309dd80"
+    },
+    "PlasmaLean.Design.DommaschkKamAAdmData4": {
+      "path": "PlasmaLean/Design/DommaschkKamAAdmData4.lean",
+      "imports": [],
+      "bytes": 735610,
+      "git_blob": "e87fb9850d794739c10ca989cc5fa253a1ef3e90"
+    },
+    "PlasmaLean.Theory.KAM.Composition": {
+      "path": "PlasmaLean/Theory/KAM/Composition.lean",
+      "imports": [
+        "PlasmaLean.Theory.KAM.WeightedEll1Z2"
+      ],
+      "bytes": 22985,
+      "git_blob": "2c7920839935bfb4ea23d3cc58c5eeb15f500e6e"
+    },
+    "PlasmaLean.Theory.Fields.TorusTrapping": {
+      "path": "PlasmaLean/Theory/Fields/TorusTrapping.lean",
+      "imports": [
+        "PlasmaLean.Theory.Fields.InvariantBarrier",
+        "PlasmaLean.Design.RationalStellarator"
+      ],
+      "bytes": 25750,
+      "git_blob": "bb130d8207585cde9ade643871eb64139f753ee2"
+    },
+    "PlasmaLean.Design.KamTorusAWeighted": {
+      "path": "PlasmaLean/Design/KamTorusAWeighted.lean",
+      "imports": [
+        "PlasmaLean.Design.KamTorusA",
+        "PlasmaLean.Design.KamTorusAWeightedCheck"
+      ],
+      "bytes": 31495,
+      "git_blob": "9d2652d2ae434789cbbecd684bccec3d36f7fd84"
+    },
+    "PlasmaLean.Design.KamTorusAFrameCheck": {
+      "path": "PlasmaLean/Design/KamTorusAFrameCheck.lean",
+      "imports": [
+        "PlasmaLean.Design.KamTorusAFrameData",
+        "PlasmaLean.Design.KamTorusAForms"
+      ],
+      "bytes": 9779,
+      "git_blob": "b59a6a9460af004ddc31a5b92ab3fae174723176"
+    },
+    "PlasmaLean.Theory.Fields.InvariantBarrier": {
+      "path": "PlasmaLean/Theory/Fields/InvariantBarrier.lean",
+      "imports": [
+        "PlasmaLean.Theory.Fields.FirstIntegral"
+      ],
+      "bytes": 18245,
+      "git_blob": "ce0532d8aef0bfbafcd3b74d816138891d2ad8ce"
+    },
+    "PlasmaLean.Design.KamTorusAWeightedCheck": {
+      "path": "PlasmaLean/Design/KamTorusAWeightedCheck.lean",
+      "imports": [
+        "PlasmaLean.Design.KamTorusACheck",
+        "PlasmaLean.Certificates.Kronecker2DWeighted",
+        "PlasmaLean.Certificates.EvalCert",
+        "PlasmaLean.Certificates.KronProof2D"
+      ],
+      "bytes": 7762,
+      "git_blob": "469a8296083ebe7d2469304838e6b037948e7331"
+    },
+    "PlasmaLean.Design.KamTorusAForms": {
+      "path": "PlasmaLean/Design/KamTorusAForms.lean",
+      "imports": [
+        "PlasmaLean.Certificates.Kronecker2D",
+        "PlasmaLean.Design.KamTorusAData"
+      ],
+      "bytes": 20527,
+      "git_blob": "b1ea40cfb99d9b4a7eb70fd50dd417ec95968022"
+    },
+    "PlasmaLean.Design.KamTorusAFrame": {
+      "path": "PlasmaLean/Design/KamTorusAFrame.lean",
+      "imports": [
+        "PlasmaLean.Design.KamTorusA",
+        "PlasmaLean.Design.KamTorusAFrameCheck"
+      ],
+      "bytes": 22993,
+      "git_blob": "c05323af9938c20aaabca43148677ef5669ee54b"
+    },
+    "PlasmaLean.Design.KamTorusASurrogateData": {
+      "path": "PlasmaLean/Design/KamTorusASurrogateData.lean",
+      "imports": [
+        "PlasmaLean.Certificates.KronExpr"
+      ],
+      "bytes": 18887,
+      "git_blob": "94376101436c72d9ca6ff9460b0988b98862766c"
+    },
+    "PlasmaLean.Theory.KAM.WeightedEll1Z2": {
+      "path": "PlasmaLean/Theory/KAM/WeightedEll1Z2.lean",
+      "imports": [
+        "PlasmaLean.Theory.KAM.Cohomological"
+      ],
+      "bytes": 39023,
+      "git_blob": "d7071040b98dc98af28016f57541eb1a98f1cd25"
+    },
+    "PlasmaLean.Design.KamNewtonFrame": {
+      "path": "PlasmaLean/Design/KamNewtonFrame.lean",
+      "imports": [
+        "PlasmaLean.Design.KamFlowFrame",
+        "PlasmaLean.Design.KamNewtonField"
+      ],
+      "bytes": 2123,
+      "git_blob": "eacffff29e872467ce28161ee64434e74eebcab9"
+    },
+    "PlasmaLean.Certificates.EvalCert": {
+      "path": "PlasmaLean/Certificates/EvalCert.lean",
+      "imports": [
+        "PlasmaLeanMeta.EvalCert"
+      ],
+      "bytes": 11245,
+      "git_blob": "49a999115da11fb72cf08d7c73f3843f984f70c6"
+    },
+    "PlasmaLean.Design.KamTorusAFrameData": {
+      "path": "PlasmaLean/Design/KamTorusAFrameData.lean",
+      "imports": [
+        "PlasmaLean.Certificates.KronExpr",
+        "PlasmaLean.Design.KamTorusAData"
+      ],
+      "bytes": 12105,
+      "git_blob": "eecfb4d409be9dea00be5fa3f54ae8a59750a3f4"
+    },
+    "PlasmaLean.Design.KamTorusAData": {
+      "path": "PlasmaLean/Design/KamTorusAData.lean",
+      "imports": [],
+      "bytes": 73778,
+      "git_blob": "c598a1d429e6298d58279bf8c5d6b2a75d703d4d"
+    },
+    "PlasmaLeanMeta.EvalCert": {
+      "path": "PlasmaLeanMeta/EvalCert.lean",
+      "imports": [],
+      "bytes": 41456,
+      "git_blob": "c77948a4d44d9a8514663225434b3a1421499f36"
+    }
+  },
+  "errors": {},
+  "Lean_rebuilt": false
+}

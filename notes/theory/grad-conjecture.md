@@ -15,7 +15,7 @@
 | Status | Q-17 formalized for family 1 (30 October 2026); plane reflections, solid-torus topology of the domain and family 2 open |
 | Lean evidence | `PlasmaLean.Design.LandremanGradCounterexample.family1_grad_counterexample` (default build, zero warnings, standard axioms); family 2: force balance, invariant surfaces, non-axisymmetry only |
 | Audit evidence | not audited |
-| Last updated | 30 October 2026: created from a literature search; Q-17 Lean statement for family 1 added. 16 November 2026: pointers to N-43 and two later papers (no change to claims) |
+| Last updated | 30 October 2026: created from a literature search; Q-17 Lean statement for family 1 added. 16 November 2026: pointers to N-47 and two later papers (no change to claims) |
 
 ## Purpose and scope
 
@@ -55,7 +55,7 @@ full texts (marked "unverified" where it matters).
   equilibria with nested surfaces sustained by a small force; quasisymmetry in a volume open.
 - **[IJLCT]** O. Issan, L. José, M. Landreman, J. Citrin, B. Tracey, *Non-axisymmetric MHD
   equilibria with an arbitrary number of field periods*, arXiv:2611.07672 (5 November 2026):
-  closed forms for every N ≥ 1 with closed field lines, ι = 0 or ±N; assessed in N-43
+  closed forms for every N ≥ 1 with closed field lines, ι = 0 or ±N; assessed in N-47
   (`issan-arbitrary-field-periods.md`). Added 16 November 2026.
 - Leads found on 16 November 2026, not read: arXiv:2611.16688 (an analytic toroidal equilibrium
   with trivial Euclidean symmetry group), arXiv:2611.10786 (exact anisotropic equilibria with

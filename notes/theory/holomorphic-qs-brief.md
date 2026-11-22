@@ -169,3 +169,5 @@ axis and no other critical points. That is the Q-24 standard, not the design cri
   form of the question; directions D–F recorded as speculative.
 - N-21: the KYM and holomorphic-generator routes are closed by Propositions 5.1–5.2.
 - N-27 / Q-16: the moment identity Ψ' = Mι − N recorded as support for the ratio criterion.
+
+**Pointer (20 November 2026):** N-42 (S-13) gives the anti-self-dual lift `β − α∧dt` (orientation `dx dy dz dt`, consistent with N-37) as an Abelian Hermitian–Yang–Mills connection on `Ω × S¹`. It observes that the bundle is not algebraic (`Pic((ℂ*)²) = 0`), whereas the field one-form on the threefold `(ℂ*)² × ℂ` is algebraic. It also gives the null-conic construction of all harmonic polynomials.

@@ -22,6 +22,12 @@ laptop may use 12 GB of Lean memory at a time, with heavy modules built alone an
 modules at once). The last one multiplies the workstation CPU time: set it, for example, to 1.5
 if the workstation cores are faster than the laptop's.
 
+The task server `theory_server` (skill `plasmalean-ensure-theory-server`, used by evolutionary
+searches) holds about 9.3 GB resident while it runs, about 7 GB of it memory-mapped `.olean`
+files; it counts against the laptop's 12 GB. Long searches can run on the workstation with the same
+scripts (`scripts/theory_server/ensure_server.sh`, `scripts/evolve/evolve.py`), with the run
+folder committed on the workstation branch like any other result.
+
 ## Requirements on the workstation
 
 - Linux or macOS, with `bash`, `git` and `python3` ≥ 3.10 (with `venv`/`pip`).

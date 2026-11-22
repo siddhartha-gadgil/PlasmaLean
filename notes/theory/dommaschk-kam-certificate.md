@@ -689,3 +689,4 @@ Items 6–10 and the residual chain are done:
 All modules are on demand, build on the laptop and use standard axioms. Every Lean process stays
 ≤ 5.4 GB.
 
+**Pointer (20 November 2026):** N-42 confirms the constants used by an outside reader (`dkIotaA`, `dkIotaC`, `tauC` = 6997/500 and 141623/10⁴, `AdmBoundsG.hτ`). It records Theorem 4 of the source: the certified twist makes tori A and C robust under small harmonic perturbations (Q-32). Q-31 asks for the toroidal interface sign test of N-44 on torus A. Audit item AF-1: `FieldTorus` and `NestedTori` do not assert embeddedness, and the source sketches why these tori are embedded.

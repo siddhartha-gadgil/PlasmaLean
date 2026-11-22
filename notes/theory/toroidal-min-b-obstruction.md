@@ -155,3 +155,5 @@ conjecture. It is not a theorem.
 
 Design implication: maximum-J candidates (M4) should be checked for **κ = 0 at every B_min point of the
 axis**. A near-axis QS candidate should not be advertised as maximum-J (Theorem E).
+
+**Pointer (20 November 2026):** N-42 (claims S-14, S-15, S-32) adds three vacuum facts: a subharmonic log-determinant of `I + ∇B/λ`; no nonzero tangent vacuum field has constant `|B|` on `∂Ω` (Hopf lemma plus a convexity comparison); and a vacuum field of constant `|B|` is constant. The last is a short lean-ready corollary of `laplacian_normSqField`.

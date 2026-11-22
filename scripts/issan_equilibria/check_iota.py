@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Rotational transform and on-axis field strength of the equilibria of arXiv:2611.07672
-(untrusted numerics for note N-43; see check_equilibria.py for the formulas).
+(untrusted numerics for note N-47; see check_equilibria.py for the formulas).
 
 Every field line is the closed curve zeta -> x(rho, zeta, eta). Its number of poloidal turns
 around the magnetic axis per toroidal turn is the Gauss linking number of the line with the axis

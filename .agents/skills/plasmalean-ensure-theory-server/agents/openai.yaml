@@ -1,0 +1,4 @@
+interface:
+  display_name: "Ensure the task server"
+  short_description: "Start the PlasmaLean task server if it is not running"
+  default_prompt: "Use $plasmalean-ensure-theory-server to make sure the task server is ready."

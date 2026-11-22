@@ -1,6 +1,6 @@
 # Checks of the closed-form equilibria of arXiv:2611.07672
 
-Untrusted numerics for note N-43 (`notes/theory/issan-arbitrary-field-periods.md`), source
+Untrusted numerics for note N-47 (`notes/theory/issan-arbitrary-field-periods.md`), source
 `sources/Non-AxisymmetricMHD.pdf`. Nothing here is a proof and nothing is emitted to Lean.
 
 ```bash

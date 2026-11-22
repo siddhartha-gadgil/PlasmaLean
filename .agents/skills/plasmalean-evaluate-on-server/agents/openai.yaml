@@ -1,0 +1,4 @@
+interface:
+  display_name: "Evaluate on the server"
+  short_description: "Evaluate Lean terms, optionally after defining functions"
+  default_prompt: "Use $plasmalean-evaluate-on-server to evaluate this term."

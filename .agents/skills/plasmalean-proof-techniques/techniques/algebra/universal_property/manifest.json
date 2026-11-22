@@ -1,0 +1,6 @@
+{
+  "name": "Universal Property Arguments",
+  "area": "Algebra/Category Theory",
+  "keywords": ["universal property", "category theory", "product", "coproduct", "quotient", "tensor product", "free object", "adjunction", "limit", "colimit"],
+  "path": "techniques/algebra/universal_property/TECHNIQUE.md"
+}

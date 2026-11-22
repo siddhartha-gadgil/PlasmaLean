@@ -323,6 +323,10 @@ public import PlasmaLean.Design.DommaschkKamCQSData
 public import PlasmaLean.Design.DommaschkKamCQSPoly
 public import PlasmaLean.Design.QSJetExample
 public import PlasmaLean.Design.RationalStellaratorJetObstruction
+-- Task handlers for the `theory_loop` and `theory_server` executables (`@[response]` tasks).
+public import PlasmaLean.ResponseExt
+public import PlasmaLean.Elaborate
+public import PlasmaLean.TaskHandlers
 
 /-!
 # PlasmaLean public library

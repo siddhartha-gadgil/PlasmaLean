@@ -1,0 +1,6 @@
+{
+  "name": "Composition of contracts on a common witness",
+  "area": "Plasma physics",
+  "keywords": ["composition", "design contract", "common witness", "equilibrium", "stability", "transport", "components", "robust design", "branch", "uncertainty set", "bridge"],
+  "path": "techniques/plasma/contract_composition/TECHNIQUE.md"
+}

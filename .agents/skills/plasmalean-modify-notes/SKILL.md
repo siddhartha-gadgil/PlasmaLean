@@ -97,6 +97,10 @@ Readers and agents resolve a note as the original plus its patches in ID order. 
 than about three patches should get a consolidation note: a new note that states the combined
 current content and supersedes the original and its patches. The old files remain as the record.
 
+When the discussion produced a reasoning task folder under `notes/reasoning/` (from
+`plasmalean-try-to-prove` or `plasmalean-explore-mathematics`), link the folder from the new or
+edited note and summarize its outcome and evidence state, rather than copying its artifacts.
+
 ## 4. Register, cross-link and publish
 
 For every new note and every in-place edit, follow `plasmalean-add-note` §3–§4:

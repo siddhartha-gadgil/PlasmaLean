@@ -14,7 +14,7 @@ public import Mathlib.Analysis.Calculus.MeanValue
 
 Source: D. Sullivan, *3D incompressible fluids: combinatorial models, eigenspace models, and a
 conjecture about well-posedness of the 3D zero viscosity limit*, J. Differential Geom. 97 (2014)
-141–148, Part 2 (note N-42).
+141–148, Part 2 (note N-46).
 
 Sullivan calls a quadratic ODE `ẋ = Q(x)` on a real inner product space *Eulerian* if there are
 a self-adjoint operator `D` and a totally skew-symmetric trilinear form `{ , , }` with

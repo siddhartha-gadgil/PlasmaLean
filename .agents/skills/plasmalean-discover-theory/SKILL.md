@@ -17,10 +17,18 @@ Useful targets include completing squares in the MHD energy, identifying the cor
 
 ## Run the discovery loop
 
+For a structured attempt on one precise claim or one open question, run `plasmalean-reasoning-loop`
+(through `plasmalean-try-to-prove` or `plasmalean-explore-mathematics`). It provides detailed
+phases for deconstruction, strategy with `plasmalean-proof-techniques`, execution with recursive
+sub-lemmas, verification, metacognition, conjecture stress tests and
+`plasmalean-examples-counterexamples`, and keeps its artifacts in a task folder under
+`notes/reasoning/`. The steps below are the plasma-specific checklist that such an attempt must
+still satisfy.
+
 1. Formulate the proposed theorem with all constants and hypotheses.
 2. Look up the closest primary literature and its limitations. Record novelty as provisional until the search and source comparison are complete.
 3. Seek a proof using algebraic rearrangement, conservation, symmetry, comparison, compactness, variational arguments, perturbation theory, or validated computation.
-4. Independently seek counterexamples: zero modes, resonances, vanishing field, near-axis singularities, boundary displacement, large gradients, omitted Fourier modes, degraded materials, and adversarial uncertainty corners.
+4. Independently seek counterexamples (`plasmalean-examples-counterexamples`): zero modes, resonances, vanishing field, near-axis singularities, boundary displacement, large gradients, omitted Fourier modes, degraded materials, and adversarial uncertainty corners.
 5. Check an experimental counterexample against the exact definitions. A floating-point failure is evidence to investigate; an exact witness refutes the statement.
 6. If refuted, repair the claim by a physically interpretable hypothesis or narrower conclusion. Record why the change is necessary.
 7. Prove the repaired theorem and test its useful special cases. Formalize it with `plasmalean-formalize-theory` when the argument and prerequisites are ready; otherwise create the next research note or record a clearly stated obstruction. Repeat until a meaningful theorem or obstruction remains.

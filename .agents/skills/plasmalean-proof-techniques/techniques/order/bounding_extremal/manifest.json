@@ -1,0 +1,6 @@
+{
+  "name": "Bounding, Monotonicity, and Extremal Objects",
+  "area": "Order/Analysis/Combinatorics",
+  "keywords": ["bounds", "monotonicity", "squeeze", "comparison", "maximal", "minimal", "extremal", "shortest path"],
+  "path": "techniques/order/bounding_extremal/TECHNIQUE.md"
+}

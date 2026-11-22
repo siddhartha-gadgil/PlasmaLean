@@ -45,7 +45,9 @@ Prioritize the kernel (`PlasmaLean/Kernel/`: `Equilibrium`, `Slab`, `ThermalSlab
    0`); hidden classical choices; missing bounds; wrong quantifier order (`∀ parameter, ∃ state`
    versus `∃ state, ∀ parameter`); unit or normalization errors (SI versus model units, Fourier and
    flux conventions, current orientation); accidental weakening; a hypothesis equivalent to the
-   conclusion inside a law bundle.
+   conclusion inside a law bundle. Construct the witnesses explicitly with
+   `plasmalean-examples-counterexamples`: an object satisfying a contract that should fail it, or
+   a degenerate object that makes a law vacuous, is a finding.
 4. **Statements match claims.** Check that exported theorems state the advertised model, domain,
    regularity, boundary conditions, norm, parameter range and time horizon, and whether solutions
    are constructed or supplied (for example `solovev_one_plasma_actual` supplies the transport
@@ -63,6 +65,11 @@ Prioritize the kernel (`PlasmaLean/Kernel/`: `Equilibrium`, `Slab`, `ThermalSlab
    `scripts/check_axioms_heavy.lean` for on-demand top modules that are built. On-demand modules
    follow the workstation policy (spot-checked; `workstation/REVIEWED.md`). Record exactly what
    ran, failures, warnings and resource limitations; do not claim a check that did not run.
+   Check that the root module of every `[[lean_lib]]` in `lakefile.toml` reaches the task
+   executables: `theory_loop.lean` and `theory_server.lean` import `PlasmaLean.TaskHandlers` at
+   the top (so building them never rebuilds the library) and list `PlasmaLean` in their
+   `importModules` calls (`PlasmaLeanMeta` reaches them through `PlasmaLean`); a further library
+   must be added to both `importModules` lists. Record a missing library as a finding and fix it.
 7. **Audit record.** Record findings by severity, corrections, affected downstream results and
    the audited commit in the strict-audit table of `notes/implementation-plan.md`. An unresolved
    kernel finding blocks claims that depend on it.
@@ -76,7 +83,9 @@ After any kernel correction, re-run its sanity suite and re-audit all dependent 
    instances as hypotheses; never add a project axiom or an unproved universal instance.
 3. Keep source-dependent material data and model-validity envelopes separate from mathematical
    consequences.
-4. Prove sanity checks in `Sanity` and derived results in `Theory`.
+4. Prove sanity checks in `Sanity` and derived results in `Theory`. A new `[[lean_lib]]` must
+   also be added to the task executables (`theory_loop.lean`, `theory_server.lean`; see
+   `plasmalean-lean-proofs`).
 5. Put coefficient decoding, interval checkers and candidate importers in `Certificates` or
    `Bridge`; keep heuristic solvers and oracles (`scripts/`) outside the trusted theorem path.
 
@@ -157,7 +166,10 @@ magnetic axis, `R = 0`, vanishing `|B|`), boundary behaviour (degenerate axis, e
 data), symmetry or equivariance, conservation or monotonicity, dimensional scaling, parameter
 endpoints, quantifier order, nonempty domains, or another independent characterization. Expect more
 than one when the law has several hazards; never stop because a quota is met. **Add a compiled
-regression theorem for every defect found during an audit.**
+regression theorem for every defect found during an audit.** Use
+`plasmalean-examples-counterexamples` to find the degenerate case, instance, counterexample and
+adversarial witnesses; when a needed sanity theorem is mathematically non-trivial, work it out
+with `plasmalean-try-to-prove` before writing the Lean proof.
 
 For each new definition also prove characterizing properties and a meaningful limiting case. For
 each certificate format, an accepted and a rejected fixture. Diagnose inconsistent or vacuous

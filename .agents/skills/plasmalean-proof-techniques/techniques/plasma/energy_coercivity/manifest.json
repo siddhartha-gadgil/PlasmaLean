@@ -1,0 +1,6 @@
+{
+  "name": "Energy principle and coercivity",
+  "area": "Plasma physics",
+  "keywords": ["energy principle", "delta W", "quadratic form", "coercivity", "completing the square", "Hardy", "Picone", "Barta", "Suydam", "Newcomb", "Mercier", "ballooning", "neutral mode", "stability"],
+  "path": "techniques/plasma/energy_coercivity/TECHNIQUE.md"
+}

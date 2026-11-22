@@ -4,7 +4,7 @@
 
 | Field | Value |
 | --- | --- |
-| ID | `N-43` |
+| ID | `N-47` |
 | Title | Assessment of "Non-axisymmetric MHD equilibria with an arbitrary number of field periods" (Issan, José, Landreman, Citrin, Tracey) |
 | Kind | source synthesis (source assessment) |
 | Addresses | `G-4`, `Q-17`, `Q-18`, `Q-20`; contract clauses C1–C5 as a test |
@@ -19,10 +19,10 @@
 
 ## Purpose and scope
 
-The user asked (16 November 2026) for the same kind of assessment as N-42 for
+The user asked (16 November 2026) for the same kind of assessment as N-46 for
 `sources/Non-AxisymmetricMHD.pdf`: O. Issan, L. José, M. Landreman, J. Citrin, B. Tracey,
 *Non-axisymmetric MHD equilibria with an arbitrary number of field periods*, arXiv:2611.07672v1
-(18 pages). Questions carried over from N-42: what the paper gives, whether its solutions meet
+(18 pages). Questions carried over from N-46: what the paper gives, whether its solutions meet
 the five contract clauses C1–C5, and whether there is a gain for the project's numerics and
 formal work. All statements about the paper refer to v1 of a preprint that is not peer reviewed.
 

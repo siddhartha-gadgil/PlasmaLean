@@ -1,0 +1,501 @@
+\section{A full positive energy calculation in a cylindrical benchmark}
+
+The following calculation signs the entire ideal-MHD quadratic energy,
+including the interface curvature term.  It is a benchmark on a periodic
+Euclidean cylinder, not a claim that a periodic cylinder is an embedded
+stellarator in three-dimensional Euclidean space.  Its useful feature is
+that the estimates are uniform in the axial period.
+
+Let the plasma occupy the solid periodic cylinder (including its axis,
+where all fields and displacements are required to be smooth)
+\[
+ r<a,\qquad \theta\in\mathbb R/(2\pi\mathbb Z),
+ \qquad z\in\mathbb R/(L\mathbb Z),
+\]
+and let the vacuum occupy $a<r<b$.  The outer surface $r=b$ is fixed and
+perfectly conducting.  Take the equilibrium fields
+\[
+ Y=B_i e_z,\qquad
+ X=B_e e_z+B_\theta\frac{a}{r}e_\theta,
+ \qquad B_i>0.
+\]
+Both fields are curl-free and divergence-free in their respective open
+regions.  The plasma pressure and density are positive constants.  The
+interface has the surface current required by the jump of the tangential
+magnetic field.  Force balance is
+\[
+ p=\frac{B_e^2+B_\theta^2-B_i^2}{2\mu_0}.
+\]
+
+We use the lossless ideal-MHD energy principle.  In particular, the outer
+wall is passive, there is no work from a perturbed external power supply,
+and the magnetic fluxes through the independent material cuts are fixed.
+One convenient complete choice fixes the plasma axial flux, the vacuum
+axial flux, and the vacuum azimuthal flux.  The last two conditions specify
+the harmonic parts of the vacuum perturbation.  The condition that the
+outer wall is fixed is not, by itself, a specification of these harmonic
+parts.  The calculations below also remain lower bounds if additional
+admissible harmonic vacuum perturbations are retained: their magnetic
+energy is nonnegative and orthogonal to the gradient part.
+
+Write $\eta=\xi\cdot e_r$ for the interface displacement and
+\[
+ Q=\nabla\times(\xi\times Y)
+\]
+for the plasma magnetic perturbation.  If $b_v$ is the vacuum magnetic
+perturbation, the complete quadratic energy is
+\[
+\begin{split}
+2\delta W={}&
+ \int_{r<a}\left(\frac{|Q|^2}{\mu_0}
+       +\gamma p\,|\operatorname{div}\xi|^2\right)\,dx
+ +\frac{1}{\mu_0}\int_{a<r<b}|b_v|^2\,dx
+ -\frac{B_\theta^2}{\mu_0 a}\int_{r=a}|\eta|^2\,dS.
+\end{split}
+\]
+Here $\gamma>1$ is the adiabatic exponent.  In particular, the negative
+surface term has not been omitted.  Its coefficient follows from
+\[
+ C=\frac{\mathrm{II}(Y,Y)-\mathrm{II}(X,X)}{\mu_0}
+   =-\frac{B_\theta^2}{\mu_0a},
+\]
+where $\mathrm{II}(v,w)=v\cdot\nabla_w n$ and $n=e_r$.
+
+\subsection{Exact mode minimization}
+
+Expand
+\[
+ \eta(\theta,z)=\sum_{m,n\in\mathbb Z}
+       \eta_{mn}\exp(i m\theta+i k_nz),
+ \qquad k_n=\frac{2\pi n}{L}.
+\]
+The normalization is
+\[
+ \frac{1}{2\pi aL}\int_{r=a}|\eta|^2\,dS
+   =\sum_{m,n}|\eta_{mn}|^2.
+\]
+Put $\kappa=a|k|$.  Derivatives of $I_m$ and $K_m$ below mean derivatives
+with respect to their arguments.
+
+First suppose $k\ne0$, and replace $m$ by $|m|$ when defining the radial
+functions.  If $w$ is the transverse part of $\xi$, then
+\[
+ Q_\perp=i kB_iw,\qquad Q_z=-B_i\operatorname{div}_\perp w.
+\]
+Consequently
+\[
+ \int |Q|^2\,dx
+  =B_i^2\int\left(k^2|w|^2+
+                         |\operatorname{div}_\perp w|^2\right)\,dx.
+\]
+The minimum for prescribed $w\cdot e_r=\eta$ is attained by
+$w=\nabla_\perp\chi$, where
+\[
+ (\Delta_\perp-k^2)\chi=0,
+ \qquad \partial_r\chi(a)=\eta.
+\]
+Indeed, writing $w=\nabla_\perp\chi+v$ with $v\cdot e_r=0$, the cross term
+vanishes by integration by parts.  The minimizing longitudinal
+displacement is $\xi_z=i k\chi$, which gives
+$\operatorname{div}\xi=0$.  Thus dropping the positive compressibility
+term loses nothing for these nonzero-$k$ modes.  The plasma contribution
+per unit interface area and per $|\eta|^2$ is
+\[
+ \frac{B_i^2}{\mu_0a}
+       \frac{\kappa I_m(\kappa)}{I_m'(\kappa)}.
+\]
+
+At the inner boundary the vacuum condition is
+\[
+ b_v\cdot e_r=\operatorname{div}_{\Sigma}(\eta X)
+       =i\left(kB_e+\frac{mB_\theta}{a}\right)\eta,
+\]
+and $b_v\cdot e_r=0$ at $r=b$.  For a nonconstant Fourier mode, the vacuum
+perturbation is the gradient of a single-valued harmonic potential.  Let
+$N_{\rm out}(m,k)>0$ be its Neumann impedance, so that its energy per unit
+inner-boundary area is
+\[
+ N_{\rm out}(m,k)
+       \left|kB_e+\frac{mB_\theta}{a}\right|^2|\eta|^2.
+\]
+Set $n_{\rm out}=N_{\rm out}/a$.  The exact minimized coefficient is
+\[
+ \frac{2\delta W_{mn}}
+      {(2\pi aL)|\eta_{mn}|^2}
+ =\frac{B_i^2}{\mu_0a}\,F_{mn},
+\]
+where, for $k\ne0$,
+\[
+ F_{mn}=
+ \frac{\kappa I_m(\kappa)}{I_m'(\kappa)}
+ +\left(\frac{k aB_e+mB_\theta}{B_i}\right)^2 n_{\rm out}
+ -\frac{B_\theta^2}{B_i^2}.
+\]
+For arbitrary plasma displacements the right side is a lower bound;
+the omitted difference is nonnegative.
+
+For $k=0$ and $m\ne0$, a transverse divergence-free displacement gives
+zero plasma magnetic and compression energy.  Direct solution of the
+vacuum problem gives
+\[
+ N_{\rm out}(m,0)=\frac{a}{|m|}
+        \coth\left(|m|\log\frac ba\right),
+\]
+and hence
+\[
+ F_{m0}=\frac{B_\theta^2}{B_i^2}
+     \left(|m|\coth\left(|m|\log\frac ba\right)-1\right)>0.
+\]
+In an unbounded exterior this becomes
+$(|m|-1)B_\theta^2/B_i^2$: the negative curvature term cancels exactly
+for a rigid transverse translation, $|m|=1$.  Thus a negative curvature
+coefficient alone is not an instability proof.  The fixed close wall
+removes this particular zero mode.
+
+\subsection{An exact unstable branch, even with a close wall}
+
+The choice of pressure-lifting direction matters.  Suppose $B_e\ge B_i$
+and $B_\theta\ne0$.  For $m=1$, choose
+\[
+ k=-\frac{B_\theta}{aB_e}.
+\]
+The vacuum normal perturbation then vanishes identically, independently
+of the wall distance.  With $\kappa=|B_\theta|/B_e$, the identity
+$\kappa I_1'=I_1+\kappa I_2$ gives
+\[
+ \frac{\kappa I_1}{I_1'}<\kappa^2.
+\]
+Consequently the exact energy coefficient is strictly less than
+\[
+ \frac{B_\theta^2}{B_e^2}
+       -\frac{B_\theta^2}{B_i^2}\le0.
+\]
+This is a genuine negative-energy mode whenever the indicated $k$ is
+allowed by the axial period.  By continuity, every sufficiently long
+period admits a nearby unstable mode.  Thus positive pressure,
+noncollinearity, and a close wall do not stabilize arbitrary choices
+of the two tangential fields.  The stable family below uses a slightly
+smaller exterior axial field, while keeping the total exterior magnetic
+pressure larger than the interior value.
+
+\subsection{A low-pressure, all-mode stability window}
+
+Here is one explicit sufficient window.  Choose
+\[
+ 0<s\le\frac14,\qquad
+ B_\theta^2=sB_i^2,\qquad
+ B_e^2=\left(1-\frac{3s}{4}\right)B_i^2.
+\]
+Both axial fields are nonzero, and
+\[
+ p=\frac{sB_i^2}{8\mu_0}>0,
+ \qquad \frac{2\mu_0p}{B_i^2}=\frac{s}{4}.
+\]
+Let
+\[
+ h=\frac ba,\qquad \ell=\log h,
+ \qquad D=\frac{h^2-1}{2},
+ \qquad \beta_e=|B_e|/B_i=\sqrt{1-\frac{3s}{4}}.
+\]
+Assume
+\[
+ \ell+\frac{sD}{\beta_e^2}\le\frac{s}{8}.
+\]
+A simple sufficient choice is
+\[
+ 1<h\le1+\frac{s}{16}.
+\]
+This is a close ideal conducting wall, not a distant coil condition.
+
+For $m\ge1$, the positive series for $I_m$ gives
+\[
+ \frac{I_{m+1}(\kappa)}{I_m(\kappa)}
+       \le\frac{\kappa}{2(m+1)}.
+\]
+Using $\kappa I_m'=mI_m+\kappa I_{m+1}$, we obtain
+\[
+ \frac{\kappa I_m}{I_m'}
+ \ge \frac{\kappa^2}
+             {m+\kappa^2/(2(m+1))}.
+\]
+There is also an elementary lower bound for the vacuum impedance:
+\[
+ n_{\rm out}\ge\frac{1}{m^2\ell+\kappa^2D}.
+\]
+To see this, use a radially constant potential as a trial function in
+the dual variational characterization of the Neumann energy.  Its
+energy per unit inner-boundary area, divided by the squared boundary
+value, is $(m^2\ell+\kappa^2D)/a$.  Optimizing its amplitude proves the
+displayed lower bound.
+
+The least favorable helicity has vacuum factor
+$(m\sqrt{s}-\kappa\beta_e)^2$.  Put
+\[
+ t=\frac{\kappa\beta_e}{m\sqrt{s}}\ge0.
+\]
+The preceding estimates give
+\[
+ \frac{F_{mn}}{s}\ge
+ \frac{t^2}{\beta_e^2+st^2/2}
+ +\frac{(1-t)^2}{\ell+st^2D/\beta_e^2}-1.
+\]
+For $0\le t\le1$, the elementary Cauchy inequality
+\[
+ \frac{t^2}{A}+\frac{(1-t)^2}{B}\ge\frac{1}{A+B}
+ \qquad (A,B>0)
+\]
+and the wall assumption imply
+\[
+ \frac{F_{mn}}{s}\ge
+ \frac{1}{1-s/8}-1\ge\frac{s}{8}.
+\]
+For $t\ge1$, the first term alone yields
+\[
+ \frac{F_{mn}}{s}\ge
+ \frac{1}{\beta_e^2+s/2}-1
+ =\frac{1}{1-s/4}-1\ge\frac{s}{4}.
+\]
+Therefore
+\[
+ F_{mn}\ge\frac{s^2}{8}
+ \qquad\text{for every }m\ne0\text{ and every }k.
+\]
+The $k=0$ case can either be read directly from the exact formula or
+obtained as the limit of this estimate.
+
+For $m=0$, $k\ne0$, the series inequality $I_1\le\kappa I_0/2$ gives
+\[
+ F_{0n}\ge\frac{\kappa I_0}{I_1}-s\ge2-s>0.
+\]
+The vacuum term is nonnegative and has not been needed for this bound.
+
+For completeness, the stated simple wall choice implies the wall
+assumption.  Indeed, $\ell\le s/16$, $\beta_e^2\ge13/16$, and
+\[
+ D\le\frac{s}{16}+\frac{s^2}{512}
+     \le\frac{129s}{2048}.
+\]
+It follows that
+\[
+ \ell+\frac{sD}{\beta_e^2}
+ \le\left(\frac1{16}+\frac{129}{6656}\right)s
+ <\frac{s}{8}.
+\]
+
+\subsection{The spatially constant displacement and the flux constraints}
+
+For $(m,k)=(0,0)$, it is important not to discard the plasma flux
+constraint.  A uniform displacement $\eta$ requires
+\[
+ \delta B_i=-\frac{2B_i\eta}{a},
+ \qquad \operatorname{div}\xi=\frac{2\eta}{a}
+\]
+for the energy-minimizing radial displacement.  Thus the plasma
+magnetic and gas contributions per unit interface area are
+\[
+ \frac{2B_i^2}{\mu_0a}|\eta|^2
+       +\frac{2\gamma p}{a}|\eta|^2.
+\]
+Even if the nonnegative vacuum contribution is discarded, the full
+coefficient satisfies
+\[
+ F_{00}\ge2-s+\frac{\gamma s}{4}>0.
+\]
+
+The harmonic vacuum terms can also be written explicitly.  Fixing the
+vacuum axial flux and azimuthal flux gives
+\[
+ \delta B_e=\frac{B_e\eta}{aD},
+ \qquad
+ \delta(aB_\theta)=\frac{B_\theta\eta}{\ell}.
+\]
+Their energies add respectively $\beta_e^2/D$ and $s/\ell$ to
+$F_{00}$.  Thus in this flux ensemble
+\[
+ F_{00}=2-s+\frac{\gamma s}{4}
+                +\frac{\beta_e^2}{D}+\frac{s}{\ell}.
+\]
+These contributions are orthogonal to the nonconstant potential
+modes.  A calculation that specified only the outer wall and silently
+set all magnetic periods to zero would miss these constraints.
+
+\subsection{An explicit uniform interface gap}
+
+The preceding positive constant bound can be strengthened to a
+half-derivative interface estimate.  For $m\ge1$, the integral
+representations of the Bessel functions imply
+\[
+ \frac{I_{m+1}(\kappa)}{I_m(\kappa)}<1,
+ \qquad \frac{K_{m-1}(\kappa)}{K_m(\kappa)}\le1.
+\]
+The first ratio is the expectation of a number in $(-1,1)$ in the
+positive integral representation of $I_m$; the second follows from
+$\cosh((m-1)t)\le\cosh(mt)$ in the integral representation of $K_m$.
+They give
+\[
+ \frac{\kappa I_m}{I_m'}\ge\frac{\kappa^2}{m+\kappa},
+ \qquad n_{\rm out}\ge\frac{1}{m+\kappa}.
+\]
+For the second inequality, the wall impedance is at least the
+unbounded-exterior impedance.  This follows by restricting trial
+functions in the dual Neumann variational principle to the smaller
+annulus.  The unbounded-exterior value is
+$-K_m/(\kappa K_m')$, and the displayed ratio bound applies.
+
+The quadratic form
+\[
+ \kappa^2+(m\sqrt{s}-\kappa\beta_e)^2
+\]
+has determinant $s$ and trace
+$s+1+\beta_e^2=2+s/4\le33/16$.  Its least eigenvalue is therefore at
+least $16s/33$.  Consequently, with $x=m+\kappa$,
+\[
+ F_{mn}\ge\frac{8s}{33}x-s.
+\]
+If $x\ge9$, this is at least $4sx/33$.  If $x\le9$, the previously
+proved estimate $F_{mn}\ge s^2/8$ applies.  Combining the two gives
+the convenient conservative bound
+\[
+ F_{mn}\ge\frac{s^2}{80}(1+m+\kappa)
+ \qquad (m\ge1).
+\]
+For $m=0$, use $I_1<I_0$ in addition to the earlier series bound to
+obtain $F_{0n}\ge\max(2-s,\kappa-s)$; this is more than sufficient for
+the same estimate.  The zero mode was checked separately above.
+
+We have therefore proved, for every smooth admissible displacement,
+\[
+ 2\delta W\ge
+ \frac{2\pi aL\,B_i^2}{\mu_0a}\,
+ \frac{s^2}{80}
+ \sum_{m,n}\left(1+|m|+a|k_n|\right)|\eta_{mn}|^2.
+\]
+The constant is independent of $L$.  This is a genuine positive
+interface $H^{1/2}$ energy gap for the complete quadratic functional.
+The nonnegative bulk excess over the mode minima is still present.
+There remain bulk relabelling directions with $\eta=0$, $Q=0$ and
+$\operatorname{div}\xi=0$.  The theorem does not give a coercive norm
+of every material displacement, a nonlinear continuation theorem, or
+a kinetic confinement theorem.
+
+\section{A geometric sufficient condition on an actual toroidal interface}
+
+Use the same passive, lossless exterior and fixed-flux ensemble as above.
+Let $Y$ be a tangent vacuum field on an analytic toroidal interface,
+straightened to $Y=\omega^i\partial_{\theta_i}$, and let $g$ and
+$\mathrm{II}$ be the induced first and second fundamental forms.
+For the pressure-lifting Hamiltonian
+\[
+ H(\theta,I)=\omega\cdot I+\frac12 I^{\mathsf T}g^{-1}(\theta)I,
+\]
+a selected family of KAM graphs with
+\[
+ I=r d+o(r)
+\]
+gives exterior trace $X=Y+r g^{-1}d+o(r)$.  A sufficient condition for
+positive pressure and a positive full surface energy term is
+\[
+ \omega\cdot d>0,
+ \qquad \mathrm{II}(Y,g^{-1}d)<0\quad\hbox{everywhere on the interface}.
+\]
+Strictness and compactness give a uniform margin.  For sufficiently
+small selected $r>0$,
+\[
+ p>0,\qquad
+ C=\frac{\mathrm{II}(Y,Y)-\mathrm{II}(X,X)}{\mu_0}>0.
+\]
+Every term in the complete ideal-MHD quadratic energy is then
+nonnegative, including the interface term.  This is a sufficient
+linear energy-stability criterion; it does not assume the positivity
+that was missing from the earlier calculation.
+
+Its feasibility is explicitly one-dimensional.  Normalize
+$\omega\cdot d=1$ and write
+\[
+ d=\frac{\omega}{|\omega|^2}+\sigma J\omega,
+\]
+where $J$ is rotation by $\pi/2$ in the two coordinate components.
+Define
+\[
+ a_0(\theta)=\frac{\mathrm{II}(Y,g^{-1}\omega)}{|\omega|^2},
+ \qquad b_0(\theta)=\mathrm{II}(Y,g^{-1}J\omega).
+\]
+The complete condition is simply
+\[
+ a_0(\theta)+\sigma b_0(\theta)<0\quad\hbox{for all }\theta.
+\]
+Equivalently, $\sigma$ must lie strictly above
+$\sup_{b_0<0}(-a_0/b_0)$ and strictly below
+$\inf_{b_0>0}(-a_0/b_0)$; every point with $b_0=0$ must have $a_0<0$.
+Empty sets impose no bound.  Compactness supplies the uniform strict
+margin once such a $\sigma$ exists.  Failure has a one-point or a
+two-point witness.  This is a concrete geometric design test.
+
+If noncollinearity is separately desired, one adds either sign of
+\[
+ \det(\omega,g^{-1}d)\ne0
+\]
+uniformly on the torus.  These are additional affine inequalities in
+$\sigma$.  Positivity of $C$ itself does not imply noncollinearity;
+noncollinearity is not needed merely to sign the displayed quadratic
+energy when $C>0$ has already been proved.
+
+\section{What remains before transferring the positive benchmark to a torus}
+
+The cylindrical theorem removes a real difficulty: it gives an
+interface gap uniform in the axial period, rather than a calculation
+restricted to finitely many modes.  It does not, by itself, construct
+the requested toroidal equilibrium.
+
+There is an exact variational reduction that could support such a
+transfer.  On a specified solid torus, the harmonic Neumann magnetic
+field of fixed flux minimizes magnetic energy among all divergence-free
+tangent fields with that flux.  If $B_h$ is this harmonic field, Hodge
+orthogonality gives
+\[
+ \int |B|^2=\int|B_h|^2+\int|B-B_h|^2.
+\]
+At fixed total mass and fixed uniform specific entropy, Jensen's
+inequality similarly minimizes the gas internal energy at uniform
+density.  Thus the sum of the harmonic magnetic energies, at the
+specified plasma and vacuum fluxes, and the uniform adiabatic gas
+energy is an exact lower bound for the ideal potential energy on a
+given plasma domain.  Its first shape derivative is the total-pressure
+jump.  At the cylinder, the preceding mode calculation is its
+interface Hessian, including the flux-dependent zero mode.
+
+This suggests solving the Bernoulli shape equation by an elliptic
+implicit-function theorem and preserving the positive Hessian.  A
+bent tube of major radius $1/\varepsilon$ has, in cross-section and
+arclength coordinates, the Euclidean metric
+\[
+ g_\varepsilon=dx^2+dy^2+(1+\varepsilon x)^2ds^2,
+ \qquad L=\frac{2\pi}{\varepsilon}.
+\]
+For each fixed $L$, an ordinary local perturbation argument is not
+enough: its permitted metric perturbation could depend on $L$.
+The actual Euclidean closing condition ties $\varepsilon$ to $L$.
+One must prove uniform estimates for the nonlinear harmonic-field
+shape map and its inverse, including the magnetic-period constraints,
+as $L$ increases.  Low axial Neumann modes make a naive estimate for
+the scalar potentials singular.  Estimates for the fields and the
+flux-constrained shape operator may cancel that singularity, but that
+cancellation must be proved, not presumed from the interface spectrum.
+
+A precise sufficient transfer certificate is a quadratic-form bound:
+after identifying the boundaries and their flux constraints, the
+change in the reduced interface Hessian must have operator norm less
+than half the cylinder gap from $H^{1/2}$ to $H^{-1/2}$.  This would
+preserve positivity of the whole energy because the bulk terms remain
+nonnegative for a current-free core with constant pressure.  Such a
+uniform bound and an exact toroidal Bernoulli solution have not been
+established in this calculation.
+
+There are further independent requirements.  A nonaxisymmetric
+perturbation need not give a nonzero rotational transform, nested
+magnetic surfaces, or exact quasisymmetry automatically.  The close
+perfectly conducting wall and the edge current in the benchmark are
+substantial assumptions.  Finite wall resistivity and kinetic wall
+losses are absent.  Thus the positive result is a complete ideal-MHD
+linear energy theorem for the stated benchmark and a concrete route
+to a geometric extension, not a proof of hot stable fusion plasma.
