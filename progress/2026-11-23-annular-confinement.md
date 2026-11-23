@@ -38,6 +38,8 @@ The flux obstruction concerns curves of the **averaged** field. A constant radia
 
 Lean now states the finite-time band form of C2 for one Littlejohn species in a specified field. It requires a positive fraction of a finite trapped birth population, existence through a positive horizon and radial control for every partial trajectory. The fraction that can exceed the tolerance is at most the uncovered fraction. A time in seconds and a fraction for the actual Dommaschk field still require physical inputs and orbit estimates. [Contract and loss bound](https://github.com/siddhartha-gadgil/PlasmaLean/blob/main/PlasmaLean/Theory/Contract/TrappedBirthBand.lean)
 
+The positive band test follows a harmonic oscillator in a synthetic quadratic mirror. An independent audit also corrected a coil claim: a circular filament can lie entirely outside a specified meridian half-space, and its field is vacuum throughout that half-space. [Model fixture](https://github.com/siddhartha-gadgil/PlasmaLean/blob/main/PlasmaLean/Sanity/TrappedBirthBand.lean) · [Audit and coil counterexample](https://github.com/siddhartha-gadgil/PlasmaLean/blob/main/notes/audit/2026-11-23-annulus-embedding-audit.md)
+
 ## Earlier results retained
 
 The original Dommaschk certificate provides the quasi-axisymmetry estimates on each torus. Constructing a family of flux surfaces or a field-level Boozer chart throughout the intervening volume remains open. Applying the annular theorem to trapped particles also requires identifying a regular physical bounce family. [Surface defect estimates](https://github.com/siddhartha-gadgil/PlasmaLean/blob/main/notes/theory/dommaschk-qs-defect.md)

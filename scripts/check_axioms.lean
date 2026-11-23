@@ -411,6 +411,13 @@ run_cmd do
 #print axioms PlasmaLean.Contract.PoloidalAngle.section_period
 #print axioms PlasmaLean.Contract.PoloidalAngle.sections_injective_of_irrational_return
 #print axioms PlasmaLean.Contract.PoloidalAngle.sections_immersed_of_irrational_return
+#print axioms PlasmaLean.Sanity.MeridianCoil.placedCircle_outside_meridian_zero
+#print axioms PlasmaLean.Sanity.MeridianCoil.placedCircle_vacuum_meridian_zero
+#print axioms PlasmaLean.Sanity.MeridianCoil.unitCoil_vacuum_meridian_zero
+#print axioms PlasmaLean.Sanity.TrappedBirthBand.quadratic_regularMirrorBirth
+#print axioms PlasmaLean.Sanity.TrappedBirthBand.littlejohnVelocity_quadratic
+#print axioms PlasmaLean.Sanity.TrappedBirthBand.quadratic_guidingCentreBand
+#print axioms PlasmaLean.Sanity.TrappedBirthBand.quadratic_fieldDiv
 #print axioms PlasmaLean.Contract.BirthCoverage.covered_pos
 #print axioms PlasmaLean.Contract.BirthCoverage.loss_le
 #print axioms PlasmaLean.Contract.not_birthCoverage_empty

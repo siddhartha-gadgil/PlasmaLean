@@ -27,6 +27,8 @@
 
 For each covered birth there must be an orbit through the positive horizon. Every partial orbit up to that time must keep the Littlejohn denominators regular and satisfy the tolerance in metres, measured by change of distance to the declared axis. The mass of births exhibiting even one excess excursion is at most the complementary fraction of the reference mass. For comparison to a reduced position trajectory, the metre errors at both endpoints add to the reduced radial excursion. A count-weighted birth measure bounds counts. A claim about heat needs its own energy weighting and coverage of the rest of the population.
 
+A quadratic mirror provides a positive mathematical test. For the specified birth the position and parallel speed are sin(t)e₀ and cos(t). The proof bounds every partial solution for every positive horizon and either charge sign. The field has divergence 2x₀ and the birth measure is concentrated at one point. [Positive fixture](../../PlasmaLean/Sanity/TrappedBirthBand.lean)
+
 ## Acceptance and competing tests
 
 Fix thermal ion and electron parameters, nonempty trapped populations and their coverage, a physical radial tolerance, and the required time in seconds before selecting the best band. Alphas can be reported separately. Identify the physical ε, timescale, common volume, margin and corrector bounds. Include model reduction and higher-order residuals in the time budget. To use the result for C5, bound the loss carried by the complement and connect these estimates to a heat budget. Compare the resulting time to the direct first-order drift bound on the same population.

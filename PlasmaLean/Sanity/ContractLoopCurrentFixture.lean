@@ -26,8 +26,9 @@ it. The fixtures are satisfiability and consistency checks. They are NOT evidenc
 topological corollary improves a current allowance in practice: the only instance of
 `CurrentFreeTransform` in the default build, `rationalStellarator_currentFreeTransform`, is
 already proved with `I_max = 0` (from the potential of the field), and no instance exists
-whose current bound was proved by an estimate. The meridian half-space hypothesis excludes
-every coil-generated field; no coil field is instantiated here.
+whose current bound was proved by an estimate. These fixtures use the rational stellarator
+field. A closed-filament example satisfying the half-space hypothesis is in
+`Sanity/MeridianCoil`.
 
 **The mathematical point.** The simply connected region `U` of the corollaries has to contain
 the poloidal loop; it does not have to be the whole region on which the field is a vacuum

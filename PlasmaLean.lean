@@ -114,6 +114,8 @@ public import PlasmaLean.Theory.Fields.FormPiecewisePeriod
 public import PlasmaLean.Sanity.FormPiecewisePeriod
 public import PlasmaLean.Theory.Fields.FormConvexRegion
 public import PlasmaLean.Sanity.ContractLoopCurrentFixture
+public import PlasmaLean.Sanity.MeridianCoil
+public import PlasmaLean.Sanity.TrappedBirthBand
 public import PlasmaLean.Theory.Kinetic.NoetherGaugeBridge
 public import PlasmaLean.Sanity.NoetherGaugeBridge
 public import PlasmaLean.Theory.Fields.FormHYMCircle

@@ -89,7 +89,8 @@ and operating temperature remain open for that candidate.
     (`Contract.BoozerModelOf`). Its only field-level instance is the vacuous ∇φ fixture. The
     approved band form now has a Lean predicate, `GuidingCentreBand`, for one Littlejohn species.
     It specifies the trapped birth population, its covered fraction, radial excursion and physical time.
-    Establishing it on a stellarator field remains open. [Band test](notes/theory/hamiltonian-bounce-band-test.md)
+    A quadratic mirror realizes the band predicate for a point-mass birth law. Establishing
+    it for thermal populations on the candidate remains open. [Band test](notes/theory/hamiltonian-bounce-band-test.md)
   - **Audit of 23 November 2026** ([record](notes/audit/2026-11-23-refresh-audit.md)): no false or
     vacuous theorem was found in the work since 31 October. Two limits of the contract are now
     recorded and open: clause C2 has no non-vacuous instance for any field (AV-M7), and the

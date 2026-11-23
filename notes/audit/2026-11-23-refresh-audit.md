@@ -66,6 +66,8 @@ circulation around it. For such fields the current clause carries no information
 transform clauses are assumed, not derived. The half-space hypothesis excludes every
 coil-generated field.
 
+**Later correction.** A circular filament can avoid a chosen meridian half-space, in which case its field is vacuum there. The later audit gives a unit-current counterexample to the preceding sentence. [Follow-up and compiled regression](2026-11-23-annulus-embedding-audit.md)
+
 Resolution: docstrings and documents reworded. New general form
 `CurrentFreeTransform.imax_zero_of_convex`, `CurrentFreeTransform.current_eq_zero_of_convex`
 (any convex region containing the loop); the half-space version is now derived from it. Fixture

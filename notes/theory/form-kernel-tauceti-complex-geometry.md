@@ -494,9 +494,10 @@ modules written in parallel and rebuilt and axiom-checked in the main session:
   poloidal cross-section: a field with no current through the cross-section has zero
   circulation around it. It is a statement about the hypothesis, not about a device. It shows
   that for such fields the current clause carries no information and `I_max` is irrelevant;
-  the torus and transform clauses are assumed, not derived. The half-space hypothesis excludes
-  every coil-generated field (coils lie in every such half-space); it applies to idealised
-  fields singular only on the z-axis. Zero poloidal circulation is compatible with `ι ≠ 0` in a
+  the torus and transform clauses are supplied. A closed filament can avoid the whole chosen
+  half-space. For example the unit circular filament centred at (−2,0,0) generates a vacuum
+  field throughout x > 0 (`MeridianCoil.unitCoil_vacuum_meridian_zero`). The idealised fields
+  singular only on the z-axis satisfy the hypothesis at every angle. Zero poloidal circulation is compatible with `ι ≠ 0` in a
   non-axisymmetric field.
 - Fixture with `ι > 0`: the rational stellarator field and its certified torus
   (`rationalStellarator_fixture`, `exactTorus_loopCurrent`, `exactTorus_period`); with `ι = 0`:

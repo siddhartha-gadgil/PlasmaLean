@@ -69,8 +69,8 @@ Dommaschk candidate `DommaschkQA2R.field DommaschkQA2R.candidate`.
    are proved elsewhere (the KAM certificates) and are hypotheses here (`hC`, `hT`, or the
    structures `ExactTorusC`, `ExactTorusA`).
 4. **Idealised field.** The meridian half-space hypothesis holds because the Dommaschk candidate
-   is singular only on the `z`-axis. It fails for every coil-generated field (coils meet every
-   meridian half-space); no coil field is treated here.
+   is singular only on the `z`-axis. For a closed filament field one can check whether the
+   source avoids the chosen meridian half-space, as in `Sanity/MeridianCoil`.
 
 What is not proved: nothing about loops that are not poloidal loops of constant toroidal angle,
 nothing about the quasi-symmetry statements of `DommaschkKamQ16` (not imported), and no
