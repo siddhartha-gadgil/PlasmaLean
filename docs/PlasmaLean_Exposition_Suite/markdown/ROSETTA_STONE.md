@@ -232,8 +232,17 @@ theorem periodHom_onOpens_flat (hB : ContDiffOn ℝ 1 B U) (hcurl : ∀ x ∈ U,
 -- PlasmaLean/Sanity/FormPeriods.lean: the wire field has period 2π on the unit circle
 theorem wire_period : periodHom (onOpens wireOpens fun y => flat (wireField y)) (wireLoop 0)
     (class of the unit circle) = 2 * Real.pi
--- Not yet stated for the poloidal loops of the contract (loopCurrent), which are
--- parametrised over [-π, π] instead of [0, 1].
+-- The contract's loop current is a period (PlasmaLean/Theory/Fields/FormLoopCurrent.lean):
+theorem lineIntegral_comp_affine (B : Space → Space) (γ : ℝ → Space) (a b : ℝ) :
+    lineIntegral B (fun t => γ (a + (b - a) * t)) 0 1 = lineIntegral B γ a b
+theorem loopCurrent_eq_periodHom_div (μ₀ : ℝ) (hB : ContDiffOn ℝ 1 B U)
+    (hcurl : ∀ x ∈ U, fieldCurl B x = 0) (hU : ∀ θ, poloidalLoop R z φ₀ θ ∈ U)
+    (hγ : ContDiff ℝ 1 (poloidalLoop R z φ₀))
+    (hclosed : poloidalLoop R z φ₀ π = poloidalLoop R z φ₀ (-π)) :
+    loopCurrent μ₀ B R z φ₀ = periodHom (onOpens U fun y => flat (B y)) _ (loop class) / μ₀
+-- Topology forces zero net current:
+theorem VacuumField.loopCurrent_eq_zero_of_simplyConnected [SimplyConnectedSpace U] (μ₀ : ℝ)
+    (h : VacuumField U B) ... : loopCurrent μ₀ B R z φ₀ = 0
 ```
 
 ## Magnetic well and min-B: |B| in a vacuum field
@@ -460,8 +469,15 @@ theorem IsBeltramiOn.reeb (h : IsBeltramiOn B lam U) (hx : x ∈ U) (hB : B x �
 theorem IsBeltramiOn.reeb_unique (h : IsBeltramiOn B lam U) (hx : x ∈ U) (hl : lam x ≠ 0)
     (hB : B x ≠ 0) (h1 : flat (B x) ![R] = 1)
     (h2 : (extDeriv (fun y => flat (B y)) x).curryLeft R = 0) : R = (‖B x‖ ^ 2)⁻¹ • B x
--- So for λ ≠ 0 the Reeb vector of β = B♭ is B/|B|². The link to TauCeti's bundled contact
--- forms on manifolds (SmoothForm.IsContactForm) is not proved.
+-- So for λ ≠ 0 the Reeb vector of β = B♭ is B/|B|².
+-- TauCeti's bundled contact forms (PlasmaLean/Theory/Fields/FormContactManifold.lean):
+def flatSmoothForm (B : Space → Space) (hB : ContDiff ℝ ∞ B) : SmoothForm 𝓘(ℝ, Space) Space ℝ 1
+theorem isContactForm_flatSmoothForm_iff (B : Space → Space) (hB : ContDiff ℝ ∞ B) :
+    (flatSmoothForm B hB).IsContactForm ↔ ∀ x, IsContactAt (fun y => flat (B y)) x
+theorem IsBeltramiOn.reebVectorField_flatSmoothForm (h : IsBeltramiOn B lam Set.univ)
+    (hB : ContDiff ℝ ∞ B) (hl : ∀ x, lam x ≠ 0) (hne : ∀ x, B x ≠ 0) (x : Space) :
+    (flatSmoothForm B hB).reebVectorField x = (‖B x‖ ^ 2)⁻¹ • B x
+-- On all of ℝ³ only; the version on an open subset is not written.
 ```
 
 ## Magnetic helicity and Taylor relaxation
@@ -638,7 +654,17 @@ theorem lorentzOrbit_eulerLagrange (h : LorentzOrbit m q (fun _ => 0) B x v)
 theorem noetherMomentum_translation_conserved ... (hinv : ∀ y s, A (y + s • e) = A y) (s t : ℝ) :
     noetherMomentum m q (fun _ => e) (fun y => ⟪A y, e⟫) x v s
       = noetherMomentum m q (fun _ => e) (fun y => ⟪A y, e⟫) x v t
--- Translation symmetries only; rotations (a gauge term in general) are not derived this way.
+-- Rotations and gauge terms (PlasmaLean/Theory/Kinetic/NoetherRotation.lean):
+theorem noetherMomentum_linear_gauge_conserved (h : LorentzOrbit m q (fun _ => 0) B x v)
+    (hK : ∀ w, ⟪K w, w⟫ = 0) (hA : Differentiable ℝ A) (hcurl : ∀ y, B y = fieldCurl A y)
+    (hχ : ∀ y, HasFDerivAt χ (innerSL ℝ (G y)) y)
+    (hequiv : ∀ y, fderiv ℝ A y (K y) = K (A y) + G y) (s t : ℝ) :
+    noetherMomentum m q (fun y => K y) (fun y => ⟪A y, K y⟫ - χ y) x v s = ... t
+theorem canonicalMomentum_rotGenZ_conserved ... (hequiv : ∀ y,
+    fderiv ℝ A y (rotGenZ y) = rotGenZ (A y)) (s t : ℝ) :
+    canonicalMomentum m q (fun y => ⟪A y, rotGenZ y⟫) x v s = ... t
+-- K is a skew linear generator; equivariance of A is the infinitesimal condition. The link
+-- to the hypotheses of the direct proof (AxisymmetricFlux) is not proved.
 ```
 
 ## Near-axis expansion (Garren–Boozer, Landreman–Sengupta)

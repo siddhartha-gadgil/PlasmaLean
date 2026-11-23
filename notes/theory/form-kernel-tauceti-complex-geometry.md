@@ -13,9 +13,9 @@
 | Produces | `Theory/Fields/FormCalculus`, `Theory/Fields/FormTopology`, `Theory/Fields/FormContact` and their `Sanity` modules; the fit table; the symplectic assessment |
 | Difficulty | routine to moderate for what is done; hard for periods and surface geometry |
 | Status | verified for the theorems listed under "What is compiled"; the rest stated |
-| Lean evidence | default build, namespace `PlasmaLean.Forms` unless noted: `lieDerivForm_eq_zero_of_interior`, `FormWeakQS.lieDerivForm_eq_zero`, `PlasmaLean.Fields.WeakQS.lieDerivForm_flux_eq_zero`, `VacuumForm.exists_scalarPotential`, `VacuumForm.exists_vectorPotential`, `onOpens`, `isSmoothForm_onOpens_iff`, `mextDeriv_onOpens`, `VacuumForm.exists_scalarPotential_of_simplyConnected`, `not_simplyConnected_of_no_potential`, `wedge12_eq_wedge`, `isContactAt_iff_nondegenerate`, `IsBeltramiOn.reeb`; `PlasmaLean.Sanity.FormTopology.wireField_no_potential`, `wireRegion_not_simplyConnected`, `bentSet_not_starConvex`, `hyperbolic_scalarPotential_bent`; `lieDerivForm_flux`, `PlasmaLean.Fields.WeakQS.lieBracket_eq_zero`, `IsBeltramiOn.reeb_unique`, `pathIntegral_onOpens_flat`, `periodHom_onOpens_flat`, `PlasmaLean.Sanity.FormPeriods.wire_period`; `PlasmaLean.Kinetic.lorentzOrbit_eulerLagrange`, `noetherMomentum_translation_conserved` |
+| Lean evidence | default build, namespace `PlasmaLean.Forms` unless noted: `lieDerivForm_eq_zero_of_interior`, `FormWeakQS.lieDerivForm_eq_zero`, `PlasmaLean.Fields.WeakQS.lieDerivForm_flux_eq_zero`, `VacuumForm.exists_scalarPotential`, `VacuumForm.exists_vectorPotential`, `onOpens`, `isSmoothForm_onOpens_iff`, `mextDeriv_onOpens`, `VacuumForm.exists_scalarPotential_of_simplyConnected`, `not_simplyConnected_of_no_potential`, `wedge12_eq_wedge`, `isContactAt_iff_nondegenerate`, `IsBeltramiOn.reeb`; `PlasmaLean.Sanity.FormTopology.wireField_no_potential`, `wireRegion_not_simplyConnected`, `bentSet_not_starConvex`, `hyperbolic_scalarPotential_bent`; `lieDerivForm_flux`, `PlasmaLean.Fields.WeakQS.lieBracket_eq_zero`, `IsBeltramiOn.reeb_unique`, `pathIntegral_onOpens_flat`, `periodHom_onOpens_flat`, `PlasmaLean.Sanity.FormPeriods.wire_period`; `PlasmaLean.Kinetic.lorentzOrbit_eulerLagrange`, `noetherMomentum_translation_conserved`, `noetherMomentum_linear_gauge_conserved`, `canonicalMomentum_rotGenZ_conserved`; `loopCurrent_eq_periodHom_div`, `PlasmaLean.Vacuum.VacuumField.loopCurrent_eq_zero_of_simplyConnected`; `flatSmoothForm`, `isContactForm_flatSmoothForm_iff`, `IsBeltramiOn.reebVectorField_flatSmoothForm` |
 | Audit evidence | not audited |
-| Last updated | 23 November 2026: created; same day, the manifold bridge, the wedge and contact links, the wire fixture and the symplectic assessment; then periods, `[ξ, B] = 0`, uniqueness of the Reeb vector, a non-star-convex fixture and the Noether charge from TauCeti |
+| Last updated | 23 November 2026: created; same day, the manifold bridge, the wedge and contact links, the wire fixture and the symplectic assessment; then periods, `[ξ, B] = 0`, uniqueness of the Reeb vector, a non-star-convex fixture and the Noether charge from TauCeti; phase 1 of the remaining tasks (rotational Noether, loop current as a period, bundled contact form) |
 | Patches | none (N-45 stands; this note adds to it) |
 
 ## Purpose and scope
@@ -101,8 +101,7 @@ the sheet `z = x²` is homeomorphic to a half-space, hence simply connected, and
 star-convex about any point (`bentSet_not_starConvex`). The hyperbolic vacuum field has a
 potential on it by the simply connected theorem (`hyperbolic_scalarPotential_bent`).
 
-**Not reached.** The period statement is for loops parametrised over `[0, 1]`; the contract's
-`loopCurrent` uses poloidal loops over `[-π, π]` and is not yet restated as a period. The de Rham
+**Not reached.** The de Rham
 classes of a torus (`DeRham/Torus`) live on the abstract torus `∏ AddCircle`, not on an embedded
 flux surface.
 
@@ -133,7 +132,7 @@ exterior calculus.
 
 ## What is compiled
 
-All in the default build, standard axioms only (`scripts/check_axioms.lean`, 35 entry points).
+All in the default build, standard axioms only (`scripts/check_axioms.lean`, 52 entry points).
 
 **Lie derivative** (`Theory/Fields/FormCalculus`).
 
@@ -223,20 +222,60 @@ already has (normed spaces): `Hamiltonian/Noether` and `Cotangent/Fiberwise`. Ev
 needs phase spaces as manifolds, which the project does not have. `Hamiltonian/Noether` is now
 used (above); `Cotangent/Fiberwise` is not.
 
+## Phase 1 of the remaining tasks (sub-agents, 23 November 2026)
+
+Three modules were written by sub-agents in parallel, each with a sanity module, and then
+rebuilt and axiom-checked in the main session (default build, standard axioms).
+
+**Rotational symmetry and gauge terms** (`Theory/Kinetic/NoetherRotation`).
+
+- `noetherMomentum_linear_gauge_conserved`: for a skew linear generator `K`, `B = ∇ × A`, and
+  `DA(y)(K y) = K(A y) + ∇χ(y)`, every Lorentz orbit conserves
+  `m⟪K x, v⟫ + q(⟪A x, K x⟫ − χ(x))`. Proved through TauCeti's Noether theorem with gauge term
+  `qχ`. `noetherMomentum_linear_conserved` is the case `χ = 0`.
+- `rotGenZ` (rotation about the z-axis), `noetherMomentum_rotGenZ` (the Noether momentum is the
+  existing `canonicalMomentum`), `canonicalMomentum_rotGenZ_conserved` and its gauge version.
+- `Sanity/NoetherRotation`: the symmetric gauge `(B₀/2)(−y, x, 0)` gives
+  `m(x v_y − y v_x) + qB₀(x² + y²)/2` (`symGauge_angular_momentum_conserved`); the Landau gauge
+  is not equivariant (`landau_not_equivariant`) but gives the same conserved quantity with the
+  gauge term `χ = B₀(x² − y²)/2` (`landau_angular_momentum_conserved`).
+- Not done: the equivariance hypothesis is infinitesimal only; the hypotheses of the direct
+  proof `canonicalMomentum_conserved` (`AxisymmetricFlux`) are not derived from it.
+
+**The contract's loop current as a period** (`Theory/Fields/FormLoopCurrent`).
+
+- `lineIntegral_comp_affine`: affine reparametrisation of `Contract.lineIntegral`, with no
+  hypothesis.
+- `poloidalCirculation_eq_periodHom`, `loopCurrent_eq_periodHom_div`: for a `C¹` curl-free field
+  on an open `U` and a `C¹` closed poloidal loop in `U`, the contract's circulation is TauCeti's
+  period on the class of the loop, and the loop current is that period divided by `μ₀`.
+  The loop must lie in `U` and be `C¹` for every real `θ`, not only on `[−π, π]`.
+- `VacuumField.poloidalCirculation_eq_zero_of_simplyConnected`,
+  `VacuumField.loopCurrent_eq_zero_of_simplyConnected`: a vacuum field on a simply connected
+  region has zero net current through every such loop. Proved from the potential, not from
+  triviality of the fundamental group.
+- `Sanity/FormLoopCurrent`: the wire circulation over `[0, 2π]` and `[−π, π]` is `2π`;
+  accepted: the hyperbolic field has zero loop current and zero period on a torus section in
+  the bent region. There is no rejected case with a poloidal loop (the wire's circle is not
+  one).
+
+**TauCeti's bundled contact forms** (`Theory/Fields/FormContactManifold`).
+
+- `flatSmoothForm B hB`: the smooth 1-form `B♭` on the manifold `ℝ³`, for `B` of class `C^∞`.
+- `isContactFormAt_iff_isContactAt`, `isContactForm_flatSmoothForm_iff`: TauCeti's contact
+  condition, pointwise and global, is `IsContactAt`.
+- `IsBeltramiOn.isContactForm_flatSmoothForm`, `IsBeltramiOn.reebVectorField_flatSmoothForm`:
+  a smooth Beltrami field with `λ ≠ 0`, `B ≠ 0` everywhere gives a TauCeti contact form whose
+  Reeb vector field is `B/‖B‖²`.
+- `Sanity/FormContactManifold`: the helical field is a contact form with Reeb field itself;
+  a constant field is not a contact form.
+- Not done: the version on an open subset.
+
 ## Next steps
 
-Done since the first version of this note: `[ξ, B] = 0`; uniqueness of the Reeb vector; periods
-linked to circulation; a simply connected, non-star-convex fixture; a Noether charge from
-TauCeti. Still open:
-
-1. **Rotational symmetry from Noether.** `canonicalMomentum_conserved` (axisymmetry) needs a
-   linear generator and in general a gauge term (`TauCeti.lagrangianVariation_comp_snd`); only
-   translations are derived.
-2. **Magnetic symplectic form** of a Lorentz orbit through `Cotangent/Fiberwise`.
-3. **`loopCurrent` as a period**: reparametrise the contract's poloidal loops to `[0, 1]`.
-4. **Bundled contact form** on `ℝ³` (`TauCeti.SmoothForm.IsContactForm`) for a smooth Beltrami
-   field.
-5. **The HYM lift** of N-42 S-13 as a statement about a 2-form on `ℝ³ × ℝ`.
+Still open after phase 1: the magnetic symplectic form (`Cotangent/Fiberwise`) and the HYM lift
+of N-42 S-13 (phase 2, in progress); loops that are `C¹` only on `[−π, π]`; the contact form on
+an open subset; finite (not infinitesimal) rotational invariance.
 
 ## Barriers
 

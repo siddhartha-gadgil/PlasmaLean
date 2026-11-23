@@ -244,7 +244,7 @@ superseded; mixed notes list the status of their parts. "Lean" names compiled ev
 | `N-45` | `notes/theory/differential-form-kernel.md`: differential-form language for the vacuum and force-balance kernel laws, with equivalences to the vector language | G-11 | `Kernel/Vacuum`, `Kernel/Equilibrium`; Mathlib `extDeriv` | routine–moderate | verified (`vacuumForm_flux_iff`, `vacuumField_fluxSymm_iff`, `formForceBalance_iff`, `forceBalance_iff`, `extDeriv_flat`, `extDeriv_flux`; `Sanity/Forms`; theory bridges `formFirstIntegralOn_flux_iff`, `formSymmetricFlux_iff`, `formWeakQS_flux_iff`, `formBeltramiOn_flat_iff`, `isContactAt_of_beltrami`) | audited 16 November 2026 (AD-*; `Sanity/AuditForms`); open: AD-L4, AD-L5 |
 | `N-46` | `notes/theory/sullivan-infinity-structures.md`: assessment of Sullivan's L∞ (combinatorial) and eigenspace fluid models for MHD and stellarators | G-9, G-11, Q-33 | `sources/SullivanFluids.pdf`; N-45; `Theory/Stability/Elsasser` | moderate | stated; Part 2 checked in Lean (`EulerianODE.energy_conserved`, `EulerianODE.helicity_conserved`, `rigidBody_eulerian`); no design consequence | none required; revisit if an implementation of the L∞ hierarchy is published |
 | `N-47` | `notes/theory/issan-arbitrary-field-periods.md`: assessment of the closed-form equilibria with any number of field periods (Issan et al., arXiv:2611.07672) | G-4, Q-17, Q-18, Q-20 | `sources/Non-AxisymmetricMHD.pdf`; N-28, N-27 | moderate | stated; 12 of 20 claims checked numerically (`scripts/issan_equilibria/`), none incorrect; nothing in Lean | optional Lean unit: Family 1 (ρ_a = ρ₀, N = 3) with zero loop current (Q-20) |
-| `N-48` | `notes/theory/form-kernel-tauceti-complex-geometry.md`: the form kernel after TauCeti v4.36.0, a bridge to forms on manifolds, and the fit of the complex-geometry notes | G-11; supports Q-29, Q-24, Q-16 | method for N-45; N-42, N-43, N-44; TauCeti Lie derivative, Poincaré lemma, forms on open subsets, simply connected exactness, wedge, linear contact criterion | routine–moderate (done parts); hard (periods, surfaces) | verified: `WeakQS.lieDerivForm_flux_eq_zero`, `VacuumField.exists_scalarPotential`, `onOpens` with `isSmoothForm_onOpens_iff` and `mextDeriv_onOpens`, `VacuumField.exists_scalarPotential_of_simplyConnected`, `wireField_no_potential`, `wireRegion_not_simplyConnected`, `wedge12_eq_wedge`, `isContactAt_iff_nondegenerate`, `IsBeltramiOn.reeb`, `IsBeltramiOn.reeb_unique`, `WeakQS.lieBracket_eq_zero`, `periodHom_onOpens_flat`, `wire_period`, `noetherMomentum_translation_conserved` (`Theory/Fields/FormCalculus`, `FormTopology`, `FormContact`, `FormPeriods`, `Theory/Kinetic/NoetherLagrangian` and `Sanity` modules); fit table for N-42–N-44; symplectic files assessed, `Hamiltonian/Noether` used | rotational symmetry from Noether (gauge term); `loopCurrent` as a period; magnetic symplectic form |
+| `N-48` | `notes/theory/form-kernel-tauceti-complex-geometry.md`: the form kernel after TauCeti v4.36.0, a bridge to forms on manifolds, and the fit of the complex-geometry notes | G-11; supports Q-29, Q-24, Q-16 | method for N-45; N-42, N-43, N-44; TauCeti Lie derivative, Poincaré lemma, forms on open subsets, simply connected exactness, wedge, linear contact criterion | routine–moderate (done parts); hard (periods, surfaces) | verified: `WeakQS.lieDerivForm_flux_eq_zero`, `VacuumField.exists_scalarPotential`, `onOpens` with `isSmoothForm_onOpens_iff` and `mextDeriv_onOpens`, `VacuumField.exists_scalarPotential_of_simplyConnected`, `wireField_no_potential`, `wireRegion_not_simplyConnected`, `wedge12_eq_wedge`, `isContactAt_iff_nondegenerate`, `IsBeltramiOn.reeb`, `IsBeltramiOn.reeb_unique`, `WeakQS.lieBracket_eq_zero`, `periodHom_onOpens_flat`, `wire_period`, `noetherMomentum_translation_conserved` (`Theory/Fields/FormCalculus`, `FormTopology`, `FormContact`, `FormPeriods`, `Theory/Kinetic/NoetherLagrangian` and `Sanity` modules); fit table for N-42–N-44; symplectic files assessed, `Hamiltonian/Noether` used | magnetic symplectic form; HYM lift (phase 2) |
 
 Main dependency edges: N-9 → N-10 → N-14 → N-15 → (Q-4, Q-5); N-10 → N-13 → (N-16 → Q-2, Q-14);
 N-4 → (N-8, N-7 → N-17 → Q-1); N-12 → (Q-3, Q-14, Q-16) → G-4; N-4 → Q-16 → G-6; N-2, N-6 → Q-10 → G-2, G-7;
@@ -2313,7 +2313,16 @@ with a literature search and independent numerical checks; note
   - `Theory/Kinetic/NoetherLagrangian`: `lorentzOrbit_eulerLagrange` and
     `noetherMomentum_translation_conserved`, from TauCeti's Noether theorem; Landau-gauge
     fixture `landau_momentum_conserved`.
-- **Not done:** rotational symmetry from Noether (needs a gauge term); the magnetic symplectic
-  form (`Cotangent/Fiberwise`); `loopCurrent` restated as a period; the bundled contact form;
-  the HYM lift of N-42 S-13.
+- **Phase 1 of the remaining tasks** (three sub-agents in parallel; rebuilt and axiom-checked
+  in the main session):
+  - `Theory/Kinetic/NoetherRotation`: `noetherMomentum_linear_gauge_conserved` (skew linear
+    generator, gauge term), `canonicalMomentum_rotGenZ_conserved`; fixtures in the symmetric and
+    Landau gauges.
+  - `Theory/Fields/FormLoopCurrent`: `lineIntegral_comp_affine`,
+    `loopCurrent_eq_periodHom_div` (the contract's loop current is a de Rham period over `μ₀`),
+    `VacuumField.loopCurrent_eq_zero_of_simplyConnected`.
+  - `Theory/Fields/FormContactManifold`: `flatSmoothForm`,
+    `isContactForm_flatSmoothForm_iff`, `IsBeltramiOn.reebVectorField_flatSmoothForm`.
+- **Not done yet:** the magnetic symplectic form (`Cotangent/Fiberwise`) and the HYM lift of
+  N-42 S-13 (phase 2).
 - **Registry:** N-48 added; pointers in N-45, N-43, N-42.
