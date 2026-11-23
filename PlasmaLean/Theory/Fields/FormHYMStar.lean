@@ -596,7 +596,9 @@ theorem two_add_two_eq_finrank_liftEuclid : 2 + 2 = finrank ℝ LiftEuclid :=
   finrank_liftEuclid.symm
 
 /-- The dimension of the Euclidean lift space, for Mathlib's volume form and TauCeti's Hodge
-star. Local: this file exports no instances. -/
+star. Local: this file exports no instances. Downstream users of `euclidForm_liftStar` (and of
+the other statements below that mention Mathlib's volume form or TauCeti's Hodge star on
+`LiftEuclid`) must supply this instance themselves, from `finrank_liftEuclid`. -/
 local instance : Fact (finrank ℝ LiftEuclid = 4) := ⟨finrank_liftEuclid⟩
 
 /-- The vectors of the standard frame: `(e₀, 0)`, `(e₁, 0)`, `(e₂, 0)`, `(0, 1)`. -/
@@ -758,7 +760,10 @@ theorem hymLift_periodic (w : Space → Form 2) (x : Space) (ℓ : ℝ) :
   fun τ => hymLift_add_period w x τ ℓ
 
 /-- **The lifted form on `ℝ³ × (ℝ/ℓℤ)`**: the field of 2-forms obtained from `hymLift ω` by
-passing to the quotient of the `τ`-line by `ℓℤ` (`Function.Periodic.lift`). -/
+passing to the quotient of the `τ`-line by `ℓℤ` (`Function.Periodic.lift`). It is defined for
+every real `ℓ`, but it is meaningful only for `0 < ℓ`, which the manifold and measure statements
+assume (`[Fact (0 < ℓ)]`): for `ℓ = 0` the quotient is the line itself, and there is no
+circle. -/
 noncomputable def hymLiftCircle (ℓ : ℝ) (w : Space → Form 2) (p : Space × AddCircle ℓ) :
     LiftForm 2 :=
   (hymLift_periodic w p.1 ℓ).lift p.2

@@ -296,14 +296,16 @@ theorem sum_lineIntegral_segCurve_eq_periodHom ... :   -- closed polygons with e
     ∑ i ∈ Finset.range n, lineIntegral B (segCurve (p i) (p (i + 1))) 0 1 = periodHom ...
 -- Sanity: a square around the wire has circulation and period 2π (square_period).
 
--- The current-free clause is automatic for vacuum fields
+-- The current allowance is 0 for fields that are vacuum on the meridian half-space (Stokes on
+-- the planar cross-section; this excludes coil fields, whose coils lie in every half-space)
 -- (PlasmaLean/Theory/Fields/FormConvexRegion.lean): a poloidal loop at angle φ₀ with R > 0
 -- lies in the convex half-space meridianHalfSpace φ₀, which misses the z-axis.
 theorem CurrentFreeTransform.imax_zero_of_meridianHalfSpace
     (hC : CurrentFreeTransform μ₀ B S Imax ιmin) (h : VacuumField Ω B)
     (hΩ : ∀ s ∈ S, (meridianHalfSpace s.φ₀ : Set Space) ⊆ Ω) :
     CurrentFreeTransform μ₀ B S 0 ιmin
--- Fixture with ι > 0: the rational stellarator field (rationalStellarator_fixture).
+-- The clause is assumed; only the allowance improves. Fixture with ι > 0 (a consistency
+-- check: its source instance already had allowance 0): rationalStellarator_fixture.
 ```
 
 ## Magnetic well and min-B: |B| in a vacuum field
@@ -388,7 +390,7 @@ theorem kam_sequence ... (hrec : ∀ j, e (j + 1) ≤ κ * e j ^ 2 / kamDelta δ
 
 -- A-posteriori theorem for polynomial field data in cylindrical coordinates:
 -- PlasmaLean/Design/KamFlowIteration.lean (namespace PlasmaLean.Design.KamNewton)
-theorem FlowField.KamH.kam_flow_torus : ∃ u z : FA, Ana u ∧ Ana z ∧ IsReal u ∧ IsReal z ∧
+theorem FlowField.KamH.kam_flow_torus (K : F.KamH c ι u₀ z₀ e₀ μ) : ∃ u z : FA, Ana u ∧ Ana z ∧ IsReal u ∧ IsReal z ∧
     F.resR ι u z = 0 ∧ F.resZ ι u z = 0 ∧ Close (rInf c) ι u z u₀ z₀ μ
 
 -- PlasmaLean/Design/RationalStellaratorFieldLines.lean
@@ -562,7 +564,9 @@ theorem IsBeltramiOn.reebVectorField_flatSmoothFormOn ... (x : U) :
 def helicity (A B : Space → Space) (Ω : Set Space) : ℝ := ∫ x in Ω, ⟪A x, B x⟫
 theorem helicity_gauge_invariant ...   -- B tangent to ∂Ω, Ω simply connected
 
--- In the library there is only the algebraic cross-helicity identity
+-- In the library there are only the algebraic cross-helicity identity and, for Sullivan's
+-- finite-dimensional Eulerian ODEs, EulerianODE.helicity_conserved (Theory/Fluids/EulerianODE);
+-- the cross-helicity identity is
 -- (PlasmaLean/Theory/Stability/Elsasser.lean: cross_helicity_identity). Since 23 November 2026
 -- a vector potential exists for vacuum fields on star-convex regions
 -- (Theory/Fields/FormCalculus: VacuumForm.exists_vectorPotential); the helicity integral
@@ -580,8 +584,8 @@ theorem helicity_gauge_invariant ...   -- B tangent to ∂Ω, Ω simply connecte
 **Lean status: Not in the library: illustrative sketch.**
 
 ```lean
--- Illustrative sketch, not in the library (proposed signature; lieDerivForm is not
--- defined, Form is PlasmaLean.Forms.Form):
+-- Illustrative sketch, not in the library (proposed signature; lieDerivForm is
+-- TauCeti.lieDerivForm, Form is PlasmaLean.Forms.Form):
 def FrozenIn (v : ℝ → Space → Space) (ω : ℝ → Space → Form 2) : Prop :=
   ∀ t x, deriv (fun s => ω s x) t + lieDerivForm (v t) (ω t) x = 0
 
@@ -752,8 +756,11 @@ theorem noetherMomentum_add_gradient (m q : ℝ) (A H : Space → Space) (χ : S
     (K : Space → Space) (x v : ℝ → Space) (t : ℝ) :
     noetherMomentum m q K (fun y => ⟪A y + H y, K y⟫ - (χ y + ⟪H y, K y⟫)) x v t
       = noetherMomentum m q K (fun y => ⟪A y, K y⟫ - χ y) x v t
--- Under A ↦ A + ∇Λ the gauge term becomes χ + ⟪∇Λ, K x⟫ and the conserved momentum is
--- unchanged. For linear A: commuting with rotGenZ ⇔ equivariance under every rotZ s.
+-- The identity above is pure algebra (no hypotheses). The gauge-invariance content is that
+-- χ + ⟪∇Λ, K x⟫ is an admissible gauge term for A + ∇Λ (equivariant_gauge_add_gradient,
+-- hasFDerivAt_gauge_term_add_gradient), and that any admissible gauge term changes the
+-- conserved momentum only by a constant (noetherMomentum_add_gradient_of_gauge_term).
+-- For linear A: commuting with rotGenZ ⇔ equivariance under every rotZ s.
 ```
 
 ## Near-axis expansion (Garren–Boozer, Landreman–Sengupta)
@@ -841,7 +848,8 @@ theorem canonicalForm_fderiv_kineticMomentumMap_flux (q : ℝ) (hA : Differentia
     strongDualCotangentSymplecticForm (fderiv ℝ (kineticMomentumMap q A) z v)
         (fderiv ℝ (kineticMomentumMap q A) z w) =
       strongDualCotangentSymplecticForm v w + q * flux (fieldCurl A z.1) ![v.1, w.1]
-  -- the pulled-back canonical form is the magnetic form Ω + q π^*ω_B
+  -- Ψ^*Ω = Ω + q π^*ω_B for Ψ : canonical → kinetic momentum; in this convention the
+  -- magnetic form on kinetic phase space is Ω − q π^*ω_B (audit AV-H1)
 theorem lorentzOrbit_hamilton (hm : m ≠ 0) (h : LorentzOrbit m q (fun _ => 0) B x v)
     (hA : Differentiable ℝ A) (hcurl : ∀ y, B y = fieldCurl A y) (t : ℝ) :
     HasDerivAt (canonicalCurve m q A x v)

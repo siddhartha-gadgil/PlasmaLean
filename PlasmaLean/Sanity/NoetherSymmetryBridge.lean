@@ -23,6 +23,12 @@ The uniform field `B₀ e_z` in the symmetric gauge `symGauge B₀` and the Land
   field; `symGauge_angular_momentum_conserved_direct`,
   `symGauge_angular_momentum_conserved_finite`: the conserved angular momentum by the direct
   route and from finite equivariance.
+* Independent check: `symGauge_symmetricFlux_explicit`: the bridged hypothesis `SymmetricFlux`
+  for the uniform field with the explicit gradient `G = B₀ (x, y, 0)`, proved in coordinates
+  without the bridge; `symmetryFluxGrad_symGauge`: this `G` is
+  `symmetryFluxGrad (symGauge B₀) rotGenZ`; `symGauge_symmetricFlux_of_explicit`: so
+  `symGauge_symmetricFlux` holds by a second route that does not use the equivalence
+  `symmetricFlux_symmetryFluxGrad_iff`.
 * Rejected: `landau_not_rotZ_equivariant`: the Landau gauge is not equivariant under the
   rotation by `π/2` when `B₀ ≠ 0`; `landau_not_symmetricFlux`: it does not satisfy the bridged
   hypothesis either.
@@ -93,6 +99,45 @@ theorem symGauge_symmetricFlux (B₀ : ℝ) :
     SymmetricFlux (fun _ => B₀ • coordVec 2) (symmetryFluxGrad (symGauge B₀) rotGenZ)
       (fun y => rotGenZ y) :=
   symmetricFlux_of_equivariant (fun y => (curl_symGauge B₀ y).symm) (symGauge_equivariant B₀)
+
+/-- **Independent check**: the bridged hypothesis for the uniform field `B₀ e_z` with the
+explicit gradient `G(y) = B₀ (x, y, 0)` of `ψ = B₀ (x² + y²)/2`, proved directly in
+coordinates: `⟪e_z × y, v × B⟫ = −⟪G(y), v⟫`. The bridge theorems are not used. -/
+theorem symGauge_symmetricFlux_explicit (B₀ : ℝ) :
+    SymmetricFlux (fun _ => B₀ • coordVec 2)
+      (fun y => B₀ • (y 0 • coordVec 0 + y 1 • coordVec 1)) (fun y => rotGenZ y) := by
+  intro y v
+  obtain ⟨h0, h1, h2⟩ := rotGenZ_coords y
+  obtain ⟨c0, c1, c2⟩ := cross_coords v (B₀ • coordVec 2)
+  rw [inner_coords3, inner_coords3, h0, h1, h2, c0, c1, c2]
+  simp
+  ring
+
+/-- **Independent check**: the gradient `symmetryFluxGrad (symGauge B₀) rotGenZ` of the bridge
+is the explicit field `B₀ (x, y, 0)`, computed in coordinates. -/
+theorem symmetryFluxGrad_symGauge (B₀ : ℝ) (y : Space) :
+    symmetryFluxGrad (symGauge B₀) rotGenZ y = B₀ • (y 0 • coordVec 0 + y 1 • coordVec 1) := by
+  refine ext_inner_right ℝ fun w => ?_
+  obtain ⟨h0, h1, h2⟩ := rotGenZ_coords y
+  obtain ⟨a0, a1, a2⟩ := symGauge_coords B₀ w
+  obtain ⟨b0, b1, b2⟩ := symGauge_coords B₀ y
+  obtain ⟨k0, k1, k2⟩ := rotGenZ_coords (symGauge B₀ y)
+  rw [inner_symmetryFluxGrad, (symGauge B₀).fderiv, inner_coords3, inner_coords3,
+    inner_coords3, h0, h1, h2, a0, a1, a2, k0, k1, k2, b0, b1]
+  simp
+  ring
+
+/-- **Independent check**: `symGauge_symmetricFlux` by a second route, from the coordinate
+computation `symGauge_symmetricFlux_explicit` and not from the equivalence
+`symmetricFlux_symmetryFluxGrad_iff`. -/
+theorem symGauge_symmetricFlux_of_explicit (B₀ : ℝ) :
+    SymmetricFlux (fun _ => B₀ • coordVec 2) (symmetryFluxGrad (symGauge B₀) rotGenZ)
+      (fun y => rotGenZ y) := by
+  have h := symGauge_symmetricFlux_explicit B₀
+  have e : symmetryFluxGrad (symGauge B₀) rotGenZ
+      = fun y => B₀ • (y 0 • coordVec 0 + y 1 • coordVec 1) :=
+    funext (symmetryFluxGrad_symGauge B₀)
+  rwa [e]
 
 /-- **Accepted fixture**: conservation of `m (x v_y − y v_x) + q B₀ (x² + y²)/2` in the
 uniform field, from the direct theorem `canonicalMomentum_conserved` with the bridged

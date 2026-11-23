@@ -35,9 +35,14 @@ With the opposite orientation `dτ ∧ dx₀ ∧ dx₁ ∧ dx₂` the same form 
 ## What is proved
 
 * `extDeriv_hymLift_apply`: `dℱ = π^*(dω) - π^*(d⋆ω) ∧ dτ`, evaluated on three vectors.
+* `differentiableAt_hymLift_iff`: the lift is differentiable at `(x, τ)` exactly when `ω` is
+  differentiable at `x`.
 * `extDeriv_hymLift_eq_zero_iff`: at every point, `dℱ = 0 ↔ dω = 0 ∧ d(⋆ω) = 0`. No
   differentiability hypothesis is needed (all three exterior derivatives use the Fréchet
-  derivative, and the lift is differentiable at `(x, τ)` exactly when `ω` is at `x`).
+  derivative, and by `differentiableAt_hymLift_iff` they are junk values together). At a point
+  where `ω` is not differentiable the statement is `True ↔ True` and has no content: the
+  "closed" lift there is a junk value (fixture `Sanity.FormHYMLift.absLift_junk_closed`). The
+  statements with content are the `C²` ones below.
 * `VacuumForm.hymLift_closed`, `hymLift_closed_iff_vacuumForm`: for `ω` of class `C²` on an
   open `Ω`, the lift is closed on `Ω × ℝ` exactly when `ω` is a vacuum form; and the same in
   vector language (`hymLift_closed_of_vacuumField`, `hymLift_closed_iff_vacuumField`).
@@ -168,6 +173,32 @@ theorem hymLift_fluxField_apply (B : Space → Space) (x u v : Space) (τ s t : 
 theorem hymLift_tau_indep (w : Space → Form 2) (x : Space) (τ τ' : ℝ) :
     hymLift w (x, τ) = hymLift w (x, τ') := rfl
 
+/-- **The lift is differentiable at `(x, τ)` exactly when `ω` is differentiable at `x`.** The
+lift is a continuous linear map applied to `ω ∘ π`, and it has the continuous linear left
+inverse `sliceCLM`. This is why `fderiv_hymLift` and `extDeriv_hymLift_eq_zero_iff` need no
+differentiability hypothesis: at a point where `ω` is not differentiable the lift is not
+differentiable either, and all the derivatives involved are the junk value `0`. -/
+theorem differentiableAt_hymLift_iff (w : Space → Form 2) (x : Space) (τ : ℝ) :
+    DifferentiableAt ℝ (hymLift w) (x, τ) ↔ DifferentiableAt ℝ w x := by
+  constructor
+  · intro hd
+    have e : w = fun y => sliceCLM (hymLift w (y, τ)) := by
+      funext y; rw [hymLift, sliceCLM_hymLiftAt]
+    have hm : DifferentiableAt ℝ (fun y : Space => ((y, τ) : LiftSpace)) x :=
+      differentiableAt_id.prodMk (differentiableAt_const τ)
+    have h3 : DifferentiableAt ℝ (fun y : Space => hymLift w (y, τ)) x :=
+      DifferentiableAt.comp (g := hymLift w) (f := fun y : Space => ((y, τ) : LiftSpace)) x
+        hd hm
+    rw [e]
+    exact DifferentiableAt.comp (g := sliceCLM) x sliceCLM.differentiableAt h3
+  · intro h
+    have h1 : DifferentiableAt ℝ (fun p : LiftSpace => w p.1) (x, τ) :=
+      DifferentiableAt.comp (g := w) (f := Prod.fst) (x, τ) h differentiableAt_fst
+    have e : hymLift w = hymLiftCLM ∘ fun p : LiftSpace => w p.1 := by
+      funext p; simp [hymLift]
+    rw [e]
+    exact hymLiftCLM.differentiableAt.comp (x, τ) h1
+
 /-- The derivative of the lifted form, with no differentiability hypothesis: both sides vanish
 where `w` is not differentiable, because the lift has the left inverse `sliceCLM`. -/
 theorem fderiv_hymLift (w : Space → Form 2) (x : Space) (τ : ℝ) :
@@ -182,18 +213,8 @@ theorem fderiv_hymLift (w : Space → Form 2) (x : Space) (τ : ℝ) :
       funext p; simp [hymLift]
     rw [e]
     exact h2.fderiv
-  · have h' : ¬ DifferentiableAt ℝ (hymLift w) (x, τ) := by
-      intro hd
-      apply h
-      have e : w = fun y => sliceCLM (hymLift w (y, τ)) := by
-        funext y; rw [hymLift, sliceCLM_hymLiftAt]
-      have hm : DifferentiableAt ℝ (fun y : Space => ((y, τ) : LiftSpace)) x :=
-        differentiableAt_id.prodMk (differentiableAt_const τ)
-      have h3 : DifferentiableAt ℝ (fun y : Space => hymLift w (y, τ)) x :=
-        DifferentiableAt.comp (g := hymLift w) (f := fun y : Space => ((y, τ) : LiftSpace)) x
-          hd hm
-      rw [e]
-      exact DifferentiableAt.comp (g := sliceCLM) x sliceCLM.differentiableAt h3
+  · have h' : ¬ DifferentiableAt ℝ (hymLift w) (x, τ) :=
+      fun hd => h ((differentiableAt_hymLift_iff w x τ).1 hd)
     rw [fderiv_zero_of_not_differentiableAt h', fderiv_zero_of_not_differentiableAt h]
     simp
 
@@ -242,7 +263,9 @@ theorem extDeriv_hymLift_apply (w : Space → Form 2) (x : Space) (τ : ℝ) (u�
 /-- **Closedness of the lift is the pair of vacuum equations.** At every point `(x, τ)`,
 `dF = 0` exactly when `dω = 0` (Gauss) and `d(⋆ω) = 0` (Ampère with no current) at `x`. No
 differentiability hypothesis is needed: where `ω` is not differentiable all three exterior
-derivatives are `0` by Mathlib's convention. -/
+derivatives are `0` by Mathlib's convention (`differentiableAt_hymLift_iff`), so there the
+statement is `True ↔ True` and says nothing about `ω`. Use `hymLift_closed_iff_vacuumForm` for
+a statement with content. -/
 theorem extDeriv_hymLift_eq_zero_iff (w : Space → Form 2) (x : Space) (τ : ℝ) :
     extDeriv (hymLift w) (x, τ) = 0 ↔
       extDeriv w x = 0 ∧ extDeriv (fun y => hodge (w y)) x = 0 := by

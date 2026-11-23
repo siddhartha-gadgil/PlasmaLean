@@ -120,6 +120,7 @@ public import PlasmaLean.Theory.Fields.FormHYMCircle
 public import PlasmaLean.Sanity.FormHYMCircle
 public import PlasmaLean.Theory.Kinetic.CrossedFieldOrbit
 public import PlasmaLean.Sanity.CrossedFieldOrbit
+public import PlasmaLean.Sanity.AuditContractC2
 public import PlasmaLean.Theory.Fluids.EulerianODE
 public import PlasmaLean.Theory.Transport.PowerBalance
 public import PlasmaLean.Theory.Transport.Comparison

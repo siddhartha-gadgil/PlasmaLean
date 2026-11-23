@@ -20,6 +20,15 @@ contract: `FieldTorus.loopCurrent_eq_periodHom_div`,
 can be satisfied together, by instances of the default build, including a genuine
 `CurrentFreeTransform` (rotational transform bounded away from zero).
 
+**Status of these fixtures (audit AV-M1, AV-M2).** The corollaries are Stokes' theorem on the
+planar poloidal cross-section: no current through the cross-section, so no circulation around
+it. The fixtures are satisfiability and consistency checks. They are NOT evidence that the
+topological corollary improves a current allowance in practice: the only instance of
+`CurrentFreeTransform` in the default build, `rationalStellarator_currentFreeTransform`, is
+already proved with `I_max = 0` (from the potential of the field), and no instance exists
+whose current bound was proved by an estimate. The meridian half-space hypothesis excludes
+every coil-generated field; no coil field is instantiated here.
+
 **The mathematical point.** The simply connected region `U` of the corollaries has to contain
 the poloidal loop; it does not have to be the whole region on which the field is a vacuum
 field. A poloidal loop of a `FieldTorus` at toroidal angle `φ₀` lies in the open half-space
@@ -46,8 +55,20 @@ bounds a disc in the half-space on which the field is curl-free.
   `CurrentFreeTransform μ₀ (field (1/4)) S I_max ι_min`, every surface has zero current
   (`rationalStellarator_current_eq_zero`, by
   `CurrentFreeTransform.current_eq_zero_of_simplyConnected`). The statement is not vacuous:
-  `rationalStellarator_fixture` exhibits a family satisfying the clause with allowance
-  `I_max = 1` and `ι_min = ι_A`, and the corollary gives current `0` on it.
+  `rationalStellarator_fixture` exhibits a family satisfying the clause with `ι_min = ι_A`.
+  That fixture is staged: its source instance has `I_max = 0`, the fixture weakens the
+  allowance to `1` with `CurrentFreeTransform.mono` and the corollary recovers `0`. It checks
+  that the hypotheses of the corollary hold together with `ι ≠ 0`, and that two independent
+  proofs of zero current (potential, topology) agree; nothing more.
+* Regression (audit AV-M1), a bounded convex region: the poloidal loop of an `ExactTorus` at
+  `φ₀ = 0` lies in the open ball of radius `1/2` about `(1, 0, 0)`
+  (`exactSurface_loop_mem_ball`), on which the rational stellarator field is a vacuum field
+  (`rationalStellarator_vacuum_ball`). The contract-level statement
+  `CurrentFreeTransform.imax_zero_of_convex` then applies with that ball
+  (`rationalStellarator_imax_zero_ball`, `rationalStellarator_ball_fixture`); the half-space
+  is not needed. For the hyperbolic field only the loop-level statement
+  `hyperbolic_loopCurrent_ball` is available: it has no invariant tori in the build, so no
+  `CurrentFreeTransform` instance.
 * Hypothesis check (rejected): the wire field of `Sanity/FormLoopCurrentInterval` has
   circulation `2π` around the circular torus section. Its vacuum region does not contain the
   meridian half-space of `φ₀ = 0` (`not_meridianHalfSpace_subset_ringRegion`: the wire crosses
@@ -236,12 +257,20 @@ theorem rationalStellarator_current_eq_zero
   hC.current_eq_zero_of_simplyConnected (rationalStellarator_vacuum_meridian s.φ₀) hs
     fun θ _ => poloidalLoop_mem_meridianHalfSpace ((hC.torus s hs).1.R_pos θ s.φ₀)
 
-/-- **The `CurrentFreeTransform` fixture.** For every `μ₀ > 0` there is a family of surfaces
-on which the rational stellarator field satisfies clause C1 with the allowance `I_max = 1` and
-`ι_min = ι_A > 0`; on every surface of the family the transform is at least `ι_A` in absolute
-value and the net current, bounded only by `1` in the clause, is `0` by the topological
+/-- **The `CurrentFreeTransform` fixture: a satisfiability and consistency check.** For every
+`μ₀ > 0` there is a family of surfaces on which the rational stellarator field satisfies clause
+C1 with the allowance `I_max = 1` and `ι_min = ι_A > 0`; on every surface of the family the
+transform is at least `ι_A` in absolute value and the net current is `0` by the topological
 corollary. So the hypotheses of `CurrentFreeTransform.current_eq_zero_of_simplyConnected` hold
-together for a field with non-zero rotational transform. -/
+together for a field with non-zero rotational transform.
+
+The fixture is staged (audit AV-M2): the source instance
+`rationalStellarator_currentFreeTransform` is already proved with `I_max = 0`, from the
+potential of the field; the proof here forgets that with `CurrentFreeTransform.mono` and the
+corollary recovers it. What is checked is that the hypotheses are jointly satisfiable with
+`ι ≠ 0` and that two independent proofs of zero current agree. It is not evidence that the
+corollary improves an allowance: no instance exists whose current bound was proved by an
+estimate. -/
 theorem rationalStellarator_fixture (hμ : 0 < μ₀) :
     ∃ S : Set SurfaceData,
       CurrentFreeTransform μ₀ (RationalStellarator.field (1 / 4)) S 1 KamTorusA.iota ∧
@@ -257,10 +286,13 @@ theorem rationalStellarator_fixture (hμ : 0 < μ₀) :
 
 variable {Ω : Set Space} {B : Space → Space}
 
-/-- **Composition with the audit theorem.** For a vacuum field on a region containing the
-meridian half-spaces of the surfaces, the clause with any allowance `I_max` gives the clause
-with `I_max = 0` (topology), and `AuditRefresh.CurrentFreeTransform.circulation_eq_zero` then
-gives zero poloidal circulation. -/
+/-- **Composition with the audit theorem (a consistency check).** For a vacuum field on a
+region containing the meridian half-spaces of the surfaces, the clause with any allowance
+`I_max` gives the clause with `I_max = 0` (Stokes on the poloidal cross-section), and
+`AuditRefresh.CurrentFreeTransform.circulation_eq_zero` then gives zero poloidal circulation.
+The statement is that of `CurrentFreeTransform.poloidalCirculation_eq_zero_of_meridianHalfSpace`
+and adds nothing to it; the clause `hC` is assumed, and no instance in the build has an
+allowance that this improves (audit AV-M2). -/
 theorem circulation_eq_zero_via_audit (hC : CurrentFreeTransform μ₀ B S Imax ιmin)
     (h : VacuumField Ω B) (hΩ : ∀ s ∈ S, (meridianHalfSpace s.φ₀ : Set Space) ⊆ Ω)
     {s : SurfaceData} (hs : s ∈ S) : poloidalCirculation B s.R s.z s.φ₀ = 0 :=
@@ -276,13 +308,125 @@ theorem circulation_eq_zero_agrees (hC : CurrentFreeTransform μ₀ B S Imax ιm
   exact ⟨Or.inl, fun h => h.resolve_right hC.mu0_pos.ne'⟩
 
 /-- For the rational stellarator field, through the audit theorem: zero poloidal circulation on
-every surface of every C1 family, whatever the allowance. -/
+every surface of every C1 family, whatever the allowance. A consistency check (audit AV-M2):
+the only such family in the build, `rationalStellarator_currentFreeTransform`, already has
+`I_max = 0`, proved from the potential of the field, so this is a second proof of a known
+value and not an improved allowance. -/
 theorem rationalStellarator_circulation_eq_zero
     (hC : CurrentFreeTransform μ₀ (RationalStellarator.field (1 / 4)) S Imax ιmin)
     {s : SurfaceData} (hs : s ∈ S) :
     poloidalCirculation (RationalStellarator.field (1 / 4)) s.R s.z s.φ₀ = 0 :=
   circulation_eq_zero_via_audit hC (RationalStellarator.field_vacuum (1 / 4))
     (fun s _ => meridianHalfSpace_subset_domain s.φ₀) hs
+
+/-! ## A bounded convex region (audit AV-M1) -/
+
+/-- The point `(1, 0, 0)`, near the centre of the cross-section of torus A at `φ₀ = 0`. -/
+noncomputable def stellCentre : Space := WithLp.toLp 2 ![1, 0, 0]
+
+/-- The open ball of radius `1/2` about `(1, 0, 0)` does not meet the `z`-axis. -/
+theorem stellBall_subset_domain :
+    (ballOpens stellCentre (1 / 2) : Set Space) ⊆ RationalStellarator.domain := by
+  intro x hx
+  have hd : dist x stellCentre < 1 / 2 := hx
+  have h0 : |x 0 - 1| < 1 / 2 := by
+    have h := (PiLp.norm_apply_le (x - stellCentre) 0).trans_lt (by rwa [← dist_eq_norm])
+    simpa [stellCentre] using h
+  have hpos : 0 < x 0 := by linarith [(abs_lt.1 h0).1]
+  change 0 < RationalStellarator.r2 x
+  unfold RationalStellarator.r2
+  positivity
+
+/-- The rational stellarator field is a vacuum field on the ball, a bounded convex region. -/
+theorem rationalStellarator_vacuum_ball :
+    VacuumField (ballOpens stellCentre (1 / 2) : Set Space) (RationalStellarator.field (1 / 4)) :=
+  have h := RationalStellarator.field_vacuum (1 / 4)
+  ⟨(ballOpens stellCentre (1 / 2)).isOpen, h.contDiffOn.mono stellBall_subset_domain,
+    fun x hx => h.div_eq_zero x (stellBall_subset_domain hx),
+    fun x hx => h.curl_eq_zero x (stellBall_subset_domain hx)⟩
+
+/-- The poloidal loop at `φ₀ = 0` of an `ExactTorus` lies in the ball: `(R - 1)² + z² < 1/4`. -/
+theorem exactSurface_loop_mem_ball {Rk zk : ℝ → ℝ → ℝ} (hK : KamTorusA.ExactTorus Rk zk)
+    (θ : ℝ) :
+    (RationalStellaratorContract.exactSurface Rk zk).loop θ ∈ ballOpens stellCentre (1 / 2) := by
+  have hb := (hK.rt2_bounds θ 0).2
+  have hlt : Real.sqrt ((Rk θ 0 - 1) ^ 2 + zk θ 0 ^ 2) < 1 / 2 := by
+    rw [Real.sqrt_lt' (by norm_num)]
+    linarith
+  rw [mem_ballOpens, EuclideanSpace.dist_eq]
+  convert hlt using 2
+  simp [SurfaceData.loop, RationalStellaratorContract.exactSurface, poloidalLoop, cylPoint,
+    stellCentre, Fin.sum_univ_three, Real.dist_eq]
+
+/-- **Regression (audit AV-M1): the half-space is not needed.** For every family of surfaces on
+which the rational stellarator field satisfies clause C1 with some allowance `I_max`, and whose
+poloidal loops lie in the bounded ball of radius `1/2` about `(1, 0, 0)`, the clause holds
+with `I_max = 0`, by `CurrentFreeTransform.imax_zero_of_convex` with that ball. The vacuum
+hypothesis is used only on the ball, a convex neighbourhood of the poloidal cross-section;
+nothing is assumed about the field elsewhere in the meridian half-space. The clause `hC` is
+assumed: only the allowance improves. -/
+theorem rationalStellarator_imax_zero_ball
+    (hC : CurrentFreeTransform μ₀ (RationalStellarator.field (1 / 4)) S Imax ιmin)
+    (hS : ∀ s ∈ S, ∀ θ ∈ Set.Icc (-Real.pi) Real.pi, s.loop θ ∈ ballOpens stellCentre (1 / 2)) :
+    CurrentFreeTransform μ₀ (RationalStellarator.field (1 / 4)) S 0 ιmin :=
+  hC.imax_zero_of_convex fun s hs =>
+    ⟨ballOpens stellCentre (1 / 2), convex_ball _ _, rationalStellarator_vacuum_ball, hS s hs⟩
+
+/-- **Regression (audit AV-M1): the bounded-region statement is instantiated.** For every
+`μ₀ > 0` there is a family of surfaces (the certified exact torus near torus A, with its
+poloidal loop at `φ₀ = 0`) satisfying clause C1 for the rational stellarator field with
+allowance `I_max = 1` and `ι_min = ι_A`, whose poloidal loops lie in the ball of radius `1/2`
+about `(1, 0, 0)`; `rationalStellarator_imax_zero_ball` gives the clause with `I_max = 0` and
+`CurrentFreeTransform.current_eq_zero_of_convex` gives zero current on each surface.
+
+What is and is not instantiated: the family is that of
+`rationalStellarator_currentFreeTransform`, rebuilt here because that theorem hides it behind
+an existential. Its clause is proved with `I_max = 0` from the potential of the field, and the
+allowance `1` is obtained by `CurrentFreeTransform.mono`; so, as for
+`rationalStellarator_fixture`, this is a satisfiability and consistency check of the hypotheses
+of the convex-region corollary, not an improved estimate. The field is an idealised one
+(singular only on the `z`-axis); no coil-generated field is instantiated. -/
+theorem rationalStellarator_ball_fixture (hμ : 0 < μ₀) :
+    ∃ S : Set SurfaceData,
+      CurrentFreeTransform μ₀ (RationalStellarator.field (1 / 4)) S 1 KamTorusA.iota ∧
+      (∀ s ∈ S, ∀ θ, s.loop θ ∈ ballOpens stellCentre (1 / 2)) ∧
+      CurrentFreeTransform μ₀ (RationalStellarator.field (1 / 4)) S 0 KamTorusA.iota ∧
+      ∀ s ∈ S, s.current μ₀ (RationalStellarator.field (1 / 4)) = 0 := by
+  obtain ⟨u, z, hu, hz, hur, hzr, hR, hZ, hC⟩ := KamNewton.torusA_exact
+  have hK := KamNewton.exactTorus hu hz hur hzr hR hZ hC
+  have hmem : ∀ θ, (RationalStellaratorContract.exactSurface (KamNewton.Rof u)
+      (KamNewton.Zof z)).loop θ ∈ RationalStellarator.domain :=
+    fun θ => stellBall_subset_domain (exactSurface_loop_mem_ball hK θ)
+  have h0 : CurrentFreeTransform μ₀ (RationalStellarator.field (1 / 4))
+      {RationalStellaratorContract.exactSurface (KamNewton.Rof u) (KamNewton.Zof z)} 0
+      KamTorusA.iota := by
+    refine currentFreeTransform_of_potential (T := RationalStellarator.toroidal)
+      (g := fun y => ((1 / 4 : ℝ) / 4) • RationalStellarator.gradH y)
+      (Φ := fun y => (1 / 4 : ℝ) / 4 * RationalStellarator.H y) hμ (Set.singleton_nonempty _)
+      RationalStellaratorContract.iota_pos ?_ ?_ ?_ ?_ ?_
+      RationalStellaratorContract.toroidal_purelyToroidal ?_ ?_
+    · rintro s rfl; exact RationalStellaratorContract.ExactTorus.iotaOnTorus hK
+    · rintro s rfl
+      exact hK.contDiff_R.comp (contDiff_id.prodMk contDiff_const)
+    · rintro s rfl
+      exact hK.contDiff_Z.comp (contDiff_id.prodMk contDiff_const)
+    · rintro s rfl θ
+      exact (RationalStellarator.field_vacuum (1 / 4)).contDiffOn.continuousOn.continuousAt
+        ((RationalStellarator.field_vacuum (1 / 4)).isOpen.mem_nhds (hmem θ))
+    · rintro s rfl θ; exact RationalStellaratorContract.field_split _
+    · rintro s rfl θ; exact RationalStellaratorContract.hasFDerivAt_potential (hmem θ)
+    · rintro s rfl
+      exact le_of_eq (abs_of_pos RationalStellaratorContract.iota_pos).symm
+  have h1 := h0.mono zero_le_one le_rfl RationalStellaratorContract.iota_pos
+  refine ⟨_, h1, ?_, ?_, ?_⟩
+  · rintro s rfl θ
+    exact exactSurface_loop_mem_ball hK θ
+  · refine rationalStellarator_imax_zero_ball h1 ?_
+    rintro s rfl θ -
+    exact exactSurface_loop_mem_ball hK θ
+  · rintro s rfl
+    exact h1.current_eq_zero_of_convex (convex_ball _ _) rationalStellarator_vacuum_ball rfl
+      fun θ _ => exactSurface_loop_mem_ball hK θ
 
 end C1
 

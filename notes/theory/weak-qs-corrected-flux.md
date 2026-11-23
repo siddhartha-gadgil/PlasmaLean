@@ -13,9 +13,9 @@
 | Produces | Q-29 statements and Lean targets |
 | Difficulty | routine–moderate (Lean); research for any device application (an exact weak-QS equilibrium and a certified buffer) |
 | Status | stated; complete mathematical proof checked (N-42); lean-ready |
-| Lean evidence | none yet |
+| Lean evidence | step 1 only: `PlasmaLean.Fields.WeakQS.lieDerivForm_flux_eq_zero`, `WeakQS.lieBracket_eq_zero` (`Theory/Fields/FormCalculus`; they need, beyond `WeakQS`, an open set, `B` differentiable and divergence-free, and a `C²` potential); nothing for steps 2–5 |
 | Audit evidence | not audited |
-| Last updated | 20 November 2026: created from N-42 |
+| Last updated | 20 November 2026: created from N-42; 23 November 2026: Lean evidence for step 1 recorded |
 | Patched by / Alternatives | method for N-29 and N-17; their compiled results stand |
 
 ## Purpose and scope

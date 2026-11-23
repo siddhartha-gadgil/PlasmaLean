@@ -18,8 +18,8 @@ The field of a straight wire, `B = e_z × x/(x² + y²)`, on the complement of i
 * `wire_period`: the de Rham period of `B♭` on the class of that loop is `2π`.
 * `wire_periodHom_ne_zero`: so the period homomorphism of `B♭` is not zero. (For a field with a
   potential it would be zero; this is the rejected case.)
-* `gradient_circulation_eq_zero`-type accepted case: `uniform_circulation`: the circulation of a
-  uniform field around the same loop is `0`.
+* Accepted case, a field with a potential: `uniform_circulation`: the circulation of a uniform
+  field around the same loop is `0`.
 -/
 
 @[expose] public section

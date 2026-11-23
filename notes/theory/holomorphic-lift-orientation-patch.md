@@ -13,7 +13,7 @@
 | Produces | the corrected statement below; audit item AK-3 resolved by this note |
 | Difficulty | routine |
 | Status | verified by exact computation (`scripts/kinetic_brief/check_brief.py`, checks 11–12) |
-| Lean evidence | none (the lift is not formalized); no declaration affected |
+| Lean evidence | since 23 November 2026 the lift is formalized (`Theory/Fields/FormHYMLift`, `FormHYMStar`): `liftStar_hymLiftAt` (anti-self-dual for the orientation `dx ∧ dy ∧ dz ∧ dτ`), `euclidForm_neg_liftStar` and `Sanity.FormHYMStar.lift_selfDual_opposite_orientation` (self-dual for the opposite orientation), which is this note's statement |
 | Audit evidence | AK-3 (low, prose), resolved by this patch |
 | Last updated | 4 November 2026: created |
 | Patches | N-32, "Summary of the brief", item 5 (Holomorphic lift), and any later statement that ℱ is anti-self-dual |
@@ -39,7 +39,8 @@ uses F = dτ ∧ α − ∗₃α with orientation dτ ∧ vol₃. In either conv
 asks for the Hodge-star sign to be verified, and checks 11–12 of `check_brief.py` do so: ∗₄ computed
 from the Levi-Civita symbol on ℝ⁴.
 
-**Effect on Lean:** none. No declaration encodes the lift. The compiled Q-25 results
+**Effect on Lean (as of 3 November):** none; no declaration then encoded the lift. Since
+23 November 2026 it is formalized, see the metadata row "Lean evidence". The compiled Q-25 results
 (`Fields.QSLinear.*`, `Design.QSJetExample.*`, `Design.RationalStellaratorJetObstruction.*`) use
 only ι_u β = dΨ, i.e. B × u = ∇Ψ, which is orientation-consistent with the brief (N-36, claim 28).
 N-32's conclusion stands: the lift re-encodes the unique vacuum field and produces no new fields.

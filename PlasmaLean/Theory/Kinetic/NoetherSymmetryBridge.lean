@@ -18,8 +18,9 @@ theorem under the infinitesimal hypothesis `DA(y)(K y) = K(A y)`. This file clos
 **Finite symmetry gives the infinitesimal one.**
 
 * `fderiv_eq_of_equivariant`: if `A` is differentiable at `y` and `A (g s y) = g s (A y)` for a
-  family of maps `g s` with `g 0 = id` on the two points involved and velocities `K y`,
-  `K (A y)` at `s = 0`, then `DA(y)(K y) = K(A y)`. The maps `g s` need not be linear.
+  family of maps `g s` with `g 0 y = y` (nothing is assumed about `g 0` at any other point,
+  in particular not at `A y`) and velocities `K y` at `y`, `K (A y)` at `A y` for `s = 0`,
+  then `DA(y)(K y) = K(A y)`. The maps `g s` need not be linear.
 * `fderiv_eq_of_equivariant_clm`: the same for a family of continuous linear maps `g s` with
   `g 0 = 1` and derivative `K` at `0`.
 * `rotZ_hasDerivAt_rotGenZ`, `fderiv_rotGenZ_of_rotZ_equivariant`: the rotations
@@ -34,7 +35,9 @@ For a skew continuous linear `K`, the function `ψ(y) = ⟪A(y), K y⟫` has gra
 
 * `symmetricFlux_symmetryFluxGrad_iff`: with `B = ∇ × A`, the hypothesis
   `SymmetricFlux B G K` of the direct proof, for this `G`, is equivalent to infinitesimal
-  equivariance of `A` under `K`. This direction does not use skewness of `K`.
+  equivariance of `A` under `K`. Neither direction of the equivalence uses skewness of `K`;
+  skewness is used only in `hasFDerivAt_symmetryFlux`, to identify `G` as the gradient of
+  `ψ`.
 * `symmetricFlux_of_equivariant`, `isKilling_linear`, `axisymmetricFlux_of_equivariant`,
   `axisymmetricFlux_iff_symmetricFlux_rotGenZ`: the hypotheses of `noetherMomentum_conserved`
   and of `canonicalMomentum_conserved`.
@@ -44,10 +47,11 @@ For a skew continuous linear `K`, the function `ψ(y) = ⟪A(y), K y⟫` has gra
   without TauCeti's Noether theorem.
 
 Scope: `A` time-independent and differentiable on all of space, `B = ∇ × A` everywhere, no
-electric field. Not proved: the gauge-term case (`A` equivariant up to a gradient) is not
-bridged; the converse "infinitesimal equivariance implies equivariance under the finite
-rotations" is not proved; no statement is made for symmetries that are not linear
-(translations are in `Theory/Kinetic/NoetherLagrangian`).
+electric field. The gauge-term case (`A` equivariant up to a gradient) is bridged in
+`Theory/Kinetic/NoetherGaugeBridge`, which also proves the converse "infinitesimal equivariance
+implies equivariance under the finite rotations" for a linear potential. Not proved here: that
+converse for a potential that is not linear; no statement is made for symmetries that are not
+linear (translations are in `Theory/Kinetic/NoetherLagrangian`).
 -/
 
 @[expose] public section
@@ -150,7 +154,9 @@ theorem hasFDerivAt_symmetryFlux {A : Space → Space} {K : Space →L[ℝ] Spac
 
 /-- **Equivalence of the hypotheses.** With `B = ∇ × A` at `y`, the identity
 `⟪K y, v × B(y)⟫ = −⟪G(y), v⟫` for all `v` (the hypothesis of the direct proof at `y`), for
-`G = symmetryFluxGrad A K`, holds if and only if `DA(y)(K y) = K(A y)`. -/
+`G = symmetryFluxGrad A K`, holds if and only if `DA(y)(K y) = K(A y)`. No differentiability of
+`A` and no skewness of `K` is assumed: where `A` is not differentiable both sides are computed
+with the junk derivative `0`. -/
 theorem symmetricFlux_at_iff {A B : Space → Space} {K : Space →L[ℝ] Space} {y : Space}
     (hcurl : B y = fieldCurl A y) :
     (∀ v, ⟪K y, cross v (B y)⟫ = -⟪symmetryFluxGrad A K y, v⟫)
@@ -173,7 +179,9 @@ theorem symmetricFlux_at_iff {A B : Space → Space} {K : Space →L[ℝ] Space}
 
 /-- **Equivalence of the hypotheses, globally.** With `B = ∇ × A`, the hypothesis
 `SymmetricFlux B G K` of `noetherMomentum_conserved`, for `G = symmetryFluxGrad A K`, is
-equivalent to infinitesimal equivariance of `A` under `K`. -/
+equivalent to infinitesimal equivariance of `A` under `K`. No differentiability of `A` and no
+skewness of `K` is assumed: where `A` is not differentiable both sides are computed with the
+junk derivative `0`. -/
 theorem symmetricFlux_symmetryFluxGrad_iff {A B : Space → Space} {K : Space →L[ℝ] Space}
     (hcurl : ∀ y, B y = fieldCurl A y) :
     SymmetricFlux B (symmetryFluxGrad A K) (fun y => K y)

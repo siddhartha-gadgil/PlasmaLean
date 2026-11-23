@@ -74,7 +74,8 @@ refresh audit).**
   - Witnesses through potentials (`currentFreeTransform_of_potential`):
     `rationalStellarator_currentFreeTransform` and `DommaschkQA3.candidate_currentFreeTransform`.
     The second reduces C1 to certifying tori.
-  - **Landreman family 2 fails C1** (`family2_not_currentFreeTransform`), via the Stokes theorem
+  - **Landreman family 2 fails C1** (`family2_not_currentFreeTransform`: for families containing a
+    surface whose poloidal loop is the family-2 loop in its given parametrisation), via the Stokes theorem
     for regular sections `netToroidalCurrent_eq_lineIntegral_div` (`Theory/Contract/SectionStokes`)
     and `family2_loopCurrent_pos`.
 - **C2:** partial, in the Boozer guiding-centre model.
@@ -244,7 +245,7 @@ superseded; mixed notes list the status of their parts. "Lean" names compiled ev
 | `N-45` | `notes/theory/differential-form-kernel.md`: differential-form language for the vacuum and force-balance kernel laws, with equivalences to the vector language | G-11 | `Kernel/Vacuum`, `Kernel/Equilibrium`; Mathlib `extDeriv` | routine–moderate | verified (`vacuumForm_flux_iff`, `vacuumField_fluxSymm_iff`, `formForceBalance_iff`, `forceBalance_iff`, `extDeriv_flat`, `extDeriv_flux`; `Sanity/Forms`; theory bridges `formFirstIntegralOn_flux_iff`, `formSymmetricFlux_iff`, `formWeakQS_flux_iff`, `formBeltramiOn_flat_iff`, `isContactAt_of_beltrami`) | audited 16 November 2026 (AD-*; `Sanity/AuditForms`); open: AD-L4, AD-L5 |
 | `N-46` | `notes/theory/sullivan-infinity-structures.md`: assessment of Sullivan's L∞ (combinatorial) and eigenspace fluid models for MHD and stellarators | G-9, G-11, Q-33 | `sources/SullivanFluids.pdf`; N-45; `Theory/Stability/Elsasser` | moderate | stated; Part 2 checked in Lean (`EulerianODE.energy_conserved`, `EulerianODE.helicity_conserved`, `rigidBody_eulerian`); no design consequence | none required; revisit if an implementation of the L∞ hierarchy is published |
 | `N-47` | `notes/theory/issan-arbitrary-field-periods.md`: assessment of the closed-form equilibria with any number of field periods (Issan et al., arXiv:2611.07672) | G-4, Q-17, Q-18, Q-20 | `sources/Non-AxisymmetricMHD.pdf`; N-28, N-27 | moderate | stated; 12 of 20 claims checked numerically (`scripts/issan_equilibria/`), none incorrect; nothing in Lean | optional Lean unit: Family 1 (ρ_a = ρ₀, N = 3) with zero loop current (Q-20) |
-| `N-48` | `notes/theory/form-kernel-tauceti-complex-geometry.md`: the form kernel after TauCeti v4.36.0, a bridge to forms on manifolds, and the fit of the complex-geometry notes | G-11; supports Q-29, Q-24, Q-16 | method for N-45; N-42, N-43, N-44; TauCeti Lie derivative, Poincaré lemma, forms on open subsets, simply connected exactness, wedge, linear contact criterion | routine–moderate (done parts); hard (periods, surfaces) | verified: `WeakQS.lieDerivForm_flux_eq_zero`, `VacuumField.exists_scalarPotential`, `onOpens` with `isSmoothForm_onOpens_iff` and `mextDeriv_onOpens`, `VacuumField.exists_scalarPotential_of_simplyConnected`, `wireField_no_potential`, `wireRegion_not_simplyConnected`, `wedge12_eq_wedge`, `isContactAt_iff_nondegenerate`, `IsBeltramiOn.reeb`, `IsBeltramiOn.reeb_unique`, `WeakQS.lieBracket_eq_zero`, `periodHom_onOpens_flat`, `wire_period`, `noetherMomentum_translation_conserved` (`Theory/Fields/FormCalculus`, `FormTopology`, `FormContact`, `FormPeriods`, `Theory/Kinetic/NoetherLagrangian` and `Sanity` modules); fit table for N-42–N-44; symplectic files assessed, `Hamiltonian/Noether` used | strict audit of the 23 November modules; line bundle of the lift (blocked on TauCeti); de Rham classes of an embedded flux surface |
+| `N-48` | `notes/theory/form-kernel-tauceti-complex-geometry.md`: the form kernel after TauCeti v4.36.0: topology and periods, contact geometry, the anti-self-dual lift, charged-particle Noether and Hamiltonian theory; fit of the complex-geometry notes | G-11; supports Q-29, Q-24, Q-16 | method for N-45; N-42, N-43, N-44; TauCeti v4.36.0 | routine–moderate | verified, audited 23 November 2026 (AV-*): twenty theory modules under `Theory/Fields/Form*` and `Theory/Kinetic/{Noether*, Magnetic*, CrossedFieldOrbit}` with sanity modules; see the note's "Current state" | open audit items AV-M4 (local versions); line bundle of the lift (blocked on TauCeti); de Rham classes of an embedded flux surface; Dommaschk check of the C1 corollary |
 
 Main dependency edges: N-9 → N-10 → N-14 → N-15 → (Q-4, Q-5); N-10 → N-13 → (N-16 → Q-2, Q-14);
 N-4 → (N-8, N-7 → N-17 → Q-1); N-12 → (Q-3, Q-14, Q-16) → G-4; N-4 → Q-16 → G-6; N-2, N-6 → Q-10 → G-2, G-7;
@@ -259,17 +260,46 @@ The canonical first command is `start` (skill `plasmalean-audit-domain`). Previo
 
 | Audit | Value |
 | --- | --- |
-| Audited commit | `921a8c3` (refresh audit, 31 October 2026, of all changes since `cda8bd0`; record [`notes/audit/2026-10-31-refresh-audit.md`](https://github.com/siddhartha-gadgil/PlasmaLean/blob/main/notes/audit/2026-10-31-refresh-audit.md)); before that `cda8bd0` (first strict audit, 30 October 2026) |
+| Audited commit | **`6ceca0e` (complete refresh audit, 23 November 2026, of all changes since `921a8c3`; record [`notes/audit/2026-11-23-refresh-audit.md`](https://github.com/siddhartha-gadgil/PlasmaLean/blob/main/notes/audit/2026-11-23-refresh-audit.md); findings AV-*)**; before that `921a8c3` (refresh audit, 31 October 2026, of all changes since `cda8bd0`; record [`notes/audit/2026-10-31-refresh-audit.md`](https://github.com/siddhartha-gadgil/PlasmaLean/blob/main/notes/audit/2026-10-31-refresh-audit.md)); before that `cda8bd0` (first strict audit, 30 October 2026) |
 | Scope | full startup audit: all six kernel modules; repository scans; headline-claims trace; note-to-code links; certificate soundness |
 | Kernel coverage | every kernel declaration reviewed (52: 28 definitions, 11 laws with 48 fields, 3 predicates, 10 theorems), record [`notes/audit/2026-10-30-kernel-audit.md`](https://github.com/siddhartha-gadgil/PlasmaLean/blob/main/notes/audit/2026-10-30-kernel-audit.md) |
 | Commands run | `lake build --no-build PlasmaLean` (current), `lake env lean scripts/check_axioms.lean` (122 entry points, standard axioms only), single-module builds of the new sanity modules, then `lake build PlasmaLean` (zero warnings) |
-| Open findings | kernel: 1 medium (F-1), 9 low; repository: 0 critical, 1 high (H-1), 5 medium; complex-geometry note: AF-1 (low); see below and [`notes/audit/2026-10-30-repository-audit.md`](https://github.com/siddhartha-gadgil/PlasmaLean/blob/main/notes/audit/2026-10-30-repository-audit.md) |
+| Open findings | kernel: 1 medium (F-1), 9 low; repository: 0 critical, 1 high (H-1), 5 medium; complex-geometry note: AF-1 (low); forms audit: AD-L4, AD-L5 (low); audit of 23 November: AV-M7, AV-M8 (medium) and the items listed below; see below and [`notes/audit/2026-10-30-repository-audit.md`](https://github.com/siddhartha-gadgil/PlasmaLean/blob/main/notes/audit/2026-10-30-repository-audit.md) |
 | Missing sanity checks | added: 58 kernel theorems in `PlasmaLean/Sanity/Audit{Equilibrium, ThermalSlab, Vacuum, Transport, Fusion}.lean` and 54 model theorems (plus 7 definitions) in `PlasmaLean/Sanity/AuditModel{GuidingCentre, Stability, Transport}.lean` (triad, risk-specific and regression checks), all in the default build; model record [`notes/audit/2026-10-30-model-audit.md`](https://github.com/siddhartha-gadgil/PlasmaLean/blob/main/notes/audit/2026-10-30-model-audit.md) |
+
+**Complete refresh audit (23 November 2026).** Audited commit `6ceca0e`; scope: all 304 Lean
+files changed since `921a8c3` and the note-to-code links of N-41–N-48, the README and the
+Rosetta-stone page. Six independent read-only sub-audits; record
+[`notes/audit/2026-11-23-refresh-audit.md`](https://github.com/siddhartha-gadgil/PlasmaLean/blob/main/notes/audit/2026-11-23-refresh-audit.md).
+- **No critical finding; no false or vacuous exported theorem.** 1 high, 12 medium, about 40
+  low. Commands after the fixes: all 1,729 modules build (13,003 jobs, no warning);
+  `check_axioms` passed for 52,147 declarations; `check_axioms_heavy` for 59,106.
+- **AV-H1 (high, documentation, resolved):** the magnetic symplectic form was mislabelled: in the
+  convention used it is `Ω − q π^*ω_B` on kinetic phase space. The proved identities were
+  correct. Sign pinned by `magneticForm_lorentzForceField`; rejected fixture
+  `uniform_plus_sign_fails`.
+- **AV-M1, AV-M2 (resolved):** the clause-C1 corollaries are Stokes on the planar cross-section;
+  "automatic for vacuum fields" was an overstatement; general form
+  `CurrentFreeTransform.imax_zero_of_convex`.
+- **AV-M3 (resolved):** gauge invariance now stated with hypotheses
+  (`noetherMomentum_gauge_invariant`).
+- **AV-M7 (open): clause C2 for a field has only a vacuous instance** (the toroidal field with
+  `ι = 0`, which fails C1). No field is shown to satisfy C1 and C2 together.
+- **AV-M8 (open): `BoozerChart` does not pin the poloidal angle**; the `ι` of C2 is defined modulo
+  integers (`BoozerModelOf.relabel`, `toroidal_boozerModelOf_iota_one`) and is not tied to the `ι`
+  of C1.
+- **AV-M9 (documented; one part open):** C1 is satisfied by a single torus; `ι` is unique for a
+  fixed parametrisation only under a differentiability hypothesis (`iotaOnTorus_iota_unique`).
+- **AV-M4 (partly resolved):** the kinetic theorems need a global vector potential; uniqueness of
+  orbits now holds for `C¹` fields without potentials (`lorentzOrbit_unique_of_contDiff`).
+- **AV-M10 (resolved):** `dommaschk_Q16_chart` exposes the regularity behind the defect bounds.
+- Open after this audit: AV-M7, AV-M8, parts of AV-M4, AV-M9, AV-M11; AV-L3, AV-L6; AF-1; AD-L4,
+  AD-L5.
 
 **Partial audit of the differential-form modules (16 November 2026).** Audited commit `1e5d4f3`,
 scope `Kernel/Forms`, `Sanity/Forms`, `Theory/Fields/FormBridges` only; record
 [`notes/audit/2026-11-16-forms-audit.md`](https://github.com/siddhartha-gadgil/PlasmaLean/blob/main/notes/audit/2026-11-16-forms-audit.md).
-The rest of the work since `921a8c3` has **not** had a refresh audit.
+The rest of the work since `921a8c3` had no refresh audit until 23 November 2026 (above).
 - No exported theorem was false; conventions (orientation, signs, `extDeriv` normalization) are
   consistent.
 - **AD-H1 (high, documentation, resolved):** the `FormBridges` module doc claimed symmetric-flux
@@ -2380,3 +2410,22 @@ with a literature search and independent numerical checks; note
   classes of an embedded flux surface; the C1 consequence on the on-demand Dommaschk instances;
   a strict audit of everything added on 23 November 2026.
 - **Registry:** N-48 added; pointers in N-45, N-43, N-42.
+
+### Complete refresh audit, 23 November 2026
+
+- Scope and result: see RG.4 and `notes/audit/2026-11-23-refresh-audit.md`. All changes since
+  `921a8c3` audited (304 Lean files; documents). No critical finding; 1 high, 12 medium.
+- New sanity module `Sanity/AuditContractC2`; regression theorems in the sanity modules of the
+  audited files; `dommaschk_Q16_chart`; the tooling's `assess` gate now requires the three
+  standard axioms.
+- Documents corrected: README (two overclaims), N-48 (a "Current state" section; stale and
+  overstated passages), the Rosetta-stone page (magnetic-form sign, clause C1, gauge invariance,
+  a dropped hypothesis), N-37, N-35, N-43.
+- Record of the renumbering of 22 November 2026 (not logged then): on merging `main` into the
+  branch `tauceti`, the notes numbered N-41, N-42, N-43 on that branch became N-45, N-46, N-47,
+  the question Q-29 became Q-33, and the forms-audit findings AF-* became AD-*. Commit messages
+  `e2dc6a5`, `1e5d4f3`, `9414b7a`, `63fa5f5` carry the old labels.
+- **Contract status after the audit:** C1 is verified for the Dommaschk and rational fields in
+  the sense of the predicate (a nonempty family of invariant tori with `|ι| ≥ ι_min` and a
+  current bound that carries no information for these vacuum fields, AV-M1). C2 has no non-vacuous instance for
+  any field (AV-M7), and its `ι` is not tied to that of C1 (AV-M8).

@@ -42,7 +42,8 @@ Heavy numerics and large certificate builds can be offloaded to a workstation; s
 C1 together with a certified quasisymmetry defect, in vacuum. C2–C5 are open for it.
 
 - **The lead candidate: an exact Dommaschk quasi-axisymmetric vacuum field.** It is a purely
-  rational field with two field periods (`Design/DommaschkQA2R`). It was found by untrusted
+  rational field with two field periods (`Design/DommaschkQA2R`; the two-period symmetry is used
+  on the certified tori and is not stated as a theorem about the field). It was found by untrusted
   workstation numerics and then certified in Lean through on-demand modules, standard axioms only
   ([N-31](notes/theory/dommaschk-qa.md), [N-33](notes/theory/dommaschk-kam-certificate.md),
   [N-34](notes/theory/dommaschk-qs-defect.md)). Main theorem:
@@ -63,11 +64,19 @@ C1 together with a certified quasisymmetry defect, in vacuum. C2–C5 are open f
   ι ≈ 0.137 that confines its field lines for all time. The C1 current is the Ampère circulation
   μ₀⁻¹∮B·dl around each torus's own poloidal loop; this is audit fix AR-H1, since an earlier
   section-based clause could be satisfied vacuously. Landreman family 2 fails C1
-  (`family2_not_currentFreeTransform`).
+  (`family2_not_currentFreeTransform`, for any family containing a surface whose poloidal loop is
+  the family-2 loop in its given parametrisation; invariant tori of family 2 in the contract's
+  form are not constructed).
 - **C2:**
   - **Contract:** since audit fix AC-1, C2 is a property of the physical field. It requires a proved
     Boozer chart (`Contract.BoozerModelOf`); the only field-level instance so far is the vacuous
     ∇φ fixture.
+  - **Audit of 23 November 2026** ([record](notes/audit/2026-11-23-refresh-audit.md)): no false or
+    vacuous theorem was found in the work since 31 October. Two limits of the contract are now
+    recorded and open: clause C2 has no non-vacuous instance for any field (AV-M7), and the
+    rotational transform of its Boozer chart is defined only modulo integers and is not tied to
+    the transform of C1 (AV-M8). For vacuum fields the current bound of C1 carries no information
+    (AV-M1); its content is in the invariant tori and their transform.
   - **The bridge:** in the Boozer guiding-centre model, quasisymmetry implies omnigeneity, exactly
     and with a per-bounce defect bound (`omnigenousOn_of_exactQS`, `approxOmnigenousOn_of_defect_le`).
     The `exactQA`/`reactorQA` results are statements about a supplied Boozer model.

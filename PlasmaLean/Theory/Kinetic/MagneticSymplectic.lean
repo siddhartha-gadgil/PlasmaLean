@@ -24,9 +24,21 @@ Lorentz orbits.
   hypothesis.
 * `kineticMomentumMap q A`: the map `(x, p) ↦ (x, p − q A(x)♭)` from canonical to kinetic
   momentum (`TauCeti.cotangentFiberTranslate`). It is a bijection
-  (`kineticMomentumMap_bijective`), and where `A` is differentiable its derivative pulls the
-  canonical form back to the magnetic form `Ω + q π^*ω_B` with `B = ∇ × A`
+  (`kineticMomentumMap_bijective`) with inverse `kineticMomentumMap (-q) A`
+  (`kineticMomentumMap_neg_comp`). Where `A` is differentiable, with `B = ∇ × A`, the identity
+  proved is `Ω(DΨ v, DΨ w) = Ω(v, w) + q ω_B(δx_v, δx_w)`, that is `Ψ^*Ω = Ω + q π^*ω_B`
   (`canonicalForm_fderiv_kineticMomentumMap`, `canonicalForm_fderiv_kineticMomentumMap_flux`).
+* **Sign and direction of the magnetic symplectic form.** In the convention above
+  (`ι_X Ω = dH`) the magnetic symplectic form on the space of positions and KINETIC momenta is
+  `magneticForm q B = Ω − q π^*ω_B`, with a minus sign. The sign is fixed by
+  `magneticForm_lorentzForceField`: with this form the free Hamiltonian `‖π‖² / (2m)` has
+  Hamiltonian vector field `lorentzForceField`, `x' = π♯/m`, `π' = (q/m) (π♯ × B)♭`, and
+  Lorentz orbits are its integral curves (`lorentzOrbit_kineticCurve`). The map `Ψ` goes from
+  (canonical momenta, `Ω`) to (kinetic momenta, `Ω − q π^*ω_B`) and is symplectic between
+  these (`magneticForm_fderiv_kineticMomentumMap`); its inverse pulls `Ω` back to
+  `Ω − q π^*ω_B` (`canonicalForm_fderiv_kineticMomentumMap_neg_flux`). The form
+  `Ω + q π^*ω_B` of the first identity is a form on the space of canonical momenta, the
+  pull-back of the canonical form of the kinetic space; it is not the magnetic form.
 * `magneticHamiltonian m q A`: the free-particle kinetic energy of TauCeti composed with the
   kinetic momentum map, `H(x, p) = ‖p♯ − q A(x)‖² / (2m)` (`magneticHamiltonian_eq`), with
   derivative `fderiv_magneticHamiltonian_apply`.
@@ -35,9 +47,18 @@ Lorentz orbits.
   of `H` for the canonical form (`TauCeti.SymplecticForm.hamiltonianVectorField`, convention
   `ι_X Ω = dH`). `magneticHamiltonian_canonicalCurve`: on that curve `H = (m/2)‖v‖²`.
 
+Limit of the statements: every theorem that relates `B` to `A` assumes a vector potential `A`
+differentiable on ALL of space with `B = ∇ × A` everywhere (or at the point considered, for the
+pointwise statements). This excludes the vacuum field `∇φ` of a straight wire or of a toroidal
+coil (it has no global potential regular on the axis) and any field defined only on a toroidal
+region. Versions on an open set containing the orbit are not stated. Only `magneticForm`,
+`lorentzForceField`, `magneticForm_lorentzForceField` and `lorentzOrbit_kineticCurve` use the
+field `B` alone, with no potential and no regularity.
+
 Not proved here: the kinetic momentum map is not bundled as a symplectomorphism (the statements
-are pointwise, as in TauCeti); no time-dependent potential is treated. The converse (integral
-curves of the Hamiltonian field are Lorentz orbits) and an electric field are in
+are pointwise, as in TauCeti), and closedness and nondegeneracy of `magneticForm` are not
+stated; no time-dependent potential is treated. The converse (integral curves of the
+Hamiltonian field are Lorentz orbits) and an electric field are in
 `Theory/Kinetic/MagneticHamiltonConverse`.
 -/
 
@@ -106,12 +127,14 @@ theorem kineticMomentumMap_bijective (q : ℝ) (A : Space → Space) :
   ⟨(leftInverse_cotangentFiberTranslate_neg (potentialForm q A)).injective,
     (rightInverse_cotangentFiberTranslate_neg (potentialForm q A)).surjective⟩
 
-/-- **The kinetic momentum map carries the magnetic form to the canonical form.** At a point
-`z = (x, p)` where the vector potential `A` is differentiable, the derivative of
-`(x, p) ↦ (x, p − q A(x)♭)` pulls the canonical symplectic form `Ω` back to
-`Ω + π^*d(q A♭)`: on tangent vectors `v`, `w`,
-`Ω(DΨ v, DΨ w) = Ω(v, w) + d(q A♭)_x(δx_v, δx_w)`. This is
-`TauCeti.strongDualCotangentSymplecticForm_fderiv_cotangentFiberTranslate` for `σ = q A♭`. -/
+/-- **Pull-back of the canonical form by the kinetic momentum map.** At a point `z = (x, p)`
+where the vector potential `A` is differentiable, the derivative of
+`Ψ : (x, p) ↦ (x, p − q A(x)♭)` satisfies, on tangent vectors `v`, `w`,
+`Ω(DΨ v, DΨ w) = Ω(v, w) + d(q A♭)_x(δx_v, δx_w)`, that is `Ψ^*Ω = Ω + π^*d(q A♭)`. This is
+`TauCeti.strongDualCotangentSymplecticForm_fderiv_cotangentFiberTranslate` for `σ = q A♭`.
+The right-hand side is a form on the space of canonical momenta. It is not the magnetic
+symplectic form, which lives on the space of kinetic momenta and is `Ω − q π^*ω_B`
+(`magneticForm`, `magneticForm_fderiv_kineticMomentumMap`). -/
 theorem canonicalForm_fderiv_kineticMomentumMap (q : ℝ) {A : Space → Space} {z : PhaseSpace}
     (hA : DifferentiableAt ℝ A z.1) (v w : PhaseSpace) :
     strongDualCotangentSymplecticForm (fderiv ℝ (kineticMomentumMap q A) z v)
@@ -120,10 +143,14 @@ theorem canonicalForm_fderiv_kineticMomentumMap (q : ℝ) {A : Space → Space} 
   strongDualCotangentSymplecticForm_fderiv_cotangentFiberTranslate
     (differentiableAt_potentialForm q hA) v w
 
-/-- **The magnetic symplectic form is `Ω + q π^*ω_B`.** In kernel language the pulled-back form
-of `canonicalForm_fderiv_kineticMomentumMap` is the canonical form plus the charge times the
+/-- **`Ψ^*Ω = Ω + q π^*ω_B`.** In kernel language the pulled-back form of
+`canonicalForm_fderiv_kineticMomentumMap` is the canonical form plus the charge times the
 flux form of `B = ∇ × A` on the position components:
-`Ω(DΨ v, DΨ w) = Ω(v, w) + q ω_B(δx_v, δx_w)`. -/
+`Ω(DΨ v, DΨ w) = Ω(v, w) + q ω_B(δx_v, δx_w)`, for `Ψ` from canonical to kinetic momenta.
+Convention: `Ω((δx, δp), (δx', δp')) = δp'(δx) − δp(δx')`, `ι_X Ω = dH`, and
+`ω_B(a, b) = ⟪B, a × b⟫`. In this convention the magnetic symplectic form on the kinetic
+space is `Ω − q π^*ω_B` (`magneticForm`), with the opposite sign; the present identity says
+that `Ψ` pulls it back to `Ω` (`magneticForm_fderiv_kineticMomentumMap`). -/
 theorem canonicalForm_fderiv_kineticMomentumMap_flux (q : ℝ) {A : Space → Space}
     {z : PhaseSpace} (hA : DifferentiableAt ℝ A z.1) (v w : PhaseSpace) :
     strongDualCotangentSymplecticForm (fderiv ℝ (kineticMomentumMap q A) z v)
@@ -144,6 +171,105 @@ theorem fderiv_kineticMomentumMap (q : ℝ) {A : Space → Space} {z : PhaseSpac
   refine Prod.ext rfl ?_
   ext u
   simp
+
+/-- The kinetic momentum map with charge `−q` is the inverse of the one with charge `q`:
+`(x, π) ↦ (x, π + q A(x)♭)` from kinetic to canonical momenta. No hypothesis on `A`. -/
+theorem kineticMomentumMap_neg_comp (q : ℝ) (A : Space → Space) (z : PhaseSpace) :
+    kineticMomentumMap (-q) A (kineticMomentumMap q A z) = z ∧
+      kineticMomentumMap q A (kineticMomentumMap (-q) A z) = z := by
+  refine ⟨Prod.ext (by simp) ?_, Prod.ext (by simp) ?_⟩
+  · rw [kineticMomentumMap_snd, kineticMomentumMap_snd, kineticMomentumMap_fst]
+    simp
+  · rw [kineticMomentumMap_snd, kineticMomentumMap_snd, kineticMomentumMap_fst]
+    simp
+
+/-- **Pull-back of the canonical form by the inverse map.** The map
+`Ψ⁻¹ = kineticMomentumMap (-q) A : (x, π) ↦ (x, π + q A(x)♭)` from kinetic to canonical
+momenta satisfies `Ω(DΨ⁻¹ v, DΨ⁻¹ w) = Ω(v, w) − q ω_B(δx_v, δx_w)` with `B = ∇ × A`: the
+canonical form, expressed in position and kinetic momentum, is `Ω − q π^*ω_B`. -/
+theorem canonicalForm_fderiv_kineticMomentumMap_neg_flux (q : ℝ) {A : Space → Space}
+    {z : PhaseSpace} (hA : DifferentiableAt ℝ A z.1) (v w : PhaseSpace) :
+    strongDualCotangentSymplecticForm (fderiv ℝ (kineticMomentumMap (-q) A) z v)
+        (fderiv ℝ (kineticMomentumMap (-q) A) z w) =
+      strongDualCotangentSymplecticForm v w - q * flux (fieldCurl A z.1) ![v.1, w.1] := by
+  rw [canonicalForm_fderiv_kineticMomentumMap_flux (-q) hA]
+  ring
+
+/-- **The magnetic symplectic form** on the space of positions and kinetic momenta, at the
+point `z = (x, π)`: `Ω(v, w) − q ω_B(δx_v, δx_w)` with `ω_B = flux (B x)`, that is
+`Ω − q π^*ω_B`. Convention: `Ω((δx, δp), (δx', δp')) = δp'(δx) − δp(δx')` and
+`ι_X Ω = dH` (TauCeti), `ω_B(a, b) = ⟪B, a × b⟫`. The minus sign is forced by
+`magneticForm_lorentzForceField`. It is defined for every field `B`; no potential is used. -/
+noncomputable def magneticForm (q : ℝ) (B : Space → Space) (z v w : PhaseSpace) : ℝ :=
+  strongDualCotangentSymplecticForm v w - q * flux (B z.1) ![v.1, w.1]
+
+/-- The Lorentz-force vector field on the space of positions and kinetic momenta:
+at `(x, π)` it is `x' = π♯ / m`, `π' = (q/m) (π♯ × B(x))♭`, that is `π' = q v × B` with
+`v = π♯ / m`. -/
+noncomputable def lorentzForceField (m q : ℝ) (B : Space → Space) (z : PhaseSpace) :
+    PhaseSpace :=
+  (m⁻¹ • (toDual ℝ Space).symm z.2,
+    (q / m) • innerSL ℝ (cross ((toDual ℝ Space).symm z.2) (B z.1)))
+
+/-- **The sign of the magnetic form.** With `magneticForm q B = Ω − q π^*ω_B`, the Lorentz-force
+field `X = (π♯/m, (q/m) (π♯ × B)♭)` satisfies `ι_X Ω_mag = dH` for the free Hamiltonian
+`H(x, π) = ‖π‖² / (2m)`: the free Hamiltonian with the magnetic form generates
+`m v' = q v × B`. No hypothesis on `B`, and none on `m` (for `m = 0` Lean's division makes
+both sides `0`). With `+ q` in place of `− q` the identity fails
+(`Sanity.MagneticSymplectic.uniform_plus_sign_fails`). -/
+theorem magneticForm_lorentzForceField (m q : ℝ) (B : Space → Space) (z w : PhaseSpace) :
+    magneticForm q B z (lorentzForceField m q B z) w =
+      fderiv ℝ (freeParticleHamiltonian m) z w := by
+  rw [(hasFDerivAt_freeParticleHamiltonian m z).fderiv]
+  obtain ⟨c0, c1, c2⟩ := cross_coords ((toDual ℝ Space).symm z.2) (B z.1)
+  simp only [magneticForm, lorentzForceField, strongDualCotangentSymplecticForm_apply,
+    flux_apply, volForm_vec, _root_.smul_apply, innerSL_apply_apply, inner_coords3, c0, c1, c2,
+    PiLp.smul_apply, smul_eq_mul, map_smul, ContinuousLinearMap.comp_apply,
+    ContinuousLinearMap.coe_snd', ContinuousLinearMap.apply_apply]
+  ring
+
+/-- **The kinetic momentum map is symplectic from `Ω` to the magnetic form.** Where `A` is
+differentiable and `B = ∇ × A`, the map `Ψ : (x, p) ↦ (x, p − q A(x)♭)` pulls
+`magneticForm q B = Ω − q π^*ω_B` back to the canonical form:
+`Ω_mag(DΨ v, DΨ w) = Ω(v, w)`. -/
+theorem magneticForm_fderiv_kineticMomentumMap (q : ℝ) {A B : Space → Space} {z : PhaseSpace}
+    (hA : DifferentiableAt ℝ A z.1) (hcurl : B z.1 = fieldCurl A z.1) (v w : PhaseSpace) :
+    magneticForm q B (kineticMomentumMap q A z) (fderiv ℝ (kineticMomentumMap q A) z v)
+        (fderiv ℝ (kineticMomentumMap q A) z w) =
+      strongDualCotangentSymplecticForm v w := by
+  rw [magneticForm, canonicalForm_fderiv_kineticMomentumMap_flux q hA, kineticMomentumMap_fst,
+    hcurl, fderiv_kineticMomentumMap q hA, fderiv_kineticMomentumMap q hA]
+  ring
+
+/-- The phase-space curve `t ↦ (x t, m (v t)♭)` of a trajectory, with the kinetic momentum. -/
+noncomputable def kineticCurve (m : ℝ) (x v : ℝ → Space) (t : ℝ) : PhaseSpace :=
+  (x t, m • innerSL ℝ (v t))
+
+/-- **Lorentz orbits are integral curves of the Lorentz-force field.** For `m ≠ 0`, along a
+Lorentz orbit `x' = v`, `m v' = q v × B` (no electric field), the curve
+`t ↦ (x t, m (v t)♭)` of positions and kinetic momenta has derivative `lorentzForceField`.
+By `magneticForm_lorentzForceField` that field is the Hamiltonian vector field of the free
+Hamiltonian for `magneticForm q B = Ω − q π^*ω_B`. No potential and no regularity of `B`. -/
+theorem lorentzOrbit_kineticCurve {m q : ℝ} (hm : m ≠ 0) {B : Space → Space}
+    {x v : ℝ → Space} (h : LorentzOrbit m q (fun _ => 0) B x v) (t : ℝ) :
+    HasDerivAt (kineticCurve m x v) (lorentzForceField m q B (kineticCurve m x v t)) t := by
+  obtain ⟨a, ha, hlaw⟩ := h.newton t
+  have hv' : HasDerivAt (fun s => innerSL ℝ (v s)) (innerSL ℝ a) t :=
+    (innerSL ℝ : Space →L[ℝ] Space →L[ℝ] ℝ).hasFDerivAt.comp_hasDerivAt t ha
+  have hγ : HasDerivAt (kineticCurve m x v) (v t, m • innerSL ℝ a) t :=
+    (h.position t).prodMk (hv'.const_smul m)
+  refine hγ.congr_deriv ?_
+  have hu : (toDual ℝ Space).symm (m • innerSL ℝ (v t)) = m • v t := by
+    rw [map_smul, toDual_symm_innerSL]
+  have hc : cross (m • v t) (B (x t)) = m • cross (v t) (B (x t)) :=
+    crossBilinear.map_smul₂ m (v t) (B (x t))
+  rw [zero_add] at hlaw
+  refine Prod.ext ?_ ?_
+  · change v t = m⁻¹ • (toDual ℝ Space).symm (m • innerSL ℝ (v t))
+    rw [hu, smul_smul, inv_mul_cancel₀ hm, one_smul]
+  · change m • innerSL ℝ a
+      = (q / m) • innerSL ℝ (cross ((toDual ℝ Space).symm (m • innerSL ℝ (v t))) (B (x t)))
+    rw [hu, ← map_smul, hlaw, hc, map_smul, map_smul, smul_smul, div_mul_cancel₀ q hm]
 
 /-- The Hamiltonian of a particle of mass `m` and charge `q` in the vector potential `A`: the
 free-particle kinetic energy of TauCeti evaluated on the kinetic momentum,

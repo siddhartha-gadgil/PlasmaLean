@@ -103,7 +103,10 @@ open scoped RealInnerProductSpace Manifold
 
 /-! ## The covering map -/
 
-/-- **The covering map** `ℝ³ × ℝ → ℝ³ × (ℝ/ℓℤ)`, `(x, τ) ↦ (x, [τ])`. -/
+/-- **The covering map** `ℝ³ × ℝ → ℝ³ × (ℝ/ℓℤ)`, `(x, τ) ↦ (x, [τ])`. It is defined for every
+real `ℓ`, but it is meaningful only for `0 < ℓ`, which the manifold and measure statements of
+this file assume (`[Fact (0 < ℓ)]`): for `ℓ = 0` the quotient `ℝ/0ℤ` is the line itself and
+there is no circle. -/
 def liftCover (ℓ : ℝ) : LiftSpace → Space × AddCircle ℓ :=
   Prod.map (id : Space → Space) ((↑) : ℝ → AddCircle ℓ)
 
@@ -449,9 +452,16 @@ theorem ymDensity_hymLiftCircle_fluxField (ℓ : ℝ) (B : Space → Space)
 
 open MeasureTheory in
 /-- **The integrated energy identity** `∫_{Ω × S¹} |ℱ|² = 2ℓ ∫_Ω |B|²`, for every set `Ω` and
-every field `B` (both sides are Bochner integrals, so both are `0` when `|B|²` is not
-integrable on `Ω`). The measure on `ℝ³ × S¹` is the product of Lebesgue measure and the Haar
-measure of total mass `ℓ` on `ℝ/ℓℤ`. -/
+every field `B`. The measure on `ℝ³ × S¹` is the product of Lebesgue measure and the Haar
+measure of total mass `ℓ` on `ℝ/ℓℤ`.
+
+Two conventions make the statement hold with no hypothesis, and both must be kept in mind when
+it is used. (1) `Ω` is not assumed measurable: for a non-measurable `Ω` the set integrals are
+integrals for the restrictions `volume.restrict Ω` and `volume.restrict (Ω ×ˢ univ)` defined
+through the outer measure, not integrals over a measurable region. (2) Both sides are Bochner
+integrals: when `‖B‖²` is not integrable on `Ω` (infinite energy, or a non-measurable
+integrand) both sides are the junk value `0`, and the identity says nothing about the energy.
+Fixtures: `Sanity.FormHYMCircle.energy_ball_three`, `energy_junk`, `energy_univ_junk`. -/
 theorem integral_liftInner_hymLiftCircle (ℓ : ℝ) [Fact (0 < ℓ)] (B : Space → Space)
     (Ω : Set Space) :
     ∫ p in Ω ×ˢ (Set.univ : Set (AddCircle ℓ)),

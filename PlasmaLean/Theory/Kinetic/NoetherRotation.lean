@@ -34,6 +34,13 @@ Scope: no electric field, time-independent `A` defined and differentiable on all
 invariance of `A` under the rotation group, and the equivalence with `AxisymmetricFlux` /
 `SymmetricFlux` (the hypothesis of the direct proofs), are in
 `Theory/Kinetic/NoetherSymmetryBridge`.
+
+Not covered: a helical (screw) symmetry. Its generator `y ↦ K y + e` is the sum of a rotation
+generator and a translation; it is neither linear nor constant, so neither the theorems for a
+linear generator here nor the translation theorem `noetherMomentum_translation_conserved` of
+`Theory/Kinetic/NoetherLagrangian` applies to it, and no theorem for the sum is stated. Also
+excluded, by the hypothesis of a potential differentiable on all of space: the vacuum field
+`∇φ` of a straight wire or a toroidal coil, and fields defined only on a toroidal region.
 -/
 
 @[expose] public section

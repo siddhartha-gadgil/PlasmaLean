@@ -33,6 +33,12 @@ The crossed uniform fields are `E₀ e_x` (`uniformE E₀`, potential `uniformPo
 * Uniqueness: `uniform_orbits_coincide`: two Lorentz orbits in the crossed fields with the same
   initial position and velocity coincide (in the Landau gauge). `drift_orbits_differ`: orbits
   with different initial velocities differ, so the hypothesis on the initial data is used.
+* Regression (audit AV-M4), uniqueness without potentials: `shear_orbit_existsUnique`: in the
+  sheared field `B = x e_z`, which is not uniform, there is exactly one Lorentz orbit for all
+  times from every initial position and velocity (`lorentzOrbit_existsUnique_of_contDiff`).
+  `rotational_E_orbits_coincide`: uniqueness in the electric field `E = x e_y`, whose curl is
+  `e_z ≠ 0` (`rotational_E_curl_ne_zero`), so that it is not a gradient (this last step is
+  not formalized here) and `lorentzOrbit_unique`, which needs `E = −∇Φ`, does not apply.
 -/
 
 @[expose] public section
@@ -194,5 +200,32 @@ theorem drift_orbits_differ :
   refine ⟨unit_drift_orbit, drift_line_orbit 1 1 1 one_ne_zero _, fun h => ?_⟩
   have h0 := congrArg (fun f : ℝ → Space => f 0 0) h
   simp [crossedVelocity, driftVelocity] at h0
+
+/-- Regression (audit AV-M4): in the sheared field `B = x e_z` (not uniform, no electric
+field) there is exactly one Lorentz orbit for all times from every initial position and
+velocity. No vector potential enters the statement or the proof. -/
+theorem shear_orbit_existsUnique {m : ℝ} (hm : m ≠ 0) (q : ℝ) (x₀ v₀ : Space) :
+    ∃ x v : ℝ → Space, LorentzOrbit m q (fun _ => 0) (fun y => y 0 • coordVec 2) x v ∧
+      x 0 = x₀ ∧ v 0 = v₀ ∧
+      ∀ x' v' : ℝ → Space, LorentzOrbit m q (fun _ => 0) (fun y => y 0 • coordVec 2) x' v' →
+        x' 0 = x₀ → v' 0 = v₀ → x' = x ∧ v' = v :=
+  lorentzOrbit_existsUnique_of_contDiff hm
+    ((EuclideanSpace.proj (𝕜 := ℝ) (ι := Fin 3) 0).contDiff.smul contDiff_const) x₀ v₀
+
+/-- The electric field `E = x e_y` (the linear map `landau 1`) has curl `e_z ≠ 0`. -/
+theorem rotational_E_curl_ne_zero (y : Space) : fieldCurl (landau 1) y ≠ 0 := by
+  rw [curl_landau, one_smul]
+  intro h
+  have h2 := congrArg (fun z : Space => z 2) h
+  simp at h2
+
+/-- Regression (audit AV-M4): uniqueness of Lorentz orbits in the electric field `E = x e_y`,
+which is not curl free, and an arbitrary `C¹` magnetic field. `lorentzOrbit_unique` needs a
+scalar and a vector potential; `lorentzOrbit_unique_of_contDiff` needs neither. -/
+theorem rotational_E_orbits_coincide {m : ℝ} (hm : m ≠ 0) (q : ℝ) {B : Space → Space}
+    (hB : ContDiff ℝ 1 B) {x₁ v₁ x₂ v₂ : ℝ → Space}
+    (h₁ : LorentzOrbit m q (landau 1) B x₁ v₁) (h₂ : LorentzOrbit m q (landau 1) B x₂ v₂)
+    {t₀ : ℝ} (hx : x₁ t₀ = x₂ t₀) (hv : v₁ t₀ = v₂ t₀) : x₁ = x₂ ∧ v₁ = v₂ :=
+  lorentzOrbit_unique_of_contDiff hm (landau 1).contDiff hB h₁ h₂ hx hv
 
 end PlasmaLean.Sanity.CrossedFieldOrbit

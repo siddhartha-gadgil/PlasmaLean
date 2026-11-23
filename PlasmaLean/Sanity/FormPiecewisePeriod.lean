@@ -18,6 +18,8 @@ public import Mathlib.Analysis.SpecialFunctions.Integrals.Basic
   the wire field (`wire_edge_integral`, an arctangent integral), so the circulation is `2π`
   (`square_circulation`, `square_lineIntegral`) and so is the de Rham period on the class of
   the polygonal loop (`square_period`). This is the value on the unit circle (`wire_period`).
+  `square_period_polygon` has the same statement as `square_period`; it is a second proof,
+  through the polygon theorem, and not a new fact.
 * Hypothesis check: the square has a genuine corner, so it is not `C¹` on `[0, 4]`
   (`square_not_differentiableAt`, `square_not_contDiffOn`); the theorems for curves that are
   `C¹` on the whole interval do not apply to it.

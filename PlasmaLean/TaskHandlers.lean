@@ -114,10 +114,16 @@ def axiomsIn (env : Environment) (n : Name) : MetaM (Option (List Name)) := do
     setEnv env
     return some (← collectAxioms n).toList
 
+/-- The axioms a required declaration may depend on: the three standard axioms of Lean and
+Mathlib. Anything else (`sorryAx`, `Lean.ofReduceBool` and `Lean.trustCompiler` from
+`native_decide`, an `axiom` declared by the candidate itself) makes the declaration not ready. -/
+def allowedAxioms : List Name := [``propext, ``Classical.choice, ``Quot.sound]
+
 /-- Elaborate `code` once and report: the compilation fields of `compileFields`; the axioms each
 declaration in `axiomNames` depends on (`null` if it is missing); and, if `term?` is given and
-every declaration in `require` exists without `sorry`, the `repr` of the term evaluated in the
-environment produced by the code. The term is evaluated even if other parts of the code fail, so
+every declaration in `require` exists and depends on no axiom outside `allowedAxioms` (so no
+`sorry`, no `native_decide`, no axiom declared by the code), the `repr` of the term evaluated in
+the environment produced by the code. The term is evaluated even if other parts of the code fail, so
 that, for example, a candidate's measure can be computed when only its proofs fail. The new
 declarations are kept only if `keep` is true and there are no errors. -/
 def assessM (code : String) (axiomNames require : List Name) (term? : Option String)
@@ -131,13 +137,15 @@ def assessM (code : String) (axiomNames require : List Name) (term? : Option Str
   let ready ← require.allM fun n => do
     return match ← axiomsIn env n with
       | none => false
-      | some axs => !axs.contains ``sorryAx
+      | some axs => axs.all (allowedAxioms.contains ·)
   let evalFields ← match term? with
     | none => pure []
     | some t =>
       if !ready then
         pure [("evaluated", toJson false),
-          ("eval_error", toJson "a required declaration is missing or uses sorry")]
+          ("eval_error", toJson <| "a required declaration is missing or depends on an axiom " ++
+            "other than propext, Classical.choice and Quot.sound (sorry, native_decide or a " ++
+            "declared axiom)")]
       else
         try
           let fmt ← withoutModifyingEnv do
@@ -150,7 +158,9 @@ def assessM (code : String) (axiomNames require : List Name) (term? : Option Str
 
 /-- Task `assess`: elaborate the `"code"` once, report compilation, the axioms of the declarations
 named in `"axioms"`, and the value of the optional `"term"` when the declarations in `"require"`
-exist without `sorry`. Used to evaluate candidates of an evolutionary search in one request. -/
+exist and depend only on the axioms `propext`, `Classical.choice` and `Quot.sound` (a `sorry`,
+a `native_decide` or an axiom declared by the code blocks the evaluation). Used to evaluate
+candidates of an evolutionary search in one request. -/
 @[response "assess"] def responseAssess (source : Json) : TermElabM Json := do
   let .ok code := source.getObjValAs? String "code" | throwError "Missing 'code' field in JSON"
   let axiomNames := (source.getObjValAs? (List Name) "axioms").toOption.getD []

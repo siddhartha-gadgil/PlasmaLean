@@ -34,6 +34,9 @@ certified quasi-axisymmetry defect small relative to `|ι|`. For the exact Domma
     half-lattice off-QA modes, is `≤ 0.0063 |ι_C|` on C and `≤ 0.0090 |ι_A|` on A
     (`L²(J)` route: `(√2/2) δ₂/B_min` with `δ₂ = 0.002244`, `0.0031112`).
 * **`dommaschk_Q16_strong`**: hence the **strong tier** `defect ≤ 0.01 |ι|` on both tori.
+* **`dommaschk_Q16_chart`** (audit AV-M10): `dommaschk_Q16_vacuum` together with the regularity
+  that gives its defect bounds meaning (`BoozerChartHyp` for both tori) and the closeness of the
+  two tori to the data tori.
 
 Scope: two thin certified tori (`r_eff ≈ 0.02` and `0.037`); this is a statement about the exact
 field on the two surfaces, not omnigeneity of a region (no C2 claim, audit AC-1). The untrusted
@@ -142,6 +145,76 @@ theorem dommaschk_Q16_vacuum :
     ?_,
     fun S hS => (hC.oracleDefect_le_L2 S hS).trans DommaschkKamC.oracleDefect_L2_num.2.2,
     fun S hS => (hA.oracleDefect_le_L2 S hS).trans DommaschkKamA.oracleDefectA_L2_num.2.2⟩
+  · intro θ φ
+    dsimp only [surfaceC]
+    exact bC θ φ
+  · intro θ φ
+    dsimp only [surfaceA]
+    exact bA θ φ
+
+/-- **Regression (audit AV-M10): the headline with the regularity that makes its defect bounds
+meaningful.** The statement of `dommaschk_Q16_vacuum` with three more conjuncts. Its conjuncts
+`TorusQADefectLe` and `oracleDefect ≤ …` are built from derivatives and a division, and alone
+they do not say that the derivatives exist (audit AV-L1). Here the chart hypotheses
+`BoozerChartHyp 2 ι (V ∘ K) (|B| ∘ K)` are exported for both tori (`V ∘ K` is `C²`, `|B| ∘ K` is
+`C¹`, both doubly periodic with two field periods, and the Boozer Jacobian is positive), and
+the two surfaces are identified as the exact KAM tori `surfaceC uC zC`, `surfaceA uA zA` within
+`10⁻¹²` (`Close`, analyticity strip `9/1400`) of the data tori C and A. -/
+theorem dommaschk_Q16_chart :
+    ∃ (sC sA : SurfaceData) (R₀ z₀ : ℝ → ℝ) (ΘC ΘA : ℝ → ℝ → ℝ),
+      sC.iota = DommaschkKamDio.dkIotaC ∧ sA.iota = DommaschkKamDio.dkIotaA ∧
+      -- two certified invariant tori, nested
+      IotaOnTorus Bdk sC.R sC.z sC.iota ∧ IotaOnTorus Bdk sA.R sA.z sA.iota ∧
+      NestedTori sC.R sC.z sA.R sA.z R₀ z₀ ΘC ΘA ∧
+      -- the transform bound and clause C1 on the family {C, A}
+      (1193 / 5000 : ℝ) ≤ |sC.iota| ∧ (1193 / 5000 : ℝ) ≤ |sA.iota| ∧
+      (∀ μ₀ : ℝ, 0 < μ₀ → CurrentFreeTransform μ₀ Bdk {sC, sA} 0 (1193 / 5000)) ∧
+      -- the certified per-torus QA defect and `|B|`
+      TorusQADefectLe Bdk sC.iota (cylTorus sC.R sC.z) (21 / 1000) ∧
+      TorusQADefectLe Bdk sA.iota (cylTorus sA.R sA.z) (32 / 1000) ∧
+      (∀ θ φ, (104259 / 100000 : ℝ) ≤ ‖Bdk (cylTorus sC.R sC.z θ φ)‖) ∧
+      (∀ θ φ, (102656 / 100000 : ℝ) ≤ ‖Bdk (cylTorus sA.R sA.z θ φ)‖) ∧
+      -- the certified off-QA Boozer spectral defect relative to `|ι|`
+      (∀ S : Finset (ℤ × ℤ), (∀ q ∈ S, OracleOffQA q) →
+        oracleDefect 2 sC.iota (torusPot Vdk (cylTorus sC.R sC.z))
+          (torusModB Bdk (cylTorus sC.R sC.z)) S ≤ (63 / 10000 : ℝ) * |sC.iota|) ∧
+      (∀ S : Finset (ℤ × ℤ), (∀ q ∈ S, OracleOffQA q) →
+        oracleDefect 2 sA.iota (torusPot Vdk (cylTorus sA.R sA.z))
+          (torusModB Bdk (cylTorus sA.R sA.z)) S ≤ (90 / 10000 : ℝ) * |sA.iota|) ∧
+      -- regularity of the chart functions: `V ∘ K` is `C²`, `|B| ∘ K` is `C¹`, periodic, `J > 0`
+      BoozerChartHyp 2 sC.iota (torusPot Vdk (cylTorus sC.R sC.z))
+        (torusModB Bdk (cylTorus sC.R sC.z)) ∧
+      BoozerChartHyp 2 sA.iota (torusPot Vdk (cylTorus sA.R sA.z))
+        (torusModB Bdk (cylTorus sA.R sA.z)) ∧
+      -- the tori are the KAM tori within `10⁻¹²` of the data tori
+      ∃ uC zC uA zA : FA, sC = surfaceC uC zC ∧ sA = surfaceA uA zA ∧
+        Close (9 / 1400) DommaschkKamDio.dkIotaC uC zC DommaschkKamC.u₀C DommaschkKamC.z₀C
+          ((1 / 10 ^ 12 : ℚ) : ℝ) ∧
+        Close (9 / 1400) DommaschkKamDio.dkIotaA uA zA DommaschkKamA.u₀A DommaschkKamA.z₀A
+          ((1 / 10 ^ 12 : ℚ) : ℝ) := by
+  obtain ⟨uC, zC, huC, hzC, hurC, hzrC, hRC, hZC, hCC⟩ :=
+    DommaschkKamC.dk_exact_of_res
+      (DommaschkKamC.Bd_weaken DommaschkKamC.dk_e0R DommaschkKamC.e0q_le_budget)
+      (DommaschkKamC.Bd_weaken DommaschkKamC.dk_e0Z DommaschkKamC.e0q_le_budget)
+  obtain ⟨uA, zA, hA⟩ := DommaschkKamA.exists_exactTorusA
+  have hC : ExactTorusC uC zC := ⟨huC, hzC, hurC, hzrC, hRC, hZC, hCC⟩
+  have bC : ∀ θ φ, (104259 / 100000 : ℝ) ≤ ‖Bdk (cylTorus (RofC uC) (Zof zC) θ φ)‖ := fun θ φ => by
+    have h1 := hC.Bmin_le θ φ
+    rw [BminC_eq] at h1
+    exact h1
+  have bA : ∀ θ φ, (102656 / 100000 : ℝ) ≤ ‖Bdk (cylTorus (RofC uA) (Zof zA) θ φ)‖ := fun θ φ => by
+    have h1 := hA.Bmin_le θ φ
+    rw [BminA_eq] at h1
+    exact h1
+  refine ⟨surfaceC uC zC, surfaceA uA zA, _, _, _, _, rfl, rfl,
+    DommaschkKamA.ExactTorusC'.iotaOnTorusRef hC, hA.iotaOnTorus, nested_of_exact hC hA,
+    le_trans (by norm_num) DommaschkKamC.iotaC_ge, DommaschkKamA.iotaA_ge,
+    fun μ₀ hμ => nested_C1_of_exact hC hA hμ, hC.torusQADefectLe_021, hA.torusQADefectLe_032,
+    ?_,
+    ?_,
+    fun S hS => (hC.oracleDefect_le_L2 S hS).trans DommaschkKamC.oracleDefect_L2_num.2.2,
+    fun S hS => (hA.oracleDefect_le_L2 S hS).trans DommaschkKamA.oracleDefectA_L2_num.2.2,
+    hC.boozerChartHyp', hA.boozerChartHyp', uC, zC, uA, zA, rfl, rfl, hC.close, hA.close⟩
   · intro θ φ
     dsimp only [surfaceC]
     exact bC θ φ

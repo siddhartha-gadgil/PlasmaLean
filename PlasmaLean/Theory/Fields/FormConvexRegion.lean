@@ -24,33 +24,63 @@ statements with no topological hypothesis left.
   a vacuum field on a convex open region has zero circulation around every closed curve that is
   `C¹` on `[a, b]` and lies in the region there, and zero loop current through every such
   poloidal loop.
-* **The meridian half-space.** A poloidal loop is a curve of constant geometric toroidal angle
-  `φ₀`. If `R > 0` along it, it lies in `meridianHalfSpace φ₀`
+* `CurrentFreeTransform.current_eq_zero_of_convex`, `CurrentFreeTransform.imax_zero_of_convex`:
+  the contract-level form. For a family satisfying clause C1 with any allowance `I_max`, if the
+  poloidal loop of each surface lies in a convex open region on which the field is a vacuum
+  field (the region may depend on the surface, and may be bounded), every surface has zero
+  current and the clause holds with `I_max = 0`.
+* **The meridian half-space**, a special case. A poloidal loop is a curve of constant geometric
+  toroidal angle `φ₀`. If `R > 0` along it, it lies in `meridianHalfSpace φ₀`
   (`poloidalLoop_mem_meridianHalfSpace`), which is convex and does not meet the `z`-axis
   (`r2_pos_of_mem_meridianHalfSpace`). So for a field that is a vacuum field on a region
-  containing that half-space (for example on the complement of the `z`-axis, which is not
+  containing that whole half-space (for example on the complement of the `z`-axis, which is not
   simply connected), every poloidal loop with `R > 0` carries zero current:
   `VacuumField.loopCurrent_eq_zero_of_meridianHalfSpace`.
 * `FieldTorus.loopCurrent_eq_zero_of_meridianHalfSpace`: the same for the poloidal loops of a
   `FieldTorus` (`R > 0` and closure are part of the structure), for every rotation number `ι`.
 * `CurrentFreeTransform.current_eq_zero_of_meridianHalfSpace`,
   `CurrentFreeTransform.poloidalCirculation_eq_zero_of_meridianHalfSpace`,
-  `CurrentFreeTransform.imax_zero_of_meridianHalfSpace`: for a family satisfying the contract
-  clause C1 with any current allowance `I_max`, if the field is a vacuum field on a region
-  containing the meridian half-spaces of the surfaces, every surface has zero current and zero
-  poloidal circulation, and the clause holds with `I_max = 0`.
+  `CurrentFreeTransform.imax_zero_of_meridianHalfSpace`: for a family that is assumed to satisfy
+  the contract clause C1 with some current allowance `I_max`, if the field is a vacuum field on
+  a region containing the meridian half-spaces of the surfaces, every surface has zero current
+  and zero poloidal circulation, and the clause holds with `I_max = 0`.
 
-The point of the half-space: the hypothesis "simply connected" is on the region that contains
-the poloidal loop, not on the region where the field is a vacuum field. A stellarator vacuum
-field is defined off the `z`-axis (or off its coils), and that region is not simply connected;
-the poloidal loop still lies in a convex part of it. A non-zero rotational transform is
-compatible with this: the transform is carried by toroidally varying terms of the field, not
-by a net poloidal circulation.
+## What these statements are, and what they are not
+
+1. **They are Stokes' theorem on the planar poloidal cross-section.** The poloidal loop bounds
+   a planar disc; a field with no current through that disc (curl-free on a convex
+   neighbourhood of it) has zero circulation around it. This is not a theorem about a device,
+   and no property of a stellarator is used.
+2. **What they show about contract clause C1.** For a field that is curl-free on a convex
+   neighbourhood of the poloidal cross-section, the current clause `current_le` of
+   `CurrentFreeTransform` carries no information and the allowance `I_max` is irrelevant: all
+   the content of C1 for such a field is in the torus and transform clauses (`torus`,
+   `iota_ge`). The current clause constrains only fields with current through the
+   cross-section (plasma current, or a conductor threading the loop).
+3. **The half-space hypothesis is far stronger than needed and excludes coil fields.** "Vacuum
+   field on the whole open half-space `meridianHalfSpace φ₀`" fails for every coil-generated
+   field: the coils of a device encircle the plasma and so meet every such half-space. The
+   meridian theorems therefore apply only to idealised fields that are singular at most on the
+   `z`-axis (the rational stellarator and Dommaschk fields). The conclusion still holds for a
+   coil field whose coils do not thread the poloidal loop, but it has to be obtained from the
+   general convex-region versions (`VacuumField.loopCurrent_eq_zero_of_convex`,
+   `CurrentFreeTransform.current_eq_zero_of_convex`, `CurrentFreeTransform.imax_zero_of_convex`)
+   with a bounded convex region around the cross-section that avoids the coils.
+4. **The clause itself is assumed.** In the contract-level statements `hC` is a hypothesis.
+   Only the allowance improves, from `I_max` to `0`; the invariant tori and the rotational
+   transform are not produced by these theorems and are in no sense automatic.
+
+The hypothesis "simply connected" is on the region that contains the poloidal loop, not on the
+whole region where the field is a vacuum field: the complement of the `z`-axis is not simply
+connected, and a poloidal loop off the axis still lies in a convex part of it. A non-zero
+rotational transform is compatible with zero poloidal circulation: the transform is carried by
+toroidally varying terms of the field, not by a net poloidal circulation.
 
 What is not proved: nothing is said about regions that are simply connected without being
 convex (use `FormLoopCurrentInterval` directly, with an instance of `SimplyConnectedSpace`), nor
-about fields whose vacuum region does not contain a meridian half-space (coils or plasma
-current threading the poloidal loop; the circulation is then the enclosed current).
+about fields for which no convex vacuum region contains the poloidal loop (coils or plasma
+current threading the loop; the circulation is then the enclosed current). No coil-generated
+field is instantiated here or in the sanity module.
 -/
 
 @[expose] public section
@@ -69,7 +99,9 @@ theorem simplyConnectedSpace_of_convex {U : Opens Space} (hc : Convex ℝ (U : S
   have : ContractibleSpace (U : Set Space) := hc.contractibleSpace hne
   exact inferInstanceAs (SimplyConnectedSpace (U : Set Space))
 
-/-- All of space is simply connected. -/
+/-- All of space is simply connected. This is a proved instance about one specific region (a
+consequence of `simplyConnectedSpace_of_convex`), not an assumption; it is exported because
+downstream fixtures use it. -/
 instance simplyConnectedSpace_top : SimplyConnectedSpace (⊤ : Opens Space) :=
   simplyConnectedSpace_of_convex (by simpa using convex_univ) ⟨0, by simp⟩
 
@@ -118,7 +150,9 @@ theorem cylPoint_mem_meridianHalfSpace {R : ℝ} (hR : 0 < R) (φ₀ z : ℝ) :
   rw [h]
   exact hR
 
-/-- The meridian half-space is simply connected. -/
+/-- The meridian half-space is simply connected. This is a proved instance about one specific
+family of regions (a consequence of `simplyConnectedSpace_of_convex`), not an assumption; it is
+exported because downstream statements use it. -/
 instance simplyConnectedSpace_meridianHalfSpace (φ₀ : ℝ) :
     SimplyConnectedSpace (meridianHalfSpace φ₀) :=
   simplyConnectedSpace_of_convex (convex_meridianHalfSpace φ₀)
@@ -175,6 +209,49 @@ theorem _root_.PlasmaLean.Vacuum.VacuumField.loopCurrent_eq_zero_of_convex (μ�
     loopCurrent μ₀ B R z φ₀ = 0 := by
   rw [loopCurrent, h.poloidalCirculation_eq_zero_of_convex hc hU hγ hclosed, zero_div]
 
+variable {μ₀ Imax ιmin : ℝ} {S : Set SurfaceData}
+
+/-- **Clause C1, one surface, convex region: zero current.** For a family assumed to satisfy
+`CurrentFreeTransform` with some allowance `I_max` (`hC`), a surface whose poloidal loop lies,
+for `θ ∈ [-π, π]`, in a convex open region `U` on which `B` is a vacuum field has zero net
+current. The region may be bounded (a ball around the cross-section), so the statement applies
+to a coil field whose coils do not thread the loop. This is Stokes' theorem on the planar
+poloidal cross-section; periodicity and `C¹` regularity of the loop come from the clause. -/
+theorem _root_.PlasmaLean.Contract.CurrentFreeTransform.current_eq_zero_of_convex
+    (hC : CurrentFreeTransform μ₀ B S Imax ιmin) (hc : Convex ℝ (U : Set Space))
+    (h : VacuumField U B) {s : SurfaceData} (hs : s ∈ S)
+    (hU : ∀ θ ∈ Set.Icc (-Real.pi) Real.pi, s.loop θ ∈ U) : s.current μ₀ B = 0 :=
+  have := simplyConnectedSpace_of_convex hc ⟨s.loop 0, hU 0 ⟨by linarith [Real.pi_pos],
+    Real.pi_pos.le⟩⟩
+  hC.current_eq_zero_of_simplyConnected h hs hU
+
+/-- **Clause C1 on convex vacuum regions: the allowance may be taken to be zero.** A family
+assumed to satisfy `CurrentFreeTransform` with some allowance `I_max` (`hC`) satisfies it with
+`I_max = 0`, when the poloidal loop of each surface lies in a convex open region (depending on
+the surface) on which `B` is a vacuum field.
+
+Only the allowance improves: the tori and the bound on the rotational transform are copied from
+`hC`. The statement shows that for a field that is curl-free on a convex neighbourhood of each
+poloidal cross-section the clause `current_le` carries no information and `I_max` is
+irrelevant; the clause constrains only fields with current through the cross-section. It is
+Stokes' theorem on the planar cross-section, not a theorem about a device. -/
+theorem _root_.PlasmaLean.Contract.CurrentFreeTransform.imax_zero_of_convex
+    (hC : CurrentFreeTransform μ₀ B S Imax ιmin)
+    (hU : ∀ s ∈ S, ∃ U : Opens Space, Convex ℝ (U : Set Space) ∧ VacuumField U B ∧
+      ∀ θ ∈ Set.Icc (-Real.pi) Real.pi, s.loop θ ∈ U) :
+    CurrentFreeTransform μ₀ B S 0 ιmin where
+  mu0_pos := hC.mu0_pos
+  nonempty := hC.nonempty
+  iotaMin_pos := hC.iotaMin_pos
+  torus := hC.torus
+  loop_R := hC.loop_R
+  loop_z := hC.loop_z
+  field_continuous := hC.field_continuous
+  current_le s hs := by
+    obtain ⟨U, hc, h, hmem⟩ := hU s hs
+    rw [hC.current_eq_zero_of_convex hc h hs hmem, abs_zero]
+  iota_ge := hC.iota_ge
+
 end Convex
 
 /-! ## The meridian half-space and the contract -/
@@ -191,10 +268,18 @@ theorem _root_.PlasmaLean.Vacuum.VacuumField.restrict_meridianHalfSpace (h : Vac
   ⟨(meridianHalfSpace φ₀).isOpen, h.contDiffOn.mono hΩ, fun x hx => h.div_eq_zero x (hΩ hx),
     fun x hx => h.curl_eq_zero x (hΩ hx)⟩
 
-/-- **Poloidal loops off the axis carry no current in a vacuum field.** Let `B` be a vacuum
-field on a region `Ω` containing the meridian half-space of `φ₀` (for example the complement of
-the `z`-axis). Every poloidal loop at `φ₀` with `R > 0` that is `C¹` on `[-π, π]` and closes up
-has zero loop current. Nothing is assumed about the topology of `Ω`. -/
+/-- **Poloidal loops off the axis carry no current in a field that is a vacuum field on the
+whole meridian half-space.** Let `B` be a vacuum field on a region `Ω` containing the meridian
+half-space of `φ₀` (for example the complement of the `z`-axis). Every poloidal loop at `φ₀`
+with `R > 0` that is `C¹` on `[-π, π]` and closes up has zero loop current. Nothing is assumed
+about the topology of `Ω`.
+
+This is Stokes' theorem on the planar poloidal cross-section: no current through the
+cross-section, so no circulation around it. It is not a theorem about a device. The hypothesis
+`hΩ` is far stronger than needed and excludes every coil-generated field (coils meet every
+meridian half-space); it holds for idealised fields singular only on the `z`-axis. For a coil
+field whose coils do not thread the loop use `VacuumField.loopCurrent_eq_zero_of_convex` with a
+bounded convex region around the cross-section. -/
 theorem _root_.PlasmaLean.Vacuum.VacuumField.loopCurrent_eq_zero_of_meridianHalfSpace (μ₀ : ℝ)
     (h : VacuumField Ω B) (hΩ : (meridianHalfSpace φ₀ : Set Space) ⊆ Ω)
     (hR : ∀ θ ∈ Set.Icc (-Real.pi) Real.pi, 0 < R θ φ₀)
@@ -204,10 +289,17 @@ theorem _root_.PlasmaLean.Vacuum.VacuumField.loopCurrent_eq_zero_of_meridianHalf
   (h.restrict_meridianHalfSpace hΩ).loopCurrent_eq_zero_of_simplyConnected_of_Icc μ₀
     (fun θ hθ => poloidalLoop_mem_meridianHalfSpace (hR θ hθ)) hγ hclosed
 
-/-- **A `FieldTorus` of a vacuum field carries no net current, whatever its rotation number.**
-The field is a vacuum field on a region containing the meridian half-space of `φ₀`, and the
-poloidal loop at `φ₀` is `C¹` on `[-π, π]`. That `R > 0` and that the loop closes up are part
-of `FieldTorus`. -/
+/-- **A `FieldTorus` of a field that is a vacuum field on the meridian half-space carries no
+net current, whatever its rotation number.** The field is a vacuum field on a region containing
+the whole meridian half-space of `φ₀`, and the poloidal loop at `φ₀` is `C¹` on `[-π, π]`. That
+`R > 0` and that the loop closes up are part of `FieldTorus`.
+
+This is Stokes' theorem on the planar poloidal cross-section, applied to the loop of a torus
+that is assumed (`hT`); it is not a theorem about a device. The hypothesis `hΩ` excludes every
+coil-generated field (coils meet every meridian half-space) and holds for idealised fields
+singular only on the `z`-axis. For a coil field whose coils do not thread the loop use
+`FieldTorus.loopCurrent_eq_zero_of_simplyConnected` or
+`VacuumField.loopCurrent_eq_zero_of_convex` with a bounded convex region. -/
 theorem _root_.PlasmaLean.Contract.FieldTorus.loopCurrent_eq_zero_of_meridianHalfSpace
     (hT : FieldTorus B R z ι) (μ₀ : ℝ) (h : VacuumField Ω B)
     (hΩ : (meridianHalfSpace φ₀ : Set Space) ⊆ Ω)
@@ -218,18 +310,28 @@ theorem _root_.PlasmaLean.Contract.FieldTorus.loopCurrent_eq_zero_of_meridianHal
 
 variable {μ₀ Imax ιmin : ℝ} {S : Set SurfaceData}
 
-/-- **Clause C1 for a vacuum field: every surface has zero current.** For a family satisfying
-`CurrentFreeTransform` with any allowance `I_max`, if `B` is a vacuum field on a region
-containing the meridian half-space of the surface `s`, the net current of `s` is zero. This is
+/-- **Clause C1 for a field that is a vacuum field on the meridian half-space: every surface
+has zero current.** For a family assumed to satisfy `CurrentFreeTransform` with some allowance
+`I_max` (`hC`), if `B` is a vacuum field on a region containing the whole meridian half-space of
+the surface `s`, the net current of `s` is zero. This is
 `CurrentFreeTransform.current_eq_zero_of_simplyConnected` with the region chosen and its
-hypotheses discharged. -/
+hypotheses discharged, and a special case of `CurrentFreeTransform.current_eq_zero_of_convex`.
+
+It is Stokes' theorem on the planar poloidal cross-section, not a theorem about a device. The
+hypothesis `hΩ` excludes every coil-generated field (coils meet every meridian half-space); it
+holds for idealised fields singular only on the `z`-axis. For a coil field whose coils do not
+thread the loop use the convex-region version with a bounded region. -/
 theorem _root_.PlasmaLean.Contract.CurrentFreeTransform.current_eq_zero_of_meridianHalfSpace
     (hC : CurrentFreeTransform μ₀ B S Imax ιmin) (h : VacuumField Ω B) {s : SurfaceData}
     (hs : s ∈ S) (hΩ : (meridianHalfSpace s.φ₀ : Set Space) ⊆ Ω) : s.current μ₀ B = 0 :=
   hC.current_eq_zero_of_simplyConnected (h.restrict_meridianHalfSpace hΩ) hs
     fun θ _ => poloidalLoop_mem_meridianHalfSpace ((hC.torus s hs).1.R_pos θ s.φ₀)
 
-/-- **Clause C1 for a vacuum field: zero poloidal circulation**, for any allowance `I_max`. -/
+/-- **Clause C1 for a field that is a vacuum field on the meridian half-space: zero poloidal
+circulation**, for any allowance `I_max`. The clause is assumed (`hC`). This is Stokes' theorem
+on the planar poloidal cross-section, not a theorem about a device; the hypothesis `hΩ`
+(vacuum on the whole meridian half-space) excludes every coil-generated field and holds for
+idealised fields singular only on the `z`-axis. -/
 theorem
     _root_.PlasmaLean.Contract.CurrentFreeTransform.poloidalCirculation_eq_zero_of_meridianHalfSpace
     (hC : CurrentFreeTransform μ₀ B S Imax ιmin) (h : VacuumField Ω B) {s : SurfaceData}
@@ -240,23 +342,28 @@ theorem
     (contDiff_poloidalLoop (hC.loop_R s hs) (hC.loop_z s hs)).contDiffOn
     ((hC.torus s hs).1.poloidalLoop_closed s.φ₀)
 
-/-- **For a vacuum field the current bound of C1 is automatic**: a family satisfying the clause
-with some allowance `I_max` satisfies it with `I_max = 0`, when the field is a vacuum field on a
-region containing the meridian half-space of every surface. -/
+/-- **For a field that is a vacuum field on the meridian half-spaces, the current clause of C1
+carries no information**: a family assumed to satisfy the clause with some allowance `I_max`
+(`hC`) satisfies it with `I_max = 0`, when the field is a vacuum field on a region containing
+the whole meridian half-space of every surface. A special case of
+`CurrentFreeTransform.imax_zero_of_convex`.
+
+Only the allowance improves. The clause itself is a hypothesis: the invariant tori and the
+bound on the rotational transform are copied from `hC` and are not automatic. What the
+statement shows is that for such a field the clause `current_le` is implied by the others and
+`I_max` is irrelevant; the clause constrains only fields with current through the poloidal
+cross-section. It is Stokes' theorem on the planar cross-section, not a theorem about a device,
+and the hypothesis `hΩ` excludes every coil-generated field (coils meet every meridian
+half-space): for a coil field whose coils do not thread the loops use
+`CurrentFreeTransform.imax_zero_of_convex` with bounded convex regions. -/
 theorem _root_.PlasmaLean.Contract.CurrentFreeTransform.imax_zero_of_meridianHalfSpace
     (hC : CurrentFreeTransform μ₀ B S Imax ιmin) (h : VacuumField Ω B)
     (hΩ : ∀ s ∈ S, (meridianHalfSpace s.φ₀ : Set Space) ⊆ Ω) :
-    CurrentFreeTransform μ₀ B S 0 ιmin where
-  mu0_pos := hC.mu0_pos
-  nonempty := hC.nonempty
-  iotaMin_pos := hC.iotaMin_pos
-  torus := hC.torus
-  loop_R := hC.loop_R
-  loop_z := hC.loop_z
-  field_continuous := hC.field_continuous
-  current_le s hs := by
-    rw [hC.current_eq_zero_of_meridianHalfSpace h hs (hΩ s hs), abs_zero]
-  iota_ge := hC.iota_ge
+    CurrentFreeTransform μ₀ B S 0 ιmin :=
+  hC.imax_zero_of_convex fun s hs =>
+    ⟨meridianHalfSpace s.φ₀, convex_meridianHalfSpace s.φ₀,
+      h.restrict_meridianHalfSpace (hΩ s hs),
+      fun θ _ => poloidalLoop_mem_meridianHalfSpace ((hC.torus s hs).1.R_pos θ s.φ₀)⟩
 
 end Meridian
 

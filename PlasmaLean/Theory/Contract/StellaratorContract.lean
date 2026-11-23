@@ -53,6 +53,26 @@ contract: C1, C2 and C5"; plan question Q-21, goal G-11.
   `C¹`, along which `B` is continuous, and around which `|μ₀⁻¹ ∮ B · dl| ≤ I_max`, all for the
   same field `B`.
 
+**Scope and limits of C1 (audit AV-M9, 23 November 2026).** The clause names read stronger than
+the predicates; the predicates say exactly the following and no more.
+* (a) `S` only has to be nonempty: a single invariant torus satisfies C1. Nothing says that the
+  surfaces are nested or that they fill a region.
+* (b) The torus predicates (`FieldTorus`, `PoloidalAngle`, `IotaOnTorus`) do not assert that the
+  torus is embedded (open audit item AF-1). For a non-embedded cross-section
+  `poloidalCirculation` is a winding-number-weighted flux, not "the current enclosed", and the
+  reference curve of `PoloidalAngle` is chosen existentially for each surface (two surfaces of
+  `S` need not share one).
+* (c) `B` needs no regularity beyond continuity on one loop. "Current-free" is a bound on ONE
+  circulation, at ONE toroidal angle `φ₀`, per surface; it is not a statement about `∇ × B`.
+* (d) (audit AV-M1) For a field that is curl-free on a convex neighbourhood of the poloidal
+  cross-section the current clause holds with allowance `0` by Stokes' theorem
+  (`CurrentFreeTransform.imax_zero_of_meridianHalfSpace` and `imax_zero_of_convex` in
+  `Theory/Fields/FormConvexRegion`). So for vacuum fields all the content of C1 is in the torus
+  and transform clauses.
+* The rotation number of a fixed parametrisation is unique when `(R, z)` is differentiable with
+  `∂_θ (R, z) ≠ 0` at one point (`Sanity/AuditRefreshContract.fieldTorus_iota_unique`); without
+  differentiability this is not proved.
+
 Section flux (auxiliary, **not** the C1 quantity):
 * `netToroidalCurrent μ₀ B X ζ₀ k₀`: the flux `∫₀^{k₀} ∫_{-π}^{π} J · (∂_k X × ∂_χ X) dχ dk`
   of the Ampère current through the section `ζ = ζ₀`, `0 ≤ k ≤ k₀`, of a toroidal coordinate map
@@ -100,7 +120,9 @@ supplied `BoozerField` and is not tied to any physical field (a constant model s
 `constField_boozerModelOmnigeneity`). The contract clause C2 for a field `B` is
 `Contract.OmnigeneityContract B Ω c κ_max` of `Theory/Contract/BoozerModel`: some Boozer model
 `F` with a proved Boozer chart of `B` onto `Ω` (`BoozerModelOf B Ω c F`) satisfies
-`BoozerModelOmnigeneity F c κ_max` (audit item AC-1, 1 November 2026).
+`BoozerModelOmnigeneity F c κ_max` (audit item AC-1, 1 November 2026). That clause has no
+non-vacuous witness in the library, and its `ι` is the chart's, defined modulo integers and not
+tied to `SurfaceData.iota` of C1 (audit AV-M7, AV-M8; see the module docstring there).
 
 * `BoozerModelOmnigeneity F c κ_max` (model-level C2 condition): `0 < c`, `0 ≤ κ_max` and
   `ApproxOmnigenousOn F c κ_max` (per-bounce radial displacement `≤ κ_max (H/|q|) τ`);
@@ -287,7 +309,12 @@ theorem rotation_not_currentFree {μ₀ ζ₀ : ℝ} (hμ : μ₀ ≠ 0) {K : Se
 `(θ, φ) ↦ cylPoint (R θ φ) φ (z θ φ)`, with `φ` the geometric toroidal angle; it is continuous,
 `2π`-periodic in `θ` and `φ`, has `R > 0`, and the field-line flow on it is conjugate to the
 linear flow `(θ, φ) ↦ (θ + ι t, φ + t)`: every such line is mapped to a curve tangent to `B`
-(velocity `c • B` for some scalar `c`; then `c ≠ 0`, since the curve has `φ̇ = 1`). -/
+(velocity `c • B` for some scalar `c`; then `c ≠ 0`, since the curve has `φ̇ = 1`).
+
+Limits (audit AV-M9): `R` and `z` are only continuous and the map need not be injective, so this
+does not assert an embedded torus (open audit item AF-1); `B` is an arbitrary function; and
+`FieldTorus` alone does not fix `ι` under reparametrisation (`θ ↦ θ + nφ` changes it by `n`;
+fixture `Sanity/AuditContractC2.torChart_relabel_fieldTorus`). -/
 structure FieldTorus (B : Space → Space) (R z : ℝ → ℝ → ℝ) (ι : ℝ) : Prop where
   /-- `R` is continuous. -/
   continuous_R : Continuous (fun p : ℝ × ℝ => R p.1 p.2)
@@ -355,7 +382,12 @@ theorem PoloidalAngle.ofConst {R z : ℝ → ℝ → ℝ} {R₀ z₀ : ℝ} {Θ 
 /-- **Rotational transform `ι` of the field `B` on the torus `(R, z)`**: an invariant torus with
 rotation number `ι` (`FieldTorus`) whose angle `θ` is poloidal in the sense of
 `PoloidalAngle` about some continuous `2π`-periodic reference curve `(R₀(φ), z₀(φ))` (which may
-follow a non-planar magnetic axis; a fixed circle is the constant case). -/
+follow a non-planar magnetic axis; a fixed circle is the constant case).
+
+Limits (audit AV-M9): the reference curve and the angle `Θ` are chosen existentially for this
+surface; embeddedness is not asserted (open audit item AF-1); uniqueness of `ι` for a fixed
+`(R, z)` is proved only when `(R, z)` is differentiable with `∂_θ (R, z) ≠ 0` at one point
+(`Sanity/AuditRefreshContract.iotaOnTorus_iota_unique`). -/
 @[expose] def IotaOnTorus (B : Space → Space) (R z : ℝ → ℝ → ℝ) (ι : ℝ) : Prop :=
   FieldTorus B R z ι ∧ ∃ R₀ z₀ : ℝ → ℝ, ∃ Θ : ℝ → ℝ → ℝ, PoloidalAngle R z R₀ z₀ Θ
 
@@ -799,7 +831,20 @@ structure SurfaceData where
 `μ₀ > 0`): a nonempty family `S` of confining surfaces, each an invariant torus with rotational
 transform `|ι| ≥ ι_min > 0` (`IotaOnTorus`; either handedness), whose poloidal loop at `φ₀` is
 `C¹` and carries `B` continuously, and around which the Ampère current
-`I = μ₀⁻¹ ∮ B · dl` satisfies `|I| ≤ I_max`. -/
+`I = μ₀⁻¹ ∮ B · dl` satisfies `|I| ≤ I_max`.
+
+**Scope and limits (audit AV-M9).** The name reads stronger than the predicate:
+* (a) `S` only has to be nonempty: a single invariant torus satisfies C1; nothing says that the
+  surfaces are nested or fill a region;
+* (b) the torus predicates do not assert embeddedness (open audit item AF-1): for a non-embedded
+  cross-section `poloidalCirculation` is a winding-number-weighted flux, not "the current
+  enclosed", and the reference curve of `PoloidalAngle` is chosen existentially per surface;
+* (c) `B` needs no regularity beyond continuity on one loop, and "current-free" is a bound on ONE
+  circulation at ONE toroidal angle `φ₀` per surface;
+* (d) (audit AV-M1) for a field that is curl-free on a convex neighbourhood of the poloidal
+  cross-section the current clause holds with allowance `0` by Stokes' theorem
+  (`CurrentFreeTransform.imax_zero_of_meridianHalfSpace` in `Theory/Fields/FormConvexRegion`), so
+  for vacuum fields all the content of C1 is in the torus and transform clauses. -/
 structure CurrentFreeTransform (μ₀ : ℝ) (B : Space → Space) (S : Set SurfaceData)
     (Imax ιmin : ℝ) : Prop where
   /-- The vacuum permeability is positive. -/

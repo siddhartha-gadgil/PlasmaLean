@@ -29,7 +29,14 @@ with vector potential `A` (`B = ∇ × A`).
 
 Scope: translation symmetries only. Rotations (the axisymmetric case of
 `canonicalMomentum_conserved`) need a linear generator and, in general, a gauge term; they are
-not treated here.
+not treated here but in `Theory/Kinetic/NoetherRotation` (linear generators, with a gauge
+term), `Theory/Kinetic/NoetherSymmetryBridge` and `Theory/Kinetic/NoetherGaugeBridge`.
+
+Limit of the statements: every theorem here assumes a vector potential `A` differentiable on
+ALL of space with `B = ∇ × A` everywhere. This excludes the vacuum field `∇φ` of a straight
+wire or of a toroidal coil (it has no global potential regular on the axis) and any field
+defined only on a toroidal region. Versions on an open set containing the orbit are not
+stated.
 -/
 
 @[expose] public section

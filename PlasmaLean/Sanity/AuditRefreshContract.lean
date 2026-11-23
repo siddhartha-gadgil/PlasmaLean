@@ -42,6 +42,10 @@ continuous `2π`-periodic reference curve `(R₀(φ), z₀(φ))`. Fixtures:
   about any fixed circle (`wander_not_poloidalAngle_const`);
 * the tokamak exclusion still holds with moving curves (`iota_eq_zero_of_purelyToroidal`); its
   non-trivial instance is `Design/RationalStellaratorContract.twistTorus_not_iotaOnTorus`.
+**Finding AV-M9 (audit of 23 November 2026).** `fieldTorus_iota_unique`,
+`iotaOnTorus_iota_unique`: for a fixed parametrisation that is differentiable with
+`∂_θ (R, z) ≠ 0` at one point the rotation number is unique. Without that hypothesis uniqueness
+is open (the torus predicates do not assert embeddedness, audit item AF-1).
 -/
 
 open scoped RealInnerProductSpace
@@ -223,5 +227,94 @@ theorem wander_not_poloidalAngle_const (R₀ z₀ : ℝ) (Θ : ℝ → ℝ → �
   obtain ⟨θ₂, h₂⟩ := h.exists_R_gt π
   simp only [wanderR, cos_zero, cos_pi] at h₁ h₂
   nlinarith [neg_one_le_cos θ₁, cos_le_one θ₂]
+
+/-! ## Audit of 23 November 2026, finding AV-M9: uniqueness of the rotational transform
+
+`IotaOnTorus B R z ι` does not assert that the torus is embedded or differentiable, so the
+uniqueness of `ι` for a fixed parametrisation `(R, z)` does not follow from the definition alone
+(`IotaOnTorus.tendsto` gives a limit along the line of slope `ι`, and the lines of two different
+slopes are different curves). With differentiability and `∂_θ (R, z) ≠ 0` at one point it does. -/
+
+/-- Coordinates of the velocity of a line of slope `a` on a torus that is differentiable at
+`(θ, φ)` with derivative `D`, when that velocity is `c • B`. -/
+theorem flow_coords {B : Space → Space} {R z : ℝ → ℝ → ℝ} {θ φ a c : ℝ}
+    {D : ℝ × ℝ →L[ℝ] ℝ × ℝ}
+    (hD : HasFDerivAt (fun p : ℝ × ℝ => ((R p.1 p.2, z p.1 p.2) : ℝ × ℝ)) D (θ, φ))
+    (hc : HasDerivAt (fun t => cylPoint (R (θ + t * a) (φ + t)) (φ + t) (z (θ + t * a) (φ + t)))
+      (c • B (cylPoint (R θ φ) φ (z θ φ))) 0) :
+    c * B (cylPoint (R θ φ) φ (z θ φ)) 0 = (D (a, 1)).1 * cos φ - R θ φ * sin φ ∧
+    c * B (cylPoint (R θ φ) φ (z θ φ)) 1 = (D (a, 1)).1 * sin φ + R θ φ * cos φ ∧
+    c * B (cylPoint (R θ φ) φ (z θ φ)) 2 = (D (a, 1)).2 := by
+  have hl : HasDerivAt (fun t : ℝ => ((θ + t * a, φ + t) : ℝ × ℝ)) (a, 1) 0 := by
+    have h := (((hasDerivAt_id (0 : ℝ)).mul_const a).const_add θ).prodMk
+      ((hasDerivAt_id (0 : ℝ)).const_add φ)
+    simpa using h
+  have hq := hD.comp_hasDerivAt_of_eq (0 : ℝ) hl (by simp)
+  have hr : HasDerivAt (fun t => R (θ + t * a) (φ + t)) (D (a, 1)).1 0 :=
+    (ContinuousLinearMap.fst ℝ ℝ ℝ).hasFDerivAt.comp_hasDerivAt (0 : ℝ) hq
+  have hz : HasDerivAt (fun t => z (θ + t * a) (φ + t)) (D (a, 1)).2 0 :=
+    (ContinuousLinearMap.snd ℝ ℝ ℝ).hasFDerivAt.comp_hasDerivAt (0 : ℝ) hq
+  have hcos : HasDerivAt (fun t => cos (φ + t)) (-sin φ) 0 := by
+    have h := ((hasDerivAt_id (0 : ℝ)).const_add φ).cos
+    simpa using h
+  have hsin : HasDerivAt (fun t => sin (φ + t)) (cos φ) 0 := by
+    have h := ((hasDerivAt_id (0 : ℝ)).const_add φ).sin
+    simpa using h
+  have h0 := hasDerivAt_coord hc 0
+  have h1 := hasDerivAt_coord hc 1
+  have h2 := hasDerivAt_coord hc 2
+  simp only [(cylPoint_coords _ _ _).1, (cylPoint_coords _ _ _).2.1, (cylPoint_coords _ _ _).2.2,
+    PiLp.smul_apply, smul_eq_mul] at h0 h1 h2
+  have e0 := h0.unique (hr.mul hcos)
+  have e1 := h1.unique (hr.mul hsin)
+  have e2 := h2.unique hz
+  simp only [zero_mul, add_zero] at e0 e1
+  exact ⟨by linear_combination e0, by linear_combination e1, e2⟩
+
+/-- **Regression (audit AV-M9): the rotation number is unique for a fixed parametrisation that
+is immersed in `θ` at one point.** If `(R, z)` is differentiable at one point `(θ, φ)` with
+`∂_θ (R, z) ≠ 0` there, then `FieldTorus B R z ι` and `FieldTorus B R z ι'` force `ι = ι'`: both
+lines through the point have velocity `c • B` with the same `c` (the toroidal angle advances at
+unit rate and `R > 0`), so `(ι − ι') ∂_θ (R, z) = 0`. Without the differentiability hypothesis
+(the torus predicates only ask for continuity, and `B` is an arbitrary function) uniqueness is
+neither proved nor refuted in the library. -/
+theorem fieldTorus_iota_unique {B : Space → Space} {R z : ℝ → ℝ → ℝ} {ι ι' : ℝ}
+    (h : FieldTorus B R z ι) (h' : FieldTorus B R z ι') {θ φ : ℝ} {D : ℝ × ℝ →L[ℝ] ℝ × ℝ}
+    (hD : HasFDerivAt (fun p : ℝ × ℝ => ((R p.1 p.2, z p.1 p.2) : ℝ × ℝ)) D (θ, φ))
+    (hne : D (1, 0) ≠ 0) : ι = ι' := by
+  obtain ⟨c, hc⟩ := h.flow θ φ
+  obtain ⟨c', hc'⟩ := h'.flow θ φ
+  obtain ⟨a0, a1, a2⟩ := flow_coords hD hc
+  obtain ⟨b0, b1, b2⟩ := flow_coords hD hc'
+  have hR := h.R_pos θ φ
+  set P := cylPoint (R θ φ) φ (z θ φ)
+  have ec : c * (-sin φ * B P 0 + cos φ * B P 1) = R θ φ := by
+    linear_combination -sin φ * a0 + cos φ * a1 + R θ φ * sin_sq_add_cos_sq φ
+  have ec' : c' * (-sin φ * B P 0 + cos φ * B P 1) = R θ φ := by
+    linear_combination -sin φ * b0 + cos φ * b1 + R θ φ * sin_sq_add_cos_sq φ
+  have hb : -sin φ * B P 0 + cos φ * B P 1 ≠ 0 := by
+    intro h0
+    rw [h0, mul_zero] at ec
+    exact hR.ne ec
+  have hcc : c = c' := mul_right_cancel₀ hb (ec.trans ec'.symm)
+  subst hcc
+  have e1 : (D (ι, 1)).1 = (D (ι', 1)).1 := by
+    linear_combination cos φ * (b0 - a0) + sin φ * (b1 - a1) -
+      ((D (ι, 1)).1 - (D (ι', 1)).1) * sin_sq_add_cos_sq φ
+  have hDeq : D (ι, 1) = D (ι', 1) := Prod.ext e1 (a2.symm.trans b2)
+  have hv : (ι - ι') • ((1 : ℝ), (0 : ℝ)) = ((ι, 1) : ℝ × ℝ) - (ι', 1) := by
+    ext <;> simp
+  have h0 : (ι - ι') • D (1, 0) = 0 := by
+    rw [← map_smul, hv, map_sub, hDeq, sub_self]
+  exact sub_eq_zero.1 ((smul_eq_zero.1 h0).resolve_right hne)
+
+/-- **Regression (audit AV-M9): uniqueness of the rotational transform** of `IotaOnTorus` for a
+fixed parametrisation that is differentiable with `∂_θ (R, z) ≠ 0` at one point. It uses only the
+`FieldTorus` clauses; the poloidal-angle convention enters when the parametrisation changes. -/
+theorem iotaOnTorus_iota_unique {B : Space → Space} {R z : ℝ → ℝ → ℝ} {ι ι' : ℝ}
+    (h : IotaOnTorus B R z ι) (h' : IotaOnTorus B R z ι') {θ φ : ℝ} {D : ℝ × ℝ →L[ℝ] ℝ × ℝ}
+    (hD : HasFDerivAt (fun p : ℝ × ℝ => ((R p.1 p.2, z p.1 p.2) : ℝ × ℝ)) D (θ, φ))
+    (hne : D (1, 0) ≠ 0) : ι = ι' :=
+  fieldTorus_iota_unique h.1 h'.1 hD hne
 
 end PlasmaLean.Sanity.AuditRefresh

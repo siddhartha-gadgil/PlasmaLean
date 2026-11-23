@@ -127,8 +127,10 @@ theorem shear_image_lowerHalf : shear '' lowerHalf = bentSet := by
     simp
     linarith
 
-/-- The bent region is simply connected: it is homeomorphic to a half-space. -/
-instance : SimplyConnectedSpace bentOpens := by
+/-- The bent region is simply connected: it is homeomorphic to a half-space. This is a proved
+instance about one specific region, not an assumption; it is exported because downstream
+fixtures use it. -/
+instance simplyConnectedSpace_bentOpens : SimplyConnectedSpace bentOpens := by
   have hc : ContractibleSpace lowerHalf := by
     refine Convex.contractibleSpace ?_ ⟨-coordVec 2, by simp [lowerHalf]⟩
     exact (convex_halfSpace_lt (f := fun x : Space => x 2)

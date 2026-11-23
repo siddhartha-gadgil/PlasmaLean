@@ -24,7 +24,10 @@ star-convex sets. This file uses them for two statements that the earlier files 
 * `FormWeakQS.lieDerivForm_eq_zero`, `WeakQS.lieDerivForm_flux_eq_zero`: the flux form of a
   weakly quasisymmetric, divergence-free field is invariant under the generator.
 * `lieDerivForm_flux`: `L_ξ(ι_B vol) = ι_{[ξ, B] + (div ξ) B} vol`.
-* `WeakQS.lieBracket_eq_zero`: hence `[ξ, B] = 0` in vector language.
+* `WeakQS.lieBracket_eq_zero`: hence `[ξ, B] = 0` in vector language, under extra hypotheses
+  that are not part of `WeakQS`: the set `T` is open, `B` is differentiable and divergence-free
+  on `T`, and the potential `ψ` is of class `C²` on `T`. (The same hypotheses are needed for
+  `WeakQS.lieDerivForm_flux_eq_zero`.)
 
 ## Potentials (topology of the region)
 
@@ -32,12 +35,15 @@ star-convex sets. This file uses them for two statements that the earlier files 
   gradient, `⋆ω = dφ`.
 * `VacuumForm.exists_vectorPotential`: there is a 1-form `A` with `dA = ω`.
 * `VacuumField.exists_scalarPotential`, `VacuumField.exists_vectorPotential`: the same in
-  vector language, `B = ∇φ` and `B = ∇ × A`.
+  vector language, `B = ∇φ` and `B = ∇ × A`. `VacuumField.exists_vectorPotential` does not
+  record the regularity of `A`; `VacuumField.exists_vectorPotential_contDiffOn` does (`A` is
+  of class `C²` on the region).
 
 Star-convexity is a hypothesis on the topology of the region. On a region that is not simply
 connected (a solid torus, the complement of a wire) a vacuum field need not be a gradient: that
 is the term `G dϑ` in the class `G dϑ + dF` of note N-42 (S-2). No such counterexample is
-proved in this file.
+proved in this file; the wire field is one (`wireField_no_potential` in
+`Sanity/FormTopology`).
 -/
 
 @[expose] public section
@@ -202,7 +208,8 @@ theorem _root_.PlasmaLean.Vacuum.VacuumField.exists_scalarPotential {Ω : Set Sp
   exact (flat.injective this).symm
 
 /-- **Vector potential, vector language**: a vacuum field on an open star-convex region is a
-curl, `B = ∇ × A`. -/
+curl, `B = ∇ × A`. The regularity of `A` is not recorded here; see
+`VacuumField.exists_vectorPotential_contDiffOn`. -/
 theorem _root_.PlasmaLean.Vacuum.VacuumField.exists_vectorPotential {Ω : Set Space}
     {B : Space → Space} (h : VacuumField Ω B) {x₀ : Space} (hs : StarConvex ℝ x₀ Ω) :
     ∃ A : Space → Space, A x₀ = 0 ∧ ∀ x ∈ Ω, B x = fieldCurl A x := by
@@ -212,5 +219,19 @@ theorem _root_.PlasmaLean.Vacuum.VacuumField.exists_vectorPotential {Ω : Set Sp
     simpa using hd x hx
   rw [extDeriv_flat] at h1
   exact (flux.injective h1).symm
+
+/-- **Vector potential of class `C²`, vector language**: a vacuum field on an open star-convex
+region is the curl of a vector field `A` that is of class `C²` on the region and vanishes at
+the centre. This is `VacuumField.exists_vectorPotential` with the regularity of `A` kept. -/
+theorem _root_.PlasmaLean.Vacuum.VacuumField.exists_vectorPotential_contDiffOn {Ω : Set Space}
+    {B : Space → Space} (h : VacuumField Ω B) {x₀ : Space} (hs : StarConvex ℝ x₀ Ω) :
+    ∃ A : Space → Space, ContDiffOn ℝ 2 A Ω ∧ A x₀ = 0 ∧ ∀ x ∈ Ω, B x = fieldCurl A x := by
+  obtain ⟨A, hA, hA0, hd⟩ := (vacuumForm_flux_iff.2 h).exists_vectorPotential hs
+  refine ⟨fun y => flat.symm (A y), ?_, by simp [hA0], fun x hx => ?_⟩
+  · exact flat.toContinuousLinearEquiv.symm.contDiff.comp_contDiffOn hA
+  · have h1 : extDeriv (fun y => flat (flat.symm (A y))) x = flux (B x) := by
+      simpa using hd x hx
+    rw [extDeriv_flat] at h1
+    exact (flux.injective h1).symm
 
 end PlasmaLean.Forms

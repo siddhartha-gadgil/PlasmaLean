@@ -306,6 +306,27 @@ run_cmd do
 #print axioms PlasmaLean.Kinetic.lorentzOrbit_existsUnique_uniform
 #print axioms PlasmaLean.Sanity.CrossedFieldOrbit.opposite_drift_not_orbit
 #print axioms PlasmaLean.Sanity.CrossedFieldOrbit.drift_orbit_hamilton
+-- Regression theorems of the refresh audit of 23 November 2026 (findings AV-*)
+#print axioms PlasmaLean.Kinetic.magneticForm_lorentzForceField
+#print axioms PlasmaLean.Kinetic.magneticForm_fderiv_kineticMomentumMap
+#print axioms PlasmaLean.Sanity.MagneticSymplectic.uniform_plus_sign_fails
+#print axioms PlasmaLean.Kinetic.noetherMomentum_gauge_invariant
+#print axioms PlasmaLean.Kinetic.lorentzOrbit_unique_of_contDiff
+#print axioms PlasmaLean.Kinetic.lorentzOrbit_existsUnique_of_contDiff
+#print axioms PlasmaLean.Sanity.NoetherLagrangian.shear_momentum_conserved
+#print axioms PlasmaLean.Contract.CurrentFreeTransform.imax_zero_of_convex
+#print axioms PlasmaLean.Sanity.ContractLoopCurrentFixture.rationalStellarator_ball_fixture
+#print axioms PlasmaLean.Sanity.FormHYMCircle.energy_ball_three
+#print axioms PlasmaLean.Sanity.FormHYMCircle.energy_junk
+#print axioms PlasmaLean.Forms.differentiableAt_hymLift_iff
+#print axioms PlasmaLean.Sanity.FormHYMLift.absLift_junk_closed
+#print axioms PlasmaLean.Sanity.FormContact.reeb_not_unique_of_lam_zero
+#print axioms PlasmaLean.Vacuum.VacuumField.exists_vectorPotential_contDiffOn
+#print axioms PlasmaLean.Contract.BoozerModelOf.relabel
+#print axioms PlasmaLean.Sanity.AuditContractC2.toroidal_boozerModelOf_iota_one
+#print axioms PlasmaLean.Sanity.AuditContractC2.exists_trappedBounce_driftMirror
+#print axioms PlasmaLean.Sanity.AuditContractC2.torusQADefectLe_const
+#print axioms PlasmaLean.Sanity.AuditRefresh.iotaOnTorus_iota_unique
 #print axioms PlasmaLean.Fluids.EulerianODE.energy_conserved
 #print axioms PlasmaLean.Fluids.EulerianODE.helicity_conserved
 #print axioms PlasmaLean.Fluids.rigidBody_eulerian

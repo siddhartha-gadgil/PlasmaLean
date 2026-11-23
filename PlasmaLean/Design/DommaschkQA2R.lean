@@ -256,7 +256,8 @@ theorem candidate_loopCurrent_eq_zero (μ₀ : ℝ) {R z : ℝ → ℝ → ℝ} 
 
 /-- **C1 for the candidate reduces to the transform clause**: for any nonempty family of invariant
 tori of the candidate with `C¹` poloidal loops and `|ι| ≥ ι_min > 0`, clause C1 holds with
-`I_max = 0`. (No such torus is certified yet.) -/
+`I_max = 0`. (Two such tori, C and A, are certified for this field in the on-demand modules
+`DommaschkKamCFinal`, `DommaschkKamAFinal` and `DommaschkKamNested`.) -/
 theorem candidate_currentFreeTransform {μ₀ ιmin : ℝ} {S : Set SurfaceData} (hμ : 0 < μ₀)
     (hS : S.Nonempty) (hι : 0 < ιmin)
     (hTor : ∀ s ∈ S, IotaOnTorus (field candidate) s.R s.z s.iota)

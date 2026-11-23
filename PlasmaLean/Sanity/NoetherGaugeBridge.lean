@@ -25,7 +25,14 @@ The uniform field `B₀ e_z` in the symmetric gauge `symGauge B₀` and the Land
   defect of the Landau gauge; `landau_angular_momentum_conserved_gauge_transformation`: the
   conserved quantity obtained from the symmetric gauge by the gauge transformation.
 * Rejected: `landau_not_symmetricFlux_zero_gauge`, `landau_not_symmetricFlux_neg_gauge`: with
-  gauge term `0` or `−landauGauge` the bridged hypothesis fails for `B₀ ≠ 0`.
+  gauge term `0` or `−landauGauge` the bridged hypothesis fails for `B₀ ≠ 0`. The first of
+  these, `landau_not_commute` below and `landau_not_symmetricFlux` of
+  `Sanity/NoetherSymmetryBridge` are not independent checks: all three are restatements,
+  through the equivalences of the theory, of the single computation `landau_not_equivariant`
+  of `Sanity/NoetherRotation`.
+* Gauge invariance: `landau_gauge_invariant`: `noetherMomentum_gauge_invariant` applied to the
+  passage from the symmetric to the Landau gauge with the gauge term `landauGauge B₀`, and
+  `landau_gauge_momenta_eq`: the two momenta are equal, by `noetherMomentum_gauge_eq_iff`.
 * Finite symmetry: `symGauge_commute`, `symGauge_rotZ_equivariant_of_commute`: the symmetric
   gauge commutes with `rotGenZ`, hence with every rotation; `landau_not_commute`: the Landau
   gauge does not.
@@ -173,10 +180,59 @@ theorem landau_angular_momentum_conserved_gauge_transformation {m q B₀ : ℝ}
   simp only [noetherMomentum, inner_rotGenZ, angularZ, hψ] at key
   exact key
 
+/-- `landauGauge B₀` is an admissible gauge term for the Landau gauge written as
+`symGauge + ∇Λ`: its gradient is the transformed defect `0 + (DH(K y) − K(H y))`. -/
+theorem hasFDerivAt_landauGauge_transformed (B₀ : ℝ) (y : Space) :
+    HasFDerivAt (landauGauge B₀)
+      (innerSL ℝ ((0 : Space)
+        + (fderiv ℝ (gaugeGrad B₀) y (rotGenZ y) - rotGenZ (gaugeGrad B₀ y)))) y := by
+  rw [landau_defect_of_gauge_transformation]
+  exact hasFDerivAt_landauGauge B₀ y
+
+/-- **Gauge-invariance fixture**: `noetherMomentum_gauge_invariant` for the passage from the
+symmetric gauge (gauge term `0`) to the Landau gauge `symGauge + ∇Λ`, with the admissible gauge
+term `landauGauge B₀`: the field is unchanged, the momentum of the Landau gauge is conserved,
+and it differs from the momentum of the symmetric gauge by `−q (landauGauge B₀ 0 − 0)`. -/
+theorem landau_gauge_invariant {m q B₀ : ℝ} {x v : ℝ → Space}
+    (h : LorentzOrbit m q (fun _ => 0) (fun _ => B₀ • coordVec 2) x v) :
+    (∀ y, B₀ • coordVec 2 = fieldCurl (fun z => symGauge B₀ z + gaugeGrad B₀ z) y) ∧
+      (∀ s t, noetherMomentum m q (fun y => rotGenZ y)
+          (fun y => ⟪symGauge B₀ y + gaugeGrad B₀ y, rotGenZ y⟫ - landauGauge B₀ y) x v s
+        = noetherMomentum m q (fun y => rotGenZ y)
+          (fun y => ⟪symGauge B₀ y + gaugeGrad B₀ y, rotGenZ y⟫ - landauGauge B₀ y) x v t) ∧
+      ∀ t, noetherMomentum m q (fun y => rotGenZ y)
+          (fun y => ⟪symGauge B₀ y + gaugeGrad B₀ y, rotGenZ y⟫ - landauGauge B₀ y) x v t
+        = noetherMomentum m q (fun y => rotGenZ y)
+            (fun y => ⟪symGauge B₀ y, rotGenZ y⟫ - (fun _ => (0 : ℝ)) y) x v t
+          - q * (landauGauge B₀ 0 - (fun _ => (0 : ℝ)) 0) :=
+  noetherMomentum_gauge_invariant (A := symGauge B₀) (G := fun _ => 0) (χ := fun _ => 0)
+    (H := fun y => gaugeGrad B₀ y) (Λ := gaugeFn B₀) (K := rotGenZ) h inner_rotGenZ_self
+    (symGauge B₀).differentiable (fun y => (curl_symGauge B₀ y).symm)
+    (fun y => by simpa using hasFDerivAt_const (0 : ℝ) y)
+    (fun y => by simpa using symGauge_equivariant B₀ y)
+    (hasFDerivAt_gaugeFn B₀) (gaugeGrad B₀).differentiable
+    (hasFDerivAt_landauGauge_transformed B₀)
+
+/-- **Gauge-invariance fixture**: the momentum of the Landau gauge with gauge term
+`landauGauge B₀` equals the momentum of the symmetric gauge with gauge term `0`, by
+`noetherMomentum_gauge_eq_iff`, because `landauGauge B₀ 0 = 0`. No orbit is assumed. -/
+theorem landau_gauge_momenta_eq (m q B₀ : ℝ) (x v : ℝ → Space) (t : ℝ) :
+    noetherMomentum m q (fun y => rotGenZ y)
+        (fun y => ⟪symGauge B₀ y + gaugeGrad B₀ y, rotGenZ y⟫ - landauGauge B₀ y) x v t
+      = noetherMomentum m q (fun y => rotGenZ y)
+        (fun y => ⟪symGauge B₀ y, rotGenZ y⟫ - (fun _ => (0 : ℝ)) y) x v t :=
+  (noetherMomentum_gauge_eq_iff (A := symGauge B₀) (G := fun _ => 0) (χ := fun _ => 0)
+    (H := fun y => gaugeGrad B₀ y) (Λ := gaugeFn B₀) (K := rotGenZ) inner_rotGenZ_self
+    (fun y => by simpa using hasFDerivAt_const (0 : ℝ) y)
+    (hasFDerivAt_gaugeFn B₀) (gaugeGrad B₀).differentiable
+    (hasFDerivAt_landauGauge_transformed B₀) x v t).mpr (by simp [landauGauge])
+
 /-! ### Rejected gauge terms -/
 
 /-- **Rejected fixture**: with gauge term `0` the bridged hypothesis fails for the Landau
-gauge when `B₀ ≠ 0`. -/
+gauge when `B₀ ≠ 0`. This is not an independent check: it is a consequence, through
+`symmetricFlux_gauge_iff`, of the single computation `landau_not_equivariant` of
+`Sanity/NoetherRotation`. -/
 theorem landau_not_symmetricFlux_zero_gauge {B₀ : ℝ} (hB : B₀ ≠ 0) :
     ¬ SymmetricFlux (fun _ => B₀ • coordVec 2)
       (fun y => symmetryFluxGrad (landau B₀) rotGenZ y - (fun _ => (0 : Space)) y)
@@ -223,7 +279,9 @@ theorem symGauge_rotZ_equivariant_of_commute (B₀ s : ℝ) (y : Space) :
   rotZ_equivariant_of_commute (symGauge B₀) (symGauge_commute B₀) s y
 
 /-- **Rejected fixture**: the Landau gauge does not commute with `rotGenZ` when `B₀ ≠ 0`, so
-`rotZ_equivariant_of_commute` does not apply to it. -/
+`rotZ_equivariant_of_commute` does not apply to it. This is not an independent check: it is a
+consequence, through `clm_fderiv_equivariant_iff`, of the single computation
+`landau_not_equivariant` of `Sanity/NoetherRotation`. -/
 theorem landau_not_commute {B₀ : ℝ} (hB : B₀ ≠ 0) :
     ¬ ∀ y : Space, landau B₀ (rotGenZ y) = rotGenZ (landau B₀ y) := fun h =>
   landau_not_equivariant hB fun y =>

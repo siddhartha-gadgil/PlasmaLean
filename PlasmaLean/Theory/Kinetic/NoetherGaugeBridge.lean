@@ -43,14 +43,25 @@ derivative is assumed).
 * `hasFDerivAt_gauge_term_add_gradient`: `G'` is the gradient of
   `χ' = χ + ⟪∇Λ, K y⟫`, that is, `χ' = χ + L_K Λ`.
 * `gauge_potential_add_gradient`, `noetherMomentum_add_gradient`: with this `χ'` the
-  potential `⟪A', K y⟫ − χ'` equals `⟪A, K y⟫ − χ`, and the two conserved momenta are equal.
+  potential `⟪A', K y⟫ − χ'` equals `⟪A, K y⟫ − χ`, and the two momenta are the same function.
+  These two statements are algebraic identities (the term `⟪H, K y⟫` is added and
+  subtracted): they hold for arbitrary `A`, `H`, `χ`, `K` with no hypothesis, in particular
+  without `H` being a gradient or anything being conserved. They are not gauge invariance by
+  themselves. The same holds for `noetherMomentum_add_gradient_naive`.
 * `gauge_term_sub_const`, `noetherMomentum_add_gradient_of_gauge_term`: any other gauge term
   `χ'` with gradient `G'` differs from `χ + L_K Λ` by the constant `χ'(0) − χ(0)`, and the
-  momentum changes by `−q (χ'(0) − χ(0))`. So the momenta coincide exactly when
-  `q (χ'(0) − χ(0)) = 0`.
-* `noetherMomentum_add_gradient_naive`: without the gauge term the momentum is not gauge
-  invariant: it changes by `q ⟪∇Λ(x), K x⟫`.
+  momentum changes by `−q (χ'(0) − χ(0))`. `noetherMomentum_gauge_eq_iff`: so the momenta
+  coincide exactly when `q (χ'(0) − χ(0)) = 0`.
+* `noetherMomentum_add_gradient_naive`: without the gauge term the momentum changes by
+  `q ⟪H(x), K x⟫` (an algebraic identity; that this term is not constant along orbits in
+  general is not proved here).
 * `noetherMomentum_linear_gauge_conserved_add_gradient`: conservation in the gauge `A'`.
+* **`noetherMomentum_gauge_invariant`**: the statement of gauge invariance with all its
+  hypotheses. The content is in `fieldCurl_add_gradient` (the field is unchanged),
+  `equivariant_gauge_add_gradient` and `hasFDerivAt_gauge_term_add_gradient` (the transformed
+  gauge term is admissible), `noetherMomentum_linear_gauge_conserved_add_gradient`
+  (conservation in the new gauge) and `noetherMomentum_add_gradient_of_gauge_term` (comparison
+  of the momenta for any admissible gauge term).
 * `equivariant_translation_add_gradient`, `hasFDerivAt_translation_gauge_term`: the same
   transformation rule for a translation `e`: `G' = G + DH(e)`, `χ' = χ + ⟪∇Λ, e⟫`.
 
@@ -93,7 +104,8 @@ theorem hasFDerivAt_symmetryFlux_gauge {A G : Space → Space} {χ : Space → �
 
 /-- **Equivalence of the hypotheses with a gauge term, at a point.** With `B = ∇ × A` at `y`,
 the identity `⟪K y, v × B(y)⟫ = −⟪symmetryFluxGrad A K y − g, v⟫` for all `v` holds if and
-only if `DA(y)(K y) = K(A y) + g`. -/
+only if `DA(y)(K y) = K(A y) + g`. No differentiability of `A` is assumed: where `A` is not
+differentiable both sides are computed with the junk derivative `0`. -/
 theorem symmetricFlux_gauge_at_iff {A B : Space → Space} {K : Space →L[ℝ] Space} {y : Space}
     (g : Space) (hcurl : B y = fieldCurl A y) :
     (∀ v, ⟪K y, cross v (B y)⟫ = -⟪symmetryFluxGrad A K y - g, v⟫)
@@ -116,7 +128,9 @@ theorem symmetricFlux_gauge_at_iff {A B : Space → Space} {K : Space →L[ℝ] 
 
 /-- **Equivalence of the hypotheses with a gauge term.** With `B = ∇ × A`, the hypothesis
 `SymmetricFlux B (symmetryFluxGrad A K − G) K` of `noetherMomentum_conserved` is equivalent to
-equivariance of `A` under `K` up to `G`: `DA(y)(K y) = K(A y) + G(y)`. -/
+equivariance of `A` under `K` up to `G`: `DA(y)(K y) = K(A y) + G(y)`. No differentiability of
+`A` is assumed: where `A` is not differentiable both sides are computed with the junk
+derivative `0`. -/
 theorem symmetricFlux_gauge_iff {A B G : Space → Space} {K : Space →L[ℝ] Space}
     (hcurl : ∀ y, B y = fieldCurl A y) :
     SymmetricFlux B (fun y => symmetryFluxGrad A K y - G y) (fun y => K y)
@@ -219,8 +233,9 @@ theorem noetherMomentum_translation_gauge_conserved_direct {m q : ℝ} {A B G : 
 
 /-! ### Gauge invariance -/
 
-/-- **Symmetry of the Hessian.** If `Λ` has gradient `H` near `y` and `H` is differentiable
-at `y`, then `⟪DH(y) v, w⟫ = ⟪DH(y) w, v⟫`. -/
+/-- **Symmetry of the Hessian.** If `Λ` has gradient `H` at every point of space (the
+hypothesis is global, although only a neighbourhood of `y` enters the proof) and `H` is
+differentiable at `y`, then `⟪DH(y) v, w⟫ = ⟪DH(y) w, v⟫`. -/
 theorem inner_fderiv_gradient_symm {Λ : Space → ℝ} {H : Space → Space} {y : Space}
     (hΛ : ∀ z, HasFDerivAt Λ (innerSL ℝ (H z)) z) (hH : DifferentiableAt ℝ H y)
     (v w : Space) : ⟪fderiv ℝ H y v, w⟫ = ⟪fderiv ℝ H y w, v⟫ := by
@@ -285,24 +300,37 @@ theorem hasFDerivAt_gauge_term_add_gradient {G H : Space → Space} {χ Λ : Spa
   rw [map_add, ← symmetryFluxGrad_gradient K hΛ hH]
   exact hχ.add (hasFDerivAt_symmetryFlux hK hH)
 
-/-- **The potential of the conserved momentum is gauge invariant.** With the gauge term
-`χ' = χ + ⟪H, K y⟫`, the potential `⟪A + H, K y⟫ − χ'` equals `⟪A, K y⟫ − χ`. -/
+/-- **The potential of the momentum with the transformed gauge term: an algebraic identity.**
+With `χ' = χ + ⟪H, K y⟫`, the potential `⟪A + H, K y⟫ − χ'` equals `⟪A, K y⟫ − χ`. It holds
+for arbitrary `A`, `H`, `χ`, `K` with no hypothesis (`⟪H, K y⟫` is added and subtracted); `H`
+need not be a gradient. It is not gauge invariance by itself: that `χ'` is an admissible gauge
+term for `A + H` is `equivariant_gauge_add_gradient` with `hasFDerivAt_gauge_term_add_gradient`,
+and the composed statement is `noetherMomentum_gauge_invariant`. -/
 theorem gauge_potential_add_gradient (A H : Space → Space) (χ : Space → ℝ)
     (K : Space → Space) (y : Space) :
     ⟪A y + H y, K y⟫ - (χ y + ⟪H y, K y⟫) = ⟪A y, K y⟫ - χ y := by
   rw [inner_add_left]
   ring
 
-/-- **The conserved momentum is gauge invariant.** The Noether momentum of `A' = A + H` with
-gauge term `χ' = χ + ⟪H, K y⟫` equals the Noether momentum of `A` with gauge term `χ`. -/
+/-- **The momentum with the transformed gauge term: an algebraic identity.** The expression
+`noetherMomentum` built from `A' = A + H` and `χ' = χ + ⟪H, K y⟫` equals the one built from
+`A` and `χ`. It holds for arbitrary `A`, `H`, `χ`, `K`, `x`, `v` with no hypothesis: nothing is
+assumed to be a gradient, a symmetry, an orbit or conserved. The gauge-invariance content is
+in `fieldCurl_add_gradient`, `equivariant_gauge_add_gradient`,
+`hasFDerivAt_gauge_term_add_gradient`, `noetherMomentum_linear_gauge_conserved_add_gradient`
+and `noetherMomentum_add_gradient_of_gauge_term`; `noetherMomentum_gauge_invariant` composes
+them. -/
 theorem noetherMomentum_add_gradient (m q : ℝ) (A H : Space → Space) (χ : Space → ℝ)
     (K : Space → Space) (x v : ℝ → Space) (t : ℝ) :
     noetherMomentum m q K (fun y => ⟪A y + H y, K y⟫ - (χ y + ⟪H y, K y⟫)) x v t
       = noetherMomentum m q K (fun y => ⟪A y, K y⟫ - χ y) x v t := by
   simp only [noetherMomentum, gauge_potential_add_gradient]
 
-/-- **Without the gauge term the momentum is not gauge invariant.** The momentum
-`m⟪K x, v⟫ + q⟪A'(x), K x⟫` of `A' = A + H` differs from that of `A` by `q⟪H(x), K x⟫`. -/
+/-- **Without the gauge term the expression changes: an algebraic identity.** The expression
+`m⟪K x, v⟫ + q⟪A'(x), K x⟫` for `A' = A + H` differs from that for `A` by `q⟪H(x), K x⟫`. It
+holds for arbitrary `A`, `H`, `K`, `x`, `v` with no hypothesis. It shows which term the gauge
+term must cancel; it does not by itself prove that the uncorrected expression fails to be
+conserved. -/
 theorem noetherMomentum_add_gradient_naive (m q : ℝ) (A H : Space → Space)
     (K : Space → Space) (x v : ℝ → Space) (t : ℝ) :
     noetherMomentum m q K (fun y => ⟪A y + H y, K y⟫) x v t
@@ -363,6 +391,60 @@ theorem noetherMomentum_linear_gauge_conserved_add_gradient {m q : ℝ}
     (fun y => (hcurl y).trans (fieldCurl_add_gradient (hA y) hΛ (hH y)).symm)
     (fun y => hasFDerivAt_gauge_term_add_gradient hK (hχ y) hΛ (hH y))
     (fun y => equivariant_gauge_add_gradient (hA y) (hH y) (hequiv y)) s t
+
+/-- **The two momenta coincide exactly when `q (χ'(0) − χ(0)) = 0`.** Under the hypotheses
+of `noetherMomentum_add_gradient_of_gauge_term` (`H = ∇Λ` differentiable, `χ` with gradient
+`G`, `χ'` any function with the gradient `G + (DH(K y) − K(H y))` of the defect of `A + H`),
+the momentum of `(A + H, χ')` equals that of `(A, χ)` at a time `t` if and only if
+`q (χ'(0) − χ(0)) = 0`. -/
+theorem noetherMomentum_gauge_eq_iff {m q : ℝ} {A G H : Space → Space}
+    {χ χ' Λ : Space → ℝ} {K : Space →L[ℝ] Space} (hK : ∀ w, ⟪K w, w⟫ = 0)
+    (hχ : ∀ y, HasFDerivAt χ (innerSL ℝ (G y)) y)
+    (hΛ : ∀ z, HasFDerivAt Λ (innerSL ℝ (H z)) z) (hH : Differentiable ℝ H)
+    (hχ' : ∀ y, HasFDerivAt χ' (innerSL ℝ (G y + (fderiv ℝ H y (K y) - K (H y)))) y)
+    (x v : ℝ → Space) (t : ℝ) :
+    noetherMomentum m q (fun y => K y) (fun y => ⟪A y + H y, K y⟫ - χ' y) x v t
+        = noetherMomentum m q (fun y => K y) (fun y => ⟪A y, K y⟫ - χ y) x v t
+      ↔ q * (χ' 0 - χ 0) = 0 := by
+  rw [noetherMomentum_add_gradient_of_gauge_term (A := A) hK hχ hΛ hH hχ' x v t]
+  constructor <;> intro h <;> linarith
+
+/-- **Gauge invariance of the conserved momentum, with all hypotheses.** Let `B = ∇ × A` with
+`A` differentiable, let `A` be equivariant under the skew linear `K` up to `G = ∇χ`
+(`DA(y)(K y) = K(A y) + G(y)`), and let `A' = A + H` with `H = ∇Λ` differentiable. Let `χ'`
+be ANY admissible gauge term for `A'`, that is, any function whose gradient is the defect
+`G + (DH(K y) − K(H y))` of `A'` (one exists: `χ + ⟪H, K y⟫`, by
+`hasFDerivAt_gauge_term_add_gradient`). Then
+
+* `B = ∇ × A'`: the field is the same;
+* the momentum `m⟪K x, v⟫ + q(⟪A'(x), K x⟫ − χ'(x))` built from `(A', χ')` is constant along
+  every Lorentz orbit;
+* it differs from the momentum built from `(A, χ)` by the constant `−q (χ'(0) − χ(0))`.
+
+So the conserved quantity is gauge invariant up to an additive constant, and equal for the
+choice `χ' = χ + ⟪H, K y⟫` (`noetherMomentum_add_gradient`,
+`noetherMomentum_gauge_eq_iff`). -/
+theorem noetherMomentum_gauge_invariant {m q : ℝ} {A B G H : Space → Space}
+    {χ χ' Λ : Space → ℝ} {x v : ℝ → Space} {K : Space →L[ℝ] Space}
+    (h : LorentzOrbit m q (fun _ => 0) B x v) (hK : ∀ w, ⟪K w, w⟫ = 0)
+    (hA : Differentiable ℝ A) (hcurl : ∀ y, B y = fieldCurl A y)
+    (hχ : ∀ y, HasFDerivAt χ (innerSL ℝ (G y)) y)
+    (hequiv : ∀ y, fderiv ℝ A y (K y) = K (A y) + G y)
+    (hΛ : ∀ z, HasFDerivAt Λ (innerSL ℝ (H z)) z) (hH : Differentiable ℝ H)
+    (hχ' : ∀ y, HasFDerivAt χ' (innerSL ℝ (G y + (fderiv ℝ H y (K y) - K (H y)))) y) :
+    (∀ y, B y = fieldCurl (fun z => A z + H z) y) ∧
+      (∀ s t, noetherMomentum m q (fun y => K y) (fun y => ⟪A y + H y, K y⟫ - χ' y) x v s
+        = noetherMomentum m q (fun y => K y) (fun y => ⟪A y + H y, K y⟫ - χ' y) x v t) ∧
+      ∀ t, noetherMomentum m q (fun y => K y) (fun y => ⟪A y + H y, K y⟫ - χ' y) x v t
+        = noetherMomentum m q (fun y => K y) (fun y => ⟪A y, K y⟫ - χ y) x v t
+          - q * (χ' 0 - χ 0) := by
+  have hcurl' : ∀ y, B y = fieldCurl (fun z => A z + H z) y := fun y =>
+    (hcurl y).trans (fieldCurl_add_gradient (hA y) hΛ (hH y)).symm
+  exact ⟨hcurl', fun s t =>
+    noetherMomentum_linear_gauge_conserved_direct (A := fun z => A z + H z)
+      (G := fun y => G y + (fderiv ℝ H y (K y) - K (H y))) (χ := χ') h hK (hA.add hH) hcurl'
+      hχ' (fun y => equivariant_gauge_add_gradient (hA y) (hH y) (hequiv y)) s t,
+    fun t => noetherMomentum_add_gradient_of_gauge_term hK hχ hΛ hH hχ' x v t⟩
 
 /-- **Transformation of the defect for a translation.** If `DA(y)(e) = g`, then for
 `A' = A + H` one has `DA'(y)(e) = g + DH(y)(e)`. -/

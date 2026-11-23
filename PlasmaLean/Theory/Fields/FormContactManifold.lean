@@ -28,7 +28,8 @@ on itself.
 * `IsBeltramiOn.reebVectorField_flatSmoothForm`: its TauCeti Reeb vector field is `B / ‖B‖²`.
 
 Not proved here: the same statements on an open subset `U` of `ℝ³` (the manifold
-`TopologicalSpace.Opens Space`). Everything is stated on all of `ℝ³`.
+`TopologicalSpace.Opens Space`). Everything in this file is stated on all of `ℝ³`; the versions
+on an open subset are in `Theory/Fields/FormContactOpens`.
 -/
 
 @[expose] public section

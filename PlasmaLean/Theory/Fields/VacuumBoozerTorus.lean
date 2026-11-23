@@ -149,12 +149,22 @@ invariant torus `J = |B|²/B^φ`). -/
 
 /-- **The per-torus quasi-axisymmetry defect** `∂_{φ_B}|B|` (note N-34, §2):
 `[(1 + ι B·∂_θK) 𝓛(|B|∘K) − ι (B·𝓛K) ∂_θ(|B|∘K)] / (B·𝓛K)`. It uses only derivatives along the
-torus, no flux label and no inverse map. -/
+torus, no flux label and no inverse map.
+
+Warning (audit AV-L1): the expression is built from `deriv` (which is `0` where the derivative
+does not exist) and a division by `J = B · 𝓛K` (which is `0` when `J = 0`). It is `∂_{φ_B}|B|`
+only where `K` is a `FieldTorus`, `|B| ∘ K` is differentiable and `J > 0`. -/
 @[expose] def torusQADefect (B : Space → Space) (ι : ℝ) (K : ℝ → ℝ → Space) (θ φ : ℝ) : ℝ :=
   boozerDeriv ι (boozerA B K θ φ) (boozerJac B ι K θ φ) (thetaDeriv (modB B K) θ φ)
     (lineDeriv ι (modB B K) θ φ)
 
-/-- The certified per-torus QA bound: `|∂_{φ_B}|B|| ≤ δ` at every point of the torus. -/
+/-- The certified per-torus QA bound: `|∂_{φ_B}|B|| ≤ δ` at every point of the torus.
+
+Warning (audit AV-L1): the predicate has no regularity clause and alone is not a quasisymmetry
+statement. It holds with `δ = 0` for a constant `K`, for `B = 0`, and wherever `|B| ∘ K` is not
+differentiable along the two directions (`Sanity/AuditContractC2.torusQADefectLe_const`,
+`torusQADefectLe_zero_field`). Consumers must add `FieldTorus`, differentiability of `|B| ∘ K`
+and `J > 0` (for example `BoozerChartHyp` of `Theory/Fields/BoozerWirtinger`). -/
 @[expose] def TorusQADefectLe (B : Space → Space) (ι : ℝ) (K : ℝ → ℝ → Space) (δ : ℝ) : Prop :=
   ∀ θ φ, |torusQADefect B ι K θ φ| ≤ δ
 

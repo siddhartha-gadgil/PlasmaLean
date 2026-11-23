@@ -39,6 +39,12 @@ with its canonical momentum, is an integral curve of the Hamiltonian vector fiel
   `energy_conserved` of `Theory/Kinetic/FullOrbit`, which needs neither a vector potential nor
   `m ≠ 0`; it is not restated here.
 
+Limit of the statements: every theorem here assumes a vector potential `A` differentiable on
+ALL of space with `B = ∇ × A` everywhere. This excludes the vacuum field `∇φ` of a straight
+wire or of a toroidal coil (it has no global potential regular on the axis) and any field
+defined only on a toroidal region. Versions on an open set containing the orbit are not
+stated.
+
 Not proved here: time-dependent potentials. Existence and uniqueness of integral curves, and
 curves defined only on an interval of times (`LorentzOrbitOn`), are in
 `Theory/Kinetic/CrossedFieldOrbit`.
@@ -119,7 +125,9 @@ theorem fderiv_emHamiltonian_apply (m q : ℝ) {A : Space → Space} {Φ : Space
 
 /-- **Hamilton's equations in closed form.** Where `A` is differentiable and `E = −∇Φ`, the
 Hamiltonian vector field of `emHamiltonian` at `z = (x, p)` is `x' = v`,
-`p' = q (DA)ᵀ v + q E(x)♭`, with `v = (p♯ − q A(x)) / m`. No hypothesis on `m`. -/
+`p' = q (DA)ᵀ v + q E(x)♭`, with `v = (p♯ − q A(x)) / m`. No hypothesis on `m`: for `m = 0`
+Lean's division makes the kinetic term `0`, so the statement is then about `H = qΦ` (and
+`v = 0`). -/
 theorem hamiltonianVectorField_emHamiltonian (m q : ℝ) {A : Space → Space} {Φ : Space → ℝ}
     {E : Space → Space} (hΦ : IsPotential Φ E) {z : PhaseSpace}
     (hA : DifferentiableAt ℝ A z.1) :
@@ -282,7 +290,8 @@ theorem emHamiltonian_canonicalCurve {m : ℝ} (hm : m ≠ 0) (q : ℝ) (A : Spa
 /-- **Conservation of the Hamiltonian.** For `A` differentiable and `E = −∇Φ`, the Hamiltonian
 is constant along every integral curve of its Hamiltonian vector field
 (`TauCeti.SymplecticForm.apply_eq_of_hasDerivWithinAt_hamiltonianVectorField`). No hypothesis
-on `m` and none relating `B` to `A`. -/
+on `m` and none relating `B` to `A`: for `m = 0` Lean's division makes the kinetic term `0`,
+so the statement is then about `H = qΦ`. -/
 theorem emHamiltonian_conserved (m q : ℝ) {A E : Space → Space} {Φ : Space → ℝ}
     {z : ℝ → PhaseSpace} (hA : Differentiable ℝ A) (hΦ : IsPotential Φ E)
     (hz : ∀ t, HasDerivAt z

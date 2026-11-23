@@ -10,10 +10,17 @@ Build the top modules first, `lake build PlasmaLean.Design.RationalStellaratorGC
 (bounded, dependencies first),
 then run `lake env lean scripts/check_axioms_heavy.lean`.
 
-Like `scripts/check_axioms.lean`, this script **fails** if any declaration owned by a
-`PlasmaLean*` module in its import closure depends on an axiom other than `propext`,
-`Classical.choice` and `Quot.sound` (so `sorryAx`, `Lean.ofReduceBool`, native `bv_decide`
-axioms and project axioms are rejected).
+Like `scripts/check_axioms.lean`, this script **fails** if any declaration covered by it depends
+on an axiom other than `propext`, `Classical.choice` and `Quot.sound` (so `sorryAx`,
+`Lean.ofReduceBool`, native `bv_decide` axioms and project axioms are rejected).
+
+Exactly what is covered: the declarations of the modules whose FIRST name component is
+`PlasmaLean` (the test is component-wise, ``(`PlasmaLean).isPrefixOf``), in the import closure of
+the imports listed below. Not covered: modules of the `PlasmaLeanMeta` library (its first
+component is `PlasmaLeanMeta`, so its meta code, the certificate tactics included, is not
+audited here; the terms those tactics produce inside `PlasmaLean` modules are); modules that
+are not in the import closure of the list below; and the option `debug.skipKernelTC`, which
+leaves no axiom behind and is not detected by an axiom check.
 -/
 import PlasmaLean.Design.RationalStellaratorGCEwFamily
 import PlasmaLean.Design.RationalStellaratorGCMuWide
@@ -168,6 +175,7 @@ run_cmd do
 #print axioms PlasmaLean.Design.DommaschkKamA.surr_G_ne
 #print axioms PlasmaLean.Design.DommaschkKamQ16.dommaschk_Q16_strong
 #print axioms PlasmaLean.Design.DommaschkKamQ16.dommaschk_Q16_vacuum
+#print axioms PlasmaLean.Design.DommaschkKamQ16.dommaschk_Q16_chart
 #print axioms PlasmaLean.Design.DommaschkKamQ16.nested_C1_of_exact
 #print axioms PlasmaLean.Design.DommaschkKamQ16.not_q16_C_tiny
 #print axioms PlasmaLean.Design.DommaschkKamQ16.q16_bounds_lt_strong

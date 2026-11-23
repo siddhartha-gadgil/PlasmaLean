@@ -19,6 +19,9 @@ public import PlasmaLean.Sanity.Forms
 * Hypothesis check: the dilation field satisfies no equation `ι_ξ ω = -dψ` with the uniform flux
   form near any point, for any `C²` potential (`dilation_not_hamiltonian`); otherwise
   `lieDerivForm_eq_zero_of_interior` would contradict the rejected fixture.
+* The rejected fixture for the potential theorems (a vacuum field with no potential, on a region
+  that is not star-convex) is not in this file: it is `wireField_no_potential` in
+  `Sanity/FormTopology`.
 -/
 
 @[expose] public section

@@ -713,7 +713,7 @@ torus C (256²): `max|g_poly − g_est| = 5.7e-9` (`qs_defect.py`, FD step 1e-6)
 `Design/DommaschkKamCQSData` (generated `φ`-derivatives `dDf, dnRf, dnZf`, R-form `dDRf, dnRhf,
 dnZRf`; 3 s, 1.5 GB) and `Design/DommaschkKamCQSPoly` (8 s, 2.0 GB): kernel checks `dDf_eq`, …,
 `substR_dDRf`, …; `QSLeaves` with `Q, Qu, Qz, Qf, PL, ML, N0, N1, N2, Ng`; `leavesAt x`; `Qp` with
-`eval_Qp`, `pd_Qp_U`, `pd_Qp_Z`, `phiD_Qp`; leaf lemmas `pd_Dp_U`, …, `phiD_Dp`, …, `pd_Rp_U`,
+`eval_QpQS`, `pd_QpQS_U`, `pd_QpQS_Z`, `phiD_QpQS` (named `eval_Qp`, … when this was written); leaf lemmas `pd_Dp_U`, …, `phiD_Dp`, …, `pd_Rp_U`,
 `eval_leaves`, `dkFieldTC_polys`; field identities `normSq_flow`, `boozerJ_flow`, `boozerA_flow`,
 `qsDefectSq_eq`, `qsDefect_eq_of_sq`, `qsDefect_eq_real`; sanity `Ng_toroidal`, `qs_instance(_lhs)`,
 `qsDefectSq_needs_invariance`, `dDf_ne`. Standard axioms.
@@ -847,7 +847,7 @@ is recomputed in exact rationals (`certify`, `EmitQ.out_values`).
 
 **Name clash (blocks `import PlasmaLean` + any Adm module):** `DommaschkKamCQSPoly.Qp` (default
 build) vs `DommaschkKamCAdmFrame.Qp`; rename the former (`QSPoly` lines 42, 284, 336, 338, 342, 344,
-350, 352, 368, 370 and its `check_axioms` entries `pd_Qp_U`, `phiD_Qp` keep their names). It is the
+350, 352, 368, 370 and its `check_axioms` entries are now `pd_QpQS_U`, `phiD_QpQS`). It is the
 only clash of `QSPoly` with the on-demand closure; my 779 new names do not clash with the default build.
 
 **Shared files (owner to add).**

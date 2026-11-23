@@ -89,7 +89,27 @@ smoothness of the global inverse is not derived here.
   for `∇φ`), `not_omnigeneityContract_zero` (the zero field fails C2 on every nonempty region,
   while the model-level condition holds for the constant model).
 
-**Not covered.** Existence of a Boozer chart for a non-integrable field (none exists on a region
+## Limits of C2 for a field (audit of 23 November 2026)
+
+* **AV-M7: C2 for a field has no non-vacuous witness in the library; the bridge theorems are not
+  applied to any field.** The only accepted instance is `toroidal_omnigeneityContract` (the
+  purely toroidal field `∇φ` with `ι = 0`), where no trapped bounce exists, so `OmnigenousOn`
+  holds vacuously; that field fails C1. No theorem constructs a `Kinetic.Boozer.TrappedBounce`
+  for a model with a proved chart, so no field is shown to satisfy C1 and C2 together. A trapped
+  bounce is constructed only at model level (`Kinetic.Boozer.dm_trappedBounce`, for the
+  drift-mirror model, which has no chart; regression
+  `Sanity/AuditContractC2.exists_trappedBounce_driftMirror`).
+* **AV-M8: a chart does not pin the poloidal angle.** If `x` is a chart of `B` for `F`, then for
+  every integer `k` the map `x'(ψ, θ, φ) = x(ψ, θ − kφ, φ)` is a chart of the same field onto the
+  same region for the relabelled model with `ι` replaced by `ι + k` (and `F.B`, `F.Bφ`, `F.ψp`
+  relabelled): `Sanity/AuditContractC2.relabelChart`, `BoozerModelOf.relabel`. So the `ι` of C2
+  is defined only modulo integers, the hypotheses `ιmin ≤ F.ι` of `omnigeneityContract_of_qa` and
+  `omnigeneityContract_of_defect_le` are chart-dependent, and nothing relates `F.ι` to
+  `SurfaceData.iota` of C1. Fixture: `∇φ` has a Boozer model with `ι = 1`
+  (`Sanity/AuditContractC2.toroidal_boozerModelOf_iota_one`).
+
+**Not covered.** A poloidal-angle convention for charts (AV-M8); a field with a constructed trapped
+bounce (AV-M7); existence of a Boozer chart for a non-integrable field (none exists on a region
 containing islands, N-34 §5.2, so no Dommaschk C2 claim is made); non-vacuum Boozer forms
 (`I, K ≠ 0`); smoothness of the inverse chart; the magnetic axis `ψ = 0` (excluded).
 -/
@@ -131,7 +151,13 @@ on the region
 * `J B = ι(ψ) e_θ + e_φ` (`B = ∇ψ × ∇θ + ι ∇φ × ∇ψ`: each surface `ψ = const` is invariant with
   straight field lines of slope `F.ι ψ`, and `ψ` is the toroidal flux divided by `2π`);
 * `B · e_ψ = 0`, `B · e_θ = 0`, `B · e_φ = F.G` (`B = G ∇φ`: the angles are vacuum Boozer angles);
-* `F.B = |B| ∘ x`. -/
+* `F.B = |B| ∘ x`.
+
+**The poloidal angle is not pinned (audit AV-M8).** There is no poloidal-angle convention: for
+every integer `k`, `(ψ, θ, φ) ↦ x (ψ, θ − kφ, φ)` is again a chart of the same field onto the
+same region, for the model with `ι + k` in place of `ι`
+(`Sanity/AuditContractC2.relabelChart`). So `F.ι` is determined by the field only modulo
+integers, and it is not tied to the rotational transform `SurfaceData.iota` of clause C1. -/
 structure BoozerChart (B : Space → Space) (Ω : Set Space) (c : ℝ) (F : BoozerField) where
   /-- The chart map `(ψ, θ, φ) ↦ x`. -/
   x : ℝ × ℝ × ℝ → Space
@@ -160,7 +186,9 @@ structure BoozerChart (B : Space → Space) (Ω : Set Space) (c : ℝ) (F : Booz
   modB : ∀ p ∈ chartRegion c, F.B p.1 p.2.1 p.2.2 = ‖B (x p)‖
 
 /-- **`F` is a vacuum Boozer model of the field `B` on `Ω`** (region `0 < ψ ≤ c`): a
-`BoozerChart` exists. -/
+`BoozerChart` exists. The model is not unique: with `F`, every relabelled model with `ι + k`
+(`k` an integer) is a Boozer model of the same field (`BoozerModelOf.relabel` in
+`Sanity/AuditContractC2`, audit AV-M8). -/
 @[expose] def BoozerModelOf (B : Space → Space) (Ω : Set Space) (c : ℝ) (F : BoozerField) :
     Prop :=
   Nonempty (BoozerChart B Ω c F)
@@ -168,7 +196,13 @@ structure BoozerChart (B : Space → Space) (Ω : Set Space) (c : ℝ) (F : Booz
 /-- **Contract clause C2 for the field `B`** on `Ω`: some vacuum Boozer model `F` of `B` on `Ω`
 (region `0 < ψ ≤ c`, `BoozerModelOf`) satisfies the model-level condition
 `BoozerModelOmnigeneity F c κ_max` (per-bounce radial displacement `≤ κ_max (H/|q|) τ` for
-every species, `μ ≥ 0` and energy; `κ_max = 0` is exact omnigeneity). -/
+every species, `μ ≥ 0` and energy; `κ_max = 0` is exact omnigeneity).
+
+**Limits (audit AV-M7, AV-M8).** C2 for a field has no non-vacuous witness in the library; the
+bridge theorems are not applied to any field. The only accepted instance is
+`toroidal_omnigeneityContract` (`∇φ`, `ι = 0`), which holds vacuously because no trapped bounce
+exists there, and that field fails C1; no field is shown to satisfy C1 and C2 together. The
+model `F` is chosen existentially and its `ι` is defined only modulo integers (`BoozerChart`). -/
 @[expose] def OmnigeneityContract (B : Space → Space) (Ω : Set Space) (c κmax : ℝ) : Prop :=
   ∃ F : BoozerField, BoozerModelOf B Ω c F ∧ BoozerModelOmnigeneity F c κmax
 
@@ -445,7 +479,12 @@ theorem omnigeneityContract_of_exactQS (hM : BoozerModelOf B Ω c F) (hc : 0 < c
   ⟨F, hM, boozerModelOmnigeneity_zero_iff.2 ⟨hc, omnigenousOn_of_exactQS (X.G_ne_zero hc) hQS hinj⟩⟩
 
 /-- **Exact quasi-axisymmetry of the physical field ⇒ C2 with `κ = 0`**: a Boozer chart in which
-`|B| ∘ x` does not depend on the Boozer angle `φ`, with `ι ≥ ι_min > 0` on the region. -/
+`|B| ∘ x` does not depend on the Boozer angle `φ`, with `ι ≥ ι_min > 0` on the region.
+
+Limits: the hypothesis `ιmin ≤ F.ι` is chart-dependent (relabelling `θ ↦ θ + kφ` replaces `F.ι` by
+`F.ι + k`, and then `|B| ∘ x` in general depends on the new `φ`; audit AV-M8), and nothing relates
+`F.ι` to `SurfaceData.iota` of C1. This theorem is not applied to any field in the library: C2 for
+a field has no non-vacuous witness (audit AV-M7). -/
 theorem omnigeneityContract_of_qa (X : BoozerChart B Ω c F) (hc : 0 < c)
     (hqa : ∀ p ∈ chartRegion c, ∀ t, ‖B (X.x (p.1, p.2.1, t))‖ = ‖B (X.x p)‖) {ιmin : ℝ}
     (hι0 : 0 < ιmin) (hι : ∀ x ∈ Ioc 0 c, ιmin ≤ F.ι x) : OmnigeneityContract B Ω c 0 :=
@@ -456,7 +495,12 @@ theorem omnigeneityContract_of_qa (X : BoozerChart B Ω c F) (hc : 0 < c)
 
 /-- **Approximate quasi-axisymmetry of the physical field ⇒ C2**: a Boozer chart with
 `|B| ≥ B_min > 0` and `|∂_φ (|B| ∘ x)| ≤ δ` on the region and `ι ≥ ι_min > 0` gives C2 with
-`κ_max = 2δ/(B_min ι_min)` (bridge theorem `approxOmnigenousOn_of_defect_le`, unchanged). -/
+`κ_max = 2δ/(B_min ι_min)` (bridge theorem `approxOmnigenousOn_of_defect_le`, unchanged).
+
+Limits: the hypotheses `ιmin ≤ F.ι` and `|∂_φ (|B| ∘ x)| ≤ δ` are chart-dependent (relabelling
+`θ ↦ θ + kφ` replaces `F.ι` by `F.ι + k` and `∂_φ` by `∂_φ − k ∂_θ`; audit AV-M8), and nothing
+relates `F.ι` to `SurfaceData.iota` of C1. This theorem is not applied to any field in the
+library: C2 for a field has no non-vacuous witness (audit AV-M7). -/
 theorem omnigeneityContract_of_defect_le (X : BoozerChart B Ω c F) (hc : 0 < c)
     {Bmin δ ιmin : ℝ} (hBmin : 0 < Bmin) (hι0 : 0 < ιmin)
     (hBlow : ∀ p ∈ chartRegion c, Bmin ≤ ‖B (X.x p)‖)
@@ -724,7 +768,8 @@ theorem torModel_axisymmetric : BoozerAxisymmetric (torModel R₀) := fun _ _ _ 
 /-- **(i) Accepted fixture: the axisymmetric vacuum field `∇φ` satisfies C2 with `κ = 0`** on
 `torRegion R₀ c` (with `ι = 0` the model has no trapped bounce, so this holds vacuously; with the
 tokamak exclusion it is the consistency check "an axisymmetric current-free field passes C2 and
-fails C1"). -/
+fails C1"). This vacuous instance is the only accepted instance of `OmnigeneityContract` in the
+library (audit AV-M7): it does not show that a field can satisfy C1 and C2 together. -/
 theorem toroidal_omnigeneityContract (hR₀ : 0 < R₀) {c : ℝ} (hc : 0 < c) :
     OmnigeneityContract toroidal (torRegion R₀ c) c 0 :=
   ⟨torModel R₀, toroidal_boozerModelOf hR₀ c, boozerModelOmnigeneity_zero_iff.2

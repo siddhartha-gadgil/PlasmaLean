@@ -37,11 +37,25 @@ written in the closed form `emHamiltonField m q A E` of `hamiltonianVectorField_
 * `emHamilton_exists_local` (Picard–Lindelöf), `emHamilton_eqOn_Ioo`, `emHamilton_unique`:
   local existence through every point, and uniqueness on an open interval and for all times.
 * `LorentzOrbitOn m q E B x v s`: the Lorentz equations at the times of a set `s`
-  (`lorentzOrbitOn_univ`: for `s = univ` it is `LorentzOrbit`).
+  (`lorentzOrbitOn_univ`: for `s = univ` it is `LorentzOrbit`). The all-time statements
+  `lorentzOrbit_emHamilton` and `lorentzOrbit_of_emHamilton` of
+  `Theory/Kinetic/MagneticHamiltonConverse` are the case `s = Set.univ` of
+  `lorentzOrbitOn_emHamilton` and `lorentzOrbitOn_of_emHamilton` through `lorentzOrbitOn_univ`
+  (they are proved separately there, by the same argument).
   `lorentzOrbitOn_iff_emHamilton`: the interval form of `lorentzOrbit_iff_emHamilton`.
   `lorentzOrbitOn_exists_local`, `lorentzOrbitOn_unique`, `lorentzOrbit_unique`: local existence
   and uniqueness of Lorentz orbits for `B = ∇ × A`, `E = −∇Φ`, `A` of class `C²`, `E` of class
   `C¹`, `m ≠ 0`.
+* Uniqueness without potentials: `lorentzEMField m q E B` is the first-order field
+  `(x, v) ↦ (v, (q/m) (E x + v × B x))` on `Space × Space`; it is `C¹` when `E` and `B` are
+  (`contDiff_lorentzEMField`), and a Lorentz orbit is an integral curve of it for `m ≠ 0`
+  (`LorentzOrbitOn.hasDerivAt_lorentzEMField`). Hence `lorentzOrbitOn_unique_of_contDiff`,
+  `lorentzOrbit_unique_of_contDiff`: two Lorentz orbits in `C¹` fields `E`, `B` with the same
+  position and velocity at one time coincide. No vector or scalar potential is assumed, so
+  this applies to fields that have none (`E` need not be a gradient, and `B` need not even be
+  divergence free). `lorentzOrbit_existsUnique_of_contDiff`: with `lorentzOrbit_exists`, for
+  `E = 0` and every `C¹` magnetic field there is exactly one Lorentz orbit for all times from
+  every initial position and velocity.
 * `exists_global_of_linear_growth`: a `C¹` vector field with `‖f z‖ ≤ K ‖z‖ + C` has global
   integral curves (Grönwall bound and the continuation theorem of
   `Theory/Fields/ODEContinuation`).
@@ -52,9 +66,22 @@ written in the closed form `emHamiltonField m q A E` of `hamiltonianVectorField_
   arbitrary uniform `E` and `B`, in the symmetric gauge `A = (B × y) / 2` (`symmetricGauge`).
 
 Comparison with `Theory/Kinetic/LorentzExistence`: `lorentzOrbit_exists` there has no electric
-field, allows every `C¹` magnetic field and does not state uniqueness. The global result here
-allows an electric field of linear growth and states uniqueness, but the magnetic field is
-uniform (the curl of a linear vector potential). Neither contains the other.
+field, allows every `C¹` magnetic field and does not state uniqueness; uniqueness for it is
+`lorentzOrbit_existsUnique_of_contDiff` here. The global result
+`lorentzOrbit_existsUnique_linearGauge` allows an electric field of linear growth, but the
+magnetic field is uniform (the curl of a linear vector potential). Neither existence result
+contains the other. Uniqueness alone holds for all `C¹` fields `E`, `B`
+(`lorentzOrbit_unique_of_contDiff`), with no potentials. Mathematically this contains
+`lorentzOrbit_unique`, since `∇ × A` is `C¹` for `A` of class `C²`; that implication is not
+formalized here and the two theorems are proved independently (one through the Hamiltonian
+field on `Space × Space*`, the other through the first-order field on `Space × Space`).
+
+Limit of the statements: every theorem of Part B stated through the Hamiltonian assumes a
+vector potential `A` differentiable (`C²` for existence and uniqueness) on ALL of space with
+`B = ∇ × A` everywhere, and `E = −∇Φ` on all of space. This excludes the vacuum field `∇φ` of
+a straight wire or a toroidal coil (no global potential regular on the axis) and any field
+defined only on a toroidal region; versions on an open set containing the orbit are not
+stated. The potential-free uniqueness theorems also assume fields `C¹` on all of space.
 
 Not proved here: global existence for a general `C²` vector potential with an electric field
 (this needs an a priori bound, for instance from a potential bounded below); maximal intervals
@@ -353,7 +380,8 @@ theorem integralCurve_eqOn_Ioo {F : Type*} [NormedAddCommGroup F] [NormedSpace �
 /-- **Local existence of integral curves** (Picard–Lindelöf). Let `A` be `C²` and `E = −∇Φ` be
 `C¹`. Through every point `z₀` of phase space, at every initial time `t₀`, there is an integral
 curve of the Hamiltonian vector field of `emHamiltonian m q A Φ` on an open interval about
-`t₀`. No hypothesis on `m`. -/
+`t₀`. No hypothesis on `m`: for `m = 0` Lean's division makes the kinetic term `0`, so the
+statement is then about `H = qΦ`. -/
 theorem emHamilton_exists_local (m q : ℝ) {A E : Space → Space} {Φ : Space → ℝ}
     (hA : ContDiff ℝ 2 A) (hE : ContDiff ℝ 1 E) (hΦ : IsPotential Φ E) (z₀ : PhaseSpace)
     (t₀ : ℝ) :
@@ -574,6 +602,86 @@ theorem lorentzOrbit_unique {m q : ℝ} (hm : m ≠ 0) {A E B : Space → Space}
       hx hv ⟨by linarith [min_le_left t t₀], by linarith [le_max_left t t₀]⟩
   exact ⟨funext fun t => (key t).1, funext fun t => (key t).2⟩
 
+/-! ### Uniqueness of Lorentz orbits without potentials -/
+
+/-- The Newton–Lorentz vector field with an electric field, on `Space × Space`:
+`(x, v) ↦ (v, (q/m) (E x + v × B x))`. For `E = 0` it is `lorentzField m q B`
+(`lorentzEMField_zero`). -/
+noncomputable def lorentzEMField (m q : ℝ) (E B : Space → Space) (y : Space × Space) :
+    Space × Space :=
+  (y.2, (q / m) • (E y.1 + cross y.2 (B y.1)))
+
+/-- With no electric field, `lorentzEMField` is `lorentzField` of
+`Theory/Kinetic/LorentzExistence`. -/
+theorem lorentzEMField_zero (m q : ℝ) (B : Space → Space) :
+    lorentzEMField m q (fun _ => 0) B = lorentzField m q B := by
+  funext y
+  simp [lorentzEMField, lorentzField]
+
+/-- The Newton–Lorentz vector field is `C¹` when `E` and `B` are. No hypothesis on `m`. -/
+theorem contDiff_lorentzEMField (m q : ℝ) {E B : Space → Space} (hE : ContDiff ℝ 1 E)
+    (hB : ContDiff ℝ 1 B) : ContDiff ℝ 1 (lorentzEMField m q E B) := by
+  have hpair : ContDiff ℝ 1 (fun y : Space × Space => (y.2, B y.1)) :=
+    contDiff_snd.prodMk (hB.comp contDiff_fst)
+  have hcr : ContDiff ℝ 1 (fun y : Space × Space => cross y.2 (B y.1)) :=
+    contDiff_cross.comp hpair
+  exact contDiff_snd.prodMk (((hE.comp contDiff_fst).add hcr).const_smul (q / m))
+
+/-- For `m ≠ 0`, a Lorentz orbit on a set of times is, at each of these times, an integral
+curve `t ↦ (x t, v t)` of `lorentzEMField`. No hypothesis on the fields. -/
+theorem LorentzOrbitOn.hasDerivAt_lorentzEMField {m q : ℝ} (hm : m ≠ 0)
+    {E B : Space → Space} {x v : ℝ → Space} {s : Set ℝ} (h : LorentzOrbitOn m q E B x v s)
+    {t : ℝ} (ht : t ∈ s) :
+    HasDerivAt (fun r => (x r, v r)) (lorentzEMField m q E B (x t, v t)) t := by
+  obtain ⟨a, ha, hlaw⟩ := h.newton t ht
+  have hacc : a = (q / m) • (E (x t) + cross (v t) (B (x t))) := by
+    rw [div_eq_inv_mul, ← smul_smul, ← hlaw, smul_smul, inv_mul_cancel₀ hm, one_smul]
+  exact (h.position t ht).prodMk (hacc ▸ ha)
+
+/-- **Uniqueness of Lorentz orbits on an interval, without potentials.** Let `m ≠ 0` and let
+`E` and `B` be `C¹` on all of space. Two Lorentz orbits on `(a, b)` with the same position and
+velocity at one time of `(a, b)` have the same position and velocity on `(a, b)`. No vector or
+scalar potential is assumed. -/
+theorem lorentzOrbitOn_unique_of_contDiff {m q : ℝ} (hm : m ≠ 0) {E B : Space → Space}
+    (hE : ContDiff ℝ 1 E) (hB : ContDiff ℝ 1 B) {a b t₀ : ℝ} (ht₀ : t₀ ∈ Ioo a b)
+    {x₁ v₁ x₂ v₂ : ℝ → Space} (h₁ : LorentzOrbitOn m q E B x₁ v₁ (Ioo a b))
+    (h₂ : LorentzOrbitOn m q E B x₂ v₂ (Ioo a b)) (hx : x₁ t₀ = x₂ t₀) (hv : v₁ t₀ = v₂ t₀)
+    {t : ℝ} (ht : t ∈ Ioo a b) : x₁ t = x₂ t ∧ v₁ t = v₂ t := by
+  have key := integralCurve_eqOn_Ioo (contDiff_lorentzEMField m q hE hB) ht₀
+    (γ₁ := fun r => (x₁ r, v₁ r)) (γ₂ := fun r => (x₂ r, v₂ r))
+    (fun r hr => h₁.hasDerivAt_lorentzEMField hm hr)
+    (fun r hr => h₂.hasDerivAt_lorentzEMField hm hr) (Prod.ext hx hv) ht
+  exact ⟨congrArg Prod.fst key, congrArg Prod.snd key⟩
+
+/-- **Uniqueness of Lorentz orbits for all times, without potentials.** Let `m ≠ 0` and let `E`
+and `B` be `C¹` on all of space. Two Lorentz orbits with the same position and velocity at one
+time are equal. No vector or scalar potential is assumed: `E` need not be a gradient and `B`
+need not be a curl. -/
+theorem lorentzOrbit_unique_of_contDiff {m q : ℝ} (hm : m ≠ 0) {E B : Space → Space}
+    (hE : ContDiff ℝ 1 E) (hB : ContDiff ℝ 1 B) {x₁ v₁ x₂ v₂ : ℝ → Space}
+    (h₁ : LorentzOrbit m q E B x₁ v₁) (h₂ : LorentzOrbit m q E B x₂ v₂) {t₀ : ℝ}
+    (hx : x₁ t₀ = x₂ t₀) (hv : v₁ t₀ = v₂ t₀) : x₁ = x₂ ∧ v₁ = v₂ := by
+  have key (t : ℝ) : x₁ t = x₂ t ∧ v₁ t = v₂ t :=
+    lorentzOrbitOn_unique_of_contDiff hm hE hB (a := min t t₀ - 1) (b := max t t₀ + 1)
+      ⟨by linarith [min_le_right t t₀], by linarith [le_max_right t t₀]⟩ (h₁.on _) (h₂.on _)
+      hx hv ⟨by linarith [min_le_left t t₀], by linarith [le_max_left t t₀]⟩
+  exact ⟨funext fun t => (key t).1, funext fun t => (key t).2⟩
+
+/-- **Global existence and uniqueness of Lorentz orbits in a `C¹` magnetic field.** If `B` is
+`C¹` on all of space and `m ≠ 0`, then for every initial position `x₀` and velocity `v₀` there
+is a Lorentz orbit (no electric field) for all times with `x 0 = x₀`, `v 0 = v₀`
+(`lorentzOrbit_exists`), and every Lorentz orbit with these initial data equals it. No vector
+potential is assumed. -/
+theorem lorentzOrbit_existsUnique_of_contDiff {m q : ℝ} (hm : m ≠ 0) {B : Space → Space}
+    (hB : ContDiff ℝ 1 B) (x₀ v₀ : Space) :
+    ∃ x v : ℝ → Space, LorentzOrbit m q (fun _ => 0) B x v ∧ x 0 = x₀ ∧ v 0 = v₀ ∧
+      ∀ x' v' : ℝ → Space, LorentzOrbit m q (fun _ => 0) B x' v' → x' 0 = x₀ → v' 0 = v₀ →
+        x' = x ∧ v' = v := by
+  obtain ⟨x, v, horb, hx0, hv0⟩ := lorentzOrbit_exists (q := q) hm hB x₀ v₀
+  exact ⟨x, v, horb, hx0, hv0, fun x' v' h' hx' hv' =>
+    lorentzOrbit_unique_of_contDiff hm contDiff_const hB h' horb (t₀ := 0)
+      (hx'.trans hx0.symm) (hv'.trans hv0.symm)⟩
+
 /-! ### Global existence for fields of linear growth -/
 
 /-- **Global existence for a vector field of linear growth.** A `C¹` vector field `f` with
@@ -618,7 +726,8 @@ theorem exists_global_of_linear_growth {F : Type*} [NormedAddCommGroup F] [Norme
 continuous linear map `L` (a uniform magnetic field) and let `E = −∇Φ` be `C¹` with
 `‖E y‖ ≤ a + b ‖y‖` (for example uniform or linear). Then through every point of phase space
 there is an integral curve of the Hamiltonian vector field of `emHamiltonian m q L Φ` for all
-times. No hypothesis on `m`. -/
+times. No hypothesis on `m`: for `m = 0` Lean's division makes the kinetic term `0`, so the
+statement is then about `H = qΦ`. -/
 theorem emHamilton_exists_global (m q : ℝ) (L : Space →L[ℝ] Space) {E : Space → Space}
     {Φ : Space → ℝ} (hE : ContDiff ℝ 1 E) (hΦ : IsPotential Φ E) {a b : ℝ}
     (hgrow : ∀ y, ‖E y‖ ≤ a + b * ‖y‖) (z₀ : PhaseSpace) :
