@@ -244,6 +244,7 @@ superseded; mixed notes list the status of their parts. "Lean" names compiled ev
 | `N-45` | `notes/theory/differential-form-kernel.md`: differential-form language for the vacuum and force-balance kernel laws, with equivalences to the vector language | G-11 | `Kernel/Vacuum`, `Kernel/Equilibrium`; Mathlib `extDeriv` | routine–moderate | verified (`vacuumForm_flux_iff`, `vacuumField_fluxSymm_iff`, `formForceBalance_iff`, `forceBalance_iff`, `extDeriv_flat`, `extDeriv_flux`; `Sanity/Forms`; theory bridges `formFirstIntegralOn_flux_iff`, `formSymmetricFlux_iff`, `formWeakQS_flux_iff`, `formBeltramiOn_flat_iff`, `isContactAt_of_beltrami`) | audited 16 November 2026 (AD-*; `Sanity/AuditForms`); open: AD-L4, AD-L5 |
 | `N-46` | `notes/theory/sullivan-infinity-structures.md`: assessment of Sullivan's L∞ (combinatorial) and eigenspace fluid models for MHD and stellarators | G-9, G-11, Q-33 | `sources/SullivanFluids.pdf`; N-45; `Theory/Stability/Elsasser` | moderate | stated; Part 2 checked in Lean (`EulerianODE.energy_conserved`, `EulerianODE.helicity_conserved`, `rigidBody_eulerian`); no design consequence | none required; revisit if an implementation of the L∞ hierarchy is published |
 | `N-47` | `notes/theory/issan-arbitrary-field-periods.md`: assessment of the closed-form equilibria with any number of field periods (Issan et al., arXiv:2611.07672) | G-4, Q-17, Q-18, Q-20 | `sources/Non-AxisymmetricMHD.pdf`; N-28, N-27 | moderate | stated; 12 of 20 claims checked numerically (`scripts/issan_equilibria/`), none incorrect; nothing in Lean | optional Lean unit: Family 1 (ρ_a = ρ₀, N = 3) with zero loop current (Q-20) |
+| `N-48` | `notes/theory/form-kernel-tauceti-complex-geometry.md`: the form kernel after TauCeti v4.36.0, a bridge to forms on manifolds, and the fit of the complex-geometry notes | G-11; supports Q-29, Q-24, Q-16 | method for N-45; N-42, N-43, N-44; TauCeti Lie derivative, Poincaré lemma, forms on open subsets, simply connected exactness, wedge, linear contact criterion | routine–moderate (done parts); hard (periods, surfaces) | verified: `WeakQS.lieDerivForm_flux_eq_zero`, `VacuumField.exists_scalarPotential`, `onOpens` with `isSmoothForm_onOpens_iff` and `mextDeriv_onOpens`, `VacuumField.exists_scalarPotential_of_simplyConnected`, `wireField_no_potential`, `wireRegion_not_simplyConnected`, `wedge12_eq_wedge`, `isContactAt_iff_nondegenerate`, `IsBeltramiOn.reeb` (`Theory/Fields/FormCalculus`, `FormTopology`, `FormContact` and `Sanity` modules); fit table for N-42–N-44; symplectic files assessed, none used | Noether charge from TauCeti's `Hamiltonian/Noether`; periods (`periodHom`) linked to the contract layer's circulation |
 
 Main dependency edges: N-9 → N-10 → N-14 → N-15 → (Q-4, Q-5); N-10 → N-13 → (N-16 → Q-2, Q-14);
 N-4 → (N-8, N-7 → N-17 → Q-1); N-12 → (Q-3, Q-14, Q-16) → G-4; N-4 → Q-16 → G-6; N-2, N-6 → Q-10 → G-2, G-7;
@@ -2275,3 +2276,32 @@ with a literature search and independent numerical checks; note
 - **Rows updated:** RG.1 G-1, G-4, G-6. **Gap:** the earlier handoff
   `sources/complex_geometry_handoff.pdf` (cited for the weak-QS equilibrium obstruction and the weak
   MHD lift) is not assessed yet.
+
+### Form kernel with TauCeti v4.36.0, and the complex-geometry notes (N-48), 23 November 2026
+
+- **Upgrade:** Lean and TauCeti at `v4.36.0` (Mathlib `fc4f59e577`). Proof repairs in 19 Lean
+  files, no statement changed; all 1688 modules build, both axiom checks pass.
+- **First use of TauCeti.** Until now only Mathlib was imported. Three new theory modules, each
+  with a sanity module, all in the default build with standard axioms.
+  - `Theory/Fields/FormCalculus` (Cartan's formula, Poincaré lemma):
+    `WeakQS.lieDerivForm_flux_eq_zero` (the flux form of a weakly quasisymmetric divergence-free
+    field is invariant under the generator; step 1 of N-43), `VacuumField.exists_scalarPotential`
+    and `…exists_vectorPotential` on star-convex regions.
+  - `Theory/Fields/FormTopology` (the bridge to forms on manifolds): `onOpens`,
+    `isSmoothForm_onOpens_iff`, `mextDeriv_onOpens`;
+    `VacuumField.exists_scalarPotential_of_simplyConnected`;
+    `not_simplyConnected_of_no_potential`. Fixture: the wire field has no potential
+    (`wireField_no_potential`), so the complement of a line is not simply connected
+    (`wireRegion_not_simplyConnected`).
+  - `Theory/Fields/FormContact`: `wedge12_eq_wedge` (the hand-written wedge is TauCeti's),
+    `isContactAt_iff_nondegenerate` (the intrinsic contact condition), `IsBeltramiOn.reeb`
+    (Reeb equations for `B/‖B‖²`).
+- **Assessment (N-48):** the kernel fits the hypotheses of N-43 and the vacuum families of N-42;
+  it does not fit the cylinder benchmark of N-44 or the kinetic estimates. TauCeti's symplectic
+  directory (64 → 650 files) was assessed from its documentation: `Hamiltonian/Noether` and
+  `Cotangent/Fiberwise` apply directly to the compiled kinetic theory; the rest needs phase
+  spaces as manifolds. None is used yet. No KAM theorem was found in TauCeti.
+- **Rosetta-stone page:** eight entries extended with the new declarations.
+- **Not done:** periods (`TauCeti.periodHom`) linked to the contract layer; `[ξ, B] = 0`;
+  uniqueness of the Reeb vector; the HYM lift of N-42 S-13.
+- **Registry:** N-48 added; pointers in N-45, N-43, N-42.

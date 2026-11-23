@@ -170,3 +170,11 @@ All compiled Lean theorems, default build, standard axioms only (`scripts/check_
   - The helical form is a negative contact form: `β ∧ dβ = -vol` (`helicalField_wedge`).
   - Checks independent of the dictionary: `extDeriv_x_dy`, `div_curl_eq_zero`,
     `wedge_eq_inner_hodge`, `interior_pinch_direct` (`Sanity/AuditForms`).
+
+- **TauCeti v4.36.0 (23 November 2026).** Method note N-48 adds the Lie derivative and the
+  Poincaré lemma (`Theory/Fields/FormCalculus`), a bridge to forms on manifolds
+  (`Theory/Fields/FormTopology`), and `Theory/Fields/FormContact`: `wedge12` is TauCeti's wedge
+  product, the contact condition in intrinsic form, and the Reeb equations for a Beltrami field.
+  Two items listed above as not covered are thereby partly covered: a wedge product of general
+  degrees exists in TauCeti and agrees with `wedge12`; the Reeb field is identified up to
+  uniqueness.

@@ -89,6 +89,13 @@ theorem flux_apply_eq_magneticTwoForm (B u v : Space) :
     flux B ![u, v] = magneticTwoForm B u v
 
 -- Not in the library: differential forms on a manifold other than ℝ³.
+
+-- Vector potential on a star-convex region (TauCeti's Poincaré lemma; 23 November 2026):
+-- PlasmaLean/Theory/Fields/FormCalculus.lean (namespace PlasmaLean.Forms)
+theorem VacuumForm.exists_vectorPotential (h : VacuumForm Ω ω) (hs : StarConvex ℝ x₀ Ω) :
+    ∃ A : Space → Form 1, ContDiffOn ℝ 2 A Ω ∧ A x₀ = 0 ∧ ∀ x ∈ Ω, extDeriv A x = ω x
+theorem VacuumField.exists_vectorPotential ... : ∃ A, A x₀ = 0 ∧ ∀ x ∈ Ω, B x = fieldCurl A x
+-- Only dω = 0 is used, but the statement is made for vacuum fields.
 ```
 
 ## Magnetic field lines as a Hamiltonian system; Poincaré sections
@@ -156,6 +163,21 @@ theorem gradField_vacuum {f : CylPoly} (h : nf (lap f) = []) :
     VacuumField domain (gradField f)
 
 -- Not in the library: boundary conditions, Hodge decomposition, de Rham cohomology.
+
+-- Potentials and topology (23 November 2026; TauCeti v4.36.0):
+-- PlasmaLean/Theory/Fields/FormCalculus.lean: star-convex regions (Poincaré lemma)
+theorem VacuumField.exists_scalarPotential (h : VacuumField Ω B) (hs : StarConvex ℝ x₀ Ω) :
+    ∃ φ : Space → ℝ, ContDiffOn ℝ 2 φ Ω ∧ φ x₀ = 0 ∧ ∀ x ∈ Ω, B x = gradient φ x
+-- PlasmaLean/Theory/Fields/FormTopology.lean: the bridge to forms on the manifold U
+def onOpens (U : Opens Space) (β : Space → Form k) : RoughForm 𝓘(ℝ, Space) U ℝ k
+theorem VacuumField.exists_scalarPotential_of_simplyConnected [SimplyConnectedSpace U]
+    (h : VacuumField U B) : ∃ φ, ContDiffOn ℝ 2 φ U ∧ ∀ x ∈ U, B x = gradient φ x
+-- PlasmaLean/Sanity/FormTopology.lean: the field of a straight wire has no potential,
+-- so the complement of a line is not simply connected
+theorem wireField_no_potential : ¬ ∃ φ, DifferentiableOn ℝ φ wireRegion ∧
+    ∀ x ∈ wireRegion, wireField x = gradient φ x
+theorem wireRegion_not_simplyConnected : ¬ SimplyConnectedSpace wireOpens
+-- Not in Lean: H¹_dR of a solid torus, the Hodge–Morrey–Friedrichs decomposition.
 ```
 
 ## Net toroidal current, Ampère's law and the current-free condition (contract clause C1)
@@ -191,6 +213,10 @@ theorem rationalStellarator_currentFreeTransform {μ₀ : ℝ} (hμ : 0 < μ₀)
     ∃ S : Set SurfaceData, CurrentFreeTransform μ₀ (field (1 / 4)) S 0 iota
 
 -- Not in the library: de Rham cohomology classes; periods are defined loop by loop.
+
+-- 23 November 2026: closed 1-forms on an open region can now be passed to TauCeti's de Rham
+-- theory through PlasmaLean.Forms.onOpens (Theory/Fields/FormTopology). TauCeti's period
+-- homomorphism (TauCeti.periodHom) is not yet linked to the circulation used here.
 ```
 
 ## Magnetic well and min-B: |B| in a vacuum field
@@ -403,6 +429,19 @@ theorem gradient_zero_iff_force_free (B J g : Vec3) [ForceBalance B J g] :
 
 -- Not in the library: the Reeb field; the converse (a metric making a given Reeb
 -- field Beltrami); contact topology; three-dimensional toroidal Beltrami fields.
+
+-- Links to TauCeti v4.36.0 (23 November 2026):
+-- PlasmaLean/Theory/Fields/FormContact.lean (namespace PlasmaLean.Forms)
+theorem wedge12_eq_wedge (a : Form 1) (b : Form 2) :
+    wedge12 a b = ContinuousAlternatingMap.wedge a b        -- TauCeti's wedge product
+theorem isContactAt_iff_nondegenerate (β : Space → Form 1) (x : Space) :
+    IsContactAt β x ↔ β x ≠ 0 ∧ ∀ v, β x ![v] = 0 →
+      (∀ w, β x ![w] = 0 → extDeriv β x ![v, w] = 0) → v = 0   -- dβ nondegenerate on ker β
+theorem IsBeltramiOn.reeb (h : IsBeltramiOn B lam U) (hx : x ∈ U) (hB : B x ≠ 0) :
+    flat (B x) ![(‖B x‖ ^ 2)⁻¹ • B x] = 1 ∧
+      (extDeriv (fun y => flat (B y)) x).curryLeft ((‖B x‖ ^ 2)⁻¹ • B x) = 0
+-- The Reeb equations β(R) = 1, ι_R dβ = 0 hold for R = B/|B|². Uniqueness of R (for λ ≠ 0)
+-- and the link to TauCeti's bundled contact forms on manifolds are not proved.
 ```
 
 ## Magnetic helicity and Taylor relaxation
@@ -421,8 +460,10 @@ def helicity (A B : Space → Space) (Ω : Set Space) : ℝ := ∫ x in Ω, ⟪A
 theorem helicity_gauge_invariant ...   -- B tangent to ∂Ω, Ω simply connected
 
 -- In the library there is only the algebraic cross-helicity identity
--- (PlasmaLean/Theory/Stability/Elsasser.lean: cross_helicity_identity) and no
--- vector potential.
+-- (PlasmaLean/Theory/Stability/Elsasser.lean: cross_helicity_identity). Since 23 November 2026
+-- a vector potential exists for vacuum fields on star-convex regions
+-- (Theory/Fields/FormCalculus: VacuumForm.exists_vectorPotential); the helicity integral
+-- itself is still not defined.
 ```
 
 ## Ideal MHD: frozen-in flux
@@ -445,6 +486,12 @@ def FrozenIn (v : ℝ → Space → Space) (ω : ℝ → Space → Form 2) : Pro
 -- (PlasmaLean/Theory/Stability/Elsasser.lean) and the abstract conserved energy
 -- (PlasmaLean/Theory/Stability/AbstractEnergy.lean: energy_conserved).
 -- There is no time-dependent MHD model.
+
+-- 23 November 2026: TauCeti v4.36.0 has the Lie derivative of forms on a normed space
+-- (TauCeti.lieDerivForm, Cartan's formula) and the flow formula
+-- ∂ₜ(ψₜ^* ωₜ) = ψₜ^*(∂ₜωₜ + L_X ωₜ)
+-- (TauCeti.compContinuousLinearMap_fderiv_eq_of_deriv_add_lieDerivForm_eq_zero).
+-- The frozen-in law ∂ₜω_B + L_v ω_B = 0 can be stated with them; it is not yet in the library.
 ```
 
 ## Boozer coordinates (ψ, θ_B, φ_B)
@@ -512,6 +559,13 @@ structure FormWeakQS (ω : Space → Form 2) (ξ : Space → Space) (ψ : Space 
   interior : ∀ x ∈ T, (ω x).curryLeft (ξ x) = -formGrad ψ x
   qs : ∀ x ∈ T, formGrad (fun y => ‖flux.symm (ω y)‖) x ![ξ x] = 0
 theorem formWeakQS_flux_iff : FormWeakQS (fluxField B) ξ ψ T ↔ WeakQS B ξ ψ T
+
+-- Invariance of the flux form under the generator (23 November 2026):
+-- PlasmaLean/Theory/Fields/FormCalculus.lean, using TauCeti's Cartan formula
+theorem WeakQS.lieDerivForm_flux_eq_zero (h : WeakQS B ξ ψ T) (hT : IsOpen T)
+    (hB : ∀ x ∈ T, DifferentiableAt ℝ B x) (hdiv : ∀ x ∈ T, fieldDiv B x = 0)
+    (hψ : ∀ x ∈ T, ContDiffAt ℝ 2 ψ x) (hx : x ∈ T) :
+    TauCeti.lieDerivForm ξ (fluxField B) x = 0              -- L_ξ ω_B = 0
 ```
 
 ## Continuous symmetry and the conserved canonical momentum
@@ -620,6 +674,10 @@ theorem lorentzOrbit_exists {m q : ℝ} (hm : m ≠ 0) {B : Space → Space}
 
 -- PlasmaLean/Theory/Kinetic/GuidingCentre.lean: magneticMoment, magneticMoment_drift
 -- Not in the library: the twisted symplectic form; adiabatic invariance of μ to all orders.
+
+-- 23 November 2026: TauCeti v4.36.0 has a large symplectic library (Hamiltonian vector
+-- fields, Poisson brackets, Liouville–Arnold tori, magnetic translation of a cotangent
+-- space). None of it is used here yet; see note N-48 for the assessment.
 ```
 
 ## Omnigeneity and the second adiabatic invariant J∥

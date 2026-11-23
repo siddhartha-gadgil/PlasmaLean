@@ -80,6 +80,12 @@ public import PlasmaLean.Kernel.Forms
 public import PlasmaLean.Sanity.Forms
 public import PlasmaLean.Theory.Fields.FormBridges
 public import PlasmaLean.Sanity.AuditForms
+public import PlasmaLean.Theory.Fields.FormCalculus
+public import PlasmaLean.Sanity.FormCalculus
+public import PlasmaLean.Theory.Fields.FormTopology
+public import PlasmaLean.Sanity.FormTopology
+public import PlasmaLean.Theory.Fields.FormContact
+public import PlasmaLean.Sanity.FormContact
 public import PlasmaLean.Theory.Fluids.EulerianODE
 public import PlasmaLean.Theory.Transport.PowerBalance
 public import PlasmaLean.Theory.Transport.Comparison

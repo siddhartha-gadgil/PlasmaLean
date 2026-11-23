@@ -179,3 +179,7 @@ These are untrusted numerics or exact sympy unless stated; details are in `02_ex
 - **Not checked here:** S-12 (needs the earlier handoff), S-33 (the manuscript is not
   available), (P5), (C8), and the completeness half of Prop. 2.
 - **Sign convention.** The source writes `B × u = ∇ψ`; `WeakQS` writes `B × ξ = −∇ψ`.
+
+**Pointer (23 November 2026).** N-48 assesses which of these claims fit the differential-form
+kernel (N-45) and compiles two of them: the invariance `L_u ω_B = 0` behind S-23, and for S-2
+potentials on simply connected regions together with a field (the straight wire) that has none.
