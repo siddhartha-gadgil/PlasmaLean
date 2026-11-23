@@ -15,7 +15,7 @@
 | Status | verified for the theorems listed under "What is compiled"; the rest stated |
 | Lean evidence | default build, namespace `PlasmaLean.Forms` unless noted: `lieDerivForm_eq_zero_of_interior`, `FormWeakQS.lieDerivForm_eq_zero`, `PlasmaLean.Fields.WeakQS.lieDerivForm_flux_eq_zero`, `VacuumForm.exists_scalarPotential`, `VacuumForm.exists_vectorPotential`, `onOpens`, `isSmoothForm_onOpens_iff`, `mextDeriv_onOpens`, `VacuumForm.exists_scalarPotential_of_simplyConnected`, `not_simplyConnected_of_no_potential`, `wedge12_eq_wedge`, `isContactAt_iff_nondegenerate`, `IsBeltramiOn.reeb`; `PlasmaLean.Sanity.FormTopology.wireField_no_potential`, `wireRegion_not_simplyConnected`, `bentSet_not_starConvex`, `hyperbolic_scalarPotential_bent`; `lieDerivForm_flux`, `PlasmaLean.Fields.WeakQS.lieBracket_eq_zero`, `IsBeltramiOn.reeb_unique`, `pathIntegral_onOpens_flat`, `periodHom_onOpens_flat`, `PlasmaLean.Sanity.FormPeriods.wire_period`; `PlasmaLean.Kinetic.lorentzOrbit_eulerLagrange`, `noetherMomentum_translation_conserved`, `noetherMomentum_linear_gauge_conserved`, `canonicalMomentum_rotGenZ_conserved`; `loopCurrent_eq_periodHom_div`, `PlasmaLean.Vacuum.VacuumField.loopCurrent_eq_zero_of_simplyConnected`; `flatSmoothForm`, `isContactForm_flatSmoothForm_iff`, `IsBeltramiOn.reebVectorField_flatSmoothForm`; `PlasmaLean.Kinetic.canonicalForm_fderiv_kineticMomentumMap_flux`, `lorentzOrbit_hamilton`; `hymLift`, `extDeriv_hymLift_eq_zero_iff`, `hymLift_closed_iff_vacuumField`, `hymLift_isAntiSelfDual` |
 | Audit evidence | not audited |
-| Last updated | 23 November 2026: created; same day, the manifold bridge, the wedge and contact links, the wire fixture and the symplectic assessment; then periods, `[ξ, B] = 0`, uniqueness of the Reeb vector, a non-star-convex fixture and the Noether charge from TauCeti; phases 1 and 2 of the remaining tasks (rotational Noether, loop current as a period, bundled contact form; magnetic symplectic form, anti-self-dual lift) |
+| Last updated | 23 November 2026: created; same day, the manifold bridge, the wedge and contact links, the wire fixture and the symplectic assessment; then periods, `[ξ, B] = 0`, uniqueness of the Reeb vector, a non-star-convex fixture and the Noether charge from TauCeti; phases 1 and 2 of the remaining tasks (rotational Noether, loop current as a period, bundled contact form; magnetic symplectic form, anti-self-dual lift); second round, phase 1 (finite symmetry and the direct proofs, periods on an interval, contact forms on an open subset) |
 | Patches | none (N-45 stands; this note adds to it) |
 
 ## Purpose and scope
@@ -132,7 +132,7 @@ exterior calculus.
 
 ## What is compiled
 
-All in the default build, standard axioms only (`scripts/check_axioms.lean`, 64 entry points).
+All in the default build, standard axioms only (`scripts/check_axioms.lean`, 83 entry points).
 
 **Lie derivative** (`Theory/Fields/FormCalculus`).
 
@@ -313,15 +313,66 @@ session.
 - Not done: the quotient to `Ω × S¹`; the complex structure, the line bundle and its Chern
   class, the energy identity and Yang–Mills minimality.
 
+## Second round, phase 1 (sub-agents, 23 November 2026)
+
+The limits recorded after the first round were taken up in two further phases. Phase 1, three
+modules written in parallel and rebuilt and axiom-checked in the main session:
+
+**Finite symmetry and the direct proofs** (`Theory/Kinetic/NoetherSymmetryBridge`).
+
+- `fderiv_eq_of_equivariant`: equivariance of `A` under a one-parameter family `g s` with
+  `g 0 y = y` and velocity `K` at `s = 0` gives the infinitesimal condition
+  `DA(y)(K y) = K(A y)`. `fderiv_rotGenZ_of_rotZ_equivariant` is the case of the rotations
+  `rotZ` about the z-axis; `canonicalMomentum_conserved_of_rotZ_equivariant` follows.
+- `symmetryFluxGrad A K y = DA(y)†(K y) − K(A y)` is the gradient of `ψ = ⟪A, K x⟫`
+  (`hasFDerivAt_symmetryFlux`, `K` skew).
+- `symmetricFlux_symmetryFluxGrad_iff`: with `B = ∇ × A`, the hypothesis `SymmetricFlux` of
+  the direct proof holds for this gradient **iff** `A` is infinitesimally equivariant.
+  `axisymmetricFlux_iff_symmetricFlux_rotGenZ`: `AxisymmetricFlux` is `SymmetricFlux` for the
+  z-rotation.
+- `noetherMomentum_linear_conserved_direct`, `canonicalMomentum_rotGenZ_conserved_direct`: the
+  same conservation laws proved from the direct theorems, without TauCeti. Each law now has two
+  independent proofs.
+- Sanity: the symmetric gauge is equivariant under all `rotZ s`; the Landau gauge is not
+  equivariant under `rotZ (π/2)` and does not satisfy `SymmetricFlux`.
+- Not done: the gauge-term case is not bridged; infinitesimal ⇒ finite equivariance.
+
+**Periods for loops on an interval** (`Theory/Fields/FormLoopCurrentInterval`).
+
+- `lineIntegral_eq_periodHom`: for a `C¹` curl-free field on `U` and a curve that is `C¹` on
+  `[a, b]`, lies in `U` there and closes up, the circulation is the period on the class of the
+  loop reparametrised by a smooth transition function (`smoothParam`, `intervalPath`). A corner
+  at the closing point is allowed.
+- `poloidalCirculation_eq_periodHom_of_Icc`, `loopCurrent_eq_periodHom_div_of_Icc`: the
+  contract's loop current with hypotheses on `[−π, π]` only. `intervalPath_poloidal_homotopic`:
+  the new loop is homotopic to the earlier `poloidalPath` when both are defined.
+- `VacuumField.lineIntegral_eq_zero_of_simplyConnected`: zero circulation on a simply connected
+  region, now derived from the period (the fundamental group is trivial).
+- `FieldTorus.loopCurrent_eq_periodHom_div`, `FieldTorus.loopCurrent_eq_zero_of_simplyConnected`,
+  `CurrentFreeTransform.current_eq_zero_of_simplyConnected`: the contract structures supply
+  periodicity and regularity, so the only extra hypothesis is that the loop lies in `U`.
+- Sanity: a poloidal loop around a straight wire has circulation and period `2π`
+  (`ring_poloidalCirculation`, `ring_period`), the rejected case that was missing; the complement
+  of that wire is not simply connected; a non-periodic profile does not close up.
+- Not done: piecewise `C¹` loops; the field must be curl-free on all of `U`; the `FieldTorus`
+  and `CurrentFreeTransform` corollaries have no concrete fixture.
+
+**Contact forms on an open subset** (`Theory/Fields/FormContactOpens`).
+
+- `flatSmoothFormOn U B hB`, `isContactFormAt_onOpens_iff`,
+  `isContactForm_flatSmoothFormOn_iff`, `IsBeltramiOn.isContactForm_flatSmoothFormOn`,
+  `IsBeltramiOn.reebVectorField_flatSmoothFormOn`: the statements of `FormContactManifold` on a
+  region `U`, with hypotheses only on `U`; they agree with the `ℝ³` version for `U = ⊤`.
+- Sanity: `shearField = (0, x²/2, 1)` has `⟪B, ∇ × B⟫ = x`, so it is a contact form on the
+  half-space `x > 0` and not on `ℝ³`; a field equal to the helical field only on the half-space.
+- Not done: smoothness of the Reeb vector field and its flow.
+
 ## Next steps
 
-All five tasks listed as not done are now compiled, each with stated limits. Still open:
-
-1. Loops that are `C¹` only on `[−π, π]` in the period statement.
-2. The contact form on an open subset; finite (not infinitesimal) rotational invariance.
-3. The converse of `lorentzOrbit_hamilton`, and an electric field.
-4. A Hodge star on `ℝ⁴` and the quotient `Ω × S¹` for the lift.
-5. The de Rham classes of an embedded flux surface.
+Phase 2 of the second round is in progress: the converse of `lorentzOrbit_hamilton` with an
+electric field, and a Hodge star on `ℝ⁴` with the circle quotient for the lift. Other open
+items: piecewise `C¹` loops; the gauge-term bridge; the de Rham classes of an embedded flux
+surface.
 
 ## Barriers
 

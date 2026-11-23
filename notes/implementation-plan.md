@@ -2331,6 +2331,17 @@ with a literature search and independent numerical checks; note
   - `Theory/Fields/FormHYMLift` (N-42 S-13): `extDeriv_hymLift_eq_zero_iff` (the lift
     `ω − ⋆ω ∧ dτ` is closed iff both vacuum equations hold), `hymLift_closed_iff_vacuumField`,
     `hymLift_isAntiSelfDual` (in components).
-- **Still open:** loops `C¹` only on `[−π, π]`; the contact form on an open subset; the converse
-  of `lorentzOrbit_hamilton`; a Hodge star on `ℝ⁴` and the circle quotient for the lift.
+- **Second round, phase 1** (three sub-agents in parallel; rebuilt and axiom-checked in the
+  main session):
+  - `Theory/Kinetic/NoetherSymmetryBridge`: finite rotational equivariance gives the
+    infinitesimal condition (`fderiv_rotGenZ_of_rotZ_equivariant`); with `B = ∇ × A`, the
+    hypothesis of the direct proof is equivalent to it (`symmetricFlux_symmetryFluxGrad_iff`,
+    `axisymmetricFlux_iff_symmetricFlux_rotGenZ`); each conservation law has two proofs.
+  - `Theory/Fields/FormLoopCurrentInterval`: `lineIntegral_eq_periodHom` for curves `C¹` on an
+    interval; `CurrentFreeTransform.current_eq_zero_of_simplyConnected`; a poloidal loop around
+    a wire with period `2π` (`ring_period`).
+  - `Theory/Fields/FormContactOpens`: contact forms and Reeb fields on an open subset; a field
+    that is contact on a half-space and not on `ℝ³`.
+- **Still open:** the converse of `lorentzOrbit_hamilton` and an electric field; a Hodge star on
+  `ℝ⁴` and the circle quotient for the lift (second round, phase 2).
 - **Registry:** N-48 added; pointers in N-45, N-43, N-42.

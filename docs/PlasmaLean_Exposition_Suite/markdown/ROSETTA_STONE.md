@@ -256,6 +256,17 @@ theorem loopCurrent_eq_periodHom_div (μ₀ : ℝ) (hB : ContDiffOn ℝ 1 B U)
 -- Topology forces zero net current:
 theorem VacuumField.loopCurrent_eq_zero_of_simplyConnected [SimplyConnectedSpace U] (μ₀ : ℝ)
     (h : VacuumField U B) ... : loopCurrent μ₀ B R z φ₀ = 0
+
+-- Loops that are C¹ only on [-π, π], and the contract's own structures
+-- (PlasmaLean/Theory/Fields/FormLoopCurrentInterval.lean):
+theorem lineIntegral_eq_periodHom (hB : ContDiffOn ℝ 1 B U) (hcurl : ∀ x ∈ U, fieldCurl B x = 0)
+    (hab : a < b) (hU : ∀ t ∈ Set.Icc a b, γ t ∈ U) (hγ : ContDiffOn ℝ 1 γ (Set.Icc a b))
+    (hclosed : γ a = γ b) : lineIntegral B γ a b = periodHom (onOpens U ...) _ (loop class)
+theorem CurrentFreeTransform.current_eq_zero_of_simplyConnected [SimplyConnectedSpace U]
+    (hC : CurrentFreeTransform μ₀ B S Imax ιmin) (h : VacuumField U B) (hs : s ∈ S)
+    (hU : ∀ θ ∈ Set.Icc (-π) π, s.loop θ ∈ U) : s.current μ₀ B = 0
+-- Sanity: a poloidal loop around a straight wire has circulation and period 2π
+-- (ring_poloidalCirculation, ring_period); the wire's complement is not simply connected.
 ```
 
 ## Magnetic well and min-B: |B| in a vacuum field
@@ -490,7 +501,13 @@ theorem isContactForm_flatSmoothForm_iff (B : Space → Space) (hB : ContDiff �
 theorem IsBeltramiOn.reebVectorField_flatSmoothForm (h : IsBeltramiOn B lam Set.univ)
     (hB : ContDiff ℝ ∞ B) (hl : ∀ x, lam x ≠ 0) (hne : ∀ x, B x ≠ 0) (x : Space) :
     (flatSmoothForm B hB).reebVectorField x = (‖B x‖ ^ 2)⁻¹ • B x
--- On all of ℝ³ only; the version on an open subset is not written.
+-- On an open subset U (PlasmaLean/Theory/Fields/FormContactOpens.lean):
+theorem isContactForm_flatSmoothFormOn_iff (U : Opens Space) (B : Space → Space)
+    (hB : ContDiffOn ℝ ∞ B U) :
+    (flatSmoothFormOn U B hB).IsContactForm ↔ ∀ x ∈ U, IsContactAt (fun y => flat (B y)) x
+theorem IsBeltramiOn.reebVectorField_flatSmoothFormOn ... (x : U) :
+    (flatSmoothFormOn U B hB).reebVectorField x = (‖B x‖ ^ 2)⁻¹ • B x
+-- Sanity: (0, x²/2, 1) is a contact form on the half-space x > 0 and not on ℝ³.
 ```
 
 ## Magnetic helicity and Taylor relaxation
@@ -676,8 +693,19 @@ theorem noetherMomentum_linear_gauge_conserved (h : LorentzOrbit m q (fun _ => 0
 theorem canonicalMomentum_rotGenZ_conserved ... (hequiv : ∀ y,
     fderiv ℝ A y (rotGenZ y) = rotGenZ (A y)) (s t : ℝ) :
     canonicalMomentum m q (fun y => ⟪A y, rotGenZ y⟫) x v s = ... t
--- K is a skew linear generator; equivariance of A is the infinitesimal condition. The link
--- to the hypotheses of the direct proof (AxisymmetricFlux) is not proved.
+-- K is a skew linear generator; equivariance of A is the infinitesimal condition.
+-- Finite symmetry and the link to the direct proofs
+-- (PlasmaLean/Theory/Kinetic/NoetherSymmetryBridge.lean):
+theorem fderiv_rotGenZ_of_rotZ_equivariant (hA : Differentiable ℝ A)
+    (hequiv : ∀ s y, A (rotZ s y) = rotZ s (A y)) (y : Space) :
+    fderiv ℝ A y (rotGenZ y) = rotGenZ (A y)
+theorem symmetricFlux_symmetryFluxGrad_iff (hcurl : ∀ y, B y = fieldCurl A y) :
+    SymmetricFlux B (symmetryFluxGrad A K) (fun y => K y)
+      ↔ ∀ y, fderiv ℝ A y (K y) = K (A y)
+theorem axisymmetricFlux_iff_symmetricFlux_rotGenZ (B G : Space → Space) :
+    AxisymmetricFlux B G ↔ SymmetricFlux B G (fun y => rotGenZ y)
+-- So the hypothesis of the direct proof is equivalent to equivariance of A, and each
+-- conservation law has two independent proofs (Noether and direct).
 ```
 
 ## Near-axis expansion (Garren–Boozer, Landreman–Sengupta)

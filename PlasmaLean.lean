@@ -100,6 +100,12 @@ public import PlasmaLean.Theory.Kinetic.MagneticSymplectic
 public import PlasmaLean.Sanity.MagneticSymplectic
 public import PlasmaLean.Theory.Fields.FormHYMLift
 public import PlasmaLean.Sanity.FormHYMLift
+public import PlasmaLean.Theory.Kinetic.NoetherSymmetryBridge
+public import PlasmaLean.Sanity.NoetherSymmetryBridge
+public import PlasmaLean.Theory.Fields.FormLoopCurrentInterval
+public import PlasmaLean.Sanity.FormLoopCurrentInterval
+public import PlasmaLean.Theory.Fields.FormContactOpens
+public import PlasmaLean.Sanity.FormContactOpens
 public import PlasmaLean.Theory.Fluids.EulerianODE
 public import PlasmaLean.Theory.Transport.PowerBalance
 public import PlasmaLean.Theory.Transport.Comparison

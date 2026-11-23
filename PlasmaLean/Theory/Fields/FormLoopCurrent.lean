@@ -28,10 +28,10 @@ circulation over `[0, 1]`. This file closes the gap between the two parametrisat
   the scalar potential (`VacuumField.exists_scalarPotential_of_simplyConnected` and the
   fundamental theorem for line integrals), not from the period.
 
-What is not proved: the poloidal loop is required to lie in `U` and to be `C¹` for every value
-of the parameter, not only on `[-π, π]`; nothing is said about loops that are only piecewise
-`C¹`, and the vanishing of the period homomorphism on a simply connected region is not derived
-from the triviality of the fundamental group.
+Restrictions of this file: the poloidal loop is required to lie in `U` and to be `C¹` for
+every value of the parameter, not only on `[-π, π]`, and the simply connected corollary is not
+derived from the period. Both are removed in `Theory/Fields/FormLoopCurrentInterval`. Nothing
+is said about loops that are only piecewise `C¹`.
 -/
 
 @[expose] public section
