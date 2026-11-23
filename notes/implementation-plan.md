@@ -2474,6 +2474,18 @@ After the audit. Three sub-agents, each with its own modules; the lead verified 
 - Checks: `lake build` (11,153 jobs), `check_axioms` 52,527 declarations.
 - Not audited.
 
+
+### Fifth round, phase 1 (N-48), 23 November 2026
+
+- `Theory/Fields/FormFluxSurfaceEmbedded` (+ sanity): `EmbeddedTorus`,
+  `EmbeddedTorus.isSmoothEmbedding_torusEmb`, `EmbeddedTorus.of_sections`,
+  `PeriodicTorus.homeomorph`, `PeriodicC2Torus.exists_potential_on_torus`; the doubly covered
+  torus is a `FieldTorus` that is not embedded (`dbl_fieldTorus`, `dbl_not_embeddedTorus`; AF-1).
+- `Theory/Kinetic/LorentzOrbitOpen` (+ sanity): `lorentzOrbitOn_exists_local_of_contDiffOn`,
+  `lorentzOrbitOn_unique_of_contDiffOn`, `lorentzOrbit_existsUnique_of_confined` for fields
+  `C¹` on an open set, no potential (AV-M4, orbit part).
+- Checks: `lake build` (11,697 jobs), `check_axioms` 53,036 declarations. Not audited.
+
 ### Conceptual methods for trapped particles and vacuum shape, 23 November 2026
 
 Registered N-49 for approximate momentum, period and bounce-average obstructions, and finite-time

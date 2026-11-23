@@ -31,6 +31,16 @@ def FormFirstIntegralOn (ω : Space → Form 2) (ψ : Space → ℝ) (U : Set Sp
   ∀ x ∈ U, DifferentiableAt ℝ ψ x ∧ formGrad ψ x ![flux.symm (ω x)] = 0
 theorem formFirstIntegralOn_flux_iff :
     FormFirstIntegralOn (fluxField B) ψ U ↔ FirstIntegralOn B ψ U
+
+-- The contract's parametrised tori as embedded surfaces:
+-- PlasmaLean/Theory/Fields/FormFluxSurfaceEmbedded.lean (namespace PlasmaLean.Forms)
+structure EmbeddedTorus (R z : ℝ → ℝ → ℝ) : Prop extends PeriodicC2Torus R z where
+  injective : InjectiveModPeriods R z
+  immersion : ∀ p, Function.Injective (fderiv ℝ (torusMap R z) p)
+theorem EmbeddedTorus.isSmoothEmbedding_torusEmb (h : EmbeddedTorus R z) :
+    Manifold.IsSmoothEmbedding (𝓘(ℝ).prod 𝓘(ℝ)) 𝓘(ℝ, Space) 2 (torusEmb R z)
+theorem EmbeddedTorus.of_sections ...   -- R > 0, sections injective mod 2π, (∂_θR, ∂_θz) ≠ 0
+-- A FieldTorus need not be embedded (the doubly covered torus: dbl_not_embeddedTorus).
 ```
 
 ## Clebsch representation B = ∇ψ × ∇α and flux coordinates
@@ -909,7 +919,13 @@ theorem lorentzOrbit_existsUnique_uniform (hm : m ≠ 0) (q : ℝ) (Ev Bv x₀ v
 theorem lorentzOrbit_existsUnique_of_linear_growth (hm : m ≠ 0) ... (hgrowth : ∀ y, ‖E y‖ ≤ a + b * ‖y‖) :
     ∃ x v, LorentzOrbit m q E B x v ∧ x 0 = x₀ ∧ v 0 = v₀ ∧ (unique)
 theorem lorentzOrbit_existsUnique_of_potential_bounded_below (hm : 0 < m) ... (hΦ : ∀ y, c ≤ q * Φ y) : ...
--- Not proved: finite-time blow-up for repulsive potentials; fields on an open subset only;
+
+-- PlasmaLean/Theory/Kinetic/LorentzOrbitOpen.lean   (E, B of class C¹ on an open U; no potential)
+theorem lorentzOrbitOn_exists_local_of_contDiffOn (hm : m ≠ 0) (hU : IsOpen U) ... (hx₀ : x₀ ∈ U) :
+    ∃ ε > 0, ∃ x v, LorentzOrbitOn m q E B x v (Ioo (t₀ - ε) (t₀ + ε)) ∧ x t₀ = x₀ ∧ v t₀ = v₀ ∧ ...
+theorem lorentzOrbitOn_unique_of_contDiffOn ...   -- orbits staying in U are unique
+theorem lorentzOrbit_existsUnique_of_confined ... -- global, if positions stay in a compact K ⊆ U
+-- Not proved: finite-time blow-up for repulsive potentials; maximal orbits and escape;
 -- time-dependent potentials; the bundled symplectomorphism.
 ```
 

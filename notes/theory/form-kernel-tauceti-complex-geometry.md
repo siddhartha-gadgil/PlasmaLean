@@ -17,7 +17,7 @@ An alternative method appears in [N-49](trapped-particle-momentum.md).
 | Status | verified and audited (23 November 2026, findings AV-*) for the modules listed under "Current state"; the rest stated |
 | Lean evidence | default build, namespace `PlasmaLean.Forms` unless noted: `lieDerivForm_eq_zero_of_interior`, `FormWeakQS.lieDerivForm_eq_zero`, `PlasmaLean.Fields.WeakQS.lieDerivForm_flux_eq_zero`, `VacuumForm.exists_scalarPotential`, `VacuumForm.exists_vectorPotential`, `onOpens`, `isSmoothForm_onOpens_iff`, `mextDeriv_onOpens`, `VacuumForm.exists_scalarPotential_of_simplyConnected`, `not_simplyConnected_of_no_potential`, `wedge12_eq_wedge`, `isContactAt_iff_nondegenerate`, `IsBeltramiOn.reeb`; `PlasmaLean.Sanity.FormTopology.wireField_no_potential`, `wireRegion_not_simplyConnected`, `bentSet_not_starConvex`, `hyperbolic_scalarPotential_bent`; `lieDerivForm_flux`, `PlasmaLean.Fields.WeakQS.lieBracket_eq_zero`, `IsBeltramiOn.reeb_unique`, `pathIntegral_onOpens_flat`, `periodHom_onOpens_flat`, `PlasmaLean.Sanity.FormPeriods.wire_period`; `PlasmaLean.Kinetic.lorentzOrbit_eulerLagrange`, `noetherMomentum_translation_conserved`, `noetherMomentum_linear_gauge_conserved`, `canonicalMomentum_rotGenZ_conserved`; `loopCurrent_eq_periodHom_div`, `PlasmaLean.Vacuum.VacuumField.loopCurrent_eq_zero_of_simplyConnected`; `flatSmoothForm`, `isContactForm_flatSmoothForm_iff`, `IsBeltramiOn.reebVectorField_flatSmoothForm`; `PlasmaLean.Kinetic.canonicalForm_fderiv_kineticMomentumMap_flux`, `lorentzOrbit_hamilton`; `hymLift`, `extDeriv_hymLift_eq_zero_iff`, `hymLift_closed_iff_vacuumField`, `hymLift_isAntiSelfDual` |
 | Audit evidence | audited at `6ceca0e` (23 November 2026): AV-H1, AV-M1–M6 resolved; AV-M4 partly open; record `notes/audit/2026-11-23-refresh-audit.md` |
-| Last updated | 23 November 2026: created; same day, the manifold bridge, the wedge and contact links, the wire fixture and the symplectic assessment; then periods, `[ξ, B] = 0`, uniqueness of the Reeb vector, a non-star-convex fixture and the Noether charge from TauCeti; phases 1 and 2 of the remaining tasks (rotational Noether, loop current as a period, bundled contact form; magnetic symplectic form, anti-self-dual lift); second round, phase 1 (finite symmetry and the direct proofs, periods on an interval, contact forms on an open subset) and phase 2 (Hamilton's equations with an electric field and the converse; Hodge star on `ℝ³ × ℝ` and the circle quotient); third round, phase 1 (piecewise `C¹` loops, convex regions and the contract's current clause, gauge terms) and phase 2 (the lift on `Ω × S¹`; crossed-field orbits, existence and uniqueness); after the audit, fourth round, phase 1 (complex structure of the lift, global existence of orbits, loop current on the Dommaschk tori) and phase 2 (energy inequality and connection form of the lift; periods of a flux surface) |
+| Last updated | 23 November 2026: created; same day, the manifold bridge, the wedge and contact links, the wire fixture and the symplectic assessment; then periods, `[ξ, B] = 0`, uniqueness of the Reeb vector, a non-star-convex fixture and the Noether charge from TauCeti; phases 1 and 2 of the remaining tasks (rotational Noether, loop current as a period, bundled contact form; magnetic symplectic form, anti-self-dual lift); second round, phase 1 (finite symmetry and the direct proofs, periods on an interval, contact forms on an open subset) and phase 2 (Hamilton's equations with an electric field and the converse; Hodge star on `ℝ³ × ℝ` and the circle quotient); third round, phase 1 (piecewise `C¹` loops, convex regions and the contract's current clause, gauge terms) and phase 2 (the lift on `Ω × S¹`; crossed-field orbits, existence and uniqueness); after the audit, fourth round, phase 1 (complex structure of the lift, global existence of orbits, loop current on the Dommaschk tori) and phase 2 (energy inequality and connection form of the lift; periods of a flux surface); fifth round, phase 1 (embedded tori; orbits on open sets) |
 | Patched by / Alternatives | [N-49](trapped-particle-momentum.md) |
 | Patches | none (N-45 stands; this note adds to it) |
 
@@ -39,8 +39,8 @@ section may be done in a later one. This section is the current summary. The aud
 | Noether | `Theory/Kinetic/NoetherLagrangian`, `NoetherRotation`, `NoetherSymmetryBridge`, `NoetherGaugeBridge` | canonical momentum for translations and linear generators with gauge terms, by TauCeti's theorem and by the direct route; `noetherMomentum_gauge_invariant` |
 | Hamiltonian | `MagneticSymplectic`, `MagneticHamiltonConverse`, `CrossedFieldOrbit` | the magnetic form is `Ω − q π^*ω_B` on kinetic phase space (`magneticForm_lorentzForceField`); Lorentz equations ⇔ Hamilton's equations with `E = −∇Φ`; `E × B` drift orbit; uniqueness for `C¹` fields; existence for uniform fields and for `C¹` `B` with `E = 0` |
 
-Limits that apply throughout: the kinetic theorems need a vector potential differentiable on all
-of space (AV-M4); the forms are on `ℝ³` or its open subsets, not on embedded flux surfaces;
+Limits that apply throughout: the Noether and Hamiltonian theorems need a vector potential
+differentiable on all of space (AV-M4; the orbit theorems of `LorentzOrbitOpen` do not); the forms are on `ℝ³` or its open subsets, not on embedded flux surfaces;
 TauCeti's own proofs were not audited. Added after the audit (not yet audited): the
 complex structure of the lift and its `(1,1)`, primitive characterisation, closedness on
 `U × S¹` without regularity (`FormHYMComplex`); global existence of orbits under linear
@@ -48,8 +48,11 @@ growth or an energy bound (`Theory/Kinetic/LorentzGlobalExistence`); the loop cu
 Dommaschk tori (`Design/DommaschkKamLoopCurrent`, on demand); the energy inequality for
 compactly supported variations of the lift and its local connection form (`FormHYMEnergy`);
 the periods of a parametrised flux surface and the independence of the contract's circulation
-from the toroidal angle (`FormFluxSurfacePeriods`). Not formalized: a line bundle and Chern
-class for the lift, the energy statement on `Ω × S¹`; flux surfaces as embedded submanifolds.
+from the toroidal angle (`FormFluxSurfacePeriods`). Fifth round, phase 1: flux surfaces as smoothly embedded
+tori with the period statements on the torus (`FormFluxSurfaceEmbedded`); orbits for fields on
+an open set, with no potential (`Theory/Kinetic/LorentzOrbitOpen`). Not formalized: a line
+bundle and Chern class for the lift, the energy statement on `Ω × S¹`; the class of `B♭` in
+TauCeti's de Rham cohomology.
 
 ## Purpose and scope
 
@@ -688,16 +691,73 @@ Checks: all modules build; `scripts/check_axioms.lean` passes for 52,306 declara
 
 Checks: all modules build; `scripts/check_axioms.lean` passes for 52,527 declarations.
 
+## Fifth round, phase 1 (sub-agents, 23 November 2026)
+
+**Flux surfaces as embedded tori** (`Theory/Fields/FormFluxSurfaceEmbedded`).
+
+- `AngleTorus = AddCircle (2π) × AddCircle (2π)`, `torusProj`, `torusEmb R z` (the surface map
+  descended to the torus), `PeriodicTorus` (continuity and double periodicity; every
+  `FieldTorus` gives one). `PeriodicTorus.isCompact_range_torusMap`: the surface is compact.
+- `InjectiveModPeriods`, `PeriodicTorus.injective_torusEmb_iff`,
+  `PeriodicTorus.isClosedEmbedding_torusEmb`, `PeriodicTorus.homeomorph`: when the
+  parametrisation is injective modulo periods, the surface is homeomorphic to the 2-torus.
+- `EmbeddedTorus R z`: `PeriodicC2Torus`, injective modulo periods, and injective differential.
+  `EmbeddedTorus.isSmoothEmbedding_torusEmb`: the descended map is a `C²` smooth embedding
+  (`Manifold.IsSmoothEmbedding`) of the manifold `AngleTorus`, and a closed embedding.
+- Criteria for cylindrical tori with `R > 0`: `PeriodicTorus.injectiveModPeriods_iff_sections`
+  (each section `θ ↦ (R, z)` injective modulo `2π`),
+  `PeriodicC2Torus.injective_fderiv_torusMap_iff` (`(∂_θR, ∂_θz) ≠ 0`),
+  `EmbeddedTorus.of_sections`, `FieldTorus.embeddedTorus`. `FieldTorus.axis_dist_pos`: the
+  surface does not meet the axis.
+- Periods on the torus: `torusFormT` (the descended 1-form),
+  `PeriodicC2Torus.exists_potential_on_torus` (for a `C¹` curl-free field, a `C¹` function `g`
+  on the torus with `dg = β − (P_θ/2π)dθ − (P_φ/2π)dφ`) and
+  `PeriodicC2Torus.periods_eq_of_potential_on_torus` (the coefficients are determined).
+- Sanity: the circular torus is an `EmbeddedTorus`; the doubly covered torus is a
+  `PeriodicC2Torus`, an immersion and a `FieldTorus` of the wire field, but not injective
+  modulo periods (`dbl_not_embeddedTorus`, `dbl_fieldTorus`); the circle (`a = 0`) is not an
+  immersion. So the contract's `FieldTorus` does not imply embeddedness (AF-1): the predicate
+  is now available but is not part of the contract.
+- Not done: the class as an element of TauCeti's de Rham cohomology (its complex consists of
+  `C^∞` forms; the pulled-back form of a `C²` surface and `C¹` field is only continuous); the
+  torus is the product of two circles, not TauCeti's `∀ i : Fin 2, AddCircle _`; no manifold
+  structure on the image itself.
+
+**Lorentz orbits for fields on an open set** (`Theory/Kinetic/LorentzOrbitOpen`).
+
+Correction to earlier text of this note: the global existence theorems of
+`LorentzGlobalExistence` need no vector potential; they need `E` and `B` of class `C¹` on all of
+space. The vector potential was needed only by `lorentzOrbitOn_exists_local` and
+`lorentzOrbit_unique`. This module treats `E`, `B` of class `C¹` on an open `U`, `m ≠ 0`.
+
+- `lorentzOrbitOn_exists_local_of_contDiffOn`: from every `x₀ ∈ U`, `v₀` and time `t₀` there is
+  an orbit on an open interval, staying in `U`.
+- `lorentzOrbitOn_unique_of_contDiffOn`: two orbits on an interval that stay in `U` and agree at
+  one time agree.
+- `LorentzOrbitOn.energy_eq_of_potentialOn` (`E = −∇Φ` on `U`),
+  `LorentzOrbitOn.speed_eq_of_electric_zero`.
+- `lorentzOrbit_existsUnique_of_confined`: if the positions of solutions from the given data
+  stay in a compact `K ⊆ U`, a unique orbit exists for all time (the speed bound is proved).
+  `lorentzOrbitOn_existsUnique_of_extension`: orbits of a global `C¹` extension are orbits of
+  the given fields while they stay in `U`.
+- Sanity: the wire field on `R > 0` (existence, uniqueness, constant speed, the rest orbit);
+  the field `E = √|x₀| e_x` has two orbits from the same data (`rootField_two_orbits`), so the
+  regularity hypothesis is needed; with `m = 0` uniqueness fails.
+- Not done: a maximal orbit and the statement that it is global or leaves every compact set;
+  the confinement hypothesis is not discharged for a concrete field; Hamilton's equations on
+  an open set (they need a vector potential on `U`).
+
+Checks: `lake build` (11,697 jobs); `scripts/check_axioms.lean` passes for 53,036 declarations.
+
 ## Next steps
 
-Open after the fourth round:
+Open after the fifth round, phase 1:
 
-1. A line bundle with connection whose curvature is the lift, its Chern class, and the energy
-   statement on `Ω × S¹` with periodic variations (TauCeti has no bundle from a closed 2-form
-   and no first Chern class).
-2. Flux surfaces as embedded submanifolds, and the period statements on TauCeti's torus.
-3. Open audit items (`notes/audit/2026-11-23-refresh-audit.md`), and an audit of the modules
-   added after `6ceca0e`.
+1. The energy statement on `Ω × S¹` and the line bundle and Chern numbers of the lift (in
+   progress).
+2. A finite-regularity de Rham complex, to state the class of `B♭` in cohomology.
+3. Embeddedness as a clause of the contract (AF-1): a design decision, not made here.
+4. Open audit items, and an audit of the modules added after `6ceca0e`.
 
 ## Barriers
 
