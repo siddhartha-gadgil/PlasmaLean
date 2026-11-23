@@ -337,6 +337,7 @@ public import PlasmaLean.Design.RationalStellaratorGCNegConfined
 public import PlasmaLean.Design.RationalStellaratorGCFamily
 public import PlasmaLean.Design.RationalStellaratorGCMuFamily
 public import PlasmaLean.Design.RationalStellaratorGCBoxConfined
+public import PlasmaLean.Theory.Fields.LogNormTrajectory
 public import PlasmaLean.Theory.Fields.RectangularODEStep
 public import PlasmaLean.Theory.Fields.CylindricalLaunchFlux
 public import PlasmaLean.Theory.Fields.ODEContinuation
@@ -354,6 +355,9 @@ public import PlasmaLean.Theory.Geometry.TorusHodge
 public import PlasmaLean.Theory.Geometry.AnnulusFluxDescent
 public import PlasmaLean.Theory.Geometry.AnnulusOrbitExistence
 public import PlasmaLean.Theory.Geometry.PeriodicLevelGraphs
+public import PlasmaLean.Theory.Kinetic.MirrorAction
+public import PlasmaLean.Theory.Kinetic.MirrorArclength
+public import PlasmaLean.Theory.Kinetic.MirrorHeightAction
 public import PlasmaLean.Theory.Kinetic.MirrorWellCriterion
 public import PlasmaLean.Theory.Fields.WeakQuasisymmetry
 public import PlasmaLean.Theory.Fields.CylAlgebra

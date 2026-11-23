@@ -93,7 +93,7 @@ and operating temperature remain open for that candidate.
     it for thermal populations on the candidate remains open. [Band test](notes/theory/hamiltonian-bounce-band-test.md)
   - A numerical screen found a change of mirror well at mid-depth. A deeper family on the
     same Dommaschk field passed two grid resolutions, with two candidate winding curves at
-    one scaled action. An outward-rounded continuum check encloses the whole launch strip and every field line for ±1/8 toroidal radian. Both mirror crossings and the physical-time bound remain open. [Bounce screen](notes/theory/dommaschk-mirror-screen.md) · [Field-line enclosure](notes/theory/dommaschk-launch-collar.md)
+    one scaled action. An outward-rounded continuum check encloses the whole launch strip and every field line for ±1/8 toroidal radian. A centred calculation reaches both simple mirrors on a smaller cell and brackets a unique mirror height at the target action. Full-circle drift and physical-time bounds remain open. [Full-strip enclosure](notes/theory/dommaschk-launch-collar.md) · [Local mirrors and action](notes/theory/dommaschk-regular-mirror-cell.md)
   - **Audit of 23 November 2026** ([record](notes/audit/2026-11-23-refresh-audit.md)): no false or
     vacuous theorem was found in the work since 31 October. Two limits of the contract are now
     recorded and open: clause C2 has no non-vacuous instance for any field (AV-M7), and the

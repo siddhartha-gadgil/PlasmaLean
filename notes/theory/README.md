@@ -80,3 +80,4 @@ Phase 8 (kam-route.md, finite-beta-stellarator.md):
 - [Dommaschk mirror-height screens](dommaschk-mirror-screen.md) (N-54, Q-35). A ripple-induced class switch and a deeper candidate strip, with Lean turning-point and winding-graph criteria.
 - [A principal-direction obstruction to stepped pressure](dommaschk-interface-obstruction.md) (N-55, Q-31). Verified on torus A, with an external interval check on C.
 - [Dommaschk launch flux and field-line enclosure](dommaschk-launch-collar.md) (N-56, Q-35). Continuum launch and two-sided field checks, with Lean flux and ODE-step theorems.
+- [A regular Dommaschk mirror cell at prescribed action](dommaschk-regular-mirror-cell.md) (N-57, Q-35). Verified general arclength, trajectory and action theorems; externally enclosed turning points and action on a positive-width cell.

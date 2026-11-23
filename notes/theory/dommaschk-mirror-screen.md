@@ -16,7 +16,7 @@
 | Status | Reproducible floating-point screen. Abstract turning-point and winding-graph criteria proved in Lean. |
 | Lean evidence | `MirrorWell.two_simple_mirrors`, `regularMirrorBirth_on_height_window`, `PeriodicLevelGraphs.separated_level_graphs`, `radius_error_of_action_residual`. |
 | Audit evidence | Model and time conventions follow N-53. Physical targets remain open by user decision. |
-| Alternatives | N-56 implements the launch geometry and the first field-line enclosure. |
+| Alternatives | N-56 implements the launch geometry and first field-line enclosure. [N-57](dommaschk-regular-mirror-cell.md) reaches both mirrors on a local cell. |
 | Last updated | 23 November 2026 |
 
 ## What was computed

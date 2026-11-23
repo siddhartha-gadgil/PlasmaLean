@@ -1,5 +1,7 @@
 # Magnetic flux and a two-sided field-line enclosure for the deep launch strip
 
+[N-57](dommaschk-regular-mirror-cell.md) continues a smaller cell to both mirrors and encloses its action.
+
 ## Metadata
 
 | Field | Value |
@@ -14,6 +16,7 @@
 | Status | Flux identity, flux lower-bound theorem and ODE enclosure theorem verified in the default build. Candidate numerical inequalities externally checked with outward rounding. |
 | Lean evidence | `Forms.interpolated_launch_flux`, `Forms.launch_flux_lower_bound`, `Fields.RectangularODEStep.exists_step`, `tube_of_endpoints`. |
 | Audit evidence | Exact polynomial comparison with the identified field, checks against known solutions and two time subdivisions, full-strip rerun. |
+| Alternatives | N-57 uses a centred trajectory and signed spatial growth bound. |
 | Last updated | 23 November 2026 |
 
 ## Launch and clock

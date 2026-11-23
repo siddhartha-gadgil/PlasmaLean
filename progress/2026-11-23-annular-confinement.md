@@ -46,6 +46,8 @@ Refining the launch phase exposed a change of mirror well that the first 128 pha
 
 Over the entire deeper strip, 32,768 outward-rounded boxes establish a nonzero transverse launch flux. A separate 131,072-tube check encloses the field lines for ±1/8 geometric toroidal radian with field strength below 1.057107, clear of the lower mirror height 1.05959233. Lean proves the geometric flux formula and the ODE enclosure theorem; the candidate numbers are checked externally. [Launch and continuation bounds](https://github.com/siddhartha-gadgil/PlasmaLean/blob/main/notes/theory/dommaschk-launch-collar.md)
 
+On one small positive-width cell a centred polynomial trajectory now reaches the first turning points in both directions. At two mirror heights the enclosed actions lie on opposite sides of the prescribed j=1.3599221876644974. Each launch in the cell therefore has a unique mirror height at that action. Moving the launch points to a common field-line section verifies the same conclusion for a 524,288-fold wider phase interval. The full-circle construction still needs transverse action bounds. [Regular mirror cell and proof methods](https://github.com/siddhartha-gadgil/PlasmaLean/blob/main/notes/theory/dommaschk-regular-mirror-cell.md)
+
 ## Earlier results retained
 
 The original Dommaschk certificate provides the quasi-axisymmetry estimates on each torus. Constructing a family of flux surfaces or a field-level Boozer chart throughout the intervening volume remains open. Applying the annular theorem to trapped particles also requires identifying a regular physical bounce family. [Surface defect estimates](https://github.com/siddhartha-gadgil/PlasmaLean/blob/main/notes/theory/dommaschk-qs-defect.md)

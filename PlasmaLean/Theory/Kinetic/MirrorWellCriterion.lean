@@ -77,14 +77,14 @@ theorem upward_crossing {f : ℝ → ℝ} {a b h : ℝ} (hab : a < b)
     exact above_to_right hx.1 (hf.mono hs) heq.ge (fun y hy => hpos y (hs hy))
 
 /-- Two oriented crossings enclose the allowed component containing the launch point.
-Within the tested interval, they are the only points at the mirror height. -/
-theorem two_simple_mirrors {f : ℝ → ℝ} {a c b h : ℝ} (hac : a < c) (hcb : c < b)
+The two exterior caps stay above the mirror height. -/
+theorem two_simple_mirrors_with_caps {f : ℝ → ℝ} {a c b h : ℝ} (hac : a < c) (hcb : c < b)
     (hf : ContinuousOn f (Icc a b)) (ha : h < f a) (hc : f c < h) (hb : h < f b)
     (hneg : ∀ x ∈ Icc a c, f x = h → deriv f x < 0)
     (hpos : ∀ x ∈ Icc c b, f x = h → 0 < deriv f x) :
     ∃ l ∈ Ioo a c, ∃ r ∈ Ioo c b, f l = h ∧ f r = h ∧
       deriv f l < 0 ∧ 0 < deriv f r ∧ (∀ x ∈ Ioo l r, f x < h) ∧
-      (∀ x ∈ Icc a b, f x = h ↔ x = l ∨ x = r) := by
+      (∀ x ∈ Ico a l, h < f x) ∧ (∀ x ∈ Ioc r b, h < f x) := by
   obtain ⟨l, hl, el, _, leftFar, leftNear⟩ :=
     upward_crossing (f := -f) hac (hf.mono (Icc_subset_Icc_right hcb.le)).neg
       (neg_lt_neg ha) (neg_lt_neg hc) fun x hx ex => by
@@ -97,13 +97,27 @@ theorem two_simple_mirrors {f : ℝ → ℝ} {a c b h : ℝ} (hac : a < c) (hcb 
     rcases le_or_gt x c with h | h
     · exact neg_lt_neg_iff.mp (leftNear x ⟨hx.1, h⟩)
     · exact rightNear x ⟨h.le, hx.2⟩
-  refine ⟨l, hl, r, hr, el', er, hneg l (Ioo_subset_Icc_self hl) el', dr, interior, ?_⟩
+  exact ⟨l, hl, r, hr, el', er, hneg l (Ioo_subset_Icc_self hl) el', dr, interior,
+    fun x hx => neg_lt_neg_iff.mp (leftFar x hx), rightFar⟩
+
+/-- Two oriented crossings enclose the allowed component containing the launch point.
+Within the tested interval, they are the only points at the mirror height. -/
+theorem two_simple_mirrors {f : ℝ → ℝ} {a c b h : ℝ} (hac : a < c) (hcb : c < b)
+    (hf : ContinuousOn f (Icc a b)) (ha : h < f a) (hc : f c < h) (hb : h < f b)
+    (hneg : ∀ x ∈ Icc a c, f x = h → deriv f x < 0)
+    (hpos : ∀ x ∈ Icc c b, f x = h → 0 < deriv f x) :
+    ∃ l ∈ Ioo a c, ∃ r ∈ Ioo c b, f l = h ∧ f r = h ∧
+      deriv f l < 0 ∧ 0 < deriv f r ∧ (∀ x ∈ Ioo l r, f x < h) ∧
+      (∀ x ∈ Icc a b, f x = h ↔ x = l ∨ x = r) := by
+  obtain ⟨l, hl, r, hr, el', er, dl, dr, interior, leftFar, rightFar⟩ :=
+    two_simple_mirrors_with_caps hac hcb hf ha hc hb hneg hpos
+  refine ⟨l, hl, r, hr, el', er, dl, dr, interior, ?_⟩
   intro x hx
   constructor
   · intro he
     by_contra! hn
     rcases lt_or_gt_of_ne hn.1 with h | h
-    · exact (neg_lt_neg_iff.mp (leftFar x ⟨hx.1, h⟩)).ne he.symm
+    · exact (leftFar x ⟨hx.1, h⟩).ne he.symm
     · rcases lt_or_gt_of_ne hn.2 with hh | hh
       · exact (interior x ⟨h, hh⟩).ne he
       · exact (rightFar x ⟨hh, hx.2⟩).ne he.symm

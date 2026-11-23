@@ -785,3 +785,25 @@ run_cmd do
 #print axioms PlasmaLean.Forms.cylindrical_launch_flux
 #print axioms PlasmaLean.Forms.interpolated_launch_flux
 #print axioms PlasmaLean.Forms.launch_flux_lower_bound
+
+#print axioms PlasmaLean.Fields.LogNormTrajectory.oneSidedOn_of_jacobian
+#print axioms PlasmaLean.Fields.LogNormTrajectory.quadraticForm_le_of_two_rows
+#print axioms PlasmaLean.Fields.LogNormTrajectory.dist_le_of_residual
+#print axioms PlasmaLean.Fields.LogNormTrajectory.exists_rational_step_centered
+#print axioms PlasmaLean.Fields.LogNormTrajectory.exists_rational_step_of_retraction
+#print axioms PlasmaLean.Fields.LogNormTrajectory.euclideanBox_retraction
+#print axioms PlasmaLean.Fields.LogNormTrajectory.picard_bounds_of_compact
+#print axioms PlasmaLean.Kinetic.MirrorWell.two_simple_mirrors_with_caps
+#print axioms PlasmaLean.Kinetic.MirrorWell.exists_arclength_clock
+#print axioms PlasmaLean.Kinetic.MirrorWell.cylindrical_trace_speed
+#print axioms PlasmaLean.Kinetic.MirrorWell.strength_deriv_of_squared
+#print axioms PlasmaLean.Kinetic.MirrorWell.regularMirrorBirth_of_parametrized_crossings
+#print axioms PlasmaLean.Kinetic.MirrorHeightAction.action_eq_well_of_crossings
+#print axioms PlasmaLean.Kinetic.MirrorHeightAction.unique_height
+#print axioms PlasmaLean.Kinetic.MirrorAction.factor
+#print axioms PlasmaLean.Kinetic.MirrorAction.shape_ge_of_collars
+#print axioms PlasmaLean.Kinetic.MirrorAction.action_eq_fixed
+#print axioms PlasmaLean.Kinetic.MirrorAction.transverse_density
+#print axioms PlasmaLean.Kinetic.MirrorAction.hasDerivAt_action
+#print axioms PlasmaLean.Kinetic.MirrorAction.quadratic_shape
+#print axioms PlasmaLean.Kinetic.MirrorAction.double_root_no_shape_lower
