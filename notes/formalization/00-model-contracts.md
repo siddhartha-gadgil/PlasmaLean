@@ -87,8 +87,10 @@ axioms only). Module `PlasmaLean/Theory/Contract/StellaratorContract.lean`, name
   **band form**: for stated species, energy and pitch ranges and a stated birth band of phase
   space, a certified bound keeping the orbits within a stated radial range through a stated
   time (the form of N-51, `VolumeChart.exists_inverse_square_orbits`). The band form is weaker
-  than omnigeneity; a claim must state band, species, time and model. It has no Lean contract
-  predicate yet and no instance on a field. Predeclare species, trapped birth coverage, allowable physical excursion and time. Include reduction errors in the bound and estimate losses outside the band before using it for C5 (N-53).
+  than omnigeneity; a claim must state band, species, time and model. `GuidingCentreBand` implements this form for one species at a time in the static Littlejohn
+  model. It fixes the physical field and a compact reference axis, finite positive birth measure,
+  fraction, energy/pitch windows, radial tolerance and positive time. The excess-excursion
+  theorem applies to every partial orbit. A thermal stellarator instance remains open. Predeclare species, trapped birth coverage, allowable physical excursion and time. Include reduction errors in the bound and estimate losses outside the band before using it for C5 (N-53).
 - C2: `OmnigeneityContract F c κ_max` (`ApproxOmnigenousOn` of `Theory/Kinetic/Omnigeneity`; `κ_max
   = 0` is `OmnigenousOn`, `boozerModelOmnigeneity_zero_iff`), scope: the vacuum Boozer guiding-centre
   model (supplied), all species, μ and energies. `BoozerAxisymmetric`; axisymmetric ⇒ omnigenous

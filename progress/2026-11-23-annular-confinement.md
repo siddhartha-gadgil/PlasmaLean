@@ -34,6 +34,10 @@ On the lifted annulus, periodicity also bounds the full speed. Any partial solut
 
 The flux obstruction concerns curves of the **averaged** field. A constant radial perturbation v gives period −v for unit volume density and illustrates the obstruction. A different example has unit instantaneous radial speed at phase zero and zero mean radial speed. For that field Lean proves that r−ε sin(2πs)/(2π) is exactly conserved. The existence of a smooth periodic phase on a particular trapped-particle band, its period, the common invariant volume and the tangency of the bounding curves all require field-specific evidence. [Computed examples](https://github.com/siddhartha-gadgil/PlasmaLean/blob/main/PlasmaLean/Theory/Geometry/AnnulusFibreFlux.lean)
 
+## Trapped birth populations
+
+Lean now states the finite-time band form of C2 for one Littlejohn species in a specified field. It requires a positive fraction of a finite trapped birth population, existence through a positive horizon and radial control for every partial trajectory. The fraction that can exceed the tolerance is at most the uncovered fraction. A time in seconds and a fraction for the actual Dommaschk field still require physical inputs and orbit estimates. [Contract and loss bound](https://github.com/siddhartha-gadgil/PlasmaLean/blob/main/PlasmaLean/Theory/Contract/TrappedBirthBand.lean)
+
 ## Earlier results retained
 
 The original Dommaschk certificate provides the quasi-axisymmetry estimates on each torus. Constructing a family of flux surfaces or a field-level Boozer chart throughout the intervening volume remains open. Applying the annular theorem to trapped particles also requires identifying a regular physical bounce family. [Surface defect estimates](https://github.com/siddhartha-gadgil/PlasmaLean/blob/main/notes/theory/dommaschk-qs-defect.md)

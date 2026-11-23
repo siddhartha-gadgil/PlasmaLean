@@ -87,7 +87,8 @@ and operating temperature remain open for that candidate.
 - **C2:**
   - **Contract.** The chart form uses a proved Boozer chart of the physical field
     (`Contract.BoozerModelOf`). Its only field-level instance is the vacuous ∇φ fixture. The
-    approved band form instead specifies species, birth band, radial excursion and physical time.
+    approved band form now has a Lean predicate, `GuidingCentreBand`, for one Littlejohn species.
+    It specifies the trapped birth population, its covered fraction, radial excursion and physical time.
     Establishing it on a stellarator field remains open. [Band test](notes/theory/hamiltonian-bounce-band-test.md)
   - **Audit of 23 November 2026** ([record](notes/audit/2026-11-23-refresh-audit.md)): no false or
     vacuous theorem was found in the work since 31 October. Two limits of the contract are now

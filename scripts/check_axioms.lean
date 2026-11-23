@@ -411,6 +411,14 @@ run_cmd do
 #print axioms PlasmaLean.Contract.PoloidalAngle.section_period
 #print axioms PlasmaLean.Contract.PoloidalAngle.sections_injective_of_irrational_return
 #print axioms PlasmaLean.Contract.PoloidalAngle.sections_immersed_of_irrational_return
+#print axioms PlasmaLean.Contract.BirthCoverage.covered_pos
+#print axioms PlasmaLean.Contract.BirthCoverage.loss_le
+#print axioms PlasmaLean.Contract.not_birthCoverage_empty
+#print axioms PlasmaLean.Contract.not_regularMirrorBirth_const
+#print axioms PlasmaLean.Contract.gcBirthOrbitOn_of_littlejohn
+#print axioms PlasmaLean.Contract.GuidingCentreBand.radial_loss_le
+#print axioms PlasmaLean.Contract.not_guidingCentreBand_const
+#print axioms PlasmaLean.Contract.radial_excursion_of_reduction
 #print axioms PlasmaLean.Contract.FieldTorus.section_return_chord
 #print axioms PlasmaLean.Contract.FieldTorus.section_return
 #print axioms PlasmaLean.Contract.FieldTorus.embeddedTorus_of_irrational

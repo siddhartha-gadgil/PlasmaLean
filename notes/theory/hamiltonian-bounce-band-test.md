@@ -12,14 +12,20 @@
 | Dependency requirement | Identify one regular family of two-turning-point bounces and the correct reduced measure and time for the chosen physical field. |
 | Produces | A reproducible band selection, physical radial and time bounds, and a decision on a C2 certificate. |
 | Difficulty | Research. Turning points, the reduction and the error bound must hold throughout the proposed population. |
-| Status | Proposed physical test. |
-| Lean evidence | VolumeChart.exists_inverse_square_orbits covers the periodic coordinate model. |
+| Status | Single-species Littlejohn acceptance predicate and loss bound verified. Physical candidate screening in progress. |
+| Lean evidence | `GuidingCentreBand`, `GuidingCentreBand.radial_loss_le`, `radial_excursion_of_reduction`. N-51 supplies existence in its periodic coordinate model. |
 | Audit evidence | Physical reduction open. |
 | Last updated | 23 November 2026 |
 
 ## What the first experiment measures
 
 **Sourced theorem and conditional inference.** Burby, MacKay and Naik describe regular guiding-centre bounce dynamics at fixed longitudinal action with a reduced Hamiltonian and magnetic flux form. If the field W, density σ and time convention used in N-51 give ι_Wσ = ±dH for a globally single-valued H on the annulus, the signed period vanishes by integration. Verify the identity on the chosen physical reduction first. In that case use the computed period as a consistency check and search for two regular winding levels. Measure their excursions in physical radius, minimum distance from a separatrix, and the birth population they enclose. Otherwise the signed period can still obstruct a winding-one level. [Isodrastic magnetic fields, §1](https://arxiv.org/html/2211.13367)
+
+## What counts as a band in the Littlejohn model
+
+`GuidingCentreBand` takes the magnetic field, mass, signed charge, reference axis, distribution of births, energy and pitch windows, covered births, required mass fraction, radial tolerance and time as arguments. The reference population includes every eligible birth in the declared support. Eligibility requires a regular two-sided mirror well of the actual field at height E/μ, with signed nonzero field-strength derivatives at the two ends. The denominator is the finite positive mass of this reference population. Evaluate thermal ions and electrons separately. A synthetic birth measure or arbitrarily narrow support has only its stated interpretation. [Lean contract](../../PlasmaLean/Theory/Contract/TrappedBirthBand.lean) · [Burby, MacKay and Naik, equations 3–6 and Definition 1](https://arxiv.org/html/2211.13367#S1)
+
+For each covered birth there must be an orbit through the positive horizon. Every partial orbit up to that time must keep the Littlejohn denominators regular and satisfy the tolerance in metres, measured by change of distance to the declared axis. The mass of births exhibiting even one excess excursion is at most the complementary fraction of the reference mass. For comparison to a reduced position trajectory, the metre errors at both endpoints add to the reduced radial excursion. A count-weighted birth measure bounds counts. A claim about heat needs its own energy weighting and coverage of the rest of the population.
 
 ## Acceptance and competing tests
 
