@@ -38,6 +38,13 @@ Heavy numerics and large certificate builds can be offloaded to a workstation; s
 
 ## Progress
 
+**Trapped-particle theory (23 November 2026).** On a regular annulus of periodic orbits,
+a common invariant volume and a nonvanishing averaged drift tangent to both edges give a
+radial label. Lean proves that trajectories starting on any closed interior subband exist and
+stay inside the annulus through time c/ε² for every sufficiently small nonzero perturbation.
+Applying the result to a stellarator requires constructing its bounce annulus and bounding
+the constants in physical units. [Theorem, examples and application](notes/theory/annulus-averaged-flux.md)
+
 **Against the contract (3 November 2026), honestly:** one stellarator candidate now has verified
 C1 together with a certified quasisymmetry defect, in vacuum. C2–C5 are open for it.
 

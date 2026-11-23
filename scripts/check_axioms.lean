@@ -666,3 +666,21 @@ run_cmd do
 #print axioms PlasmaLean.Sanity.AuditRefresh.rotY_pinch_flux_zero
 #print axioms PlasmaLean.Sanity.AuditRefresh.rotY_not_currentFreeTransform
 #print axioms PlasmaLean.Sanity.AuditRefresh.CurrentFreeTransform.circulation_eq_zero
+
+#print axioms PlasmaLean.AnnulusStream.ClosedFlux.exists_normalized_stream
+#print axioms PlasmaLean.AnnulusStream.ClosedFlux.integral_eq_period_of_winding
+#print axioms PlasmaLean.AnnulusFibreFlux.VolumeChart.torusFlux_zero_of_winding
+#print axioms PlasmaLean.AnnulusFluxDescent.VolumeAtlas.exists_normalized_invariant
+#print axioms PlasmaLean.AnnulusFluxDescent.VolumeAtlas.eqOn_of_phaseMatch
+#print axioms PlasmaLean.PeriodicOrbit.Lifted.exists_periodic_residual_bound_iff
+#print axioms PlasmaLean.AnnulusFibreFlux.VolumeChart.exists_correctedStream
+#print axioms PlasmaLean.AnnulusFibreFlux.VolumeChart.CorrectedStream.orbit_derivative
+#print axioms PlasmaLean.AnnulusFibreFlux.VolumeChart.CorrectedStream.excludes_first_hit
+#print axioms PlasmaLean.AnnulusFibreFlux.VolumeChart.CorrectedStream.exists_uniform_bounds
+#print axioms PlasmaLean.AnnulusFibreFlux.VolumeChart.oscillatoryShear_corrected_constant
+#print axioms PlasmaLean.AnnulusFluxDescent.VolumeAtlas.corrector_overlap
+#print axioms PlasmaLean.AnnulusFibreFlux.VolumeChart.CorrectedStream.exists_uniform_birth_margin
+#print axioms PlasmaLean.AnnulusFibreFlux.VolumeChart.exists_confinement_window
+#print axioms PlasmaLean.AnnulusFibreFlux.VolumeChart.CorrectedStream.ConfinementWindow.inverse_square
+#print axioms PlasmaLean.AnnulusFibreFlux.VolumeChart.exists_confined_orbits
+#print axioms PlasmaLean.AnnulusFibreFlux.VolumeChart.exists_inverse_square_orbits

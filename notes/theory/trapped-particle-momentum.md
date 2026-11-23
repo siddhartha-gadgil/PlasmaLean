@@ -1,5 +1,7 @@
 # Approximate momentum on a band of trapped particles
 
+For a regular annulus of periodic orbits, the averaged perturbation determines a radial label and a finite-time confinement bound. [N-51](annulus-averaged-flux.md)
+
 ## Metadata
 
 | Field | Value |
@@ -13,7 +15,7 @@
 | Produces | A finite-time exit criterion, a test for the solvability of a periodic correction, and a route to energy-weighted birth losses |
 | Difficulty | Research. The pointwise identity is elementary. The challenge is a useful momentum gap and drift bound on one physical field. |
 | Status | Exploratory. The conditional estimates below have paper proofs. The field-specific construction is open. |
-| Lean evidence | None for the proposed band or loss estimate. Compiled prerequisites below. |
+| Lean evidence | N-51 proves the single-orbit periodic obstruction, its optimal residual, and finite-time exit estimates when the band has its common-volume annular structure. Constructing a physical band is open. |
 | Audit evidence | Not audited |
 | Last updated | 23 November 2026. Proposed after discussion of conceptual alternatives to per-surface certificates. |
 

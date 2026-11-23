@@ -1,11 +1,11 @@
 {
-  "updated": "2026-10-30",
-  "report": "2026-10-30-progress-15.md",
+  "updated": "2026-11-23",
+  "report": "2026-11-23-annular-confinement.md",
   "panel": {
     "stat": "Contract C1–C5",
-    "headline": "C1 and C4 in vacuum only; C3 on test beds; C2 and C5 on a stellarator candidate open"
+    "headline": "Vacuum C1 on certified tori. A general trapped-orbit theorem awaits a physical bounce band."
   },
-  "summary": "Organized by the stellarator contract (C1 current-free rotational transform, C2 omnigeneity for thermal ions and electrons, C3 finite-β stability, C4 existence, C5 thermal performance on the same candidate); non-axisymmetry is a consequence, not a goal. Status: C1 and C4 only in vacuum (an exact non-axisymmetric vacuum field with a KAM-certified torus, ι ≈ 0.137, confining field lines for all time); C2 essentially open for thermal particles (weak quasisymmetry defined, Landreman families proved not weakly quasisymmetric; passing 3.5 MeV alphas confined for all time in the vacuum field, Littlejohn model, one species); C3 only on test beds that fail C1 (Landreman family 2 carries positive net toroidal current) and on a Solov'ev tokamak model; C5 only on that tokamak model (one field with a pressure-budget band, transport solutions supplied) and in 0-D. First strict audit done; orbits proved to exist; Landreman family 1 proved a Grad counterexample (infrastructure); every module with a recorded peak is within the 6 GB laptop target after the split of the one 6.7 GB module.",
+  "summary": "A volume-preserving periodic model on an annulus now has a proved inverse-square confinement time for trapped-orbit bands under averaged tangency and nonsingularity. The proof constructs the orbit and a radial label. The Dommaschk vacuum candidate has certified C1 and surface quasisymmetry-defect bounds. Thermal-particle confinement and performance on that candidate are open.",
   "tasks": {
     "model-contracts:I1": "Partially implemented — algebraic force balance and tangency; positive permeability and actual differential laws in the restricted slab model.",
     "model-contracts:I2": "Lean verified — uniform-field and nonzero-current force-free witnesses in the Cartesian slab model; not toroidal confinement.",
@@ -70,7 +70,7 @@
     "roadmap:R4": "Partially implemented — near-QA passing alphas confined for 0.19 s (Boozer GC model, off the axis); weak-QS defect defined; no transport bound from imperfect symmetry.",
     "roadmap:R8": "Partially implemented — proof-term certificate tools (Kronecker, Boolean, digit-sum, evaluation certificates) replace most decide +kernel checks; every module with a recorded peak is within 6 GB per process.",
     "literature:Validated equilibrium or invariant torus": "Lean verified — validated slab equilibrium and an exact KAM invariant torus (rationalStellarator_confined_forever_exists, vacuum model field); toroidal validated equilibrium pending.",
-    "literature:Invariant barrier or approximate-invariant loss time": "Lean verified — invariant barriers from the KAM torus (field lines and passing alpha guiding centres, Littlejohn model) and finite-horizon near-QA bounds (0.19 s); trapped particles open.",
+    "literature:Invariant barrier or approximate-invariant loss time": "Lean verified — field-line and passing-alpha barriers, finite-time near-QA estimates and a general annular averaged-flow confinement theorem with orbit existence through c/ε². A trapped-particle band in a stellarator field remains open.",
     "literature:Force-balance tangency and a vacuum/force-free distinction": "Lean verified — kernel ForceBalance and VacuumField with tangency and consistent slab, Solov'ev, helical and Landreman instances (see model-contracts I1–I2 and E1).",
     "literature:Static fixed-boundary quadratic energy": "Partially implemented — abstract energy conservation and coercivity for symmetric forms (S1); no MHD boundary terms or operator domain.",
     "literature:Exact retained-mode / continuous-clearance checker": "Partially implemented — exact interval and polynomial checkers and continuous Lipschitz-cover clearance; infinite tails pending.",

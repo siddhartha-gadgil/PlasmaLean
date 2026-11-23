@@ -1,5 +1,7 @@
 # Progress
 
+[23 November 2026 — annular averaged flux, orbit existence and finite-time confinement](2026-11-23-annular-confinement.md).
+
 [12 October 2026: verified foundations and remaining integration gaps](2026-10-12-progress.md).
 
 [12 October 2026, run 2: tolerance-aware vacuum fields and probe-escape sanity](2026-10-12-progress-2.md).

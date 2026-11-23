@@ -1,13 +1,13 @@
 {
- "updated": "2026-10-30",
- "report": "2026-10-30-progress-15.md",
+ "updated": "2026-11-23",
+ "report": "2026-11-23-annular-confinement.md",
  "status": "Organized by the stellarator contract C1–C5 · C1 and C4 only in vacuum · C2 and C5 on a stellarator candidate essentially open · Solov'ev results are a tokamak model · Not a construction release.",
  "slides": [
   {
    "id": "where-we-are",
    "eyebrow": "0 · where we are against the stellarator contract",
    "title": "The stellarator contract: C1 and C4 hold only in vacuum; C2 and C5 on a stellarator candidate are essentially open.",
-   "lead": "PlasmaLean is building a Lean library for stellarator design, now organized by the stellarator contract: C1 current-free rotational transform, C2 omnigeneity for thermal ions and electrons, C3 finite-β MHD stability, C4 existence, C5 thermal performance, all on one candidate. An exact non-axisymmetric vacuum field has a KAM-certified torus (ι ≈ 0.137) confining field lines and passing 3.5 MeV alpha guiding centres for all time (C1 and C4 in vacuum; alphas are one species, so part of C2 at most). Stability (C3) is certified only on test beds that fail C1: Landreman family 2 carries positive net toroidal current, and the Solov'ev field is a tokamak model. C5 is shown only on that tokamak model: one field with a pressure-budget band, for every supplied transport solution.",
+   "lead": "PlasmaLean tracks five conditions on one stellarator candidate, covering current-free rotational transform, thermal-particle confinement, finite-pressure stability, equilibrium existence and thermal performance. The exact Dommaschk vacuum field has verified current and transform bounds and certified quasisymmetry defects on two tori. The new annulus theorem gives a way to approach trapped-particle confinement throughout a band.",
    "metrics": [
     {
      "value": "C1 + C4, vacuum",
@@ -18,11 +18,11 @@
      "label": "nothing yet for thermal ions and electrons; passing 3.5 MeV alphas confined forever for λ ∈ [0, 1/4] (one energy, one B₀R₀)"
     },
     {
-     "value": "≤ 2.74 GB",
-     "label": "peak of the split module that was over 6 GB; KAM checks peak at 4.3 GB; every recorded module within the 6 GB laptop target"
+     "value": "c/ε²",
+     "label": "uniform confinement time proved on an abstract annular birth band"
     }
    ],
-   "progress": "Strict audit done (30 October); orbits proved to exist; weak quasisymmetry defined and the Landreman families proved not weakly quasisymmetric on regions containing their axis; Landreman family 1 satisfies the hypotheses of a Grad counterexample (ι ≡ 2, non-generic; infrastructure); 1-D relative-entropy identity and a torus Hodge period inequality; large checks rewritten as explicit proof-term certificates; heavy cells computed on a workstation and spot-checked on the laptop.",
+   "progress": "For a regular annular periodic flow, shared invariant volume and a nonsingular averaged field tangent to both edges give a radial label and orbit existence and confinement through time c/ε². The next slide states the hypotheses and what remains to apply it to a stellarator.",
    "boundary": "Non-axisymmetry is a means, not a goal. No candidate satisfies more than C1 and C4, and those only in vacuum. Omnigeneity and bounce-averaged drift are in Lean (Boozer guiding-centre model); ε_eff is not. The C1 current clause is the intrinsic loop circulation (audit fix AR-H1). Alpha results: one B₀R₀, Littlejohn model supplied, vacuum model field, trapped alphas open. Coil-produced all-time confinement blocked. On-demand workstation modules spot-checked, not fully rebuilt.",
    "evidence": [
     {
@@ -36,6 +36,46 @@
     {
      "label": "Original motivation & graphics",
      "href": "index.html#background"
+    }
+   ]
+  },
+  {
+   "id": "annular-averaged-flux",
+   "eyebrow": "Trapped-particle theory",
+   "title": "A radial label from averaged flux controls particle motion for times of order ε⁻².",
+   "lead": "Suppose periodic leading orbits fill a regular annulus. If both fields preserve the same positive volume, the averaged drift has no zeros, and it is tangent to both edge circles, its flux constructs a radial label.",
+   "metrics": [
+    {
+     "value": "c/ε²",
+     "label": "guaranteed existence and confinement time from a fixed interior birth band"
+    },
+    {
+     "value": "ε²Yg",
+     "label": "exact derivative of the corrected label"
+    },
+    {
+     "value": "One signed period",
+     "label": "a nonzero value rules out a winding-one invariant curve of the averaged field"
+    }
+   ],
+   "progress": "The constants work for all initial angles and phases. In an oscillatory example, radial speed is nonzero at phase zero, the phase average vanishes, and the corrected radius is exactly conserved.",
+   "boundary": "The orbit theorem uses periodic phase coordinates. A physical application needs a regular bounce annulus and quantitative constants for the chosen species, energy and pitch.",
+   "evidence": [
+    {
+     "href": "progress.html#new-checked-results",
+     "label": "Theorems and examples"
+    },
+    {
+     "href": "progress.html#quantitative-certificates",
+     "label": "Confinement time"
+    }
+   ],
+   "cards": [
+    {
+     "title": "Can a different correction improve the result?",
+     "text": "On a single bounce orbit, the absolute mean drift of a proposed radial label is exactly the smallest uniform first-order residual achievable by a periodic correction.",
+     "status": "Proved",
+     "kind": "checked"
     }
    ]
   },

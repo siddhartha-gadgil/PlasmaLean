@@ -1,7 +1,7 @@
 [
   {
     "title": "Progress slideshow",
-    "section": "Evidence updated 2026-10-30 · Organized by the stellarator contract (C1 current-free rotational transform, C2 omnigeneity for thermal ions and electrons, C3 finite-β stability, C4 existence, C5 thermal performance on the same candidate); non-axisymmetry is a consequence, not a goal. Status: C1 and C4 only in vacuum (an exact non-axisymmetric vacuum field with a KAM-certified torus, ι ≈ 0.137, confining field lines for all time); C2 essentially open for thermal particles (weak quasisymmetry defined, Landreman families proved not weakly quasisymmetric; passing 3.5 MeV alphas confined for all time in the vacuum field, Littlejohn model, one species); C3 only on test beds that fail C1 (Landreman family 2 carries positive net toroidal current) and on a Solov'ev tokamak model; C5 only on that tokamak model (one field with a pressure-budget band, transport solutions supplied) and in 0-D. First strict audit done; orbits proved to exist; Landreman family 1 proved a Grad counterexample (infrastructure); every module with a recorded peak is within the 6 GB laptop target after the split of the one 6.7 GB module.",
+    "section": "Evidence updated 2026-11-23 · A volume-preserving periodic model on an annulus now has a proved inverse-square confinement time for trapped-orbit bands under averaged tangency and nonsingularity. The proof constructs the orbit and a radial label. The Dommaschk vacuum candidate has certified C1 and surface quasisymmetry-defect bounds. Thermal-particle confinement and performance on that candidate are open.",
     "url": "slides.html",
     "text": "progress slideshow presentation latest run evidence vacuum fixture"
   },
@@ -9,7 +9,13 @@
     "title": "The stellarator contract: C1 and C4 hold only in vacuum; C2 and C5 on a stellarator candidate are essentially open.",
     "section": "Progress slideshow",
     "url": "slides.html#where-we-are",
-    "text": "the stellarator contract: c1 and c4 hold only in vacuum; c2 and c5 on a stellarator candidate are essentially open. plasmalean is building a lean library for stellarator design, now organized by the stellarator contract: c1 current-free rotational transform, c2 omnigeneity for thermal ions and electrons, c3 finite-β mhd stability, c4 existence, c5 thermal performance, all on one candidate. an exact non-axisymmetric vacuum field has a kam-certified torus (ι ≈ 0.137) confining field lines and passing 3.5 mev alpha guiding centres for all time (c1 and c4 in vacuum; alphas are one species, so part of c2 at most). stability (c3) is certified only on test beds that fail c1: landreman family 2 carries positive net toroidal current, and the solov'ev field is a tokamak model. c5 is shown only on that tokamak model: one field with a pressure-budget band, for every supplied transport solution. strict audit done (30 october); orbits proved to exist; weak quasisymmetry defined and the landreman families proved not weakly quasisymmetric on regions containing their axis; landreman family 1 satisfies the hypotheses of a grad counterexample (ι ≡ 2, non-generic; infrastructure); 1-d relative-entropy identity and a torus hodge period inequality; large checks rewritten as explicit proof-term certificates; heavy cells computed on a workstation and spot-checked on the laptop."
+    "text": "the stellarator contract: c1 and c4 hold only in vacuum; c2 and c5 on a stellarator candidate are essentially open. plasmalean tracks five conditions on one stellarator candidate, covering current-free rotational transform, thermal-particle confinement, finite-pressure stability, equilibrium existence and thermal performance. the exact dommaschk vacuum field has verified current and transform bounds and certified quasisymmetry defects on two tori. the new annulus theorem gives a way to approach trapped-particle confinement throughout a band. for a regular annular periodic flow, shared invariant volume and a nonsingular averaged field tangent to both edges give a radial label and orbit existence and confinement through time c/ε². the next slide states the hypotheses and what remains to apply it to a stellarator."
+  },
+  {
+    "title": "A radial label from averaged flux controls particle motion for times of order ε⁻².",
+    "section": "Progress slideshow",
+    "url": "slides.html#annular-averaged-flux",
+    "text": "a radial label from averaged flux controls particle motion for times of order ε⁻². suppose periodic leading orbits fill a regular annulus. if both fields preserve the same positive volume, the averaged drift has no zeros, and it is tangent to both edge circles, its flux constructs a radial label. the constants work for all initial angles and phases. in an oscillatory example, radial speed is nonzero at phase zero, the phase average vanishes, and the corrected radius is exactly conserved."
   },
   {
     "title": "The aim: one candidate satisfying C1–C5 with common witnesses — not merely a non-axisymmetric field.",
@@ -2682,6 +2688,12 @@
     "text": "conceptual methods for trapped particles and vacuum shape, 23 november 2026 implementation plan"
   },
   {
+    "title": "Annular averaged flux and trapped-particle confinement (N-51), 23 November 2026",
+    "section": "Implementation plan",
+    "url": "implementation-plan.html#annular-averaged-flux-and-trapped-particle-confinement-n-51-23-november-2026",
+    "text": "annular averaged flux and trapped-particle confinement (n-51), 23 november 2026 implementation plan"
+  },
+  {
     "title": "M0 · Exact symmetric equilibria: slab, screw pinch, Solov'ev, helical",
     "section": "Implementation plan · Lean verified — exact slab, screw-pinch, Solov'ev and helical equilibria with kernel force balance, all-time field-line/orbit confinement, Suydam both ways and screw-pinch Newcomb stability for every m ≠ 0 (reduced form supplied; idealized symmetric models).",
     "url": "implementation-plan.html",
@@ -2827,9 +2839,9 @@
   },
   {
     "title": "Invariant barrier or approximate-invariant loss time · BKM20; Littlejohn83; Helander14; [04](04-particles-and-transport.md)",
-    "section": "Literature · Lean verified — invariant barriers from the KAM torus (field lines and passing alpha guiding centres, Littlejohn model) and finite-horizon near-QA bounds (0.19 s); trapped particles open.",
+    "section": "Literature · Lean verified — field-line and passing-alpha barriers, finite-time near-QA estimates and a general annular averaged-flow confinement theorem with orbit existence through c/ε². A trapped-particle band in a stellarator field remains open.",
     "url": "literature.html",
-    "text": "invariant barrier or approximate-invariant loss time bkm20; littlejohn83; helander14; [04](04-particles-and-transport.md) reading order and theorem targets lean verified — invariant barriers from the kam torus (field lines and passing alpha guiding centres, littlejohn model) and finite-horizon near-qa bounds (0.19 s); trapped particles open."
+    "text": "invariant barrier or approximate-invariant loss time bkm20; littlejohn83; helander14; [04](04-particles-and-transport.md) reading order and theorem targets lean verified — field-line and passing-alpha barriers, finite-time near-qa estimates and a general annular averaged-flow confinement theorem with orbit existence through c/ε². a trapped-particle band in a stellarator field remains open."
   },
   {
     "title": "Exact retained-mode / continuous-clearance checker · Rump10; [05](05-verified-numerics.md)",
@@ -2863,9 +2875,9 @@
   },
   {
     "title": "Verified progress",
-    "section": "Organized by the stellarator contract (C1 current-free rotational transform, C2 omnigeneity for thermal ions and electrons, C3 finite-β stability, C4 existence, C5 thermal performance on the same candidate); non-axisymmetry is a consequence, not a goal. Status: C1 and C4 only in vacuum (an exact non-axisymmetric vacuum field with a KAM-certified torus, ι ≈ 0.137, confining field lines for all time); C2 essentially open for thermal particles (weak quasisymmetry defined, Landreman families proved not weakly quasisymmetric; passing 3.5 MeV alphas confined for all time in the vacuum field, Littlejohn model, one species); C3 only on test beds that fail C1 (Landreman family 2 carries positive net toroidal current) and on a Solov'ev tokamak model; C5 only on that tokamak model (one field with a pressure-budget band, transport solutions supplied) and in 0-D. First strict audit done; orbits proved to exist; Landreman family 1 proved a Grad counterexample (infrastructure); every module with a recorded peak is within the 6 GB laptop target after the split of the one 6.7 GB module.",
+    "section": "A volume-preserving periodic model on an annulus now has a proved inverse-square confinement time for trapped-orbit bands under averaged tangency and nonsingularity. The proof constructs the orbit and a radial label. The Dommaschk vacuum candidate has certified C1 and surface quasisymmetry-defect bounds. Thermal-particle confinement and performance on that candidate are open.",
     "url": "progress.html",
-    "text": "verified progress organized by the stellarator contract (c1 current-free rotational transform, c2 omnigeneity for thermal ions and electrons, c3 finite-β stability, c4 existence, c5 thermal performance on the same candidate); non-axisymmetry is a consequence, not a goal. status: c1 and c4 only in vacuum (an exact non-axisymmetric vacuum field with a kam-certified torus, ι ≈ 0.137, confining field lines for all time); c2 essentially open for thermal particles (weak quasisymmetry defined, landreman families proved not weakly quasisymmetric; passing 3.5 mev alphas confined for all time in the vacuum field, littlejohn model, one species); c3 only on test beds that fail c1 (landreman family 2 carries positive net toroidal current) and on a solov'ev tokamak model; c5 only on that tokamak model (one field with a pressure-budget band, transport solutions supplied) and in 0-d. first strict audit done; orbits proved to exist; landreman family 1 proved a grad counterexample (infrastructure); every module with a recorded peak is within the 6 gb laptop target after the split of the one 6.7 gb module."
+    "text": "verified progress a volume-preserving periodic model on an annulus now has a proved inverse-square confinement time for trapped-orbit bands under averaged tangency and nonsingularity. the proof constructs the orbit and a radial label. the dommaschk vacuum candidate has certified c1 and surface quasisymmetry-defect bounds. thermal-particle confinement and performance on that candidate are open."
   },
   {
     "title": "Outcome",
