@@ -2486,6 +2486,19 @@ After the audit. Three sub-agents, each with its own modules; the lead verified 
   `C¹` on an open set, no potential (AV-M4, orbit part).
 - Checks: `lake build` (11,697 jobs), `check_axioms` 53,036 declarations. Not audited.
 
+
+### Fifth round, phase 2 (N-48), 23 November 2026
+
+- `Theory/Fields/FormHYMCircleEnergy` (+ sanity): `integral_slab_energy_perturbation`,
+  `VacuumForm.integral_slab_energy_hymLift_le`, `VacuumForm.integral_circle_energy_hymLift_le`
+  (periodic variations vanishing near `∂Ω`).
+- `Theory/Fields/FormHYMBundle` (+ sanity): `torusPeriod_hymLift_fluxField`
+  (`−ℓ ∮_γ B·dl`), `chernNumber_hymLift_poloidal`, `LiftBundleData`,
+  `LiftBundleData.IsPeriodic.torusPeriod_mem` (periods in `2πℤ`),
+  `wire_exists_periodic_iff` (the wire bundle exists iff `ℓ ∈ ℤ`). Cocycle data, not a
+  vector bundle; no `c₁` as a class.
+- Checks: `lake build` (11,707 jobs), `check_axioms` 53,307 declarations. Not audited.
+
 ### Conceptual methods for trapped particles and vacuum shape, 23 November 2026
 
 Registered N-49 for approximate momentum, period and bounce-average obstructions, and finite-time

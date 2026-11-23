@@ -53,9 +53,10 @@ Results.
 What is not proved. The surface is a parametrised torus, not an embedded submanifold: `K` need
 not be injective or an immersion. All statements are on the parameter plane, the universal
 cover of the torus; "exact on the torus" is expressed as "the differential of a doubly periodic
-function on the plane". The descent to TauCeti's torus `∀ i : Fin 2, AddCircle (2π)` and to its
-de Rham cohomology (`torusTimeForm`) is not written. The field must be curl-free on an open set
-containing the image of the whole plane, not only near one loop.
+function on the plane". Embedded tori and the descent to the torus
+`AddCircle (2π) × AddCircle (2π)` are in `Theory/Fields/FormFluxSurfaceEmbedded`; the class in
+TauCeti's de Rham cohomology (`torusTimeForm`) is not written. The field must be curl-free on
+an open set containing the image of the whole plane, not only near one loop.
 -/
 
 @[expose] public section

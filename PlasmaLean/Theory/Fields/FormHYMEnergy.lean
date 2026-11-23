@@ -93,9 +93,8 @@ proved integrable (`integrable_liftInner_extDeriv`, `integrable_liftInner_extDer
   the perturbation has compact support in `Ω × ℝ`. This is a smaller class in two ways (support
   away from `∂Ω`, and compact in `τ` rather than periodic), and the identity is on the cover
   `Ω × ℝ`, not on the quotient. The periodic statement on `Ω × S¹` (integration over the circle
-  factor, perturbations that are `τ`-periodic) is NOT proved: it needs Stokes' theorem on the
-  manifold `Ω × S¹` for a non-compactly supported form on the cover, which is not available in
-  the form needed.
+  factor, perturbations that are `τ`-periodic) is not proved in this file; it is in
+  `Theory/Fields/FormHYMCircleEnergy` (for variations vanishing near `∂Ω`).
 * "Minimises the Yang–Mills energy" is proved only in this sense: among connections `A + a`
   with `a` compactly supported, on the trivial bundle. No functional on a space of connections
   of a bundle is defined.
@@ -444,8 +443,8 @@ So on `Ω × ℝ`, and after the quotient by `τ ↦ τ + ℓ` on `Ω × S¹` (`
 the lift is the curvature of the connection `d - i𝒜` on the TRIVIAL line bundle. Nothing is
 said here about a region that is not star-convex: on a solid torus the scalar potential is
 multivalued, the local forms `𝒜` differ by multiples of `dτ`, and the bundle of the source may
-be non-trivial. The bundle, its Chern class and the integrality of the periods of `ℱ/2π` are
-not formalized. -/
+be non-trivial. Cocycle data for the bundle and the integrality of the periods of `ℱ/2π` are
+in `Theory/Fields/FormHYMBundle`. -/
 theorem VacuumForm.exists_liftConnection {Ω : Set Space} {w : Space → Form 2}
     (h : VacuumForm Ω w) {x₀ : Space} (hs : StarConvex ℝ x₀ Ω) :
     ∃ (A : Space → Form 1) (φ : Space → ℝ), ContDiffOn ℝ 2 A Ω ∧ ContDiffOn ℝ 2 φ Ω ∧

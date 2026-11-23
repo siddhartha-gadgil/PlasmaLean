@@ -235,8 +235,20 @@ theorem VacuumForm.integral_energy_hymLift_perturbation (h : VacuumForm Ω w) ..
       ∫ p, liftInner (extDeriv a p) (extDeriv a p)        -- ≥ 0, and = 0 iff da = 0
 theorem VacuumForm.exists_liftConnection (h : VacuumForm Ω w) (hs : StarConvex ℝ x₀ Ω) :
     ∃ A φ, ... ∀ x ∈ Ω, ∀ τ, extDeriv (liftConnection A φ) (x, τ) = hymLift w (x, τ)
--- Not in Lean: the line bundle and its Chern class; the energy statement on Ω × S¹
--- (TauCeti has no bundle-from-curvature construction or Chern class).
+
+-- PlasmaLean/Theory/Fields/FormHYMCircleEnergy.lean   (a periodic in τ, zero near ∂Ω; ∫_Ω|B|² finite)
+theorem VacuumForm.integral_circle_energy_hymLift_le ... :
+    ∫ q in Ω ×ˢ univ, |ℱ|² ≤ ∫ q in Ω ×ˢ univ, |ℱ + D|²     -- on Space × AddCircle ℓ
+
+-- PlasmaLean/Theory/Fields/FormHYMBundle.lean
+theorem torusPeriod_hymLift_fluxField (B : Space → Space) (γ : ℝ → Space) (a b ℓ : ℝ) :
+    torusPeriod (hymLift (fluxField B)) γ a b ℓ = -(ℓ * lineIntegral B γ a b)
+structure LiftBundleData (ι : Type*) (Ω : Set Space) (F : LiftSpace → LiftForm 2) ...
+  -- local connections with curvature F, Circle-valued transition functions (cocycle data)
+theorem LiftBundleData.IsPeriodic.torusPeriod_mem (hper : L.IsPeriodic ℓ) ... (hclosed : γ a = γ b) :
+    ∃ n : ℤ, torusPeriod F γ a b ℓ = 2 * Real.pi * n
+-- Not in Lean: a vector bundle in Mathlib's sense, c₁ as a cohomology class, the
+-- holomorphic structure (TauCeti has no bundle-from-curvature construction or Chern class).
 ```
 
 ## Net toroidal current, Ampère's law and the current-free condition (contract clause C1)

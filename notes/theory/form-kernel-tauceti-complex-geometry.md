@@ -17,7 +17,7 @@ An alternative method appears in [N-49](trapped-particle-momentum.md).
 | Status | verified and audited (23 November 2026, findings AV-*) for the modules listed under "Current state"; the rest stated |
 | Lean evidence | default build, namespace `PlasmaLean.Forms` unless noted: `lieDerivForm_eq_zero_of_interior`, `FormWeakQS.lieDerivForm_eq_zero`, `PlasmaLean.Fields.WeakQS.lieDerivForm_flux_eq_zero`, `VacuumForm.exists_scalarPotential`, `VacuumForm.exists_vectorPotential`, `onOpens`, `isSmoothForm_onOpens_iff`, `mextDeriv_onOpens`, `VacuumForm.exists_scalarPotential_of_simplyConnected`, `not_simplyConnected_of_no_potential`, `wedge12_eq_wedge`, `isContactAt_iff_nondegenerate`, `IsBeltramiOn.reeb`; `PlasmaLean.Sanity.FormTopology.wireField_no_potential`, `wireRegion_not_simplyConnected`, `bentSet_not_starConvex`, `hyperbolic_scalarPotential_bent`; `lieDerivForm_flux`, `PlasmaLean.Fields.WeakQS.lieBracket_eq_zero`, `IsBeltramiOn.reeb_unique`, `pathIntegral_onOpens_flat`, `periodHom_onOpens_flat`, `PlasmaLean.Sanity.FormPeriods.wire_period`; `PlasmaLean.Kinetic.lorentzOrbit_eulerLagrange`, `noetherMomentum_translation_conserved`, `noetherMomentum_linear_gauge_conserved`, `canonicalMomentum_rotGenZ_conserved`; `loopCurrent_eq_periodHom_div`, `PlasmaLean.Vacuum.VacuumField.loopCurrent_eq_zero_of_simplyConnected`; `flatSmoothForm`, `isContactForm_flatSmoothForm_iff`, `IsBeltramiOn.reebVectorField_flatSmoothForm`; `PlasmaLean.Kinetic.canonicalForm_fderiv_kineticMomentumMap_flux`, `lorentzOrbit_hamilton`; `hymLift`, `extDeriv_hymLift_eq_zero_iff`, `hymLift_closed_iff_vacuumField`, `hymLift_isAntiSelfDual` |
 | Audit evidence | audited at `6ceca0e` (23 November 2026): AV-H1, AV-M1–M6 resolved; AV-M4 partly open; record `notes/audit/2026-11-23-refresh-audit.md` |
-| Last updated | 23 November 2026: created; same day, the manifold bridge, the wedge and contact links, the wire fixture and the symplectic assessment; then periods, `[ξ, B] = 0`, uniqueness of the Reeb vector, a non-star-convex fixture and the Noether charge from TauCeti; phases 1 and 2 of the remaining tasks (rotational Noether, loop current as a period, bundled contact form; magnetic symplectic form, anti-self-dual lift); second round, phase 1 (finite symmetry and the direct proofs, periods on an interval, contact forms on an open subset) and phase 2 (Hamilton's equations with an electric field and the converse; Hodge star on `ℝ³ × ℝ` and the circle quotient); third round, phase 1 (piecewise `C¹` loops, convex regions and the contract's current clause, gauge terms) and phase 2 (the lift on `Ω × S¹`; crossed-field orbits, existence and uniqueness); after the audit, fourth round, phase 1 (complex structure of the lift, global existence of orbits, loop current on the Dommaschk tori) and phase 2 (energy inequality and connection form of the lift; periods of a flux surface); fifth round, phase 1 (embedded tori; orbits on open sets) |
+| Last updated | 23 November 2026: created; same day, the manifold bridge, the wedge and contact links, the wire fixture and the symplectic assessment; then periods, `[ξ, B] = 0`, uniqueness of the Reeb vector, a non-star-convex fixture and the Noether charge from TauCeti; phases 1 and 2 of the remaining tasks (rotational Noether, loop current as a period, bundled contact form; magnetic symplectic form, anti-self-dual lift); second round, phase 1 (finite symmetry and the direct proofs, periods on an interval, contact forms on an open subset) and phase 2 (Hamilton's equations with an electric field and the converse; Hodge star on `ℝ³ × ℝ` and the circle quotient); third round, phase 1 (piecewise `C¹` loops, convex regions and the contract's current clause, gauge terms) and phase 2 (the lift on `Ω × S¹`; crossed-field orbits, existence and uniqueness); after the audit, fourth round, phase 1 (complex structure of the lift, global existence of orbits, loop current on the Dommaschk tori) and phase 2 (energy inequality and connection form of the lift; periods of a flux surface); fifth round, phase 1 (embedded tori; orbits on open sets) and phase 2 (energy on `Ω × S¹`; bundle cocycle data and Chern numbers) |
 | Patched by / Alternatives | [N-49](trapped-particle-momentum.md) |
 | Patches | none (N-45 stands; this note adds to it) |
 
@@ -50,9 +50,11 @@ compactly supported variations of the lift and its local connection form (`FormH
 the periods of a parametrised flux surface and the independence of the contract's circulation
 from the toroidal angle (`FormFluxSurfacePeriods`). Fifth round, phase 1: flux surfaces as smoothly embedded
 tori with the period statements on the torus (`FormFluxSurfaceEmbedded`); orbits for fields on
-an open set, with no potential (`Theory/Kinetic/LorentzOrbitOpen`). Not formalized: a line
-bundle and Chern class for the lift, the energy statement on `Ω × S¹`; the class of `B♭` in
-TauCeti's de Rham cohomology.
+an open set, with no potential (`Theory/Kinetic/LorentzOrbitOpen`). Phase 2: the energy inequality on
+`Ω × S¹` for periodic variations vanishing near `∂Ω` (`FormHYMCircleEnergy`); the bundle of the
+lift as cocycle data, its periods over `γ × S¹` and their integrality (`FormHYMBundle`). Not
+formalized: a vector bundle in Mathlib's sense and `c₁` as a cohomology class; the class of
+`B♭` in TauCeti's de Rham cohomology.
 
 ## Purpose and scope
 
@@ -749,15 +751,75 @@ space. The vector potential was needed only by `lorentzOrbitOn_exists_local` and
 
 Checks: `lake build` (11,697 jobs); `scripts/check_axioms.lean` passes for 53,036 declarations.
 
+## Fifth round, phase 2 (sub-agents, 23 November 2026)
+
+**Energy of the lift on `Ω × S¹`** (`Theory/Fields/FormHYMCircleEnergy`).
+
+- Variations: `a` a `C¹` 1-form on `ℝ³ × ℝ`, `ℓ`-periodic in `τ`, vanishing for `x` outside a
+  compact `K ⊆ Ω`. Integrals are over one period, `ℝ³ × (0, ℓ]`.
+- `integral_slab_liftInner_extDeriv_eq_zero`: for `G` of class `C¹`, co-closed and
+  `ℓ`-periodic on `Ω × ℝ`, `∫⟨G, da⟩ = 0`. `integral_slab_energy_perturbation` and
+  `…_eq_zero_iff`: `∫(|G + da|² − |G|²) = ∫|da|² ≥ 0`, zero iff `da = 0`. For the lift:
+  `VacuumForm.integral_slab_energy_hymLift_perturbation`.
+- With `∫_Ω|B|²` finite: `VacuumForm.integral_slab_energy_hymLift_add`
+  (`∫|ℱ + da|² = 2ℓ∫_Ω|B|² + ∫|da|²`) and `VacuumForm.integral_slab_energy_hymLift_le`.
+- On `Space × AddCircle ℓ`: `setIntegral_circle_eq_setIntegral_slab`, and
+  `VacuumForm.integral_circle_energy_hymLift_perturbation`, `…_add`, `…_le`. In these the
+  curvature of the variation is a field `D` on the circle product with
+  `D ∘ liftCover = da`; that `D` is the manifold exterior derivative of a descended 1-form is
+  not proved.
+- Relation to the source: this is its sentence "the lift minimizes the Abelian Yang–Mills
+  energy against these fixed-boundary connection variations" for variations that vanish near
+  `∂Ω`. The source's class (vanishing tangential trace on `∂M`) is larger; it needs a trace
+  and Stokes on a manifold with boundary.
+- Sanity: a `τ`-independent bump variation raises the energy strictly, on the slab and on the
+  circle product over a ball; a non-periodic variation `τ f(x) dx₀` has a non-zero cross term
+  (`nonperiodic_cross_term`), so periodicity is needed.
+
+**The bundle as cocycle data, and its Chern numbers** (`Theory/Fields/FormHYMBundle`).
+
+- `torusPeriod F γ a b ℓ`: the integral of a 2-form over the torus `(s, τ) ↦ (γ s, τ)`, frame
+  `(∂_s, ∂_τ)`. `chernNumber = torusPeriod / 2π`.
+- `torusPeriod_hymLift_fluxField`: the period of the lift is `−ℓ ∮_γ B·dl` (the source's
+  `−Γℓ`). `torusPeriod_hymLift_eq_periodHom` (it is `−ℓ` times TauCeti's period);
+  `torusPeriod_hymLift_poloidal`, `chernNumber_hymLift_poloidal`: over a poloidal loop the
+  Chern number is `−ℓ μ₀ I/2π` with `I` the contract's loop current;
+  `VacuumField.torusPeriod_hymLift_eq_zero` on simply connected regions.
+- `LiftBundleData ι Ω F`: cylinder charts `base i × ℝ`, `C¹` local connection forms with
+  `d(conn i) = F`, `Circle`-valued transition functions with the cocycle condition, and the
+  compatibility `g_ij = exp(i h)` locally with `dh = 𝒜_i − 𝒜_j`. `IsPeriodic L ℓ`: invariance
+  under `τ ↦ τ + ℓ`, which stands for data on `Ω × S¹`.
+- `LiftBundleData.ofPotentials`: the source's construction, one vector potential and local
+  scalar potentials, `g_ij = exp(i(φ_j − φ_i)τ)`; `ofPotentials_isPeriodic_iff`: periodic iff
+  all jumps satisfy `(φ_j − φ_i)ℓ ∈ 2πℤ`. `VacuumForm.exists_liftBundleData`: one chart on a
+  star-convex region.
+- Integrality: `LiftBundleData.IsPeriodic.torusPeriod_mem`: for periodic data with curvature
+  `F` and a closed `C¹` loop in `Ω`, `∫_{γ×S¹}F ∈ 2πℤ`, so the Chern number is an integer.
+  `not_isPeriodic_of_torusPeriod`, `IsPeriodic.circulation_mem`: if `ℓ ∮_γ B·dl ∉ 2πℤ` no
+  periodic data with curvature the lift exist.
+- Sanity (the wire field on `R > 0`): period `−2πℓ`, Chern number `−ℓ`; `wireBundle`, two
+  charts with the two branches of the angle and `A = −½ log(x² + y²) e_z`, periodic for
+  integer `ℓ`, with a non-trivial transition function; `wire_exists_periodic_iff`: periodic
+  data exist iff `ℓ ∈ ℤ`; `wire_not_one_chart`.
+- What this is not: `LiftBundleData` is cocycle data, not a Mathlib or TauCeti vector bundle
+  (no total space, sections or covariant derivative). The class `c₁ ∈ H²(M; ℤ)` is not
+  constructed; that the tori `γ × S¹` exhaust the second homology is not formalized. Charts
+  are cylinders, so the obstruction covers only such data. Sufficiency of the integrality
+  condition is proved for `ofPotentials` data and the wire, not in general. The holomorphic
+  structure and the non-algebraicity claim are not formalized.
+
+Checks: `lake build` (11,707 jobs); `scripts/check_axioms.lean` passes for 53,307 declarations.
+
 ## Next steps
 
-Open after the fifth round, phase 1:
+Open after the fifth round:
 
-1. The energy statement on `Ω × S¹` and the line bundle and Chern numbers of the lift (in
-   progress).
+1. For the lift: a vector bundle in Mathlib's sense with a connection, `c₁` as a cohomology
+   class, variations with only vanishing tangential trace, the holomorphic structure.
 2. A finite-regularity de Rham complex, to state the class of `B♭` in cohomology.
 3. Embeddedness as a clause of the contract (AF-1): a design decision, not made here.
-4. Open audit items, and an audit of the modules added after `6ceca0e`.
+4. Maximal orbits and a confinement criterion for a concrete field.
+5. Open audit items, and an audit of the modules added after `6ceca0e`.
 
 ## Barriers
 

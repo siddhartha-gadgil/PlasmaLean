@@ -198,3 +198,11 @@ lift has both properties (`Theory/Fields/FormHYMComplex`, N-48). The energy iden
 `∫(|ℱ + da|² − |ℱ|²) = ∫|da|² ≥ 0` is compiled for variations with compact support in `Ω × ℝ`,
 and the local connection `A − Φ dt` with `dA = ℱ` on star-convex regions
 (`Theory/Fields/FormHYMEnergy`). The statement on `Ω × S¹`, the bundle and its Chern class are not.
+
+**Pointer (23 November 2026, fifth round).** The energy statement is now compiled on `Ω × S¹` for
+periodic variations that vanish near `∂Ω` (`Theory/Fields/FormHYMCircleEnergy`). The period
+`(1/2π)∫_{γ×S¹}ℱ = −Γℓ/2π`, the local connections `A_i = a − Φ_i dt` with transition functions
+`e^{i(Φ_j − Φ_i)t}`, the integrality of the periods for periodic cocycle data, and the wire bundle
+(which exists iff `ℓ ∈ ℤ`) are compiled (`Theory/Fields/FormHYMBundle`, N-48). The bundle is
+cocycle data only; `c₁` as a cohomology class, the holomorphic structure and non-algebraicity
+are not formalized.

@@ -133,6 +133,10 @@ public import PlasmaLean.Theory.Fields.FormFluxSurfaceEmbedded
 public import PlasmaLean.Sanity.FormFluxSurfaceEmbedded
 public import PlasmaLean.Theory.Kinetic.LorentzOrbitOpen
 public import PlasmaLean.Sanity.LorentzOrbitOpen
+public import PlasmaLean.Theory.Fields.FormHYMCircleEnergy
+public import PlasmaLean.Sanity.FormHYMCircleEnergy
+public import PlasmaLean.Theory.Fields.FormHYMBundle
+public import PlasmaLean.Sanity.FormHYMBundle
 public import PlasmaLean.Theory.Fluids.EulerianODE
 public import PlasmaLean.Theory.Transport.PowerBalance
 public import PlasmaLean.Theory.Transport.Comparison
