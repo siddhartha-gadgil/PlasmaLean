@@ -117,7 +117,7 @@ theorem helAt_val (rn zn cn sn : ℤ) (rd zd cd sd : ℕ) (hrn : 0 < rn) (hrd : 
     have : (cd : ℝ) ≠ 0 := by exact_mod_cast hcd.ne'
     have : (sd : ℝ) ≠ 0 := by exact_mod_cast hsd.ne'
     field_simp
-    try ring
+  all_goals ring
 
 /-! ## Faces -/
 

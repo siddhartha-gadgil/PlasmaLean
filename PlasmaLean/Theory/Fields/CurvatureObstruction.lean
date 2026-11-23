@@ -131,8 +131,8 @@ theorem fieldCurvature_eq {B : Euclid3 → Euclid3} {L : Euclid3 →L[ℝ] Eucli
   simp only [conj_trivial, smul_sub, smul_smul]
   rw [← hBb]
   match_scalars
-  all_goals (try simp only [smul_eq_mul])
-  all_goals field_simp
+  all_goals simp only [smul_eq_mul]
+  field_simp
 
 /-- The curvature is normal to the field: `⟪b, κ⟫ = 0`. -/
 theorem inner_unitField_fieldCurvature {B : Euclid3 → Euclid3} {L : Euclid3 →L[ℝ] Euclid3}

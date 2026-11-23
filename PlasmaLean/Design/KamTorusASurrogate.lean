@@ -148,8 +148,8 @@ theorem gridPoly1_eq (g : ℕ → ℕ → ℤ) : gridPoly1 g = gridPolyG (2 * n1
 /-- Coefficients of a grid polynomial. -/
 theorem coeff_gridPolyG (A B : ℕ) (g : ℕ → ℕ → ℤ) (i j : ℕ) :
     ((gridPolyG A B g).coeff j).coeff i = if i ≤ A ∧ j ≤ B then g i j else 0 := by
-  simp only [gridPolyG, Polynomial.finsetSum_coeff, Polynomial.coeff_monomial]
-  simp only [apply_ite (fun p : Polynomial ℤ => p.coeff i), Polynomial.coeff_monomial,
+  simp only [gridPolyG, Polynomial.finsetSum_coeff, Polynomial.coeff_monomial_apply]
+  simp only [apply_ite (fun p : Polynomial ℤ => p.coeff i), Polynomial.coeff_monomial_apply,
     Polynomial.coeff_zero]
   simp [Finset.sum_ite_eq']
   grind

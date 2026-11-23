@@ -34,7 +34,7 @@ folder committed on the workstation branch like any other result.
   On Debian/Ubuntu: `sudo apt install git python3-venv build-essential`.
 - Push access to the GitHub repository **without typing a password** (see below). `run.sh` checks
   this before starting and stops at once if a push would prompt.
-- Lean set up once by hand in the clone: `elan` (Lean v4.35.0 from `lean-toolchain`),
+- Lean set up once by hand in the clone: `elan` (Lean v4.36.0 from `lean-toolchain`),
   `lake exe cache get` and `lake build`. This is already done on the workstation. The script only
   checks that `lake` is available. Later builds are incremental: each task builds only what changed.
 - The script installs the Python packages itself, into a venv `.venv-ws`, from

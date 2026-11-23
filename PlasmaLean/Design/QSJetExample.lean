@@ -312,7 +312,7 @@ theorem jet_values :
       fieldZ p₀ = vec3 240 (-768) 432 ∧
       ⟪field p₀, cross (fieldY field p₀) (fieldZ p₀)⟫ = 564480 := by
   have hX : field p₀ = vec3 6 3 2 := by
-    rw [field_apply]; apply space_ext <;> (simp [p₀]; try norm_num)
+    rw [field_apply]; apply space_ext <;> norm_num [p₀]
   have hY : fieldY field p₀ = vec3 10 (-128) 162 := by
     rw [fieldY_eq]
     apply space_ext <;> simp [polyField, polyEval, monoEval, PY0, PY1, PY2, p₀] <;> norm_num

@@ -111,6 +111,8 @@ open Set Filter Topology PlasmaLean.Transport PlasmaLean.Fusion PlasmaLean.Certi
    (9099/10000, 21/4, 111/20), (2299/2500, 5, 53/10), (9509/10000, 4, 101/20), (973/1000, 3,
    81/20), (1977/2000, 2, 61/20), (1, 1, 41/20)]
 
+set_option maxHeartbeats 1000000 in
+-- the long literal list of rationals is slow to elaborate
 /-- Pieces of the upper-barrier certificates (upper labels end supplied windows). -/
 @[expose] def ignited_supP : List (ℚ × ℚ × ℚ) :=
   [(73/10000, 197/10, 20), (11/250, 389/20, 79/4), (801/10000, 96/5, 39/2), (231/2000, 379/20,

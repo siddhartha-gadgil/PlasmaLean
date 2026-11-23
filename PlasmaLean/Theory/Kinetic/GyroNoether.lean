@@ -369,7 +369,7 @@ theorem uniform_gyroCorr {B₀ ε : ℝ} (hB₀ : B₀ ≠ 0) :
   ext i
   fin_cases i <;>
     simp [gyroCorr, defectVec, uniformField, quadFluxGrad, unitX, hn, cross, cross_apply]
-  all_goals field_simp
+  field_simp
 
 /-- Sanity (uniform field, linear defect): for every orbit in `B₀ e₂` with the translation
 `K = e₀` and `ψ = -B₀ y₁ + (ε/2) y₁²`, the corrected momentum has

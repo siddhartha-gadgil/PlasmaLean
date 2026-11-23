@@ -128,7 +128,7 @@ variable {R : Type*} [Ring R]
 /-- `liftN` is invariant under negation when `N` is. -/
 theorem liftN_neg (N : R → ℕ) (hneg : ∀ a, N (-a) = N a) (p : R[X]) :
     liftN N (-p) = liftN N p := by
-  simp [liftN, Polynomial.sum_def, support_neg, coeff_neg, hneg]
+  simp [liftN, Polynomial.sum_def, support_neg, hneg]
 
 end LiftRing
 
@@ -271,7 +271,7 @@ theorem InBox.sum {ι : Type*} (s : Finset ι) {f : ι → P2} {a b : ℕ}
 
 theorem InBox.monomial (i j : ℕ) (c : ℤ) : InBox (monomial j (monomial i c)) i j := by
   refine ⟨natDegree_monomial_le _, fun k => ?_⟩
-  rw [coeff_monomial]
+  rw [coeff_monomial_apply]
   split_ifs
   · exact natDegree_monomial_le _
   · simp

@@ -471,8 +471,8 @@ def dΦequiv (p : ℝ × ℝ) : (ℝ × ℝ) ≃L[ℝ] (ℝ × ℝ) :=
 /-- `Φ` has the invertible strict derivative `dΦequiv` everywhere. -/
 theorem hasStrictFDerivAt_Φmap (p : ℝ × ℝ) :
     HasStrictFDerivAt (Φmap Rk zk) (hK.dΦequiv p : (ℝ × ℝ) →L[ℝ] (ℝ × ℝ)) p := by
-  have h := (hK.contDiff_Φmap.contDiffAt (x := p)).hasStrictFDerivAt (by norm_num)
-  rw [(hK.hasFDerivAt_Φmap p).fderiv] at h
+  have h := (hK.contDiff_Φmap.contDiffAt (x := p)).hasStrictFDerivAt (hK.hasFDerivAt_Φmap p)
+    (by norm_num)
   have e : (hK.dΦequiv p : (ℝ × ℝ) →L[ℝ] (ℝ × ℝ)) = dΦ Rk zk p :=
     ContinuousLinearMap.ext fun v => rfl
   rw [e]; exact h

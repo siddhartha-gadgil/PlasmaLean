@@ -94,7 +94,7 @@ theorem poloidal_eq_cross (A L : ℝ) {x : Space} (hx : R2 x ≠ 0) :
   apply space_ext
   all_goals simp [cross, crossProduct, fluxGrad, psiTGrad, phiGrad, poloidal]
   all_goals field_simp
-  all_goals unfold R2; ring
+  unfold R2; ring
 
 /-- Coordinate functions are continuous linear, with themselves as derivative. -/
 theorem coord_hasFDerivAt (i : Fin 3) (x : Space) :
@@ -254,7 +254,7 @@ theorem force_balance (μ₀ A L F : ℝ) (hμ : μ₀ ≠ 0) {x : Space} (hx : 
   fin_cases i
   all_goals simp [cross_apply, field, poloidal, phiGrad, pressureGrad, psiTGrad]
   all_goals field_simp
-  all_goals unfold R2; ring
+  unfold R2; ring
 
 /-- Consequence via the kernel: the pressure gradient is tangent to the field. -/
 theorem field_pressure_tangent (μ₀ A L F : ℝ) (hμ : μ₀ ≠ 0) {x : Space}
@@ -345,7 +345,7 @@ theorem axis_values (A L F : ℝ) (hL : 0 < L) :
   · simp [psiT, R2]
   · apply space_ext
     all_goals simp [field, poloidal, phiGrad, R2]
-    all_goals field_simp
+    field_simp
 
 /-- All-time full-orbit confinement in the exact Solov'ev equilibrium: with rigidity
 `|m| ‖v‖ / |q| ≤ A L / 64`, initial `ψ̃ ≤ L⁴/64` and `‖x 0‖ ≤ 4L/3`, the orbit satisfies

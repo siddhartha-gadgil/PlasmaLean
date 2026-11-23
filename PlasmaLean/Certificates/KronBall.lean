@@ -97,9 +97,9 @@ theorem coefZ2_monomial (i j : ℕ) (c : ℤ) (i₀ j₀ : ℕ) (km : ℤ × ℤ
   · simp only [Prod.mk.injEq, h2, ↓reduceIte]
     unfold coefZ2
     split_ifs with h1
-    · rw [Polynomial.coeff_monomial]
+    · rw [Polynomial.coeff_monomial_apply]
       split_ifs with h3
-      · rw [Polynomial.coeff_monomial]
+      · rw [Polynomial.coeff_monomial_apply]
         split_ifs with h4
         · exfalso; omega
         · rfl

@@ -227,7 +227,7 @@ theorem lineS_fieldLine (hA : A ≠ 0) (hL : L ≠ 0) (hs : 0 ≤ s) (h : 2 * s 
     have hR4 : RS L s t ^ 4 = (L ^ 2 + 2 * s * Real.sin t) ^ 2 := by
       rw [show RS L s t ^ 4 = (RS L s t ^ 2) ^ 2 by ring, hR2]; rfl
     rw [hR4, h2]
-    try rw [hR2]
+    rw [hR2]
     unfold uS
     ring
 

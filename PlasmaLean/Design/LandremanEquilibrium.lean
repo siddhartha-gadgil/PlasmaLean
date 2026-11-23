@@ -780,7 +780,7 @@ theorem field_flipX (a b : ℝ) (x : Space) : field a b (flipX x) = -flipX (fiel
     rw [Fr, Fr, rad, rad, hs]; simp [flipX]
   simp only [field, N0, N1, hs, hF]
   apply space_ext <;> simp [flipX]
-  all_goals ring
+  ring
 
 /-- The points used to exhibit non-axisymmetry lie in `𝒰`. -/
 theorem quarter_points_mem {a b : ℝ} (ha : a ≠ 0) (hb : b ≠ 0) (hab : b ^ 2 < 2 * a ^ 2) :

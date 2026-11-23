@@ -172,7 +172,7 @@ theorem eval_convT (N : ℕ) (t : Tm) (hden : (N * t.q).den = 1) (heven : t.a % 
   have hR2 : R ^ 2 ≠ 0 := by positivity
   rw [convT, cscale_eval, cmulMono_eval _ _ hy, eval_trigC _ _ hR]
   have hnum : (((N * t.q).num : ℤ) : ℝ) = (N : ℝ) * (t.q : ℝ) := by
-    have := Rat.coe_int_num_of_den_eq_one hden
+    have := Rat.intCast_num_of_den_eq_one hden
     exact_mod_cast this
   rw [hnum]
   obtain ⟨k, hk⟩ : ∃ k, t.a = 2 * k := ⟨t.a / 2, by omega⟩
@@ -221,7 +221,7 @@ theorem LW_den (k : Fin 42) : (LWq k).den = 1 := by
 /-- `L w_k` as a real number. -/
 theorem LW_cast (k : Fin 42) : (((LWq k).num : ℤ) : ℝ) =
     (Lw : ℝ) * ((DommaschkQA2R.candidate k * DommaschkQA2R.scale k : ℚ) : ℝ) := by
-  have := Rat.coe_int_num_of_den_eq_one (LW_den k)
+  have := Rat.intCast_num_of_den_eq_one (LW_den k)
   have h2 : ((LWq k : ℚ) : ℝ) = (Lw : ℝ) * ((DommaschkQA2R.candidate k *
       DommaschkQA2R.scale k : ℚ) : ℝ) := by simp [LWq]
   rw [← h2, ← this]; push_cast; rfl

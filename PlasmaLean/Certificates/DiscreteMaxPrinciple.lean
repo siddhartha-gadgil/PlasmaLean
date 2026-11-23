@@ -298,8 +298,9 @@ theorem L_offDiag_nonneg (hg : g.Valid) {i j : Fin N} (hij : i ≠ j) : 0 ≤ g.
 theorem rowSum_backwardEuler (Δt : ℝ) (i : Fin N) :
     rowSum (g.backwardEuler Δt) i = 1 + Δt * g.bdry i := by
   have h := g.rowSum_L i
-  simp only [rowSum, backwardEuler, sub_apply, smul_apply, smul_eq_mul, Finset.sum_sub_distrib,
-    ← Finset.mul_sum, one_apply, Finset.sum_ite_eq, mem_univ, ite_true] at h ⊢
+  simp only [rowSum, backwardEuler, Matrix.sub_apply, Matrix.smul_apply, smul_eq_mul,
+    Finset.sum_sub_distrib, ← Finset.mul_sum, Matrix.one_apply, Finset.sum_ite_eq, mem_univ,
+    ite_true] at h ⊢
   rw [h]; ring
 
 /-- **The backward-Euler matrix is an M-matrix** for `vol > 0`, `κ ≥ 0` (i.e. `V' > 0`,
@@ -307,7 +308,8 @@ theorem rowSum_backwardEuler (Δt : ℝ) (i : Fin N) :
 theorem backwardEuler_isMMatrix (hg : g.Valid) {Δt : ℝ} (hΔt : 0 ≤ Δt) :
     IsRowMMatrix (g.backwardEuler Δt) where
   offDiag i j hij := by
-    simp only [backwardEuler, sub_apply, smul_apply, smul_eq_mul, one_apply_ne hij, zero_sub,
+    simp only [backwardEuler, Matrix.sub_apply, Matrix.smul_apply, smul_eq_mul,
+      Matrix.one_apply_ne hij, zero_sub,
       neg_nonpos]
     exact mul_nonneg hΔt (g.L_offDiag_nonneg hg hij)
   rowSum_pos i := by

@@ -40,7 +40,7 @@ theorem rootMap_derivative (x : ℝ) : HasDerivAt rootMap (1 - 2 * x / 3) x := b
 /-- A bound throughout the ball, not a derivative sampled at the center. -/
 theorem rootMap_lipschitz :
     LipschitzOnWith (1 / 3 : NNReal) rootMap (Metric.closedBall (3 / 2 : ℝ) (1 / 2)) := by
-  apply (convex_closedBall (3 / 2 : ℝ) (1 / 2)).lipschitzOnWith_of_nnnorm_hasDerivWithin_le
+  apply (convex_closedBall (3 / 2 : ℝ) (1 / 2)).lipschitzOnWith_of_nnNorm_hasDerivWithin_le
     (fun x _ => (rootMap_derivative x).hasDerivWithinAt)
   intro x hx
   have hx' : |x - 3 / 2| ≤ 1 / 2 := by simpa [Real.dist_eq] using hx

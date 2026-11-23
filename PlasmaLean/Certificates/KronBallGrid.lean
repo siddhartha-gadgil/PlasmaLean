@@ -149,9 +149,9 @@ theorem coeff_gridPolyNM (N M : ℕ) (g : ℕ → ℕ → ℤ) (i j : ℕ) :
   have h1 : ∀ i' j', ((monomial j' (monomial i' (g i' j')) : P2).coeff j).coeff i =
       if i' = i then (if j' = j then g i' j' else 0) else 0 := by
     intro i' j'
-    rw [coeff_monomial]
+    rw [coeff_monomial_apply]
     by_cases hj : j' = j
-    · simp only [hj, ↓reduceIte, coeff_monomial]
+    · simp only [hj, ↓reduceIte, coeff_monomial_apply]
     · simp [hj]
   simp only [gridPolyNM, finsetSum_coeff, h1]
   have h2 : ∀ x, (∑ y ∈ range (2 * M + 1), if x = i then (if y = j then g x y else 0) else 0) =
