@@ -188,4 +188,6 @@ potentials on simply connected regions together with a field (the straight wire)
 N-48): the lift `ℱ = β − α ∧ dt` is closed iff the field is a vacuum field, and it is
 anti-self-dual. Anti-self-duality is now `⋆ℱ = −ℱ` for a Hodge star identified with TauCeti's
 intrinsic one (`Theory/Fields/FormHYMStar`), and the lift descends to `Space × AddCircle ℓ`.
-The bundle, its Chern class and Yang–Mills minimality are not formalized.
+On the source's manifold `Ω × S¹` the form is closed iff the field is a vacuum field, and the
+energy identity `∫|ℱ|² = 2ℓ∫|B|²` is compiled (`Theory/Fields/FormHYMCircle`). The bundle, its
+Chern class and Yang–Mills minimality are not formalized.

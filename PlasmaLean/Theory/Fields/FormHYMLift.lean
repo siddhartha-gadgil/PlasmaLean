@@ -50,7 +50,8 @@ With the opposite orientation `dτ ∧ dx₀ ∧ dx₁ ∧ dx₂` the same form 
   `IsAntiSelfDual` is the component form of `⋆₄ℱ = -ℱ`, written by hand. Both are supplied in
   `Theory/Fields/FormHYMStar` (`isAntiSelfDual_iff_liftStar`, `hymLiftCircle`).
 * The complex structure, the type `(1,1)` and primitivity statements, the line bundle and its
-  Chern class, the energy identity `∫|ℱ|² = 2ℓ ∫|B|²` and Yang–Mills minimality.
+  Chern class, and Yang–Mills minimality. (The energy identity `∫|ℱ|² = 2ℓ ∫|B|²` is in
+  `Theory/Fields/FormHYMCircle`.)
 -/
 
 @[expose] public section

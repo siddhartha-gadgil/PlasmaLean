@@ -39,9 +39,9 @@ with its canonical momentum, is an integral curve of the Hamiltonian vector fiel
   `energy_conserved` of `Theory/Kinetic/FullOrbit`, which needs neither a vector potential nor
   `m ≠ 0`; it is not restated here.
 
-Not proved here: existence or uniqueness of integral curves; time-dependent potentials; curves
-defined only on an interval of times (all statements are for curves defined for all times, as
-`LorentzOrbit` is).
+Not proved here: time-dependent potentials. Existence and uniqueness of integral curves, and
+curves defined only on an interval of times (`LorentzOrbitOn`), are in
+`Theory/Kinetic/CrossedFieldOrbit`.
 -/
 
 @[expose] public section

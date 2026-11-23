@@ -116,6 +116,10 @@ public import PlasmaLean.Theory.Fields.FormConvexRegion
 public import PlasmaLean.Sanity.ContractLoopCurrentFixture
 public import PlasmaLean.Theory.Kinetic.NoetherGaugeBridge
 public import PlasmaLean.Sanity.NoetherGaugeBridge
+public import PlasmaLean.Theory.Fields.FormHYMCircle
+public import PlasmaLean.Sanity.FormHYMCircle
+public import PlasmaLean.Theory.Kinetic.CrossedFieldOrbit
+public import PlasmaLean.Sanity.CrossedFieldOrbit
 public import PlasmaLean.Theory.Fluids.EulerianODE
 public import PlasmaLean.Theory.Transport.PowerBalance
 public import PlasmaLean.Theory.Transport.Comparison

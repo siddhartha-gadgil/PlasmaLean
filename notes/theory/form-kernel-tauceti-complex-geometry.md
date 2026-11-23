@@ -15,7 +15,7 @@
 | Status | verified for the theorems listed under "What is compiled"; the rest stated |
 | Lean evidence | default build, namespace `PlasmaLean.Forms` unless noted: `lieDerivForm_eq_zero_of_interior`, `FormWeakQS.lieDerivForm_eq_zero`, `PlasmaLean.Fields.WeakQS.lieDerivForm_flux_eq_zero`, `VacuumForm.exists_scalarPotential`, `VacuumForm.exists_vectorPotential`, `onOpens`, `isSmoothForm_onOpens_iff`, `mextDeriv_onOpens`, `VacuumForm.exists_scalarPotential_of_simplyConnected`, `not_simplyConnected_of_no_potential`, `wedge12_eq_wedge`, `isContactAt_iff_nondegenerate`, `IsBeltramiOn.reeb`; `PlasmaLean.Sanity.FormTopology.wireField_no_potential`, `wireRegion_not_simplyConnected`, `bentSet_not_starConvex`, `hyperbolic_scalarPotential_bent`; `lieDerivForm_flux`, `PlasmaLean.Fields.WeakQS.lieBracket_eq_zero`, `IsBeltramiOn.reeb_unique`, `pathIntegral_onOpens_flat`, `periodHom_onOpens_flat`, `PlasmaLean.Sanity.FormPeriods.wire_period`; `PlasmaLean.Kinetic.lorentzOrbit_eulerLagrange`, `noetherMomentum_translation_conserved`, `noetherMomentum_linear_gauge_conserved`, `canonicalMomentum_rotGenZ_conserved`; `loopCurrent_eq_periodHom_div`, `PlasmaLean.Vacuum.VacuumField.loopCurrent_eq_zero_of_simplyConnected`; `flatSmoothForm`, `isContactForm_flatSmoothForm_iff`, `IsBeltramiOn.reebVectorField_flatSmoothForm`; `PlasmaLean.Kinetic.canonicalForm_fderiv_kineticMomentumMap_flux`, `lorentzOrbit_hamilton`; `hymLift`, `extDeriv_hymLift_eq_zero_iff`, `hymLift_closed_iff_vacuumField`, `hymLift_isAntiSelfDual` |
 | Audit evidence | not audited |
-| Last updated | 23 November 2026: created; same day, the manifold bridge, the wedge and contact links, the wire fixture and the symplectic assessment; then periods, `[ξ, B] = 0`, uniqueness of the Reeb vector, a non-star-convex fixture and the Noether charge from TauCeti; phases 1 and 2 of the remaining tasks (rotational Noether, loop current as a period, bundled contact form; magnetic symplectic form, anti-self-dual lift); second round, phase 1 (finite symmetry and the direct proofs, periods on an interval, contact forms on an open subset) and phase 2 (Hamilton's equations with an electric field and the converse; Hodge star on `ℝ³ × ℝ` and the circle quotient); third round, phase 1 (piecewise `C¹` loops, convex regions and the contract's current clause, gauge terms) |
+| Last updated | 23 November 2026: created; same day, the manifold bridge, the wedge and contact links, the wire fixture and the symplectic assessment; then periods, `[ξ, B] = 0`, uniqueness of the Reeb vector, a non-star-convex fixture and the Noether charge from TauCeti; phases 1 and 2 of the remaining tasks (rotational Noether, loop current as a period, bundled contact form; magnetic symplectic form, anti-self-dual lift); second round, phase 1 (finite symmetry and the direct proofs, periods on an interval, contact forms on an open subset) and phase 2 (Hamilton's equations with an electric field and the converse; Hodge star on `ℝ³ × ℝ` and the circle quotient); third round, phase 1 (piecewise `C¹` loops, convex regions and the contract's current clause, gauge terms) and phase 2 (the lift on `Ω × S¹`; crossed-field orbits, existence and uniqueness) |
 | Patches | none (N-45 stands; this note adds to it) |
 
 ## Purpose and scope
@@ -114,7 +114,7 @@ flux surface.
 | N-43 steps 2–5 (homological equation, certificate, hot core) | linear algebra in velocity space, orbit estimates | no: not statements about forms on `ℝ³` |
 | N-42 S-2: the class `G dϑ + dF` | `B♭` closed; `dF` the exact part | **done** for the two extremes: no `G dϑ` term on a simply connected region; the wire field is a pure `G dϑ` term with no potential |
 | N-42 S-3–S-6: harmonic polynomial families | `B♭ = dF`, `ΔF = 0` | available in vector language (`VacuumField`); the form version is one transport |
-| N-42 S-13: Hermitian–Yang–Mills lift | `ℱ = ω_B − ⋆ω_B ∧ dτ` is closed on `Ω × ℝ` iff `dω_B = 0` and `d⋆ω_B = 0` | **done** (`extDeriv_hymLift_eq_zero_iff`, `hymLift_closed_iff_vacuumField`, `isAntiSelfDual_iff_liftStar`, `hymLiftCircle`); closedness on the circle product and the bundle are not |
+| N-42 S-13: Hermitian–Yang–Mills lift | `ℱ = ω_B − ⋆ω_B ∧ dτ` is closed on `Ω × ℝ` iff `dω_B = 0` and `d⋆ω_B = 0` | **done** (`extDeriv_hymLift_eq_zero_iff`, `hymLift_closed_iff_vacuumField`, `isAntiSelfDual_iff_liftStar`, `hymLiftRegionForm_closed_iff_vacuumField` on `U × S¹`, `integral_liftInner_hymLiftCircle`); the bundle and Yang–Mills minimality are not |
 | N-42 S-32: constant `\|B\|` vacuum field is constant | Bochner identity | no gain: `laplacian_normSqField` is a vector-language theorem |
 | N-42 S-14: subharmonic log-determinant | uses `∇B` as a symmetric matrix | no |
 | N-42 S-15: no constant `\|B\|` on `∂Ω` | needs integration over `∂Ω` | no: no boundary integration for these forms |
@@ -132,7 +132,7 @@ exterior calculus.
 
 ## What is compiled
 
-All in the default build, standard axioms only (`scripts/check_axioms.lean`, 117 entry points).
+All in the default build, standard axioms only (`scripts/check_axioms.lean`, 134 entry points).
 
 **Lie derivative** (`Theory/Fields/FormCalculus`).
 
@@ -473,12 +473,68 @@ modules written in parallel and rebuilt and axiom-checked in the main session:
   gauge term `B₀(x² − y²)/2`; with the wrong gauge term the hypothesis fails.
 - Not done: infinitesimal ⇒ finite for nonlinear `A`; time-dependent gauge functions.
 
+## Third round, phase 2 (sub-agents, 23 November 2026)
+
+**The lift on the manifold `Ω × S¹`** (`Theory/Fields/FormHYMCircle`).
+
+- `isSmoothForm_hymLiftCircleForm_iff`: the form on `Space × AddCircle ℓ` is `C^n` iff `ω` is.
+- `mextDeriv_hymLiftCircleForm_eq_zero_iff`: where `ω` is `C¹`, the manifold exterior derivative
+  vanishes at `(x, θ)` iff `dω = 0` and `d⋆ω = 0` at `x`.
+  `hymLiftCircleForm_closed_iff_vacuumField`: for a `C²` field on `ℝ³`, closed iff vacuum.
+- `circleRegion ℓ U`, `hymLiftRegionForm ℓ U ω`: the open submanifold `U × S¹` and the
+  restricted form. `hymLiftRegionForm_closed_iff_vacuumForm`,
+  `hymLiftRegionForm_closed_iff_vacuumField`: for `C²` data on `U`, the form on `U × S¹` is
+  closed iff the field is a vacuum field on `U`. This is the statement of N-42 S-13 on the
+  source's manifold.
+- Energy: `liftInner_hymLiftAt_self` (`|ℱ|² = 2|B|²` pointwise),
+  `integral_liftInner_hymLiftCircle` (`∫_{Ω×S¹}|ℱ|² = 2ℓ∫_Ω|B|²`).
+- Sanity: constant and hyperbolic fields have closed lifts on the circle product; the rotation
+  and identity fields do not; a discontinuous `ω` does not give a continuous form.
+- Not done, with what TauCeti lacks (from a search of its declarations, not from building
+  against them): the complex structure on `ℝ³ × S¹` and the `(1,1)` and primitivity statements;
+  a line bundle with connection constructed from a closed 2-form with integral periods; a first
+  Chern class and the Chern–Weil identification; a Yang–Mills functional and a minimality
+  theorem. TauCeti does have curvature forms of connections, an Euler class, a manifold Hodge
+  star and the identity `∫|F|² = 2∫|F⁺|² − ∫F∧F`.
+- Limit: closedness on the circle product needs `ω` of class `C¹` at the point (from TauCeti's
+  naturality of the exterior derivative); on `ℝ³ × ℝ` no regularity was needed.
+
+**Crossed fields, existence and uniqueness** (`Theory/Kinetic/CrossedFieldOrbit`).
+
+- `crossedField_orbit`: the explicit `E × B` drift orbit for `E = E₀e_x`, `B = B₀e_z`, with
+  gyrofrequency `qB₀/m` and drift `driftVelocity E₀ B₀ = −(E₀/B₀)e_y = (E × B)/|B|²`, for all
+  initial data (`crossedField_orbit_exists`). `crossedPosition_period`: per gyro-period the
+  position advances by the period times the drift plus the parallel velocity.
+- `crossedField_hamilton`, `crossedField_energy`: it is an integral curve of the Hamiltonian
+  field and conserves energy; the crossed-field statement now has an instance with `B₀ ≠ 0`.
+- `emHamilton_exists_local`, `emHamilton_unique`: for `A` of class `C²` and `E = −∇Φ` of class
+  `C¹`, integral curves of the Hamiltonian field exist locally and are unique.
+- `LorentzOrbitOn` (orbit equations on a set of times), `lorentzOrbitOn_iff_emHamilton`,
+  `lorentzOrbitOn_exists_local`, `lorentzOrbit_unique`: local existence and uniqueness of
+  Lorentz orbits under the same hypotheses and `m ≠ 0`.
+- `exists_global_of_linear_growth`, `lorentzOrbit_existsUnique_linearGauge`,
+  `lorentzOrbit_existsUnique_uniform`: for a linear vector potential and an electric field of
+  linear growth, in particular for arbitrary uniform `E` and `B`, a unique Lorentz orbit exists
+  for all time from every initial position and velocity.
+- Relation to the existing `lorentzOrbit_exists` (`Theory/Kinetic/LorentzExistence`): that one
+  has no electric field, allows any globally `C¹` `B`, and states no uniqueness; neither
+  result contains the other. `lorentzOrbit_unique` supplies uniqueness for it when
+  `B = ∇ × A` with `A` of class `C²`.
+- Sanity: explicit values; uniform motion with the drift velocity is an orbit, and with the
+  opposite velocity it is not (`opposite_drift_not_orbit`), which checks the sign.
+- Not done: global existence for a general vector potential with an electric field (needs an
+  a priori bound); uniqueness without potentials; regularity on an open subset only.
+
 ## Next steps
 
-Phase 2 of the third round is in progress: closedness of the lifted form on `Ω × S¹` as a
-manifold statement, and an explicit crossed-field orbit with existence of integral curves.
-Other open items: the line bundle of N-42 S-13 and its Chern class; the de Rham classes of an
-embedded flux surface.
+Three rounds of follow-up are complete. What remains is of a different kind:
+
+1. The complex structure, line bundle, Chern class and Yang–Mills minimality of N-42 S-13:
+   blocked on constructions that TauCeti does not have.
+2. The de Rham classes of an embedded flux surface (needs flux surfaces as submanifolds).
+3. Checking `CurrentFreeTransform.imax_zero_of_meridianHalfSpace` on the on-demand Dommaschk
+   instances.
+4. A strict audit of the modules added on 23 November 2026 (none has been audited).
 
 ## Barriers
 
@@ -487,7 +543,7 @@ embedded flux surface.
 - **Embedded surfaces.** Flux surfaces are parametrised tori in the contract layer
   (`FieldTorus`), not submanifolds. De Rham statements on a flux surface need them as manifolds.
 - **Build cost.** TauCeti files are compiled locally the first time they are imported. The
-  default build now has 11,103 jobs, up from 7,938; the increase is almost all TauCeti files.
+  default build now has 11,123 jobs, up from 7,938; the increase is almost all TauCeti files.
 - **Not checked.** TauCeti files were read for their statements; their proofs were not
   reviewed. The theorems listed above pass the project's axiom check (standard axioms only),
   which covers the TauCeti results they use.

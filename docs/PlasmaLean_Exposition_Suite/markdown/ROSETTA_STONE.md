@@ -205,8 +205,15 @@ theorem isCompl_selfDualForms_antiSelfDualForms : IsCompl selfDualForms antiSelf
 def hymLiftCircle (ℓ : ℝ) (w : Space → Form 2) (p : Space × AddCircle ℓ) : LiftForm 2
 theorem mpullback_hymLiftCircleForm ... : pullback along Space × ℝ → Space × AddCircle ℓ
     of the form on the circle product is hymLift w
--- Not in Lean: closedness of the form on Space × AddCircle ℓ, the line bundle, its Chern
--- class, Yang–Mills minimality.
+-- On the manifold Ω × S¹ (PlasmaLean/Theory/Fields/FormHYMCircle.lean):
+theorem isSmoothForm_hymLiftCircleForm_iff (w : Space → Form 2) :
+    IsSmoothForm _ n (hymLiftCircleForm ℓ w) ↔ ContDiff ℝ n w
+theorem hymLiftRegionForm_closed_iff_vacuumField (U : Opens Space) (hB : ContDiffOn ℝ 2 B U) :
+    mextDeriv (hymLiftRegionForm ℓ U (fluxField B)) = 0 ↔ VacuumField U B
+theorem integral_liftInner_hymLiftCircle (B : Space → Space) (Ω : Set Space) :
+    ∫ p in Ω ×ˢ univ, liftInner (hymLiftCircle ℓ (fluxField B) p) (...) = 2 * ℓ * ∫ x in Ω, ‖B x‖ ^ 2
+-- Not in Lean: the complex structure, the line bundle and its Chern class, Yang–Mills
+-- minimality (TauCeti has no bundle-from-curvature construction or Chern class).
 ```
 
 ## Net toroidal current, Ampère's law and the current-free condition (contract clause C1)
@@ -851,8 +858,21 @@ theorem lorentzOrbit_iff_emHamilton (hm : m ≠ 0) (hA : Differentiable ℝ A)
       ∀ t, HasDerivAt (canonicalCurve m q A x v)
         (hamiltonianVectorField (emHamiltonian m q A Φ) (canonicalCurve m q A x v t)) t
 theorem emHamiltonian_conserved ... : emHamiltonian m q A Φ (z s) = emHamiltonian m q A Φ (z t)
--- The Lorentz equations and Hamilton's equations are equivalent. Not proved: existence of
--- integral curves, time-dependent potentials, the bundled symplectomorphism.
+-- The Lorentz equations and Hamilton's equations are equivalent.
+-- E × B drift, existence and uniqueness (PlasmaLean/Theory/Kinetic/CrossedFieldOrbit.lean):
+def driftVelocity (E₀ B₀ : ℝ) : Space := -(E₀ / B₀) • coordVec 1      -- (E × B)/|B|²
+theorem crossedField_orbit (hm : m ≠ 0) (hq : q ≠ 0) (hB : B₀ ≠ 0) (E₀ : ℝ) (X : Space)
+    (a b w : ℝ) :
+    LorentzOrbit m q (fun _ => E₀ • coordVec 0) (fun _ => B₀ • coordVec 2)
+      (crossedPosition m q E₀ B₀ X a b w) (crossedVelocity m q E₀ B₀ a b w)
+theorem crossedPosition_period ... :   -- per gyro-period the position advances by
+    crossedPosition ... (t + 2π/Ω) = crossedPosition ... t + (2π/Ω) • (driftVelocity E₀ B₀ + w • e_z)
+theorem lorentzOrbit_unique (hm : m ≠ 0) (hA : ContDiff ℝ 2 A) (hcurl : ∀ y, B y = fieldCurl A y)
+    (hE : ContDiff ℝ 1 E) (hΦ : IsPotential Φ E) ... : x₁ = x₂ ∧ v₁ = v₂
+theorem lorentzOrbit_existsUnique_uniform (hm : m ≠ 0) (q : ℝ) (Ev Bv x₀ v₀ : Space) :
+    ∃ x v, LorentzOrbit m q (fun _ => Ev) (fun _ => Bv) x v ∧ x 0 = x₀ ∧ v 0 = v₀ ∧ (unique)
+-- Not proved: global existence for a general vector potential with an electric field;
+-- time-dependent potentials; the bundled symplectomorphism.
 ```
 
 ## Omnigeneity and the second adiabatic invariant J∥

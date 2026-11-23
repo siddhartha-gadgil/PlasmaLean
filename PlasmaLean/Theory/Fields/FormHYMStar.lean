@@ -62,11 +62,11 @@ not formalized.
 
 ## What is not proved
 
-* Smoothness and closedness of `hymLiftCircleForm` as a form on the manifold
-  `ℝ³ × AddCircle ℓ` (in terms of TauCeti's `mextDeriv`). Closedness is known upstairs only:
-  `extDeriv_hymLift_eq_zero_iff` on `ℝ³ × ℝ`.
+* In this file, smoothness and closedness of `hymLiftCircleForm` as a form on the manifold
+  `ℝ³ × AddCircle ℓ`, and the energy identity `∫|ℱ|² = 2ℓ ∫|B|²`: both are in
+  `Theory/Fields/FormHYMCircle`.
 * The complex structure, the type `(1,1)` and primitivity statements, the line bundle and its
-  Chern class, the energy identity `∫|ℱ|² = 2ℓ ∫|B|²` and Yang–Mills minimality.
+  Chern class, and Yang–Mills minimality.
 * A Hodge star in degrees other than two, or for a metric other than the product Euclidean
   one.
 -/
