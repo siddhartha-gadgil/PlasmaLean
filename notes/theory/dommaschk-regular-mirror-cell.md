@@ -1,5 +1,7 @@
 # Two regular mirrors and a prescribed action on a Dommaschk launch cell
 
+[N-59](dommaschk-phase-faces.md) checks the two radial faces on six launch sectors.
+
 ## Metadata
 
 | Field | Value |

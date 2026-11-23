@@ -1,0 +1,653 @@
+{
+  "status": "Externally checked interval inequalities for the physical candidate on two phase sectors. No Lean certificate for candidate arithmetic.",
+  "model": "N-54 one-way longitudinal mirror action j, actual Dommaschk field, launch chart C+u(A-C) at theta=0 with Q-16 profile errors",
+  "units": "Candidate dimensionless length and field strength. Section is in multiples of pi/2, launch width and root brackets in geometric radians. Cutoffs are measured from the fixed section after transfer.",
+  "scaling": "Divide transfer integer bounds by transfer.denominator. Divide crossing radius, slope and defect numerators by trajectory_denominator. The derivative is outward d|B|^2/d|phi|, defect is evaluated in moving frame coordinates. The radii bound Euclidean physical (R,z) error. Actions and margins are exact rational strings.",
+  "method": "Centred field-strength polynomial, two simple first mirrors and clipped action at each height, continuous affine variational frame with dyadic endpoints. Positive strict face margin gives the same ordering throughout the height interval by monotonicity.",
+  "limitations": "Face radii at the indicated phases only. A phase half-width of 1/128 did not validate the conjunction at either section and 1/64 time step. Wider coverage, identification across the radial interior and a physical transport claim remain open.",
+  "candidate_file_sha256": "9bd100ec63244c0980856a3633188f7bebcbb28b7a96417e2931210583bcb646",
+  "profiles": {
+    "C": {
+      "seed_json_sha256": "ef91ae1b34333fd4b43ffbfb1d73ceda500ac3fecae1eb4cde320319497276c2",
+      "packed_lean_sha256": "691a12a2723954263e567ba7cdf198e6f0c10e6bdccac2a54e73ca8c7874bde4"
+    },
+    "A": {
+      "seed_json_sha256": "b2524e61c865759436434df012a2727febd5bc73347c0412c493efc73404c5ac",
+      "packed_lean_sha256": "d1c57b90b04d513eb5dc53c00004be612e4b09059e0a4f27394bf47ca917abf4"
+    }
+  },
+  "numpy": "2.5.4",
+  "scipy": "1.18.1",
+  "runs": [
+    {
+      "command": "env OPENBLAS_NUM_THREADS=1 .venv-ws/bin/python scripts/dommaschk_kam/bounce_phase_faces.py --section 0 --u 11/25 --compensated --framed --alpha-half-width 1/1024 --step 1/64 --limit 6 --panels 8",
+      "result": {
+        "step": "1/64",
+        "panels_per_step": 8,
+        "crossings": [
+          {
+            "direction": -1,
+            "steps": 323,
+            "max_radius_numerator": 18229711067162424648,
+            "max_trial_numerator": 36433305791040198866,
+            "max_defect_numerator": 18855437743496,
+            "brackets": [
+              [
+                "313/64",
+                "315/64"
+              ],
+              [
+                "319/64",
+                "161/32"
+              ]
+            ],
+            "outward_B2_slope_lower_numerators": [
+              13672972569995120564275,
+              8014329776710755969081
+            ],
+            "band_slope_lower_numerator": 8014329776710755969081,
+            "success": true
+          },
+          {
+            "direction": 1,
+            "steps": 323,
+            "max_radius_numerator": 18229711067162424641,
+            "max_trial_numerator": 36433305791040198857,
+            "max_defect_numerator": 18855437743494,
+            "brackets": [
+              [
+                "313/64",
+                "315/64"
+              ],
+              [
+                "319/64",
+                "161/32"
+              ]
+            ],
+            "outward_B2_slope_lower_numerators": [
+              13672972569995120564328,
+              8014329776710755968766
+            ],
+            "band_slope_lower_numerator": 8014329776710755968766,
+            "success": true
+          }
+        ],
+        "trajectory_denominator": 1208925819614629174706176,
+        "target": "6799610938322487/5000000000000000",
+        "heights": [
+          "5297961656084411/5000000000000000",
+          "5300546391395933/5000000000000000"
+        ],
+        "cutoff_abs_phi": [
+          [
+            "315/64",
+            "161/32"
+          ],
+          [
+            "315/64",
+            "161/32"
+          ]
+        ],
+        "action_bounds": [
+          [
+            "1475689351120225381/1152921504606846976",
+            "1493687650066601897/1152921504606846976"
+          ],
+          [
+            "762475956686055529/576460752303423488",
+            "771778766855876481/576460752303423488"
+          ]
+        ],
+        "section_in_half_pi": 0,
+        "face_u": "11/25",
+        "compensated": true,
+        "framed": true,
+        "defect_coordinates": "moving frame",
+        "phase_half_width": "1/1024",
+        "transfer": {
+          "denominator": 4503599627370496,
+          "trial_numerators": [
+            43980465112,
+            43980465112
+          ],
+          "residual_numerators": [
+            2952653976013,
+            24732268889095
+          ],
+          "transfer_error_numerators": [
+            2883451149,
+            24152606338
+          ],
+          "B_upper_numerator": 4704907769638232,
+          "Bphi_lower_numerator": 4689023572992777
+        },
+        "strict_face_margin": "1855926592913383101775691967/87960930222080000000000000000"
+      }
+    },
+    {
+      "command": "env OPENBLAS_NUM_THREADS=1 .venv-ws/bin/python scripts/dommaschk_kam/bounce_phase_faces.py --section 0 --u 27/50 --compensated --framed --alpha-half-width 1/1024 --step 1/64 --limit 6 --panels 8",
+      "result": {
+        "step": "1/64",
+        "panels_per_step": 8,
+        "crossings": [
+          {
+            "direction": -1,
+            "steps": 340,
+            "max_radius_numerator": 18622766848515358645,
+            "max_trial_numerator": 37218860256481440657,
+            "max_defect_numerator": 16373857976436,
+            "brackets": [
+              [
+                "81/16",
+                "41/8"
+              ],
+              [
+                "337/64",
+                "339/64"
+              ]
+            ],
+            "outward_B2_slope_lower_numerators": [
+              4776938804051884456213,
+              7375384065291623141714
+            ],
+            "band_slope_lower_numerator": 4273520039569522406724,
+            "success": true
+          },
+          {
+            "direction": 1,
+            "steps": 340,
+            "max_radius_numerator": 18622766848515358673,
+            "max_trial_numerator": 37218860256481440714,
+            "max_defect_numerator": 16373857976439,
+            "brackets": [
+              [
+                "81/16",
+                "41/8"
+              ],
+              [
+                "337/64",
+                "339/64"
+              ]
+            ],
+            "outward_B2_slope_lower_numerators": [
+              4776938804051884453854,
+              7375384065291623140601
+            ],
+            "band_slope_lower_numerator": 4273520039569522405582,
+            "success": true
+          }
+        ],
+        "trajectory_denominator": 1208925819614629174706176,
+        "target": "6799610938322487/5000000000000000",
+        "heights": [
+          "5297961656084411/5000000000000000",
+          "5300546391395933/5000000000000000"
+        ],
+        "cutoff_abs_phi": [
+          [
+            "41/8",
+            "339/64"
+          ],
+          [
+            "41/8",
+            "339/64"
+          ]
+        ],
+        "action_bounds": [
+          [
+            "98182741507696719/72057594037927936",
+            "1590366816820758583/1152921504606846976"
+          ],
+          [
+            "1626833592143724051/1152921504606846976",
+            "1646890868796031093/1152921504606846976"
+          ]
+        ],
+        "section_in_half_pi": 0,
+        "face_u": "27/50",
+        "compensated": true,
+        "framed": true,
+        "defect_coordinates": "moving frame",
+        "phase_half_width": "1/1024",
+        "transfer": {
+          "denominator": 4503599627370496,
+          "trial_numerators": [
+            43980465112,
+            43980465112
+          ],
+          "residual_numerators": [
+            2943213044424,
+            25198685362900
+          ],
+          "transfer_error_numerators": [
+            2874231489,
+            24608091175
+          ],
+          "B_upper_numerator": 4699695427526649,
+          "Bphi_lower_numerator": 4683767543414078
+        },
+        "strict_face_margin": "28994840362169714054161551/10995116277760000000000000000"
+      }
+    },
+    {
+      "command": "env OPENBLAS_NUM_THREADS=1 .venv-ws/bin/python scripts/dommaschk_kam/bounce_phase_faces.py --section 0 --u 11/25 --compensated --framed --alpha-half-width 1/1024 --step 1/128 --limit 6 --panels 8",
+      "result": {
+        "step": "1/128",
+        "panels_per_step": 8,
+        "crossings": [
+          {
+            "direction": -1,
+            "steps": 644,
+            "max_radius_numerator": 16908591190211050299,
+            "max_trial_numerator": 33808433729952738101,
+            "max_defect_numerator": 32865857874576,
+            "brackets": [
+              [
+                "313/64",
+                "315/64"
+              ],
+              [
+                "639/128",
+                "643/128"
+              ]
+            ],
+            "outward_B2_slope_lower_numerators": [
+              13847116817581886503286,
+              8599042117440945226529
+            ],
+            "band_slope_lower_numerator": 8599042117440945226529,
+            "success": true
+          },
+          {
+            "direction": 1,
+            "steps": 644,
+            "max_radius_numerator": 16908591190211050294,
+            "max_trial_numerator": 33808433729952738091,
+            "max_defect_numerator": 32865857874564,
+            "brackets": [
+              [
+                "313/64",
+                "315/64"
+              ],
+              [
+                "639/128",
+                "643/128"
+              ]
+            ],
+            "outward_B2_slope_lower_numerators": [
+              13847116817581886504750,
+              8599042117440945227327
+            ],
+            "band_slope_lower_numerator": 8599042117440945227327,
+            "success": true
+          }
+        ],
+        "trajectory_denominator": 1208925819614629174706176,
+        "target": "6799610938322487/5000000000000000",
+        "heights": [
+          "5297961656084411/5000000000000000",
+          "5300546391395933/5000000000000000"
+        ],
+        "cutoff_abs_phi": [
+          [
+            "315/64",
+            "643/128"
+          ],
+          [
+            "315/64",
+            "643/128"
+          ]
+        ],
+        "action_bounds": [
+          [
+            "1477998491148184679/1152921504606846976",
+            "2982708041476844651/2305843009213693952"
+          ],
+          [
+            "1527340792581193969/1152921504606846976",
+            "3082277323953502509/2305843009213693952"
+          ]
+        ],
+        "section_in_half_pi": 0,
+        "face_u": "11/25",
+        "compensated": true,
+        "framed": true,
+        "defect_coordinates": "moving frame",
+        "phase_half_width": "1/1024",
+        "transfer": {
+          "denominator": 4503599627370496,
+          "trial_numerators": [
+            43980465112,
+            43980465112
+          ],
+          "residual_numerators": [
+            2952653976013,
+            24732268889095
+          ],
+          "transfer_error_numerators": [
+            2883451149,
+            24152606338
+          ],
+          "B_upper_numerator": 4704907769638232,
+          "Bphi_lower_numerator": 4689023572992777
+        },
+        "strict_face_margin": "8161887443126221463499252243/351843720888320000000000000000"
+      }
+    },
+    {
+      "command": "env OPENBLAS_NUM_THREADS=1 .venv-ws/bin/python scripts/dommaschk_kam/bounce_phase_faces.py --section 0 --u 27/50 --compensated --framed --alpha-half-width 1/1024 --step 1/128 --limit 6 --panels 8",
+      "result": {
+        "step": "1/128",
+        "panels_per_step": 8,
+        "crossings": [
+          {
+            "direction": -1,
+            "steps": 678,
+            "max_radius_numerator": 17287221222016200194,
+            "max_trial_numerator": 34565445161341590600,
+            "max_defect_numerator": 27823565316720,
+            "brackets": [
+              [
+                "649/128",
+                "327/64"
+              ],
+              [
+                "337/64",
+                "677/128"
+              ]
+            ],
+            "outward_B2_slope_lower_numerators": [
+              5282176692175343110373,
+              7734161771348925291967
+            ],
+            "band_slope_lower_numerator": 4596525059267357689416,
+            "success": true
+          },
+          {
+            "direction": 1,
+            "steps": 678,
+            "max_radius_numerator": 17287221222016200229,
+            "max_trial_numerator": 34565445161341590666,
+            "max_defect_numerator": 27823565316707,
+            "brackets": [
+              [
+                "649/128",
+                "327/64"
+              ],
+              [
+                "337/64",
+                "677/128"
+              ]
+            ],
+            "outward_B2_slope_lower_numerators": [
+              5282176692175343107055,
+              7734161771348925289524
+            ],
+            "band_slope_lower_numerator": 4596525059267357686323,
+            "success": true
+          }
+        ],
+        "trajectory_denominator": 1208925819614629174706176,
+        "target": "6799610938322487/5000000000000000",
+        "heights": [
+          "5297961656084411/5000000000000000",
+          "5300546391395933/5000000000000000"
+        ],
+        "cutoff_abs_phi": [
+          [
+            "327/64",
+            "677/128"
+          ],
+          [
+            "327/64",
+            "677/128"
+          ]
+        ],
+        "action_bounds": [
+          [
+            "196673816256000185/144115188075855872",
+            "396966816175944653/288230376151711744"
+          ],
+          [
+            "3258795032080886689/2305843009213693952",
+            "3288615092900479683/2305843009213693952"
+          ]
+        ],
+        "section_in_half_pi": 0,
+        "face_u": "27/50",
+        "compensated": true,
+        "framed": true,
+        "defect_coordinates": "moving frame",
+        "phase_half_width": "1/1024",
+        "transfer": {
+          "denominator": 4503599627370496,
+          "trial_numerators": [
+            43980465112,
+            43980465112
+          ],
+          "residual_numerators": [
+            2943213044424,
+            25198685362900
+          ],
+          "transfer_error_numerators": [
+            2874231489,
+            24608091175
+          ],
+          "B_upper_numerator": 4699695427526649,
+          "Bphi_lower_numerator": 4683767543414078
+        },
+        "strict_face_margin": "105037599518093547981369977/21990232555520000000000000000"
+      }
+    },
+    {
+      "command": "env OPENBLAS_NUM_THREADS=1 .venv-ws/bin/python scripts/dommaschk_kam/bounce_phase_faces.py --section 1 --u 11/25 --compensated --framed --alpha-half-width 1/512 --step 1/64 --limit 6 --panels 8",
+      "result": {
+        "step": "1/64",
+        "panels_per_step": 8,
+        "crossings": [
+          {
+            "direction": -1,
+            "steps": 329,
+            "max_radius_numerator": 44975284495719006076,
+            "max_trial_numerator": 89819310166774116822,
+            "max_defect_numerator": 26775130881578,
+            "brackets": [
+              [
+                "159/32",
+                "321/64"
+              ],
+              [
+                "81/16",
+                "41/8"
+              ]
+            ],
+            "outward_B2_slope_lower_numerators": [
+              12946152248288821627896,
+              7409830465043756790755
+            ],
+            "band_slope_lower_numerator": 7409830465043756790755,
+            "success": true
+          },
+          {
+            "direction": 1,
+            "steps": 329,
+            "max_radius_numerator": 44975283588159944682,
+            "max_trial_numerator": 89819308220743800518,
+            "max_defect_numerator": 26009921126317,
+            "brackets": [
+              [
+                "159/32",
+                "321/64"
+              ],
+              [
+                "81/16",
+                "41/8"
+              ]
+            ],
+            "outward_B2_slope_lower_numerators": [
+              12946152198624697196103,
+              7409830400541723278305
+            ],
+            "band_slope_lower_numerator": 7409830400541723278305,
+            "success": true
+          }
+        ],
+        "trajectory_denominator": 1208925819614629174706176,
+        "target": "6799610938322487/5000000000000000",
+        "heights": [
+          "5297961656084411/5000000000000000",
+          "5300546391395933/5000000000000000"
+        ],
+        "cutoff_abs_phi": [
+          [
+            "321/64",
+            "41/8"
+          ],
+          [
+            "321/64",
+            "41/8"
+          ]
+        ],
+        "action_bounds": [
+          [
+            "185029757926341965/144115188075855872",
+            "3018092745893091297/2305843009213693952"
+          ],
+          [
+            "3064670983660628881/2305843009213693952",
+            "3124602604406550777/2305843009213693952"
+          ]
+        ],
+        "section_in_half_pi": 1,
+        "face_u": "11/25",
+        "compensated": true,
+        "framed": true,
+        "defect_coordinates": "moving frame",
+        "phase_half_width": "1/512",
+        "transfer": {
+          "denominator": 4503599627370496,
+          "trial_numerators": [
+            87960930223,
+            87960930223
+          ],
+          "residual_numerators": [
+            15595408078751,
+            23554956483123
+          ],
+          "transfer_error_numerators": [
+            30459781404,
+            46005774382
+          ],
+          "B_upper_numerator": 4708081502383726,
+          "Bphi_lower_numerator": 4656944602605394
+        },
+        "strict_face_margin": "1703562178684041898069564743/351843720888320000000000000000"
+      }
+    },
+    {
+      "command": "env OPENBLAS_NUM_THREADS=1 .venv-ws/bin/python scripts/dommaschk_kam/bounce_phase_faces.py --section 1 --u 27/50 --compensated --framed --alpha-half-width 1/512 --step 1/64 --limit 6 --panels 8",
+      "result": {
+        "step": "1/64",
+        "panels_per_step": 8,
+        "crossings": [
+          {
+            "direction": -1,
+            "steps": 340,
+            "max_radius_numerator": 50454042708962440978,
+            "max_trial_numerator": 100671318371836808710,
+            "max_defect_numerator": 18625013361039,
+            "brackets": [
+              [
+                "41/8",
+                "333/64"
+              ],
+              [
+                "335/64",
+                "339/64"
+              ]
+            ],
+            "outward_B2_slope_lower_numerators": [
+              6382438895587367355892,
+              9335788429434931966122
+            ],
+            "band_slope_lower_numerator": 6382438895587367355892,
+            "success": true
+          },
+          {
+            "direction": 1,
+            "steps": 340,
+            "max_radius_numerator": 50454039240990093643,
+            "max_trial_numerator": 100671311185470727618,
+            "max_defect_numerator": 22354789595713,
+            "brackets": [
+              [
+                "41/8",
+                "333/64"
+              ],
+              [
+                "335/64",
+                "339/64"
+              ]
+            ],
+            "outward_B2_slope_lower_numerators": [
+              6382439084064025498091,
+              9335788699062757618924
+            ],
+            "band_slope_lower_numerator": 6382439084064025498091,
+            "success": true
+          }
+        ],
+        "trajectory_denominator": 1208925819614629174706176,
+        "target": "6799610938322487/5000000000000000",
+        "heights": [
+          "5297961656084411/5000000000000000",
+          "5300546391395933/5000000000000000"
+        ],
+        "cutoff_abs_phi": [
+          [
+            "333/64",
+            "339/64"
+          ],
+          [
+            "333/64",
+            "339/64"
+          ]
+        ],
+        "action_bounds": [
+          [
+            "789858982546081199/576460752303423488",
+            "1610754434170078783/1152921504606846976"
+          ],
+          [
+            "816751603887409031/576460752303423488",
+            "3331541008854869291/2305843009213693952"
+          ]
+        ],
+        "section_in_half_pi": 1,
+        "face_u": "27/50",
+        "compensated": true,
+        "framed": true,
+        "defect_coordinates": "moving frame",
+        "phase_half_width": "1/512",
+        "transfer": {
+          "denominator": 4503599627370496,
+          "trial_numerators": [
+            87960930223,
+            87960930223
+          ],
+          "residual_numerators": [
+            15286606896040,
+            23759808636202
+          ],
+          "transfer_error_numerators": [
+            29856654094,
+            46405876243
+          ],
+          "B_upper_numerator": 4702811902920008,
+          "Bphi_lower_numerator": 4652619022964030
+        },
+        "strict_face_margin": "902895381299983292267276783/87960930222080000000000000000"
+      }
+    }
+  ]
+}

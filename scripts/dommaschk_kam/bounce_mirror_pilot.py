@@ -130,14 +130,17 @@ def polynomial_data():
     return data
 
 
-def angle_models(center, half_step, alpha_width):
-    """Actual angle is center + half_step*s + alpha, with |alpha| <= alpha_width."""
+def angle_models(center, half_step, alpha_width, origin=()):
+    """Enclose harmonics about origin + center, with jitter at most alpha_width."""
     angles = [ONE]
     for k in range(1,4):
         # Range reduction by exact doubling avoids Taylor evaluation at large angles.
         c,s = trig_center(2*k*center/64)
         for _ in range(6):
             c,s = c*c-s*s, Box(2*S,2*S)*c*s
+        if origin:
+            co, si = origin[k-1]
+            c, s = co*c-si*s, si*c+co*s
         phase = [Model.box(c), Model.box(s), -Model.box(c), -Model.box(s)]
         w = 2*k*half_step
         for initial in (1,0):
@@ -318,6 +321,7 @@ class MirrorSegment:
     outgoing_radius: int
     trial_radius: int
     defect: F
+    origin: tuple = ()
 
     def models(self, low=F(-1), high=F(1)):
         """Return ([R,z], harmonics) on the whole slab. Each Model is independent."""
@@ -328,7 +332,7 @@ class MirrorSegment:
             nominal_tube = [x.restrict(low,high) for x in nominal_tube]
             center += half*(F(low)+high)/2
             half *= (F(high)-low)/2
-        angles = angle_models(center,half,self.alpha_width)
+        angles = angle_models(center,half,self.alpha_width,self.origin)
         return nominal_tube,angles
 
     def fields(self, data, low=F(-1), high=F(1)):
@@ -337,7 +341,7 @@ class MirrorSegment:
         return tube,angles,[evaluate(g[0],tube,angles)[0] for g in data]
 
 
-def certified_segments(data, seed, ev, init, sign, dt, count, alpha_width):
+def certified_segments(data, seed, ev, init, sign, dt, count, alpha_width, origin=()):
     """Yield immutable proof records in increasing outward angle, including every accepted slab."""
     if sign not in (-1,1) or dt<=0 or count<=0:
         raise ValueError('a direction, positive step, and positive count are required')
@@ -345,7 +349,7 @@ def certified_segments(data, seed, ev, init, sign, dt, count, alpha_width):
     radius = isqrt(sum(x.e*x.e for x in seed))+1
     for i,nominal in enumerate(proposals(ev,init,sign,dt,count)):
         radius += isqrt(sum((x.endpoint(-1)-y)**2 for x,y in zip(nominal,previous)))+1
-        angles = angle_models(sign*(i+F(1,2))*dt,sign*dt/2,alpha_width)
+        angles = angle_models(sign*(i+F(1,2))*dt,sign*dt/2,alpha_width,origin)
         trial = max(2*radius,ceil(F(1,10**10)*SCALE))
         for _ in range(5):
             final,defect,_,_ = radius_check(data,angles,nominal,radius,dt,sign,trial)
@@ -355,12 +359,12 @@ def certified_segments(data, seed, ev, init, sign, dt, count, alpha_width):
         else:
             raise ArithmeticError(f'bootstrap failed at step {i}')
         yield MirrorSegment(i,sign,dt,alpha_width,tuple(tuple(x.a) for x in nominal),
-                            radius,final,trial,defect)
+                            radius,final,trial,defect,origin)
         previous = [x.endpoint(1) for x in nominal]
         radius = final
 
 
-def check_crossings(data, segments):
+def check_crossings(data, segments, geometry_on=geometry):
     """Prove both first-root brackets and the signed derivative throughout the height band."""
     max_radius, max_trial, max_defect = 0,0,F(0)
     first = [None,None]
@@ -374,13 +378,13 @@ def check_crossings(data, segments):
             raise ValueError('a single contiguous direction from the launch is required')
         expected,step,direction = i+1,dt,sign
         tube,angles,val = segment.fields(data)
-        gaps,_ = geometry(data,angles,tube,val,None,sign,False)
+        gaps,_ = geometry_on(data,angles,tube,val,None,sign,False)
         if i == 0 and gaps[0][1]>=0:
             raise ArithmeticError('initial fully allowed slab not verified')
         slope = None
         if gaps[0][1]>=0 and gaps[1][0]<=0:
             grad = [[evaluate(p,tube,angles)[0] for p in g[1:]] for g in data]
-            _,slope = geometry(data,angles,tube,val,grad,sign,True)
+            _,slope = geometry_on(data,angles,tube,val,grad,sign,True)
             band_slope = slope[0] if band_slope is None else min(band_slope,slope[0])
         for j,(lo,hi) in enumerate(gaps):
             if hi<0:

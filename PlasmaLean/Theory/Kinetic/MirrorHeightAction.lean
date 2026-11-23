@@ -27,7 +27,7 @@ namespace PlasmaLean.Kinetic.MirrorHeightAction
 
 /-- The real square root vanishes on negative arguments. Multiplication by the arclength
 density expresses the dimensionless longitudinal action in the supplied trace parameter. -/
-def action (f w : ℝ → ℝ) (a b h : ℝ) : ℝ :=
+@[expose] def action (f w : ℝ → ℝ) (a b h : ℝ) : ℝ :=
   ∫ t in a..b, w t * √(2 * (h - f t))
 
 /-- On a fixed finite bracket, the action is continuous at every height. -/

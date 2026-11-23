@@ -82,3 +82,4 @@ Phase 8 (kam-route.md, finite-beta-stellarator.md):
 - [Dommaschk launch flux and field-line enclosure](dommaschk-launch-collar.md) (N-56, Q-35). Continuum launch and two-sided field checks, with Lean flux and ODE-step theorems.
 - [A regular Dommaschk mirror cell at prescribed action](dommaschk-regular-mirror-cell.md) (N-57, Q-35). Verified general arclength, trajectory and action theorems; externally enclosed turning points and action on a positive-width cell.
 - [Action bounds on two radial faces](action-faces-and-winding.md) (N-58, Q-1, Q-35). Finite-time confinement from boundary values and an action budget. Positive orientation on the target level gives winding graphs.
+- [Action bounds on six Dommaschk launch sectors](dommaschk-phase-faces.md) (N-59, Q-35). Externally checked face margins, a verified moving-frame estimator and launch-well action bounds.

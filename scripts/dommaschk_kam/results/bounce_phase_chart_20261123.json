@@ -1,0 +1,1019 @@
+{
+  "description": "External directed-interval bounds for the two radial faces on four additional phase sectors, rational phase-chart coordinate t=1/2. The general field and seed identification is the one used in bounce_phase_faces_20261123.json.",
+  "reproduce": "Run OPENBLAS_NUM_THREADS=1 .venv-ws/bin/python scripts/dommaschk_kam/bounce_phase_chart.py --framed --quadrant Q --center T --alpha-half-width W, adding --face-only for the one-sided action envelope. Each face uses the step and number of panels recorded below.",
+  "failed_wider_face_test": "At half-width 1/256 the core/cap test at quadrants 0 and 3 returned negative margins on both faces. This width is unresolved.",
+  "angle": "phi_center=q*pi/4+atan(t); widths are geometric radians on either side",
+  "heights": "Low height and high height are in each face record. Only the lower bound at the outer face and the upper bound at the inner face are needed.",
+  "records": [
+    {
+      "quadrant": 0,
+      "chart_center": "1/2",
+      "phase_half_width": "1/1024",
+      "framed": true,
+      "trace_limit": "49/8",
+      "trajectory_denominator": 1208925819614629174706176,
+      "faces": [
+        {
+          "step": "1/64",
+          "panels_per_step": 8,
+          "crossings": [
+            {
+              "direction": -1,
+              "steps": 326,
+              "max_radius_numerator": 21242923613976370552,
+              "max_trial_numerator": 42453635276006136324,
+              "max_defect_numerator": 12095570284882,
+              "brackets": [
+                [
+                  "315/64",
+                  "319/64"
+                ],
+                [
+                  "321/64",
+                  "325/64"
+                ]
+              ],
+              "outward_B2_slope_lower_numerators": [
+                10621098433740867053170,
+                10600276181675517545782
+              ],
+              "band_slope_lower_numerator": 10561724046962263487327,
+              "success": true
+            },
+            {
+              "direction": 1,
+              "steps": 333,
+              "max_radius_numerator": 18647171593348158292,
+              "max_trial_numerator": 37263268258919391763,
+              "max_defect_numerator": 12604387261621,
+              "brackets": [
+                [
+                  "163/32",
+                  "41/8"
+                ],
+                [
+                  "331/64",
+                  "83/16"
+                ]
+              ],
+              "outward_B2_slope_lower_numerators": [
+                14785969419626901033993,
+                18038442741664920937617
+              ],
+              "band_slope_lower_numerator": 14785969419626901033993,
+              "success": true
+            }
+          ],
+          "trajectory_denominator": 1208925819614629174706176,
+          "target": "6799610938322487/5000000000000000",
+          "heights": [
+            "5297961656084411/5000000000000000",
+            "5300546391395933/5000000000000000"
+          ],
+          "cutoff_abs_phi": [
+            [
+              "319/64",
+              "325/64"
+            ],
+            [
+              "41/8",
+              "83/16"
+            ]
+          ],
+          "action_bounds": [
+            [
+              "1491826769567972489/1152921504606846976",
+              "3023508454373665221/2305843009213693952"
+            ],
+            [
+              "3086611252592405129/2305843009213693952",
+              "3054023537011303/2251799813685248"
+            ]
+          ],
+          "face_u": "11/25",
+          "transfer": {
+            "denominator": 4503599627370496,
+            "trial_numerators": [
+              43980465112,
+              43980465112
+            ],
+            "residual_numerators": [
+              5541053242440,
+              29043947315604
+            ],
+            "transfer_error_numerators": [
+              5411184808,
+              28363229801
+            ],
+            "B_upper_numerator": 4704151123254241,
+            "Bphi_lower_numerator": 4676297449539867
+          },
+          "strict_face_margin": "1258696258246934709428057/343597383680000000000000000"
+        },
+        {
+          "step": "1/64",
+          "panels_per_step": 8,
+          "crossings": [
+            {
+              "direction": -1,
+              "steps": 334,
+              "max_radius_numerator": 21726680325716114402,
+              "max_trial_numerator": 43420197803003311522,
+              "max_defect_numerator": 12348945412433,
+              "brackets": [
+                [
+                  "81/16",
+                  "41/8"
+                ],
+                [
+                  "165/32",
+                  "333/64"
+                ]
+              ],
+              "outward_B2_slope_lower_numerators": [
+                11443837537693939578353,
+                14230977340807795185684
+              ],
+              "band_slope_lower_numerator": 11443837537693939578353,
+              "success": true
+            },
+            {
+              "direction": 1,
+              "steps": 339,
+              "max_radius_numerator": 18872178674870393176,
+              "max_trial_numerator": 37713323333591643389,
+              "max_defect_numerator": 17033927283175,
+              "brackets": [
+                [
+                  "333/64",
+                  "167/32"
+                ],
+                [
+                  "337/64",
+                  "169/32"
+                ]
+              ],
+              "outward_B2_slope_lower_numerators": [
+                19516078047004645692615,
+                20723455843565300081448
+              ],
+              "band_slope_lower_numerator": 19516078047004645692615,
+              "success": true
+            }
+          ],
+          "trajectory_denominator": 1208925819614629174706176,
+          "target": "6799610938322487/5000000000000000",
+          "heights": [
+            "5297961656084411/5000000000000000",
+            "5300546391395933/5000000000000000"
+          ],
+          "cutoff_abs_phi": [
+            [
+              "41/8",
+              "333/64"
+            ],
+            [
+              "167/32",
+              "169/32"
+            ]
+          ],
+          "action_bounds": [
+            [
+              "794595734599563663/576460752303423488",
+              "3219312095278269065/2305843009213693952"
+            ],
+            [
+              "3279658750425682175/2305843009213693952",
+              "3320372238616865421/2305843009213693952"
+            ]
+          ],
+          "face_u": "27/50",
+          "transfer": {
+            "denominator": 4503599627370496,
+            "trial_numerators": [
+              43980465112,
+              43980465112
+            ],
+            "residual_numerators": [
+              5570386678105,
+              29478510677048
+            ],
+            "transfer_error_numerators": [
+              5439830741,
+              28787608084
+            ],
+            "B_upper_numerator": 4699071958459046,
+            "Bphi_lower_numerator": 4671441884934373
+          },
+          "strict_face_margin": "1625666385554509659454776783/87960930222080000000000000000"
+        }
+      ],
+      "face_only": false
+    },
+    {
+      "quadrant": 1,
+      "chart_center": "1/2",
+      "phase_half_width": "1/4096",
+      "framed": true,
+      "trace_limit": "49/8",
+      "trajectory_denominator": 1208925819614629174706176,
+      "faces": [
+        {
+          "step": "1/64",
+          "panels_per_step": 8,
+          "crossings": [
+            {
+              "direction": -1,
+              "steps": 326,
+              "max_radius_numerator": 4844237619338422004,
+              "max_trial_numerator": 9673764328574539496,
+              "max_defect_numerator": 19071976826311,
+              "brackets": [
+                [
+                  "321/64",
+                  "161/32"
+                ],
+                [
+                  "81/16",
+                  "325/64"
+                ]
+              ],
+              "outward_B2_slope_lower_numerators": [
+                22682093481347168866778,
+                22066383231334693769308
+              ],
+              "band_slope_lower_numerator": 22066383231334693769308,
+              "success": true
+            },
+            {
+              "direction": 1,
+              "steps": 327,
+              "max_radius_numerator": 3434755723292359959,
+              "max_trial_numerator": 6865964993673142108,
+              "max_defect_numerator": 18007331140611,
+              "brackets": [
+                [
+                  "159/32",
+                  "319/64"
+                ],
+                [
+                  "81/16",
+                  "163/32"
+                ]
+              ],
+              "outward_B2_slope_lower_numerators": [
+                13103285538924126384744,
+                12845380340739184251417
+              ],
+              "band_slope_lower_numerator": 12817674774004551035535,
+              "success": true
+            }
+          ],
+          "trajectory_denominator": 1208925819614629174706176,
+          "target": "6799610938322487/5000000000000000",
+          "heights": [
+            "5297961656084411/5000000000000000",
+            "5300546391395933/5000000000000000"
+          ],
+          "cutoff_abs_phi": [
+            [
+              "161/32",
+              "325/64"
+            ],
+            [
+              "319/64",
+              "163/32"
+            ]
+          ],
+          "action_bounds": [
+            [
+              "1490064584049654819/1152921504606846976",
+              "2999104599275681053/2305843009213693952"
+            ],
+            [
+              "1541503494563825067/1152921504606846976",
+              "3102490722258712767/2305843009213693952"
+            ]
+          ],
+          "face_u": "11/25",
+          "transfer": {
+            "denominator": 4503599627370496,
+            "trial_numerators": [
+              10995116278,
+              10995116278
+            ],
+            "residual_numerators": [
+              8372065855941,
+              19513942419539
+            ],
+            "transfer_error_numerators": [
+              2043961391,
+              4764146099
+            ],
+            "B_upper_numerator": 4706967955739997,
+            "Bphi_lower_numerator": 4662455074323760
+          },
+          "strict_face_margin": "5077567633371238248167220993/351843720888320000000000000000"
+        },
+        {
+          "step": "1/64",
+          "panels_per_step": 8,
+          "crossings": [
+            {
+              "direction": -1,
+              "steps": 334,
+              "max_radius_numerator": 5482379719365175525,
+              "max_trial_numerator": 10950076546278317053,
+              "max_defect_numerator": 22789069955752,
+              "brackets": [
+                [
+                  "163/32",
+                  "327/64"
+                ],
+                [
+                  "331/64",
+                  "333/64"
+                ]
+              ],
+              "outward_B2_slope_lower_numerators": [
+                19327018865706574246884,
+                4259595016945770407649
+              ],
+              "band_slope_lower_numerator": 4259595016945770407649,
+              "success": true
+            },
+            {
+              "direction": 1,
+              "steps": 336,
+              "max_radius_numerator": 3476609319653939615,
+              "max_trial_numerator": 6949694552505035921,
+              "max_defect_numerator": 22032819126009,
+              "brackets": [
+                [
+                  "41/8",
+                  "329/64"
+                ],
+                [
+                  "167/32",
+                  "335/64"
+                ]
+              ],
+              "outward_B2_slope_lower_numerators": [
+                13903691152953094481121,
+                15949794066042055657639
+              ],
+              "band_slope_lower_numerator": 13903691152953094481121,
+              "success": true
+            }
+          ],
+          "trajectory_denominator": 1208925819614629174706176,
+          "target": "6799610938322487/5000000000000000",
+          "heights": [
+            "5297961656084411/5000000000000000",
+            "5300546391395933/5000000000000000"
+          ],
+          "cutoff_abs_phi": [
+            [
+              "327/64",
+              "333/64"
+            ],
+            [
+              "329/64",
+              "335/64"
+            ]
+          ],
+          "action_bounds": [
+            [
+              "3175815023474304397/2305843009213693952",
+              "1597856992546409025/1152921504606846976"
+            ],
+            [
+              "3277809466031916589/2305843009213693952",
+              "3298558049589130103/2305843009213693952"
+            ]
+          ],
+          "face_u": "27/50",
+          "transfer": {
+            "denominator": 4503599627370496,
+            "trial_numerators": [
+              10995116278,
+              10995116278
+            ],
+            "residual_numerators": [
+              8438716117101,
+              19842218911467
+            ],
+            "transfer_error_numerators": [
+              2060233428,
+              4844291727
+            ],
+            "B_upper_numerator": 4701827463916404,
+            "Bphi_lower_numerator": 4658142978695479
+          },
+          "strict_face_margin": "6110832820668011934938247757/351843720888320000000000000000"
+        }
+      ],
+      "face_only": false
+    },
+    {
+      "quadrant": 2,
+      "chart_center": "1/2",
+      "phase_half_width": "1/4096",
+      "framed": true,
+      "trace_limit": "49/8",
+      "trajectory_denominator": 1208925819614629174706176,
+      "faces": [
+        {
+          "step": "1/64",
+          "panels_per_step": 8,
+          "crossings": [
+            {
+              "direction": -1,
+              "steps": 325,
+              "max_radius_numerator": 3649495022887847133,
+              "max_trial_numerator": 7295264036410292843,
+              "max_defect_numerator": 23079732673677,
+              "brackets": [
+                [
+                  "317/64",
+                  "159/32"
+                ],
+                [
+                  "323/64",
+                  "81/16"
+                ]
+              ],
+              "outward_B2_slope_lower_numerators": [
+                15497882726025818200505,
+                14138612747710787305723
+              ],
+              "band_slope_lower_numerator": 14138612747710787305723,
+              "success": true
+            },
+            {
+              "direction": 1,
+              "steps": 329,
+              "max_radius_numerator": 5956054587237941544,
+              "max_trial_numerator": 11898838892670988884,
+              "max_defect_numerator": 25913495497546,
+              "brackets": [
+                [
+                  "317/64",
+                  "319/64"
+                ],
+                [
+                  "81/16",
+                  "41/8"
+                ]
+              ],
+              "outward_B2_slope_lower_numerators": [
+                16632936740133824162948,
+                1039476402555188441757
+              ],
+              "band_slope_lower_numerator": 1039476402555188441757,
+              "success": true
+            }
+          ],
+          "trajectory_denominator": 1208925819614629174706176,
+          "target": "6799610938322487/5000000000000000",
+          "heights": [
+            "5297961656084411/5000000000000000",
+            "5300546391395933/5000000000000000"
+          ],
+          "cutoff_abs_phi": [
+            [
+              "159/32",
+              "81/16"
+            ],
+            [
+              "319/64",
+              "41/8"
+            ]
+          ],
+          "action_bounds": [
+            [
+              "2978751267830039757/2305843009213693952",
+              "2998135691222321915/2305843009213693952"
+            ],
+            [
+              "3080119170112311053/2305843009213693952",
+              "387610895577250747/288230376151711744"
+            ]
+          ],
+          "face_u": "11/25",
+          "transfer": {
+            "denominator": 4503599627370496,
+            "trial_numerators": [
+              10995116278,
+              10995116278
+            ],
+            "residual_numerators": [
+              9269912999089,
+              21737270266980
+            ],
+            "transfer_error_numerators": [
+              2263162354,
+              5306950749
+            ],
+            "B_upper_numerator": 4705485638596477,
+            "Bphi_lower_numerator": 4663327185115915
+          },
+          "strict_face_margin": "665281388907786140121244421/43980465111040000000000000000"
+        },
+        {
+          "step": "1/64",
+          "panels_per_step": 8,
+          "crossings": [
+            {
+              "direction": -1,
+              "steps": 335,
+              "max_radius_numerator": 3691719361327636370,
+              "max_trial_numerator": 7379737873190563610,
+              "max_defect_numerator": 16432076433026,
+              "brackets": [
+                [
+                  "327/64",
+                  "41/8"
+                ],
+                [
+                  "333/64",
+                  "167/32"
+                ]
+              ],
+              "outward_B2_slope_lower_numerators": [
+                13688733982805565093267,
+                13543499813850140509152
+              ],
+              "band_slope_lower_numerator": 13476762906792399924117,
+              "success": true
+            },
+            {
+              "direction": 1,
+              "steps": 340,
+              "max_radius_numerator": 6437860473073235267,
+              "max_trial_numerator": 12867155820140143588,
+              "max_defect_numerator": 16752096400501,
+              "brackets": [
+                [
+                  "333/64",
+                  "167/32"
+                ],
+                [
+                  "337/64",
+                  "339/64"
+                ]
+              ],
+              "outward_B2_slope_lower_numerators": [
+                10374469015378168865457,
+                19836105257949500529839
+              ],
+              "band_slope_lower_numerator": 10374469015378168865457,
+              "success": true
+            }
+          ],
+          "trajectory_denominator": 1208925819614629174706176,
+          "target": "6799610938322487/5000000000000000",
+          "heights": [
+            "5297961656084411/5000000000000000",
+            "5300546391395933/5000000000000000"
+          ],
+          "cutoff_abs_phi": [
+            [
+              "41/8",
+              "167/32"
+            ],
+            [
+              "167/32",
+              "339/64"
+            ]
+          ],
+          "action_bounds": [
+            [
+              "1588357959664502627/1152921504606846976",
+              "1599131632427019479/1152921504606846976"
+            ],
+            [
+              "3282991658152098869/2305843009213693952",
+              "1652421691160857787/1152921504606846976"
+            ]
+          ],
+          "face_u": "27/50",
+          "transfer": {
+            "denominator": 4503599627370496,
+            "trial_numerators": [
+              10995116278,
+              10995116278
+            ],
+            "residual_numerators": [
+              9348732933544,
+              22118917426519
+            ],
+            "transfer_error_numerators": [
+              2282405502,
+              5400126325
+            ],
+            "B_upper_numerator": 4700418686878165,
+            "Bphi_lower_numerator": 4659047661488703
+          },
+          "strict_face_margin": "3124149309404811097474006691/175921860444160000000000000000"
+        }
+      ],
+      "face_only": false
+    },
+    {
+      "quadrant": 3,
+      "chart_center": "1/2",
+      "phase_half_width": "1/1024",
+      "framed": true,
+      "trace_limit": "49/8",
+      "trajectory_denominator": 1208925819614629174706176,
+      "faces": [
+        {
+          "step": "1/64",
+          "panels_per_step": 8,
+          "crossings": [
+            {
+              "direction": -1,
+              "steps": 334,
+              "max_radius_numerator": 18956239411459719506,
+              "max_trial_numerator": 37887412078455286125,
+              "max_defect_numerator": 13341519535600,
+              "brackets": [
+                [
+                  "325/64",
+                  "327/64"
+                ],
+                [
+                  "83/16",
+                  "333/64"
+                ]
+              ],
+              "outward_B2_slope_lower_numerators": [
+                10843724656251963841862,
+                13387531121257238623062
+              ],
+              "band_slope_lower_numerator": 10843724656251963841862,
+              "success": true
+            },
+            {
+              "direction": 1,
+              "steps": 325,
+              "max_radius_numerator": 19411134474900974891,
+              "max_trial_numerator": 38794923697236315766,
+              "max_defect_numerator": 13533164815893,
+              "brackets": [
+                [
+                  "315/64",
+                  "159/32"
+                ],
+                [
+                  "321/64",
+                  "81/16"
+                ]
+              ],
+              "outward_B2_slope_lower_numerators": [
+                10964932901824625686281,
+                13692796813158131674140
+              ],
+              "band_slope_lower_numerator": 10964932901824625686281,
+              "success": true
+            }
+          ],
+          "trajectory_denominator": 1208925819614629174706176,
+          "target": "6799610938322487/5000000000000000",
+          "heights": [
+            "5297961656084411/5000000000000000",
+            "5300546391395933/5000000000000000"
+          ],
+          "cutoff_abs_phi": [
+            [
+              "327/64",
+              "333/64"
+            ],
+            [
+              "159/32",
+              "81/16"
+            ]
+          ],
+          "action_bounds": [
+            [
+              "2973022335314643493/2305843009213693952",
+              "3012721423897789291/2305843009213693952"
+            ],
+            [
+              "769723877375191711/576460752303423488",
+              "3118149190418217905/2305843009213693952"
+            ]
+          ],
+          "face_u": "11/25",
+          "transfer": {
+            "denominator": 4503599627370496,
+            "trial_numerators": [
+              43980465112,
+              43980465112
+            ],
+            "residual_numerators": [
+              4278222243815,
+              27525789666807
+            ],
+            "transfer_error_numerators": [
+              4177951410,
+              26880653972
+            ],
+            "B_upper_numerator": 4704549470731524,
+            "Bphi_lower_numerator": 4682059753725036
+          },
+          "strict_face_margin": "2688275006493623196897689743/351843720888320000000000000000"
+        },
+        {
+          "step": "1/64",
+          "panels_per_step": 8,
+          "crossings": [
+            {
+              "direction": -1,
+              "steps": 342,
+              "max_radius_numerator": 19313432240794945882,
+              "max_trial_numerator": 38601227204307484253,
+              "max_defect_numerator": 13098032085064,
+              "brackets": [
+                [
+                  "335/64",
+                  "21/4"
+                ],
+                [
+                  "339/64",
+                  "341/64"
+                ]
+              ],
+              "outward_B2_slope_lower_numerators": [
+                15650541491508533669178,
+                18249536472164469782239
+              ],
+              "band_slope_lower_numerator": 15650541491508533669178,
+              "success": true
+            },
+            {
+              "direction": 1,
+              "steps": 332,
+              "max_radius_numerator": 19849948551065400487,
+              "max_trial_numerator": 39671709710775747090,
+              "max_defect_numerator": 11565096956750,
+              "brackets": [
+                [
+                  "81/16",
+                  "163/32"
+                ],
+                [
+                  "329/64",
+                  "331/64"
+                ]
+              ],
+              "outward_B2_slope_lower_numerators": [
+                15458464630118552920730,
+                16914868223549836780320
+              ],
+              "band_slope_lower_numerator": 15458464630118552920730,
+              "success": true
+            }
+          ],
+          "trajectory_denominator": 1208925819614629174706176,
+          "target": "6799610938322487/5000000000000000",
+          "heights": [
+            "5297961656084411/5000000000000000",
+            "5300546391395933/5000000000000000"
+          ],
+          "cutoff_abs_phi": [
+            [
+              "21/4",
+              "341/64"
+            ],
+            [
+              "163/32",
+              "331/64"
+            ]
+          ],
+          "action_bounds": [
+            [
+              "1585890441076675085/1152921504606846976",
+              "3210972526608075319/2305843009213693952"
+            ],
+            [
+              "204606938324137335/144115188075855872",
+              "1656434563010597587/1152921504606846976"
+            ]
+          ],
+          "face_u": "27/50",
+          "transfer": {
+            "denominator": 4503599627370496,
+            "trial_numerators": [
+              43980465112,
+              43980465112
+            ],
+            "residual_numerators": [
+              4247796600816,
+              27969376872098
+            ],
+            "transfer_error_numerators": [
+              4148238868,
+              27313844602
+            ],
+            "B_upper_numerator": 4699405212539046,
+            "Bphi_lower_numerator": 4677010837203601
+          },
+          "strict_face_margin": "2747635853010227662415412941/175921860444160000000000000000"
+        }
+      ],
+      "face_only": false
+    },
+    {
+      "quadrant": 1,
+      "chart_center": "1/2",
+      "phase_half_width": "1/1024",
+      "framed": true,
+      "face_only": true,
+      "trace_limit": "49/8",
+      "trajectory_denominator": 1208925819614629174706176,
+      "faces": [
+        {
+          "action_upper_bound": "1556113328099414857/1152921504606846976",
+          "action_lower_bound": null,
+          "strict_face_margin": "1795991005092224119811149559/175921860444160000000000000000",
+          "heights": [
+            "5297961656084411/5000000000000000",
+            "5300546391395933/5000000000000000"
+          ],
+          "target": "6799610938322487/5000000000000000",
+          "step": "1/64",
+          "panels_per_step": 8,
+          "extents": [
+            {
+              "direction": -1,
+              "accessible_core_end": "5",
+              "forbidden_cap": "163/32"
+            },
+            {
+              "direction": 1,
+              "accessible_core_end": "317/64",
+              "forbidden_cap": "163/32"
+            }
+          ],
+          "face_u": "11/25",
+          "transfer": {
+            "denominator": 4503599627370496,
+            "trial_numerators": [
+              43980465112,
+              43980465112
+            ],
+            "residual_numerators": [
+              14968502684836,
+              26144063439298
+            ],
+            "transfer_error_numerators": [
+              14617678404,
+              25531311953
+            ],
+            "B_upper_numerator": 4710025891030103,
+            "Bphi_lower_numerator": 4660529847981359
+          }
+        },
+        {
+          "action_upper_bound": null,
+          "action_lower_bound": "3165982410434680123/2305843009213693952",
+          "strict_face_margin": "4610495137619874422731216507/351843720888320000000000000000",
+          "heights": [
+            "5297961656084411/5000000000000000",
+            "5300546391395933/5000000000000000"
+          ],
+          "target": "6799610938322487/5000000000000000",
+          "step": "1/64",
+          "panels_per_step": 8,
+          "extents": [
+            {
+              "direction": -1,
+              "accessible_core_end": "325/64",
+              "forbidden_cap": "341/64"
+            },
+            {
+              "direction": 1,
+              "accessible_core_end": "41/8",
+              "forbidden_cap": "335/64"
+            }
+          ],
+          "face_u": "27/50",
+          "transfer": {
+            "denominator": 4503599627370496,
+            "trial_numerators": [
+              43980465112,
+              43980465112
+            ],
+            "residual_numerators": [
+              14922571042265,
+              26367378754168
+            ],
+            "transfer_error_numerators": [
+              14572823284,
+              25749393315
+            ],
+            "B_upper_numerator": 4704823753520667,
+            "Bphi_lower_numerator": 4656243990441839
+          }
+        }
+      ]
+    },
+    {
+      "quadrant": 2,
+      "chart_center": "1/2",
+      "phase_half_width": "1/1024",
+      "framed": true,
+      "face_only": true,
+      "trace_limit": "49/8",
+      "trajectory_denominator": 1208925819614629174706176,
+      "faces": [
+        {
+          "action_upper_bound": "3114575072208310325/2305843009213693952",
+          "action_lower_bound": null,
+          "strict_face_margin": "3233642164987821805296127243/351843720888320000000000000000",
+          "heights": [
+            "5297961656084411/5000000000000000",
+            "5300546391395933/5000000000000000"
+          ],
+          "target": "6799610938322487/5000000000000000",
+          "step": "1/64",
+          "panels_per_step": 8,
+          "extents": [
+            {
+              "direction": -1,
+              "accessible_core_end": "317/64",
+              "forbidden_cap": "81/16"
+            },
+            {
+              "direction": 1,
+              "accessible_core_end": "79/16",
+              "forbidden_cap": "333/64"
+            }
+          ],
+          "face_u": "11/25",
+          "transfer": {
+            "denominator": 4503599627370496,
+            "trial_numerators": [
+              43980465112,
+              43980465112
+            ],
+            "residual_numerators": [
+              15455874613610,
+              27761096840261
+            ],
+            "transfer_error_numerators": [
+              15093627553,
+              27110446134
+            ],
+            "B_upper_numerator": 4708351546516644,
+            "Bphi_lower_numerator": 4661411955747316
+          }
+        },
+        {
+          "action_upper_bound": null,
+          "action_lower_bound": "395452392610740019/288230376151711744",
+          "strict_face_margin": "531236102774536857925630579/43980465111040000000000000000",
+          "heights": [
+            "5297961656084411/5000000000000000",
+            "5300546391395933/5000000000000000"
+          ],
+          "target": "6799610938322487/5000000000000000",
+          "step": "1/64",
+          "panels_per_step": 8,
+          "extents": [
+            {
+              "direction": -1,
+              "accessible_core_end": "163/32",
+              "forbidden_cap": "167/32"
+            },
+            {
+              "direction": 1,
+              "accessible_core_end": "329/64",
+              "forbidden_cap": "85/16"
+            }
+          ],
+          "face_u": "27/50",
+          "transfer": {
+            "denominator": 4503599627370496,
+            "trial_numerators": [
+              43980465112,
+              43980465112
+            ],
+            "residual_numerators": [
+              15440512181021,
+              28059201700875
+            ],
+            "transfer_error_numerators": [
+              15078625177,
+              27401564162
+            ],
+            "B_upper_numerator": 4703234396046632,
+            "Bphi_lower_numerator": 4657154600504766
+          }
+        }
+      ]
+    }
+  ]
+}

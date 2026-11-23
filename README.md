@@ -94,6 +94,7 @@ and operating temperature remain open for that candidate.
   - A numerical screen found a change of mirror well at mid-depth. A deeper family on the
     same Dommaschk field passed two grid resolutions, with two candidate winding curves at
     one scaled action. An outward-rounded continuum check encloses the whole launch strip and every field line for ±1/8 toroidal radian. A centred calculation reaches both simple mirrors on a smaller cell and brackets a unique mirror height at the target action. Full-circle drift and physical-time bounds remain open. [Full-strip enclosure](notes/theory/dommaschk-launch-collar.md) · [Local mirrors and action](notes/theory/dommaschk-regular-mirror-cell.md)
+  - Directed-interval calculations now separate the target action from both radial faces on six positive-width launch sectors. [Six phase sectors](notes/theory/dommaschk-phase-faces.md)
   - Lean proves finite-time radial confinement from a bound on action drift and separated action values at two radial faces. To obtain a winding graph, it suffices to check positive radial derivative at the crossings of the selected action. [Face and winding theorems](notes/theory/action-faces-and-winding.md)
   - **Audit of 23 November 2026** ([record](notes/audit/2026-11-23-refresh-audit.md)): no false or
     vacuous theorem was found in the work since 31 October. Two limits of the contract are now

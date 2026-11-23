@@ -76,3 +76,5 @@ On the embedded Dommaschk torus A, Lean finds a point where every tangent variat
 ## Confinement from radial face values
 
 For one regular bounce family, two face bounds and a finite-time action budget exclude radial escape. This theorem allows several roots at the target action. A separate theorem gives a winding graph under positive radial derivative at every target crossing. Both criteria are proved in the default Lean library. The physical orbit must still be related to the chosen action and radial observable. [Face estimates and winding graphs](https://github.com/siddhartha-gadgil/PlasmaLean/blob/main/notes/theory/action-faces-and-winding.md)
+
+Two radial face estimates hold on six positive-width launch sectors in the physical Dommaschk field. The interval calculation uses a moving frame to control trajectory error and can use one-sided action bounds even on sectors where turning-point orientation is unresolved. A compiled counterexample shows that well mergers can make the launch-connected action jump. [Candidate results and scope](https://github.com/siddhartha-gadgil/PlasmaLean/blob/main/notes/theory/dommaschk-phase-faces.md)

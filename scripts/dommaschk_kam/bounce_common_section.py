@@ -29,8 +29,8 @@ from bounce_mirror_pilot import (
 PHASE_WIDTH = F(1,2**16)
 
 
-def section_at_zero(u_width):
-    """Use all packed Fourier coefficients at the exact section, with the Q-16 error."""
+def section_seed(u, u_width, section):
+    """Enclose the Q-16 launch at phi=section*pi/2 using every packed mode."""
     C,A = profile_coefficients('C'),profile_coefficients('A')
     result = []
     off = Box(-ceil(u_width*S),ceil(u_width*S))
@@ -38,21 +38,32 @@ def section_at_zero(u_width):
         points = []
         for profile in (C,A):
             kind,coeffs,error = profile[key,False]
-            mid = sum(coeffs) if kind=='cos' else F(0)
+            mid = sum(c*(-1)**(section*j) for j,c in enumerate(coeffs)) if kind=='cos' else F(0)
             points.append(Box(floor((mid-error)*S),ceil((mid+error)*S)))
         c,a = points
-        delta = a-c
-        result.append(c+(Box.rational(F(49,100))+off)*delta)
+        result.append(Box.rational(1-u)*c+Box.rational(u)*a+off*(a-c))
     return result
 
 
-def transfer(alpha_width=PHASE_WIDTH, u_width=U_WIDTH):
-    """Return a fixed-absolute-phase seed enclosure and the integer transfer bounds."""
-    if not (0<alpha_width<=F(1,2) and 0<u_width<=F(1,20)):
+def transfer(alpha_width=PHASE_WIDTH, u_width=U_WIDTH, u=F(49,100), section=0):
+    """Transfer births near a symmetry section to its exact azimuth."""
+    if section not in (0,1):
+        raise ValueError('section must be 0 or 1 in units of pi/2')
+    cs,sn = harmonics(F(0),2*section,24)
+    return transfer_at(cs,sn,section_seed(u,u_width,section),alpha_width,u_width,u)
+
+
+def transfer_at(cs,sn,anchor,alpha_width,u_width,u):
+    """Transfer any phase cell to an anchor enclosing the launch chart at its centre.
+
+    cs[j], sn[j] enclose cos(2j*centre), sin(2j*centre) for j=0,...,24.
+    The two boxes in anchor enclose the profile at that exact phase for all
+    radii in [u-u_width,u+u_width].
+    """
+    if not (0<alpha_width<=F(1,2) and 0<=u_width and F(11,25)<=u-u_width<=u+u_width<=F(27,50)):
         raise ValueError('birth cell lies outside the deep strip')
     modes = launch_model(floor(1/(2*alpha_width)))
-    cs,sn = harmonics(F(0),0,24)
-    off = Box(-ceil(S*u_width),ceil(S*u_width))
+    off = Box.rational(u-F(49,100))+Box(-ceil(S*u_width),ceil(S*u_width))
     def chart(derivative):
         values = []
         for k in ('R','z'):
@@ -77,20 +88,32 @@ def transfer(alpha_width=PHASE_WIDTH, u_width=U_WIDTH):
         raise ArithmeticError('the transfer first-exit inclusion did not close')
     if F(mag,S)>=HEIGHTS[0] or bp<=0:
         raise ArithmeticError('transfer reaches the low mirror height or loses angular orientation')
-    anchor = section_at_zero(u_width)
     pulled = [Model.box(x+Box(-r,r)) for x,r in zip(anchor,end)]
     summary = dict(denominator=S,trial_numerators=trial,residual_numerators=residual,
                    transfer_error_numerators=end,B_upper_numerator=mag,Bphi_lower_numerator=bp)
     return pulled,summary
 
 
-def common_section_inputs(alpha_width=PHASE_WIDTH,u_width=U_WIDTH):
+def common_section_inputs(alpha_width=PHASE_WIDTH,u_width=U_WIDTH,u=F(49,100),section=0):
     """Return ((data,seed,ev,init), transfer_report). Use alpha_width=0 in certified_segments."""
     check_arithmetic()
-    seed,summary = transfer(alpha_width,u_width)
+    seed,summary = transfer(alpha_width,u_width,u,section)
     ev,seeds = load_inputs()
-    c,a = [seed_cut(*s,np.array([0.]))[0][:,0] for s in seeds]
-    return (polynomial_data(),seed,ev,c+0.49*(a-c)),summary
+    section_angle = section*np.pi/2
+    c,a = [seed_cut(*s,np.array([section_angle]))[0][:,0] for s in seeds]
+    data = polynomial_data()
+    if section:
+        # sin and cos at 2k*(pi/2+tau) both acquire the factor (-1)^k.
+        # The same change applies to every spatial derivative in the Jacobian.
+        data = [[{i:[[v.integer((-1)**((i+1)//2)) for v in row] for row in rows]
+                       for i,rows in p.items()} for p in group] for group in data]
+        class ShiftedProposer:
+            def rhs(self, t, r, z):
+                return ev.rhs(section_angle+t,r,z)
+        proposer = ShiftedProposer()
+    else:
+        proposer = ev
+    return (data,seed,proposer,c+float(u)*(a-c)),summary
 
 
 if __name__=='__main__':
