@@ -10,12 +10,12 @@
 | Addresses | `Q-30`, `Q-31` (new); `G-4`, `Q-3`, `Q-14`, `Q-20` |
 | Depends on | N-42 (source claims S-16 to S-22); N-12, N-13 (stepped-pressure route); N-33 (certified torus A for Q-31); Lean: none yet |
 | Dependency requirement | Q-30 (a) needs only real algebra, with the Bessel and impedance quantities supplied as hypotheses; Q-31 needs the certified torus A (`ExactTorusA`, on-demand) and evaluation of `g`, `II`, `ω` on it |
-| Produces | Q-30, Q-31 statements; a stress example (the wall dependence) |
+| Produces | Q-30, Q-31 statements; a stress example (the wall dependence) and a joint current, transform and interface screening test |
 | Difficulty | routine (Q-30 a); moderate (Q-31 numerics, then certificate); research (Q-30 b) |
-| Status | stated; complete proof of the cylinder window checked numerically (N-42); (a) lean-ready |
+| Status | stated; complete proof of the cylinder window checked numerically (N-42); (a) lean-ready; toroidal screening proposed |
 | Lean evidence | none yet |
 | Audit evidence | not audited |
-| Last updated | 20 November 2026: created from N-42 |
+| Last updated | 23 November 2026. Added the current and transform checks for the first finite-pressure screening test. |
 | Patched by / Alternatives | method for N-12 (its compiled family-1/family-2 results stand) |
 
 ## Purpose and scope
@@ -101,7 +101,12 @@ first-order terms were re-derived in N-42.
     algebraic core of a signed-interface stability theorem.
   - (b) Research: the uniform transfer to a bent tube or torus.
 - **Q-31.** Evaluate `a₀`, `b₀` on the certified Dommaschk torus A. First as untrusted numerics
-  (workstation or laptop), then, if a `σ` exists, as a certificate. The outcome decides whether a
-  stepped-pressure interface on torus A can carry a positive surface term at small step.
+  (workstation or laptop), then, if a `σ` exists, as a certificate. Record either a uniform strict margin or a certified witness that excludes every σ in this
+  sufficient criterion. An inconclusive enclosure leaves the question open.
+- **Q-14 and Q-20.** On the same candidate, specify a nonzero pressure step, the allowed net
+  toroidal current and the minimum transform. Estimate the sheet contribution to the current
+  and the transform on the proposed equilibrium. Promote the sign test to an equilibrium
+  project when these margins survive the step and its remainder. A vacuum loop current alone
+  covers only the seed. The sign test can share surface derivatives with [N-50](harmonic-field-shape-variation.md).
 - **Technique registry.** The dual trial-potential bound for a Neumann impedance is a worked
   example for "energy principle and coercivity" (`plasmalean-proof-techniques`).

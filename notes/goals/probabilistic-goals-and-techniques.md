@@ -129,6 +129,14 @@ be preferable to Monte Carlo for a small, smooth parameter space.
 certified cell classifications and a nontrivial probability interval. A theorem
 which assumes the desired classification everywhere is only an interface.
 
+For the trapped-particle band in [N-49](../theory/trapped-particle-momentum.md), let A be the
+births certified to avoid the wall through T, let ρ be the normalized birth measure and let
+E₀ ≥ 0 be the birth energy with finite positive mean. In a collisionless static magnetic field
+with zero electric field, the fraction of birth energy carried to the wall by T is at most
+∫_{Aᶜ} E₀ dρ / ∫ E₀ dρ. This follows by bounding the hit indicator by the indicator of Aᶜ.
+Include marginally trapped and uncovered births in Aᶜ. A lower bound on energy deposited in
+the plasma additionally needs slowing-down and deposition physics.
+
 ### 3.3 Second technique: stopped-process barriers
 
 For an Itô diffusion
@@ -169,6 +177,11 @@ Barrier certificates for stochastic reachability are an established methodology
 plasma model: propose \(V\) numerically, check positivity and generator inequalities
 with certified arithmetic, and connect those checks to the stopped-process theorem.
 Checking sampled points alone does not certify an inequality on the whole domain.
+
+For the geometric route, try V = h(P) using N-49's approximate momentum P. For smooth h and
+time-independent P the diffusion contributes ½ h″(P)‖σᵀ∇P‖² in addition to h′(P)ℒP.
+Choose the normalization from the loss boundary and test the resulting bound first on a
+reduced pitch-scattering problem with a known exit probability.
 
 **First milestone:** a bounded, explicitly specified model with positive and negative
 fixtures. Then transfer to one actual orbit-loss question. Do not start with an

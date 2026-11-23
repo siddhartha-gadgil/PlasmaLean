@@ -1,5 +1,7 @@
 # Certified quasi-axisymmetry defect on the certified Dommaschk torus, and the path to C2
 
+Related methods appear in [N-49](trapped-particle-momentum.md) and [N-50](harmonic-field-shape-variation.md).
+
 ## Metadata
 
 | Field | Value |
@@ -16,6 +18,7 @@
 | Lean evidence | A1 `Theory/Fields/VacuumBoozerTorus` (`torusQADefect`, `boozerJac_eq_normSq_div`, `exists_qa_of_torusQADefect_eq_zero`, `boozerAngles_bijective`, `symmetryDefect_eq_torusQADefect_vacuum`) and D3 `Design/DommaschkKamCQSPoly` (`qsDefect_eq_real`), default build; earlier: | prototype only: `PlasmaLean.Design.DommaschkQSProto.{boozerX_thetaB, boozerX_phiB, boozerX_apply, boozerX_qa, boozerVec_eq, bijective_of_strictMono_bdd, coeff_sq_le}` (on demand, not imported; standard axioms; 1.5 s, 1.3 GB) |
 | Audit evidence | not audited. §5.1 is a candidate audit finding (C2 has no link between `BoozerField` and the physical field) |
 | Last updated | 3 November 2026: metadata brought to the current state (history in the "Update" sections below) |
+| Patched by / Alternatives | [N-49](trapped-particle-momentum.md) and [N-50](harmonic-field-shape-variation.md) |
 
 ## Purpose and scope
 

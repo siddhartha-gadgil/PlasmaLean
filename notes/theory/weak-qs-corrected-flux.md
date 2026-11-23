@@ -1,5 +1,7 @@
 # Corrected full-orbit flux for weak quasisymmetry and an absorbing-core certificate
 
+An alternative method appears in [N-49](trapped-particle-momentum.md).
+
 ## Metadata
 
 | Field | Value |
@@ -16,7 +18,7 @@
 | Lean evidence | step 1 only: `PlasmaLean.Fields.WeakQS.lieDerivForm_flux_eq_zero`, `WeakQS.lieBracket_eq_zero` (`Theory/Fields/FormCalculus`; they need, beyond `WeakQS`, an open set, `B` differentiable and divergence-free, and a `C²` potential); nothing for steps 2–5 |
 | Audit evidence | not audited |
 | Last updated | 20 November 2026: created from N-42; 23 November 2026: Lean evidence for step 1 recorded |
-| Patched by / Alternatives | method for N-29 and N-17; their compiled results stand |
+| Patched by / Alternatives | method for N-29 and N-17; their compiled results stand. See [N-49](trapped-particle-momentum.md) |
 
 ## Purpose and scope
 
