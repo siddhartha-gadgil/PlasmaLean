@@ -79,6 +79,12 @@ axioms only). Module `PlasmaLean/Theory/Contract/StellaratorContract.lean`, name
   proved for any candidate (plan question Q-36); the instances above prove `CurrentFreeTransform`
   only. Proof obligations: `CurrentFreeTransform.embedded_of_sections`,
   `CurrentFreeTransform.embedded_of_strictMono`.
+- C2, two admissible forms (user decision, 23 November 2026): the chart form below, or the
+  **band form**: for stated species, energy and pitch ranges and a stated birth band of phase
+  space, a certified bound keeping the orbits within a stated radial range through a stated
+  time (the form of N-51, `VolumeChart.exists_inverse_square_orbits`). The band form is weaker
+  than omnigeneity; a claim must state band, species, time and model. It has no Lean contract
+  predicate yet and no instance on a field.
 - C2: `OmnigeneityContract F c κ_max` (`ApproxOmnigenousOn` of `Theory/Kinetic/Omnigeneity`; `κ_max
   = 0` is `OmnigenousOn`, `boozerModelOmnigeneity_zero_iff`), scope: the vacuum Boozer guiding-centre
   model (supplied), all species, μ and energies. `BoozerAxisymmetric`; axisymmetric ⇒ omnigenous

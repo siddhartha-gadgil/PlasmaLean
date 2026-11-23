@@ -26,7 +26,7 @@ equilibrium with common witnesses:
 | Clause | Requirement | What it rules out or admits |
 | --- | --- | --- |
 | **C1. Current-free rotational transform** | The net toroidal plasma current vanishes or is small: ‖I_tor‖ ≤ I_max, a stated bootstrap-level bound (vacuum, J = 0, is the limiting case); and the rotational transform satisfies ι ≥ ι_min > 0 on the confining surfaces, provided by the external field (3-D shaping or helical coils), not by plasma current | Excludes tokamaks: an axisymmetric current-free field has ι = 0 (its field lines do not rotate poloidally), so it confines nothing. Admits vacuum stellarator fields |
-| **C2. Omnigeneity / small neoclassical transport for thermal particles** | For thermal ions **and electrons** (not only 3.5 MeV alphas): the bounce-averaged radial drift of trapped particles vanishes (omnigeneity) or is bounded by a stated amount, or the effective ripple ε_eff is bounded on the confining surfaces | Quasisymmetry and quasi-isodynamic fields are special cases. An axisymmetric field is automatically omnigenous; a generic 3-D field is not. C2 is what a stellarator needs to match tokamak neoclassical confinement |
+| **C2. Omnigeneity / small neoclassical transport for thermal particles** | For thermal ions **and electrons** (not only 3.5 MeV alphas): the bounce-averaged radial drift of trapped particles vanishes (omnigeneity) or is bounded by a stated amount, or the effective ripple ε_eff is bounded on the confining surfaces **Band form (allowed since 23 November 2026, user decision):** alternatively, for stated species, energy and pitch ranges and a stated birth band of phase space, a certified bound keeping the orbits within a stated radial range through a stated time (N-51). It is weaker than omnigeneity and must state its band, time and model | Quasisymmetry and quasi-isodynamic fields are special cases. An axisymmetric field is automatically omnigenous; a generic 3-D field is not. C2 is what a stellarator needs to match tokamak neoclassical confinement |
 | **C3. MHD stability at finite β** | Mercier (interchange), ideal ballooning and, where available, global ideal modes, at a stated β > 0, with the reductions named | Current-driven modes (kinks, tearing driven by I_tor) are absent by C1; pressure-driven modes remain |
 | **C4. Existence** | Nested flux surfaces on the confining region (certified invariant tori, or a validated equilibrium) and force balance J × B = ∇p (vacuum: J = 0) | Makes C1–C3 statements about an object that exists |
 | **C5. Thermal performance** (added 30 October 2026) | On the **same** candidate that satisfies C1–C4: the core temperature stays above a burn threshold (e.g. T ≥ 10 keV in the core) over the operating interval [0, T_burn] (or forever), and below wall and material limits. Derived from power balance with alpha heating (Bosch–Hale), bremsstrahlung and transport losses; the neoclassical losses come from C2 (omnigeneity bounds for thermal ions and electrons); anomalous (turbulent) transport is a stated, supplied scaling (ISS04 or an Â bound), never hidden | C5 is the existing goal G-2 restated as a contract clause. The Solov'ev results show it only for a tokamak model with a supplied transport solution |
@@ -103,6 +103,35 @@ refresh audit).**
   by a budget). On stellarator parameters there are only 0-D windows and proved obstructions at
   measured renormalisation factors (Q-13).
 
+**Update, 23 November 2026 (assessment against the contract; the summary of 31 October above is
+kept as history and is out of date where the two differ).**
+
+- **C1:** met in vacuum on a nested pair of certified tori of the Dommaschk NFP-2 target, with
+  zero loop current and |ι| ≥ 0.2386 (`DommaschkKamNested.dommaschk_nested_C1`, on demand). For
+  curl-free fields the current clause carries no information on a convex cross-section
+  (`CurrentFreeTransform.imax_zero_of_convex`), and the measured circulation does not depend on
+  the toroidal angle (`FieldTorus.poloidalCirculation_eq_of_curl_eq_zero`). **Stricter since
+  today:** the contract requires embedded tori (`Contract.EmbeddedCurrentFreeTransform`); no
+  candidate proves it yet (Q-36). Two tori are certified, not a region.
+- **C2:** not met by any field. Certified on the Dommaschk pair: the per-torus QA defect
+  (≤ 0.009 |ι|, `dommaschk_Q16_vacuum`). Untrusted numerics for the same field: defect ≈ 0.002 |ι|
+  and ε_eff ≲ 0.04 % (N-31). The Lean clause `OmnigeneityContract` asks for a Boozer chart of the
+  field on a region (`BoozerModelOf`); its only instance is vacuous (audit AV-M7), and a chart over
+  a volume is not available for a non-integrable field with two certified tori. The bridge Q-23
+  is in the Boozer guiding-centre model with orbits and bounces supplied. N-51 (23 November)
+  proves second-order confinement on an annulus of periodic orbits in phase space; it needs no
+  chart of the field over a volume, but no physical band has been constructed, and its
+  hypothesis (averaged drift tangent to both edges) is of the same kind as what C2 asserts.
+  By user decision (23 November) C2 may be met in this band form as well as in the chart form.
+- **C3, C4 at finite β:** unchanged since 31 October. There is no current-free finite-β candidate
+  (Q-20); N-44 (20 November) states a cylinder benchmark and an interface test, not in Lean.
+- **C5:** unchanged: tokamak model and 0-D windows only.
+- **Balance of recent work.** Between 2 and 23 November the compiled additions were
+  infrastructure (the form kernel and its links to TauCeti, N-48; the annulus theorem, N-51) and
+  assessments of source notes (N-36–N-47). No contract clause changed status for a candidate,
+  apart from C1 becoming stricter. The contract's own rule applies: results whose content is
+  general geometry are infrastructure, not design progress.
+
 Sources: [domain-libraries](domain-libraries.md) (run protocol), [roadmap](formalization/08-roadmap.md) (gates P0–P9, research problems R1–R8),
 [PDE bounds](https://github.com/siddhartha-gadgil/PlasmaLean/blob/main/notes/pde-bounds-and-verification-roadmap.md) (Stages 1–7, Milestones A–G),
 [microturbulence](https://github.com/siddhartha-gadgil/PlasmaLean/blob/main/notes/microturbulence-and-available-energy.md), [holomorphic/KYM/Wick](https://github.com/siddhartha-gadgil/PlasmaLean/blob/main/notes/holomorphic-bundles-kym-wick-rotations.md),
@@ -141,8 +170,8 @@ new IDs (G-10, G-11).
 | `G-7` | **Verified plasma evolution** (§11): for one candidate, a certified interval on which the selected plasma model exists and stays within error, stability, thermal and geometric bounds | supports G-8; supported by Q-7–Q-11 | proposed (E1 done) | E1: `lieBracket_gradient_of_contDiffAt`, `quasisymmetry_not_pde_symmetry`; conditional `riccati_le_initial`. Needed: gates E2–E8 *4 November 2026:* additive-residual inward-radius lemma and norm-to-observable step (Q-27, N-39). |
 | `G-8` | **Integrated stellarator candidate (C1–C5 with common witnesses)** (restated 30 October 2026): one decoded candidate satisfying C1 (current-free ι ≥ ι_min), C2 (omnigeneity or a bounded ε_eff for thermal ions and electrons), C3 (finite-β stability), C4 (nested surfaces, force balance) and C5 (thermal performance, G-2) with the same witnesses, then coils and engineering margins (M6, §11.1). *Superseded meaning:* "coils, equilibrium, stability, transport and engineering margins on one candidate" without the C1/C2 filters | supported by G-1, G-2, G-4–G-7, G-10, G-11 | open | `Bridge/Contracts` (common-witness composition) only *4 November 2026:* acceptance criteria and rejection tests from the kinetic/coil brief in `notes/goals/README.md` (N-22, N-36); a finite-horizon maintained-state goal is recorded there as a proposal only (user decision). |
 | `G-9` | **Auditable certificates within the laptop budget** (Phases 15–16, auxiliary): every concrete check an explicit certificate, ≤ 6 GB per Lean process, no `decide` of any kind | supports all | active | Certificate tactics in `PlasmaLean/Certificates/`; workstation pipeline. Needed: Q-6, Q-12 |
-| `G-10` | **Omnigeneity for thermal particles (C2)** (new, 30 October 2026): on the certified surfaces of a current-free candidate (G-1), the bounce-averaged radial drift of trapped thermal ions and electrons vanishes (exact omnigeneity) or is bounded by a stated amount, or ε_eff ≤ ε_max (a stated value, e.g. the W7-X level of about 1 %); quasisymmetry and quasi-isodynamicity are admissible special cases | supports G-8, G-2 (via Q-22); supported by Q-16, Q-19, Q-21, Q-1 | open (definitions not in Lean) | Only adjacent: `WeakQS`, `qsDefect`, `family1_not_weakQS`, `family2_not_weakQS` (N-27); `boozerGC_trapped` (exact-symmetry Boozer model). Needed: Q-21 (definitions and sanity triad), then Q-19 on the rational field and Q-16 on a Dommaschk QA fit. N-49 tests a physical orbit observable. Extending it to thermal C2 remains research. |
-| `G-11` | **Contract infrastructure** (new, 30 October 2026, auxiliary): kernel-level definitions of net toroidal current, rotational transform of the field on a family of tori, bounce-averaged radial drift, omnigeneity and ε_eff, each with the sanity triad, and a `StellaratorContract` record composing C1–C5 on a common witness | supports G-1, G-4, G-8, G-10 | open | specifications in `notes/formalization/00-model-contracts.md` (not yet in Lean); adjacent compiled pieces: `torCurrent` (family 2), `iotaK`, `WeakQS`. Needed: Q-21 **23 November 2026:** embeddedness clause of C1 in Lean (`Theory/Contract/EmbeddedSurfaces`: `EmbeddedSurfaces`, `EmbeddedCurrentFreeTransform`, obligations `embedded_of_sections`, `embedded_of_strictMono`); to be proved for all examples (Q-36). |
+| `G-10` | **Omnigeneity for thermal particles (C2)** (new, 30 October 2026): on the certified surfaces of a current-free candidate (G-1), the bounce-averaged radial drift of trapped thermal ions and electrons vanishes (exact omnigeneity) or is bounded by a stated amount, or ε_eff ≤ ε_max (a stated value, e.g. the W7-X level of about 1 %); quasisymmetry and quasi-isodynamicity are admissible special cases | supports G-8, G-2 (via Q-22); supported by Q-16, Q-19, Q-21, Q-1 | open (definitions in Lean since 30 October; no field instance, AV-M7) | Only adjacent: `WeakQS`, `qsDefect`, `family1_not_weakQS`, `family2_not_weakQS` (N-27); `boozerGC_trapped` (exact-symmetry Boozer model). Needed: Q-21 (definitions and sanity triad), then Q-19 on the rational field and Q-16 on a Dommaschk QA fit. N-49 tests a physical orbit observable. Extending it to thermal C2 remains research. **Assessment, 23 November:** see the contract section; the next step is an orbit-level computation on the Dommaschk field (RG.5, item 2). C2 may be met in the chart form or the band form (user decision, 23 November). |
+| `G-11` | **Contract infrastructure** (new, 30 October 2026, auxiliary): kernel-level definitions of net toroidal current, rotational transform of the field on a family of tori, bounce-averaged radial drift, omnigeneity and ε_eff, each with the sanity triad, and a `StellaratorContract` record composing C1–C5 on a common witness | supports G-1, G-4, G-8, G-10 | active (C1 and C2 predicates in Lean; ε_eff, C3–C5 predicates and the composed record open) | specifications in `notes/formalization/00-model-contracts.md` (C1, C2 in Lean: `Theory/Contract/StellaratorContract`, `BoozerModel`; the rest not yet); adjacent compiled pieces: `torCurrent` (family 2), `iotaK`, `WeakQS`. Needed: Q-21 **23 November 2026:** embeddedness clause of C1 in Lean (`Theory/Contract/EmbeddedSurfaces`: `EmbeddedSurfaces`, `EmbeddedCurrentFreeTransform`, obligations `embedded_of_sections`, `embedded_of_strictMono`); to be proved for all examples (Q-36). Also needed: a Lean predicate for the band form of C2 (allowed 23 November). |
 
 **Re-labelled results (30 October 2026).** The Solov'ev work (`solovev_one_plasma_*`,
 `reactor_alpha_born_confined`, `reactor_ballooning_all`, `reactor_mercier_stable`) is a tokamak model
@@ -190,8 +219,8 @@ that carry net toroidal current (Q-18).
 | `Q-31` | **Toroidal interface sign test on the certified Dommaschk torus A** (N-44): does a `σ` exist with `a₀ + σb₀ < 0` on torus A (`a₀ = II(Y, g⁻¹ω)/\|ω\|²`, `b₀ = II(Y, g⁻¹Jω)`), giving a positive interface term for small stepped pressure? | G-4, Q-14, Q-20, N-33, N-44 | open (numerics first, untrusted) | none; needs `g`, `II`, `ω` on `ExactTorusA` (on-demand), then a certificate if feasible; the exterior KAM graphs (Enciso–Luque–Peralta-Salas) are an unproved input. N-44 screens this sufficient sign condition alongside sheet current and transform for Q-20. |
 | `Q-32` | **Certified harmonic perturbations of the Dommaschk seed** (N-42 S-10): find members `B₀ + ∇Σa_jP_j` (symmetric harmonic polynomials) with better QS diagnostics and their own torus certificates, or quantify the KAM radius `ε_N` | Q-16, G-1, G-10, N-31, N-33, N-41 | open (research; workstation route) | KAM persistence (source Theorem 4, plausible) gives existence for an unquantified `ε_N` only; every member is C1 (vacuum); the certificate pipeline of N-33 is a-posteriori per field. Q-34 supplies a possible boundary deformation for comparison with coefficient variation. |
 | `Q-33` | **A deformation complex for quasisymmetric equilibria** (N-46, speculative): is there a complex (dg Lie or L∞ algebra) attached to the weak-quasisymmetry and force-balance equations whose cohomology counts the free functions and the obstructions order by order, and explains why the near-axis expansion is solvable to second order and overdetermined from third order (Garren–Boozer)? | none (conceptual; would inform G-10) | open, exploratory, low priority | no formulation found in the literature search of 16 November 2026; the algebraic parts are compiled (`FormWeakQS`, `FormForceBalance`, `Kernel/Forms`) |
-| `Q-34` | Does an embedded Dommaschk boundary satisfy Roussel’s admissibility, straight-field and mixed-curvature hypotheses, and admit a normal deformation with nonzero mean boundary return-map response? | Q-32, G-1, N-50 | open, research | Test the mixed second fundamental form on torus C or A. Tangential relabellings account for zero-mean variations. |
-| `Q-35` | When does a periodic flow over an annulus admit a radial label with zero averaged first-order drift and a quantitative second-order confinement bound? | G-6, Q-1, Q-29, N-49 | proved in periodic phase coordinates | N-51 derives the stream, exact second-order identity, uniform inverse-square orbit existence and confinement, and winding obstruction. A physical bounce band is open. |
+| `Q-34` | Does an embedded Dommaschk boundary satisfy Roussel’s admissibility, straight-field and mixed-curvature hypotheses, and admit a normal deformation with nonzero mean boundary return-map response? | Q-32, G-1, N-50 | open, research | Test the mixed second fundamental form on torus C or A. Tangential relabellings account for zero-mean variations. Depends on Q-36: Roussel's theorem is for an embedded solid torus, and the certified tori are not yet proved embedded. |
+| `Q-35` | When does a periodic flow over an annulus admit a radial label with zero averaged first-order drift and a quantitative second-order confinement bound? | G-6, Q-1, Q-29, N-49 | proved in periodic phase coordinates | N-51 derives the stream, exact second-order identity, uniform inverse-square orbit existence and confinement, and winding obstruction. A physical bounce band is open. Assessment (23 November): no sanity module and no instance of `exists_inverse_square_orbits` on a fixture; constants are existential; not audited. |
 | `Q-36` | **Embeddedness of the certified tori (clause C1 with embeddedness).** Prove `Contract.EmbeddedCurrentFreeTransform` (C1 together with `EmbeddedSurfaces`: every surface an `EmbeddedTorus`, i.e. `C²`, injective modulo periods, immersed) for every C1 example: (a) the rational stellarator torus A (`rationalStellarator_currentFreeTransform`, `Sanity.ContractLoopCurrentFixture.rationalStellarator_fixture`); (b) Dommaschk torus C (`DommaschkKamC.dommaschk_C1_unconditional`); (c) Dommaschk torus A (`DommaschkKamA.dommaschkA_C1_unconditional`); (d) the nested pair (`DommaschkKamNested.dommaschk_nested_C1`) and the Q-16 theorems built on it (`DommaschkKamQ16`) | G-1, G-11; audit AF-1; N-48 | open (clause and proof obligations in Lean, 23 November 2026; no example proved) | Clause: `EmbeddedCurrentFreeTransform`, `EmbeddedSurfaces` (`Theory/Contract/EmbeddedSurfaces`). Obligations per surface: `CurrentFreeTransform.embedded_of_sections` (`C²` profiles, sections injective modulo `2π`, `(∂_θR, ∂_θz) ≠ 0`) or `embedded_of_strictMono` (polar angle strictly increasing in `θ`). Proposed route (not checked): the KAM tori are analytic and close to explicit tori; derive `C²` from analyticity, and monotonicity of the polar angle and the tangent bound from a `C¹` closeness estimate (Cauchy estimates on the analyticity strip). Until proved, these examples satisfy C1 without the embeddedness clause. |
 
 ### RG.3 Note registry and dependency graph
@@ -251,7 +280,7 @@ superseded; mixed notes list the status of their parts. "Lean" names compiled ev
 | `N-48` | `notes/theory/form-kernel-tauceti-complex-geometry.md`: the form kernel after TauCeti v4.36.0: topology and periods, contact geometry, the anti-self-dual lift, charged-particle Noether and Hamiltonian theory; fit of the complex-geometry notes | G-11; supports Q-29, Q-24, Q-16 | method for N-45; N-42, N-43, N-44; TauCeti v4.36.0 | routine–moderate | verified, audited 23 November 2026 (AV-*): twenty theory modules under `Theory/Fields/Form*` and `Theory/Kinetic/{Noether*, Magnetic*, CrossedFieldOrbit}` with sanity modules; see the note's "Current state" | open audit items AV-M4 (local versions); line bundle and Chern class of the lift (blocked on TauCeti); flux surfaces as embedded submanifolds; audit of the modules added after `6ceca0e`. Alternative method N-49. |
 | `N-49` | `notes/theory/trapped-particle-momentum.md`: approximate momentum, periods and finite-time loss | Q-1, Q-23, Q-29, G-6, G-10, G-3 | method for N-34, N-43, N-48 | research | conditional estimates on paper, field application open | regular trapped band, bounce mean and exit margin. N-51 constructs the radial coordinate from averaged flux. |
 | `N-50` | `notes/theory/harmonic-field-shape-variation.md`: harmonic-field shape variation and Euclidean realization | Q-34, Q-32, Q-24, G-1, G-10 | method for N-32 and N-34, uses N-33 | research | sourced boundary theorem, seed hypotheses open | curvature test and physical normal variation |
-| `N-51` | `notes/theory/annulus-averaged-flux.md`: radial stream, flux obstruction and second-order confinement | Q-35, Q-1, Q-29, G-6 | method for N-49 | moderate | Lean verified in the default library | construct a regular physical bounce band and bound its constants |
+| `N-51` | `notes/theory/annulus-averaged-flux.md`: radial stream, flux obstruction and second-order confinement | Q-35, Q-1, Q-29, G-6 | method for N-49 | moderate | Lean verified in the default library | construct a regular physical bounce band and bound its constants Also: a sanity module with an instance of the main theorem, docstrings for the fields of `VolumeChart`, and an audit. |
 
 Main dependency edges: N-9 → N-10 → N-14 → N-15 → (Q-4, Q-5); N-10 → N-13 → (N-16 → Q-2, Q-14);
 N-4 → (N-8, N-7 → N-17 → Q-1); N-12 → (Q-3, Q-14, Q-16) → G-4; N-4 → Q-16 → G-6; N-2, N-6 → Q-10 → G-2, G-7;
@@ -434,6 +463,39 @@ Independently screen a boundary deformation (N-50, Q-34) and the N-44 interface 
 geometry. Seek numerical or analytic evidence for a margin, or an obstruction to the proposed
 construction, before building a field-specific proof chain. The fixed-domain exact-QS
 linearization in N-50 is an exploratory direction.
+
+**Status of the order of 30 October, and the order of 23 November 2026 (user-approved,
+23 November 2026; it replaces the order of 30 October for work selection).** Items 0–4 of the approved order are done or answered: Q-23 in the Boozer model,
+Q-16 in vacuum on two tori, Q-25 (a)–(c) for the rational field, Q-19 (the rational field fails
+C2, untrusted), Q-18 (family 2 fails C1), Q-21 except ε_eff. Item 5 (Q-20/Q-14, Q-22, Q-3 on a
+current-free equilibrium) has not started in Lean. Measured against the goal G-8 (one candidate
+with C1–C5), the critical path is now:
+
+1. **Validity of what is claimed for the Dommaschk candidate.** Q-36 (embeddedness of tori C and
+   A, now a contract requirement and a prerequisite of Q-34, Q-31 and of any "inside" statement),
+   and a strict audit of the modules added after `6ceca0e` (the N-48 modules of the fourth and
+   fifth rounds and the eight N-51 modules).
+2. **C2 on the actual field.** First an untrusted computation on the Dommaschk field between
+   tori C and A, for thermal ions and electrons and for alphas: the bounce-averaged radial drift
+   on one regular trapped band, the signed flux of N-51 and the momentum gap of N-49. This is
+   the orbit-level analogue of Q-19 for the candidate and tests the N-49/N-51 route cheaply.
+   Then either a certificate on that band, or a recorded obstruction. **Decided (user,
+   23 November 2026): both forms of C2 are allowed.** A candidate may satisfy C2 in the
+   Boozer-chart form (`OmnigeneityContract`) or in the band form: for stated species, energy
+   and pitch ranges and a stated birth band of phase space, orbits stay within a stated radial
+   range through a stated time (the N-51 form). A band-form claim must state its band, species,
+   time and model, and is weaker than omnigeneity; the Lean predicate for it is still to be
+   written (G-11).
+3. **Finite β (Q-20).** The Q-31 interface sign and the sheet current and transform at one
+   pressure step on torus A (numerics first), and Q-30 (a) in Lean. This is the gate to C3, C4
+   and C5 on a current-free candidate and has had no compiled progress.
+4. **Lean-ready items already in the registry:** Q-29 (a)–(b), Q-27 (a), Q-26, Q-28 (a). They are
+   cheap and feed 2 and C5.
+5. **Lower:** improving the seed (Q-32, Q-34/N-50) while the candidate's own C2 numbers are
+   good; the fixed-domain rigidity test (Q-24); further general theory for N-48 (bundles,
+   cohomology classes) and for N-51 without a physical band. For full-orbit versions of item 2
+   the missing piece is a maximal-orbit (escape) lemma on an open set
+   (`Theory/Kinetic/LorentzOrbitOpen` has local existence and uniqueness only).
 
 ### RG.6 Definition of done and evidence gates
 
@@ -2517,6 +2579,22 @@ After the audit. Three sub-agents, each with its own modules; the lead verified 
 - Sanity: circular tori accepted; the doubly covered torus and the collapsed circle rejected;
   no instance of the full clause with non-zero transform exists yet.
 - Checks: `lake build` (11,711 jobs), `check_axioms` 53,331 declarations. Not audited.
+
+
+### Assessment against the contract after N-49–N-51, 23 November 2026
+
+- Reviewed the notes N-49, N-50, N-51 and the Lean modules of N-51 against the contract section,
+  RG.1, RG.2 and RG.5.
+- Recorded: a dated status per clause in the contract section; in RG.5 the status of the approved
+  order of 30 October and a proposed order (not yet user-approved); corrected stale status cells
+  of G-10 and G-11; dependencies of Q-34 on Q-36; remarks on Q-35 and N-51.
+- Main findings: no contract clause changed status for a candidate between 2 and 23 November;
+  C2 has no field instance and its Boozer-chart form cannot at present be instantiated by a
+  certified field; N-51 is a compiled general theorem without a physical band; finite β (Q-20)
+  has no compiled progress.
+- **User decisions (23 November 2026):** both forms of C2 are allowed (chart form and band
+  form); the order in RG.5 is approved and replaces the order of 30 October.
+- No Lean change.
 
 ### Conceptual methods for trapped particles and vacuum shape, 23 November 2026
 
