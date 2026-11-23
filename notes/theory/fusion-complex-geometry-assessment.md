@@ -194,4 +194,7 @@ Chern class and Yang–Mills minimality are not formalized.
 
 **Pointer (23 November 2026, after the audit).** For a constant complex structure on `ℝ³ × ℝ`
 (one for each unit vector), anti-self-dual is equivalent to type `(1,1)` and primitive, and the
-lift has both properties (`Theory/Fields/FormHYMComplex`, N-48).
+lift has both properties (`Theory/Fields/FormHYMComplex`, N-48). The energy identity
+`∫(|ℱ + da|² − |ℱ|²) = ∫|da|² ≥ 0` is compiled for variations with compact support in `Ω × ℝ`,
+and the local connection `A − Φ dt` with `dA = ℱ` on star-convex regions
+(`Theory/Fields/FormHYMEnergy`). The statement on `Ω × S¹`, the bundle and its Chern class are not.

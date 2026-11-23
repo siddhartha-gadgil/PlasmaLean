@@ -15,7 +15,7 @@
 | Status | verified and audited (23 November 2026, findings AV-*) for the modules listed under "Current state"; the rest stated |
 | Lean evidence | default build, namespace `PlasmaLean.Forms` unless noted: `lieDerivForm_eq_zero_of_interior`, `FormWeakQS.lieDerivForm_eq_zero`, `PlasmaLean.Fields.WeakQS.lieDerivForm_flux_eq_zero`, `VacuumForm.exists_scalarPotential`, `VacuumForm.exists_vectorPotential`, `onOpens`, `isSmoothForm_onOpens_iff`, `mextDeriv_onOpens`, `VacuumForm.exists_scalarPotential_of_simplyConnected`, `not_simplyConnected_of_no_potential`, `wedge12_eq_wedge`, `isContactAt_iff_nondegenerate`, `IsBeltramiOn.reeb`; `PlasmaLean.Sanity.FormTopology.wireField_no_potential`, `wireRegion_not_simplyConnected`, `bentSet_not_starConvex`, `hyperbolic_scalarPotential_bent`; `lieDerivForm_flux`, `PlasmaLean.Fields.WeakQS.lieBracket_eq_zero`, `IsBeltramiOn.reeb_unique`, `pathIntegral_onOpens_flat`, `periodHom_onOpens_flat`, `PlasmaLean.Sanity.FormPeriods.wire_period`; `PlasmaLean.Kinetic.lorentzOrbit_eulerLagrange`, `noetherMomentum_translation_conserved`, `noetherMomentum_linear_gauge_conserved`, `canonicalMomentum_rotGenZ_conserved`; `loopCurrent_eq_periodHom_div`, `PlasmaLean.Vacuum.VacuumField.loopCurrent_eq_zero_of_simplyConnected`; `flatSmoothForm`, `isContactForm_flatSmoothForm_iff`, `IsBeltramiOn.reebVectorField_flatSmoothForm`; `PlasmaLean.Kinetic.canonicalForm_fderiv_kineticMomentumMap_flux`, `lorentzOrbit_hamilton`; `hymLift`, `extDeriv_hymLift_eq_zero_iff`, `hymLift_closed_iff_vacuumField`, `hymLift_isAntiSelfDual` |
 | Audit evidence | audited at `6ceca0e` (23 November 2026): AV-H1, AV-M1–M6 resolved; AV-M4 partly open; record `notes/audit/2026-11-23-refresh-audit.md` |
-| Last updated | 23 November 2026: created; same day, the manifold bridge, the wedge and contact links, the wire fixture and the symplectic assessment; then periods, `[ξ, B] = 0`, uniqueness of the Reeb vector, a non-star-convex fixture and the Noether charge from TauCeti; phases 1 and 2 of the remaining tasks (rotational Noether, loop current as a period, bundled contact form; magnetic symplectic form, anti-self-dual lift); second round, phase 1 (finite symmetry and the direct proofs, periods on an interval, contact forms on an open subset) and phase 2 (Hamilton's equations with an electric field and the converse; Hodge star on `ℝ³ × ℝ` and the circle quotient); third round, phase 1 (piecewise `C¹` loops, convex regions and the contract's current clause, gauge terms) and phase 2 (the lift on `Ω × S¹`; crossed-field orbits, existence and uniqueness); after the audit, fourth round, phase 1 (complex structure of the lift, global existence of orbits, loop current on the Dommaschk tori) |
+| Last updated | 23 November 2026: created; same day, the manifold bridge, the wedge and contact links, the wire fixture and the symplectic assessment; then periods, `[ξ, B] = 0`, uniqueness of the Reeb vector, a non-star-convex fixture and the Noether charge from TauCeti; phases 1 and 2 of the remaining tasks (rotational Noether, loop current as a period, bundled contact form; magnetic symplectic form, anti-self-dual lift); second round, phase 1 (finite symmetry and the direct proofs, periods on an interval, contact forms on an open subset) and phase 2 (Hamilton's equations with an electric field and the converse; Hodge star on `ℝ³ × ℝ` and the circle quotient); third round, phase 1 (piecewise `C¹` loops, convex regions and the contract's current clause, gauge terms) and phase 2 (the lift on `Ω × S¹`; crossed-field orbits, existence and uniqueness); after the audit, fourth round, phase 1 (complex structure of the lift, global existence of orbits, loop current on the Dommaschk tori) and phase 2 (energy inequality and connection form of the lift; periods of a flux surface) |
 | Patches | none (N-45 stands; this note adds to it) |
 
 ## Current state (after the audit of 23 November 2026)
@@ -42,8 +42,11 @@ TauCeti's own proofs were not audited. Added after the audit (not yet audited): 
 complex structure of the lift and its `(1,1)`, primitive characterisation, closedness on
 `U × S¹` without regularity (`FormHYMComplex`); global existence of orbits under linear
 growth or an energy bound (`Theory/Kinetic/LorentzGlobalExistence`); the loop current on the
-Dommaschk tori (`Design/DommaschkKamLoopCurrent`, on demand). Not formalized: the line bundle,
-Chern class and Yang–Mills minimality of the lift; the de Rham classes of a flux surface.
+Dommaschk tori (`Design/DommaschkKamLoopCurrent`, on demand); the energy inequality for
+compactly supported variations of the lift and its local connection form (`FormHYMEnergy`);
+the periods of a parametrised flux surface and the independence of the contract's circulation
+from the toroidal angle (`FormFluxSurfacePeriods`). Not formalized: a line bundle and Chern
+class for the lift, the energy statement on `Ω × S¹`; flux surfaces as embedded submanifolds.
 
 ## Purpose and scope
 
@@ -621,15 +624,77 @@ modules written in parallel and rebuilt and axiom-checked in the main session:
 Checks: all modules build; `scripts/check_axioms.lean` passes for 52,306 declarations and
 `scripts/check_axioms_heavy.lean` for 59,506.
 
+## Fourth round, phase 2 (sub-agents, 23 November 2026)
+
+**Energy of the lift, and its connection form** (`Theory/Fields/FormHYMEnergy`).
+
+- Pointwise: `sdPart`, `asdPart` (the self-dual and anti-self-dual parts), `wedgeDensity`
+  (`F ∧ F = wedgeDensity F · vol`, `wedge_self_apply`),
+  `liftInner_self_eq_sdPart_add_asdPart` (`|F|² = |F⁺|² + |F⁻|²`),
+  `wedgeDensity_eq_sdPart_sub_asdPart`, `neg_wedgeDensity_le_liftInner_self` with equality
+  iff `⋆F = −F` (`liftInner_self_eq_neg_wedgeDensity_iff`), and the self-dual companions.
+- Cross term: `integral_liftInner_extDeriv_eq_zero`: on an open `U ⊆ ℝ³ × ℝ`, for `G` of class
+  `C¹` on `U` with `d⋆G = 0` there and `a` a `C¹` 1-form with compact support in `U`,
+  `∫⟨G, da⟩ = 0`. Closed self-dual and closed anti-self-dual fields are special cases.
+- Minimality: `integral_energy_perturbation`, `…_nonneg`, `…_eq_zero_iff`:
+  `∫(|G + da|² − |G|²) = ∫|da|² ≥ 0`, with equality iff `da = 0`. For the lift of a vacuum form
+  on an open `Ω`: `VacuumForm.integral_energy_hymLift_perturbation` (and `_nonneg`,
+  `_eq_zero_iff`), `VacuumField.integral_ymDensity_hymLift_perturbation`. The difference is
+  integrated as one integrand, which is proved integrable; the two energies are not written
+  separately because the lift is not integrable over `ℝ³ × ℝ`.
+- Relation to the source (`continuation_geometry.tex`, lines 54–59: the lift minimises the
+  Abelian Yang–Mills energy against connection variations with vanishing tangential trace on
+  `∂M`, `M = Ω × S¹`): the same identity with the same proof, but on the cover `Ω × ℝ` and for
+  a smaller class of variations (compact support in `Ω × ℝ`). The statement on `Ω × S¹` with
+  periodic variations is not proved.
+- Connection: `liftConnection A φ = π^*A − (π^*φ) dτ`; `extDeriv_liftConnection_eq_hymLift`:
+  its exterior derivative is the lift when `dA = ω` and `dφ = ⋆ω`.
+  `VacuumForm.exists_liftConnection`: on an open star-convex region such `A`, `φ` exist. The
+  connection does not depend on `τ`. It is a connection on a trivial bundle; on a region that
+  is not star-convex (a solid torus) nothing is proved.
+- Sanity: values for an anti-self-dual, a self-dual and a mixed form; the explicit connection
+  `A = x₀ dx₁`, `φ = x₂` for the constant field `e₂`, and the wrong sign rejected; a bump
+  perturbation of the hyperbolic field raises the energy strictly
+  (`hyperbolic_energy_bump_pos`).
+- Not formalized: a line bundle with connection, the Chern class `[ℱ/2π]` and integrality of
+  periods, the holomorphic structure, a Yang–Mills functional on a space of connections.
+
+**Periods of a flux surface** (`Theory/Fields/FormFluxSurfacePeriods`).
+
+- `torusMap R z`, `torusForm B R z` (the pull-back of `B♭` to the parameter plane),
+  `poloidalPeriod`, `toroidalPeriod`; `PeriodicC2Torus R z` (`C²`, doubly `2π`-periodic; a
+  `FieldTorus` with `C²` profiles is one).
+- For `B` of class `C¹` and curl-free on an open set containing the image of the surface:
+  `fderiv_torusForm_symm` (the pulled-back form is closed), `exists_torusPotential` (exact on
+  the plane), `poloidalPeriod_eq_of_curl_eq_zero`, `toroidalPeriod_eq_of_curl_eq_zero` (each
+  period is independent of the other angle), `torusPotential_add_θ`, `torusPotential_add_φ`.
+- The class: `exists_periodic_potential_of_curl_eq_zero` (`β̃ − (P_θ/2π)dθ − (P_φ/2π)dφ` is the
+  differential of a doubly periodic function) and `periods_eq_of_periodic_potential` (the
+  coefficients are determined). This is the statement that the class of `B♭` on the surface is
+  `(P_θ/2π)[dθ] + (P_φ/2π)[dφ]`, written on the universal cover.
+- Contract: `poloidalPeriod_eq_poloidalCirculation` (no hypothesis on `B`);
+  `FieldTorus.poloidalCirculation_eq_of_curl_eq_zero`, `FieldTorus.loopCurrent_eq_of_curl_eq_zero`:
+  the circulation that clause C1 measures at one toroidal angle does not depend on the angle.
+  This answers the third part of audit finding AV-M9 under these hypotheses.
+  `VacuumField.poloidalPeriod_eq_zero_of_meridianHalfSpace`.
+- Sanity: for the wire field on a circular torus the periods are `0` and `2π` and the class is
+  `[dφ]`; a uniform field has both periods `0`; for the shear field `x₀e_z` (not curl-free) the
+  poloidal circulation is `πa² cos φ₀`, which depends on the angle.
+- Not done: the statement on TauCeti's torus and its de Rham cohomology; embeddedness (the map
+  need not be injective or an immersion); fields curl-free only near one loop.
+
+Checks: all modules build; `scripts/check_axioms.lean` passes for 52,527 declarations.
+
 ## Next steps
 
-Open after the fourth round, phase 1:
+Open after the fourth round:
 
-1. The line bundle, Chern class and Yang–Mills minimality of N-42 S-13 (TauCeti has no bundle
-   from a closed 2-form and no first Chern class); the energy inequality for exact
-   perturbations needs no bundle.
-2. The de Rham classes of a flux surface (the contract's tori are parametrised, not embedded).
-3. Open audit items: `notes/audit/2026-11-23-refresh-audit.md`.
+1. A line bundle with connection whose curvature is the lift, its Chern class, and the energy
+   statement on `Ω × S¹` with periodic variations (TauCeti has no bundle from a closed 2-form
+   and no first Chern class).
+2. Flux surfaces as embedded submanifolds, and the period statements on TauCeti's torus.
+3. Open audit items (`notes/audit/2026-11-23-refresh-audit.md`), and an audit of the modules
+   added after `6ceca0e`.
 
 ## Barriers
 

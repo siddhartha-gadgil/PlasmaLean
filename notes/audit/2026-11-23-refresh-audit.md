@@ -138,6 +138,9 @@ surface. Resolution: "Scope and limits" paragraphs in `StellaratorContract`. Uni
 for a fixed parametrisation does not follow from `IotaOnTorus.tendsto`; it is proved under
 differentiability of the surface at one point with nonzero `θ`-derivative
 (`fieldTorus_iota_unique`, `iotaOnTorus_iota_unique`). Open: the unconditional statement.
+Later the same day (not audited): for a `C²` surface and a field `C¹` and curl-free on an open
+set containing it, the circulation does not depend on the toroidal angle
+(`FieldTorus.poloidalCirculation_eq_of_curl_eq_zero`, `Theory/Fields/FormFluxSurfacePeriods`).
 
 ### AV-M10 (medium; resolved): `dommaschk_Q16_vacuum` hides the regularity behind its defect bounds
 

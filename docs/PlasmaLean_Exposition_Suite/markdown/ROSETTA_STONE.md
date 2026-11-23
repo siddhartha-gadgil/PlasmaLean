@@ -218,7 +218,14 @@ theorem liftStar_eq_neg_iff_isType11_and_isPrimitive (hn : ‖n‖ = 1) (F : Lif
     liftStar F = -F ↔ IsType11 n F ∧ IsPrimitive n F
 theorem isType11_and_isPrimitive_hymLift ...   -- the lift is (1,1) and primitive
 theorem VacuumForm.hymLiftRegionForm_closed ...  -- closed on U × S¹, no regularity hypothesis
--- Not in Lean: the line bundle and its Chern class, Yang–Mills minimality
+
+-- PlasmaLean/Theory/Fields/FormHYMEnergy.lean   (a : C¹ 1-form, compact support in Ω × ℝ)
+theorem VacuumForm.integral_energy_hymLift_perturbation (h : VacuumForm Ω w) ... :
+    ∫ p, (liftInner (ℱ p + extDeriv a p) (ℱ p + extDeriv a p) - liftInner (ℱ p) (ℱ p)) =
+      ∫ p, liftInner (extDeriv a p) (extDeriv a p)        -- ≥ 0, and = 0 iff da = 0
+theorem VacuumForm.exists_liftConnection (h : VacuumForm Ω w) (hs : StarConvex ℝ x₀ Ω) :
+    ∃ A φ, ... ∀ x ∈ Ω, ∀ τ, extDeriv (liftConnection A φ) (x, τ) = hymLift w (x, τ)
+-- Not in Lean: the line bundle and its Chern class; the energy statement on Ω × S¹
 -- (TauCeti has no bundle-from-curvature construction or Chern class).
 ```
 
@@ -316,6 +323,14 @@ theorem CurrentFreeTransform.imax_zero_of_meridianHalfSpace
 -- PlasmaLean/Design/DommaschkKamLoopCurrent.lean   (on demand)
 theorem exists_fieldTorus_loopCurrent_eq_zero ...   -- the two KAM tori of the Dommaschk
 -- candidate, ι ≠ 0: loop current 0 by the topological route (second proof of a known fact)
+
+-- PlasmaLean/Theory/Fields/FormFluxSurfacePeriods.lean   (C² surface; B C¹, curl-free near it)
+theorem FieldTorus.poloidalCirculation_eq_of_curl_eq_zero ... (φ₀ φ₁ : ℝ) :
+    poloidalCirculation B R z φ₀ = poloidalCirculation B R z φ₁
+theorem PeriodicC2Torus.exists_periodic_potential_of_curl_eq_zero ... :
+    ∃ g, (doubly 2π-periodic) ∧ ∀ p, HasFDerivAt g (torusForm B R z p
+      - (poloidalPeriod B R z φ₀ / (2 * π)) • fst - (toroidalPeriod B R z θ₀ / (2 * π)) • snd) p
+-- The class of B♭ on the surface is (P_θ/2π)[dθ] + (P_φ/2π)[dφ], stated on the parameter plane.
 ```
 
 ## Magnetic well and min-B: |B| in a vacuum field

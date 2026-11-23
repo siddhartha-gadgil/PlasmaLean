@@ -125,6 +125,10 @@ public import PlasmaLean.Theory.Fields.FormHYMComplex
 public import PlasmaLean.Sanity.FormHYMComplex
 public import PlasmaLean.Theory.Kinetic.LorentzGlobalExistence
 public import PlasmaLean.Sanity.LorentzGlobalExistence
+public import PlasmaLean.Theory.Fields.FormHYMEnergy
+public import PlasmaLean.Sanity.FormHYMEnergy
+public import PlasmaLean.Theory.Fields.FormFluxSurfacePeriods
+public import PlasmaLean.Sanity.FormFluxSurfacePeriods
 public import PlasmaLean.Theory.Fluids.EulerianODE
 public import PlasmaLean.Theory.Transport.PowerBalance
 public import PlasmaLean.Theory.Transport.Comparison
