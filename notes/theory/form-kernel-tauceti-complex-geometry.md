@@ -15,7 +15,7 @@
 | Status | verified for the theorems listed under "What is compiled"; the rest stated |
 | Lean evidence | default build, namespace `PlasmaLean.Forms` unless noted: `lieDerivForm_eq_zero_of_interior`, `FormWeakQS.lieDerivForm_eq_zero`, `PlasmaLean.Fields.WeakQS.lieDerivForm_flux_eq_zero`, `VacuumForm.exists_scalarPotential`, `VacuumForm.exists_vectorPotential`, `onOpens`, `isSmoothForm_onOpens_iff`, `mextDeriv_onOpens`, `VacuumForm.exists_scalarPotential_of_simplyConnected`, `not_simplyConnected_of_no_potential`, `wedge12_eq_wedge`, `isContactAt_iff_nondegenerate`, `IsBeltramiOn.reeb`; `PlasmaLean.Sanity.FormTopology.wireField_no_potential`, `wireRegion_not_simplyConnected`, `bentSet_not_starConvex`, `hyperbolic_scalarPotential_bent`; `lieDerivForm_flux`, `PlasmaLean.Fields.WeakQS.lieBracket_eq_zero`, `IsBeltramiOn.reeb_unique`, `pathIntegral_onOpens_flat`, `periodHom_onOpens_flat`, `PlasmaLean.Sanity.FormPeriods.wire_period`; `PlasmaLean.Kinetic.lorentzOrbit_eulerLagrange`, `noetherMomentum_translation_conserved`, `noetherMomentum_linear_gauge_conserved`, `canonicalMomentum_rotGenZ_conserved`; `loopCurrent_eq_periodHom_div`, `PlasmaLean.Vacuum.VacuumField.loopCurrent_eq_zero_of_simplyConnected`; `flatSmoothForm`, `isContactForm_flatSmoothForm_iff`, `IsBeltramiOn.reebVectorField_flatSmoothForm`; `PlasmaLean.Kinetic.canonicalForm_fderiv_kineticMomentumMap_flux`, `lorentzOrbit_hamilton`; `hymLift`, `extDeriv_hymLift_eq_zero_iff`, `hymLift_closed_iff_vacuumField`, `hymLift_isAntiSelfDual` |
 | Audit evidence | not audited |
-| Last updated | 23 November 2026: created; same day, the manifold bridge, the wedge and contact links, the wire fixture and the symplectic assessment; then periods, `[ξ, B] = 0`, uniqueness of the Reeb vector, a non-star-convex fixture and the Noether charge from TauCeti; phases 1 and 2 of the remaining tasks (rotational Noether, loop current as a period, bundled contact form; magnetic symplectic form, anti-self-dual lift); second round, phase 1 (finite symmetry and the direct proofs, periods on an interval, contact forms on an open subset) and phase 2 (Hamilton's equations with an electric field and the converse; Hodge star on `ℝ³ × ℝ` and the circle quotient) |
+| Last updated | 23 November 2026: created; same day, the manifold bridge, the wedge and contact links, the wire fixture and the symplectic assessment; then periods, `[ξ, B] = 0`, uniqueness of the Reeb vector, a non-star-convex fixture and the Noether charge from TauCeti; phases 1 and 2 of the remaining tasks (rotational Noether, loop current as a period, bundled contact form; magnetic symplectic form, anti-self-dual lift); second round, phase 1 (finite symmetry and the direct proofs, periods on an interval, contact forms on an open subset) and phase 2 (Hamilton's equations with an electric field and the converse; Hodge star on `ℝ³ × ℝ` and the circle quotient); third round, phase 1 (piecewise `C¹` loops, convex regions and the contract's current clause, gauge terms) |
 | Patches | none (N-45 stands; this note adds to it) |
 
 ## Purpose and scope
@@ -132,7 +132,7 @@ exterior calculus.
 
 ## What is compiled
 
-All in the default build, standard axioms only (`scripts/check_axioms.lean`, 99 entry points).
+All in the default build, standard axioms only (`scripts/check_axioms.lean`, 117 entry points).
 
 **Lie derivative** (`Theory/Fields/FormCalculus`).
 
@@ -415,18 +415,70 @@ modules written in parallel and rebuilt and axiom-checked in the main session:
   of `Space`; the complex structure, the line bundle, its Chern class, the energy identity and
   Yang–Mills minimality.
 
+## Third round, phase 1 (sub-agents, 23 November 2026)
+
+**Piecewise `C¹` loops and polygons** (`Theory/Fields/FormPiecewisePeriod`).
+
+- `pathClassIntegral_arcPath`: for a curve `C¹` on `[a, b]` in `U` (not closed), TauCeti's
+  integral over the path class is the line integral.
+- `PiecewiseC1In U γ t n` (a partition `t 0 < … < t n` with `γ` `C¹` and in `U` on each piece),
+  `lineIntegral_eq_periodHom_piecewise`: the circulation around a closed piecewise `C¹` loop is
+  the period on the concatenated class (`chainLoop`). Any finite number of corners.
+- `sum_lineIntegral_segCurve_eq_periodHom`: closed polygons, as the sum of the edge integrals.
+- `VacuumField.lineIntegral_eq_zero_of_piecewise`: zero circulation on a simply connected
+  region, from the period.
+- Sanity: a square around the wire has edge integrals `π/2` each, circulation and period `2π`
+  (`square_period`), and is proved not `C¹` at a vertex (`square_not_contDiffOn`), so it needs
+  this theorem; a triangle in the bent region has zero circulation.
+- Not done: the concatenated class is not compared with the affinely parametrised loop; no
+  contract-clause version for piecewise loops.
+
+**Convex regions and the contract's current clause** (`Theory/Fields/FormConvexRegion`,
+`Sanity/ContractLoopCurrentFixture`).
+
+- `simplyConnectedSpace_of_convex`: nonempty convex open sets are simply connected (balls, all
+  of `ℝ³`). `VacuumField.lineIntegral_eq_zero_of_convex` and the poloidal versions.
+- `meridianHalfSpace φ₀ = {x | 0 < x₀ cos φ₀ + x₁ sin φ₀}` is convex and misses the z-axis, and
+  every poloidal loop at toroidal angle `φ₀` with `R > 0` lies in it
+  (`poloidalLoop_mem_meridianHalfSpace`).
+- **Consequence for contract clause C1.** `CurrentFreeTransform.imax_zero_of_meridianHalfSpace`:
+  if `B` is a vacuum field on a region containing those half-spaces (for instance away from the
+  z-axis), then any `CurrentFreeTransform` holds with current allowance `0`. For vacuum fields
+  the net-current bound of C1 is therefore automatic; it has content only for fields with
+  current. Zero poloidal circulation is compatible with `ι ≠ 0` in a non-axisymmetric field.
+- Fixture with `ι > 0`: the rational stellarator field and its certified torus
+  (`rationalStellarator_fixture`, `exactTorus_loopCurrent`, `exactTorus_period`); with `ι = 0`:
+  the purely toroidal field (`toroidal_circ_loopCurrent`). Rejected: no convex region inside
+  the ring wire's complement contains the torus section (`ring_no_convex_region`).
+- Relation to the audit theorem `Sanity.AuditRefresh.CurrentFreeTransform.circulation_eq_zero`:
+  that one assumes allowance `0` and no vacuum hypothesis; the new one assumes vacuum and any
+  allowance. Neither implies the other; they compose (`circulation_eq_zero_via_audit`).
+- Not checked in Lean: the same for the on-demand Dommaschk instances (their field is also
+  vacuum away from the z-axis).
+
+**Gauge terms and gauge invariance** (`Theory/Kinetic/NoetherGaugeBridge`).
+
+- `symmetricFlux_gauge_iff`, `axisymmetricFlux_gauge_iff`: with `B = ∇ × A`, the hypothesis of
+  the direct proof for `ψ = ⟪A, K x⟫ − χ` is equivalent to equivariance up to `G = ∇χ`.
+  `noetherMomentum_linear_gauge_conserved_direct`: a second proof of the gauge-term law.
+- Gauge transformation `A ↦ A + ∇Λ`: `fieldCurl_add_gradient` (the field is unchanged),
+  `equivariant_gauge_add_gradient` (the defect becomes `G + D(∇Λ)(K y) − K(∇Λ)`), and the
+  gauge term becomes `χ + ⟪∇Λ, K x⟫`. With that rule the conserved momentum is exactly
+  unchanged (`noetherMomentum_add_gradient`); any other gauge term with the same gradient
+  shifts it by a constant (`noetherMomentum_add_gradient_of_gauge_term`); dropping the gauge
+  term shifts it by `q⟪∇Λ, K x⟫` (`noetherMomentum_add_gradient_naive`).
+- `rotZ_equivariant_iff_commute`: for a continuous linear `A`, commuting with `rotGenZ` is
+  equivalent to equivariance under every `rotZ s` (infinitesimal ⇔ finite, linear case).
+- Sanity: the Landau gauge is the symmetric gauge plus `∇(B₀xy/2)`, and the rule reproduces its
+  gauge term `B₀(x² − y²)/2`; with the wrong gauge term the hypothesis fails.
+- Not done: infinitesimal ⇒ finite for nonlinear `A`; time-dependent gauge functions.
+
 ## Next steps
 
-Every limit recorded after the first round has now been addressed, each again with stated
-limits. Still open:
-
-1. Closedness of the lifted form on `Ω × S¹` as a manifold statement; the line bundle of N-42
-   S-13 and its Chern class.
-2. Piecewise `C¹` loops; a concrete `CurrentFreeTransform` fixture for the zero-current
-   corollary.
-3. The gauge-term case of the bridge to the direct proofs.
-4. An explicit crossed-field orbit; existence of integral curves.
-5. The de Rham classes of an embedded flux surface.
+Phase 2 of the third round is in progress: closedness of the lifted form on `Ω × S¹` as a
+manifold statement, and an explicit crossed-field orbit with existence of integral curves.
+Other open items: the line bundle of N-42 S-13 and its Chern class; the de Rham classes of an
+embedded flux surface.
 
 ## Barriers
 

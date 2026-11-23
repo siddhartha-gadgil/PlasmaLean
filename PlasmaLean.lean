@@ -110,6 +110,12 @@ public import PlasmaLean.Theory.Kinetic.MagneticHamiltonConverse
 public import PlasmaLean.Sanity.MagneticHamiltonConverse
 public import PlasmaLean.Theory.Fields.FormHYMStar
 public import PlasmaLean.Sanity.FormHYMStar
+public import PlasmaLean.Theory.Fields.FormPiecewisePeriod
+public import PlasmaLean.Sanity.FormPiecewisePeriod
+public import PlasmaLean.Theory.Fields.FormConvexRegion
+public import PlasmaLean.Sanity.ContractLoopCurrentFixture
+public import PlasmaLean.Theory.Kinetic.NoetherGaugeBridge
+public import PlasmaLean.Sanity.NoetherGaugeBridge
 public import PlasmaLean.Theory.Fluids.EulerianODE
 public import PlasmaLean.Theory.Transport.PowerBalance
 public import PlasmaLean.Theory.Transport.Comparison

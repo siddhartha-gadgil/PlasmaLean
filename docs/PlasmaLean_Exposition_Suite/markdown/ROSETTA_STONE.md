@@ -279,6 +279,24 @@ theorem CurrentFreeTransform.current_eq_zero_of_simplyConnected [SimplyConnected
     (hU : ∀ θ ∈ Set.Icc (-π) π, s.loop θ ∈ U) : s.current μ₀ B = 0
 -- Sanity: a poloidal loop around a straight wire has circulation and period 2π
 -- (ring_poloidalCirculation, ring_period); the wire's complement is not simply connected.
+
+-- Piecewise C¹ loops and polygons (PlasmaLean/Theory/Fields/FormPiecewisePeriod.lean):
+theorem lineIntegral_eq_periodHom_piecewise (hB : ContDiffOn ℝ 1 B U)
+    (hcurl : ∀ x ∈ U, fieldCurl B x = 0) (h : PiecewiseC1In U γ t n)
+    (hclosed : γ (t 0) = γ (t n)) :
+    lineIntegral B γ (t 0) (t n) = periodHom (onOpens U ...) _ (chainLoop h hclosed)
+theorem sum_lineIntegral_segCurve_eq_periodHom ... :   -- closed polygons with edges in U
+    ∑ i ∈ Finset.range n, lineIntegral B (segCurve (p i) (p (i + 1))) 0 1 = periodHom ...
+-- Sanity: a square around the wire has circulation and period 2π (square_period).
+
+-- The current-free clause is automatic for vacuum fields
+-- (PlasmaLean/Theory/Fields/FormConvexRegion.lean): a poloidal loop at angle φ₀ with R > 0
+-- lies in the convex half-space meridianHalfSpace φ₀, which misses the z-axis.
+theorem CurrentFreeTransform.imax_zero_of_meridianHalfSpace
+    (hC : CurrentFreeTransform μ₀ B S Imax ιmin) (h : VacuumField Ω B)
+    (hΩ : ∀ s ∈ S, (meridianHalfSpace s.φ₀ : Set Space) ⊆ Ω) :
+    CurrentFreeTransform μ₀ B S 0 ιmin
+-- Fixture with ι > 0: the rational stellarator field (rationalStellarator_fixture).
 ```
 
 ## Magnetic well and min-B: |B| in a vacuum field
@@ -718,6 +736,17 @@ theorem axisymmetricFlux_iff_symmetricFlux_rotGenZ (B G : Space → Space) :
     AxisymmetricFlux B G ↔ SymmetricFlux B G (fun y => rotGenZ y)
 -- So the hypothesis of the direct proof is equivalent to equivariance of A, and each
 -- conservation law has two independent proofs (Noether and direct).
+
+-- Gauge terms and gauge invariance (PlasmaLean/Theory/Kinetic/NoetherGaugeBridge.lean):
+theorem symmetricFlux_gauge_iff (hcurl : ∀ y, B y = fieldCurl A y) :
+    SymmetricFlux B (fun y => symmetryFluxGrad A K y - G y) (fun y => K y)
+      ↔ ∀ y, fderiv ℝ A y (K y) = K (A y) + G y
+theorem noetherMomentum_add_gradient (m q : ℝ) (A H : Space → Space) (χ : Space → ℝ)
+    (K : Space → Space) (x v : ℝ → Space) (t : ℝ) :
+    noetherMomentum m q K (fun y => ⟪A y + H y, K y⟫ - (χ y + ⟪H y, K y⟫)) x v t
+      = noetherMomentum m q K (fun y => ⟪A y, K y⟫ - χ y) x v t
+-- Under A ↦ A + ∇Λ the gauge term becomes χ + ⟪∇Λ, K x⟫ and the conserved momentum is
+-- unchanged. For linear A: commuting with rotGenZ ⇔ equivariance under every rotZ s.
 ```
 
 ## Near-axis expansion (Garren–Boozer, Landreman–Sengupta)

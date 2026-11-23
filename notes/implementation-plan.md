@@ -2351,7 +2351,20 @@ with a literature search and independent numerical checks; note
     intrinsic Hodge star (`euclidForm_liftStar`); `isAntiSelfDual_iff_liftStar`;
     `liftStar_eq_neg_iff_exists` (every anti-self-dual form is a lift);
     `hymLiftCircle` and `mpullback_hymLiftCircleForm` (descent to `Space × AddCircle ℓ`).
-- **Still open:** closedness of the lifted form on the circle product as a manifold statement,
-  the line bundle and its Chern class; piecewise `C¹` loops; the gauge-term bridge; an explicit
-  crossed-field orbit; the de Rham classes of an embedded flux surface.
+- **Third round, phase 1** (three sub-agents in parallel; rebuilt and axiom-checked in the main
+  session):
+  - `Theory/Fields/FormPiecewisePeriod`: `lineIntegral_eq_periodHom_piecewise` (closed
+    piecewise `C¹` loops), `sum_lineIntegral_segCurve_eq_periodHom` (polygons); a square around
+    the wire with period `2π`.
+  - `Theory/Fields/FormConvexRegion` and `Sanity/ContractLoopCurrentFixture`:
+    `simplyConnectedSpace_of_convex`; **`CurrentFreeTransform.imax_zero_of_meridianHalfSpace`:
+    for a vacuum field away from the z-axis the net-current bound of contract clause C1 holds
+    with allowance `0`** (every poloidal loop with `R > 0` lies in a convex half-space missing
+    the axis). Fixture with `ι > 0`: `rationalStellarator_fixture`.
+  - `Theory/Kinetic/NoetherGaugeBridge`: `symmetricFlux_gauge_iff`; the gauge term transforms
+    as `χ + ⟪∇Λ, K x⟫` and the conserved momentum is gauge invariant
+    (`noetherMomentum_add_gradient`); `rotZ_equivariant_iff_commute`.
+- **Still open:** closedness of the lifted form on the circle product as a manifold statement;
+  an explicit crossed-field orbit and existence of integral curves (third round, phase 2); the
+  line bundle and its Chern class; the de Rham classes of an embedded flux surface.
 - **Registry:** N-48 added; pointers in N-45, N-43, N-42.
