@@ -15,7 +15,7 @@
 | Status | verified and audited (23 November 2026, findings AV-*) for the modules listed under "Current state"; the rest stated |
 | Lean evidence | default build, namespace `PlasmaLean.Forms` unless noted: `lieDerivForm_eq_zero_of_interior`, `FormWeakQS.lieDerivForm_eq_zero`, `PlasmaLean.Fields.WeakQS.lieDerivForm_flux_eq_zero`, `VacuumForm.exists_scalarPotential`, `VacuumForm.exists_vectorPotential`, `onOpens`, `isSmoothForm_onOpens_iff`, `mextDeriv_onOpens`, `VacuumForm.exists_scalarPotential_of_simplyConnected`, `not_simplyConnected_of_no_potential`, `wedge12_eq_wedge`, `isContactAt_iff_nondegenerate`, `IsBeltramiOn.reeb`; `PlasmaLean.Sanity.FormTopology.wireField_no_potential`, `wireRegion_not_simplyConnected`, `bentSet_not_starConvex`, `hyperbolic_scalarPotential_bent`; `lieDerivForm_flux`, `PlasmaLean.Fields.WeakQS.lieBracket_eq_zero`, `IsBeltramiOn.reeb_unique`, `pathIntegral_onOpens_flat`, `periodHom_onOpens_flat`, `PlasmaLean.Sanity.FormPeriods.wire_period`; `PlasmaLean.Kinetic.lorentzOrbit_eulerLagrange`, `noetherMomentum_translation_conserved`, `noetherMomentum_linear_gauge_conserved`, `canonicalMomentum_rotGenZ_conserved`; `loopCurrent_eq_periodHom_div`, `PlasmaLean.Vacuum.VacuumField.loopCurrent_eq_zero_of_simplyConnected`; `flatSmoothForm`, `isContactForm_flatSmoothForm_iff`, `IsBeltramiOn.reebVectorField_flatSmoothForm`; `PlasmaLean.Kinetic.canonicalForm_fderiv_kineticMomentumMap_flux`, `lorentzOrbit_hamilton`; `hymLift`, `extDeriv_hymLift_eq_zero_iff`, `hymLift_closed_iff_vacuumField`, `hymLift_isAntiSelfDual` |
 | Audit evidence | audited at `6ceca0e` (23 November 2026): AV-H1, AV-M1–M6 resolved; AV-M4 partly open; record `notes/audit/2026-11-23-refresh-audit.md` |
-| Last updated | 23 November 2026: created; same day, the manifold bridge, the wedge and contact links, the wire fixture and the symplectic assessment; then periods, `[ξ, B] = 0`, uniqueness of the Reeb vector, a non-star-convex fixture and the Noether charge from TauCeti; phases 1 and 2 of the remaining tasks (rotational Noether, loop current as a period, bundled contact form; magnetic symplectic form, anti-self-dual lift); second round, phase 1 (finite symmetry and the direct proofs, periods on an interval, contact forms on an open subset) and phase 2 (Hamilton's equations with an electric field and the converse; Hodge star on `ℝ³ × ℝ` and the circle quotient); third round, phase 1 (piecewise `C¹` loops, convex regions and the contract's current clause, gauge terms) and phase 2 (the lift on `Ω × S¹`; crossed-field orbits, existence and uniqueness) |
+| Last updated | 23 November 2026: created; same day, the manifold bridge, the wedge and contact links, the wire fixture and the symplectic assessment; then periods, `[ξ, B] = 0`, uniqueness of the Reeb vector, a non-star-convex fixture and the Noether charge from TauCeti; phases 1 and 2 of the remaining tasks (rotational Noether, loop current as a period, bundled contact form; magnetic symplectic form, anti-self-dual lift); second round, phase 1 (finite symmetry and the direct proofs, periods on an interval, contact forms on an open subset) and phase 2 (Hamilton's equations with an electric field and the converse; Hodge star on `ℝ³ × ℝ` and the circle quotient); third round, phase 1 (piecewise `C¹` loops, convex regions and the contract's current clause, gauge terms) and phase 2 (the lift on `Ω × S¹`; crossed-field orbits, existence and uniqueness); after the audit, fourth round, phase 1 (complex structure of the lift, global existence of orbits, loop current on the Dommaschk tori) |
 | Patches | none (N-45 stands; this note adds to it) |
 
 ## Current state (after the audit of 23 November 2026)
@@ -38,8 +38,12 @@ section may be done in a later one. This section is the current summary. The aud
 
 Limits that apply throughout: the kinetic theorems need a vector potential differentiable on all
 of space (AV-M4); the forms are on `ℝ³` or its open subsets, not on embedded flux surfaces;
-TauCeti's own proofs were not audited. Not formalized: the line bundle, Chern class and
-Yang–Mills minimality of the lift; the de Rham classes of a flux surface.
+TauCeti's own proofs were not audited. Added after the audit (not yet audited): the
+complex structure of the lift and its `(1,1)`, primitive characterisation, closedness on
+`U × S¹` without regularity (`FormHYMComplex`); global existence of orbits under linear
+growth or an energy bound (`Theory/Kinetic/LorentzGlobalExistence`); the loop current on the
+Dommaschk tori (`Design/DommaschkKamLoopCurrent`, on demand). Not formalized: the line bundle,
+Chern class and Yang–Mills minimality of the lift; the de Rham classes of a flux surface.
 
 ## Purpose and scope
 
@@ -565,16 +569,67 @@ modules written in parallel and rebuilt and axiom-checked in the main session:
 - Not done: global existence for a general vector potential with an electric field (needs an
   a priori bound); uniqueness without potentials; regularity on an open subset only.
 
+## Fourth round, phase 1 (sub-agents, 23 November 2026, after the audit)
+
+**Complex structure of the lift; closedness without regularity** (`Theory/Fields/FormHYMComplex`).
+
+- `liftJ n`: for a vector `n` of `ℝ³`, the map `J(u, s) = (n × u − s n, ⟪n, u⟫)` on `ℝ³ × ℝ`;
+  `liftJ_comp_liftJ`: `J² = −1` when `‖n‖ = 1`. `kahlerForm n = π^*(⋆n♭) + π^*n♭ ∧ dτ` is
+  self-dual (`liftStar_kahlerForm`) and `kahlerForm_wedge_kahlerForm` gives `ω ∧ ω`.
+- `liftForm2_liftJ_apply`: `F(Jp, Jq) = ⟨F, ω⟩ ω(p, q) − ‖n‖² (⋆F)(p, q)` for every 2-form `F`.
+- `IsType11` (`F(Jp, Jq) = F(p, q)`), `IsPrimitive` (`⟨F, ω⟩ = 0`), and
+  `liftStar_eq_neg_iff_isType11_and_isPrimitive`: for a unit `n`, a 2-form is anti-self-dual
+  iff it is of type `(1,1)` and primitive. `isType11_and_isPrimitive_hymLift`: the lift of
+  every 2-form field is of type `(1,1)` and primitive for every such constant complex
+  structure. This is the linear-algebra content of "Abelian Hermitian–Yang–Mills" in N-42 S-13;
+  the complex structure is constant (one for each unit vector), its orientation agrees with
+  `liftOrientation`, and no holomorphic structure on a bundle is stated.
+- `mextDeriv_hymLiftCircleForm_eq_zero_iff'`, `mextDeriv_hymLiftRegionForm_eq_zero_iff`,
+  `VacuumForm.hymLiftRegionForm_closed`: the closedness criterion on `Space × S¹` and on
+  `U × S¹` with no differentiability hypothesis on `ω`. This removes the limit recorded in the
+  third round.
+- Sanity: explicit values on basis vectors; a self-dual form that is of type `(1,1)` but not
+  primitive (the Kähler form), and one that is primitive but not of type `(1,1)`.
+
+**Global existence of Lorentz orbits** (`Theory/Kinetic/LorentzGlobalExistence`).
+
+- `lorentzOrbit_existsUnique_of_linear_growth`: for `m ≠ 0`, `B = ∇ × A` with `A` of class `C²`,
+  and `E = −∇Φ` of class `C¹` with `‖E y‖ ≤ a + b‖y‖`, a unique orbit exists for all time from
+  every initial position and velocity. It contains the three earlier existence results.
+- `lorentzOrbit_existsUnique_of_potential_bounded_below` (`0 < m`, `qΦ` bounded below) and
+  `…_of_potential_bounded_above` (`m < 0`): the a priori bound is the energy. The general form
+  is `lorentzOrbit_existsUnique_of_energy_bound`; `LorentzOrbitOn.energy_eq_Icc` is energy
+  conservation on a time interval. Hamiltonian forms: `emHamilton_existsUnique_of_*`.
+- Sanity: a sheared magnetic field with a harmonic potential and a quartic confining potential
+  are accepted; the repulsive quartic potential satisfies neither hypothesis
+  (`repulsive_quartic_rejected`). That its orbits blow up in finite time is not proved.
+- Still needed: the vector potential on all of space (AV-M4).
+
+**The loop current on the Dommaschk instances** (`Design/DommaschkKamLoopCurrent`, on demand).
+
+- `candidate_vacuum_meridian`: the staged Dommaschk candidate is `C¹` and curl-free on the open
+  half-space containing the meridian sections of its tori.
+- `exactTorusC_loopCurrent`, `exactTorusA_loopCurrent`, `exists_fieldTorus_loopCurrent_eq_zero`,
+  `dommaschk_nested_current_eq_zero`: the loop current of the two KAM tori (with rotational
+  transforms `dkIotaC`, `dkIotaA`, both non-zero) is `0`, by the topological route
+  (`FieldTorus.loopCurrent_eq_zero_of_meridianHalfSpace`). `exactTorus{C,A}_routes_agree`
+  compares with the earlier direct proof (`DommaschkQA2R.field_poloidalCirculation_eq_zero`).
+  This is a second proof of a known fact, on a real instance: it shows that the hypotheses of
+  the C1 corollary are satisfiable by a contract candidate. The module is audited by
+  `scripts/check_axioms_heavy.lean`.
+
+Checks: all modules build; `scripts/check_axioms.lean` passes for 52,306 declarations and
+`scripts/check_axioms_heavy.lean` for 59,506.
+
 ## Next steps
 
-Three rounds of follow-up are complete. What remains is of a different kind:
+Open after the fourth round, phase 1:
 
-1. The complex structure, line bundle, Chern class and Yang–Mills minimality of N-42 S-13:
-   blocked on constructions that TauCeti does not have.
-2. The de Rham classes of an embedded flux surface (needs flux surfaces as submanifolds).
-3. Checking `CurrentFreeTransform.imax_zero_of_meridianHalfSpace` on the on-demand Dommaschk
-   instances.
-4. A strict audit of the modules added on 23 November 2026 (none has been audited).
+1. The line bundle, Chern class and Yang–Mills minimality of N-42 S-13 (TauCeti has no bundle
+   from a closed 2-form and no first Chern class); the energy inequality for exact
+   perturbations needs no bundle.
+2. The de Rham classes of a flux surface (the contract's tori are parametrised, not embedded).
+3. Open audit items: `notes/audit/2026-11-23-refresh-audit.md`.
 
 ## Barriers
 

@@ -41,6 +41,7 @@ import PlasmaLean.Design.DommaschkKamCQS
 import PlasmaLean.Design.DommaschkKamCQSL2
 import PlasmaLean.Design.DommaschkKamNested
 import PlasmaLean.Design.DommaschkKamQ16
+import PlasmaLean.Design.DommaschkKamLoopCurrent
 
 /-! Audit all declarations owned by project modules in the import closure (the on-demand top
 modules and everything they import). Fails on any non-standard axiom. -/
@@ -176,6 +177,14 @@ run_cmd do
 #print axioms PlasmaLean.Design.DommaschkKamQ16.dommaschk_Q16_strong
 #print axioms PlasmaLean.Design.DommaschkKamQ16.dommaschk_Q16_vacuum
 #print axioms PlasmaLean.Design.DommaschkKamQ16.dommaschk_Q16_chart
+#print axioms PlasmaLean.Design.DommaschkKamLoopCurrent.candidate_imax_zero
+#print axioms PlasmaLean.Design.DommaschkKamLoopCurrent.exactTorusC_loopCurrent
+#print axioms PlasmaLean.Design.DommaschkKamLoopCurrent.exactTorusA_loopCurrent
+#print axioms PlasmaLean.Design.DommaschkKamLoopCurrent.exactTorusC_period
+#print axioms PlasmaLean.Design.DommaschkKamLoopCurrent.exactTorusA_period
+#print axioms PlasmaLean.Design.DommaschkKamLoopCurrent.exactTorusC_routes_agree
+#print axioms PlasmaLean.Design.DommaschkKamLoopCurrent.exists_fieldTorus_loopCurrent_eq_zero
+#print axioms PlasmaLean.Design.DommaschkKamLoopCurrent.dommaschk_nested_current_eq_zero
 #print axioms PlasmaLean.Design.DommaschkKamQ16.nested_C1_of_exact
 #print axioms PlasmaLean.Design.DommaschkKamQ16.not_q16_C_tiny
 #print axioms PlasmaLean.Design.DommaschkKamQ16.q16_bounds_lt_strong

@@ -65,8 +65,9 @@ not formalized.
 * In this file, smoothness and closedness of `hymLiftCircleForm` as a form on the manifold
   `ℝ³ × AddCircle ℓ`, and the energy identity `∫|ℱ|² = 2ℓ ∫|B|²`: both are in
   `Theory/Fields/FormHYMCircle`.
-* The complex structure, the type `(1,1)` and primitivity statements, the line bundle and its
-  Chern class, and Yang–Mills minimality.
+* In this file, the complex structure and the type `(1,1)` and primitivity statements: they
+  are in `Theory/Fields/FormHYMComplex` (pointwise linear algebra).
+* Anywhere in the library: the line bundle and its Chern class, and Yang–Mills minimality.
 * A Hodge star in degrees other than two, or for a metric other than the product Euclidean
   one.
 -/

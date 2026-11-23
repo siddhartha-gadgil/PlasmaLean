@@ -84,8 +84,9 @@ defined only on a toroidal region; versions on an open set containing the orbit 
 stated. The potential-free uniqueness theorems also assume fields `C¹` on all of space.
 
 Not proved here: global existence for a general `C²` vector potential with an electric field
-(this needs an a priori bound, for instance from a potential bounded below); maximal intervals
-of existence; dependence of the orbit on its initial data; time-dependent fields.
+(it is in `Theory/Kinetic/LorentzGlobalExistence`, for a field of linear growth or a potential
+energy bounded below); maximal intervals of existence; dependence of the orbit on its initial
+data; time-dependent fields.
 -/
 
 @[expose] public section

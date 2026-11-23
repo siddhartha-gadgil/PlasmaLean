@@ -212,8 +212,14 @@ theorem hymLiftRegionForm_closed_iff_vacuumField (U : Opens Space) (hB : ContDif
     mextDeriv (hymLiftRegionForm ℓ U (fluxField B)) = 0 ↔ VacuumField U B
 theorem integral_liftInner_hymLiftCircle (B : Space → Space) (Ω : Set Space) :
     ∫ p in Ω ×ˢ univ, liftInner (hymLiftCircle ℓ (fluxField B) p) (...) = 2 * ℓ * ∫ x in Ω, ‖B x‖ ^ 2
--- Not in Lean: the complex structure, the line bundle and its Chern class, Yang–Mills
--- minimality (TauCeti has no bundle-from-curvature construction or Chern class).
+
+-- PlasmaLean/Theory/Fields/FormHYMComplex.lean   (J(u, s) = (n × u − s n, ⟪n, u⟫), ‖n‖ = 1)
+theorem liftStar_eq_neg_iff_isType11_and_isPrimitive (hn : ‖n‖ = 1) (F : LiftForm 2) :
+    liftStar F = -F ↔ IsType11 n F ∧ IsPrimitive n F
+theorem isType11_and_isPrimitive_hymLift ...   -- the lift is (1,1) and primitive
+theorem VacuumForm.hymLiftRegionForm_closed ...  -- closed on U × S¹, no regularity hypothesis
+-- Not in Lean: the line bundle and its Chern class, Yang–Mills minimality
+-- (TauCeti has no bundle-from-curvature construction or Chern class).
 ```
 
 ## Net toroidal current, Ampère's law and the current-free condition (contract clause C1)
@@ -306,6 +312,10 @@ theorem CurrentFreeTransform.imax_zero_of_meridianHalfSpace
     CurrentFreeTransform μ₀ B S 0 ιmin
 -- The clause is assumed; only the allowance improves. Fixture with ι > 0 (a consistency
 -- check: its source instance already had allowance 0): rationalStellarator_fixture.
+
+-- PlasmaLean/Design/DommaschkKamLoopCurrent.lean   (on demand)
+theorem exists_fieldTorus_loopCurrent_eq_zero ...   -- the two KAM tori of the Dommaschk
+-- candidate, ι ≠ 0: loop current 0 by the topological route (second proof of a known fact)
 ```
 
 ## Magnetic well and min-B: |B| in a vacuum field
@@ -879,7 +889,12 @@ theorem lorentzOrbit_unique (hm : m ≠ 0) (hA : ContDiff ℝ 2 A) (hcurl : ∀ 
     (hE : ContDiff ℝ 1 E) (hΦ : IsPotential Φ E) ... : x₁ = x₂ ∧ v₁ = v₂
 theorem lorentzOrbit_existsUnique_uniform (hm : m ≠ 0) (q : ℝ) (Ev Bv x₀ v₀ : Space) :
     ∃ x v, LorentzOrbit m q (fun _ => Ev) (fun _ => Bv) x v ∧ x 0 = x₀ ∧ v 0 = v₀ ∧ (unique)
--- Not proved: global existence for a general vector potential with an electric field;
+
+-- PlasmaLean/Theory/Kinetic/LorentzGlobalExistence.lean   (B = ∇ × A, A of class C², E = −∇Φ)
+theorem lorentzOrbit_existsUnique_of_linear_growth (hm : m ≠ 0) ... (hgrowth : ∀ y, ‖E y‖ ≤ a + b * ‖y‖) :
+    ∃ x v, LorentzOrbit m q E B x v ∧ x 0 = x₀ ∧ v 0 = v₀ ∧ (unique)
+theorem lorentzOrbit_existsUnique_of_potential_bounded_below (hm : 0 < m) ... (hΦ : ∀ y, c ≤ q * Φ y) : ...
+-- Not proved: finite-time blow-up for repulsive potentials; fields on an open subset only;
 -- time-dependent potentials; the bundled symplectomorphism.
 ```
 

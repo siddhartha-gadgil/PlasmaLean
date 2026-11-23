@@ -245,7 +245,7 @@ superseded; mixed notes list the status of their parts. "Lean" names compiled ev
 | `N-45` | `notes/theory/differential-form-kernel.md`: differential-form language for the vacuum and force-balance kernel laws, with equivalences to the vector language | G-11 | `Kernel/Vacuum`, `Kernel/Equilibrium`; Mathlib `extDeriv` | routine–moderate | verified (`vacuumForm_flux_iff`, `vacuumField_fluxSymm_iff`, `formForceBalance_iff`, `forceBalance_iff`, `extDeriv_flat`, `extDeriv_flux`; `Sanity/Forms`; theory bridges `formFirstIntegralOn_flux_iff`, `formSymmetricFlux_iff`, `formWeakQS_flux_iff`, `formBeltramiOn_flat_iff`, `isContactAt_of_beltrami`) | audited 16 November 2026 (AD-*; `Sanity/AuditForms`); open: AD-L4, AD-L5 |
 | `N-46` | `notes/theory/sullivan-infinity-structures.md`: assessment of Sullivan's L∞ (combinatorial) and eigenspace fluid models for MHD and stellarators | G-9, G-11, Q-33 | `sources/SullivanFluids.pdf`; N-45; `Theory/Stability/Elsasser` | moderate | stated; Part 2 checked in Lean (`EulerianODE.energy_conserved`, `EulerianODE.helicity_conserved`, `rigidBody_eulerian`); no design consequence | none required; revisit if an implementation of the L∞ hierarchy is published |
 | `N-47` | `notes/theory/issan-arbitrary-field-periods.md`: assessment of the closed-form equilibria with any number of field periods (Issan et al., arXiv:2611.07672) | G-4, Q-17, Q-18, Q-20 | `sources/Non-AxisymmetricMHD.pdf`; N-28, N-27 | moderate | stated; 12 of 20 claims checked numerically (`scripts/issan_equilibria/`), none incorrect; nothing in Lean | optional Lean unit: Family 1 (ρ_a = ρ₀, N = 3) with zero loop current (Q-20) |
-| `N-48` | `notes/theory/form-kernel-tauceti-complex-geometry.md`: the form kernel after TauCeti v4.36.0: topology and periods, contact geometry, the anti-self-dual lift, charged-particle Noether and Hamiltonian theory; fit of the complex-geometry notes | G-11; supports Q-29, Q-24, Q-16 | method for N-45; N-42, N-43, N-44; TauCeti v4.36.0 | routine–moderate | verified, audited 23 November 2026 (AV-*): twenty theory modules under `Theory/Fields/Form*` and `Theory/Kinetic/{Noether*, Magnetic*, CrossedFieldOrbit}` with sanity modules; see the note's "Current state" | open audit items AV-M4 (local versions); line bundle of the lift (blocked on TauCeti); de Rham classes of an embedded flux surface; Dommaschk check of the C1 corollary |
+| `N-48` | `notes/theory/form-kernel-tauceti-complex-geometry.md`: the form kernel after TauCeti v4.36.0: topology and periods, contact geometry, the anti-self-dual lift, charged-particle Noether and Hamiltonian theory; fit of the complex-geometry notes | G-11; supports Q-29, Q-24, Q-16 | method for N-45; N-42, N-43, N-44; TauCeti v4.36.0 | routine–moderate | verified, audited 23 November 2026 (AV-*): twenty theory modules under `Theory/Fields/Form*` and `Theory/Kinetic/{Noether*, Magnetic*, CrossedFieldOrbit}` with sanity modules; see the note's "Current state" | open audit items AV-M4 (local versions); line bundle and Chern class of the lift (blocked on TauCeti); de Rham classes of a flux surface; audit of the modules added after `6ceca0e` |
 
 Main dependency edges: N-9 → N-10 → N-14 → N-15 → (Q-4, Q-5); N-10 → N-13 → (N-16 → Q-2, Q-14);
 N-4 → (N-8, N-7 → N-17 → Q-1); N-12 → (Q-3, Q-14, Q-16) → G-4; N-4 → Q-16 → G-6; N-2, N-6 → Q-10 → G-2, G-7;
@@ -2429,3 +2429,19 @@ with a literature search and independent numerical checks; note
   the sense of the predicate (a nonempty family of invariant tori with `|ι| ≥ ι_min` and a
   current bound that carries no information for these vacuum fields, AV-M1). C2 has no non-vacuous instance for
   any field (AV-M7), and its `ι` is not tied to that of C1 (AV-M8).
+
+
+### Fourth round, phase 1 (N-48), 23 November 2026
+
+After the audit. Three sub-agents, each with its own modules; the lead verified and integrated.
+
+- `Theory/Fields/FormHYMComplex` (+ sanity): `liftJ`, `kahlerForm`,
+  `liftStar_eq_neg_iff_isType11_and_isPrimitive`, `isType11_and_isPrimitive_hymLift`;
+  closedness on the circle product without a regularity hypothesis
+  (`mextDeriv_hymLiftCircleForm_eq_zero_iff'`, `VacuumForm.hymLiftRegionForm_closed`).
+- `Theory/Kinetic/LorentzGlobalExistence` (+ sanity): `lorentzOrbit_existsUnique_of_linear_growth`,
+  `lorentzOrbit_existsUnique_of_potential_bounded_below`, `…_of_energy_bound`.
+- `Design/DommaschkKamLoopCurrent` (on demand): `dommaschk_nested_current_eq_zero`,
+  `exists_fieldTorus_loopCurrent_eq_zero` by the topological route.
+- Checks: full build of all modules; `check_axioms` 52,306 declarations, heavy 59,506.
+- Not audited (added after the audited commit `6ceca0e`).

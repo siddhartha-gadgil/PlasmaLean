@@ -54,9 +54,10 @@ With the opposite orientation `dτ ∧ dx₀ ∧ dx₁ ∧ dx₂` the same form 
 * In this file, the quotient by `τ ↦ τ + ℓ` and a Hodge star on 2-forms of `ℝ⁴`:
   `IsAntiSelfDual` is the component form of `⋆₄ℱ = -ℱ`, written by hand. Both are supplied in
   `Theory/Fields/FormHYMStar` (`isAntiSelfDual_iff_liftStar`, `hymLiftCircle`).
-* The complex structure, the type `(1,1)` and primitivity statements, the line bundle and its
-  Chern class, and Yang–Mills minimality. (The energy identity `∫|ℱ|² = 2ℓ ∫|B|²` is in
-  `Theory/Fields/FormHYMCircle`.)
+* In this file: the complex structure and the type `(1,1)` and primitivity statements (they
+  are in `Theory/Fields/FormHYMComplex`, pointwise) and the energy identity
+  `∫|ℱ|² = 2ℓ ∫|B|²` (in `Theory/Fields/FormHYMCircle`).
+* Anywhere in the library: the line bundle and its Chern class, and Yang–Mills minimality.
 -/
 
 @[expose] public section

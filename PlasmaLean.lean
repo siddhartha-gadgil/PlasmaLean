@@ -121,6 +121,10 @@ public import PlasmaLean.Sanity.FormHYMCircle
 public import PlasmaLean.Theory.Kinetic.CrossedFieldOrbit
 public import PlasmaLean.Sanity.CrossedFieldOrbit
 public import PlasmaLean.Sanity.AuditContractC2
+public import PlasmaLean.Theory.Fields.FormHYMComplex
+public import PlasmaLean.Sanity.FormHYMComplex
+public import PlasmaLean.Theory.Kinetic.LorentzGlobalExistence
+public import PlasmaLean.Sanity.LorentzGlobalExistence
 public import PlasmaLean.Theory.Fluids.EulerianODE
 public import PlasmaLean.Theory.Transport.PowerBalance
 public import PlasmaLean.Theory.Transport.Comparison

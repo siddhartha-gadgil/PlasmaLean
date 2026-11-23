@@ -67,10 +67,16 @@ derivative `mextDeriv`, and the pointwise and integrated energy identities are p
 
 The `C¹` hypothesis in the closedness statements on the manifold is used for TauCeti's
 naturality of `mextDeriv` under pullback (`mpullback_mextDeriv_at`). Upstairs, on `ℝ³ × ℝ`,
-`extDeriv_hymLift_eq_zero_iff` needs no hypothesis; a hypothesis-free statement on the quotient
-would need a direct computation in the charts of `AddCircle` and is not proved.
+`extDeriv_hymLift_eq_zero_iff` needs no hypothesis. The hypothesis-free statements on the
+quotient are proved in `Theory/Fields/FormHYMComplex` by a direct computation in the charts of
+`AddCircle` (`mextDeriv_hymLiftCircleForm_eq_zero_iff'`, `mextDeriv_hymLiftRegionForm_eq_zero_iff`);
+the versions in this file keep the `C¹` hypothesis.
 
 ## What is not proved (from inspection of TauCeti v4.36.0)
+
+The pointwise statements "`ℱ` is of type `(1,1)` and primitive" for the constant complex
+structure are proved in `Theory/Fields/FormHYMComplex`; what is described below as missing is
+the packaging as TauCeti manifold structures.
 
 * Complex structure: TauCeti has `SmoothAlmostComplexStructure`, its Nijenhuis tensor and the
   type predicate `SmoothForm.IsOfType` for an almost complex structure, but no complex-manifold

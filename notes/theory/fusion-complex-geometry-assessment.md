@@ -191,3 +191,7 @@ intrinsic one (`Theory/Fields/FormHYMStar`), and the lift descends to `Space × 
 On the source's manifold `Ω × S¹` the form is closed iff the field is a vacuum field, and the
 energy identity `∫|ℱ|² = 2ℓ∫|B|²` is compiled (`Theory/Fields/FormHYMCircle`). The bundle, its
 Chern class and Yang–Mills minimality are not formalized.
+
+**Pointer (23 November 2026, after the audit).** For a constant complex structure on `ℝ³ × ℝ`
+(one for each unit vector), anti-self-dual is equivalent to type `(1,1)` and primitive, and the
+lift has both properties (`Theory/Fields/FormHYMComplex`, N-48).
