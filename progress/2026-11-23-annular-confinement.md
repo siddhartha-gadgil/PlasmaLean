@@ -61,3 +61,8 @@ For embedded C1, the default build passed with 11,731 jobs. The default axiom au
 ## Next boundary
 
 The most informative candidate calculation is a signed flux or bounce-mean test on a regular band with a known period and volume. A nonzero result can eliminate a whole class of proposed corrections. A band that passes the test needs two regular bounding curves, quantitative bounds on G and K, and an estimate of the birth population it covers before it yields a physical loss time. [Trapped-particle application N-49](https://github.com/siddhartha-gadgil/PlasmaLean/blob/main/notes/theory/trapped-particle-momentum.md)
+
+
+## Finite-pressure interface benchmark
+
+For a periodic cylinder, the normalized interface energy of every mode is at least s²(1+|m|+κ)/80 under the close-wall and mode-multiplier hypotheses. The constant is independent of the axial period. The formulas for the Bessel ratio, exterior impedance and reduced energy enter as inputs. Transferring the bound to a torus requires a period-uniform estimate of the change in the reduced energy. [Cylinder benchmark](https://github.com/siddhartha-gadgil/PlasmaLean/blob/main/notes/theory/cylinder-interface-stability.md)

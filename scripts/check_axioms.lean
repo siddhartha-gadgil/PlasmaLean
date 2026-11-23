@@ -767,3 +767,12 @@ run_cmd do
 #print axioms PlasmaLean.PeriodicLevelGraphs.Bracketed.exists_level_graph
 #print axioms PlasmaLean.PeriodicLevelGraphs.separated_level_graphs
 #print axioms PlasmaLean.PeriodicLevelGraphs.radius_error_of_action_residual
+
+#print axioms PlasmaLean.Stability.CylinderInterfaceGap.close_wall
+#print axioms PlasmaLean.Stability.CylinderInterfaceGap.nonaxisymmetric_floor
+#print axioms PlasmaLean.Stability.CylinderInterfaceGap.nonaxisymmetric_gap
+#print axioms PlasmaLean.Stability.CylinderInterfaceGap.signed_helicity_lower
+#print axioms PlasmaLean.Stability.CylinderInterfaceGap.axisymmetric_gap
+#print axioms PlasmaLean.Stability.CylinderInterfaceGap.fixed_flux_zero_mode
+#print axioms PlasmaLean.Stability.CylinderInterfaceGap.endpoint_wall
+#print axioms PlasmaLean.Stability.CylinderInterfaceGap.distant_wall_fails

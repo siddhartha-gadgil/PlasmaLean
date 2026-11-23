@@ -99,7 +99,7 @@
     },
     {
      "title": "C3 · finite-β MHD stability",
-     "text": "Mercier band on Landreman family 2 (family2_mercier_stable_derived, Mercier index supplied) and Solov'ev Mercier and ballooning; all on fields that fail C1.",
+     "text": "Mercier band on Landreman family 2 (family2_mercier_stable_derived, Mercier index supplied) and Solov'ev Mercier and ballooning. A close-wall cylinder has a period-uniform interface gap under explicit mode-multiplier bounds.",
      "status": "Test beds only",
      "kind": "partial"
     },

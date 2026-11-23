@@ -12,10 +12,10 @@
 | Dependency requirement | Q-30 (a) needs only real algebra, with the Bessel and impedance quantities supplied as hypotheses; Q-31 needs the certified torus A (`ExactTorusA`, on-demand) and evaluation of `g`, `II`, `ω` on it |
 | Produces | Q-30, Q-31 statements; a stress example (the wall dependence) and a joint current, transform and interface screening test |
 | Difficulty | routine (Q-30 a); moderate (Q-31 numerics, then certificate); research (Q-30 b) |
-| Status | stated; complete proof of the cylinder window checked numerically (N-42); (a) lean-ready; toroidal screening proposed |
-| Lean evidence | none yet |
+| Status | Q-30(a) verified under the mode-multiplier hypotheses. Period-uniform transfer to a torus remains open. |
+| Lean evidence | [CylinderInterfaceGap](../../PlasmaLean/Theory/Stability/CylinderInterfaceGap.lean) gives the logarithmic wall budget, the nonaxisymmetric floor and gap, the least favourable helicity, the axisymmetric gap and fixed-flux uniform mode. The period-uniform estimate uses the two additional high-frequency multiplier bounds in source §6. |
 | Audit evidence | not audited |
-| Last updated | 23 November 2026. Added the current and transform checks for the first finite-pressure screening test. |
+| Last updated | 23 November 2026. Verified the cylinder algebra with explicit hypotheses on the mode coefficients. |
 | Patched by / Alternatives | method for N-12 (its compiled family-1/family-2 results stand) |
 
 ## Purpose and scope
@@ -96,7 +96,7 @@ first-order terms were re-derived in N-42.
 ## Outputs
 
 - **Q-30.**
-  - (a) Lean-ready: the window inequality chain with `X_m(κ) ≥ κ²/(m + κ²/(2(m+1)))` and
+  - (a) Verified under the source multiplier hypotheses: the window inequality chain with `X_m(κ) ≥ κ²/(m + κ²/(2(m+1)))` and
     `n_out ≥ 1/(m²ℓ + κ²D)` as hypotheses, concluding `F ≥ s²/8` and the gap bound. This is the
     algebraic core of a signed-interface stability theorem.
   - (b) Research: the uniform transfer to a bent tube or torus.
