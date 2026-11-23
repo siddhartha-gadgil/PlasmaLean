@@ -84,7 +84,7 @@ axioms only). Module `PlasmaLean/Theory/Contract/StellaratorContract.lean`, name
   space, a certified bound keeping the orbits within a stated radial range through a stated
   time (the form of N-51, `VolumeChart.exists_inverse_square_orbits`). The band form is weaker
   than omnigeneity; a claim must state band, species, time and model. It has no Lean contract
-  predicate yet and no instance on a field.
+  predicate yet and no instance on a field. Predeclare species, trapped birth coverage, allowable physical excursion and time. Include reduction errors in the bound and estimate losses outside the band before using it for C5 (N-53).
 - C2: `OmnigeneityContract F c κ_max` (`ApproxOmnigenousOn` of `Theory/Kinetic/Omnigeneity`; `κ_max
   = 0` is `OmnigenousOn`, `boozerModelOmnigeneity_zero_iff`), scope: the vacuum Boozer guiding-centre
   model (supplied), all species, μ and energies. `BoozerAxisymmetric`; axisymmetric ⇒ omnigenous

@@ -46,7 +46,7 @@ Applying the result to a stellarator requires constructing its bounce annulus an
 the constants in physical units. [Theorem, examples and application](notes/theory/annulus-averaged-flux.md)
 
 **Against the contract (3 November 2026), honestly:** one stellarator candidate now has verified
-C1 together with a certified quasisymmetry defect, in vacuum. C2–C5 are open for it.
+current, transform and quasisymmetry-defect bounds in vacuum. Embedded C1 is open (Q-36). C2–C5 are open for it.
 
 - **The lead candidate: an exact Dommaschk quasi-axisymmetric vacuum field.** It is a purely
   rational field with two field periods (`Design/DommaschkQA2R`; the two-period symmetry is used

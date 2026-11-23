@@ -3,9 +3,9 @@
   "report": "2026-11-23-annular-confinement.md",
   "panel": {
     "stat": "Contract C1–C5",
-    "headline": "Vacuum C1 on certified tori. A general trapped-orbit theorem awaits a physical bounce band."
+    "headline": "Vacuum current and transform certified. Embeddedness open. A general trapped-orbit theorem awaits a physical bounce band."
   },
-  "summary": "A volume-preserving periodic model on an annulus now has a proved inverse-square confinement time for trapped-orbit bands under averaged tangency and nonsingularity. The proof constructs the orbit and a radial label. The Dommaschk vacuum candidate has certified C1 and surface quasisymmetry-defect bounds. Thermal-particle confinement and performance on that candidate are open.",
+  "summary": "A volume-preserving periodic model on an annulus now has a proved inverse-square confinement time for trapped-orbit bands under averaged tangency and nonsingularity. The proof constructs the orbit and a radial label. The Dommaschk vacuum candidate has certified current, transform and surface quasisymmetry-defect bounds. Embeddedness remains open. Thermal-particle confinement and performance on that candidate are open.",
   "tasks": {
     "model-contracts:I1": "Partially implemented — algebraic force balance and tangency; positive permeability and actual differential laws in the restricted slab model.",
     "model-contracts:I2": "Lean verified — uniform-field and nonzero-current force-free witnesses in the Cartesian slab model; not toroidal confinement.",

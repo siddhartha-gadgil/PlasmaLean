@@ -1,5 +1,7 @@
 # The form kernel after TauCeti v4.36.0, and its use for the complex-geometry notes
 
+[N-52](irrational-return-embedding.md) develops the section argument for candidate embeddedness.
+
 An alternative method appears in [N-49](trapped-particle-momentum.md).
 
 ## Metadata

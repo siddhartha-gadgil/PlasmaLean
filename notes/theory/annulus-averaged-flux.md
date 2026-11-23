@@ -1,5 +1,7 @@
 # Annular stream functions and second-order confinement for periodic flows
 
+[N-53](hamiltonian-bounce-band-test.md) sets the physical Hamiltonian and band acceptance tests.
+
 ## Metadata
 
 | Field | Value |

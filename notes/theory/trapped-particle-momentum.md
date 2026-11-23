@@ -1,5 +1,7 @@
 # Approximate momentum on a band of trapped particles
 
+[N-53](hamiltonian-bounce-band-test.md) specifies the physical comparison and birth coverage.
+
 For a regular annulus of periodic orbits, the averaged perturbation determines a radial label and a finite-time confinement bound. [N-51](annulus-averaged-flux.md)
 
 ## Metadata

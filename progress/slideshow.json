@@ -1,16 +1,16 @@
 {
  "updated": "2026-11-23",
  "report": "2026-11-23-annular-confinement.md",
- "status": "Organized by the stellarator contract C1–C5 · C1 and C4 only in vacuum · C2 and C5 on a stellarator candidate essentially open · Solov'ev results are a tokamak model · Not a construction release.",
+ "status": "Vacuum current and transform certified; embedded C1 open. Thermal confinement and operating temperature on a stellarator candidate remain open.",
  "slides": [
   {
    "id": "where-we-are",
    "eyebrow": "0 · where we are against the stellarator contract",
-   "title": "The stellarator contract: C1 and C4 hold only in vacuum; C2 and C5 on a stellarator candidate are essentially open.",
+   "title": "Vacuum current and transform are certified. Embeddedness is the next C1 obligation.",
    "lead": "PlasmaLean tracks five conditions on one stellarator candidate, covering current-free rotational transform, thermal-particle confinement, finite-pressure stability, equilibrium existence and thermal performance. The exact Dommaschk vacuum field has verified current and transform bounds and certified quasisymmetry defects on two tori. The new annulus theorem gives a way to approach trapped-particle confinement throughout a band.",
    "metrics": [
     {
-     "value": "C1 + C4, vacuum",
+     "value": "Vacuum current and transform",
      "label": "exact non-axisymmetric vacuum field; KAM torus with ι ≈ 0.137 confines field lines forever"
     },
     {
@@ -23,7 +23,7 @@
     }
    ],
    "progress": "For a regular annular periodic flow, shared invariant volume and a nonsingular averaged field tangent to both edges give a radial label and orbit existence and confinement through time c/ε². The next slide states the hypotheses and what remains to apply it to a stellarator.",
-   "boundary": "Non-axisymmetry is a means, not a goal. No candidate satisfies more than C1 and C4, and those only in vacuum. Omnigeneity and bounce-averaged drift are in Lean (Boozer guiding-centre model); ε_eff is not. The C1 current clause is the intrinsic loop circulation (audit fix AR-H1). Alpha results: one B₀R₀, Littlejohn model supplied, vacuum model field, trapped alphas open. Coil-produced all-time confinement blocked. On-demand workstation modules spot-checked, not fully rebuilt.",
+   "boundary": "The ray-order theorem proves disjointness of the Dommaschk sections. Embeddedness of each candidate surface is Q-36. Thermal trapped-particle bands on the physical field remain open.",
    "evidence": [
     {
      "label": "Latest report",
@@ -87,7 +87,7 @@
    "cards": [
     {
      "title": "C1 · current-free rotational transform",
-     "text": "Defined in Lean (netToroidalCurrent, CurrentFreeTransform) with the tokamak exclusion: a purely toroidal (current-free axisymmetric) field has ι = 0. The vacuum rational field satisfies C1 on its KAM torus (rationalStellarator_currentFreeTransform). C1 bounds the Ampère circulation around each torus's poloidal loop, with |ι| ≥ ι_min. This is audit fix AR-H1; the earlier section-based clause was vacuous. Landreman family 2 fails C1 (family2_not_currentFreeTransform, via a Stokes theorem for regular sections). The exact Dommaschk field passes the current clause on every loop (candidate_currentFreeTransform).",
+     "text": "Defined in Lean (netToroidalCurrent, CurrentFreeTransform) with the tokamak exclusion: a purely toroidal (current-free axisymmetric) field has ι = 0. The vacuum rational field satisfies the current and transform clauses on its KAM torus (rationalStellarator_currentFreeTransform). C1 bounds the Ampère circulation around each torus's poloidal loop, with |ι| ≥ ι_min. This is audit fix AR-H1; the earlier section-based clause was vacuous. Landreman family 2 fails C1 (family2_not_currentFreeTransform, via a Stokes theorem for regular sections). The exact Dommaschk field passes the current clause on every loop (candidate_currentFreeTransform).",
      "status": "Defined; one current-free candidate",
      "kind": "partial"
     },

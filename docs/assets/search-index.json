@@ -1,15 +1,15 @@
 [
   {
     "title": "Progress slideshow",
-    "section": "Evidence updated 2026-11-23 · A volume-preserving periodic model on an annulus now has a proved inverse-square confinement time for trapped-orbit bands under averaged tangency and nonsingularity. The proof constructs the orbit and a radial label. The Dommaschk vacuum candidate has certified C1 and surface quasisymmetry-defect bounds. Thermal-particle confinement and performance on that candidate are open.",
+    "section": "Evidence updated 2026-11-23 · A volume-preserving periodic model on an annulus now has a proved inverse-square confinement time for trapped-orbit bands under averaged tangency and nonsingularity. The proof constructs the orbit and a radial label. The Dommaschk vacuum candidate has certified current, transform and surface quasisymmetry-defect bounds. Embeddedness remains open. Thermal-particle confinement and performance on that candidate are open.",
     "url": "slides.html",
     "text": "progress slideshow presentation latest run evidence vacuum fixture"
   },
   {
-    "title": "The stellarator contract: C1 and C4 hold only in vacuum; C2 and C5 on a stellarator candidate are essentially open.",
+    "title": "Vacuum current and transform are certified. Embeddedness is the next C1 obligation.",
     "section": "Progress slideshow",
     "url": "slides.html#where-we-are",
-    "text": "the stellarator contract: c1 and c4 hold only in vacuum; c2 and c5 on a stellarator candidate are essentially open. plasmalean tracks five conditions on one stellarator candidate, covering current-free rotational transform, thermal-particle confinement, finite-pressure stability, equilibrium existence and thermal performance. the exact dommaschk vacuum field has verified current and transform bounds and certified quasisymmetry defects on two tori. the new annulus theorem gives a way to approach trapped-particle confinement throughout a band. for a regular annular periodic flow, shared invariant volume and a nonsingular averaged field tangent to both edges give a radial label and orbit existence and confinement through time c/ε². the next slide states the hypotheses and what remains to apply it to a stellarator."
+    "text": "vacuum current and transform are certified. embeddedness is the next c1 obligation. plasmalean tracks five conditions on one stellarator candidate, covering current-free rotational transform, thermal-particle confinement, finite-pressure stability, equilibrium existence and thermal performance. the exact dommaschk vacuum field has verified current and transform bounds and certified quasisymmetry defects on two tori. the new annulus theorem gives a way to approach trapped-particle confinement throughout a band. for a regular annular periodic flow, shared invariant volume and a nonsingular averaged field tangent to both edges give a radial label and orbit existence and confinement through time c/ε². the next slide states the hypotheses and what remains to apply it to a stellarator."
   },
   {
     "title": "A radial label from averaged flux controls particle motion for times of order ε⁻².",
@@ -2718,6 +2718,12 @@
     "text": "annular averaged flux and trapped-particle confinement (n-51), 23 november 2026 implementation plan"
   },
   {
+    "title": "Review of the implementation order, 23 November 2026",
+    "section": "Implementation plan",
+    "url": "implementation-plan.html#review-of-the-implementation-order-23-november-2026",
+    "text": "review of the implementation order, 23 november 2026 implementation plan"
+  },
+  {
     "title": "M0 · Exact symmetric equilibria: slab, screw pinch, Solov'ev, helical",
     "section": "Implementation plan · Lean verified — exact slab, screw-pinch, Solov'ev and helical equilibria with kernel force balance, all-time field-line/orbit confinement, Suydam both ways and screw-pinch Newcomb stability for every m ≠ 0 (reduced form supplied; idealized symmetric models).",
     "url": "implementation-plan.html",
@@ -2899,9 +2905,9 @@
   },
   {
     "title": "Verified progress",
-    "section": "A volume-preserving periodic model on an annulus now has a proved inverse-square confinement time for trapped-orbit bands under averaged tangency and nonsingularity. The proof constructs the orbit and a radial label. The Dommaschk vacuum candidate has certified C1 and surface quasisymmetry-defect bounds. Thermal-particle confinement and performance on that candidate are open.",
+    "section": "A volume-preserving periodic model on an annulus now has a proved inverse-square confinement time for trapped-orbit bands under averaged tangency and nonsingularity. The proof constructs the orbit and a radial label. The Dommaschk vacuum candidate has certified current, transform and surface quasisymmetry-defect bounds. Embeddedness remains open. Thermal-particle confinement and performance on that candidate are open.",
     "url": "progress.html",
-    "text": "verified progress a volume-preserving periodic model on an annulus now has a proved inverse-square confinement time for trapped-orbit bands under averaged tangency and nonsingularity. the proof constructs the orbit and a radial label. the dommaschk vacuum candidate has certified c1 and surface quasisymmetry-defect bounds. thermal-particle confinement and performance on that candidate are open."
+    "text": "verified progress a volume-preserving periodic model on an annulus now has a proved inverse-square confinement time for trapped-orbit bands under averaged tangency and nonsingularity. the proof constructs the orbit and a radial label. the dommaschk vacuum candidate has certified current, transform and surface quasisymmetry-defect bounds. embeddedness remains open. thermal-particle confinement and performance on that candidate are open."
   },
   {
     "title": "Outcome",
