@@ -143,7 +143,10 @@ set containing it, the circulation does not depend on the toroidal angle
 (`FieldTorus.poloidalCirculation_eq_of_curl_eq_zero`, `Theory/Fields/FormFluxSurfacePeriods`).
 An embeddedness predicate now exists (`EmbeddedTorus`, `Theory/Fields/FormFluxSurfaceEmbedded`),
 with a `FieldTorus` that is not embedded (`dbl_fieldTorus`, `dbl_not_embeddedTorus`); it is not
-a clause of the contract, so AF-1 stays open. AV-M4: orbit existence and uniqueness for fields
+a clause of `CurrentFreeTransform`. Later the same day the clause was added as the
+strengthened predicate `Contract.EmbeddedCurrentFreeTransform`
+(`Theory/Contract/EmbeddedSurfaces`); AF-1 stays open until it is proved for the certified tori
+(plan question Q-36). AV-M4: orbit existence and uniqueness for fields
 on an open set, without potentials, are in `Theory/Kinetic/LorentzOrbitOpen` (not audited).
 
 ### AV-M10 (medium; resolved): `dommaschk_Q16_vacuum` hides the regularity behind its defect bounds

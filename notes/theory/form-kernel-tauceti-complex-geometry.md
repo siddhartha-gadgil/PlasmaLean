@@ -810,6 +810,23 @@ Checks: `lake build` (11,697 jobs); `scripts/check_axioms.lean` passes for 53,03
 
 Checks: `lake build` (11,707 jobs); `scripts/check_axioms.lean` passes for 53,307 declarations.
 
+## Embeddedness clause of the contract (23 November 2026)
+
+By user decision the stellarator contract requires its surfaces to be embedded tori.
+
+- `Theory/Contract/EmbeddedSurfaces`: `EmbeddedSurfaces S` (every surface an `EmbeddedTorus`)
+  and `EmbeddedCurrentFreeTransform` (clause C1 extended by it). Consequences:
+  `EmbeddedCurrentFreeTransform.isSmoothEmbedding`, `isCompact_isClosed`.
+- Proof obligations: `CurrentFreeTransform.embedded_of_sections`,
+  `CurrentFreeTransform.embedded_of_strictMono`;
+  `PoloidalAngle.sections_injective_of_strictMono` (a section whose polar angle is strictly
+  increasing in `θ` is injective modulo `2π`).
+- `CurrentFreeTransform` is unchanged. `IotaOnTorus` already excludes multiply covered sections
+  (its polar angle winds once in `θ`); what the new clause adds is `C²` regularity, sections
+  that do not cross themselves, and the immersion condition.
+- No C1 example proves the clause yet. Plan question Q-36 lists them as goals: the rational
+  stellarator torus A, the Dommaschk tori C and A, the nested pair and the Q-16 theorems.
+
 ## Next steps
 
 Open after the fifth round:
@@ -817,7 +834,7 @@ Open after the fifth round:
 1. For the lift: a vector bundle in Mathlib's sense with a connection, `c₁` as a cohomology
    class, variations with only vanishing tangential trace, the holomorphic structure.
 2. A finite-regularity de Rham complex, to state the class of `B♭` in cohomology.
-3. Embeddedness as a clause of the contract (AF-1): a design decision, not made here.
+3. Embeddedness of the certified tori of every C1 example (Q-36).
 4. Maximal orbits and a confinement criterion for a concrete field.
 5. Open audit items, and an audit of the modules added after `6ceca0e`.
 

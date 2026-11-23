@@ -70,6 +70,15 @@ axioms only). Module `PlasmaLean/Theory/Contract/StellaratorContract.lean`, name
   `CurrentFreeTransform.mono`. (There is no general vacuum lemma for the loop form; vacuum
   candidates prove C1 per certified torus, e.g. `rationalStellarator_currentFreeTransform`,
   `DommaschkKamC.dommaschk_C1_unconditional`. The section form has `currentFree_of_vacuum`.)
+- C1 embeddedness clause (normative since 23 November 2026): every confining surface is an
+  embedded torus. In Lean: `EmbeddedSurfaces S` and `EmbeddedCurrentFreeTransform μ₀ B S I_max
+  ι_min` (`Theory/Contract/EmbeddedSurfaces`), which extends `CurrentFreeTransform` by
+  `EmbeddedTorus` for each surface (`C²` parametrisation, injective modulo the two periods,
+  injective differential; then the surface is the image of a `C²` smooth embedding of the
+  2-torus). A candidate satisfies C1 only when it proves the extended predicate. Status: not yet
+  proved for any candidate (plan question Q-36); the instances above prove `CurrentFreeTransform`
+  only. Proof obligations: `CurrentFreeTransform.embedded_of_sections`,
+  `CurrentFreeTransform.embedded_of_strictMono`.
 - C2: `OmnigeneityContract F c κ_max` (`ApproxOmnigenousOn` of `Theory/Kinetic/Omnigeneity`; `κ_max
   = 0` is `OmnigenousOn`, `boozerModelOmnigeneity_zero_iff`), scope: the vacuum Boozer guiding-centre
   model (supplied), all species, μ and energies. `BoozerAxisymmetric`; axisymmetric ⇒ omnigenous

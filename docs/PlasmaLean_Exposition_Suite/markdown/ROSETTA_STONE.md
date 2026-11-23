@@ -41,6 +41,13 @@ theorem EmbeddedTorus.isSmoothEmbedding_torusEmb (h : EmbeddedTorus R z) :
     Manifold.IsSmoothEmbedding (𝓘(ℝ).prod 𝓘(ℝ)) 𝓘(ℝ, Space) 2 (torusEmb R z)
 theorem EmbeddedTorus.of_sections ...   -- R > 0, sections injective mod 2π, (∂_θR, ∂_θz) ≠ 0
 -- A FieldTorus need not be embedded (the doubly covered torus: dbl_not_embeddedTorus).
+
+-- Contract clause C1 with embeddedness:
+-- PlasmaLean/Theory/Contract/EmbeddedSurfaces.lean (namespace PlasmaLean.Contract)
+structure EmbeddedCurrentFreeTransform (μ₀ : ℝ) (B : Space → Space) (S : Set SurfaceData)
+    (Imax ιmin : ℝ) : Prop extends CurrentFreeTransform μ₀ B S Imax ιmin where
+  embedded : ∀ s ∈ S, EmbeddedTorus s.R s.z
+-- Not yet proved for any candidate (plan question Q-36).
 ```
 
 ## Clebsch representation B = ∇ψ × ∇α and flux coordinates

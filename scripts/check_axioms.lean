@@ -403,6 +403,12 @@ run_cmd do
 #print axioms PlasmaLean.Sanity.FormHYMBundle.wireBundle_isPeriodic
 #print axioms PlasmaLean.Sanity.FormHYMBundle.wire_exists_periodic_iff
 #print axioms PlasmaLean.Sanity.FormHYMBundle.wire_not_one_chart
+#print axioms PlasmaLean.Contract.EmbeddedCurrentFreeTransform.isSmoothEmbedding
+#print axioms PlasmaLean.Contract.PoloidalAngle.sections_injective_of_strictMono
+#print axioms PlasmaLean.Contract.CurrentFreeTransform.embedded_of_sections
+#print axioms PlasmaLean.Contract.CurrentFreeTransform.embedded_of_strictMono
+#print axioms PlasmaLean.Sanity.EmbeddedSurfaces.circ_embeddedSurfaces
+#print axioms PlasmaLean.Sanity.EmbeddedSurfaces.dbl_not_embeddedCurrentFreeTransform
 #print axioms PlasmaLean.Fluids.EulerianODE.energy_conserved
 #print axioms PlasmaLean.Fluids.EulerianODE.helicity_conserved
 #print axioms PlasmaLean.Fluids.rigidBody_eulerian

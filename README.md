@@ -67,6 +67,11 @@ C1 together with a certified quasisymmetry defect, in vacuum. C2–C5 are open f
   - **Not proved:** confinement of field lines inside the tori, more than two surfaces (an exact
     continuum is impossible for this non-integrable field), C2 (no Boozer chart of the field over a
     volume, see audit AC-1), and finite β, C3 and C5.
+- **C1, embeddedness (added 23 November 2026):** the contract now requires each confining
+  surface to be an embedded torus (`Contract.EmbeddedCurrentFreeTransform`,
+  `Theory/Contract/EmbeddedSurfaces`). This is **not yet proved for any candidate** (plan
+  question Q-36): the C1 results here are for parametrised invariant tori whose cross-sections
+  wind once about a reference curve.
 - **C1 elsewhere:** the earlier rational stellarator vacuum field has a KAM-certified torus with
   ι ≈ 0.137 that confines its field lines for all time. The C1 current is the Ampère circulation
   μ₀⁻¹∮B·dl around each torus's own poloidal loop; this is audit fix AR-H1, since an earlier
