@@ -779,3 +779,9 @@ run_cmd do
 #print axioms PlasmaLean.Stability.InterfacePrincipalDirection.positive_at_principal
 #print axioms PlasmaLean.Stability.InterfacePrincipalDirection.exists_obstruction_of_sign_change
 #print axioms PlasmaLean.Stability.InterfaceFourierTaylor.sum_cosTaylorFour_error
+
+#print axioms PlasmaLean.Fields.RectangularODEStep.exists_step
+#print axioms PlasmaLean.Fields.RectangularODEStep.tube_of_endpoints
+#print axioms PlasmaLean.Forms.cylindrical_launch_flux
+#print axioms PlasmaLean.Forms.interpolated_launch_flux
+#print axioms PlasmaLean.Forms.launch_flux_lower_bound

@@ -44,6 +44,8 @@ The positive band test follows a harmonic oscillator in a synthetic quadratic mi
 
 Refining the launch phase exposed a change of mirror well that the first 128 phases missed. A deeper pair of heights at the same action j = 1.35992219 passed two strip resolutions and gave a sampled minimum separation of 0.0523 in the launch coordinate. Lean proves the continuous crossing and winding-graph criteria. Bounding their hypotheses for every launch and selecting thermal coverage remain open. [Results, inputs and source](https://github.com/siddhartha-gadgil/PlasmaLean/blob/main/notes/theory/dommaschk-mirror-screen.md)
 
+Over the entire deeper strip, 32,768 outward-rounded boxes establish a nonzero transverse launch flux. A separate 131,072-tube check encloses the field lines for ±1/8 geometric toroidal radian with field strength below 1.057107, clear of the lower mirror height 1.05959233. Lean proves the geometric flux formula and the ODE enclosure theorem; the candidate numbers are checked externally. [Launch and continuation bounds](https://github.com/siddhartha-gadgil/PlasmaLean/blob/main/notes/theory/dommaschk-launch-collar.md)
+
 ## Earlier results retained
 
 The original Dommaschk certificate provides the quasi-axisymmetry estimates on each torus. Constructing a family of flux surfaces or a field-level Boozer chart throughout the intervening volume remains open. Applying the annular theorem to trapped particles also requires identifying a regular physical bounce family. [Surface defect estimates](https://github.com/siddhartha-gadgil/PlasmaLean/blob/main/notes/theory/dommaschk-qs-defect.md)
