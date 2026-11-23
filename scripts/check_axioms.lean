@@ -815,6 +815,13 @@ run_cmd do
 #print axioms PlasmaLean.Kinetic.MirrorActionEnvelope.LaunchWell.action_strictly_increases
 #print axioms PlasmaLean.Kinetic.MirrorActionEnvelope.forbidden_caps_allow_infinite_bounce_time
 #print axioms PlasmaLean.Kinetic.MirrorActionEnvelope.launch_action_can_be_discontinuous
+#print axioms PlasmaLean.LocalLevelGraphs.separated_graphs_of_local_secants
+#print axioms PlasmaLean.LocalLevelGraphs.identity_fixture
+#print axioms PlasmaLean.Kinetic.MirrorHeightAction.continuousOn_action_family
+#print axioms PlasmaLean.Kinetic.MirrorHeightAction.exists_continuous_fixed_action_height
+#print axioms PlasmaLean.Kinetic.MirrorHeightAction.strictMonoOn_action_of_trace_order
+#print axioms PlasmaLean.Kinetic.MirrorHeightAction.action_gap_ge_of_core
+#print axioms PlasmaLean.Kinetic.MirrorHeightAction.decreasing_density_counterexample
 #print axioms PlasmaLean.Kinetic.MirrorAction.factor
 #print axioms PlasmaLean.Kinetic.MirrorAction.shape_ge_of_collars
 #print axioms PlasmaLean.Kinetic.MirrorAction.action_eq_fixed

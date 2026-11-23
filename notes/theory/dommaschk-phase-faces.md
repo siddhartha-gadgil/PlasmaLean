@@ -1,5 +1,7 @@
 # Action bounds on six sectors of the Dommaschk launch circle
 
+[N-60](dommaschk-local-action-graphs.md) constructs two separated root arcs on each of the two symmetry sectors.
+
 ## Metadata
 
 | Field | Value |

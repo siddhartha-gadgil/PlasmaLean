@@ -1,0 +1,355 @@
+{
+  "status": "floating-point finite sampling of the connected launch well",
+  "field_file_sha256": "9bd100ec63244c0980856a3633188f7bebcbb28b7a96417e2931210583bcb646",
+  "seed_sha256": {
+    "C": "ef91ae1b34333fd4b43ffbfb1d73ceda500ac3fecae1eb4cde320319497276c2",
+    "A": "b2524e61c865759436434df012a2727febd5bc73347c0412c493efc73404c5ac"
+  },
+  "numpy": "2.5.4",
+  "scipy": "1.18.1",
+  "target": "6799610938322487/5000000000000000",
+  "u": [
+    0.44,
+    0.54
+  ],
+  "alpha": [
+    0.0,
+    3.141592653589793
+  ],
+  "half_trace_window": 6.1,
+  "coarse": {
+    "nrad": 9,
+    "nphase_intervals": 128,
+    "half_trace_steps": 256,
+    "panels": 8,
+    "gauss_order": 12,
+    "ode_tol": 2e-10,
+    "heights": [
+      {
+        "height": 1.0595923312168822,
+        "action_at_inner_face": [
+          1.287734690626682,
+          1.305135381444609
+        ],
+        "action_at_outer_face": [
+          1.3709433879837443,
+          1.388117020853901
+        ],
+        "inner_margin": 0.054786806219888406,
+        "outer_margin": 0.011021200319246915,
+        "radial_derivative": [
+          0.8152457754936234,
+          0.919879738770213
+        ],
+        "min_derivative_launch": [
+          0.44,
+          0.0
+        ],
+        "arclength_term": [
+          0.012863578641832706,
+          0.013951487559356456
+        ],
+        "strength_term": [
+          0.8023821967957059,
+          0.9060961553380551
+        ],
+        "negative_part_of_derivative_integral": [
+          0.0,
+          0.0
+        ],
+        "sampled_strength_u": [
+          -0.01157314016541998,
+          -0.00778250933301244
+        ],
+        "smallest_outward_slope": 0.0008943860868990228,
+        "left_mirror": [
+          -5.241844418271434,
+          -4.906951738231496
+        ],
+        "right_mirror": [
+          4.906951733932932,
+          5.241844411816239
+        ],
+        "largest_adjacent_mirror_step": 0.08070445594725406
+      },
+      {
+        "height": 1.0601092782791866,
+        "action_at_inner_face": [
+          1.330710229101149,
+          1.3487380041041344
+        ],
+        "action_at_outer_face": [
+          1.4196855040384757,
+          1.4315683366296554
+        ],
+        "inner_margin": 0.011184183560362992,
+        "outer_margin": 0.05976331637397836,
+        "radial_derivative": [
+          0.81906622495441,
+          0.927123981171113
+        ],
+        "min_derivative_launch": [
+          0.54,
+          0.7363107781851077
+        ],
+        "arclength_term": [
+          0.013291971083069376,
+          0.014365235934035894
+        ],
+        "strength_term": [
+          0.8047940168238417,
+          0.9131350646403014
+        ],
+        "negative_part_of_derivative_integral": [
+          0.0,
+          0.0
+        ],
+        "sampled_strength_u": [
+          -0.011573200328111138,
+          -0.007674394185945672
+        ],
+        "smallest_outward_slope": 0.0008733262691704813,
+        "left_mirror": [
+          -5.32477329376761,
+          -4.996304319530334
+        ],
+        "right_mirror": [
+          4.996304316626565,
+          5.32477330217345
+        ],
+        "largest_adjacent_mirror_step": 0.08439645121265116
+      }
+    ],
+    "fixed_window_interpolants": {
+      "strength": [
+        1.042743740908242,
+        1.0669074894833568
+      ],
+      "arclength_density": [
+        0.877312059259658,
+        0.9991089142693264
+      ],
+      "strength_u": [
+        -0.011573250181207048,
+        -0.006213937212555066
+      ],
+      "arclength_density_u": [
+        0.002979474186273026,
+        0.013329892404209323
+      ],
+      "core_strength": [
+        1.042743740908242,
+        1.0456485096050185
+      ]
+    },
+    "core_angle_half_width": 1.0,
+    "smallest_critical_value_gap": 0.005429311979874507,
+    "seam_difference": {
+      "left": 1.915132008534215e-07,
+      "right": 3.391185092738169e-07,
+      "outward_slope": 1.606808028862053e-08,
+      "action": 1.7919949968359106e-08,
+      "radial_derivative": 3.0011672513818866e-07
+    }
+  },
+  "fine": {
+    "nrad": 17,
+    "nphase_intervals": 256,
+    "half_trace_steps": 512,
+    "panels": 16,
+    "gauss_order": 16,
+    "ode_tol": 2e-12,
+    "heights": [
+      {
+        "height": 1.0595923312168822,
+        "action_at_inner_face": [
+          1.2877440151865922,
+          1.3051392589938633
+        ],
+        "action_at_outer_face": [
+          1.3709566186755955,
+          1.3881214918366545
+        ],
+        "inner_margin": 0.05478292867063406,
+        "outer_margin": 0.011034431011098134,
+        "radial_derivative": [
+          0.8152382855907654,
+          0.9239940707899896
+        ],
+        "min_derivative_launch": [
+          0.44,
+          3.141592653589793
+        ],
+        "arclength_term": [
+          0.012863716540073084,
+          0.013951523614402767
+        ],
+        "strength_term": [
+          0.8023745690505558,
+          0.9101035398161275
+        ],
+        "negative_part_of_derivative_integral": [
+          0.0,
+          0.0
+        ],
+        "sampled_strength_u": [
+          -0.011573194889103543,
+          -0.007782078259340641
+        ],
+        "smallest_outward_slope": 0.0008945205098303654,
+        "left_mirror": [
+          -5.241995197308197,
+          -4.906951828006788
+        ],
+        "right_mirror": [
+          4.906951827974584,
+          5.241995197274831
+        ],
+        "largest_adjacent_mirror_step": 0.05566436006999087
+      },
+      {
+        "height": 1.0601092782791866,
+        "action_at_inner_face": [
+          1.3307231038984786,
+          1.3487376992594466
+        ],
+        "action_at_outer_face": [
+          1.4196836076212773,
+          1.431579994748787
+        ],
+        "inner_margin": 0.011184488405050708,
+        "outer_margin": 0.05976141995677997,
+        "radial_derivative": [
+          0.8190684521294955,
+          0.9312345959423275
+        ],
+        "min_derivative_launch": [
+          0.54,
+          0.7363107781851077
+        ],
+        "arclength_term": [
+          0.013292169995562824,
+          0.014365099656833961
+        ],
+        "strength_term": [
+          0.8047962997689428,
+          0.9171919673956973
+        ],
+        "negative_part_of_derivative_integral": [
+          0.0,
+          0.0
+        ],
+        "sampled_strength_u": [
+          -0.01157319425455463,
+          -0.0076743530208569985
+        ],
+        "smallest_outward_slope": 0.0008723721569934378,
+        "left_mirror": [
+          -5.324800599040431,
+          -4.996094024097583
+        ],
+        "right_mirror": [
+          4.996094024099093,
+          5.324800599071962
+        ],
+        "largest_adjacent_mirror_step": 0.05925727792585089
+      }
+    ],
+    "fixed_window_interpolants": {
+      "strength": [
+        1.0427436998320156,
+        1.0669074889756707
+      ],
+      "arclength_density": [
+        0.8773011002200213,
+        0.9991089142693264
+      ],
+      "strength_u": [
+        -0.011573250181207048,
+        -0.006213937000768039
+      ],
+      "arclength_density_u": [
+        0.0029792362456978407,
+        0.013329894268564384
+      ],
+      "core_strength": [
+        1.0427436998320156,
+        1.0456485096860761
+      ]
+    },
+    "core_angle_half_width": 1.0,
+    "smallest_critical_value_gap": 0.011575285532270163,
+    "seam_difference": {
+      "left": 1.7406067698289007e-09,
+      "right": 1.6400747426814632e-09,
+      "outward_slope": 3.7315186617731255e-10,
+      "action": 7.731459916726635e-11,
+      "radial_derivative": 3.6106657663736996e-09
+    }
+  },
+  "max_abs_shared_launch_change": {
+    "left": 5.487029605788507e-06,
+    "right": 5.436452350515708e-06,
+    "outward_slope": 2.0842903599204224e-06,
+    "action": 1.3700062207799846e-05,
+    "radial_derivative": 1.7529859740350595e-05,
+    "arclength_term": 2.2693675591663187e-07,
+    "strength_term": 1.7605911541207497e-05,
+    "negative_mass": 0.0,
+    "max_strength_u": 9.30364775064002e-08,
+    "min_strength_u": 2.736417561442772e-05
+  },
+  "independent_secants": [
+    {
+      "u": 0.49,
+      "alpha": 0.0,
+      "variational": [
+        0.8260854021456335,
+        0.9004999971107768
+      ],
+      "secant_at_1e_minus4": [
+        0.8260854738662005,
+        0.9005000512785077
+      ],
+      "secant_at_5e_minus5": [
+        0.8260854625063985,
+        0.9005000962503118
+      ],
+      "max_abs_difference": 9.913953502582729e-08
+    },
+    {
+      "u": 0.44,
+      "alpha": 0.7853981633974483,
+      "variational": [
+        0.8386323212378144,
+        0.8273946229823597
+      ],
+      "secant_at_1e_minus4": [
+        0.838632401115591,
+        0.8273945306391806
+      ],
+      "secant_at_5e_minus5": [
+        0.8386323982900734,
+        0.8273945279912986
+      ],
+      "max_abs_difference": 9.4991061017069e-08
+    },
+    {
+      "u": 0.54,
+      "alpha": 0.5154175447295755,
+      "variational": [
+        0.8320287132923487,
+        0.8247067706912654
+      ],
+      "secant_at_1e_minus4": [
+        0.832028592180345,
+        0.8247068428601789
+      ],
+      "secant_at_5e_minus5": [
+        0.8320285928431481,
+        0.8247068443933969
+      ],
+      "max_abs_difference": 1.2044920061349274e-07
+    }
+  ]
+}

@@ -1,0 +1,704 @@
+{
+  "status": "externally checked interval tubes",
+  "field_file_sha256": "9bd100ec63244c0980856a3633188f7bebcbb28b7a96417e2931210583bcb646",
+  "seed_sha256": {
+    "C": "ef91ae1b34333fd4b43ffbfb1d73ceda500ac3fecae1eb4cde320319497276c2",
+    "A": "b2524e61c865759436434df012a2727febd5bc73347c0412c493efc73404c5ac"
+  },
+  "scale": 1208925819614629174706176,
+  "section_in_half_pi": 0,
+  "common_section": true,
+  "alpha_half_width": "1/4096",
+  "core_limit": "1",
+  "limit": "61/10",
+  "heights": [
+    "5297961656084411/5000000000000000",
+    "5300546391395933/5000000000000000"
+  ],
+  "brackets": [
+    {
+      "height_index": 0,
+      "u": [
+        "523/1000",
+        "531/1000"
+      ],
+      "radial_action_secant_lower": "61362626679419780606477/1208925819614629174706176",
+      "tiles": [
+        {
+          "scale": 1208925819614629174706176,
+          "u_center": "131/250",
+          "section_in_half_pi": 0,
+          "common_section": true,
+          "framed": true,
+          "transfer_tangent_error_numerator": 770342823895732976,
+          "alpha_half_width": "1/4096",
+          "u_half_width": "1/1000",
+          "step": "1/64",
+          "limit": "61/10",
+          "core_limit": "1",
+          "heights": [
+            "5297961656084411/5000000000000000",
+            "5300546391395933/5000000000000000"
+          ],
+          "clipped_action_secant_lower_numerator": 61380979598906086282284,
+          "radial_action_secant_lower_numerator": 61380979598906086282284,
+          "runs": [
+            {
+              "direction": -1,
+              "steps": 391,
+              "success": true,
+              "clipped_comparison": true,
+              "regular_mirror": true,
+              "max_tangent_error_numerator": 847836780608344016477,
+              "max_tangent_defect_numerator": 179512666455608602741,
+              "core_B2_upper_numerator": 1319533249862647348590036,
+              "end_B2_lower_numerator": 1373718354923451927990313,
+              "core_radial_action_slope_lower_numerator": 30690489799453043140529,
+              "outward_B2_slope_lower_numerator": 2721112740907127161548,
+              "bounds": {
+                "B2": [
+                  1314565336655612258359360,
+                  1374374888933670832230773
+                ],
+                "A2": [
+                  952978172069302158931431,
+                  1206413035137952354041612
+                ],
+                "B2_u": [
+                  -29357677327655219460686,
+                  -15441865918732064622888
+                ],
+                "A2_u": [
+                  9554076185622418536903,
+                  29014777796171320360858
+                ]
+              }
+            },
+            {
+              "direction": 1,
+              "steps": 391,
+              "success": true,
+              "clipped_comparison": true,
+              "regular_mirror": true,
+              "max_tangent_error_numerator": 847836780608344016225,
+              "max_tangent_defect_numerator": 179512666455608602675,
+              "core_B2_upper_numerator": 1319533249862647348589972,
+              "end_B2_lower_numerator": 1373718354923451927990377,
+              "core_radial_action_slope_lower_numerator": 30690489799453043141755,
+              "outward_B2_slope_lower_numerator": 2721112740907127161832,
+              "bounds": {
+                "B2": [
+                  1314565336655612258359380,
+                  1374374888933670832230714
+                ],
+                "A2": [
+                  952978172069302158931499,
+                  1206413035137952354041611
+                ],
+                "B2_u": [
+                  -29357677327655219460503,
+                  -15441865918732064623500
+                ],
+                "A2_u": [
+                  9554076185622418537334,
+                  29014777796171320360754
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "scale": 1208925819614629174706176,
+          "u_center": "263/500",
+          "section_in_half_pi": 0,
+          "common_section": true,
+          "framed": true,
+          "transfer_tangent_error_numerator": 769649966781448127,
+          "alpha_half_width": "1/4096",
+          "u_half_width": "1/1000",
+          "step": "1/64",
+          "limit": "61/10",
+          "core_limit": "1",
+          "heights": [
+            "5297961656084411/5000000000000000",
+            "5300546391395933/5000000000000000"
+          ],
+          "clipped_action_secant_lower_numerator": 61374834941442545301245,
+          "radial_action_secant_lower_numerator": 61374834941442545301245,
+          "runs": [
+            {
+              "direction": -1,
+              "steps": 391,
+              "success": true,
+              "clipped_comparison": true,
+              "regular_mirror": true,
+              "max_tangent_error_numerator": 847829573017115962492,
+              "max_tangent_defect_numerator": 179512937153882962199,
+              "core_B2_upper_numerator": 1319479598092099738105904,
+              "end_B2_lower_numerator": 1373683338536227130917641,
+              "core_radial_action_slope_lower_numerator": 30687417470721272652026,
+              "outward_B2_slope_lower_numerator": 2727246498843768229079,
+              "bounds": {
+                "B2": [
+                  1314507674673950296240792,
+                  1374339872240555792878719
+                ],
+                "A2": [
+                  953020391526312512918086,
+                  1206464335353569137504285
+                ],
+                "B2_u": [
+                  -29359352861247174640414,
+                  -15449950606102244884808
+                ],
+                "A2_u": [
+                  9561059146391200092846,
+                  29017214440035063817285
+                ]
+              }
+            },
+            {
+              "direction": 1,
+              "steps": 391,
+              "success": true,
+              "clipped_comparison": true,
+              "regular_mirror": true,
+              "max_tangent_error_numerator": 847829573017115963078,
+              "max_tangent_defect_numerator": 179512937153882962407,
+              "core_B2_upper_numerator": 1319479598092099738105945,
+              "end_B2_lower_numerator": 1373683338536227130917548,
+              "core_radial_action_slope_lower_numerator": 30687417470721272649219,
+              "outward_B2_slope_lower_numerator": 2727246498843768225973,
+              "bounds": {
+                "B2": [
+                  1314507674673950296240777,
+                  1374339872240555792878819
+                ],
+                "A2": [
+                  953020391526312512917956,
+                  1206464335353569137504288
+                ],
+                "B2_u": [
+                  -29359352861247174640649,
+                  -15449950606102244883400
+                ],
+                "A2_u": [
+                  9561059146391200091827,
+                  29017214440035063817383
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "scale": 1208925819614629174706176,
+          "u_center": "66/125",
+          "section_in_half_pi": 0,
+          "common_section": true,
+          "framed": true,
+          "transfer_tangent_error_numerator": 768957541672890655,
+          "alpha_half_width": "1/4096",
+          "u_half_width": "1/1000",
+          "step": "1/64",
+          "limit": "61/10",
+          "core_limit": "1",
+          "heights": [
+            "5297961656084411/5000000000000000",
+            "5300546391395933/5000000000000000"
+          ],
+          "clipped_action_secant_lower_numerator": 61368717577868934768572,
+          "radial_action_secant_lower_numerator": 61368717577868934768572,
+          "runs": [
+            {
+              "direction": -1,
+              "steps": 391,
+              "success": true,
+              "clipped_comparison": true,
+              "regular_mirror": true,
+              "max_tangent_error_numerator": 847822124727981895614,
+              "max_tangent_defect_numerator": 179513145995094564017,
+              "core_B2_upper_numerator": 1319425946810855306427510,
+              "end_B2_lower_numerator": 1373648306697718952836264,
+              "core_radial_action_slope_lower_numerator": 30684358788934467385070,
+              "outward_B2_slope_lower_numerator": 2733381328808558398284,
+              "bounds": {
+                "B2": [
+                  1314450014513040974232794,
+                  1374304839460357324741179
+                ],
+                "A2": [
+                  953062621415864873911171,
+                  1206515635836807904287935
+                ],
+                "B2_u": [
+                  -29361028294943520780026,
+                  -15458032480352850266681
+                ],
+                "A2_u": [
+                  9568041437919118855128,
+                  29019652114191992092215
+                ]
+              }
+            },
+            {
+              "direction": 1,
+              "steps": 391,
+              "success": true,
+              "clipped_comparison": true,
+              "regular_mirror": true,
+              "max_tangent_error_numerator": 847822124727981895933,
+              "max_tangent_defect_numerator": 179513145995094564081,
+              "core_B2_upper_numerator": 1319425946810855306427592,
+              "end_B2_lower_numerator": 1373648306697718952836149,
+              "core_radial_action_slope_lower_numerator": 30684358788934467383502,
+              "outward_B2_slope_lower_numerator": 2733381328808558397202,
+              "bounds": {
+                "B2": [
+                  1314450014513040974232774,
+                  1374304839460357324741310
+                ],
+                "A2": [
+                  953062621415864873911097,
+                  1206515635836807904287933
+                ],
+                "B2_u": [
+                  -29361028294943520780177,
+                  -15458032480352850265897
+                ],
+                "A2_u": [
+                  9568041437919118854577,
+                  29019652114191992092288
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "scale": 1208925819614629174706176,
+          "u_center": "53/100",
+          "section_in_half_pi": 0,
+          "common_section": true,
+          "framed": true,
+          "transfer_tangent_error_numerator": 768265548538054965,
+          "alpha_half_width": "1/4096",
+          "u_half_width": "1/1000",
+          "step": "1/64",
+          "limit": "61/10",
+          "core_limit": "1",
+          "heights": [
+            "5297961656084411/5000000000000000",
+            "5300546391395933/5000000000000000"
+          ],
+          "clipped_action_secant_lower_numerator": 61362626679419780606477,
+          "radial_action_secant_lower_numerator": 61362626679419780606477,
+          "runs": [
+            {
+              "direction": -1,
+              "steps": 391,
+              "success": true,
+              "clipped_comparison": true,
+              "regular_mirror": true,
+              "max_tangent_error_numerator": 847814508658006604311,
+              "max_tangent_defect_numerator": 179513326604891057350,
+              "core_B2_upper_numerator": 1319372295980340432176643,
+              "end_B2_lower_numerator": 1373613259374694676000108,
+              "core_radial_action_slope_lower_numerator": 30681313339709890305261,
+              "outward_B2_slope_lower_numerator": 2739516716068772819314,
+              "bounds": {
+                "B2": [
+                  1314392356201971302846294,
+                  1374269790639577427303963
+                ],
+                "A2": [
+                  953104861709972714772474,
+                  1206566936588596235131526
+                ],
+                "B2_u": [
+                  -29362703558532345663836,
+                  -15466111357092466438838
+                ],
+                "A2_u": [
+                  9575022934443174351116,
+                  29022090808316320272955
+                ]
+              }
+            },
+            {
+              "direction": 1,
+              "steps": 391,
+              "success": true,
+              "clipped_comparison": true,
+              "regular_mirror": true,
+              "max_tangent_error_numerator": 847814508658006605153,
+              "max_tangent_defect_numerator": 179513326604891057568,
+              "core_B2_upper_numerator": 1319372295980340432176770,
+              "end_B2_lower_numerator": 1373613259374694675999980,
+              "core_radial_action_slope_lower_numerator": 30681313339709890301216,
+              "outward_B2_slope_lower_numerator": 2739516716068772815679,
+              "bounds": {
+                "B2": [
+                  1314392356201971302846222,
+                  1374269790639577427304089
+                ],
+                "A2": [
+                  953104861709972714772275,
+                  1206566936588596235131529
+                ],
+                "B2_u": [
+                  -29362703558532345664058,
+                  -15466111357092466436815
+                ],
+                "A2_u": [
+                  9575022934443174349654,
+                  29022090808316320273078
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "height_index": 1,
+      "u": [
+        "47/100",
+        "239/500"
+      ],
+      "radial_action_secant_lower": "30766488175155801063863/604462909807314587353088",
+      "tiles": [
+        {
+          "scale": 1208925819614629174706176,
+          "u_center": "471/1000",
+          "section_in_half_pi": 0,
+          "common_section": true,
+          "framed": true,
+          "transfer_tangent_error_numerator": 788879877851914219,
+          "alpha_half_width": "1/4096",
+          "u_half_width": "1/1000",
+          "step": "1/64",
+          "limit": "61/10",
+          "core_limit": "1",
+          "heights": [
+            "5297961656084411/5000000000000000",
+            "5300546391395933/5000000000000000"
+          ],
+          "clipped_action_secant_lower_numerator": 61553467158255479588302,
+          "radial_action_secant_lower_numerator": 61553467158255479588302,
+          "runs": [
+            {
+              "direction": -1,
+              "steps": 391,
+              "success": true,
+              "clipped_comparison": true,
+              "regular_mirror": true,
+              "max_tangent_error_numerator": 848014480360782712134,
+              "max_tangent_defect_numerator": 179494572181027238884,
+              "core_B2_upper_numerator": 1320955195798373500185762,
+              "end_B2_lower_numerator": 1374640620553795393338821,
+              "core_radial_action_slope_lower_numerator": 30776733579127739793830,
+              "outward_B2_slope_lower_numerator": 3046776723478799339752,
+              "bounds": {
+                "B2": [
+                  1316094045186931654327771,
+                  1375296963134786493324441
+                ],
+                "A2": [
+                  951863159960089687592547,
+                  1205053676260326092210385
+                ],
+                "B2_u": [
+                  -29313259255178109133639,
+                  -15226422218300137615971
+                ],
+                "A2_u": [
+                  9366401337931168563506,
+                  28950579147169238183824
+                ]
+              }
+            },
+            {
+              "direction": 1,
+              "steps": 391,
+              "success": true,
+              "clipped_comparison": true,
+              "regular_mirror": true,
+              "max_tangent_error_numerator": 848014480360782712000,
+              "max_tangent_defect_numerator": 179494572181027238855,
+              "core_B2_upper_numerator": 1320955195798373500185691,
+              "end_B2_lower_numerator": 1374640620553795393338766,
+              "core_radial_action_slope_lower_numerator": 30776733579127739794472,
+              "outward_B2_slope_lower_numerator": 3046776723478799339731,
+              "bounds": {
+                "B2": [
+                  1316094045186931654327819,
+                  1375296963134786493324499
+                ],
+                "A2": [
+                  951863159960089687592556,
+                  1205053676260326092210389
+                ],
+                "B2_u": [
+                  -29313259255178109133486,
+                  -15226422218300137616280
+                ],
+                "A2_u": [
+                  9366401337931168563750,
+                  28950579147169238183728
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "scale": 1208925819614629174706176,
+          "u_center": "473/1000",
+          "section_in_half_pi": 0,
+          "common_section": true,
+          "framed": true,
+          "transfer_tangent_error_numerator": 788173598955062647,
+          "alpha_half_width": "1/4096",
+          "u_half_width": "1/1000",
+          "step": "1/64",
+          "limit": "61/10",
+          "core_limit": "1",
+          "heights": [
+            "5297961656084411/5000000000000000",
+            "5300546391395933/5000000000000000"
+          ],
+          "clipped_action_secant_lower_numerator": 61546606776536709582605,
+          "radial_action_secant_lower_numerator": 61546606776536709582605,
+          "runs": [
+            {
+              "direction": -1,
+              "steps": 391,
+              "success": true,
+              "clipped_comparison": true,
+              "regular_mirror": true,
+              "max_tangent_error_numerator": 848008184829244824651,
+              "max_tangent_defect_numerator": 179495567175055475036,
+              "core_B2_upper_numerator": 1320901531216072979039321,
+              "end_B2_lower_numerator": 1374606017165482131042888,
+              "core_radial_action_slope_lower_numerator": 30773303388268354792610,
+              "outward_B2_slope_lower_numerator": 2777449287442721861923,
+              "bounds": {
+                "B2": [
+                  1316036334885145555992944,
+                  1375262373944331377900167
+                ],
+                "A2": [
+                  951905102502442679006729,
+                  1205104969458258292980710
+                ],
+                "B2_u": [
+                  -29314936384568411593807,
+                  -15234594092037691687981
+                ],
+                "A2_u": [
+                  9373612124625462792782,
+                  28952988760534235948037
+                ]
+              }
+            },
+            {
+              "direction": 1,
+              "steps": 391,
+              "success": true,
+              "clipped_comparison": true,
+              "regular_mirror": true,
+              "max_tangent_error_numerator": 848008184829244825184,
+              "max_tangent_defect_numerator": 179495567175055475266,
+              "core_B2_upper_numerator": 1320901531216072979039263,
+              "end_B2_lower_numerator": 1374606017165482131042757,
+              "core_radial_action_slope_lower_numerator": 30773303388268354789995,
+              "outward_B2_slope_lower_numerator": 2777449287442721859443,
+              "bounds": {
+                "B2": [
+                  1316036334885145555992957,
+                  1375262373944331377900295
+                ],
+                "A2": [
+                  951905102502442679006586,
+                  1205104969458258292980708
+                ],
+                "B2_u": [
+                  -29314936384568411593821,
+                  -15234594092037691686687
+                ],
+                "A2_u": [
+                  9373612124625462791841,
+                  28952988760534235948041
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "scale": 1208925819614629174706176,
+          "u_center": "19/40",
+          "section_in_half_pi": 0,
+          "common_section": true,
+          "framed": true,
+          "transfer_tangent_error_numerator": 787467753692221213,
+          "alpha_half_width": "1/4096",
+          "u_half_width": "1/1000",
+          "step": "1/64",
+          "limit": "61/10",
+          "core_limit": "1",
+          "heights": [
+            "5297961656084411/5000000000000000",
+            "5300546391395933/5000000000000000"
+          ],
+          "clipped_action_secant_lower_numerator": 61539776391912511190735,
+          "radial_action_secant_lower_numerator": 61539776391912511190735,
+          "runs": [
+            {
+              "direction": -1,
+              "steps": 391,
+              "success": true,
+              "clipped_comparison": true,
+              "regular_mirror": true,
+              "max_tangent_error_numerator": 848001717444113318466,
+              "max_tangent_defect_numerator": 179496521792416577513,
+              "core_B2_upper_numerator": 1320847867116873909181613,
+              "end_B2_lower_numerator": 1374571398136710060488898,
+              "core_radial_action_slope_lower_numerator": 30769888195956255597726,
+              "outward_B2_slope_lower_numerator": 2783076984290789977280,
+              "bounds": {
+                "B2": [
+                  1315978626410615301621461,
+                  1375227768512050669736061
+                ],
+                "A2": [
+                  951947055547120309275678,
+                  1205156262915117473605319
+                ],
+                "B2_u": [
+                  -29316613402246557653935,
+                  -15242763028491228109934
+                ],
+                "A2_u": [
+                  9380822049375902610525,
+                  28955399370796265520717
+                ]
+              }
+            },
+            {
+              "direction": 1,
+              "steps": 391,
+              "success": true,
+              "clipped_comparison": true,
+              "regular_mirror": true,
+              "max_tangent_error_numerator": 848001717444113319422,
+              "max_tangent_defect_numerator": 179496521792416577804,
+              "core_B2_upper_numerator": 1320847867116873909181833,
+              "end_B2_lower_numerator": 1374571398136710060488677,
+              "core_radial_action_slope_lower_numerator": 30769888195956255593009,
+              "outward_B2_slope_lower_numerator": 2783076984290789972066,
+              "bounds": {
+                "B2": [
+                  1315978626410615301621401,
+                  1375227768512050669736295
+                ],
+                "A2": [
+                  951947055547120309275468,
+                  1205156262915117473605318
+                ],
+                "B2_u": [
+                  -29316613402246557654388,
+                  -15242763028491228107613
+                ],
+                "A2_u": [
+                  9380822049375902608857,
+                  28955399370796265520965
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "scale": 1208925819614629174706176,
+          "u_center": "477/1000",
+          "section_in_half_pi": 0,
+          "common_section": true,
+          "framed": true,
+          "transfer_tangent_error_numerator": 786762342030546692,
+          "alpha_half_width": "1/4096",
+          "u_half_width": "1/1000",
+          "step": "1/64",
+          "limit": "61/10",
+          "core_limit": "1",
+          "heights": [
+            "5297961656084411/5000000000000000",
+            "5300546391395933/5000000000000000"
+          ],
+          "clipped_action_secant_lower_numerator": 61532976350311602127726,
+          "radial_action_secant_lower_numerator": 61532976350311602127726,
+          "runs": [
+            {
+              "direction": -1,
+              "steps": 391,
+              "success": true,
+              "clipped_comparison": true,
+              "regular_mirror": true,
+              "max_tangent_error_numerator": 847995026937400813899,
+              "max_tangent_defect_numerator": 179497428536351743830,
+              "core_B2_upper_numerator": 1320794203480345330186044,
+              "end_B2_lower_numerator": 1374536763467644628929463,
+              "core_radial_action_slope_lower_numerator": 30766488175155801065980,
+              "outward_B2_slope_lower_numerator": 2604763588057530887347,
+              "bounds": {
+                "B2": [
+                  1315920919762390831930711,
+                  1375193146850629471701580
+                ],
+                "A2": [
+                  951989019095474868553022,
+                  1205207556630799565557532
+                ],
+                "B2_u": [
+                  -29318290250926151750855,
+                  -15250929145821739197608
+                ],
+                "A2_u": [
+                  9388031200917163892391,
+                  28957810943607980908924
+                ]
+              }
+            },
+            {
+              "direction": 1,
+              "steps": 391,
+              "success": true,
+              "clipped_comparison": true,
+              "regular_mirror": true,
+              "max_tangent_error_numerator": 847995026937400814763,
+              "max_tangent_defect_numerator": 179497428536351744051,
+              "core_B2_upper_numerator": 1320794203480345330186136,
+              "end_B2_lower_numerator": 1374536763467644628929308,
+              "core_radial_action_slope_lower_numerator": 30766488175155801061746,
+              "outward_B2_slope_lower_numerator": 2604763588057530882948,
+              "bounds": {
+                "B2": [
+                  1315920919762390831930655,
+                  1375193146850629471701749
+                ],
+                "A2": [
+                  951989019095474868552844,
+                  1205207556630799565557532
+                ],
+                "B2_u": [
+                  -29318290250926151751189,
+                  -15250929145821739195523
+                ],
+                "A2_u": [
+                  9388031200917163890871,
+                  28957810943607980909111
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -2784,6 +2784,12 @@
     "text": "23 november 2026 — outward-rounded action bounds at six phases (n-59) implementation plan"
   },
   {
+    "title": "23 November 2026 — separated local fixed-action curves at both symmetry phases (N-60)",
+    "section": "Implementation plan",
+    "url": "implementation-plan.html#23-november-2026-separated-local-fixed-action-curves-at-both-symmetry-phases-n-60",
+    "text": "23 november 2026 — separated local fixed-action curves at both symmetry phases (n-60) implementation plan"
+  },
+  {
     "title": "M0 · Exact symmetric equilibria: slab, screw pinch, Solov'ev, helical",
     "section": "Implementation plan · Lean verified — exact slab, screw-pinch, Solov'ev and helical equilibria with kernel force balance, all-time field-line/orbit confinement, Suydam both ways and screw-pinch Newcomb stability for every m ≠ 0 (reduced form supplied; idealized symmetric models).",
     "url": "implementation-plan.html",
@@ -3046,5 +3052,11 @@
     "section": "Verified progress",
     "url": "progress.html#confinement-from-radial-face-values",
     "text": "confinement from radial face values verified progress"
+  },
+  {
+    "title": "Fixed-action curves on two phase sectors",
+    "section": "Verified progress",
+    "url": "progress.html#fixed-action-curves-on-two-phase-sectors",
+    "text": "fixed-action curves on two phase sectors verified progress"
   }
 ]

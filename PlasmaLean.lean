@@ -357,9 +357,11 @@ public import PlasmaLean.Theory.Geometry.AnnulusFluxDescent
 public import PlasmaLean.Theory.Geometry.AnnulusOrbitExistence
 public import PlasmaLean.Theory.Geometry.PeriodicLevelGraphs
 public import PlasmaLean.Theory.Geometry.PeriodicOrientedCrossings
+public import PlasmaLean.Theory.Geometry.LocalLevelGraphs
 public import PlasmaLean.Theory.Kinetic.MirrorAction
 public import PlasmaLean.Theory.Kinetic.MirrorArclength
 public import PlasmaLean.Theory.Kinetic.MirrorHeightAction
+public import PlasmaLean.Theory.Kinetic.MirrorActionComparison
 public import PlasmaLean.Theory.Kinetic.MirrorActionEnvelope
 public import PlasmaLean.Theory.Kinetic.MirrorWellCriterion
 public import PlasmaLean.Theory.Fields.WeakQuasisymmetry
