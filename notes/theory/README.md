@@ -75,5 +75,5 @@ Phase 8 (kam-route.md, finite-beta-stellarator.md):
 - [Approximate momentum and particle loss](trapped-particle-momentum.md) (N-49). Method for N-34, N-43 and N-48. Conditional exit and bounce-average obstruction proofs, with the regular-band construction and energy-weighted application open.
 - [Boundary variation of a harmonic field](harmonic-field-shape-variation.md) (N-50). Method for N-32 and N-34. Q-34 tests Roussel’s curvature condition and a physical normal deformation. Q-24 tests rigidity in a prescribed Euclidean domain.
 - [Annular stream functions and second-order confinement](annulus-averaged-flux.md) (N-51, Q-35). Common invariant volume determines the averaged flux. Its period obstructs winding invariant curves and its primitive supplies a radial label.
-- [Embeddedness from irrational section dynamics](irrational-return-embedding.md) (N-52, Q-36).
+- [Embeddedness from irrational section dynamics](irrational-return-embedding.md) (N-52, Q-36). Irrational return and winding one prove embeddedness of the rational stellarator and both Dommaschk tori, including the nested Q-16 witnesses. A zero-transform fixture shows where the argument fails.
 - [Testing a Hamiltonian bounce band](hamiltonian-bounce-band-test.md) (N-53, Q-35).

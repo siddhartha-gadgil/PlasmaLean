@@ -145,8 +145,13 @@ An embeddedness predicate now exists (`EmbeddedTorus`, `Theory/Fields/FormFluxSu
 with a `FieldTorus` that is not embedded (`dbl_fieldTorus`, `dbl_not_embeddedTorus`); it is not
 a clause of `CurrentFreeTransform`. Later the same day the clause was added as the
 strengthened predicate `Contract.EmbeddedCurrentFreeTransform`
-(`Theory/Contract/EmbeddedSurfaces`); AF-1 stays open until it is proved for the certified tori
-(plan question Q-36). AV-M4: orbit existence and uniqueness for fields
+(`Theory/Contract/EmbeddedSurfaces`). The subsequent Q-36 proofs establish that clause
+on the rational stellarator torus A and on Dommaschk tori C and A, including the nested Q-16
+witnesses. AF-1 still describes the bare predicates. Even a smooth winding-one
+`IotaOnTorus` at zero transform can have a stationary tangent. These developments postdate
+the audited revision. [N-52](../theory/irrational-return-embedding.md)
+
+AV-M4: orbit existence and uniqueness for fields
 on an open set, without potentials, are in `Theory/Kinetic/LorentzOrbitOpen` (not audited).
 
 ### AV-M10 (medium; resolved): `dommaschk_Q16_vacuum` hides the regularity behind its defect bounds
@@ -234,7 +239,8 @@ section now precedes the chronological sections, and the stale table entries are
 | AV-M4 | local (open-set) versions of the kinetic theorems; the helical generator |
 | AV-M11 | reparametrisation invariance of `poloidalCirculation` |
 | AV-L3, AV-L6 | tooling in the default import; layering |
-| AF-1, AD-L4, AD-L5 | unchanged |
+| AF-1 | Bare predicates omit embeddedness. The candidate obligations were subsequently proved in Q-36. [N-52](../theory/irrational-return-embedding.md) |
+| AD-L4, AD-L5 | unchanged |
 
 ## Downstream claims to re-read after the fixes
 

@@ -1,17 +1,17 @@
 {
  "updated": "2026-11-23",
  "report": "2026-11-23-annular-confinement.md",
- "status": "Vacuum current and transform certified; embedded C1 open. Thermal confinement and operating temperature on a stellarator candidate remain open.",
+ "status": "Embedded C1 is proved on both vacuum examples. Thermal-particle confinement and operating temperature on the Dommaschk candidate remain open.",
  "slides": [
   {
    "id": "where-we-are",
    "eyebrow": "0 · where we are against the stellarator contract",
-   "title": "Vacuum current and transform are certified. Embeddedness is the next C1 obligation.",
-   "lead": "PlasmaLean tracks five conditions on one stellarator candidate, covering current-free rotational transform, thermal-particle confinement, finite-pressure stability, equilibrium existence and thermal performance. The exact Dommaschk vacuum field has verified current and transform bounds and certified quasisymmetry defects on two tori. The new annulus theorem gives a way to approach trapped-particle confinement throughout a band.",
+   "title": "Both vacuum examples have embedded invariant tori with zero net toroidal current.",
+   "lead": "The two Dommaschk tori C and A are embedded and nested. The same pair has absolute rotational transform at least 0.2386 and the certified Q-16 quasi-axisymmetry bounds. On the rational stellarator, the exact KAM torus is embedded and has transform (75+√5)/562.",
    "metrics": [
     {
-     "value": "Vacuum current and transform",
-     "label": "exact non-axisymmetric vacuum field; KAM torus with ι ≈ 0.137 confines field lines forever"
+     "value": "0.63% and 0.90%",
+     "label": "off-QA spectral defect as a fraction of the absolute transform on Dommaschk C and A, respectively"
     },
     {
      "value": "C2 open",
@@ -23,11 +23,11 @@
     }
    ],
    "progress": "For a regular annular periodic flow, shared invariant volume and a nonsingular averaged field tangent to both edges give a radial label and orbit existence and confinement through time c/ε². The next slide states the hypotheses and what remains to apply it to a stellarator.",
-   "boundary": "The ray-order theorem proves disjointness of the Dommaschk sections. Embeddedness of each candidate surface is Q-36. Thermal trapped-particle bands on the physical field remain open.",
+   "boundary": "The Dommaschk proof controls two surfaces. A flux chart throughout the intervening volume and a physical thermal trapped-particle band remain open.",
    "evidence": [
     {
-     "label": "Latest report",
-     "href": "progress.html"
+     "label": "Embeddedness theorem and examples",
+     "href": "progress.html#embedded-invariant-tori"
     },
     {
      "label": "The contract (implementation plan)",
@@ -87,9 +87,9 @@
    "cards": [
     {
      "title": "C1 · current-free rotational transform",
-     "text": "Defined in Lean (netToroidalCurrent, CurrentFreeTransform) with the tokamak exclusion: a purely toroidal (current-free axisymmetric) field has ι = 0. The vacuum rational field satisfies the current and transform clauses on its KAM torus (rationalStellarator_currentFreeTransform). C1 bounds the Ampère circulation around each torus's poloidal loop, with |ι| ≥ ι_min. This is audit fix AR-H1; the earlier section-based clause was vacuous. Landreman family 2 fails C1 (family2_not_currentFreeTransform, via a Stokes theorem for regular sections). The exact Dommaschk field passes the current clause on every loop (candidate_currentFreeTransform).",
-     "status": "Defined; one current-free candidate",
-     "kind": "partial"
+     "text": "EmbeddedCurrentFreeTransform bounds the Ampère circulation around each torus's own poloidal loop and requires embeddedness and |ι| ≥ ι_min > 0. The rational stellarator torus and the nested Dommaschk pair satisfy it. A purely toroidal field has zero transform. Landreman family 2 fails the current clause on its specified poloidal loop.",
+     "status": "Proved on both vacuum examples",
+     "kind": "checked"
     },
     {
      "title": "C2 · omnigeneity for thermal particles",
@@ -117,7 +117,7 @@
     }
    ],
    "progress": "Plan restructured around the contract on 30 October (user-approved): goals restated, new questions Q-18–Q-22 on net current, drift and ε_eff, current-free finite β, definitions and thermal neoclassical bounds.",
-   "boundary": "CurrentFreeTransform (loop circulation, |ι| ≥ ι_min) and the omnigeneity predicates are Lean definitions; EffectiveRippleBound and ThermalPerformance are still specifications only.",
+   "boundary": "The C1 surface results address the certified members of each family. Thermal omnigeneity and performance on either field require additional theory and candidate evidence.",
    "evidence": [
     {
      "label": "Implementation plan: the contract",
@@ -1589,7 +1589,7 @@
      "kind": "checked"
     }
    ],
-   "progress": "All in the default build with standard axioms only. Next under the contract: a Dommaschk QA vacuum fit (C1 by construction), drift and ε_eff diagnostics on the rational field, and Lean definitions for C1 and C2.",
+   "progress": "These results entered the default build with standard axioms only. The subsequent Dommaschk certificate establishes embedded C1 and surface QA bounds. Drift and effective-ripple diagnostics on physical trapped-particle bands remain open.",
    "boundary": "Non-axisymmetry results are not design progress under the contract. Relative-entropy coercivity, 2-D/3-D, and non-constant metrics (isothermal coordinates) remain open.",
    "evidence": [
     {
@@ -1694,7 +1694,7 @@
    "cards": [
     {
      "title": "1 · Dommaschk QA fit",
-     "text": "An explicit vacuum field (current-free by construction) fitted to a quasi-axisymmetric target (Q-16): a two-period, purely rational Dommaschk field. Verified in Lean (dommaschk_Q16_vacuum): two certified nested invariant tori with |ι| ≥ 0.2386 and zero net toroidal current (C1), and a certified strong-tier quasi-axisymmetry defect on both (≤ 0.0063 |ι| and ≤ 0.0090 |ι|), which is the vacuum Q-16 criterion. Open: C2.",
+     "text": "The rational-coefficient Dommaschk field realizes Q-16 on two embedded nested tori. The theorem dommaschk_Q16_embedded certifies |ι| ≥ 0.2386 and zero net toroidal current on this pair, with defect ≤ 0.0063 |ι| on C and ≤ 0.0090 |ι| on A.",
      "status": "Q-16 vacuum criterion verified · C2 next",
      "kind": "checked"
     },
@@ -1740,7 +1740,7 @@
    "id": "next-run",
    "eyebrow": "39 · Keep every step reviewable",
    "title": "The next run must leave evidence, not just a promise.",
-   "lead": "Next, in the contract's priority order: a Dommaschk QA vacuum fit with certified tori and ι ≥ ι_min; drift and ε_eff diagnostics on the exact rational field; the net current of the Landreman families; Lean definitions for C1 and C2 with the sanity triad; then a current-free finite-β equilibrium and thermal neoclassical bounds for C5.",
+   "lead": "The C2 application needs a regular physical bounce band, a bound on radial excursion and a measure of the births it covers. A current-free finite-pressure equilibrium and a thermal loss estimate for the same candidate remain open.",
    "cards": [
     {
      "title": "Implement & challenge",

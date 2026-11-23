@@ -14,13 +14,13 @@ tokamaks and are achievable by stellarators:
 
 - **C1, current-free rotational transform:** net toroidal plasma current zero or at most a stated
   bootstrap-level bound (a vacuum field is the limiting case), with rotational transform
-  ι ≥ ι_min > 0 provided by the external field. An axisymmetric current-free field has ι = 0, so C1
+  |ι| ≥ ι_min > 0 on embedded invariant tori. An axisymmetric current-free field has ι = 0, so C1
   excludes tokamaks.
 - **C2, omnigeneity:** small neoclassical transport for *thermal* ions and electrons (not only
   alphas): the bounce-averaged radial drift of trapped particles vanishes or is bounded, or the
   effective ripple ε_eff is bounded. Quasisymmetric and quasi-isodynamic fields are special cases.
-- **C3, MHD stability at finite β:** Mercier, ballooning and interchange; current-driven modes are
-  absent by C1.
+- **C3, MHD stability at finite β:** Mercier, ballooning and interchange stability, with local
+  current-driven modes assessed independently of the net-current bound in C1.
 - **C4, existence:** nested flux surfaces (certified invariant tori) and force balance.
 - **C5, thermal performance:** on the *same* candidate, the core stays above a burn temperature
   (e.g. 10 keV) over the operating interval and below wall limits, from power balance with alpha
@@ -45,44 +45,50 @@ stay inside the annulus through time c/ε² for every sufficiently small nonzero
 Applying the result to a stellarator requires constructing its bounce annulus and bounding
 the constants in physical units. [Theorem, examples and application](notes/theory/annulus-averaged-flux.md)
 
-**Against the contract (3 November 2026), honestly:** one stellarator candidate now has verified
-current, transform and quasisymmetry-defect bounds in vacuum. Embedded C1 is open (Q-36). C2–C5 are open for it.
+**Embedded C1 (23 November 2026).** The Dommaschk and rational stellarator vacuum fields both
+satisfy C1 on their certified tori. For the Dommaschk field, the same nested pair carries the
+quasi-axisymmetry bounds of Q-16. Thermal confinement, finite-pressure equilibrium and stability,
+and operating temperature remain open for that candidate.
 
 - **The lead candidate: an exact Dommaschk quasi-axisymmetric vacuum field.** It is a purely
   rational field with two field periods (`Design/DommaschkQA2R`; the two-period symmetry is used
   on the certified tori and is not stated as a theorem about the field). It was found by untrusted
   workstation numerics and then certified in Lean through on-demand modules, standard axioms only
   ([N-31](notes/theory/dommaschk-qa.md), [N-33](notes/theory/dommaschk-kam-certificate.md),
-  [N-34](notes/theory/dommaschk-qs-defect.md)). Main theorem:
-  `DommaschkKamQ16.dommaschk_Q16_vacuum`.
+  [N-34](notes/theory/dommaschk-qs-defect.md)). The combined theorem is
+  [dommaschk_Q16_embedded](PlasmaLean/Design/DommaschkKamEmbedded.lean).
   - **Exact field:** a vacuum field, `DommaschkQA2R.candidate_vacuum`, in the default build.
   - **Certified tori:** two exact invariant tori C and A, with ι_C = −(85+√5)/361 and
     ι_A = −(19+√5)/89, from an a posteriori KAM theorem applied to 96 × 80 Fourier tori. The tori
-    are proved nested (`DommaschkKamNested.dommaschk_nested`).
-  - **C1:** zero net toroidal current and |ι| ≥ 0.2386 on both tori
-    (`DommaschkKamNested.dommaschk_nested_C1`).
+    are embedded and their sections are disjoint and ordered along each common polar ray.
+  - **C1:** both tori have zero net toroidal current. The singleton transform bounds are
+    |ι_C| ≥ 0.24 and |ι_A| ≥ 0.2386, giving |ι| ≥ 0.2386 on the pair.
   - **Quasi-axisymmetry:** on both tori the off-QA Boozer spectral defect is certified at
     ≤ 0.0063 |ι| (C) and ≤ 0.0090 |ι| (A), the strong tier. This meets the decided vacuum criterion
     of question Q-16 on a nested pair.
-  - **Not proved:** confinement of field lines inside the tori, more than two surfaces (an exact
-    continuum is impossible for this non-integrable field), C2 (no Boozer chart of the field over a
-    volume, see audit AC-1), and finite β, C3 and C5.
-- **C1, embeddedness (added 23 November 2026):** the contract now requires each confining
-  surface to be an embedded torus (`Contract.EmbeddedCurrentFreeTransform`,
-  `Theory/Contract/EmbeddedSurfaces`). This is **not yet proved for any candidate** (plan
-  question Q-36): the C1 results here are for parametrised invariant tori whose cross-sections
-  wind once about a reference curve.
-- **C1 elsewhere:** the earlier rational stellarator vacuum field has a KAM-certified torus with
-  ι ≈ 0.137 that confines its field lines for all time. The C1 current is the Ampère circulation
+  - **Scope.** The two certified Boozer charts live on the individual surfaces. A flux-surface
+    foliation or a Boozer chart throughout the intervening volume, field-line confinement
+    inside the Dommaschk tori, and a thermal trapped-particle bound all require further work.
+- **The geometric proof (Q-36).** For a field-line invariant torus with C² profiles, a locally
+  C¹ field on the image, and a poloidal angle of winding one, an irrational transform implies
+  embeddedness. A one-turn Grönwall estimate propagates coincident points and vanishing section
+  tangents. Density and winding exclude repeated points modulo the period and stationary tangents.
+  [Reusable theorem](PlasmaLean/Theory/Contract/IrrationalTorus.lean)
+- **C1 elsewhere:** the rational stellarator has an embedded KAM torus with
+  ι = (75+√5)/562 ≈ 0.137 and zero net toroidal current.
+  [Rational stellarator theorem](PlasmaLean/Design/RationalStellaratorEmbedded.lean)
+  Its separate field-line theorem gives all-time confinement for initial points inside its
+  certified barrier. The C1 current is the Ampère circulation
   μ₀⁻¹∮B·dl around each torus's own poloidal loop; this is audit fix AR-H1, since an earlier
   section-based clause could be satisfied vacuously. Landreman family 2 fails C1
   (`family2_not_currentFreeTransform`, for any family containing a surface whose poloidal loop is
   the family-2 loop in its given parametrisation; invariant tori of family 2 in the contract's
   form are not constructed).
 - **C2:**
-  - **Contract:** since audit fix AC-1, C2 is a property of the physical field. It requires a proved
-    Boozer chart (`Contract.BoozerModelOf`); the only field-level instance so far is the vacuous
-    ∇φ fixture.
+  - **Contract.** The chart form uses a proved Boozer chart of the physical field
+    (`Contract.BoozerModelOf`). Its only field-level instance is the vacuous ∇φ fixture. The
+    approved band form instead specifies species, birth band, radial excursion and physical time.
+    Establishing it on a stellarator field remains open. [Band test](notes/theory/hamiltonian-bounce-band-test.md)
   - **Audit of 23 November 2026** ([record](notes/audit/2026-11-23-refresh-audit.md)): no false or
     vacuous theorem was found in the work since 31 October. Two limits of the contract are now
     recorded and open: clause C2 has no non-vacuous instance for any field (AV-M7), and the
@@ -98,8 +104,10 @@ current, transform and quasisymmetry-defect bounds in vacuum. Embedded C1 is ope
 - **C3 (test beds only):** Mercier stability on a band of Landreman family 2 (current-carrying),
   and Mercier and ballooning stability of a Solov'ev tokamak equilibrium. Nothing for a current-free
   equilibrium.
-- **C4:** the vacuum fields inside their certified tori. Finite-β exact equilibria exist only for
-  symmetric models and the current-carrying Landreman families.
+- **C4:** the Dommaschk vacuum example has two nested invariant surfaces. Constructing an
+  equilibrium with nested surfaces throughout a finite-pressure region remains open for a
+  current-free stellarator. Existing finite-β examples are symmetric models and the
+  current-carrying Landreman families.
 - **C5 (tokamak model and 0-D only):** a burn-temperature band holds on a Solov'ev (tokamak) field
   for every *supplied* transport solution. On stellarator parameters there are only 0-D windows and
   proved obstructions at measured confinement factors.

@@ -1,15 +1,15 @@
 [
   {
     "title": "Progress slideshow",
-    "section": "Evidence updated 2026-11-23 · A volume-preserving periodic model on an annulus now has a proved inverse-square confinement time for trapped-orbit bands under averaged tangency and nonsingularity. The proof constructs the orbit and a radial label. The Dommaschk vacuum candidate has certified current, transform and surface quasisymmetry-defect bounds. Embeddedness remains open. Thermal-particle confinement and performance on that candidate are open.",
+    "section": "Evidence updated 2026-11-23 · The same two embedded Dommaschk tori have zero net toroidal current, absolute transform at least 0.2386 and off-QA defect at most 0.0063 and 0.0090 times the absolute transform on C and A respectively. Embedded C1 also holds on the rational stellarator KAM torus. A separate annular theorem constructs a radial label and trajectories confined through time c/ε² under averaged tangency and nonsingularity. A volume-filling flux chart, thermal-particle confinement and performance on the Dommaschk candidate remain open.",
     "url": "slides.html",
     "text": "progress slideshow presentation latest run evidence vacuum fixture"
   },
   {
-    "title": "Vacuum current and transform are certified. Embeddedness is the next C1 obligation.",
+    "title": "Both vacuum examples have embedded invariant tori with zero net toroidal current.",
     "section": "Progress slideshow",
     "url": "slides.html#where-we-are",
-    "text": "vacuum current and transform are certified. embeddedness is the next c1 obligation. plasmalean tracks five conditions on one stellarator candidate, covering current-free rotational transform, thermal-particle confinement, finite-pressure stability, equilibrium existence and thermal performance. the exact dommaschk vacuum field has verified current and transform bounds and certified quasisymmetry defects on two tori. the new annulus theorem gives a way to approach trapped-particle confinement throughout a band. for a regular annular periodic flow, shared invariant volume and a nonsingular averaged field tangent to both edges give a radial label and orbit existence and confinement through time c/ε². the next slide states the hypotheses and what remains to apply it to a stellarator."
+    "text": "both vacuum examples have embedded invariant tori with zero net toroidal current. the two dommaschk tori c and a are embedded and nested. the same pair has absolute rotational transform at least 0.2386 and the certified q-16 quasi-axisymmetry bounds. on the rational stellarator, the exact kam torus is embedded and has transform (75+√5)/562. for a regular annular periodic flow, shared invariant volume and a nonsingular averaged field tangent to both edges give a radial label and orbit existence and confinement through time c/ε². the next slide states the hypotheses and what remains to apply it to a stellarator."
   },
   {
     "title": "A radial label from averaged flux controls particle motion for times of order ε⁻².",
@@ -231,7 +231,7 @@
     "title": "A Grad counterexample, a quasisymmetry barrier, and a current finding — infrastructure under the contract.",
     "section": "Progress slideshow",
     "url": "slides.html#infrastructure-and-barriers",
-    "text": "a grad counterexample, a quasisymmetry barrier, and a current finding — infrastructure under the contract. new theory since the strict audit. under the contract these are mathematical infrastructure or barriers, not design progress: they establish non-symmetry or rule out a route, while c1 and c2 need current-free, omnigenous candidates. all in the default build with standard axioms only. next under the contract: a dommaschk qa vacuum fit (c1 by construction), drift and ε_eff diagnostics on the rational field, and lean definitions for c1 and c2."
+    "text": "a grad counterexample, a quasisymmetry barrier, and a current finding — infrastructure under the contract. new theory since the strict audit. under the contract these are mathematical infrastructure or barriers, not design progress: they establish non-symmetry or rule out a route, while c1 and c2 need current-free, omnigenous candidates. these results entered the default build with standard axioms only. the subsequent dommaschk certificate establishes embedded c1 and surface qa bounds. drift and effective-ripple diagnostics on physical trapped-particle bands remain open."
   },
   {
     "title": "The vacuum and force-balance laws in differential-form language, equivalent to the vector language in both directions.",
@@ -255,7 +255,7 @@
     "title": "The next run must leave evidence, not just a promise.",
     "section": "Progress slideshow",
     "url": "slides.html#next-run",
-    "text": "the next run must leave evidence, not just a promise. next, in the contract's priority order: a dommaschk qa vacuum fit with certified tori and ι ≥ ι_min; drift and ε_eff diagnostics on the exact rational field; the net current of the landreman families; lean definitions for c1 and c2 with the sanity triad; then a current-free finite-β equilibrium and thermal neoclassical bounds for c5. the linked run records checked declarations, assumptions and validation. this slideshow is a summary of that evidence, not a new design certificate."
+    "text": "the next run must leave evidence, not just a promise. the c2 application needs a regular physical bounce band, a bound on radial excursion and a measure of the births it covers. a current-free finite-pressure equilibrium and a thermal loss estimate for the same candidate remain open. the linked run records checked declarations, assumptions and validation. this slideshow is a summary of that evidence, not a new design certificate."
   },
   {
     "title": "Stellarator concepts",
@@ -360,10 +360,10 @@
     "text": "stellarator contract: c1, c2 and c5 model contracts"
   },
   {
-    "title": "C1: `CurrentFreeTransform` (net toroidal current; ι from the field)",
+    "title": "C1. Embedded current-free transform",
     "section": "Model contracts",
-    "url": "model-contracts.html#c1-currentfreetransform-net-toroidal-current-from-the-field",
-    "text": "c1: `currentfreetransform` (net toroidal current; ι from the field) model contracts"
+    "url": "model-contracts.html#c1-embedded-current-free-transform",
+    "text": "c1. embedded current-free transform model contracts"
   },
   {
     "title": "C2: `BounceAveragedDrift`, `Omnigenous`, `EffectiveRippleBound`",
@@ -1261,9 +1261,9 @@
   },
   {
     "title": "VD4 · Establish the declared confinement property",
-    "section": "Vacuum demonstrator · Partially implemented — residence bound for the probe; all-time field-line confinement in the exact non-axisymmetric rational vacuum field (verified KAM; the C1 witness in vacuum, ι ≈ 0.137); 52 transits for a coil-produced field; coil-produced all-time confinement blocked (Q-2).",
+    "section": "Vacuum demonstrator · Partially implemented — the rational vacuum field has an embedded C1 torus with ι ≈ 0.137 and a separate all-time field-line confinement proof. There is a residence bound for the probe and a 52-transit result for a coil-produced field. Coil-produced all-time confinement remains open (Q-2).",
     "url": "vacuum-demonstrator.html",
-    "text": "vd4 establish the declared confinement property work packages and progress partially implemented — residence bound for the probe; all-time field-line confinement in the exact non-axisymmetric rational vacuum field (verified kam; the c1 witness in vacuum, ι ≈ 0.137); 52 transits for a coil-produced field; coil-produced all-time confinement blocked (q-2)."
+    "text": "vd4 establish the declared confinement property work packages and progress partially implemented — the rational vacuum field has an embedded c1 torus with ι ≈ 0.137 and a separate all-time field-line confinement proof. there is a residence bound for the probe and a 52-transit result for a coil-produced field. coil-produced all-time confinement remains open (q-2)."
   },
   {
     "title": "VD5 · Qualify physical operation",
@@ -2724,6 +2724,12 @@
     "text": "review of the implementation order, 23 november 2026 implementation plan"
   },
   {
+    "title": "Embedded C1 on all Q-36 witnesses, 23 November 2026",
+    "section": "Implementation plan",
+    "url": "implementation-plan.html#embedded-c1-on-all-q-36-witnesses-23-november-2026",
+    "text": "embedded c1 on all q-36 witnesses, 23 november 2026 implementation plan"
+  },
+  {
     "title": "M0 · Exact symmetric equilibria: slab, screw pinch, Solov'ev, helical",
     "section": "Implementation plan · Lean verified — exact slab, screw-pinch, Solov'ev and helical equilibria with kernel force balance, all-time field-line/orbit confinement, Suydam both ways and screw-pinch Newcomb stability for every m ≠ 0 (reduced form supplied; idealized symmetric models).",
     "url": "implementation-plan.html",
@@ -2905,9 +2911,9 @@
   },
   {
     "title": "Verified progress",
-    "section": "A volume-preserving periodic model on an annulus now has a proved inverse-square confinement time for trapped-orbit bands under averaged tangency and nonsingularity. The proof constructs the orbit and a radial label. The Dommaschk vacuum candidate has certified current, transform and surface quasisymmetry-defect bounds. Embeddedness remains open. Thermal-particle confinement and performance on that candidate are open.",
+    "section": "The same two embedded Dommaschk tori have zero net toroidal current, absolute transform at least 0.2386 and off-QA defect at most 0.0063 and 0.0090 times the absolute transform on C and A respectively. Embedded C1 also holds on the rational stellarator KAM torus. A separate annular theorem constructs a radial label and trajectories confined through time c/ε² under averaged tangency and nonsingularity. A volume-filling flux chart, thermal-particle confinement and performance on the Dommaschk candidate remain open.",
     "url": "progress.html",
-    "text": "verified progress a volume-preserving periodic model on an annulus now has a proved inverse-square confinement time for trapped-orbit bands under averaged tangency and nonsingularity. the proof constructs the orbit and a radial label. the dommaschk vacuum candidate has certified current, transform and surface quasisymmetry-defect bounds. embeddedness remains open. thermal-particle confinement and performance on that candidate are open."
+    "text": "verified progress the same two embedded dommaschk tori have zero net toroidal current, absolute transform at least 0.2386 and off-qa defect at most 0.0063 and 0.0090 times the absolute transform on c and a respectively. embedded c1 also holds on the rational stellarator kam torus. a separate annular theorem constructs a radial label and trajectories confined through time c/ε² under averaged tangency and nonsingularity. a volume-filling flux chart, thermal-particle confinement and performance on the dommaschk candidate remain open."
   },
   {
     "title": "Outcome",
@@ -2920,6 +2926,12 @@
     "section": "Verified progress",
     "url": "progress.html#new-checked-results",
     "text": "new checked results verified progress"
+  },
+  {
+    "title": "Embedded invariant tori",
+    "section": "Verified progress",
+    "url": "progress.html#embedded-invariant-tori",
+    "text": "embedded invariant tori verified progress"
   },
   {
     "title": "Quantitative certificates",

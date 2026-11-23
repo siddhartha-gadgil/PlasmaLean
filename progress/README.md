@@ -1,6 +1,6 @@
 # Progress
 
-[23 November 2026 — annular averaged flux, orbit existence and finite-time confinement](2026-11-23-annular-confinement.md).
+[23 November 2026 — embedded invariant tori on both vacuum examples, annular averaged flux, orbit existence and finite-time confinement](2026-11-23-annular-confinement.md).
 
 [12 October 2026: verified foundations and remaining integration gaps](2026-10-12-progress.md).
 

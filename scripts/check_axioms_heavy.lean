@@ -6,7 +6,7 @@ Build the top modules first, `lake build PlasmaLean.Design.RationalStellaratorGC
 `lake build PlasmaLean.Design.CoilKamCert`, `lake build PlasmaLean.Design.DommaschkKamCAdm`, `lake build PlasmaLean.Design.DommaschkKamCConsts`,
 `lake build PlasmaLean.Design.DommaschkKamCContract`,
 `lake build PlasmaLean.Design.DommaschkKamCRes`, `lake build PlasmaLean.Design.DommaschkKamCFinal`,
-`lake build PlasmaLean.Design.DommaschkKamCQSTransfer`, `lake build PlasmaLean.Design.DommaschkKamCQSIdent`, `lake build PlasmaLean.Design.DommaschkKamCQS`, `lake build PlasmaLean.Design.DommaschkKamCQSL2`, `lake build PlasmaLean.Design.DommaschkKamNested`, `lake build PlasmaLean.Design.DommaschkKamQ16`
+`lake build PlasmaLean.Design.DommaschkKamCQSTransfer`, `lake build PlasmaLean.Design.DommaschkKamCQSIdent`, `lake build PlasmaLean.Design.DommaschkKamCQS`, `lake build PlasmaLean.Design.DommaschkKamCQSL2`, `lake build PlasmaLean.Design.DommaschkKamNested`, `lake build PlasmaLean.Design.DommaschkKamEmbedded`
 (bounded, dependencies first),
 then run `lake env lean scripts/check_axioms_heavy.lean`.
 
@@ -41,6 +41,7 @@ import PlasmaLean.Design.DommaschkKamCQS
 import PlasmaLean.Design.DommaschkKamCQSL2
 import PlasmaLean.Design.DommaschkKamNested
 import PlasmaLean.Design.DommaschkKamQ16
+import PlasmaLean.Design.DommaschkKamEmbedded
 import PlasmaLean.Design.DommaschkKamLoopCurrent
 
 /-! Audit all declarations owned by project modules in the import closure (the on-demand top
@@ -174,6 +175,14 @@ run_cmd do
 #print axioms PlasmaLean.Design.DommaschkKamA.qsd_not_tiny
 #print axioms PlasmaLean.Design.DommaschkKamA.qsd_numbers
 #print axioms PlasmaLean.Design.DommaschkKamA.surr_G_ne
+#print axioms PlasmaLean.Design.DommaschkKamEmbedded.torusC_embedded
+#print axioms PlasmaLean.Design.DommaschkKamEmbedded.torusA_embedded
+#print axioms PlasmaLean.Design.DommaschkKamEmbedded.dommaschkC_embedded_C1
+#print axioms PlasmaLean.Design.DommaschkKamEmbedded.dommaschkA_embedded_C1
+#print axioms PlasmaLean.Design.DommaschkKamEmbedded.dommaschk_nested_embedded_C1
+#print axioms PlasmaLean.Design.DommaschkKamEmbedded.dommaschk_nested_embedded_current_eq_zero
+#print axioms PlasmaLean.Design.DommaschkKamEmbedded.dommaschk_Q16_embedded
+#print axioms PlasmaLean.Design.DommaschkKamEmbedded.dommaschk_Q16_strong_embedded
 #print axioms PlasmaLean.Design.DommaschkKamQ16.dommaschk_Q16_strong
 #print axioms PlasmaLean.Design.DommaschkKamQ16.dommaschk_Q16_vacuum
 #print axioms PlasmaLean.Design.DommaschkKamQ16.dommaschk_Q16_chart

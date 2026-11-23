@@ -359,6 +359,7 @@ public import PlasmaLean.Theory.Contract.BoozerModel
 public import PlasmaLean.Theory.Contract.SectionStokes
 public import PlasmaLean.Design.LandremanNetCurrent
 public import PlasmaLean.Design.RationalStellaratorContract
+public import PlasmaLean.Design.RationalStellaratorEmbedded
 public import PlasmaLean.Design.RationalStellaratorQAObstruction
 public import PlasmaLean.Design.DommaschkQA3Data
 public import PlasmaLean.Design.DommaschkQA3

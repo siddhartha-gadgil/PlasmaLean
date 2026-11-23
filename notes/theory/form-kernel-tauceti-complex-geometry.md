@@ -1,6 +1,6 @@
 # The form kernel after TauCeti v4.36.0, and its use for the complex-geometry notes
 
-[N-52](irrational-return-embedding.md) develops the section argument for candidate embeddedness.
+The rational stellarator and the Dommaschk pair now have embedded C1 certificates, including the Q-16 witnesses. [N-52](irrational-return-embedding.md)
 
 An alternative method appears in [N-49](trapped-particle-momentum.md).
 
@@ -826,8 +826,7 @@ By user decision the stellarator contract requires its surfaces to be embedded t
 - `CurrentFreeTransform` is unchanged. `IotaOnTorus` already excludes multiply covered sections
   (its polar angle winds once in `θ`); what the new clause adds is `C²` regularity, sections
   that do not cross themselves, and the immersion condition.
-- No C1 example proves the clause yet. Plan question Q-36 lists them as goals: the rational
-  stellarator torus A, the Dommaschk tori C and A, the nested pair and the Q-16 theorems.
+- Q-36 is proved for the rational stellarator torus A, Dommaschk tori C and A, the nested pair and the Q-16 witnesses. The reusable theorem is `FieldTorus.embeddedTorus_of_irrational`. A smooth winding-one section at zero transform can have a stationary tangent. [Proofs and counterexample](irrational-return-embedding.md)
 
 ## Next steps
 
@@ -836,16 +835,14 @@ Open after the fifth round:
 1. For the lift: a vector bundle in Mathlib's sense with a connection, `c₁` as a cohomology
    class, variations with only vanishing tangential trace, the holomorphic structure.
 2. A finite-regularity de Rham complex, to state the class of `B♭` in cohomology.
-3. Embeddedness of the certified tori of every C1 example (Q-36).
-4. Maximal orbits and a confinement criterion for a concrete field.
-5. Open audit items, and an audit of the modules added after `6ceca0e`.
+3. Maximal orbits and a confinement criterion for a concrete field.
+4. Open audit items, and an audit of the modules added after `6ceca0e`.
 
 ## Barriers
 
 - **Smoothness.** The kernel laws are `C²`. TauCeti's cohomology groups need `C^∞` forms.
   The polynomial and rational fixtures are smooth, but `VacuumField` does not say so.
-- **Embedded surfaces.** Flux surfaces are parametrised tori in the contract layer
-  (`FieldTorus`), not submanifolds. De Rham statements on a flux surface need them as manifolds.
+- **Embedded surfaces.** A bare `FieldTorus` supplies a parametrization. N-52 gives an embedding for the certified surfaces. A de Rham statement formulated on the image still needs a manifold structure there and a comparison with the parametrizing torus. [N-52](irrational-return-embedding.md)
 - **Build cost.** TauCeti files are compiled locally the first time they are imported. The
   `lake build` reported 11,123 jobs after these modules, against 7,938 at the v4.36.0 upgrade;
   Lake's job count includes several jobs per module and all dependencies, so these are not

@@ -30,11 +30,11 @@ that is what makes "inside the surface" meaningful. This file adds the missing c
 
 ## Status and scope
 
-* The clause is a separate predicate, and `CurrentFreeTransform` is unchanged, because none of
-  the existing C1 instances (the rational stellarator and the Dommaschk candidates, whose tori
-  come from a KAM argument) proves embeddedness yet. Proving `EmbeddedCurrentFreeTransform` for
-  each of them is an open goal (plan question Q-36). Until then those instances establish C1
-  without the embeddedness clause.
+* Q-36 is proved for rational stellarator torus A and Dommaschk tori C and A, including the
+  nested pair on the Q-16 witnesses. The reusable theorem in `Theory/Contract/IrrationalTorus`
+  derives embeddedness from winding one, irrational transform, C² profiles and local C¹
+  regularity of the field. The applications are in `Design/RationalStellaratorEmbedded` and
+  `Design/DommaschkKamEmbedded`.
 * `IotaOnTorus` already asks for a polar angle that winds once in `θ`, which excludes multiply
   covered sections; it does not exclude a section that crosses itself, nor a section that is
   not an immersed curve, and it asks only for continuity.

@@ -277,20 +277,17 @@ theorem hasFDerivAt_potential {x : Space} (hx : x ∈ domain) :
 /-- `ι_A > 0`. -/
 theorem iota_pos : 0 < iota := by unfold iota; positivity
 
-/-- **C1 witness**: the rational stellarator vacuum field satisfies clause C1 with `I_max = 0` and
-`ι_min = ι_A = (75 + √5)/562` on the exact KAM torus near torus A (zero circulation around its
-poloidal loop at `φ = 0`), for every `μ₀ > 0`. -/
-theorem rationalStellarator_currentFreeTransform {μ₀ : ℝ} (hμ : 0 < μ₀) :
-    ∃ S : Set SurfaceData, CurrentFreeTransform μ₀ (field (1 / 4)) S 0 iota := by
-  obtain ⟨u, z, hu, hz, hur, hzr, hR, hZ, hC⟩ := PlasmaLean.Design.KamNewton.torusA_exact
-  have hK := PlasmaLean.Design.KamNewton.exactTorus hu hz hur hzr hR hZ hC
-  have hmem : ∀ θ, (exactSurface (KamNewton.Rof u) (KamNewton.Zof z)).loop θ ∈ domain :=
-    fun θ => cylPoint_mem_domain (show 0 < KamNewton.Rof u θ 0 by
+/-- Zero loop current and the transform bound on this exact KAM witness. -/
+theorem ExactTorus.currentFreeTransform {Rk zk : ℝ → ℝ → ℝ} (hK : ExactTorus Rk zk)
+    {μ₀ : ℝ} (hμ : 0 < μ₀) :
+    CurrentFreeTransform μ₀ (field (1 / 4)) {exactSurface Rk zk} 0 iota := by
+  have hmem : ∀ θ, (exactSurface Rk zk).loop θ ∈ domain :=
+    fun θ => cylPoint_mem_domain (show 0 < Rk θ 0 by
       linarith [(hK.R_bounds θ 0).1]) _ _
-  refine ⟨{exactSurface (KamNewton.Rof u) (KamNewton.Zof z)},
-    currentFreeTransform_of_potential (T := toroidal) (g := fun y => ((1 / 4 : ℝ) / 4) • gradH y)
+  refine currentFreeTransform_of_potential (T := toroidal)
+      (g := fun y => ((1 / 4 : ℝ) / 4) • gradH y)
       (Φ := fun y => (1 / 4 : ℝ) / 4 * H y) hμ (singleton_nonempty _) iota_pos ?_ ?_ ?_ ?_
-      ?_ toroidal_purelyToroidal ?_ ?_⟩
+      ?_ toroidal_purelyToroidal ?_ ?_
   · rintro s rfl; exact ExactTorus.iotaOnTorus hK
   · rintro s rfl
     exact hK.contDiff_R.comp (contDiff_id.prodMk contDiff_const)
@@ -303,5 +300,14 @@ theorem rationalStellarator_currentFreeTransform {μ₀ : ℝ} (hμ : 0 < μ₀)
   · rintro s rfl θ; exact hasFDerivAt_potential (hmem θ)
   · rintro s rfl
     exact le_of_eq (abs_of_pos iota_pos).symm
+
+/-- **C1 witness**: the rational stellarator vacuum field satisfies clause C1 with `I_max = 0` and
+`ι_min = ι_A = (75 + √5)/562` on the exact KAM torus near torus A (zero circulation around its
+poloidal loop at `φ = 0`), for every `μ₀ > 0`. -/
+theorem rationalStellarator_currentFreeTransform {μ₀ : ℝ} (hμ : 0 < μ₀) :
+    ∃ S : Set SurfaceData, CurrentFreeTransform μ₀ (field (1 / 4)) S 0 iota := by
+  obtain ⟨u, z, hu, hz, hur, hzr, hR, hZ, hC⟩ := PlasmaLean.Design.KamNewton.torusA_exact
+  have hK := PlasmaLean.Design.KamNewton.exactTorus hu hz hur hzr hR hZ hC
+  exact ⟨_, ExactTorus.currentFreeTransform hK hμ⟩
 
 end PlasmaLean.Design.RationalStellaratorContract

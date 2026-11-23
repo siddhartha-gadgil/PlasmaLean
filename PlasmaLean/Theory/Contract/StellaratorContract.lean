@@ -25,8 +25,8 @@ contract: C1, C2 and C5"; plan question Q-21, goal G-11.
 * `cylPoint R φ z`: the point with cylindrical coordinates `(R, φ, z)`.
 * `FieldTorus B R z ι`: a continuous torus `(θ, φ) ↦ cylPoint (R θ φ) φ (z θ φ)` in cylindrical
   form (`φ` the geometric toroidal angle), `2π`-periodic in both angles, `R > 0`, on which the
-  field-line flow is **conjugate to the linear flow with rotation number `ι`**: every line
-  `t ↦ (θ + ι t, φ + t)` is mapped to a curve tangent to `B` (`flow`).
+  parametrisation maps every line `t ↦ (θ + ι t, φ + t)` to a curve tangent to `B` (`flow`).
+  On an embedded witness these parameters identify the flow in geometric toroidal angle.
 * `PoloidalAngle R z R₀ z₀ Θ`: the angle convention, about a **reference curve**
   `R₀, z₀ : ℝ → ℝ` (continuous and `2π`-periodic in `φ`; e.g. an approximation of a non-planar
   magnetic axis). `Θ` is a continuous polar angle of `(R θ φ − R₀ φ, z θ φ − z₀ φ)` that winds
@@ -58,7 +58,8 @@ the predicates; the predicates say exactly the following and no more.
 * (a) `S` only has to be nonempty: a single invariant torus satisfies C1. Nothing says that the
   surfaces are nested or that they fill a region.
 * (b) The torus predicates (`FieldTorus`, `PoloidalAngle`, `IotaOnTorus`) do not assert that the
-  torus is embedded (open audit item AF-1). For a non-embedded cross-section
+  torus is embedded (audit AF-1). The named rational stellarator and Dommaschk examples now
+  prove the stronger `EmbeddedCurrentFreeTransform` predicate. For a non-embedded cross-section
   `poloidalCirculation` is a winding-number-weighted flux, not "the current enclosed", and the
   reference curve of `PoloidalAngle` is chosen existentially for each surface (two surfaces of
   `S` need not share one).
@@ -307,12 +308,11 @@ theorem rotation_not_currentFree {μ₀ ζ₀ : ℝ} (hμ : μ₀ ≠ 0) {K : Se
 
 /-- **Invariant torus with rotation number `ι`** (cylindrical form). The torus is
 `(θ, φ) ↦ cylPoint (R θ φ) φ (z θ φ)`, with `φ` the geometric toroidal angle; it is continuous,
-`2π`-periodic in `θ` and `φ`, has `R > 0`, and the field-line flow on it is conjugate to the
-linear flow `(θ, φ) ↦ (θ + ι t, φ + t)`: every such line is mapped to a curve tangent to `B`
-(velocity `c • B` for some scalar `c`; then `c ≠ 0`, since the curve has `φ̇ = 1`).
+`2π`-periodic in `θ` and `φ`, and has `R > 0`. It sends each straight line
+`t ↦ (θ + ι t, φ + t)` to a curve of velocity `c • B`, where `c ≠ 0` since `φ̇ = 1`.
 
 Limits (audit AV-M9): `R` and `z` are only continuous and the map need not be injective, so this
-does not assert an embedded torus (open audit item AF-1); `B` is an arbitrary function; and
+does not assert an embedded torus (audit AF-1); `B` is an arbitrary function; and
 `FieldTorus` alone does not fix `ι` under reparametrisation (`θ ↦ θ + nφ` changes it by `n`;
 fixture `Sanity/AuditContractC2.torChart_relabel_fieldTorus`). -/
 structure FieldTorus (B : Space → Space) (R z : ℝ → ℝ → ℝ) (ι : ℝ) : Prop where
@@ -385,7 +385,7 @@ rotation number `ι` (`FieldTorus`) whose angle `θ` is poloidal in the sense of
 follow a non-planar magnetic axis; a fixed circle is the constant case).
 
 Limits (audit AV-M9): the reference curve and the angle `Θ` are chosen existentially for this
-surface; embeddedness is not asserted (open audit item AF-1); uniqueness of `ι` for a fixed
+surface; embeddedness is not asserted (audit AF-1); uniqueness of `ι` for a fixed
 `(R, z)` is proved only when `(R, z)` is differentiable with `∂_θ (R, z) ≠ 0` at one point
 (`Sanity/AuditRefreshContract.iotaOnTorus_iota_unique`). -/
 @[expose] def IotaOnTorus (B : Space → Space) (R z : ℝ → ℝ → ℝ) (ι : ℝ) : Prop :=
@@ -836,7 +836,7 @@ transform `|ι| ≥ ι_min > 0` (`IotaOnTorus`; either handedness), whose poloid
 **Scope and limits (audit AV-M9).** The name reads stronger than the predicate:
 * (a) `S` only has to be nonempty: a single invariant torus satisfies C1; nothing says that the
   surfaces are nested or fill a region;
-* (b) the torus predicates do not assert embeddedness (open audit item AF-1): for a non-embedded
+* (b) the torus predicates do not assert embeddedness (audit AF-1): for a non-embedded
   cross-section `poloidalCirculation` is a winding-number-weighted flux, not "the current
   enclosed", and the reference curve of `PoloidalAngle` is chosen existentially per surface;
 * (c) `B` needs no regularity beyond continuity on one loop, and "current-free" is a bound on ONE

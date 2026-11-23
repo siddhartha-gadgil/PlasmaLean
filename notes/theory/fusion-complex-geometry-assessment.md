@@ -17,6 +17,8 @@
 | Audit evidence | not audited; AF-1 recorded |
 | Last updated | 20 November 2026: created |
 
+The classifications below refer to the source at the pinned revision. On 23 November, Q-36 proved S-9 for the exact Dommaschk surfaces and the rational stellarator using irrational return and winding. S-8, the identification of torsion with return-map shear, remains at its source assessment. [N-52](irrational-return-embedding.md)
+
 ## Provenance
 
 - **Source:** `sources/fusion_complex_geometry_and_stability.pdf`, "Fusion / research note. Complex
@@ -164,7 +166,7 @@ These are untrusted numerics or exact sympy unless stated; details are in `02_ex
 | S-28, S-29 | N-40 | not implemented | edited in place (§ "Hot-core moment fixtures") |
 | S-14, S-15, S-32 | N-1 | implemented (partial) | pointer; S-32 lean-ready corollary listed in the RG.3 row of N-42 |
 | S-13 | N-32 | implemented (partial) | pointer (non-algebraic bundle) |
-| S-9 | contract `FieldTorus`, `NestedTori` | — | audit item **AF-1** (low) |
+| S-9 | contract `FieldTorus`, `NestedTori` | — | AF-1 identified the limitation of the bare predicates. Q-36 subsequently proved embeddedness on the certified surfaces. [N-52](irrational-return-embedding.md) |
 | S-12, S-33 | — | — | no change (unassessed dependencies; recorded as gaps) |
 
 ## Gaps and disagreements

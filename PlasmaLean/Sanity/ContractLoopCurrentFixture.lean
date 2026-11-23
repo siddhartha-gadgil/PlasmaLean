@@ -8,7 +8,7 @@ module
 public import PlasmaLean.Theory.Fields.FormConvexRegion
 public import PlasmaLean.Sanity.FormLoopCurrentInterval
 public import PlasmaLean.Sanity.AuditRefreshContract
-public import PlasmaLean.Design.RationalStellaratorContract
+public import PlasmaLean.Design.RationalStellaratorEmbedded
 
 /-!
 # Fixtures for the loop-current corollaries of the stellarator contract
@@ -257,6 +257,18 @@ theorem rationalStellarator_current_eq_zero
   hC.current_eq_zero_of_simplyConnected (rationalStellarator_vacuum_meridian s.φ₀) hs
     fun θ _ => poloidalLoop_mem_meridianHalfSpace ((hC.torus s hs).1.R_pos θ s.φ₀)
 
+/-- The original loop-current fixture with embeddedness on the same family. -/
+theorem rationalStellarator_embedded_fixture (hμ : 0 < μ₀) :
+    ∃ S : Set SurfaceData,
+      EmbeddedCurrentFreeTransform μ₀ (RationalStellarator.field (1 / 4)) S 1 KamTorusA.iota ∧
+      0 < KamTorusA.iota ∧
+      ∀ s ∈ S, KamTorusA.iota ≤ |s.iota| ∧
+        s.current μ₀ (RationalStellarator.field (1 / 4)) = 0 := by
+  obtain ⟨S, hS⟩ := RationalStellaratorContract.rationalStellarator_embeddedCurrentFreeTransform hμ
+  have hS1 := hS.mono zero_le_one le_rfl RationalStellaratorContract.iota_pos
+  exact ⟨S, hS1, RationalStellaratorContract.iota_pos, fun s hs =>
+    ⟨hS1.iota_ge s hs, rationalStellarator_current_eq_zero hS1.toCurrentFreeTransform hs⟩⟩
+
 /-- **The `CurrentFreeTransform` fixture: a satisfiability and consistency check.** For every
 `μ₀ > 0` there is a family of surfaces on which the rational stellarator field satisfies clause
 C1 with the allowance `I_max = 1` and `ι_min = ι_A > 0`; on every surface of the family the
@@ -277,10 +289,8 @@ theorem rationalStellarator_fixture (hμ : 0 < μ₀) :
       0 < KamTorusA.iota ∧
       ∀ s ∈ S, KamTorusA.iota ≤ |s.iota| ∧
         s.current μ₀ (RationalStellarator.field (1 / 4)) = 0 := by
-  obtain ⟨S, hS⟩ := RationalStellaratorContract.rationalStellarator_currentFreeTransform hμ
-  have hS1 := hS.mono zero_le_one le_rfl RationalStellaratorContract.iota_pos
-  exact ⟨S, hS1, RationalStellaratorContract.iota_pos, fun s hs =>
-    ⟨hS1.iota_ge s hs, rationalStellarator_current_eq_zero hS1 hs⟩⟩
+  obtain ⟨S, hS, hι, hcurrent⟩ := rationalStellarator_embedded_fixture hμ
+  exact ⟨S, hS.toCurrentFreeTransform, hι, hcurrent⟩
 
 /-! ## Comparison with the audit theorem -/
 
@@ -372,6 +382,30 @@ theorem rationalStellarator_imax_zero_ball
   hC.imax_zero_of_convex fun s hs =>
     ⟨ballOpens stellCentre (1 / 2), convex_ball _ _, rationalStellarator_vacuum_ball, hS s hs⟩
 
+/-- Embedded C1 at both current allowances on the exact surface used by the bounded-ball
+loop-current fixture. The proof of the sharper allowance uses the convex vacuum region. -/
+theorem rationalStellarator_embedded_ball_fixture (hμ : 0 < μ₀) :
+    ∃ S : Set SurfaceData,
+      EmbeddedCurrentFreeTransform μ₀ (RationalStellarator.field (1 / 4)) S 1 KamTorusA.iota ∧
+      (∀ s ∈ S, ∀ θ, s.loop θ ∈ ballOpens stellCentre (1 / 2)) ∧
+      EmbeddedCurrentFreeTransform μ₀ (RationalStellarator.field (1 / 4)) S 0 KamTorusA.iota ∧
+      ∀ s ∈ S, s.current μ₀ (RationalStellarator.field (1 / 4)) = 0 := by
+  obtain ⟨u, z, hu, hz, hur, hzr, hR, hZ, hC⟩ := KamNewton.torusA_exact
+  have hK := KamNewton.exactTorus hu hz hur hzr hR hZ hC
+  have h0 := RationalStellaratorContract.ExactTorus.embeddedCurrentFreeTransform hK hμ
+  have h1 := h0.mono zero_le_one le_rfl RationalStellaratorContract.iota_pos
+  let surf := RationalStellaratorContract.exactSurface (KamNewton.Rof u) (KamNewton.Zof z)
+  have hball : ∀ s ∈ ({surf} : Set SurfaceData), ∀ θ : ℝ,
+      s.loop θ ∈ ballOpens stellCentre (1 / 2) := by
+    rintro s rfl θ
+    exact exactSurface_loop_mem_ball hK θ
+  refine ⟨_, h1, hball, ⟨rationalStellarator_imax_zero_ball h1.toCurrentFreeTransform
+    (fun s hs θ _ => hball s hs θ), h1.embedded⟩, ?_⟩
+  intro s hs
+  exact h1.toCurrentFreeTransform.current_eq_zero_of_convex (convex_ball _ _)
+    rationalStellarator_vacuum_ball hs
+    (fun θ _ => hball s hs θ)
+
 /-- **Regression (audit AV-M1): the bounded-region statement is instantiated.** For every
 `μ₀ > 0` there is a family of surfaces (the certified exact torus near torus A, with its
 poloidal loop at `φ₀ = 0`) satisfying clause C1 for the rational stellarator field with
@@ -379,9 +413,8 @@ allowance `I_max = 1` and `ι_min = ι_A`, whose poloidal loops lie in the ball 
 about `(1, 0, 0)`; `rationalStellarator_imax_zero_ball` gives the clause with `I_max = 0` and
 `CurrentFreeTransform.current_eq_zero_of_convex` gives zero current on each surface.
 
-What is and is not instantiated: the family is that of
-`rationalStellarator_currentFreeTransform`, rebuilt here because that theorem hides it behind
-an existential. Its clause is proved with `I_max = 0` from the potential of the field, and the
+The family consists of the same embedded KAM witness as the stronger bounded-ball fixture.
+Its clause is proved with `I_max = 0` from the potential of the field, and the
 allowance `1` is obtained by `CurrentFreeTransform.mono`; so, as for
 `rationalStellarator_fixture`, this is a satisfiability and consistency check of the hypotheses
 of the convex-region corollary, not an improved estimate. The field is an idealised one
@@ -392,41 +425,8 @@ theorem rationalStellarator_ball_fixture (hμ : 0 < μ₀) :
       (∀ s ∈ S, ∀ θ, s.loop θ ∈ ballOpens stellCentre (1 / 2)) ∧
       CurrentFreeTransform μ₀ (RationalStellarator.field (1 / 4)) S 0 KamTorusA.iota ∧
       ∀ s ∈ S, s.current μ₀ (RationalStellarator.field (1 / 4)) = 0 := by
-  obtain ⟨u, z, hu, hz, hur, hzr, hR, hZ, hC⟩ := KamNewton.torusA_exact
-  have hK := KamNewton.exactTorus hu hz hur hzr hR hZ hC
-  have hmem : ∀ θ, (RationalStellaratorContract.exactSurface (KamNewton.Rof u)
-      (KamNewton.Zof z)).loop θ ∈ RationalStellarator.domain :=
-    fun θ => stellBall_subset_domain (exactSurface_loop_mem_ball hK θ)
-  have h0 : CurrentFreeTransform μ₀ (RationalStellarator.field (1 / 4))
-      {RationalStellaratorContract.exactSurface (KamNewton.Rof u) (KamNewton.Zof z)} 0
-      KamTorusA.iota := by
-    refine currentFreeTransform_of_potential (T := RationalStellarator.toroidal)
-      (g := fun y => ((1 / 4 : ℝ) / 4) • RationalStellarator.gradH y)
-      (Φ := fun y => (1 / 4 : ℝ) / 4 * RationalStellarator.H y) hμ (Set.singleton_nonempty _)
-      RationalStellaratorContract.iota_pos ?_ ?_ ?_ ?_ ?_
-      RationalStellaratorContract.toroidal_purelyToroidal ?_ ?_
-    · rintro s rfl; exact RationalStellaratorContract.ExactTorus.iotaOnTorus hK
-    · rintro s rfl
-      exact hK.contDiff_R.comp (contDiff_id.prodMk contDiff_const)
-    · rintro s rfl
-      exact hK.contDiff_Z.comp (contDiff_id.prodMk contDiff_const)
-    · rintro s rfl θ
-      exact (RationalStellarator.field_vacuum (1 / 4)).contDiffOn.continuousOn.continuousAt
-        ((RationalStellarator.field_vacuum (1 / 4)).isOpen.mem_nhds (hmem θ))
-    · rintro s rfl θ; exact RationalStellaratorContract.field_split _
-    · rintro s rfl θ; exact RationalStellaratorContract.hasFDerivAt_potential (hmem θ)
-    · rintro s rfl
-      exact le_of_eq (abs_of_pos RationalStellaratorContract.iota_pos).symm
-  have h1 := h0.mono zero_le_one le_rfl RationalStellaratorContract.iota_pos
-  refine ⟨_, h1, ?_, ?_, ?_⟩
-  · rintro s rfl θ
-    exact exactSurface_loop_mem_ball hK θ
-  · refine rationalStellarator_imax_zero_ball h1 ?_
-    rintro s rfl θ -
-    exact exactSurface_loop_mem_ball hK θ
-  · rintro s rfl
-    exact h1.current_eq_zero_of_convex (convex_ball _ _) rationalStellarator_vacuum_ball rfl
-      fun θ _ => exactSurface_loop_mem_ball hK θ
+  obtain ⟨S, h1, hball, h0, hcurrent⟩ := rationalStellarator_embedded_ball_fixture hμ
+  exact ⟨S, h1.toCurrentFreeTransform, hball, h0.toCurrentFreeTransform, hcurrent⟩
 
 end C1
 

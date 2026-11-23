@@ -28,7 +28,7 @@ Use separate predicates, with explicit parameters:
 | `TransportBound` | Species, collision/turbulence model, profiles, heat/particle flux, and averaging interval |
 | `ComponentFeasible` | Geometry, loads, constitutive data, tolerances, temperatures, degradation, and duty cycle |
 | `DesignFeasible` | Explicit conjunction of the required contracts for the same candidate and operating states |
-| `CurrentFreeTransform` (C1, partly in Lean: `Contract.CurrentFreeTransform`, `netToroidalCurrent`, `IotaOnTorus` in `Theory/Contract/StellaratorContract`) | Toroidal domain, field, family of invariant tori, net toroidal plasma current bound I_max, lower bound ι_min > 0 on the rotational transform; see [stellarator contract](#stellarator-contract-c1-c2-and-c5) |
+| `EmbeddedCurrentFreeTransform` (C1) | A nonempty family of embedded field tori with bounded net loop current and a positive lower bound on the magnitude of the rotational transform of each surface. [Stellarator contract](#stellarator-contract-c1-c2-and-c5) |
 | `BounceAveragedDrift`, `Omnigenous`, `EffectiveRippleBound` (C2, partly in Lean: `Contract.OmnigeneityContract` over `Kinetic.Boozer.OmnigenousOn`/`ApproxOmnigenousOn`, Boozer guiding-centre model; `EffectiveRippleBound` not in Lean) | Field, certified surfaces, guiding-centre model, species (thermal ions and electrons), energy and pitch ranges, trapped-orbit class, drift or ε_eff bound; see [stellarator contract](#stellarator-contract-c1-c2-and-c5) |
 | `ThermalPerformance` (C5, not yet in Lean as a contract predicate) | The same candidate as C1–C4, operating interval, power balance (Bosch–Hale alpha heating, bremsstrahlung, transport losses), neoclassical losses from C2, supplied anomalous scaling, burn threshold and wall limits; see [stellarator contract](#stellarator-contract-c1-c2-and-c5) |
 
@@ -57,8 +57,8 @@ axioms only). Module `PlasmaLean/Theory/Contract/StellaratorContract.lean`, name
   (`netToroidalCurrent_eq_zero_of_vacuum`, `currentFree_of_vacuum`); degenerate
   `netToroidalCurrent_zero_field`; counterexample `netToroidalCurrent_rotation` (`4πk₀/μ₀` for
   `B = e_z × x`), `rotation_not_currentFree`.
-- C1 transform: `FieldTorus B R z ι` (torus in cylindrical form, field-line flow conjugate to the
-  linear flow of slope ι), `PoloidalAngle` (angle convention about a continuous 2π-periodic reference curve
+- C1 transform: `FieldTorus B R z ι` (a cylindrical parametrisation mapping each straight line
+  of slope ι to a curve tangent to B), `PoloidalAngle` (angle convention about a continuous 2π-periodic reference curve
   `(R₀(φ), z₀(φ))`, e.g. an approximation of the magnetic axis; a fixed circle is the constant case,
   `poloidalAngle_const_iff`; audit fix AR-L4, 31 October 2026; without
   it ι is defined only modulo integers), `IotaOnTorus`; `IotaOnTorus.tendsto` (ι is the asymptotic
@@ -75,10 +75,14 @@ axioms only). Module `PlasmaLean/Theory/Contract/StellaratorContract.lean`, name
   ι_min` (`Theory/Contract/EmbeddedSurfaces`), which extends `CurrentFreeTransform` by
   `EmbeddedTorus` for each surface (`C²` parametrisation, injective modulo the two periods,
   injective differential; then the surface is the image of a `C²` smooth embedding of the
-  2-torus). A candidate satisfies C1 only when it proves the extended predicate. Status: not yet
-  proved for any candidate (plan question Q-36); the instances above prove `CurrentFreeTransform`
-  only. Proof obligations: `CurrentFreeTransform.embedded_of_sections`,
-  `CurrentFreeTransform.embedded_of_strictMono`.
+  2-torus). The exact rational stellarator torus A and the exact Dommaschk tori C and A
+  satisfy the extended predicate (Q-36, 23 November 2026). The generic theorem
+  `FieldTorus.embeddedTorus_of_irrational` assumes C² profiles, a C¹ field locally at the image,
+  an irrational transform and a poloidal angle of winding one. The rational example keeps
+  zero current and transform (75 + √5)/562. On the Dommaschk pair `dommaschk_Q16_embedded`
+  certifies embeddedness on the same surfaces that carry the current, transform, ray-order
+  and defect bounds. The underlying `FieldTorus` and `NestedTori` predicates still need a
+  separate embedding argument in other applications. [N-52](https://github.com/siddhartha-gadgil/PlasmaLean/blob/main/notes/theory/irrational-return-embedding.md)
 - C2, two admissible forms (user decision, 23 November 2026): the chart form below, or the
   **band form**: for stated species, energy and pitch ranges and a stated birth band of phase
   space, a certified bound keeping the orbits within a stated radial range through a stated
@@ -113,7 +117,7 @@ axioms only). Module `PlasmaLean/Theory/Contract/StellaratorContract.lean`, name
   ι ≥ ι_min for the rational stellarator (only one exact torus); family 1's net current; the
   identification of the Boozer model with a Cartesian field.
 
-### C1: `CurrentFreeTransform` (net toroidal current; ι from the field)
+### C1. Embedded current-free transform
 
 | Component | Required content |
 | --- | --- |
@@ -121,8 +125,8 @@ axioms only). Module `PlasmaLean/Theory/Contract/StellaratorContract.lean`, name
 | Net toroidal current | I_tor(S) = ∫_Σ J·n dA with J = (∇ × B)/μ₀, the Ampère current of the same field (not a separately supplied J). Equivalently, by Stokes, μ₀ I_tor = ∮ B·dl around a poloidal loop on S, minus nothing (no external conductor threads the poloidal loop inside Ω). Units: A |
 | Current bound | ‖I_tor(S)‖ ≤ I_max for every confining surface S, with I_max a stated number and its origin recorded (bootstrap-level estimate, a machine requirement, or 0). Vacuum (J = 0 on Ω, the kernel `VacuumField`) implies I_tor = 0 and is the limiting case |
 | Rotational transform | A family of invariant tori (certified, e.g. KAM tori with explicit parametrizations) on which the field-line flow is conjugate to a linear flow with rotation number ι(S), or ι(S) = dψ_p/dψ_t from flux labels; the definition fixes the angle conventions and the orientation |
-| Transform bound | ι(S) ≥ ι_min > 0 for every confining surface S, with ι_min stated |
-| Provenance clause | The contract is `I_tor bound ∧ ι bound` on the same field and surfaces; "provided by the field" means precisely the current bound, so no further clause is needed |
+| Transform bound | The magnitude of ι(S) is at least the stated ι_min > 0 on every confining surface S. This includes the negative signed transforms of the Dommaschk pair. |
+| Embeddedness and common witnesses | The current bound, transform bound and C² embedding hold on each surface of the same nonempty family for the same magnetic field. The transform is witnessed by the field-line equation and the poloidal angle. |
 | Sanity triad | (1) witness: the exact rational stellarator vacuum field with its certified torus (I_tor = 0, ι ≈ 0.137); (2) **current-free axisymmetric ⇒ ι = 0**: an axisymmetric field with I_tor = 0 on every surface has zero poloidal field on the surfaces, hence ι = 0, so it fails C1 for every ι_min > 0 (no confining transform); (3) a tokamak-like field (Solov'ev, or Landreman family 2 with I_tor > 0) violates the current bound for small I_max |
 | Not covered | Current profiles inside S (only the net current), surface currents of stepped-pressure equilibria (to be included via a measure-valued J or a jump condition), external conductors threading the domain |
 

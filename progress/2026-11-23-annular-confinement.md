@@ -2,6 +2,8 @@
 
 ## Outcome
 
+Both stellarator vacuum examples satisfy C1 on embedded invariant tori. For the Dommaschk field, a single pair of surfaces realizes the current, transform, nesting and quasi-axisymmetry bounds. For the rational stellarator, the exact KAM torus realizes the current and transform bounds. [Embeddedness proof and applications](https://github.com/siddhartha-gadgil/PlasmaLean/blob/main/notes/theory/irrational-return-embedding.md)
+
 A general confinement theorem now connects the volume-preservation equations of a periodic flow to a bound on radial motion. It applies on a regular annulus of periodic leading orbits. The averaged perturbation must have no zeros and must be tangent to the two bounding circles. For every closed interior radial birth band, the theorem constructs trajectories through time c/ε², uniformly in starting angle and phase for sufficiently small nonzero ε. [Research note N-51](https://github.com/siddhartha-gadgil/PlasmaLean/blob/main/notes/theory/annulus-averaged-flux.md)
 
 ## New checked results
@@ -9,6 +11,18 @@ A general confinement theorem now connects the volume-preservation equations of 
 - **Topology.** The signed radial volume flux across a core torus is the period of a closed one-form on the base annulus, up to the chosen orientation. A nonzero period rules out a winding-one invariant curve of the averaged field. With boundary tangency and nonsingularity, integrating the one-form instead constructs a smooth radial label ψ with values 0 and 1 on the two edges.
 - **Averaging.** The zero-mean periodic correction g solves X₀g = −Yψ. The corrected label ψ + εg then has derivative exactly ε²Yg for X₀ + εY. For an arbitrary proposed label, the least achievable uniform first-order residual on one orbit equals the absolute value of its mean drift.
 - **Choice of phase.** The flux and label descend from local charts even when the phase origin depends on position. The local corrections agree under the same rotations when the charts give the same physical period. The dynamical theorem uses a periodic coordinate representation of the total space. [Local phase charts](https://github.com/siddhartha-gadgil/PlasmaLean/blob/main/PlasmaLean/Theory/Geometry/AnnulusFluxDescent.lean)
+
+### Embedded invariant tori
+
+A torus parametrization that follows the field lines with an irrational transform is a C² embedding if its profiles are C², its poloidal angle winds once, and the field is locally C¹ at every point of the torus. A Grönwall bound on the distance between field lines carries coincident points forward by one turn. Irrational rotation and continuity turn a coincidence into a period of the entire section. Winding one forces that period to be a multiple of 2π. Applying the same bound to a difference quotient propagates a zero section tangent, which would force a constant section. [FieldTorus.embeddedTorus_of_irrational](https://github.com/siddhartha-gadgil/PlasmaLean/blob/main/PlasmaLean/Theory/Contract/IrrationalTorus.lean)
+
+| Surface | Certified absolute transform bound | Certified off-QA spectral defect |
+| --- | --- | --- |
+| Dommaschk C | ≥ 0.24 | ≤ 0.0063 times its absolute transform |
+| Dommaschk A | ≥ 0.2386 | ≤ 0.0090 times its absolute transform |
+| Rational stellarator torus A | (75+√5)/562 ≈ 0.1374 | Open for this example |
+
+Each torus has zero net toroidal current. The Dommaschk Q-16 theorem gives embeddedness, ray ordering, both surface Boozer chart hypotheses and both defect estimates on the same pair of exact witnesses. The theorem retains the 10⁻¹² strip-distance bounds for both profiles and the common transform bound 0.2386. The rational stellarator has a separate all-time field-line confinement theorem. [Dommaschk Q-16 and singleton theorems](https://github.com/siddhartha-gadgil/PlasmaLean/blob/main/PlasmaLean/Design/DommaschkKamEmbedded.lean) · [Rational stellarator theorem](https://github.com/siddhartha-gadgil/PlasmaLean/blob/main/PlasmaLean/Design/RationalStellaratorEmbedded.lean)
 
 ## Quantitative certificates
 
@@ -22,7 +36,7 @@ The flux obstruction concerns curves of the **averaged** field. A constant radia
 
 ## Earlier results retained
 
-The Dommaschk vacuum candidate has certified tori and bounds on quasisymmetry defect at those tori. A theorem on thermal or trapped particles throughout a volume requires further geometric and dynamical input. [Candidate evidence](https://github.com/siddhartha-gadgil/PlasmaLean/blob/main/notes/theory/dommaschk-qs-defect.md)
+The original Dommaschk certificate provides the quasi-axisymmetry estimates on each torus. Constructing a family of flux surfaces or a field-level Boozer chart throughout the intervening volume remains open. Applying the annular theorem to trapped particles also requires identifying a regular physical bounce family. [Surface defect estimates](https://github.com/siddhartha-gadgil/PlasmaLean/blob/main/notes/theory/dommaschk-qs-defect.md)
 
 ### Results from earlier runs
 
@@ -30,7 +44,9 @@ The October report gives the existing passing-particle, stability, vacuum fixtur
 
 ## Validation
 
-The default Lean build passed (11,679 jobs). The repository axiom audit checked 52,887 project declarations. All used only the permitted foundations, propext, Classical.choice and Quot.sound. The full orbit-existence and confinement statements are both in the default import. The research note lists the individual declarations and their hypotheses. [Implementation record](https://github.com/siddhartha-gadgil/PlasmaLean/blob/main/notes/theory/annulus-averaged-flux.md#implementation-record)
+The annular-confinement stage passed the default Lean build (11,679 jobs). Its repository axiom audit checked 52,887 project declarations. All used only the permitted foundations, propext, Classical.choice and Quot.sound. The full orbit-existence and confinement statements are both in the default import. The research note lists their declarations and hypotheses. [Annular-confinement implementation record](https://github.com/siddhartha-gadgil/PlasmaLean/blob/main/notes/theory/annulus-averaged-flux.md#implementation-record)
+
+For embedded C1, the default build passed with 11,731 jobs. The default axiom audit checked 53,360 project declarations. The separate on-demand build and audit included the Dommaschk applications and checked 59,706 project declarations in its import closure. The two closures overlap. Both audits allowed only `propext`, `Classical.choice` and `Quot.sound`. [Embedding proof and checks](https://github.com/siddhartha-gadgil/PlasmaLean/blob/main/notes/theory/irrational-return-embedding.md)
 
 ## Next boundary
 
