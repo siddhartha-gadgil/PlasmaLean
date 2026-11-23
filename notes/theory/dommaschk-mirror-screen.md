@@ -1,5 +1,7 @@
 # Two mirror-height screens on the Dommaschk field
 
+[N-58](action-faces-and-winding.md) gives a two-face confinement test and a winding-graph criterion using derivatives only on the target level.
+
 [N-56](dommaschk-launch-collar.md) verifies bounds on the continuous launch strip and a two-sided field-line segment.
 
 ## Metadata

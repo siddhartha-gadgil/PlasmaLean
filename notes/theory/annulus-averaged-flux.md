@@ -1,5 +1,7 @@
 # Annular stream functions and second-order confinement for periodic flows
 
+[N-58](action-faces-and-winding.md) gives a two-face confinement test and a winding-graph criterion using derivatives only on the target level.
+
 [N-53](hamiltonian-bounce-band-test.md) sets the physical Hamiltonian and band acceptance tests.
 
 ## Metadata

@@ -767,6 +767,14 @@ run_cmd do
 #print axioms PlasmaLean.PeriodicLevelGraphs.Bracketed.exists_level_graph
 #print axioms PlasmaLean.PeriodicLevelGraphs.separated_level_graphs
 #print axioms PlasmaLean.PeriodicLevelGraphs.radius_error_of_action_residual
+#print axioms PlasmaLean.ActionFaceBarrier.first_hit_of_departure
+#print axioms PlasmaLean.ActionFaceBarrier.FaceBounds.stays_inside
+#print axioms PlasmaLean.ActionFaceBarrier.FaceBounds.stays_inside_of_corrected_action
+#print axioms PlasmaLean.ActionFaceBarrier.three_root_face_bounds
+#print axioms PlasmaLean.PeriodicLevelGraphs.exists_continuous_root_of_unique
+#print axioms PlasmaLean.PeriodicLevelGraphs.UpwardCrossings.exists_level_graph
+#print axioms PlasmaLean.PeriodicLevelGraphs.separated_graphs_of_upward_crossings
+#print axioms PlasmaLean.PeriodicLevelGraphs.folded_profile
 
 #print axioms PlasmaLean.Stability.CylinderInterfaceGap.close_wall
 #print axioms PlasmaLean.Stability.CylinderInterfaceGap.nonaxisymmetric_floor

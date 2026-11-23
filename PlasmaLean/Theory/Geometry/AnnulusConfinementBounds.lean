@@ -6,6 +6,7 @@ Authors: PlasmaLean contributors
 module
 
 public import PlasmaLean.Theory.Geometry.AnnulusConfinement
+public import PlasmaLean.Theory.Geometry.ActionFaceBarrier
 
 /-!
 # Uniform second-order confinement bounds
@@ -94,42 +95,6 @@ theorem exists_uniform_bounds (S : C.CorrectedStream) {a b : ℝ}
   obtain ⟨K, hK, hk⟩ := exists_periodic_band_bound ha hab hb hc hrθ hrs
   exact ⟨G, K, hG, hK, fun z hz ↦ ⟨hg z hz, hk z hz⟩⟩
 
-private theorem first_hit_of_departure {r : ℝ → ℝ} {t : ℝ} (hc : ContinuousOn r (Icc 0 t))
-    (hstart : r 0 ∈ Ioo (0 : ℝ) 1) {s : ℝ} (hs : s ∈ Icc 0 t) (hout : r s ∉ Ioo (0 : ℝ) 1) :
-    ∃ u ∈ Icc 0 t, (r u = 0 ∨ r u = 1) ∧ ∀ v ∈ Icc 0 u, r v ∈ Icc (0 : ℝ) 1 := by
-  have reach (v : ℝ) (hv : v ∈ Icc 0 t) (hout' : r v ∉ Ioo (0 : ℝ) 1) :
-      ∃ w ∈ Icc 0 v, r w = 0 ∨ r w = 1 := by
-    have hcv := hc.mono (Icc_subset_Icc_right hv.2)
-    by_cases hlow : r v ≤ 0
-    · obtain ⟨w, hw, he⟩ := intermediate_value_Icc' hv.1 hcv (show 0 ∈ Icc (r v) (r 0) from
-        ⟨hlow, hstart.1.le⟩)
-      exact ⟨w, hw, Or.inl he⟩
-    · have hhigh : 1 ≤ r v := le_of_not_gt fun h ↦ hout' ⟨lt_of_not_ge hlow, h⟩
-      obtain ⟨w, hw, he⟩ := intermediate_value_Icc hv.1 hcv (show 1 ∈ Icc (r 0) (r v) from
-        ⟨hstart.2.le, hhigh⟩)
-      exact ⟨w, hw, Or.inr he⟩
-  let hits : Set ℝ := Icc 0 t ∩ r ⁻¹' ({0, 1} : Set ℝ)
-  have hclosed : IsClosed hits := hc.preimage_isClosed_of_isClosed isClosed_Icc
-    (Set.toFinite _).isClosed
-  have hcompact : IsCompact hits := isCompact_Icc.of_isClosed_subset hclosed inter_subset_left
-  obtain ⟨w, hw, hwedge⟩ := reach s hs hout
-  have embed {x : ℝ} (hx : x ∈ Icc 0 t) (he : r x = 0 ∨ r x = 1) : x ∈ hits :=
-    ⟨hx, by simpa using he⟩
-  have hne : hits.Nonempty := ⟨w, embed (Icc_subset_Icc_right hs.2 hw) hwedge⟩
-  obtain ⟨u, hu, hmin⟩ := hcompact.exists_isMinOn hne (continuousOn_id (s := hits))
-  have huedge : r u = 0 ∨ r u = 1 := by simpa using hu.2
-  refine ⟨u, hu.1, huedge, ?_⟩
-  intro v hv
-  rcases hv.2.eq_or_lt with hvu | hvu
-  · subst v
-    rcases huedge with h | h <;> simp [h]
-  · have hinside : r v ∈ Ioo (0 : ℝ) 1 := by
-      by_contra hn
-      obtain ⟨x, hx, he⟩ := reach v (Icc_subset_Icc_right hu.1.2 hv) hn
-      have hearly := hmin (embed (Icc_subset_Icc_right (hv.2.trans hu.1.2) hx) he)
-      exact (not_le_of_gt (hx.2.trans_lt hvu)) hearly
-    exact ⟨hinside.1.le, hinside.2.le⟩
-
 /-- Every existing solution curve started with the stated label margin stays in the open
 band throughout the finite-time budget. The ODE is only required on the closed band. -/
 def ConfinementWindow (S : C.CorrectedStream) (G K : ℝ) : Prop :=
@@ -147,7 +112,7 @@ theorem exists_confinement_window (S : C.CorrectedStream) (hlo : lo < 0) (hhi : 
   refine ⟨G, K, hG, hK, ?_⟩
   intro z t ε δ hc hrad hlabel hz hbudget s hs
   by_contra hout
-  obtain ⟨u, hu, hedge, hband⟩ := first_hit_of_departure hc.fst.snd hrad hs hout
+  obtain ⟨u, hu, hedge, hband⟩ := ActionFaceBarrier.first_hit_of_departure hc.fst.snd hrad hs hout
   have hsub : Icc 0 u ⊆ Icc 0 t := Icc_subset_Icc_right hu.2
   have hcollar (v : ℝ) (hv : v ∈ Icc 0 u) : z v ∈ PhaseCollar lo hi :=
     ⟨⟨trivial, hlo.trans_le (hband v hv).1, (hband v hv).2.trans_lt hhi⟩, trivial⟩

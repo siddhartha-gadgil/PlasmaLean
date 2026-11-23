@@ -2772,6 +2772,12 @@
     "text": "23 november 2026 — local fixed-action mirror cell (n-57) implementation plan"
   },
   {
+    "title": "23 November 2026 — confinement from two radial face bounds (N-58)",
+    "section": "Implementation plan",
+    "url": "implementation-plan.html#23-november-2026-confinement-from-two-radial-face-bounds-n-58",
+    "text": "23 november 2026 — confinement from two radial face bounds (n-58) implementation plan"
+  },
+  {
     "title": "M0 · Exact symmetric equilibria: slab, screw pinch, Solov'ev, helical",
     "section": "Implementation plan · Lean verified — exact slab, screw-pinch, Solov'ev and helical equilibria with kernel force balance, all-time field-line/orbit confinement, Suydam both ways and screw-pinch Newcomb stability for every m ≠ 0 (reduced form supplied; idealized symmetric models).",
     "url": "implementation-plan.html",
@@ -3028,5 +3034,11 @@
     "section": "Verified progress",
     "url": "progress.html#finite-pressure-interface-benchmark",
     "text": "finite-pressure interface benchmark verified progress"
+  },
+  {
+    "title": "Confinement from radial face values",
+    "section": "Verified progress",
+    "url": "progress.html#confinement-from-radial-face-values",
+    "text": "confinement from radial face values verified progress"
   }
 ]
