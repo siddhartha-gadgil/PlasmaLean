@@ -182,6 +182,19 @@ theorem bentSet_not_starConvex (c : Space) : ¬ StarConvex ℝ c bentSet
 theorem hyperbolic_scalarPotential_bent : ∃ φ, ContDiffOn ℝ 2 φ bentSet ∧
     ∀ x ∈ bentSet, hyperbolicField x = gradient φ x
 -- Not in Lean: H¹_dR of a solid torus, the Hodge–Morrey–Friedrichs decomposition.
+
+-- The anti-self-dual lift to ℝ³ × ℝ (23 November 2026):
+-- PlasmaLean/Theory/Fields/FormHYMLift.lean (namespace PlasmaLean.Forms)
+def hymLift (w : Space → Form 2) (p : Space × ℝ) : (Space × ℝ) [⋀^Fin 2]→L[ℝ] ℝ
+  -- ℱ = π^*ω − π^*(⋆ω) ∧ dτ, independent of τ
+theorem extDeriv_hymLift_eq_zero_iff (w : Space → Form 2) (x : Space) (τ : ℝ) :
+    extDeriv (hymLift w) (x, τ) = 0 ↔
+      extDeriv w x = 0 ∧ extDeriv (fun y => hodge (w y)) x = 0
+theorem hymLift_closed_iff_vacuumField (hΩ : IsOpen Ω) (hB : ContDiffOn ℝ 2 B Ω) :
+    (∀ p ∈ Ω ×ˢ Set.univ, extDeriv (hymLift (fluxField B)) p = 0) ↔ VacuumField Ω B
+theorem hymLift_isAntiSelfDual (w : Space → Form 2) (p : Space × ℝ) :
+    IsAntiSelfDual (hymLift w p)        -- ℱ(eᵢ, e_τ) = −ℱ(eⱼ, eₖ), written in components
+-- Not in Lean: the circle quotient, a general Hodge star on ℝ⁴, the line bundle.
 ```
 
 ## Net toroidal current, Ampère's law and the current-free condition (contract clause C1)
@@ -741,8 +754,25 @@ theorem lorentzOrbit_exists {m q : ℝ} (hm : m ≠ 0) {B : Space → Space}
 
 -- 23 November 2026: TauCeti v4.36.0 has a large symplectic library (Hamiltonian vector
 -- fields, Poisson brackets, Liouville–Arnold tori, magnetic translation of a cotangent
--- space). Used so far: Noether's theorem for the Lagrangian (m/2)|v|² + q A·v
--- (Theory/Kinetic/NoetherLagrangian). The magnetic symplectic form is not used; see N-48.
+-- space). Used: Noether's theorem for the Lagrangian (m/2)|v|² + q A·v
+-- (Theory/Kinetic/NoetherLagrangian, NoetherRotation), and the magnetic symplectic form:
+-- PlasmaLean/Theory/Kinetic/MagneticSymplectic.lean (namespace PlasmaLean.Kinetic)
+abbrev PhaseSpace : Type := Space × StrongDual ℝ Space
+def kineticMomentumMap (q : ℝ) (A : Space → Space) (z : PhaseSpace) : PhaseSpace
+  -- (x, p) ↦ (x, p − q A(x)♭): canonical to kinetic momentum (TauCeti's magnetic translation)
+theorem canonicalForm_fderiv_kineticMomentumMap_flux (q : ℝ) (hA : DifferentiableAt ℝ A z.1)
+    (v w : PhaseSpace) :
+    strongDualCotangentSymplecticForm (fderiv ℝ (kineticMomentumMap q A) z v)
+        (fderiv ℝ (kineticMomentumMap q A) z w) =
+      strongDualCotangentSymplecticForm v w + q * flux (fieldCurl A z.1) ![v.1, w.1]
+  -- the pulled-back canonical form is the magnetic form Ω + q π^*ω_B
+theorem lorentzOrbit_hamilton (hm : m ≠ 0) (h : LorentzOrbit m q (fun _ => 0) B x v)
+    (hA : Differentiable ℝ A) (hcurl : ∀ y, B y = fieldCurl A y) (t : ℝ) :
+    HasDerivAt (canonicalCurve m q A x v)
+      ((strongDualCotangentSymplecticForm (V := Space)).hamiltonianVectorField
+        (magneticHamiltonian m q A) (canonicalCurve m q A x v t)) t
+  -- Lorentz orbits are integral curves of the Hamiltonian field of |p♯ − qA|²/(2m)
+-- Not proved: the converse, an electric field, the bundled symplectomorphism.
 ```
 
 ## Omnigeneity and the second adiabatic invariant J∥

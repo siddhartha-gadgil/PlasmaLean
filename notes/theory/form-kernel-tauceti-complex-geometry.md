@@ -13,9 +13,9 @@
 | Produces | `Theory/Fields/FormCalculus`, `Theory/Fields/FormTopology`, `Theory/Fields/FormContact` and their `Sanity` modules; the fit table; the symplectic assessment |
 | Difficulty | routine to moderate for what is done; hard for periods and surface geometry |
 | Status | verified for the theorems listed under "What is compiled"; the rest stated |
-| Lean evidence | default build, namespace `PlasmaLean.Forms` unless noted: `lieDerivForm_eq_zero_of_interior`, `FormWeakQS.lieDerivForm_eq_zero`, `PlasmaLean.Fields.WeakQS.lieDerivForm_flux_eq_zero`, `VacuumForm.exists_scalarPotential`, `VacuumForm.exists_vectorPotential`, `onOpens`, `isSmoothForm_onOpens_iff`, `mextDeriv_onOpens`, `VacuumForm.exists_scalarPotential_of_simplyConnected`, `not_simplyConnected_of_no_potential`, `wedge12_eq_wedge`, `isContactAt_iff_nondegenerate`, `IsBeltramiOn.reeb`; `PlasmaLean.Sanity.FormTopology.wireField_no_potential`, `wireRegion_not_simplyConnected`, `bentSet_not_starConvex`, `hyperbolic_scalarPotential_bent`; `lieDerivForm_flux`, `PlasmaLean.Fields.WeakQS.lieBracket_eq_zero`, `IsBeltramiOn.reeb_unique`, `pathIntegral_onOpens_flat`, `periodHom_onOpens_flat`, `PlasmaLean.Sanity.FormPeriods.wire_period`; `PlasmaLean.Kinetic.lorentzOrbit_eulerLagrange`, `noetherMomentum_translation_conserved`, `noetherMomentum_linear_gauge_conserved`, `canonicalMomentum_rotGenZ_conserved`; `loopCurrent_eq_periodHom_div`, `PlasmaLean.Vacuum.VacuumField.loopCurrent_eq_zero_of_simplyConnected`; `flatSmoothForm`, `isContactForm_flatSmoothForm_iff`, `IsBeltramiOn.reebVectorField_flatSmoothForm` |
+| Lean evidence | default build, namespace `PlasmaLean.Forms` unless noted: `lieDerivForm_eq_zero_of_interior`, `FormWeakQS.lieDerivForm_eq_zero`, `PlasmaLean.Fields.WeakQS.lieDerivForm_flux_eq_zero`, `VacuumForm.exists_scalarPotential`, `VacuumForm.exists_vectorPotential`, `onOpens`, `isSmoothForm_onOpens_iff`, `mextDeriv_onOpens`, `VacuumForm.exists_scalarPotential_of_simplyConnected`, `not_simplyConnected_of_no_potential`, `wedge12_eq_wedge`, `isContactAt_iff_nondegenerate`, `IsBeltramiOn.reeb`; `PlasmaLean.Sanity.FormTopology.wireField_no_potential`, `wireRegion_not_simplyConnected`, `bentSet_not_starConvex`, `hyperbolic_scalarPotential_bent`; `lieDerivForm_flux`, `PlasmaLean.Fields.WeakQS.lieBracket_eq_zero`, `IsBeltramiOn.reeb_unique`, `pathIntegral_onOpens_flat`, `periodHom_onOpens_flat`, `PlasmaLean.Sanity.FormPeriods.wire_period`; `PlasmaLean.Kinetic.lorentzOrbit_eulerLagrange`, `noetherMomentum_translation_conserved`, `noetherMomentum_linear_gauge_conserved`, `canonicalMomentum_rotGenZ_conserved`; `loopCurrent_eq_periodHom_div`, `PlasmaLean.Vacuum.VacuumField.loopCurrent_eq_zero_of_simplyConnected`; `flatSmoothForm`, `isContactForm_flatSmoothForm_iff`, `IsBeltramiOn.reebVectorField_flatSmoothForm`; `PlasmaLean.Kinetic.canonicalForm_fderiv_kineticMomentumMap_flux`, `lorentzOrbit_hamilton`; `hymLift`, `extDeriv_hymLift_eq_zero_iff`, `hymLift_closed_iff_vacuumField`, `hymLift_isAntiSelfDual` |
 | Audit evidence | not audited |
-| Last updated | 23 November 2026: created; same day, the manifold bridge, the wedge and contact links, the wire fixture and the symplectic assessment; then periods, `[ξ, B] = 0`, uniqueness of the Reeb vector, a non-star-convex fixture and the Noether charge from TauCeti; phase 1 of the remaining tasks (rotational Noether, loop current as a period, bundled contact form) |
+| Last updated | 23 November 2026: created; same day, the manifold bridge, the wedge and contact links, the wire fixture and the symplectic assessment; then periods, `[ξ, B] = 0`, uniqueness of the Reeb vector, a non-star-convex fixture and the Noether charge from TauCeti; phases 1 and 2 of the remaining tasks (rotational Noether, loop current as a period, bundled contact form; magnetic symplectic form, anti-self-dual lift) |
 | Patches | none (N-45 stands; this note adds to it) |
 
 ## Purpose and scope
@@ -114,7 +114,7 @@ flux surface.
 | N-43 steps 2–5 (homological equation, certificate, hot core) | linear algebra in velocity space, orbit estimates | no: not statements about forms on `ℝ³` |
 | N-42 S-2: the class `G dϑ + dF` | `B♭` closed; `dF` the exact part | **done** for the two extremes: no `G dϑ` term on a simply connected region; the wire field is a pure `G dϑ` term with no potential |
 | N-42 S-3–S-6: harmonic polynomial families | `B♭ = dF`, `ΔF = 0` | available in vector language (`VacuumField`); the form version is one transport |
-| N-42 S-13: Hermitian–Yang–Mills lift | `F = ω_B + ⋆ω_B ∧ dτ` is closed on `Ω × S¹` iff `dω_B = 0` and `d⋆ω_B = 0` | the two conditions are exactly `VacuumForm`; the 4-dimensional statement needs forms on `ℝ³ × ℝ` (lean-ready, moderate; not done) |
+| N-42 S-13: Hermitian–Yang–Mills lift | `ℱ = ω_B − ⋆ω_B ∧ dτ` is closed on `Ω × ℝ` iff `dω_B = 0` and `d⋆ω_B = 0` | **done** (`extDeriv_hymLift_eq_zero_iff`, `hymLift_closed_iff_vacuumField`, `hymLift_isAntiSelfDual`); the circle quotient is not built |
 | N-42 S-32: constant `\|B\|` vacuum field is constant | Bochner identity | no gain: `laplacian_normSqField` is a vector-language theorem |
 | N-42 S-14: subharmonic log-determinant | uses `∇B` as a symmetric matrix | no |
 | N-42 S-15: no constant `\|B\|` on `∂Ω` | needs integration over `∂Ω` | no: no boundary integration for these forms |
@@ -132,7 +132,7 @@ exterior calculus.
 
 ## What is compiled
 
-All in the default build, standard axioms only (`scripts/check_axioms.lean`, 52 entry points).
+All in the default build, standard axioms only (`scripts/check_axioms.lean`, 64 entry points).
 
 **Lie derivative** (`Theory/Fields/FormCalculus`).
 
@@ -219,8 +219,8 @@ found no KAM theorem. The project's own KAM modules are not replaced by anything
 
 **Verdict.** Two files apply directly to compiled PlasmaLean theory and use carriers the project
 already has (normed spaces): `Hamiltonian/Noether` and `Cotangent/Fiberwise`. Everything else
-needs phase spaces as manifolds, which the project does not have. `Hamiltonian/Noether` is now
-used (above); `Cotangent/Fiberwise` is not.
+needs phase spaces as manifolds, which the project does not have. Both are now used
+(`NoetherLagrangian`, `NoetherRotation`, `MagneticSymplectic`).
 
 ## Phase 1 of the remaining tasks (sub-agents, 23 November 2026)
 
@@ -271,11 +271,57 @@ rebuilt and axiom-checked in the main session (default build, standard axioms).
   a constant field is not a contact form.
 - Not done: the version on an open subset.
 
+## Phase 2 of the remaining tasks (sub-agents, 23 November 2026)
+
+Two more modules, written by sub-agents in parallel and rebuilt and axiom-checked in the main
+session.
+
+**The magnetic symplectic form** (`Theory/Kinetic/MagneticSymplectic`), on the phase space
+`Space × StrongDual ℝ Space` with TauCeti's canonical form.
+
+- `kineticMomentumMap q A`: `(x, p) ↦ (x, p − qA(x)♭)`, TauCeti's magnetic translation
+  (`cotangentFiberTranslate`) for the 1-form `q A♭`; it is bijective.
+- `extDeriv_potentialForm`: `d(qA♭) = q · flux(∇ × A)`, with no hypothesis.
+- `canonicalForm_fderiv_kineticMomentumMap_flux`: where `A` is differentiable, the canonical
+  form pulled back by this map is `Ω + q π^*ω_B` with `B = ∇ × A`. The statement is pointwise,
+  on derivatives.
+- `magneticHamiltonian m q A` (`‖p♯ − qA(x)‖²/(2m)`, `magneticHamiltonian_eq`) and
+  `lorentzOrbit_hamilton`: for `m ≠ 0`, `A` differentiable and `B = ∇ × A`, a Lorentz orbit with
+  `E = 0`, lifted with canonical momentum `m v♭ + qA♭`, is an integral curve of TauCeti's
+  Hamiltonian vector field of that Hamiltonian.
+- `Sanity/MagneticSymplectic`: Landau gauge (`landau_magneticForm`, `landau_hamilton`); the
+  explicit helix orbit satisfies the hypotheses (`helix_hamilton`); with `q = 0` the magnetic
+  term vanishes, and for `q ≠ 0`, `B₀ ≠ 0` it cannot be dropped (`landau_not_symplectic`).
+- Not done: the converse (integral curves are Lorentz orbits); an electric field or
+  time-dependent `A`; the map bundled as a symplectomorphism; TauCeti's Hamiltonian flow.
+
+**The anti-self-dual lift of a vacuum field** (`Theory/Fields/FormHYMLift`; N-42 S-13).
+
+- `hymLift ω`: the 2-form `ℱ = π^*ω − π^*(⋆ω) ∧ dτ` on `Space × ℝ`, independent of `τ`. The
+  sign is the source's (`continuation_geometry.tex`: `ℱ = β − α ∧ dt` with `α = B♭`,
+  `β = ⋆₃α`, orientation `dx ∧ dy ∧ dz ∧ dt`), not the plus sign written earlier in this note.
+- `extDeriv_hymLift_eq_zero_iff`: `dℱ = 0` at `(x, τ)` iff `dω = 0` and `d(⋆ω) = 0` at `x`.
+  No differentiability hypothesis is needed.
+- `hymLift_closed_iff_vacuumForm`, `hymLift_closed_iff_vacuumField`: for a `C²` field on an
+  open `Ω`, the lift is closed on `Ω × ℝ` iff the field is a vacuum field.
+- `hymLift_isAntiSelfDual`: `ℱ(eᵢ, e_τ) = −ℱ(eⱼ, eₖ)` for `(i, j, k)` cyclic. This is
+  anti-self-duality written in components for that orientation; it is not derived from a Hodge
+  star on `ℝ⁴`. It agrees with N-37.
+- `Sanity/FormHYMLift`: accepted, constant and hyperbolic fields; rejected, the rotation field
+  (fails Ampère; defect `−2`) and the identity field (fails Gauss; defect `3`); the opposite
+  sign is not anti-self-dual (`wrong_sign_not_antiSelfDual`).
+- Not done: the quotient to `Ω × S¹`; the complex structure, the line bundle and its Chern
+  class, the energy identity and Yang–Mills minimality.
+
 ## Next steps
 
-Still open after phase 1: the magnetic symplectic form (`Cotangent/Fiberwise`) and the HYM lift
-of N-42 S-13 (phase 2, in progress); loops that are `C¹` only on `[−π, π]`; the contact form on
-an open subset; finite (not infinitesimal) rotational invariance.
+All five tasks listed as not done are now compiled, each with stated limits. Still open:
+
+1. Loops that are `C¹` only on `[−π, π]` in the period statement.
+2. The contact form on an open subset; finite (not infinitesimal) rotational invariance.
+3. The converse of `lorentzOrbit_hamilton`, and an electric field.
+4. A Hodge star on `ℝ⁴` and the quotient `Ω × S¹` for the lift.
+5. The de Rham classes of an embedded flux surface.
 
 ## Barriers
 
@@ -284,7 +330,7 @@ an open subset; finite (not infinitesimal) rotational invariance.
 - **Embedded surfaces.** Flux surfaces are parametrised tori in the contract layer
   (`FieldTorus`), not submanifolds. De Rham statements on a flux surface need them as manifolds.
 - **Build cost.** TauCeti files are compiled locally the first time they are imported. The
-  default build now has 10,413 jobs, up from 7,938; the increase is almost all TauCeti files.
+  default build now has 10,547 jobs, up from 7,938; the increase is almost all TauCeti files.
 - **Not checked.** TauCeti files were read for their statements; their proofs were not
   reviewed. The theorems listed above pass the project's axiom check (standard axioms only),
   which covers the TauCeti results they use.

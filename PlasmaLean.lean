@@ -96,6 +96,10 @@ public import PlasmaLean.Theory.Fields.FormLoopCurrent
 public import PlasmaLean.Sanity.FormLoopCurrent
 public import PlasmaLean.Theory.Fields.FormContactManifold
 public import PlasmaLean.Sanity.FormContactManifold
+public import PlasmaLean.Theory.Kinetic.MagneticSymplectic
+public import PlasmaLean.Sanity.MagneticSymplectic
+public import PlasmaLean.Theory.Fields.FormHYMLift
+public import PlasmaLean.Sanity.FormHYMLift
 public import PlasmaLean.Theory.Fluids.EulerianODE
 public import PlasmaLean.Theory.Transport.PowerBalance
 public import PlasmaLean.Theory.Transport.Comparison

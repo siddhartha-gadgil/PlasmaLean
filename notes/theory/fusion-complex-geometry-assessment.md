@@ -183,3 +183,7 @@ These are untrusted numerics or exact sympy unless stated; details are in `02_ex
 **Pointer (23 November 2026).** N-48 assesses which of these claims fit the differential-form
 kernel (N-45) and compiles two of them: the invariance `L_u ω_B = 0` behind S-23, and for S-2
 potentials on simply connected regions together with a field (the straight wire) that has none.
+
+**Pointer (23 November 2026, later).** S-13 is partly compiled (`Theory/Fields/FormHYMLift`,
+N-48): the lift `ℱ = β − α ∧ dt` is closed iff the field is a vacuum field, and it is
+anti-self-dual in components. The bundle, its Chern class and Yang–Mills minimality are not.
