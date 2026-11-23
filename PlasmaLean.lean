@@ -106,6 +106,10 @@ public import PlasmaLean.Theory.Fields.FormLoopCurrentInterval
 public import PlasmaLean.Sanity.FormLoopCurrentInterval
 public import PlasmaLean.Theory.Fields.FormContactOpens
 public import PlasmaLean.Sanity.FormContactOpens
+public import PlasmaLean.Theory.Kinetic.MagneticHamiltonConverse
+public import PlasmaLean.Sanity.MagneticHamiltonConverse
+public import PlasmaLean.Theory.Fields.FormHYMStar
+public import PlasmaLean.Sanity.FormHYMStar
 public import PlasmaLean.Theory.Fluids.EulerianODE
 public import PlasmaLean.Theory.Transport.PowerBalance
 public import PlasmaLean.Theory.Transport.Comparison

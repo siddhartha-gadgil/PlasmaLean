@@ -194,7 +194,19 @@ theorem hymLift_closed_iff_vacuumField (hΩ : IsOpen Ω) (hB : ContDiffOn ℝ 2 
     (∀ p ∈ Ω ×ˢ Set.univ, extDeriv (hymLift (fluxField B)) p = 0) ↔ VacuumField Ω B
 theorem hymLift_isAntiSelfDual (w : Space → Form 2) (p : Space × ℝ) :
     IsAntiSelfDual (hymLift w p)        -- ℱ(eᵢ, e_τ) = −ℱ(eⱼ, eₖ), written in components
--- Not in Lean: the circle quotient, a general Hodge star on ℝ⁴, the line bundle.
+-- The Hodge star on 2-forms of ℝ³ × ℝ (PlasmaLean/Theory/Fields/FormHYMStar.lean):
+def liftStar : LiftForm 2 ≃ₗ[ℝ] LiftForm 2     -- ⋆(π^*a + π^*e ∧ dτ) = π^*(⋆⁻¹e) + π^*(⋆a) ∧ dτ
+theorem euclidForm_liftStar (F : LiftForm 2) :
+    euclidForm (liftStar F) = liftOrientation.formHodgeStar _ (euclidForm F)  -- TauCeti's star
+theorem isAntiSelfDual_iff_liftStar (F : LiftForm 2) : IsAntiSelfDual F ↔ liftStar F = -F
+theorem liftStar_eq_neg_iff_exists (F : LiftForm 2) :
+    liftStar F = -F ↔ ∃ b : Form 2, F = hymLiftAt b     -- every anti-self-dual form is a lift
+theorem isCompl_selfDualForms_antiSelfDualForms : IsCompl selfDualForms antiSelfDualForms
+def hymLiftCircle (ℓ : ℝ) (w : Space → Form 2) (p : Space × AddCircle ℓ) : LiftForm 2
+theorem mpullback_hymLiftCircleForm ... : pullback along Space × ℝ → Space × AddCircle ℓ
+    of the form on the circle product is hymLift w
+-- Not in Lean: closedness of the form on Space × AddCircle ℓ, the line bundle, its Chern
+-- class, Yang–Mills minimality.
 ```
 
 ## Net toroidal current, Ampère's law and the current-free condition (contract clause C1)
@@ -800,7 +812,18 @@ theorem lorentzOrbit_hamilton (hm : m ≠ 0) (h : LorentzOrbit m q (fun _ => 0) 
       ((strongDualCotangentSymplecticForm (V := Space)).hamiltonianVectorField
         (magneticHamiltonian m q A) (canonicalCurve m q A x v t)) t
   -- Lorentz orbits are integral curves of the Hamiltonian field of |p♯ − qA|²/(2m)
--- Not proved: the converse, an electric field, the bundled symplectomorphism.
+-- With an electric field E = −∇Φ, and the converse
+-- (PlasmaLean/Theory/Kinetic/MagneticHamiltonConverse.lean):
+def emHamiltonian (m q : ℝ) (A : Space → Space) (Φ : Space → ℝ) (z : PhaseSpace) : ℝ :=
+  magneticHamiltonian m q A z + q * Φ z.1
+theorem lorentzOrbit_iff_emHamilton (hm : m ≠ 0) (hA : Differentiable ℝ A)
+    (hcurl : ∀ y, B y = fieldCurl A y) (hΦ : IsPotential Φ E) (x v : ℝ → Space) :
+    LorentzOrbit m q E B x v ↔
+      ∀ t, HasDerivAt (canonicalCurve m q A x v)
+        (hamiltonianVectorField (emHamiltonian m q A Φ) (canonicalCurve m q A x v t)) t
+theorem emHamiltonian_conserved ... : emHamiltonian m q A Φ (z s) = emHamiltonian m q A Φ (z t)
+-- The Lorentz equations and Hamilton's equations are equivalent. Not proved: existence of
+-- integral curves, time-dependent potentials, the bundled symplectomorphism.
 ```
 
 ## Omnigeneity and the second adiabatic invariant J∥

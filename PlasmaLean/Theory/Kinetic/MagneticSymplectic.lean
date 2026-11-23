@@ -36,8 +36,9 @@ Lorentz orbits.
   `ι_X Ω = dH`). `magneticHamiltonian_canonicalCurve`: on that curve `H = (m/2)‖v‖²`.
 
 Not proved here: the kinetic momentum map is not bundled as a symplectomorphism (the statements
-are pointwise, as in TauCeti); the converse, that integral curves of the Hamiltonian field are
-Lorentz orbits, is not proved; no electric field or time-dependent potential is treated.
+are pointwise, as in TauCeti); no time-dependent potential is treated. The converse (integral
+curves of the Hamiltonian field are Lorentz orbits) and an electric field are in
+`Theory/Kinetic/MagneticHamiltonConverse`.
 -/
 
 @[expose] public section

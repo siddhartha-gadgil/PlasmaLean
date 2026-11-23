@@ -46,11 +46,9 @@ With the opposite orientation `dτ ∧ dx₀ ∧ dx₁ ∧ dx₂` the same form 
 
 ## What is not formalized
 
-* The quotient by `τ ↦ τ + ℓ`: the source works on `Ω × (ℝ/ℓℤ)`. The lift does not depend on
-  `τ` (`hymLift_tau_indep`), so it descends to the circle; the quotient manifold is not built.
-* A Hodge star operator on 2-forms of `ℝ⁴`: `IsAntiSelfDual` is the component form of
-  `⋆₄ℱ = -ℱ` for the stated metric and orientation, written by hand; it is not derived from a
-  general star.
+* In this file, the quotient by `τ ↦ τ + ℓ` and a Hodge star on 2-forms of `ℝ⁴`:
+  `IsAntiSelfDual` is the component form of `⋆₄ℱ = -ℱ`, written by hand. Both are supplied in
+  `Theory/Fields/FormHYMStar` (`isAntiSelfDual_iff_liftStar`, `hymLiftCircle`).
 * The complex structure, the type `(1,1)` and primitivity statements, the line bundle and its
   Chern class, the energy identity `∫|ℱ|² = 2ℓ ∫|B|²` and Yang–Mills minimality.
 -/
