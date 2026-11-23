@@ -1,5 +1,7 @@
 # A fully signed free-boundary ideal-MHD benchmark and a toroidal interface criterion
 
+See [N-55](dommaschk-interface-obstruction.md) for the outcome of the toroidal interface test.
+
 ## Metadata
 
 | Field | Value |
@@ -16,7 +18,7 @@
 | Lean evidence | [CylinderInterfaceGap](../../PlasmaLean/Theory/Stability/CylinderInterfaceGap.lean) gives the logarithmic wall budget, the nonaxisymmetric floor and gap, the least favourable helicity, the axisymmetric gap and fixed-flux uniform mode. The period-uniform estimate uses the two additional high-frequency multiplier bounds in source §6. |
 | Audit evidence | not audited |
 | Last updated | 23 November 2026. Verified the cylinder algebra with explicit hypotheses on the mode coefficients. |
-| Patched by / Alternatives | method for N-12 (its compiled family-1/family-2 results stand) |
+| Patched by / Alternatives | method for N-12; [N-55](dommaschk-interface-obstruction.md) resolves the sign test on A |
 
 ## Purpose and scope
 

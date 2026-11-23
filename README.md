@@ -108,7 +108,7 @@ and operating temperature remain open for that candidate.
     most one part of C2.
 - **C3 (test beds only):** Mercier stability on a band of Landreman family 2 (current-carrying),
   and Mercier and ballooning stability of a Solov'ev tokamak equilibrium. Nothing for a current-free
-  equilibrium. A close-wall cylinder has a period-uniform interface gap under explicit bounds on its plasma and vacuum multipliers. [Cylinder benchmark](notes/theory/cylinder-interface-stability.md)
+  equilibrium. The strict first-order stepped-pressure condition fails on the exact Dommaschk torus A. [Geometric obstruction](notes/theory/dommaschk-interface-obstruction.md) A close-wall cylinder has a period-uniform interface gap under explicit bounds on its plasma and vacuum multipliers. [Cylinder benchmark](notes/theory/cylinder-interface-stability.md)
 - **C4:** the Dommaschk vacuum example has two nested invariant surfaces. Constructing an
   equilibrium with nested surfaces throughout a finite-pressure region remains open for a
   current-free stellarator. Existing finite-β examples are symmetric models and the

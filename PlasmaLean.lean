@@ -27,6 +27,8 @@ public import PlasmaLean.Theory.Geometry.ParametricBounds
 public import PlasmaLean.Theory.Geometry.CircularCoil
 public import PlasmaLean.Theory.Geometry.CoilTube
 public import PlasmaLean.Theory.Geometry.PlacedCircle
+public import PlasmaLean.Theory.Stability.InterfaceFourierTaylor
+public import PlasmaLean.Theory.Stability.InterfacePrincipalDirection
 public import PlasmaLean.Theory.Stability.CylinderInterfaceGap
 public import PlasmaLean.Theory.Stability.AbstractEnergy
 public import PlasmaLean.Theory.Stability.BlockBounds

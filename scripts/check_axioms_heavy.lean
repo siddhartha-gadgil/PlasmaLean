@@ -43,6 +43,8 @@ import PlasmaLean.Design.DommaschkKamNested
 import PlasmaLean.Design.DommaschkKamQ16
 import PlasmaLean.Design.DommaschkKamEmbedded
 import PlasmaLean.Design.DommaschkKamLoopCurrent
+import PlasmaLean.Design.DommaschkInterfaceArcWitness
+import PlasmaLean.Design.DommaschkInterfaceFundamentalForms
 
 /-! Audit all declarations owned by project modules in the import closure (the on-demand top
 modules and everything they import). Fails on any non-standard axiom. -/
@@ -197,3 +199,15 @@ run_cmd do
 #print axioms PlasmaLean.Design.DommaschkKamQ16.nested_C1_of_exact
 #print axioms PlasmaLean.Design.DommaschkKamQ16.not_q16_C_tiny
 #print axioms PlasmaLean.Design.DommaschkKamQ16.q16_bounds_lt_strong
+
+#print axioms PlasmaLean.Design.KamNewton.ProfileAngle.first_error
+#print axioms PlasmaLean.Design.KamNewton.ProfileAngle.second_error
+#print axioms PlasmaLean.Design.DommaschkKamAInterfaceMoments.gridJet_error
+#print axioms PlasmaLean.Design.DommaschkInterfaceArcBounds.obstruction_of_close
+#print axioms PlasmaLean.Design.DommaschkInterfaceArcBounds.seedMargins
+#print axioms PlasmaLean.Design.DommaschkInterfaceArcBounds.exactTorusA_obstruction
+#print axioms PlasmaLean.Design.DommaschkInterfaceArcWitness.exists_embedded_oriented_torus_obstruction
+#print axioms PlasmaLean.Design.DommaschkInterfaceArcOrientation.normal_dot_polarRay_positive
+#print axioms PlasmaLean.Design.DommaschkInterfaceFundamentalForms.surface_derivatives
+#print axioms PlasmaLean.Design.DommaschkInterfaceFundamentalForms.field_eq_speed_tangent
+#print axioms PlasmaLean.Design.DommaschkInterfaceFundamentalForms.exactTorusA_field_normalDerivative_obstruction

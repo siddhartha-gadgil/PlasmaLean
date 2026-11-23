@@ -776,3 +776,6 @@ run_cmd do
 #print axioms PlasmaLean.Stability.CylinderInterfaceGap.fixed_flux_zero_mode
 #print axioms PlasmaLean.Stability.CylinderInterfaceGap.endpoint_wall
 #print axioms PlasmaLean.Stability.CylinderInterfaceGap.distant_wall_fails
+#print axioms PlasmaLean.Stability.InterfacePrincipalDirection.positive_at_principal
+#print axioms PlasmaLean.Stability.InterfacePrincipalDirection.exists_obstruction_of_sign_change
+#print axioms PlasmaLean.Stability.InterfaceFourierTaylor.sum_cosTaylorFour_error

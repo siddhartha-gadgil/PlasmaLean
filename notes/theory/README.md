@@ -78,3 +78,4 @@ Phase 8 (kam-route.md, finite-beta-stellarator.md):
 - [Embeddedness from irrational section dynamics](irrational-return-embedding.md) (N-52, Q-36). Irrational return and winding one prove embeddedness of the rational stellarator and both Dommaschk tori, including the nested Q-16 witnesses. A zero-transform fixture shows where the argument fails.
 - [Testing a Hamiltonian bounce band](hamiltonian-bounce-band-test.md) (N-53, Q-35).
 - [Dommaschk mirror-height screens](dommaschk-mirror-screen.md) (N-54, Q-35). A ripple-induced class switch and a deeper candidate strip, with Lean turning-point and winding-graph criteria.
+- [A principal-direction obstruction to stepped pressure](dommaschk-interface-obstruction.md) (N-55, Q-31). Verified on torus A, with an external interval check on C.

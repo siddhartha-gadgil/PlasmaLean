@@ -99,7 +99,7 @@
     },
     {
      "title": "C3 · finite-β MHD stability",
-     "text": "Mercier band on Landreman family 2 (family2_mercier_stable_derived, Mercier index supplied) and Solov'ev Mercier and ballooning. A close-wall cylinder has a period-uniform interface gap under explicit mode-multiplier bounds.",
+     "text": "Mercier band on Landreman family 2 (family2_mercier_stable_derived, Mercier index supplied) and Solov'ev Mercier and ballooning. The close-wall cylinder has a conditional mode gap. On the embedded Dommaschk torus A, a positive principal direction rules out the strict first-order pressure-step criterion.",
      "status": "Test beds only",
      "kind": "partial"
     },
