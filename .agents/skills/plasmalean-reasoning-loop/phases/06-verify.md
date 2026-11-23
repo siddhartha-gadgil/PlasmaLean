@@ -15,7 +15,7 @@ in the trace.
 
 ## WITH_LEAN: check the step in Lean
 
-- Make sure Lean is set up (`lake exe cache get`, then the modules the draft imports built by
+- Make sure Lean is set up (`scripts/get_cache.sh` for Mathlib and TauCeti, then the modules the draft imports built by
   frontier as in `plasmalean-develop-theory`, "Resource rules"), before the first check. Keep within
   the laptop budget: at most 12 GB of Lean memory at a time, a draft that imports a heavy
   certificate module checked alone, and heavy checks sent to the workstation (`Workstation.md`).

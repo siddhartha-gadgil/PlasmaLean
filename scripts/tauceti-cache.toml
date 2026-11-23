@@ -1,0 +1,9 @@
+# Lake cache service for TauCeti's prebuilt outputs (public, anonymous).
+# Used by scripts/get_cache.sh via LAKE_CONFIG; see that script.
+cache.defaultService = "tauceti-public"
+
+[[cache.service]]
+name = "tauceti-public"
+kind = "s3"
+artifactEndpoint = "https://cache.taucetiproject.org/artifacts"
+revisionEndpoint = "https://cache.taucetiproject.org/revisions"

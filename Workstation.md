@@ -35,7 +35,7 @@ folder committed on the workstation branch like any other result.
 - Push access to the GitHub repository **without typing a password** (see below). `run.sh` checks
   this before starting and stops at once if a push would prompt.
 - Lean set up once by hand in the clone: `elan` (Lean v4.36.0 from `lean-toolchain`),
-  `lake exe cache get` and `lake build`. This is already done on the workstation. The script only
+  `scripts/get_cache.sh` (prebuilt Mathlib and TauCeti) and `lake build`. This is already done on the workstation. The script only
   checks that `lake` is available. Later builds are incremental: each task builds only what changed.
 - The script installs the Python packages itself, into a venv `.venv-ws`, from
   [`scripts/requirements.txt`](scripts/requirements.txt).
@@ -257,8 +257,9 @@ laptop with a small parameter setting, then commit it to `main` before running i
 ## Troubleshooting
 
 - **Lost connection:** always run inside `tmux` or `screen`.
-- **Mathlib, TauCeti or Lean version bumped on `main`:** run `lake exe cache get` (and `elan` picks up a
-  new `lean-toolchain` automatically) before the next run, or Mathlib will rebuild from source.
+- **Mathlib, TauCeti or Lean version bumped on `main`:** run `scripts/get_cache.sh` (and `elan` picks up a
+  new `lean-toolchain` automatically) before the next run, or Mathlib and TauCeti will rebuild
+  from source.
 - **Out of memory on the workstation:** lower `--jobs`. A task's numerics should respect `WS_JOBS`.
 - **Push rejected:** the branch name is unique per run, so this is an authentication problem.
   Check `git remote -v` and your ssh key.

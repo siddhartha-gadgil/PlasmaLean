@@ -358,6 +358,7 @@ Lean is pinned to v4.36.0. The only direct dependency is
 transitively, at the commit pinned by TauCeti. From the repository root:
 
 ```sh
+scripts/get_cache.sh   # prebuilt Mathlib and TauCeti outputs; skip and they build from source
 lake build
 lake env lean scripts/check_axioms.lean
 node scripts/generate_handbook.mjs
