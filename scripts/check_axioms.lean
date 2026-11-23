@@ -760,3 +760,10 @@ run_cmd do
 #print axioms PlasmaLean.AnnulusFibreFlux.VolumeChart.CorrectedStream.ConfinementWindow.inverse_square
 #print axioms PlasmaLean.AnnulusFibreFlux.VolumeChart.exists_confined_orbits
 #print axioms PlasmaLean.AnnulusFibreFlux.VolumeChart.exists_inverse_square_orbits
+#print axioms PlasmaLean.Kinetic.MirrorWell.upward_crossing
+#print axioms PlasmaLean.Kinetic.MirrorWell.two_simple_mirrors
+#print axioms PlasmaLean.Kinetic.MirrorWell.regularMirrorBirth_of_crossings
+#print axioms PlasmaLean.Kinetic.MirrorWell.regularMirrorBirth_on_height_window
+#print axioms PlasmaLean.PeriodicLevelGraphs.Bracketed.exists_level_graph
+#print axioms PlasmaLean.PeriodicLevelGraphs.separated_level_graphs
+#print axioms PlasmaLean.PeriodicLevelGraphs.radius_error_of_action_residual

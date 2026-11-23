@@ -2742,6 +2742,12 @@
     "text": "domain audit and band sanity cases, 23 november 2026 implementation plan"
   },
   {
+    "title": "Two mirror-height screens on the physical Dommaschk field, 23 November 2026",
+    "section": "Implementation plan",
+    "url": "implementation-plan.html#two-mirror-height-screens-on-the-physical-dommaschk-field-23-november-2026",
+    "text": "two mirror-height screens on the physical dommaschk field, 23 november 2026 implementation plan"
+  },
+  {
     "title": "M0 · Exact symmetric equilibria: slab, screw pinch, Solov'ev, helical",
     "section": "Implementation plan · Lean verified — exact slab, screw-pinch, Solov'ev and helical equilibria with kernel force balance, all-time field-line/orbit confinement, Suydam both ways and screw-pinch Newcomb stability for every m ≠ 0 (reduced form supplied; idealized symmetric models).",
     "url": "implementation-plan.html",
@@ -2962,6 +2968,12 @@
     "section": "Verified progress",
     "url": "progress.html#trapped-birth-populations",
     "text": "trapped birth populations verified progress"
+  },
+  {
+    "title": "Dommaschk bounce screen",
+    "section": "Verified progress",
+    "url": "progress.html#dommaschk-bounce-screen",
+    "text": "dommaschk bounce screen verified progress"
   },
   {
     "title": "Earlier results retained",

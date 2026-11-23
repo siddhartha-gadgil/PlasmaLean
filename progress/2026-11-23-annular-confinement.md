@@ -40,6 +40,10 @@ Lean now states the finite-time band form of C2 for one Littlejohn species in a 
 
 The positive band test follows a harmonic oscillator in a synthetic quadratic mirror. An independent audit also corrected a coil claim: a circular filament can lie entirely outside a specified meridian half-space, and its field is vacuum throughout that half-space. [Model fixture](https://github.com/siddhartha-gadgil/PlasmaLean/blob/main/PlasmaLean/Sanity/TrappedBirthBand.lean) · [Audit and coil counterexample](https://github.com/siddhartha-gadgil/PlasmaLean/blob/main/notes/audit/2026-11-23-annulus-embedding-audit.md)
 
+## Dommaschk bounce screen
+
+Refining the launch phase exposed a change of mirror well that the first 128 phases missed. A deeper pair of heights at the same action j = 1.35992219 passed two strip resolutions and gave a sampled minimum separation of 0.0523 in the launch coordinate. Lean proves the continuous crossing and winding-graph criteria. Bounding their hypotheses for every launch and selecting thermal coverage remain open. [Results, inputs and source](https://github.com/siddhartha-gadgil/PlasmaLean/blob/main/notes/theory/dommaschk-mirror-screen.md)
+
 ## Earlier results retained
 
 The original Dommaschk certificate provides the quasi-axisymmetry estimates on each torus. Constructing a family of flux surfaces or a field-level Boozer chart throughout the intervening volume remains open. Applying the annular theorem to trapped particles also requires identifying a regular physical bounce family. [Surface defect estimates](https://github.com/siddhartha-gadgil/PlasmaLean/blob/main/notes/theory/dommaschk-qs-defect.md)

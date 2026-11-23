@@ -12,10 +12,12 @@
 | Dependency requirement | Identify one regular family of two-turning-point bounces and the correct reduced measure and time for the chosen physical field. |
 | Produces | A reproducible band selection, physical radial and time bounds, and a decision on a C2 certificate. |
 | Difficulty | Research. Turning points, the reduction and the error bound must hold throughout the proposed population. |
-| Status | Single-species Littlejohn acceptance predicate and loss bound verified. Physical candidate screening in progress. |
+| Status | Single-species Littlejohn acceptance predicate and loss bound verified. Two candidate screens complete. A regular deep strip is a numerical lead in N-54. |
 | Lean evidence | `GuidingCentreBand`, `GuidingCentreBand.radial_loss_le`, `radial_excursion_of_reduction`. N-51 supplies existence in its periodic coordinate model. |
 | Audit evidence | Physical reduction open. |
 | Last updated | 23 November 2026 |
+
+The first and second candidate screens, the rejected branch and the proof targets are recorded in [N-54](dommaschk-mirror-screen.md).
 
 ## What the first experiment measures
 

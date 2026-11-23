@@ -348,6 +348,8 @@ public import PlasmaLean.Theory.Transport.RelativeEntropyCoercive
 public import PlasmaLean.Theory.Geometry.TorusHodge
 public import PlasmaLean.Theory.Geometry.AnnulusFluxDescent
 public import PlasmaLean.Theory.Geometry.AnnulusOrbitExistence
+public import PlasmaLean.Theory.Geometry.PeriodicLevelGraphs
+public import PlasmaLean.Theory.Kinetic.MirrorWellCriterion
 public import PlasmaLean.Theory.Fields.WeakQuasisymmetry
 public import PlasmaLean.Theory.Fields.CylAlgebra
 public import PlasmaLean.Theory.Fields.QSLinearSystem

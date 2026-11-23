@@ -91,6 +91,9 @@ and operating temperature remain open for that candidate.
     It specifies the trapped birth population, its covered fraction, radial excursion and physical time.
     A quadratic mirror realizes the band predicate for a point-mass birth law. Establishing
     it for thermal populations on the candidate remains open. [Band test](notes/theory/hamiltonian-bounce-band-test.md)
+  - A numerical screen found a change of mirror well at mid-depth. A deeper family on the
+    same Dommaschk field passed two grid resolutions, with two candidate winding curves at
+    one scaled action. Continuum and physical-time bounds remain open. [Screen and data](notes/theory/dommaschk-mirror-screen.md)
   - **Audit of 23 November 2026** ([record](notes/audit/2026-11-23-refresh-audit.md)): no false or
     vacuous theorem was found in the work since 31 October. Two limits of the contract are now
     recorded and open: clause C2 has no non-vacuous instance for any field (AV-M7), and the
