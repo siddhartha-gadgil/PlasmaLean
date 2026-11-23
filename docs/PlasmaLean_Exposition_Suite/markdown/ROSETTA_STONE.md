@@ -177,6 +177,10 @@ theorem VacuumField.exists_scalarPotential_of_simplyConnected [SimplyConnectedSp
 theorem wireField_no_potential : ¬ ∃ φ, DifferentiableOn ℝ φ wireRegion ∧
     ∀ x ∈ wireRegion, wireField x = gradient φ x
 theorem wireRegion_not_simplyConnected : ¬ SimplyConnectedSpace wireOpens
+-- A region that is simply connected but not star-convex about any point (below z = x²):
+theorem bentSet_not_starConvex (c : Space) : ¬ StarConvex ℝ c bentSet
+theorem hyperbolic_scalarPotential_bent : ∃ φ, ContDiffOn ℝ 2 φ bentSet ∧
+    ∀ x ∈ bentSet, hyperbolicField x = gradient φ x
 -- Not in Lean: H¹_dR of a solid torus, the Hodge–Morrey–Friedrichs decomposition.
 ```
 
@@ -215,8 +219,21 @@ theorem rationalStellarator_currentFreeTransform {μ₀ : ℝ} (hμ : 0 < μ₀)
 -- Not in the library: de Rham cohomology classes; periods are defined loop by loop.
 
 -- 23 November 2026: closed 1-forms on an open region can now be passed to TauCeti's de Rham
--- theory through PlasmaLean.Forms.onOpens (Theory/Fields/FormTopology). TauCeti's period
--- homomorphism (TauCeti.periodHom) is not yet linked to the circulation used here.
+-- theory through PlasmaLean.Forms.onOpens (Theory/Fields/FormTopology), and the circulation is
+-- a de Rham period:
+-- PlasmaLean/Theory/Fields/FormPeriods.lean (namespace PlasmaLean.Forms)
+theorem pathIntegral_onOpens_flat (U : Opens Space) (B : Space → Space) (c : ℝ → U) (a b : ℝ) :
+    TauCeti.pathIntegral (onOpens U fun y => flat (B y)) c a b
+      = lineIntegral B (fun t => (c t : Space)) a b
+theorem periodHom_onOpens_flat (hB : ContDiffOn ℝ 1 B U) (hcurl : ∀ x ∈ U, fieldCurl B x = 0)
+    (hc : ContDiff ℝ 1 fun t => (c t : Space)) (hγ : ∀ t : unitInterval, γ t = c t) :
+    TauCeti.periodHom (onOpens U fun y => flat (B y)) x (class of γ)
+      = lineIntegral B (fun t => (c t : Space)) 0 1
+-- PlasmaLean/Sanity/FormPeriods.lean: the wire field has period 2π on the unit circle
+theorem wire_period : periodHom (onOpens wireOpens fun y => flat (wireField y)) (wireLoop 0)
+    (class of the unit circle) = 2 * Real.pi
+-- Not yet stated for the poloidal loops of the contract (loopCurrent), which are
+-- parametrised over [-π, π] instead of [0, 1].
 ```
 
 ## Magnetic well and min-B: |B| in a vacuum field
@@ -440,8 +457,11 @@ theorem isContactAt_iff_nondegenerate (β : Space → Form 1) (x : Space) :
 theorem IsBeltramiOn.reeb (h : IsBeltramiOn B lam U) (hx : x ∈ U) (hB : B x ≠ 0) :
     flat (B x) ![(‖B x‖ ^ 2)⁻¹ • B x] = 1 ∧
       (extDeriv (fun y => flat (B y)) x).curryLeft ((‖B x‖ ^ 2)⁻¹ • B x) = 0
--- The Reeb equations β(R) = 1, ι_R dβ = 0 hold for R = B/|B|². Uniqueness of R (for λ ≠ 0)
--- and the link to TauCeti's bundled contact forms on manifolds are not proved.
+theorem IsBeltramiOn.reeb_unique (h : IsBeltramiOn B lam U) (hx : x ∈ U) (hl : lam x ≠ 0)
+    (hB : B x ≠ 0) (h1 : flat (B x) ![R] = 1)
+    (h2 : (extDeriv (fun y => flat (B y)) x).curryLeft R = 0) : R = (‖B x‖ ^ 2)⁻¹ • B x
+-- So for λ ≠ 0 the Reeb vector of β = B♭ is B/|B|². The link to TauCeti's bundled contact
+-- forms on manifolds (SmoothForm.IsContactForm) is not proved.
 ```
 
 ## Magnetic helicity and Taylor relaxation
@@ -566,6 +586,11 @@ theorem WeakQS.lieDerivForm_flux_eq_zero (h : WeakQS B ξ ψ T) (hT : IsOpen T)
     (hB : ∀ x ∈ T, DifferentiableAt ℝ B x) (hdiv : ∀ x ∈ T, fieldDiv B x = 0)
     (hψ : ∀ x ∈ T, ContDiffAt ℝ 2 ψ x) (hx : x ∈ T) :
     TauCeti.lieDerivForm ξ (fluxField B) x = 0              -- L_ξ ω_B = 0
+
+theorem lieDerivForm_flux (ξ B : Space → Space) (x : Space) :
+    TauCeti.lieDerivForm ξ (fluxField B) x
+      = flux (VectorField.lieBracket ℝ ξ B x + fieldDiv ξ x • B x)
+theorem WeakQS.lieBracket_eq_zero ... : VectorField.lieBracket ℝ ξ B x = 0   -- [ξ, B] = 0
 ```
 
 ## Continuous symmetry and the conserved canonical momentum
@@ -601,6 +626,19 @@ theorem formSymmetricFlux_iff :
     FormSymmetricFlux (fluxField B) (fun x => flat (G x)) K ↔ Kinetic.SymmetricFlux B G K
 
 -- Not in the library: the symplectic form and the momentum map as such.
+
+-- From TauCeti's general Noether theorem (23 November 2026):
+-- PlasmaLean/Theory/Kinetic/NoetherLagrangian.lean (namespace PlasmaLean.Kinetic)
+def lorentzLagrangian (m q : ℝ) (A : Space → Space) (_t : ℝ) (p : Space × Space) : ℝ :=
+  m / 2 * ‖p.2‖ ^ 2 + q * ⟪A p.1, p.2⟫
+theorem lorentzOrbit_eulerLagrange (h : LorentzOrbit m q (fun _ => 0) B x v)
+    (hA : Differentiable ℝ A) (hcurl : ∀ y, B y = fieldCurl A y) (t : ℝ) :
+    HasDerivAt (fun s => fderiv ℝ (fun u => lorentzLagrangian m q A s (x s, u)) (v s))
+      (fderiv ℝ (fun y => lorentzLagrangian m q A t (y, v t)) (x t)) t
+theorem noetherMomentum_translation_conserved ... (hinv : ∀ y s, A (y + s • e) = A y) (s t : ℝ) :
+    noetherMomentum m q (fun _ => e) (fun y => ⟪A y, e⟫) x v s
+      = noetherMomentum m q (fun _ => e) (fun y => ⟪A y, e⟫) x v t
+-- Translation symmetries only; rotations (a gauge term in general) are not derived this way.
 ```
 
 ## Near-axis expansion (Garren–Boozer, Landreman–Sengupta)
@@ -677,7 +715,8 @@ theorem lorentzOrbit_exists {m q : ℝ} (hm : m ≠ 0) {B : Space → Space}
 
 -- 23 November 2026: TauCeti v4.36.0 has a large symplectic library (Hamiltonian vector
 -- fields, Poisson brackets, Liouville–Arnold tori, magnetic translation of a cotangent
--- space). None of it is used here yet; see note N-48 for the assessment.
+-- space). Used so far: Noether's theorem for the Lagrangian (m/2)|v|² + q A·v
+-- (Theory/Kinetic/NoetherLagrangian). The magnetic symplectic form is not used; see N-48.
 ```
 
 ## Omnigeneity and the second adiabatic invariant J∥

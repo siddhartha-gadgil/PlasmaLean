@@ -22,8 +22,9 @@ star-convex sets. This file uses them for two statements that the earlier files 
 * `lieDerivForm_eq_zero_of_interior`: if `ω` is closed at `x` and `ι_ξ ω = -dψ` near `x` with
   `ψ` of class `C²`, then `L_ξ ω = 0` at `x` (Cartan's formula and `d ∘ d = 0`).
 * `FormWeakQS.lieDerivForm_eq_zero`, `WeakQS.lieDerivForm_flux_eq_zero`: the flux form of a
-  weakly quasisymmetric, divergence-free field is invariant under the generator. In vector
-  language this is `[ξ, B] = 0` (given `div ξ = 0`); that translation is not proved here.
+  weakly quasisymmetric, divergence-free field is invariant under the generator.
+* `lieDerivForm_flux`: `L_ξ(ι_B vol) = ι_{[ξ, B] + (div ξ) B} vol`.
+* `WeakQS.lieBracket_eq_zero`: hence `[ξ, B] = 0` in vector language.
 
 ## Potentials (topology of the region)
 
@@ -102,6 +103,58 @@ theorem _root_.PlasmaLean.Fields.WeakQS.lieDerivForm_flux_eq_zero
   · exact (flux.toContinuousLinearEquiv.differentiable.differentiableAt).comp y (hB y hy)
   · change extDeriv (fun z => flux (B z)) y = 0
     rw [extDeriv_flux, hdiv y hy, map_zero]
+
+/-! ## The Lie derivative of a flux form and the Lie bracket -/
+
+/-- Components of a linear map applied to a vector, in the Cartesian basis. -/
+theorem clm_coords (L : Space →L[ℝ] Space) (v : Space) (i : Fin 3) :
+    L v i = v 0 * L (coordVec 0) i + v 1 * L (coordVec 1) i + v 2 * L (coordVec 2) i := by
+  have hv : v = v 0 • coordVec 0 + v 1 • coordVec 1 + v 2 • coordVec 2 := by
+    ext j; fin_cases j <;> simp
+  conv_lhs => rw [hv]
+  simp
+
+/-- **Lie derivative of a flux form**: `L_ξ(ι_B vol) = ι_{[ξ, B] + (div ξ) B} vol`, at every
+point and with no differentiability hypothesis (both sides use the Fréchet derivative). Here
+`[ξ, B] = DB ξ − Dξ B` is Mathlib's Lie bracket. -/
+theorem lieDerivForm_flux (ξ B : Space → Space) (x : Space) :
+    lieDerivForm ξ (fluxField B) x =
+      flux (VectorField.lieBracket ℝ ξ B x + fieldDiv ξ x • B x) := by
+  have hd : fderiv ℝ (fluxField B) x
+      = (flux.toContinuousLinearEquiv : Space →L[ℝ] Form 2) ∘L fderiv ℝ B x :=
+    flux.toContinuousLinearEquiv.comp_fderiv
+  rw [← LinearEquiv.symm_apply_eq, flux_symm_eq]
+  set L := fderiv ℝ ξ x with hL
+  set M := fderiv ℝ B x with hM
+  have c0 := clm_coords L (B x) 0
+  have c1 := clm_coords L (B x) 1
+  have c2 := clm_coords L (B x) 2
+  have u0 (a b c : Space) : Function.update ![a, b] 0 c = ![c, b] := by
+    ext i j; fin_cases i <;> simp
+  have u1 (a b c : Space) : Function.update ![a, b] 1 c = ![a, c] := by
+    ext i j; fin_cases i <;> simp
+  ext i
+  fin_cases i <;>
+    simp [lieDerivForm_apply, hd, Fin.sum_univ_two, u0, u1, flux_apply, volForm_vec,
+      fluxField_apply, VectorField.lieBracket, fieldDiv, divOp_apply, ← hL, ← hM, c0, c1, c2] <;>
+    ring
+
+/-- **Weak quasisymmetry gives commuting fields**: for a weakly quasisymmetric field `B` that
+is differentiable and divergence-free on the open set `T`, with potential of class `C²`, the
+generator commutes with the field, `[ξ, B] = 0` on `T`. This is step 1 of note N-43 in vector
+language. -/
+theorem _root_.PlasmaLean.Fields.WeakQS.lieBracket_eq_zero
+    {B ξ : Space → Space} {ψ : Space → ℝ} {T : Set Space} (h : WeakQS B ξ ψ T)
+    (hT : IsOpen T) (hB : ∀ x ∈ T, DifferentiableAt ℝ B x)
+    (hdiv : ∀ x ∈ T, fieldDiv B x = 0) (hψ : ∀ x ∈ T, ContDiffAt ℝ 2 ψ x)
+    {x : Space} (hx : x ∈ T) : VectorField.lieBracket ℝ ξ B x = 0 := by
+  have h0 := h.lieDerivForm_flux_eq_zero hT hB hdiv hψ hx
+  rw [lieDerivForm_flux ξ B x] at h0
+  have hξ : fieldDiv ξ x = 0 := by
+    have := h.div_free x hx
+    rwa [← divOp_eq_divergence] at this
+  rw [hξ, zero_smul, add_zero] at h0
+  exact flux.injective (h0.trans (map_zero flux).symm)
 
 /-! ## Potentials on star-convex regions -/
 

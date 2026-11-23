@@ -24,7 +24,7 @@ with the general objects of TauCeti.
   (`Module.Dual.IsContact`): `β x ≠ 0`, and `dβ x` is nondegenerate on the plane `ker β x`.
 * `IsBeltramiOn.reeb`: for a Beltrami field with `B ≠ 0`, the vector `R = B / ‖B‖²` satisfies
   the Reeb equations of `β = B♭`: `β(R) = 1` and `ι_R dβ = 0`. When `λ ≠ 0` the form is contact
-  and `R` is its Reeb vector.
+  and `R` is its Reeb vector: `IsBeltramiOn.reeb_unique` shows it is the only solution.
 -/
 
 @[expose] public section
@@ -126,5 +126,39 @@ theorem IsBeltramiOn.reeb {B : Space → Space} {lam : Space → ℝ} {U : Set S
     have hc : cross (lam x • B x) (B x) = 0 := by
       ext i; fin_cases i <;> simp [h0, h1, h2] <;> ring
     rw [hc]; simp
+
+/-- `B × (B × R) = ⟪B, R⟫ B − ‖B‖² R`. -/
+theorem cross_cross_self (B R : Space) :
+    cross B (cross B R) = ⟪B, R⟫ • B - ‖B‖ ^ 2 • R := by
+  obtain ⟨h0, h1, h2⟩ := cross_coords B R
+  obtain ⟨g0, g1, g2⟩ := cross_coords B (cross B R)
+  have hn : ‖B‖ ^ 2 = B 0 ^ 2 + B 1 ^ 2 + B 2 ^ 2 := by
+    rw [← real_inner_self_eq_norm_sq, inner_coords3]; ring
+  ext i
+  fin_cases i <;> simp [g0, g1, g2, h0, h1, h2, hn, inner_coords3] <;> ring
+
+/-- **Uniqueness of the Reeb vector.** For a Beltrami field with `λ(x) ≠ 0` and `B x ≠ 0`, the
+Reeb equations `β(R) = 1`, `ι_R dβ = 0` for `β = B♭` have the single solution `R = B/‖B‖²`. -/
+theorem IsBeltramiOn.reeb_unique {B : Space → Space} {lam : Space → ℝ} {U : Set Space}
+    (h : IsBeltramiOn B lam U) {x : Space} (hx : x ∈ U) (hl : lam x ≠ 0) (hB : B x ≠ 0)
+    {R : Space} (h1 : flat (B x) ![R] = 1)
+    (h2 : (extDeriv (fun y => flat (B y)) x).curryLeft R = 0) :
+    R = (‖B x‖ ^ 2)⁻¹ • B x := by
+  have hn : ‖B x‖ ^ 2 ≠ 0 := pow_ne_zero 2 (norm_ne_zero_iff.2 hB)
+  have hin : ⟪B x, R⟫ = 1 := by simpa [flat_apply] using h1
+  rw [extDeriv_flat, (h x hx).2, map_smul, ContinuousAlternatingMap.curryLeft_smul,
+    smul_apply, curryLeft_flux_cross] at h2
+  have hc : cross (B x) R = 0 := by
+    have := (smul_eq_zero.1 h2).resolve_left hl
+    exact flat.injective (this.trans (map_zero flat).symm)
+  have hcc := cross_cross_self (B x) R
+  rw [hc, hin, one_smul] at hcc
+  have hz : cross (B x) (0 : Space) = 0 := by
+    obtain ⟨a0, a1, a2⟩ := cross_coords (B x) 0
+    ext i; fin_cases i <;> simp [a0, a1, a2]
+  rw [hz] at hcc
+  have : ‖B x‖ ^ 2 • R = B x := (sub_eq_zero.1 hcc.symm).symm
+  calc R = (‖B x‖ ^ 2)⁻¹ • (‖B x‖ ^ 2 • R) := by rw [smul_smul, inv_mul_cancel₀ hn, one_smul]
+    _ = (‖B x‖ ^ 2)⁻¹ • B x := by rw [this]
 
 end PlasmaLean.Forms

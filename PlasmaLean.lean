@@ -86,6 +86,10 @@ public import PlasmaLean.Theory.Fields.FormTopology
 public import PlasmaLean.Sanity.FormTopology
 public import PlasmaLean.Theory.Fields.FormContact
 public import PlasmaLean.Sanity.FormContact
+public import PlasmaLean.Theory.Fields.FormPeriods
+public import PlasmaLean.Sanity.FormPeriods
+public import PlasmaLean.Theory.Kinetic.NoetherLagrangian
+public import PlasmaLean.Sanity.NoetherLagrangian
 public import PlasmaLean.Theory.Fluids.EulerianODE
 public import PlasmaLean.Theory.Transport.PowerBalance
 public import PlasmaLean.Theory.Transport.Comparison

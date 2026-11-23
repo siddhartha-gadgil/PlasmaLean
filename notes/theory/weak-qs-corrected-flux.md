@@ -100,4 +100,5 @@ Sign convention: `WeakQS` has `B × ξ = −∇ψ`, so take `u = −ξ` or flip 
 - **N-40:** the moment bounds (H3)–(H5) are recorded as candidate kinetic fixtures for Q-28.
 
 **Pointer (23 November 2026).** Step 1 is compiled in form language: `L_ξ ω_B = 0`
-(`WeakQS.lieDerivForm_flux_eq_zero`, N-48). The vector statement `[B, u] = 0` is not.
+(`WeakQS.lieDerivForm_flux_eq_zero`, N-48), and so is the vector statement `[ξ, B] = 0`
+(`WeakQS.lieBracket_eq_zero`).

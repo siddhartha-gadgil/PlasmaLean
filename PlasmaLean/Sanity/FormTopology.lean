@@ -18,8 +18,10 @@ public import PlasmaLean.Sanity.Forms
   which is a closed field line.
 * Topological consequence through the bridge: the complement of a line in `ℝ³` is not simply
   connected (`wireRegion_not_simplyConnected`).
-* Accepted fixture: on all of `ℝ³`, which is simply connected, the hyperbolic vacuum field has a
-  potential by the same theorem (`hyperbolic_scalarPotential_top`).
+* Accepted fixture: the region below the sheet `z = x²` is simply connected
+  (homeomorphic to a half-space) and not star-convex about any point
+  (`bentSet_not_starConvex`); the hyperbolic vacuum field has a potential on it by the simply
+  connected theorem (`hyperbolic_scalarPotential_bent`).
 * Bridge checks: the bridge preserves closedness for the wire form (`wire_closed_onOpens`).
 -/
 
@@ -84,5 +86,86 @@ theorem wire_isSmoothForm_onOpens :
     IsSmoothForm 𝓘(ℝ, Space) 2 (onOpens wireOpens fun y => flat (wireField y)) := by
   rw [isSmoothForm_onOpens_iff]
   exact flat.toContinuousLinearEquiv.contDiff.comp_contDiffOn wireField_vacuum.contDiffOn
+
+/-! ## A simply connected region that is not star-convex -/
+
+/-- The shear `(x, y, z) ↦ (x, y, z + x²)` of `ℝ³`. -/
+noncomputable def shear : Space ≃ₜ Space where
+  toFun x := x + (x 0 ^ 2) • coordVec 2
+  invFun x := x - (x 0 ^ 2) • coordVec 2
+  left_inv x := by ext i; fin_cases i <;> simp
+  right_inv x := by ext i; fin_cases i <;> simp
+  continuous_toFun := by fun_prop
+  continuous_invFun := by fun_prop
+
+/-- The lower half-space `z < 0`. -/
+def lowerHalf : Set Space := {x | x 2 < 0}
+
+/-- The region below the parabolic sheet `z = x²`. -/
+def bentSet : Set Space := {x | x 2 < x 0 ^ 2}
+
+/-- The bent region is open. -/
+theorem isOpen_bentSet : IsOpen bentSet :=
+  isOpen_lt (by fun_prop) (by fun_prop)
+
+/-- The bent region as an open subset of `ℝ³`. -/
+def bentOpens : Opens Space := ⟨bentSet, isOpen_bentSet⟩
+
+/-- The bent region is the image of the lower half-space under the shear. -/
+theorem shear_image_lowerHalf : shear '' lowerHalf = bentSet := by
+  ext x
+  constructor
+  · rintro ⟨y, hy, rfl⟩
+    have h : y 2 < 0 := hy
+    change (y + (y 0 ^ 2) • coordVec 2) 2 < (y + (y 0 ^ 2) • coordVec 2) 0 ^ 2
+    simp
+    linarith
+  · intro hx
+    have h : x 2 < x 0 ^ 2 := hx
+    refine ⟨shear.symm x, ?_, shear.apply_symm_apply x⟩
+    change (x - (x 0 ^ 2) • coordVec 2) 2 < 0
+    simp
+    linarith
+
+/-- The bent region is simply connected: it is homeomorphic to a half-space. -/
+instance : SimplyConnectedSpace bentOpens := by
+  have hc : ContractibleSpace lowerHalf := by
+    refine Convex.contractibleSpace ?_ ⟨-coordVec 2, by simp [lowerHalf]⟩
+    exact (convex_halfSpace_lt (f := fun x : Space => x 2)
+      ⟨fun x y => by simp, fun c x => by simp⟩ 0)
+  have e : bentOpens ≃ₜ lowerHalf :=
+    ((shear.image lowerHalf).trans (Homeomorph.setCongr shear_image_lowerHalf)).symm
+  have : ContractibleSpace bentOpens := e.contractibleSpace
+  infer_instance
+
+/-- **The bent region is not star-convex about any point**, so the Poincaré-lemma theorem of
+`Theory/Fields/FormCalculus` does not apply to it. -/
+theorem bentSet_not_starConvex (c : Space) : ¬ StarConvex ℝ c bentSet := by
+  intro h
+  set t : ℝ := c 0 ^ 2 - c 2 + 2 with ht
+  let p : Space := WithLp.toLp 2 ![c 0 + t, c 1, (c 0 + t) ^ 2 - 1]
+  have hp : p ∈ bentSet := by
+    change p 2 < p 0 ^ 2
+    simp [p]
+  have hc : c ∈ bentSet := by
+    have := h hp (a := 1) (b := 0) zero_le_one le_rfl (by norm_num)
+    simpa using this
+  have hc' : c 2 < c 0 ^ 2 := hc
+  have hm := h hp (a := 1 / 2) (b := 1 / 2) (by norm_num) (by norm_num) (by norm_num)
+  have hm' : ((1 / 2 : ℝ) • c + (1 / 2 : ℝ) • p) 2 < ((1 / 2 : ℝ) • c + (1 / 2 : ℝ) • p) 0 ^ 2 :=
+    hm
+  simp [p] at hm'
+  nlinarith [sq_nonneg (t - 1), sq_nonneg t]
+
+/-- **Accepted fixture for the simply connected theorem**: on the bent region, which is simply
+connected but not star-convex, the hyperbolic vacuum field has a potential. -/
+theorem hyperbolic_scalarPotential_bent :
+    ∃ φ : Space → ℝ, ContDiffOn ℝ 2 φ bentSet ∧
+      ∀ x ∈ bentSet, hyperbolicField x = gradient φ x := by
+  have hV : VacuumField (bentOpens : Set Space) (fun y => hyperbolicField y) :=
+    ⟨isOpen_bentSet, hyperbolic_gradient_vacuum.contDiffOn.mono (Set.subset_univ _),
+      fun x _ => hyperbolic_gradient_vacuum.div_eq_zero x (Set.mem_univ x),
+      fun x _ => hyperbolic_gradient_vacuum.curl_eq_zero x (Set.mem_univ x)⟩
+  exact hV.exists_scalarPotential_of_simplyConnected
 
 end PlasmaLean.Sanity.FormTopology

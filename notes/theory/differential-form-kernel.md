@@ -176,5 +176,6 @@ All compiled Lean theorems, default build, standard axioms only (`scripts/check_
   (`Theory/Fields/FormTopology`), and `Theory/Fields/FormContact`: `wedge12` is TauCeti's wedge
   product, the contact condition in intrinsic form, and the Reeb equations for a Beltrami field.
   Two items listed above as not covered are thereby partly covered: a wedge product of general
-  degrees exists in TauCeti and agrees with `wedge12`; the Reeb field is identified up to
-  uniqueness.
+  degrees exists in TauCeti and agrees with `wedge12`; the Reeb field of a Beltrami field with
+  `λ ≠ 0` is `B/‖B‖²` (`IsBeltramiOn.reeb`, `reeb_unique`). Circulation is a de Rham period
+  (`Theory/Fields/FormPeriods`).

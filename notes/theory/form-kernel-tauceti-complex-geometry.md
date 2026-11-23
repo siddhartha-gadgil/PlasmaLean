@@ -13,9 +13,9 @@
 | Produces | `Theory/Fields/FormCalculus`, `Theory/Fields/FormTopology`, `Theory/Fields/FormContact` and their `Sanity` modules; the fit table; the symplectic assessment |
 | Difficulty | routine to moderate for what is done; hard for periods and surface geometry |
 | Status | verified for the theorems listed under "What is compiled"; the rest stated |
-| Lean evidence | default build, namespace `PlasmaLean.Forms` unless noted: `lieDerivForm_eq_zero_of_interior`, `FormWeakQS.lieDerivForm_eq_zero`, `PlasmaLean.Fields.WeakQS.lieDerivForm_flux_eq_zero`, `VacuumForm.exists_scalarPotential`, `VacuumForm.exists_vectorPotential`, `onOpens`, `isSmoothForm_onOpens_iff`, `mextDeriv_onOpens`, `VacuumForm.exists_scalarPotential_of_simplyConnected`, `not_simplyConnected_of_no_potential`, `wedge12_eq_wedge`, `isContactAt_iff_nondegenerate`, `IsBeltramiOn.reeb`; `PlasmaLean.Sanity.FormTopology.wireField_no_potential`, `wireRegion_not_simplyConnected` |
+| Lean evidence | default build, namespace `PlasmaLean.Forms` unless noted: `lieDerivForm_eq_zero_of_interior`, `FormWeakQS.lieDerivForm_eq_zero`, `PlasmaLean.Fields.WeakQS.lieDerivForm_flux_eq_zero`, `VacuumForm.exists_scalarPotential`, `VacuumForm.exists_vectorPotential`, `onOpens`, `isSmoothForm_onOpens_iff`, `mextDeriv_onOpens`, `VacuumForm.exists_scalarPotential_of_simplyConnected`, `not_simplyConnected_of_no_potential`, `wedge12_eq_wedge`, `isContactAt_iff_nondegenerate`, `IsBeltramiOn.reeb`; `PlasmaLean.Sanity.FormTopology.wireField_no_potential`, `wireRegion_not_simplyConnected`, `bentSet_not_starConvex`, `hyperbolic_scalarPotential_bent`; `lieDerivForm_flux`, `PlasmaLean.Fields.WeakQS.lieBracket_eq_zero`, `IsBeltramiOn.reeb_unique`, `pathIntegral_onOpens_flat`, `periodHom_onOpens_flat`, `PlasmaLean.Sanity.FormPeriods.wire_period`; `PlasmaLean.Kinetic.lorentzOrbit_eulerLagrange`, `noetherMomentum_translation_conserved` |
 | Audit evidence | not audited |
-| Last updated | 23 November 2026: created; same day, the manifold bridge, the wedge and contact links, the wire fixture and the symplectic assessment |
+| Last updated | 23 November 2026: created; same day, the manifold bridge, the wedge and contact links, the wire fixture and the symplectic assessment; then periods, `[ξ, B] = 0`, uniqueness of the Reeb vector, a non-star-convex fixture and the Noether charge from TauCeti |
 | Patches | none (N-45 stands; this note adds to it) |
 
 ## Purpose and scope
@@ -85,17 +85,32 @@ smooth fields; statements about a single closed form, such as exactness, do not.
 - `wireRegion_not_simplyConnected`: hence the complement of a line in `ℝ³` is not simply
   connected. This is a topological theorem proved from a magnetic field.
 
-**Not reached.** TauCeti's period homomorphism (`periodHom`, a closed form is exact iff all its
-periods vanish) is not linked to the circulation integrals of the contract layer. The de Rham
+**Periods** (`Theory/Fields/FormPeriods`).
+
+- `pathIntegral_onOpens_flat`: TauCeti's line integral of `B♭` along a curve in `U` equals the
+  contract layer's circulation `Contract.lineIntegral B γ a b`. No hypothesis.
+- `periodHom_onOpens_flat`: for a `C¹` curl-free field on `U` and a `C¹` loop, TauCeti's period
+  homomorphism on the class of the loop is the circulation. So the Ampère current through a loop
+  is `μ₀⁻¹` times a de Rham period and depends only on the homotopy class of the loop in `U`.
+- `wire_circulation`, `wire_period`, `wire_periodHom_ne_zero` (`Sanity/FormPeriods`): the wire
+  field has circulation and period `2π` on the unit circle; a uniform field has circulation `0`
+  on the same loop (`uniform_circulation`).
+
+**A simply connected region that is not star-convex** (`Sanity/FormTopology`): the region below
+the sheet `z = x²` is homeomorphic to a half-space, hence simply connected, and is not
+star-convex about any point (`bentSet_not_starConvex`). The hyperbolic vacuum field has a
+potential on it by the simply connected theorem (`hyperbolic_scalarPotential_bent`).
+
+**Not reached.** The period statement is for loops parametrised over `[0, 1]`; the contract's
+`loopCurrent` uses poloidal loops over `[-π, π]` and is not yet restated as a period. The de Rham
 classes of a torus (`DeRham/Torus`) live on the abstract torus `∏ AddCircle`, not on an embedded
-flux surface. A statement that a region **is** simply connected (a ball minus nothing, a solid
-ball) is not proved here for any region other than through star-convexity.
+flux surface.
 
 ## Fit of the complex-geometry notes to the kernel
 
 | Claim | Statement in form language | Fit |
 | --- | --- | --- |
-| N-43 step 1: weak QS gives `[B, u] = 0` | `L_u ω_B = 0`, from Cartan's formula | **done** (`WeakQS.lieDerivForm_flux_eq_zero`) |
+| N-43 step 1: weak QS gives `[B, u] = 0` | `L_u ω_B = 0`, from Cartan's formula | **done** (`WeakQS.lieDerivForm_flux_eq_zero`, `WeakQS.lieBracket_eq_zero`) |
 | N-43: `div u = 0`, `B × u = ∇ψ`, `u·∇\|B\| = 0` | `d(ι_u vol) = 0`, `ι_u ω_B = dψ`, `d\|B\|(u) = 0` | this is `FormWeakQS` with `ξ = −u` |
 | N-43 steps 2–5 (homological equation, certificate, hot core) | linear algebra in velocity space, orbit estimates | no: not statements about forms on `ℝ³` |
 | N-42 S-2: the class `G dϑ + dF` | `B♭` closed; `dF` the exact part | **done** for the two extremes: no `G dϑ` term on a simply connected region; the wire field is a pure `G dϑ` term with no potential |
@@ -118,7 +133,7 @@ exterior calculus.
 
 ## What is compiled
 
-All in the default build, standard axioms only (`scripts/check_axioms.lean`, 22 entry points).
+All in the default build, standard axioms only (`scripts/check_axioms.lean`, 35 entry points).
 
 **Lie derivative** (`Theory/Fields/FormCalculus`).
 
@@ -130,8 +145,10 @@ All in the default build, standard axioms only (`scripts/check_axioms.lean`, 22 
   `FormWeakQS`: `T` open, `ω` differentiable and closed on `T`, `ψ` of class `C²` on `T`.
 - `WeakQS.lieDerivForm_flux_eq_zero`: the vector-language version, with `∇ · B = 0` on `T`.
 
-The vector statement `[ξ, B] = 0` would follow from
-`L_ξ(ι_B vol) = ι_{[ξ,B]} vol + (div ξ) ι_B vol`, which is not proved.
+- `lieDerivForm_flux`: `L_ξ(ι_B vol) = ι_{[ξ,B] + (div ξ)B} vol` at every point, with no
+  differentiability hypothesis.
+- `WeakQS.lieBracket_eq_zero`: hence `[ξ, B] = 0` on `T` (same hypotheses as the previous
+  item). This is step 1 of N-43 in vector language.
 
 **Potentials on star-convex regions** (same file). `VacuumForm.exists_vectorPotential`
 (`dA = ω`), `VacuumForm.exists_scalarPotential` (`dφ = ⋆ω`), and the `VacuumField` versions
@@ -149,8 +166,23 @@ The vector statement `[ξ, B] = 0` would follow from
   criterion in dimension three.
 - `IsBeltramiOn.reeb`: for a Beltrami field with `B x ≠ 0`, the vector `R = B/‖B‖²` satisfies
   the Reeb equations `β(R) = 1`, `ι_R dβ = 0` for `β = B♭`. No hypothesis on `λ`; when `λ ≠ 0`
-  the form is contact (`isContactAt_of_beltrami`) and these equations determine the Reeb vector.
-  Uniqueness is not proved here.
+  the form is contact (`isContactAt_of_beltrami`).
+- `IsBeltramiOn.reeb_unique`: for `λ(x) ≠ 0` and `B x ≠ 0` the Reeb equations have the single
+  solution `B/‖B‖²`.
+
+**Noether charge** (`Theory/Kinetic/NoetherLagrangian`), from TauCeti's
+`noetherCharge_eq_of_eulerLagrange`.
+
+- `lorentzLagrangian`: `L(x, v) = (m/2)‖v‖² + q⟪A(x), v⟫`.
+- `lorentzOrbit_eulerLagrange`: a `LorentzOrbit` with `E = 0` solves the Euler–Lagrange equation
+  of `L` when `B = ∇ × A` everywhere and `A` is differentiable.
+- `noetherMomentum_translation_conserved`: if moreover `A` is invariant under translation along
+  `e`, then `noetherMomentum m q (fun _ => e) (fun y => ⟪A y, e⟫)` is constant along the orbit.
+  Translation symmetries only.
+- `Sanity/NoetherLagrangian`: the Landau gauge `A = B₀ x e_y` has curl `B₀ e_z`
+  (`curl_landau`); `m v_y + q B₀ x` is conserved along every Lorentz orbit in the uniform field
+  (`landau_momentum_conserved`); the gauge is not invariant along `e_x`
+  (`landau_not_invariant_x`).
 
 **Sanity.**
 
@@ -161,9 +193,7 @@ The vector statement `[ξ, B] = 0` would follow from
   `wire_closed_onOpens`, `wire_isSmoothForm_onOpens`.
 - `Sanity/FormContact`: accepted `helical_wedge_ne_zero`, `helical_nondegenerate`,
   `helical_reeb`; rejected `const_not_nondegenerate`, `const_wedge_eq_zero`.
-- Missing: an accepted fixture for `exists_scalarPotential_of_simplyConnected` on a region that
-  is simply connected but not star-convex. No such region is proved simply connected in the
-  library.
+- `Sanity/FormPeriods` and `Sanity/NoetherLagrangian`: listed above.
 
 ## Assessment of TauCeti's symplectic geometry files
 
@@ -190,19 +220,23 @@ found no KAM theorem. The project's own KAM modules are not replaced by anything
 
 **Verdict.** Two files apply directly to compiled PlasmaLean theory and use carriers the project
 already has (normed spaces): `Hamiltonian/Noether` and `Cotangent/Fiberwise`. Everything else
-needs phase spaces as manifolds, which the project does not have. None is used yet.
+needs phase spaces as manifolds, which the project does not have. `Hamiltonian/Noether` is now
+used (above); `Cotangent/Fiberwise` is not.
 
-## Lean-ready next steps
+## Next steps
 
-1. **Noether charge.** Derive `canonicalMomentum_conserved` from TauCeti's
-   `noetherCharge_eq_of_eulerLagrange` for `L = m|v|²/2 + q A·v`.
+Done since the first version of this note: `[ξ, B] = 0`; uniqueness of the Reeb vector; periods
+linked to circulation; a simply connected, non-star-convex fixture; a Noether charge from
+TauCeti. Still open:
+
+1. **Rotational symmetry from Noether.** `canonicalMomentum_conserved` (axisymmetry) needs a
+   linear generator and in general a gauge term (`TauCeti.lagrangianVariation_comp_snd`); only
+   translations are derived.
 2. **Magnetic symplectic form** of a Lorentz orbit through `Cotangent/Fiberwise`.
-3. **`[ξ, B] = 0`** from `L_ξ ω_B = 0` and `div ξ = 0`.
-4. **Uniqueness of the Reeb vector** for `λ ≠ 0`, and the bundled contact form on `ℝ³`
-   (`TauCeti.SmoothForm.IsContactForm`) for a smooth Beltrami field.
-5. **Periods.** Link `TauCeti.periodHom` to the circulation of the contract layer
-   (`CurrentFreeTransform`), so that "net current" is a de Rham period in Lean.
-6. **The HYM lift** of N-42 S-13 as a statement about a 2-form on `ℝ³ × ℝ`.
+3. **`loopCurrent` as a period**: reparametrise the contract's poloidal loops to `[0, 1]`.
+4. **Bundled contact form** on `ℝ³` (`TauCeti.SmoothForm.IsContactForm`) for a smooth Beltrami
+   field.
+5. **The HYM lift** of N-42 S-13 as a statement about a 2-form on `ℝ³ × ℝ`.
 
 ## Barriers
 
@@ -211,16 +245,18 @@ needs phase spaces as manifolds, which the project does not have. None is used y
 - **Embedded surfaces.** Flux surfaces are parametrised tori in the contract layer
   (`FieldTorus`), not submanifolds. De Rham statements on a flux surface need them as manifolds.
 - **Build cost.** TauCeti files are compiled locally the first time they are imported. The
-  default build now has 9,279 jobs, up from 7,938; the increase is TauCeti files.
+  default build now has 10,413 jobs, up from 7,938; the increase is almost all TauCeti files.
 - **Not checked.** TauCeti files were read for their statements; their proofs were not
   reviewed. The theorems listed above pass the project's axiom check (standard axioms only),
   which covers the TauCeti results they use.
 
 ## Outputs and next dependencies
 
-- New modules `Theory/Fields/FormCalculus`, `FormTopology`, `FormContact` and
-  `Sanity/FormCalculus`, `FormTopology`, `FormContact`, imported by `PlasmaLean.lean`.
-- The Rosetta-stone page: eight entries extended (solenoidal field, vacuum field, net current,
-  Beltrami fields, helicity, frozen-in flux, quasisymmetry, charged-particle motion).
+- New modules `Theory/Fields/FormCalculus`, `FormTopology`, `FormContact`, `FormPeriods`,
+  `Theory/Kinetic/NoetherLagrangian`, and a `Sanity` module for each, imported by
+  `PlasmaLean.lean`.
+- The Rosetta-stone page: nine entries extended (solenoidal field, vacuum field, net current,
+  Beltrami fields, helicity, frozen-in flux, quasisymmetry, Noether symmetry, charged-particle
+  motion).
 - Pointers added in N-45, N-43 and N-42.
-- Next: steps 1 and 5 above.
+- Next: steps 1 and 3 above.
