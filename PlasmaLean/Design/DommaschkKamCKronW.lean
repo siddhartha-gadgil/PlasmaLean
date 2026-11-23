@@ -258,7 +258,7 @@ theorem eval_pwT (X : ℕ → FA) (v : ℕ) : ∀ (n : ℕ) (acc : Ex),
 
 /-- An integral rational is the cast of its numerator. -/
 theorem num_cast_of_den {q : ℚ} (h : q.den = 1) : ((q.num : ℤ) : ℂ) = ((q : ℚ) : ℂ) := by
-  have : (q.num : ℚ) = q := Rat.coe_int_num_of_den_eq_one h
+  have : (q.num : ℚ) = q := Rat.intCast_num_of_den_eq_one h
   rw [← this]; push_cast; rfl
 
 /-- The value of one term tree. -/
