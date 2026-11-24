@@ -72,6 +72,7 @@ import PlasmaLean.Design.DommaschkGroupedMirrorModels
 import PlasmaLean.Design.DommaschkEndpointMirrorBranch
 import PlasmaLean.Design.DommaschkEndpointTraceFamily
 import PlasmaLean.Design.DommaschkCenteredStrength
+import PlasmaLean.Design.DommaschkOppositeMirrorExclusion
 import PlasmaLean.Design.DommaschkPairedActionBirth
 import PlasmaLean.Design.DommaschkCommonPilotObservables
 import PlasmaLean.Design.DommaschkPilotBirthVariation
@@ -506,3 +507,5 @@ run_cmd do
 #print axioms PlasmaLean.Design.DommaschkCenteredStrength.physical_derivative
 #print axioms PlasmaLean.Design.DommaschkCenteredStrength.centered
 #print axioms PlasmaLean.Design.DommaschkCenteredStrength.compare
+#print axioms PlasmaLean.Design.DommaschkOppositeMirrorExclusion.FitsRow.below
+#print axioms PlasmaLean.Design.DommaschkOppositeMirrorExclusion.from_passage
