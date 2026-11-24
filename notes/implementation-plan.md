@@ -2689,6 +2689,6 @@ For every phase within 1/4096 radian of each symmetry centre, both proposed heig
 
 ### 24 November 2026 — Lean replay of the local mirror certificates (N-61)
 
-For a cold or partially completed replay, run `bash scripts/dommaschk_kam/check_mirror_replay.sh`. It builds the 28 heavy endpoint modules in sequence. The first parallel aggregate attempt exhausted workstation memory.
+The workstation replay uses `bash scripts/dommaschk_kam/check_mirror_replay.sh --jobs 6`. Each batch checks available RAM, and each Lean declaration checks at most 16 slabs of the action quadrature data. All 28 packets passed along with the radial and graph modules. The standard-axiom checks passed for 53,987 default and 80,912 on-demand declarations.
 
 The physical Q-16 launch theorem covers both sectors, the whole radial strip, and 1/64 geometric radian in either direction. The 28 endpoint packets compare the action with the target from directed field and density enclosures. The 16 radial tiles give 12,512 consecutive slab records. The long-trajectory comparison still needs verified residual, frame and first-variation bounds for the same physical field line. See [N-61](https://github.com/siddhartha-gadgil/PlasmaLean/blob/main/notes/theory/dommaschk-mirror-certificate-replay.md).

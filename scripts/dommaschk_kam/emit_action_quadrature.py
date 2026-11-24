@@ -171,6 +171,51 @@ def mirror(common, index, dest):
                 dest, splits=8)
 
 
+def slab_witness(packed, mass, upper, splits):
+    """Verify the coarse roots and mass while encoding all 48 uniform panels."""
+    if splits not in (8, PANELS):
+        raise ValueError('unexpected panel count')
+    repeats = PANELS // splits
+    expanded = 0
+    weight = 0
+    for j in range(splits):
+        digit = packed % (1 << 72)
+        packed >>= 72
+        density = digit % DIGIT
+        squared_speed = (digit >> 24) % DIGIT
+        speed = digit >> 48
+        scaled_square = squared_speed * (SPATIAL**2 // GAP)
+        valid = scaled_square <= speed**2 if upper else speed**2 <= scaled_square
+        if not valid:
+            raise ArithmeticError('invalid directed square-root witness')
+        weight += repeats * density * speed
+        for k in range(repeats):
+            expanded |= digit << (72 * (repeats * j + k))
+    if packed or weight != mass:
+        raise ArithmeticError('surplus panel data or incorrect slab mass')
+    return f'  ⟨0x{expanded:x}, {mass}, rfl⟩'
+
+
+def lean_slabs(rows, upper, splits):
+    """Limit kernel reduction caches to one small list declaration at a time."""
+    side = 'true' if upper else 'false'
+    groups = []
+    definitions = []
+    for start in range(0, len(rows), 16):
+        witnesses = [slab_witness(packed, mass, upper, splits)
+                     for packed, mass in rows[start:start + 16]]
+        group = f'slabGroup{len(groups)}'
+        groups.append(group)
+        definitions.append(f'/-- Slab witnesses {start} through {start + len(witnesses) - 1}. -/\n'
+                           f'noncomputable def {group} : List (Block {side}) := [\n'
+                           + ',\n'.join(witnesses) + ']')
+    definitions.append('/-- Ordered slab witnesses in increasing absolute angle; '
+                       'the section is the angular origin. -/\n'
+                       f'noncomputable def slabs : List (Block {side}) :=\n  '
+                       + ' ++\n  '.join(groups))
+    return '\n\n'.join(definitions)
+
+
 def write_table(groups, height, upper, name, label, dest, splits=PANELS):
     rows = groups[0] + groups[1]
     mass = sum(x for _, x in rows)
@@ -181,14 +226,11 @@ def write_table(groups, height, upper, name, label, dest, splits=PANELS):
     start = f'(-{len(groups[0])} / 64 : ℝ)'
     end = f'({len(groups[1])} / 64 : ℝ)'
     side = 'true' if upper else 'false'
-    def row_term(p, mass):
-        data = f'0x{p:x}' if splits == PANELS else f'repeatSix 8 0x{p:x}'
-        return f'  ⟨{data}, {mass}, rfl⟩'
-
-    chunks = ',\n'.join(row_term(p, v) for p, v in rows)
+    chunks = lean_slabs(rows, upper, splits)
     text = f'''/-
 Copyright (c) 2026 PlasmaLean contributors. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
+Authors: PlasmaLean contributors
 -/
 module
 
@@ -205,10 +247,9 @@ open PlasmaLean.Certificates.MirrorActionQuadrature
 
 set_option linter.style.longLine false
 set_option maxRecDepth 8192
+set_option Elab.async false
 
-/-- Ordered slab witnesses in increasing absolute angle; the section is the angular origin. -/
-noncomputable def slabs : List (Block {side}) := [
-{chunks}]
+{chunks}
 
 /-- Exact finite certificate, including the number of slabs and comparison with the target. -/
 theorem checked : Packet {side} slabs {len(groups[0])} {len(groups[1])}
