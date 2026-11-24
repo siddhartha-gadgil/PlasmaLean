@@ -50,7 +50,7 @@ import PlasmaLean.Design.DommaschkLocalMirrorGraphs
 import PlasmaLean.Design.DommaschkMirrorSectorFlow
 import PlasmaLean.Design.DommaschkBounceObservables
 import PlasmaLean.Design.DommaschkMirrorFirstPassage
-import PlasmaLean.Design.DommaschkMirrorFramePath
+import PlasmaLean.Design.DommaschkMirrorTwoSlabs
 import PlasmaLean.Design.DommaschkHarmonicTrace
 import PlasmaLean.Design.DommaschkBounceTaylorFirst
 import PlasmaLean.Design.DommaschkReferenceFirstDefect
@@ -249,3 +249,6 @@ run_cmd do
 #print axioms PlasmaLean.Design.DommaschkPhysicalFirstStep.physical_first_step
 #print axioms PlasmaLean.Design.DommaschkMirrorLaunch.exists_nested_firstPassage
 #print axioms PlasmaLean.Design.DommaschkMirrorLaunch.exists_nested_frame_paths
+#print axioms PlasmaLean.Design.DommaschkPhysicalSecondStep.physical_second_step
+#print axioms PlasmaLean.Design.DommaschkMirrorLaunch.exists_nested_two_slabs
+#print axioms PlasmaLean.Design.DommaschkMirrorLaunch.two_tube_error

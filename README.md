@@ -38,7 +38,7 @@ Heavy numerics and large certificate builds can be offloaded to a workstation; s
 
 ## Progress
 
-Lean now proves a 1/64-radian physical field-line collar on both Dommaschk mirror-launch sectors. The endpoint and radial certificates cover 28 action comparisons and 16 radial tiles. Exact external checks reproduce the crossings and action bounds on 16 long traces at all eight local-action endpoints. Lean verifies the physical entry on smaller sectors, all 6,256 scalar frame steps, the harmonics, and the first physical reference defect. At radius 0.470 the first forward moving tube contains the true solution from its Q-16 birth, with dimensionless error at most 1.23 × 10⁻⁶. Successive physical tubes remain open. [First physical moving-frame step](notes/theory/dommaschk-first-physical-step.md)
+Lean now proves a 1/64-radian physical field-line collar on both Dommaschk mirror-launch sectors. The endpoint and radial certificates cover 28 action comparisons and 16 radial tiles. Exact external checks reproduce the crossings and action bounds on 16 long traces at all eight local-action endpoints. Lean verifies the physical entry on smaller sectors, all 6,256 scalar frame steps, the harmonics, and the first physical reference defect. At radius 0.470 a physical solution from a Q-16 birth follows two consecutive forward references through 1/32 radian, with dimensionless Euclidean error at most 1.232 × 10⁻⁶. [Two-slab theorem](notes/theory/dommaschk-two-physical-slabs.md)
 
 **Trapped-particle theory (23 November 2026).** On a regular annulus of periodic orbits,
 a common invariant volume and a nonvanishing averaged drift tangent to both edges give a

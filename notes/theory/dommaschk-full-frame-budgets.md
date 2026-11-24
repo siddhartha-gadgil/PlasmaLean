@@ -13,6 +13,7 @@
 | Lean evidence | `HilbertRetraction.radial_retraction`, `PositionFrameSlabs.physical_step_ball`, `TrajectoryTaylorModel.cover_spatial_radius`, `DommaschkMirrorLaunch.exists_nested_frame_paths` |
 | Audit evidence | Default and heavy standard-axiom checks passed for 54,512 and 93,146 project declarations. |
 | Last updated | 24 November 2026 |
+| Patched by | N-67 supplies the first two consecutive physical steps. |
 | Patches | N-64 and N-65, coverage of the feasibility checks and remaining physical hypotheses |
 
 ## What the exact calculation establishes

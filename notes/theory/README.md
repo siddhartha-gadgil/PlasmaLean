@@ -90,3 +90,4 @@ Phase 8 (kam-route.md, finite-beta-stellarator.md):
 - [Physical entry, frame arithmetic and the first trajectory defect](dommaschk-physical-frame-trace.md) (N-64, Q-35). Lean checks all 16 scalar chains and the first physical reference defect.
 - [The first physical moving-frame step from a Dommaschk mirror birth](dommaschk-first-physical-step.md) (N-65, Q-35). A true Q-16 launch follows the forward reference with controlled Euclidean error throughout the first slab.
 - [Full-trace Jacobian budgets and the physical chain criterion](dommaschk-full-frame-budgets.md) (N-66, Q-35). All 6,256 Jacobian budgets pass exact screening. Lean states the remaining requirements on the actual trial balls.
+- [Two consecutive physical field-line slabs from a Q-16 birth](dommaschk-two-physical-slabs.md) (N-67, Q-35). A true solution reaches 1/32 radian and stays within 1.232 × 10⁻⁶ of the two recorded references.

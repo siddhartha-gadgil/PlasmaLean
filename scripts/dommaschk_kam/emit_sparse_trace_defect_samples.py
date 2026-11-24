@@ -1,4 +1,4 @@
-"""Build physical polynomial residual packets on two other q0,u=.47 slabs."""
+"""Build the selected physical polynomial residual packets for q0,u=.47."""
 import argparse
 from fractions import Fraction
 
@@ -110,7 +110,8 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--check', action='store_true')
     args = parser.parse_args()
-    sample = (job for job in jobs(RECORD, 8, sample=True) if (job[1],job[2]) in ((-1,0),(1,390)))
+    sample = (job for job in jobs(RECORD, 8, sample=False)
+              if (job[1],job[2]) in ((-1,0),(1,1),(1,390)))
     for name, source in emit_selected(sample):
         target = DEST / (name+'.lean')
         if args.check:
