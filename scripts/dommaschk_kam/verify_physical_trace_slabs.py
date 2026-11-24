@@ -221,16 +221,18 @@ def main():
                         help='indices with whole spatial boxes and eight time panels')
     parser.add_argument('--projected',nargs='+',type=int,default=[],metavar='INDEX',
                         help='indices with separate radial and vertical trial widths')
+    parser.add_argument('--vertical-split',nargs='+',type=int,default=[],metavar='INDEX',
+                        help='projected rows whose vertical interval is bisected')
     args = parser.parse_args()
     lo,hi = args.range
     if not 0 <= lo <= hi < 391 or args.wait_seconds < 0:
         parser.error('expected an inclusive range in 0..390 and a nonnegative wait')
     if args.shared_from is not None and not 0 <= args.shared_from < 391:
         parser.error('--shared-from must lie in 0..390')
-    if any(not 0 <= i < 391 for i in [*args.square_panels,*args.projected]):
+    selected = [*args.square_panels,*args.projected,*args.vertical_split]
+    if any(not 0 <= i < 391 for i in selected):
         parser.error('panel and projected indices must lie in 0..390')
-    if ((set(args.square_panels) & set(args.projected)) or
-            ((set(args.square_panels) | set(args.projected)) & TRACKED_PANEL_ROWS.keys())):
+    if len(selected) != len(set(selected)) or set(selected) & TRACKED_PANEL_ROWS.keys():
         parser.error('each row must use a single Jacobian source')
     args.cache = args.cache.resolve()
     jac_cache, res_cache = args.jacobian_cache.resolve(), args.residual_cache.resolve()
@@ -239,9 +241,9 @@ def main():
                                         for i in range(lo//8,hi//8+1))]
     if args.shared_from is not None and hi >= args.shared_from:
         static.append('DommaschkStoredPowers')
-    if args.projected or args.square_panels:
+    if selected:
         static.extend(['DommaschkJacobianPanels','DommaschkStoredPowers'])
-    if args.projected:
+    if args.projected or args.vertical_split:
         static.append('DommaschkProjectedTrial')
     static.extend(name for index,name in TRACKED_PANEL_ROWS.items() if lo <= index <= hi)
     subprocess.run(['lake','build','--no-build',*['PlasmaLean.Design.'+m for m in static]],
@@ -268,6 +270,11 @@ def main():
         radii = None
         if index in TRACKED_PANEL_ROWS:
             jac = tracked_jacobian(TRACKED_PANEL_ROWS[index],packet_hash,version)
+        elif index in args.vertical_split:
+            from verify_vertical_split_jacobian import CACHE as split_cache, join
+            from emit_rectangular_jacobian import rectangular_data
+            jac = join(index,split_cache,version,deadline=deadline)
+            radii = rectangular_data(index)[2]
         else:
             shared = args.shared_from is not None and index >= args.shared_from
             if index in args.projected:

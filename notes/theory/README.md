@@ -99,3 +99,4 @@ Phase 8 (kam-route.md, finite-beta-stellarator.md):
 - [Comparing bounce actions from finitely many sublevel lengths](finite-sublevel-action-comparison.md) (N-73). Finite action bounds and a mesh-corrected comparison, with an eight-endpoint exact arithmetic screen.
 - [A physical field line through three projected Jacobian boxes](dommaschk-projected-physical-trace.md) (N-74). Smaller coordinate boxes certify the physical solution across rows 69–71 and through 9/8 radian.
 - [One physical trajectory on both sides of a Dommaschk birth](dommaschk-signed-projected-trace.md) (N-75). One signed-angle field line follows 72 slabs in each direction through the reflected rectangular bounds.
+- [A signed three-radian field line and a split Jacobian at slab 226](dommaschk-signed-trace-spatial-split.md) (N-76). A single trajectory reaches ±3/2 radians. Two vertical half-boxes certify the physical step at row 226 in both directions.

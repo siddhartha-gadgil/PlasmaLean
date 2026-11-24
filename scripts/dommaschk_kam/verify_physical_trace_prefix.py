@@ -164,6 +164,7 @@ def main():
                         help='use shared-power Jacobian certificates at and above this row')
     parser.add_argument('--square-panels',nargs='+',type=int,default=[],metavar='INDEX')
     parser.add_argument('--projected',nargs='+',type=int,default=[],metavar='INDEX')
+    parser.add_argument('--vertical-split',nargs='+',type=int,default=[],metavar='INDEX')
     args = parser.parse_args()
     if not 2 <= args.length <= 391 or args.wait_seconds < 0:
         parser.error('length must be 2..391 and the wait nonnegative')
@@ -179,6 +180,8 @@ def main():
                 backend.extend(['--square-panels',*map(str,args.square_panels)])
             if args.projected:
                 backend.extend(['--projected',*map(str,args.projected)])
+            if args.vertical_split:
+                backend.extend(['--vertical-split',*map(str,args.vertical_split)])
             subprocess.run([sys.executable,str(HERE/'verify_physical_trace_slabs.py'),*backend,
                             '--range','2',str(args.length-1),'--cache',str(args.cache),
                             '--residual-cache',str(args.residual_cache),'--jacobian-cache',

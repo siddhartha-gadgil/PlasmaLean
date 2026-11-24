@@ -143,12 +143,17 @@ def union(cache,packages):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--length',type=int,default=3)
+    selection = parser.add_mutually_exclusive_group()
+    selection.add_argument('--length',type=int,default=3)
+    selection.add_argument('--row',type=int,metavar='INDEX',
+                           help='check one physical step from its own entry ellipsoid')
     parser.add_argument('--shared-from',type=int,default=16)
     parser.add_argument('--square-panels',nargs='+',type=int,default=[],metavar='INDEX',
                         help='reuse a forward square with normalized-time panels on these rows')
     parser.add_argument('--projected',nargs='+',type=int,default=[],metavar='INDEX',
                         help='reuse the common signed rectangular bounds on these rows')
+    parser.add_argument('--vertical-split',nargs='+',type=int,default=[],metavar='INDEX',
+                        help='reuse a rectangle certified by two vertical half-boxes')
     parser.add_argument('--cache',type=Path,default=ROOT/'.lake/backward-physical')
     parser.add_argument('--jacobian-cache',type=Path,default=ROOT/'.lake/jacobian-checks')
     parser.add_argument('--residual-cache',type=Path,default=ROOT/'.lake/trace-residual')
@@ -157,15 +162,18 @@ def main():
     a = parser.parse_args()
     if not 3 <= a.length <= 391:
         parser.error('length must be in [3,391]')
-    chosen = set(a.square_panels) | set(a.projected)
-    if set(a.square_panels) & set(a.projected) or chosen & TRACKED_PANEL_ROWS.keys():
+    if a.row is not None and not 2 <= a.row < 391:
+        parser.error('row must be in [2,390]')
+    selection = [*a.square_panels,*a.projected,*a.vertical_split]
+    chosen = set(selection)
+    if len(chosen) != len(selection) or chosen & TRACKED_PANEL_ROWS.keys():
         parser.error('each row must use one Jacobian source')
     if any(not 2 <= i < 391 for i in chosen) or a.wait_seconds < 0:
         parser.error('explicit row indices must be 2..390 and the wait must be nonnegative')
     def lake(*cmd):
         return subprocess.check_output(['lake','env',*cmd],cwd=ROOT,text=True).strip()
     required = [*STATIC,'DommaschkBackwardPrefixRadius']
-    if a.projected:
+    if a.projected or a.vertical_split:
         required.append('DommaschkReflectedProjectedTrial')
     subprocess.run(['lake','build','--no-build',*['PlasmaLean.Design.'+m for m in required]],
                    cwd=ROOT,check=True,stdout=subprocess.DEVNULL)
@@ -179,14 +187,20 @@ def main():
     common = [checksum,version,[(m,digest(DESIGN/(m+'.trace'))) for m in STATIC],
               digest(ROOT/'.lake/build/lib/lean/PlasmaLean/Certificates/PositionFrameProjection.trace')]
     packages, proof_keys = [], []
+    selected_rows = range(2,a.length) if a.row is None else (a.row,)
     for job in jobs(RECORD,8,False):
         _,direction,i,*_ = job
-        if direction != 1 or not 2 <= i < a.length:
+        if direction != 1 or i not in selected_rows:
             continue
         deadline = time.monotonic()+a.wait_seconds
         radii = None
         if i in TRACKED_PANEL_ROWS:
             jac = tracked_jacobian(TRACKED_PANEL_ROWS[i],checksum,version)
+        elif i in a.vertical_split:
+            from verify_vertical_split_jacobian import CACHE as split_cache, join
+            from emit_rectangular_jacobian import rectangular_data
+            jac = join(i,split_cache,version,deadline=deadline)
+            radii = rectangular_data(i)[2]
         elif i in chosen:
             from verify_explicit_jacobians import explicit_package
             _,info = explicit_package(i,i in a.square_panels,a.jacobian_cache.resolve(),checksum,version)
@@ -232,6 +246,13 @@ def main():
         proof_keys.append(result[1]['key'])
         print(f'verified backward physical row {i}: {result[1]["key"][:12]}',flush=True)
     overlay = union(cache,packages)
+    if a.row is not None:
+        public = {k:v for k,v in result[1].items() if k != 'artifacts'}
+        public.update(row=a.row,direction=-1,packet_sha256=checksum,import_paths=[str(overlay)])
+        if a.output:
+            save(a.output,public)
+        print(json.dumps(public),flush=True)
+        return
     maximum = max(row['physical_radius_out'] for row in back[:a.length])
     declaration = prefix_source(a.length,maximum)
     extra = digest(DESIGN/'DommaschkBackwardPrefixRadius.trace')

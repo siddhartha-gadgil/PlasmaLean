@@ -116,3 +116,5 @@ The finite-sample theorem gives an explicit mesh correction for comparing well a
 The three projected Jacobian certificates on rows 69–71 extend the physical solution to 9/8 radian. The uniform position error is below 2.214 × 10⁻⁶. [One-and-one-eighth-radian theorem and replay](https://github.com/siddhartha-gadgil/PlasmaLean/blob/main/notes/theory/dommaschk-projected-physical-trace.md)
 
 The backward proof reuses the projected rectangles via a reflection lemma. A single signed trajectory now covers [−9/8,9/8] with the same uniform error bound. [Signed theorem and replay](https://github.com/siddhartha-gadgil/PlasmaLean/blob/main/notes/theory/dommaschk-signed-projected-trace.md)
+
+The signed trajectory reaches ±3/2 radians across 192 slabs. The physical steps on the isolated slab 226 also pass in both directions with two closed vertical half-boxes. [Signed interval, spatial cover and replay](https://github.com/siddhartha-gadgil/PlasmaLean/blob/main/notes/theory/dommaschk-signed-trace-spatial-split.md)

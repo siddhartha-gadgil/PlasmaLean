@@ -23,6 +23,8 @@ are not in the import closure of the list below; and the option `debug.skipKerne
 leaves no axiom behind and is not detected by an axiom check.
 -/
 import PlasmaLean.Design.RationalStellaratorGCEwFamily
+import PlasmaLean.Certificates.DyadicTaylorCover
+import PlasmaLean.Design.DommaschkReflectedProjectedTrial
 import PlasmaLean.Design.RationalStellaratorGCMuWide
 import PlasmaLean.Design.RationalStellaratorGCMu3Confined
 import PlasmaLean.Design.RationalStellaratorGCMu4Confined
@@ -269,3 +271,5 @@ run_cmd do
 #print axioms PlasmaLean.Design.DommaschkReflectedBack001.physical_defect
 #print axioms PlasmaLean.Design.DommaschkJacobianForward042.physical_clock_log_norm
 #print axioms PlasmaLean.Design.DommaschkStoredPowers.checkedChunk
+#print axioms PlasmaLean.Certificates.TrajectoryTaylorModel.dyadic_cover
+#print axioms PlasmaLean.Design.DommaschkProjectedTrial.reflected_membership
