@@ -8,6 +8,7 @@ stretch of the physical error region along the reference trace.
 """
 from fractions import Fraction as F
 from math import ceil, isqrt
+from dataclasses import dataclass
 
 import numpy as np
 from scipy.linalg import expm
@@ -72,11 +73,12 @@ def shifted_jump(start, jump):
     return norm_upper([F(FRAME_SCALE*(d*x-b*y),det),F(FRAME_SCALE*(a*y-c*x),det)])
 
 
-def radius_in_frame(data, angles, nominal, incoming, dt, sign, trial, frame, residual, den):
+def radius_in_frame(data, angles, nominal, incoming, dt, sign, trial, frame, residual, den,
+                    *, record=None):
     op = frame[-1]
     tube = [pilot.Model(x.a,ceil(op*trial)) for x in nominal]
     jnum,den2 = jacobian(data,angles,tube,sign)
-    return linear_step_in_frame(jnum,den2,incoming,dt,frame,residual,den)
+    return linear_step_in_frame(jnum,den2,incoming,dt,frame,residual,den,record=record)
 
 
 def linear_step_in_frame(jnum,den2,incoming,dt,frame,residual,den,*,record=None):
@@ -99,7 +101,51 @@ def linear_step_in_frame(jnum,den2,incoming,dt,frame,residual,den,*,record=None)
     return pilot.radius_step(incoming,defect,mu,dt),defect
 
 
-def framed_segments(data, seed, ev, init, sign, dt, count, alpha_width, origin=()):
+@dataclass(frozen=True, slots=True)
+class CheckedFrameStep:
+    """Coordinates use SCALE; adjacent frame matrices use FRAME_SCALE."""
+    segment: pilot.MirrorSegment
+    jump: tuple
+    jump_upper: int
+    incoming: int
+    outgoing: int
+    trial: int
+    log_norm: F
+    operator_upper: F
+    determinant_lower: F
+
+
+def check_frame_step(data, angles, nominal, previous, radius, start, end,
+                     index, sign, dt, alpha_width, origin=()):
+    """Verify one dyadic proposal. Only exact operations run on this path."""
+    jump = tuple(x.endpoint(-1)-y for x,y in zip(nominal,previous,strict=True))
+    jump_upper = shifted_jump(start,jump)
+    incoming = radius+jump_upper
+    val = [pilot.evaluate(g[0],nominal,angles)[0] for g in data]
+    den = val[0]
+    residual = []
+    for x,n in zip(nominal,val[1:],strict=True):
+        slope = pilot.Model([j*x.a[j] for j in range(1,len(x.a))])*pilot.Model.rational(2/dt)
+        residual.append(n.integer(sign)-slope*den)
+    frame = affine_frame(start,end,dt)
+    trial = max(2*incoming,ceil(F(1,10**10)*pilot.SCALE))
+    for _ in range(6):
+        norms = []
+        final,defect = radius_in_frame(data,angles,nominal,incoming,dt,sign,trial,frame,
+                                       residual,den,record=norms.append)
+        if final < trial:
+            break
+        trial = 2*final+2
+    else:
+        raise ArithmeticError(f'frame first-exit test failed at step {index}')
+    op = frame[-1]
+    segment = pilot.MirrorSegment(index,sign,dt,alpha_width,tuple(tuple(x.a) for x in nominal),
+                                  ceil(op*incoming),ceil(op*final),ceil(op*trial),defect,origin)
+    return CheckedFrameStep(segment,jump,jump_upper,incoming,final,trial,norms[0],
+                            op,frame[3].bound()[0])
+
+
+def framed_segments(data, seed, ev, init, sign, dt, count, alpha_width, origin=(), *, record=None):
     if sign not in (-1,1) or dt<=0 or count<=0:
         raise ValueError('positive step and count and a signed direction required')
     previous = [x.a[0] for x in seed]
@@ -107,31 +153,17 @@ def framed_segments(data, seed, ev, init, sign, dt, count, alpha_width, origin=(
     start = [[FRAME_SCALE,0],[0,FRAME_SCALE]]
     for i,nominal in enumerate(pilot.proposals(ev,init,sign,dt,count)):
         angles = pilot.angle_models(sign*(i+F(1,2))*dt,sign*dt/2,alpha_width,origin)
-        radius += shifted_jump(start,[x.endpoint(-1)-y for x,y in zip(nominal,previous,strict=True)])
-        val = [pilot.evaluate(g[0],nominal,angles)[0] for g in data]
-        den = val[0]
-        residual = []
-        for x,n in zip(nominal,val[1:],strict=True):
-            slope = pilot.Model([j*x.a[j] for j in range(1,len(x.a))])*pilot.Model.rational(2/dt)
-            residual.append(n.integer(sign)-slope*den)
         # Midpoint estimates of the unconstrained Jacobian only propose the new frame.
         center = [pilot.Model([x.a[0]]) for x in nominal]
         at_center = [pilot.Model([x.a[0]],x.e) for x in angles]
         end = propose_frame(start,*jacobian(data,at_center,center,sign),dt)
-        frame = affine_frame(start,end,dt)
-        trial = max(2*radius,ceil(F(1,10**10)*pilot.SCALE))
-        for _ in range(6):
-            final,defect = radius_in_frame(data,angles,nominal,radius,dt,sign,trial,frame,residual,den)
-            if final<trial:
-                break
-            trial = 2*final+2
-        else:
-            raise ArithmeticError(f'frame first-exit test failed at step {i}')
-        op = frame[-1]
-        yield pilot.MirrorSegment(i,sign,dt,alpha_width,tuple(tuple(x.a) for x in nominal),
-                                  ceil(op*radius),ceil(op*final),ceil(op*trial),defect,origin)
+        checked = check_frame_step(data,angles,nominal,previous,radius,start,end,
+                                   i,sign,dt,alpha_width,origin)
+        if record is not None:
+            record(checked,end)
+        yield checked.segment
         previous = [x.endpoint(1) for x in nominal]
-        radius,start = final,end
+        radius,start = checked.outgoing,end
 
 
 def check_frame():

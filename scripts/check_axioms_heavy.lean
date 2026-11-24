@@ -48,6 +48,8 @@ import PlasmaLean.Design.DommaschkInterfaceFundamentalForms
 import PlasmaLean.Design.DommaschkActionQuadrature
 import PlasmaLean.Design.DommaschkLocalMirrorGraphs
 import PlasmaLean.Design.DommaschkMirrorSectorFlow
+import PlasmaLean.Design.DommaschkBounceObservables
+import PlasmaLean.Theory.Fields.MovingFrameSlabs
 import PlasmaLean.Design.DommaschkRadialSlabsS0H0
 import PlasmaLean.Design.DommaschkRadialSlabsS0H1
 import PlasmaLean.Design.DommaschkRadialSlabsS1H0
@@ -219,4 +221,7 @@ run_cmd do
 #print axioms PlasmaLean.Design.DommaschkInterfaceFundamentalForms.field_eq_speed_tangent
 #print axioms PlasmaLean.Design.DommaschkInterfaceFundamentalForms.exactTorusA_field_normalDerivative_obstruction
 #print axioms PlasmaLean.Design.DommaschkMirrorLaunch.exists_nested_collar
+#print axioms PlasmaLean.Design.DommaschkBounceField.physical_trace_tangent
+#print axioms PlasmaLean.Fields.TrajectorySlabs.Chain.exists_trajectory
+#print axioms PlasmaLean.Fields.TrajectorySlabs.MovingFrame.step_of_defect
 #print axioms PlasmaLean.Design.DommaschkLocalMirrorGraphs.sector_graphs

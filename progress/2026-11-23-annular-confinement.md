@@ -88,3 +88,7 @@ For every phase within 1/4096 radian of 0 or π/2, two unique roots in disjoint 
 All 28 endpoint modules passed the workstation replay. Building in memory-aware batches of six after splitting the large declarations gave a measured service peak of 2.8 GiB with existing compiled dependencies. The default and on-demand axiom audits passed for 53,987 and 80,912 declarations respectively.
 
 The nested Dommaschk launch theorem now reaches 1/64 geometric radian from every point in each of the two specified symmetry sectors. For a complete mirror passage, Lean checks 28 directed quadrature comparisons from pointwise field and arclength bounds. The four radial brackets use 16 tiles and 12,512 directed time slabs. Identifying the physical trajectory and its first variation on the full 6.1-radian trace remains open. [Verification record](https://github.com/siddhartha-gadgil/PlasmaLean/blob/main/notes/theory/dommaschk-mirror-certificate-replay.md)
+
+### Long-trace witness
+
+For the phase-zero radius 0.470, exact external replay covers 391 slabs in each direction. The general Lean gluing theorem passes the actual exit of each slab to the next one. The physical tangent theorem identifies the arclength density used by the action. Linking every slab to the physical trajectory in Lean remains open. [Long-trace verification record](https://github.com/siddhartha-gadgil/PlasmaLean/blob/main/notes/theory/dommaschk-long-trace-witness.md)

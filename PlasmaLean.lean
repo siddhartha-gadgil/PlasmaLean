@@ -345,6 +345,8 @@ public import PlasmaLean.Design.RationalStellaratorGCBoxConfined
 public import PlasmaLean.Theory.Fields.LogNormTrajectory
 public import PlasmaLean.Theory.Fields.MovingFrameTrajectory
 public import PlasmaLean.Theory.Fields.RectangularODEStep
+public import PlasmaLean.Theory.Fields.TrajectorySlabs
+public import PlasmaLean.Theory.Fields.MovingFrameSlabs
 public import PlasmaLean.Theory.Fields.CylindricalLaunchFlux
 public import PlasmaLean.Theory.Fields.ODEContinuation
 public import PlasmaLean.Theory.Kinetic.LorentzExistence

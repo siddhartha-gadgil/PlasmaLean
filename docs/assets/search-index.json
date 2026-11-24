@@ -2796,6 +2796,12 @@
     "text": "24 november 2026 — lean replay of the local mirror certificates (n-61) implementation plan"
   },
   {
+    "title": "24 November 2026 — exact long-trace witness and physical observable identities (N-62)",
+    "section": "Implementation plan",
+    "url": "implementation-plan.html#24-november-2026-exact-long-trace-witness-and-physical-observable-identities-n-62",
+    "text": "24 november 2026 — exact long-trace witness and physical observable identities (n-62) implementation plan"
+  },
+  {
     "title": "M0 · Exact symmetric equilibria: slab, screw pinch, Solov'ev, helical",
     "section": "Implementation plan · Lean verified — exact slab, screw-pinch, Solov'ev and helical equilibria with kernel force balance, all-time field-line/orbit confinement, Suydam both ways and screw-pinch Newcomb stability for every m ≠ 0 (reduced form supplied; idealized symmetric models).",
     "url": "implementation-plan.html",
@@ -3070,5 +3076,11 @@
     "section": "Verified progress",
     "url": "progress.html#mirror-certificate-replay-24-november-2026",
     "text": "mirror certificate replay, 24 november 2026 verified progress"
+  },
+  {
+    "title": "Long-trace witness",
+    "section": "Verified progress",
+    "url": "progress.html#long-trace-witness",
+    "text": "long-trace witness verified progress"
   }
 ]
