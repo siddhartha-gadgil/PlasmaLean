@@ -196,6 +196,12 @@ def main():
         jac = jacobians[i]
         jm = f'DommaschkJacobian{label.upper()}PairedForward{i:03}'
         jacdir = input_root(jac,label,1,i,jm,checksum,version)
+        jac_roots = [jacdir]
+        jac_import = jacdir
+        if 'shared_parents' in jac:
+            from verify_horner_endpoint_jacobian import checked_shared_roots
+            jac_roots.extend(checked_shared_roots(jac,jacdir,version))
+            jac_import = merge_import_roots(args.cache,jac_roots,[jac['key'],'physical-field-imports'])
         if (not jac.get('paired_trials') or tuple(jac['projected_radii']) != pair.common_radii
                 or Fraction(jac['common_rate']) != pair.common_rate):
             raise ValueError(f'incorrect two-direction rectangle for {label} row {i}')
@@ -206,13 +212,13 @@ def main():
             source = physical_source(label, sign, pair, prev.forward if sign == 1 else prev.backward, jm, fm)
             name, code = source
             root, row = compile_modules(args.cache/name, [(name, code, ['checked','field_bounds','physical_step'])],
-                [jacdir, refdir], [*base,jac['key'],ref['key']], args, PACKAGE)
-            roots.extend([jacdir, refdir, root])
+                [jac_import, refdir], [*base,jac['key'],ref['key']], args, PACKAGE)
+            roots.extend([*jac_roots, refdir, root])
             keys.append(row['key'])
             branches[sign].append({k: v for k, v in row.items() if k != 'artifacts'} |
                 {'index': i, 'direction': sign, 'endpoint': label, 'packet_sha256': checksum,
                  'jacobian_key': jac['key'], 'residual_key': ref['key'],
-                 'import_paths': list(map(str, [root, jacdir, refdir]))})
+                 'import_paths': list(map(str, [root, jac_import, refdir]))})
             print(f'{label} {tag} {i} accepted {row["key"]}',flush=True)
     imports = merge_import_roots(args.cache, roots, keys)
     name, code = prefix_source(label,branches)

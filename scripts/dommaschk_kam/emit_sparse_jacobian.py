@@ -81,7 +81,7 @@ theorem {name}_checked : Blocks {FORMAT} trial {name} {name}0 := {name}0_checked
 
 
 def matrix_certificate(source_models, step, *, namespace=PREFIX, start=None, dependencies=None,
-                       context="DommaschkBounceTaylorFirst", numeric=None, panel=None):
+                       context="DommaschkBounceTaylorFirst", numeric=None, panel=None, free_leaves=False):
     from bounce_phase_frame import FRAME_SCALE, affine_frame
 
     columns = ['DU', 'DZ', 'RU', 'RZ', 'ZU', 'ZZ']
@@ -100,7 +100,8 @@ def matrix_certificate(source_models, step, *, namespace=PREFIX, start=None, dep
     defs, proof = [], []
     table = {}
     for k,(mname, poly, model) in source_models.items():
-        proof.append(f'  have h{k} := {poly}_checked.mem ht hin')
+        if not free_leaves:
+            proof.append(f'  have h{k} := {poly}_checked.mem ht hin')
         table[k] = (mname, model)
     for tag, dat, val in [('M',m,'frameEntries firstLeft firstRight t'),
                           ('V',dm,'velocityEntries firstLeft firstRight')]:
@@ -158,10 +159,14 @@ def matrix_certificate(source_models, step, *, namespace=PREFIX, start=None, dep
     w = binary('off','add',A[0][1],A[1][0])
     if panel is not None:
         out += '\n'.join(defs)
+        inputs = ' (hin : trial.Mem t u z c s)'
+        if free_leaves:
+            inputs = ''.join(f'\n    (h{k} : {mname}.Mem t (evR u z c s {poly}))'
+                             for k,(mname,poly,_) in source_models.items())
         out += f"""
 /-- The actual sparse numerator matrix and denominator have all four joint
 memberships required by the panel-wise positive-semidefinite test. -/
-theorem models_mem {{t u z c s : ℝ}} (ht : |t| ≤ 1) (hin : trial.Mem t u z c s) :
+theorem models_mem {{t u z c s : ℝ}} (ht : |t| ≤ 1){inputs} :
     let m := frameEntries firstLeft firstRight t
     let denSq := evR u z c s dD * evR u z c s dD
     {panel}.models.Mem t (m.det * denSq) (transformedNumerator (spatialNumerator u z c s)

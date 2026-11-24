@@ -47,6 +47,10 @@ def static_data():
     polynomials = list(sparse_fields())
     polynomials.append(polynomials[0] + [
         (-HEIGHTS[0]*comb(7, j)*R0**(7-j), (j, 0, 0, 0)) for j in range(8)])
+    return weighted_channels(polynomials, models)
+
+
+def weighted_channels(polynomials, models):
     result = []
     for p, groups in zip(polynomials, models, strict=True):
         exact = defaultdict(F)
@@ -74,7 +78,10 @@ def static_data():
 
 
 def emit_static(k, channels):
-    name = 'DommaschkNativeActionData' + FIELDS[k]
+    return emit_static_field('DommaschkNativeActionData' + FIELDS[k], SP_FIELDS[k], channels)
+
+
+def emit_static_field(name, target, channels):
     src = header(name, ['PlasmaLean.Design.DommaschkNativeActionModel'])
     rows = []
     for w, group in channels:
@@ -87,7 +94,6 @@ def emit_static(k, channels):
         src += f'def channel{w} : WeightedRows := [' + ', '.join(rnames) + ']\n'
         rows.append(f'(.{WAVES[w]}, channel{w})')
     src += 'def channels : WeightedChannels := [' + ', '.join(rows) + ']\n\n'
-    target = SP_FIELDS[k]
     src += f'''theorem physical_identity (u z θ : ℝ) :
     value u z θ (exactChannels channels) = evR u z (Real.cos θ) (Real.sin θ) {target} := by
   rw [← expand_sound]
@@ -217,10 +223,14 @@ def horner_proof(variable, models, name):
 
 
 def emit_field(i, sign, k, channels, ins, input_name, paired=False):
-    _, u, z, angles = ins
     name = signed_prefix(i, sign, paired) + FIELDS[k]
     data = 'DommaschkNativeActionData' + FIELDS[k]
-    src = header(name, [DATA_PACKAGE+'.'+data, INPUT_PACKAGE+'.'+input_name])
+    return emit_horner_field(name, SP_FIELDS[k], channels, ins, data, input_name, DATA_PACKAGE, INPUT_PACKAGE)
+
+
+def emit_horner_field(name, symbol, channels, ins, data, input_name, data_package, input_package):
+    _, u, z, angles = ins
+    src = header(name, [data_package+'.'+data, input_package+'.'+input_name])
     src += f'open {input_name}\n'
     amplitudes = {}
     for w, group in channels:
@@ -254,7 +264,7 @@ def emit_field(i, sign, k, channels, ins, input_name, paired=False):
     src += f'''def model : Model := {model_literal(partial)}
 theorem sound {{s u z θ : ℝ}} (hs : |s| ≤ 1) (hu : displacement.Mem s u)
     (hz : vertical.Mem s z) (ha : ∀ w, (phase w).Mem s (w.value θ)) :
-    model.Mem s (evR u z (Real.cos θ) (Real.sin θ) {SP_FIELDS[k]}) := by
+    model.Mem s (evR u z (Real.cos θ) (Real.sin θ) {symbol}) := by
   rw [← {data}.physical_identity]
 '''
     for (w, _), tail in zip(channels, list(reversed(tails))[1:] + ['(constant 0)'], strict=True):

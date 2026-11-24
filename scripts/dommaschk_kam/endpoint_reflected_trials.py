@@ -27,7 +27,7 @@ class TrialPair:
     common_rate: Fraction
 
 
-def paired_rows(path, lo=0, hi=7):
+def paired_rows(path, lo=0, hi=7, *, allow_unpaired=False):
     with gzip.open(path, 'rt') as src:
         packet = json.load(src)
     traces = {trace['direction']: trace['steps'] for trace in packet['traces']}
@@ -39,6 +39,9 @@ def paired_rows(path, lo=0, hi=7):
         lf = traces[1][index-1]['frame_end'] if index else identity
         lb = traces[-1][index-1]['frame_end'] if index else identity
         if conjugate(lb) != lf or conjugate(b['frame_end']) != f['frame_end']:
+            if allow_unpaired:
+                yield None
+                continue
             raise ValueError(f'{path.name} row {index}: frames do not conjugate')
         fr = projected_radii(lf, f['frame_end'], f['frame_trial_radius'])
         br = projected_radii(lb, b['frame_end'], b['frame_trial_radius'])
