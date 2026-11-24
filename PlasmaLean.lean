@@ -376,6 +376,8 @@ public import PlasmaLean.Theory.Kinetic.MirrorHeightAction
 public import PlasmaLean.Theory.Kinetic.MirrorSublevelAction
 public import PlasmaLean.Theory.Kinetic.MirrorSublevelPanels
 public import PlasmaLean.Certificates.SublevelActionGrid
+public import PlasmaLean.Certificates.MirrorSublevelQuadrature
+public import PlasmaLean.Theory.Kinetic.MirrorSublevelPartition
 public import PlasmaLean.Theory.Kinetic.MirrorActionComparison
 public import PlasmaLean.Theory.Kinetic.MirrorActionEnvelope
 public import PlasmaLean.Theory.Kinetic.MirrorWellCriterion

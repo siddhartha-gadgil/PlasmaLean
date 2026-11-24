@@ -31,6 +31,7 @@ import PlasmaLean.Certificates.PositionFrameObservables
 import PlasmaLean.Design.DommaschkSublevelActionGrids
 import PlasmaLean.Design.DommaschkPreMirrorSigns
 import PlasmaLean.Design.DommaschkSignedObservable
+import PlasmaLean.Design.DommaschkSublevelArchiveNodes
 import PlasmaLean.Design.RationalStellaratorGCMuWide
 import PlasmaLean.Design.RationalStellaratorGCMu3Confined
 import PlasmaLean.Design.RationalStellaratorGCMu4Confined
@@ -297,3 +298,6 @@ run_cmd do
 #print axioms PlasmaLean.Design.DommaschkSignedObservable.Path.at_row
 #print axioms PlasmaLean.Design.DommaschkSignedObservable.Path.below_on
 #print axioms PlasmaLean.Design.DommaschkSignedObservable.birth_with
+#print axioms PlasmaLean.Certificates.MirrorSublevelQuadrature.covers_sublevel
+#print axioms PlasmaLean.Design.DommaschkSublevelArchiveNodes.Upper.node
+#print axioms PlasmaLean.Design.DommaschkSublevelArchiveNodes.Lower.node
