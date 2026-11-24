@@ -1,0 +1,23 @@
+{
+  "source": "bounce_frame_q0_u470.json.gz",
+  "packet_sha256": "203174bc83dc40b46bca175b2ac03a39e9631c1d9cf6f35209df9660ae213a3d",
+  "field_sha256": "6fa28479f725ad01686e0992788b5d7fbf0ecb6f7962e66e0988ac3fa34ba09b",
+  "direction": 1,
+  "reflected_pair": false,
+  "time_panels": 8,
+  "counts": {
+    "whole": 387,
+    "time": 3,
+    "1x2": 1
+  },
+  "refined_rows": {
+    "time": [
+      69,
+      171,
+      274
+    ],
+    "1x2": [
+      226
+    ]
+  }
+}

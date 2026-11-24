@@ -7,7 +7,7 @@ module
 
 public import PlasmaLean.Design.DommaschkPositionFramesFwd
 public import PlasmaLean.Design.DommaschkPhysicalTraceStep
-public import JacobianTraceCache.${jac}
+public import ${jac_package}.${jac}
 public import TraceCache.${central}
 
 /-! # Certified physical forward slab ${index} at the phase-zero 47/100 endpoint

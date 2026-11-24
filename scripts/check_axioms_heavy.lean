@@ -53,6 +53,8 @@ import PlasmaLean.Design.DommaschkMirrorFirstPassage
 import PlasmaLean.Design.DommaschkMirrorTwoSlabs
 import PlasmaLean.Design.DommaschkMirrorBidirectional
 import PlasmaLean.Design.DommaschkMirrorTwoSided
+import PlasmaLean.Design.DommaschkBackwardPairedPrefix
+import PlasmaLean.Design.DommaschkProjectedTrial
 import PlasmaLean.Design.DommaschkReflectedBack001
 import PlasmaLean.Design.DommaschkJacobianForward042
 import PlasmaLean.Design.DommaschkStoredPowers
@@ -262,6 +264,8 @@ run_cmd do
 #print axioms PlasmaLean.Design.DommaschkPhysicalBackwardSecondStep.physical_step
 #print axioms PlasmaLean.Design.DommaschkMirrorLaunch.join_physical_clocks
 #print axioms PlasmaLean.Design.DommaschkMirrorLaunch.exists_nested_four_slabs
+#print axioms PlasmaLean.Design.DommaschkBackwardPairedPrefix.birthPassage
+#print axioms PlasmaLean.Design.DommaschkProjectedTrial.trial_membership
 #print axioms PlasmaLean.Design.DommaschkReflectedBack001.physical_defect
 #print axioms PlasmaLean.Design.DommaschkJacobianForward042.physical_clock_log_norm
 #print axioms PlasmaLean.Design.DommaschkStoredPowers.checkedChunk

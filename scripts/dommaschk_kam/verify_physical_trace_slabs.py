@@ -5,6 +5,7 @@ Their exact emitted sources, compiler, witness and current dependency hashes
 identify the upstream packages. Every recorded artifact is rehashed before use.
 The output includes a single LEAN_PATH entry for importing every selected row.
 Use --shared-from 16 with the shared-power forward Jacobian campaign.
+Row 42 uses the checked-in panel certificate on the ordinary Lake path.
 """
 
 import argparse
@@ -32,6 +33,7 @@ TEMPLATE = HERE / 'templates/physical_forward_step.lean.tpl'
 PACKAGE = 'PhysicalTraceCache'
 THEOREMS = ('checked', 'field_bounds', 'physical_step')
 LIBRARIES = ('DommaschkPositionFramesFwd', 'DommaschkPhysicalTraceStep')
+TRACKED_PANEL_ROWS = {42: 'DommaschkJacobianForward042'}
 # Version one used the verifier's source digest as the physical artifact schema
 # identifier. Keep it stable for CLI and scheduling changes. The generated Lean
 # proof, both upstream manifests, compiler, witness and imported .trace files
@@ -95,17 +97,33 @@ def stored(index):
     return f'DommaschkPositionFramesFwd.block{block}[{offset}]'
 
 
-def source_for(index, error, spatial, central):
+def tracked_jacobian(name, packet_hash, version):
+    """Bind a tracked Jacobian and its row-local panel/field proofs to the current Lake build."""
+    library = DESIGN.parents[1]
+    sources = sorted((ROOT/'PlasmaLean/Design').glob(name+'*.lean'))
+    if (ROOT/'PlasmaLean/Design'/(name+'Panels.lean')) not in sources:
+        raise ValueError(f'missing tracked panel certificate for {name}')
+    artifacts = {}
+    for source in sources:
+        for suffix in ('.trace', '.olean', '.olean.private', '.olean.server'):
+            path = DESIGN/(source.stem+suffix)
+            artifacts[str(path.relative_to(library))] = digest(path)
+    key = key_of([packet_hash,version,[(p.name,digest(p)) for p in sources],artifacts])
+    return library, {'module':name,'key':key,'artifacts':artifacts,'package':'PlasmaLean.Design'}
+
+
+def source_for(index, error, spatial, central, jac_package=JACOBIAN_PACKAGE):
     name = f'DommaschkPhysicalForward{index:03}'
     prior = 'next ' + stored(index-1) if index else 'DommaschkPositionFramesFwd.start'
     return name, Template(TEMPLATE.read_text()).substitute(
-        name=name, jac=spatial, central=central, index=index, end=index+1,
+        name=name, jac=spatial, jac_package=jac_package, central=central, index=index, end=index+1,
         offset=2*index+1, stored=stored(index), previous=prior, error=error)
 
 
 def verify_row(index, error, packages, args, common):
     (jacdir, jac), (resdir, res) = packages
-    name, source = source_for(index, error, jac['module'], res['theorem'].split('.')[0])
+    name, source = source_for(index, error, jac['module'], res['theorem'].split('.')[0],
+                              jac.get('package', JACOBIAN_PACKAGE))
     key = key_of([common, source, jac['key'], res['key'], jac['artifacts'], res['artifacts']])
     directory = args.cache / name / key
     tree = directory / PACKAGE
@@ -200,6 +218,7 @@ def main():
                                         for i in range(lo//8,hi//8+1))]
     if args.shared_from is not None and hi >= args.shared_from:
         static.append('DommaschkStoredPowers')
+    static.extend(name for index,name in TRACKED_PANEL_ROWS.items() if lo <= index <= hi)
     subprocess.run(['lake','build','--no-build',*['PlasmaLean.Design.'+m for m in static]],
                    check=True,cwd=ROOT,stdout=subprocess.DEVNULL)
     def lake(*cmd):
@@ -220,14 +239,18 @@ def main():
         _,direction,index,*_ = job
         if direction != 1 or not lo <= index <= hi:
             continue
-        shared = args.shared_from is not None and index >= args.shared_from
-        emitted = emit_jacobian(index,shared=True) if shared else emit_jacobian(index)
-        jac = upstream(jac_cache,list(emitted.items()),'verify_sparse_forward_jacobians.py',
-                       packet_hash,version,JACOBIAN_PACKAGE)
+        deadline = time.monotonic()+args.wait_seconds
+        if index in TRACKED_PANEL_ROWS:
+            jac = tracked_jacobian(TRACKED_PANEL_ROWS[index],packet_hash,version)
+        else:
+            shared = args.shared_from is not None and index >= args.shared_from
+            emitted = emit_jacobian(index,shared=True) if shared else emit_jacobian(index)
+            info = upstream(jac_cache,list(emitted.items()),'verify_sparse_forward_jacobians.py',
+                            packet_hash,version,JACOBIAN_PACKAGE)
+            jac = accepted(info,index,deadline)
         res = upstream(res_cache,list(emit_selected([job])),'verify_sparse_reference_slabs.py',
                        packet_hash,version,'TraceCache')
-        deadline = time.monotonic()+args.wait_seconds
-        packages = [accepted(p,index,deadline) for p in (jac,res)]
+        packages = [jac,accepted(res,index,deadline)]
         work,record,resumed = verify_row(index,forward['steps'][index]['physical_trial_radius'],
                                           packages,args,common)
         artifacts.extend([*packages,(work,record)])
