@@ -63,6 +63,8 @@ import PlasmaLean.Design.DommaschkActionHeightInverse
 import PlasmaLean.Design.DommaschkNativeWellAction
 import PlasmaLean.Design.DommaschkCartesianMirrorBirth
 import PlasmaLean.Design.DommaschkTrappedBirthCoordinates
+import PlasmaLean.Design.DommaschkActionFlightFloor
+import PlasmaLean.Design.DommaschkSignedTracePrefix
 import PlasmaLean.Design.DommaschkToroidalEnvelopeTest
 import PlasmaLean.Design.DommaschkEndpointContinuation
 import PlasmaLean.Design.DommaschkNativeActionReflection
@@ -452,3 +454,7 @@ run_cmd do
 #print axioms PlasmaLean.Design.DommaschkCartesianMirrorBirth.neighborhood
 #print axioms PlasmaLean.Design.DommaschkTrappedBirthCoordinates.strict_at_birth
 #print axioms PlasmaLean.Design.DommaschkTrappedBirthCoordinates.from_path
+#print axioms PlasmaLean.Design.DommaschkSignedObservable.Path.take_through
+#print axioms PlasmaLean.Kinetic.MirrorActionEnvelope.LaunchWell.time_floor_of_action_cap
+#print axioms PlasmaLean.Design.DommaschkActionFlightFloor.of_passage
+#print axioms PlasmaLean.Design.DommaschkActionFlightFloor.join_bounds
