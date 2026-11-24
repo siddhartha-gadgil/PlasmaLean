@@ -158,6 +158,7 @@ import PlasmaLean.Design.DommaschkIncomingHeightAction
 import PlasmaLean.Certificates.WeakenLowerActionCells
 import PlasmaLean.Design.DommaschkPhaseZeroRegularBirth
 import PlasmaLean.Design.DommaschkCompactLittlejohnArc
+import PlasmaLean.Certificates.WeakenLowerActionCover
 
 /-! Audit all declarations owned by project modules in the import closure (the on-demand top
 modules and everything they import). Fails on any non-standard axiom. -/
@@ -590,3 +591,5 @@ run_cmd do
 #print axioms PlasmaLean.Design.DommaschkCompactLittlejohnArc.Uniform.unrestricted
 #print axioms PlasmaLean.Design.DommaschkCompactLittlejohnArc.of_compact
 #print axioms PlasmaLean.Design.DommaschkCompactLittlejohnArc.of_path
+#print axioms PlasmaLean.Certificates.MirrorActionQuadrature.covers_of_blocksLowerLE
+#print axioms PlasmaLean.Certificates.MirrorActionQuadrature.blocksLowerLE_append

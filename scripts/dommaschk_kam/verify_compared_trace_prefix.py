@@ -134,7 +134,10 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--calibrated', required=True,type=Path)
     parser.add_argument('--launch-profile',required=True,type=Path)
-    parser.add_argument('--rows',required=True,type=Path,nargs='+',help='ordered signed row or row-group receipts, starting at zero')
+    source = parser.add_mutually_exclusive_group(required=True)
+    source.add_argument('--rows',type=Path,nargs='+',help='ordered signed row or row-group receipts, starting at zero')
+    source.add_argument('--row-map',type=Path,help='ordered receipt manifest from verify_grouped_profile_interval')
+    parser.add_argument('--length',type=int,help='use this many initial signed pairs from the supplied receipts')
     parser.add_argument('--cache',type=Path,default=ROOT/'.lake/compared-trace-prefix')
     parser.add_argument('--output',required=True,type=Path)
     args = parser.parse_args()
@@ -147,12 +150,17 @@ def main():
     args.cache = args.cache.resolve()
     cal,launch = read(args.calibrated),read(args.launch_profile)
     reports = []
-    for path in args.rows:
+    sources = [Path(p) for p in read(args.row_map)['receipts']] if args.row_map else args.rows
+    for path in sources:
         record = read(path)
         lo,hi = record.get('start',len(reports)),record.get('stop',len(reports)+1)
         if type(lo) is not int or type(hi) is not int or lo != len(reports) or not lo < hi <= 325:
             parser.error(f'nonconsecutive comparison receipt {path}')
         reports.extend([record]*(hi-lo))
+    if args.length is not None:
+        if not 1 <= args.length <= len(reports):
+            parser.error('requested signed pairs must be covered by the supplied comparison receipts')
+        reports = reports[:args.length]
     n,counts = len(reports),cal['lengths_each_direction']
     if set(counts) != set(ENDPOINTS) or not 1 <= n <= min(325,counts['q0r470'],counts['q0r478']):
         parser.error('the calibrated family must enclose the whole requested pair of prefixes')
