@@ -2,6 +2,7 @@
 
 import argparse
 from concurrent.futures import FIRST_COMPLETED, ThreadPoolExecutor, wait
+from contextlib import ExitStack
 import fcntl
 import glob
 import json
@@ -79,7 +80,15 @@ def residual_method(args):
 def produce(args, stage, i):
     path = row_path(args.cache,stage,i)
     py = sys.executable
-    if stage=='references':
+    if stage=='grouped-jacobians':
+        start,stop=args.groups[i]
+        missing=[j for j in range(max(1,start),min(stop,args.length))
+                 if not row_path(args.cache,'jacobians',j).exists()]
+        if not missing:
+            return None
+        cmd=[py,HERE/'verify_grouped_endpoint_jacobians.py','--endpoint',args.endpoint,
+             '--span',str(start),str(stop),'--rows',*map(str,missing),'--handoff',args.cache,'--output',path]
+    elif stage=='references':
         method = residual_method(args)
         if method in ('native-horner','reflected'):
             script = ('verify_native_endpoint_residuals.py' if method == 'native-horner'
@@ -99,12 +108,22 @@ def produce(args, stage, i):
              '--references',*[row_path(args.cache,'references',j) for j in range(1,i)],
              '--jacobians',*[row_path(args.cache,'jacobians',j) for j in range(1,i)],'--output',path]
     log = path.with_suffix('.log')
-    with log.open('a') as out:
+    with ExitStack() as stack:
+        if stage=='prefixes' and i>=128 and args.prefix_lock:
+            gate=stack.enter_context(args.prefix_lock.open('a'))
+            fcntl.flock(gate,fcntl.LOCK_EX)
+        out=stack.enter_context(log.open('a'))
         result=subprocess.run(cmd,cwd=ROOT,stdout=out,stderr=subprocess.STDOUT,
                               env={**os.environ,'OPENBLAS_NUM_THREADS':'1','OMP_NUM_THREADS':'1','LEAN_NUM_THREADS':'1'})
     if result.returncode:
         raise RuntimeError(f'{log}: {log.read_text()[-850:]}')
-    if stage=='prefixes':
+    if stage=='grouped-jacobians':
+        spatial=records_for(path,'jacobians',args.endpoint,args.checksum)
+        if set(spatial)!=set(missing) or any(
+                j not in records_for(row_path(args.cache,'jacobians',j),'jacobians',args.endpoint,args.checksum)
+                for j in missing):
+            raise ValueError(f'incomplete on-disk handoff of grouped interval {i} at {path}')
+    elif stage=='prefixes':
         receipt=read(path)
         if receipt['endpoint'] != args.endpoint or receipt['length_each_direction'] != i:
             raise ValueError(f'wrong physical checkpoint at {path}')
@@ -120,7 +139,8 @@ def campaign(a):
     checked_files={}
     checkpoints=sorted({n for n in a.checkpoint if 2<=n<=a.length}|{a.length})
     running,errors,attempts={}, {}, {}
-    for stage in [*STAGES,'prefixes']:
+    fallback_groups={}
+    for stage in [*STAGES,'prefixes',*(['grouped-jacobians'] if a.groups else [])]:
         (a.cache/stage).mkdir(parents=True,exist_ok=True)
     for path in sorted((a.cache/'prefixes').glob('*.json')):
         r=read(path)
@@ -162,6 +182,8 @@ def campaign(a):
               'active_jobs':sorted(running.values()),'other_endpoint_workers':external,
               'idle_cores':idle,'available_gib':round(available_ram()/GIB,1),
               'worker_target':target,'errors':{f'{s}{i:03}':v for (s,i),v in errors.items()}}
+        if a.groups:
+            data['grouped_spatial_fallbacks']=fallback_groups
         save(a.cache/'status.json',data)
         save(a.output,data)
     def next_job():
@@ -179,10 +201,14 @@ def campaign(a):
                 job=(s,i)
                 if s=='references' and a.defer_reference==i and a.reference_unit and active_unit(a.reference_unit):
                     continue
+                if s=='jacobians' and i in a.groups and a.groups[i][0] not in fallback_groups:
+                    job=('grouped-jacobians',a.groups[i][0])
                 if i not in stages[s] and job not in busy and job not in errors:
                     return job
         return None
     with ThreadPoolExecutor(max_workers=a.workers) as pool:
+        if a.groups:
+            status()
         while a.length not in prefixes:
             now=time.monotonic()
             if now-last_ingest>=20:
@@ -206,7 +232,11 @@ def campaign(a):
                 elif idle<a.reserve_cores:
                     target=max(a.baseline,target-1)
                 target=min(target,cap)
-            slots=max(0,min(max(1,target-external)-len(running),
+            allowance=max(1,target-external)
+            if a.worker_leases:
+                target=max(0,min(a.workers,read(a.worker_leases).get(a.endpoint,0)))
+                allowance=max(0,target-external)
+            slots=max(0,min(allowance-len(running),
                             int((available_ram()/GIB-a.reserve_gib)//6)))
             if (a.cache/'drain').exists():
                 slots=0
@@ -233,12 +263,19 @@ def campaign(a):
                     if s=='prefixes':
                         prefixes[i]=read(path)['key']
                         print(f'{a.endpoint} {i} signed slabs each way: {prefixes[i]}',flush=True)
+                    elif s=='grouped-jacobians':
+                        if path is not None:
+                            stages['jacobians'].update(records_for(path,'jacobians',a.endpoint,a.checksum))
+                        ingest()
                     else:
                         stages[s].add(i)
                 except Exception as exc:
                     attempts[job]=attempts.get(job,0)+1
                     if attempts[job]>=2:
-                        errors[job]=str(exc)
+                        if s=='grouped-jacobians':
+                            fallback_groups[i]=str(exc)
+                        else:
+                            errors[job]=str(exc)
                     print(f'{s} {i} attempt {attempts[job]}: {exc}',flush=True)
             if len(errors)>=3:
                 break
@@ -260,8 +297,11 @@ def main():
     method.add_argument('--native-residuals',action='store_true',
                         help='use the seven-harmonic central jet on the phase-zero reference')
     p.add_argument('--jacobians-input',nargs='*',default=[])
+    p.add_argument('--group-plan',type=Path,help='adaptive projected trial rectangles from plan_endpoint_continuations.py')
     p.add_argument('--baseline',type=int,default=2)
     p.add_argument('--workers',type=int,default=8)
+    p.add_argument('--worker-leases',type=Path,help='external shared worker allocation by endpoint')
+    p.add_argument('--prefix-lock',type=Path,help='serialize long chain joins across independent endpoints')
     p.add_argument('--workers-during-cells',type=int,default=4)
     p.add_argument('--cells-progress',type=Path)
     p.add_argument('--reserve-cores',type=int,default=2)
@@ -281,6 +321,12 @@ def main():
     a.cache=a.cache.resolve()/a.endpoint
     a.cache.mkdir(parents=True,exist_ok=True)
     a.checksum=digest(RECORD.with_name(f'bounce_frame_{a.endpoint[:2]}_u{a.endpoint[3:]}.json.gz'))
+    a.groups={}
+    if a.group_plan:
+        from plan_endpoint_continuations import checked_plan
+        target,a.groups=checked_plan(read(a.group_plan),a.endpoint)
+        if target['target']<a.length:
+            p.error('requested length exceeds the planned trace')
     with (a.cache/'campaign.lock').open('a') as lock:
         fcntl.flock(lock,fcntl.LOCK_EX|fcntl.LOCK_NB)
         campaign(a)

@@ -15,7 +15,7 @@
     },
     {
      "value": "C2 open",
-     "label": "One positive guiding-centre time covers every admitted pilot launch, its full ±316/64 arc, both velocity signs, the height band and a compatible closed energy interval. The field-drop and arclength bounds hold on 325 tube pairs each way and on both actual field lines through ±4 radians. At the second birth the near-upper action over ±4 radians exceeds 47/125. The 48 outermost spatial derivative bounds for the second signed trace now come from four shared field enclosures. Thermal transport and a numerical trapped fraction remain open."
+     "label": "One positive guiding-centre time covers every admitted pilot launch, its full ±316/64 arc, both velocity signs, the height band and a compatible closed energy interval. The field-drop and arclength bounds hold on 325 tube pairs each way and on both actual field lines through ±4 radians. At the second birth the near-upper action over ±4 radians exceeds 47/125. Both ODE steps of an asymmetric opposite-section slab now pass with independent frames. Six further trajectories are being extended beyond their mirror caps. Thermal transport and a numerical trapped fraction remain open."
     },
     {
      "value": "c/ε²",

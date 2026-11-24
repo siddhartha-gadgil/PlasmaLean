@@ -80,7 +80,7 @@ def checked_grouped_roots(row, root, version):
     return [Path(p['root']) for p in parents]
 
 
-def handoff(row, root, campaign):
+def handoff(row, source, campaign):
     """Let the existing campaign discover one complete immutable row during its next scan."""
     from verify_endpoint_trace_campaign import records_for
     status = json.loads((campaign/'status.json').read_text())
@@ -88,7 +88,6 @@ def handoff(row, root, campaign):
     if (status['endpoint'] != label or status['packet_sha256'] != checksum or
             not 0 < i < status['target_length_each_way']):
         raise ValueError('handoff does not match the active physical trace')
-    source = root/'row.json'
     dest = campaign/'jacobians'/f'{i:03}.json'
     if i not in records_for(source,'jacobians',label,checksum):
         raise ValueError('grouped matrix was not admitted by the trace campaign')
@@ -106,19 +105,26 @@ def handoff(row, root, campaign):
             return 'already installed'
 
 
-def finish(stem,start,stop,pairs,group,models,providers,args):
+def finish(stem,start,stop,rows,group,models,providers,args):
     results = []
     packet = args.keys[0][0]
     version = args.keys[1]
-    for pair in pairs:
+    section=int(args.endpoint[1])
+    for branches in rows:
+        pair=branches[0][1]
         i = pair.index
         if args.rows and i not in args.rows:
             continue
         prefix = stem+f'Row{i:03}'
         r,z = own_models(pair)
-        local = inputs_source(prefix+'Input',i,(r,r-R0M,z,angle_models(F(2*i+1,128),F(1,128),F(0))),0)
+        angles=angle_models(F(2*i+1,128),F(1,128),F(0))
+        if section:
+            angles=[wave.integer((-1)**((j+1)//2)) for j,wave in enumerate(angles)]
+        local = inputs_source(prefix+'Input',i,(r,r-R0M,z,angles),section)
+        angle_traces = [digest(DESIGN/'DommaschkOppositeHarmonic.trace')] if section else []
         inp = compile_modules(args.cache/local[0],[local],[],
-                              [LOCAL,packet,version,digest(DESIGN/f'DommaschkHarmonicBlock{i//8:02}.trace')],
+                              [LOCAL,packet,version,digest(DESIGN/f'DommaschkHarmonicBlock{i//8:02}.trace'),
+                               *angle_traces],
                               args,LOCAL)
         jet = restricted(models,start,stop,i)
         res = restrict_source(prefix+'Restricted',local[0],stem,providers,jet,
@@ -129,19 +135,30 @@ def finish(stem,start,stop,pairs,group,models,providers,args):
             args,ADAPTER)
         sources.append(adapted)
         parents = [{'root':str(path),'key':m['key'],'module':m['module']} for path,m in sources]
-        mods = endpoint_modules(args.endpoint,pair,jet,[res[0]+'.'+t for t in TAGS],
-                                local[0],field_imports=[ADAPTER+'.'+res[0]])
-        root,record = compile_modules(args.cache/mods[-1][0],mods,[union(args.cache,sources)],
-                                      matrix_keys(parents,packet,version),args,JACOBIAN)
-        row = {k:v for k,v in record.items() if k!='artifacts'}
-        row.update(endpoint=args.endpoint,launch_u=str(F(int(args.endpoint[3:]),1000)),
-                   section_in_half_pi=0,direction=1,index=i,projected_radii=pair.common_radii,
-                   paired_trials=True,common_rate=str(pair.common_rate),packet_sha256=packet,
-                   lean_version=version,import_paths=[str(root)],grouped_trial=[start,stop],
-                   grouped_parents=parents)
-        checked_grouped_roots(row,root,version)
-        save(root/'row.json',row)
-        results.append(row)
+        links=union(args.cache,sources)
+        pair_results=[]
+        for sign,frame in branches:
+            mods = endpoint_modules(args.endpoint,frame,jet,[res[0]+'.'+t for t in TAGS],
+                                    local[0],matrix_sign=sign,field_imports=[ADAPTER+'.'+res[0]])
+            root,record = compile_modules(args.cache/mods[-1][0],mods,[links],
+                                          matrix_keys(parents,packet,version),args,JACOBIAN)
+            row = {k:v for k,v in record.items() if k!='artifacts'}
+            row.update(endpoint=args.endpoint,launch_u=str(F(int(args.endpoint[3:]),1000)),
+                       section_in_half_pi=section,direction=1,index=i,projected_radii=frame.common_radii,
+                       paired_trials=True,common_rate=str(frame.common_rate),packet_sha256=packet,
+                       lean_version=version,import_paths=[str(root)],grouped_trial=[start,stop],
+                       grouped_parents=parents)
+            if sign is not None:
+                row['matrix_direction']=sign
+            checked_grouped_roots(row,root,version)
+            save(root/'row.json',row)
+            pair_results.append(row)
+        results.extend(pair_results)
         save(args.output,results)
-        state = handoff(row,root,args.handoff) if args.handoff else 'verified'
-        print(f'{i} {state} {row["key"]} {row["wall_seconds"]}s',flush=True)
+        if args.handoff:
+            combined=Path(pair_results[0]['import_paths'][0])/'matrix-pair.json'
+            save(combined,pair_results)
+            state=handoff(pair_results[0],combined,args.handoff)
+        else:
+            state='verified'
+        print(f'{i} {state}'+''.join(f' {m["key"]} {m["wall_seconds"]}s' for m in pair_results),flush=True)

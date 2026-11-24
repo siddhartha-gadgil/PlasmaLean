@@ -9,6 +9,7 @@ from bounce_mirror_pilot import Model, angle_models, evaluate
 from endpoint_reflected_trials import paired_rows
 from grouped_profile_harmonics import prepare
 from screen_endpoint_jacobian_sharing import first_failure, native_jet, own_models
+from screen_independent_endpoint_frames import trial_frames
 from verify_backward_physical_prefix import compile_modules
 from verify_endpoint_reference_slabs import ENDPOINTS
 from verify_grouped_mirror_exclusion import compose
@@ -19,17 +20,18 @@ from verify_physical_trace_slabs import DESIGN, RECORD, ROOT, digest, save
 
 
 FIELDS = 'GroupedTrialJetCache'
-ENDPOINT_LABELS = tuple(label for label in ENDPOINTS if label.startswith('q0'))
+ENDPOINT_LABELS = tuple(ENDPOINTS)
 
 
-def tube(pairs):
+def tube(pairs,section=0):
     """Enclose the four original trial coordinates under the common affine clock."""
     start,stop = pairs[0].index,pairs[-1].index+1
     n = stop-start
     rows = []
     for pair in pairs:
         w = angle_models(F(2*pair.index+1,128),F(1,128),F(0))
-        rows.append([*own_models(pair),w[2],w[1]])
+        c,s = (w[2],w[1]) if section==0 else (-w[2],-w[1])
+        rows.append([*own_models(pair),c,s])
     m = (start+stop-1)//2
     out = []
     for k,center in enumerate(rows[m-start]):
@@ -68,6 +70,29 @@ def restricted(models,a,b,i):
     return [row[j:j+3] for j in (0,3,6)]
 
 
+def trial_data(label,start,stop):
+    """Group the physical coordinates, retaining every required signed matrix and budget."""
+    packet=RECORD.with_name(f'bounce_frame_{label[:2]}_u{label[3:]}.json.gz')
+    section=int(label[1])
+    if section:
+        rows=[[(1,forward),(-1,back)] for forward,back in trial_frames(packet,start,stop-1)]
+    else:
+        rows=[[(None,pair)] for pair in paired_rows(packet,start,stop-1)]
+    box=tube([row[0][1] for row in rows],section)
+    r,z,c,s=box
+    waves=harmonics(c,s)
+    candidate=[evaluate(term,(r,z),waves)[0] for triple in native_jet() for term in triple]
+    failures={}
+    for branches in rows:
+        i=branches[0][1].index
+        local=restricted(candidate,start,stop,i)
+        for sign,pair in branches:
+            panel=first_failure(local,pair)
+            if panel is not None:
+                failures[i if sign is None else f'{i}:{sign}']=panel
+    return packet,rows,box,candidate,failures
+
+
 def main():
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument('--span',type=int,nargs=2,required=True,metavar=('FIRST','STOP'))
@@ -84,14 +109,7 @@ def main():
         p.error('the trial span must be a nonempty subset of the original trace')
     if args.rows and (len(set(args.rows))!=len(args.rows) or any(i<a or i>=b for i in args.rows)):
         p.error('requested rows must be distinct indices in the trial span')
-    packet = RECORD.with_name(f'bounce_frame_q0_u{args.endpoint[3:]}.json.gz')
-    pairs = list(paired_rows(packet,a,b-1))
-    box = tube(pairs)
-    r,z,c,s = box
-    waves = harmonics(c,s)
-    candidate = [evaluate(term,(r,z),waves)[0] for triple in native_jet() for term in triple]
-    failures = {pair.index:j for pair in pairs
-                if (j := first_failure(restricted(candidate,a,b,pair.index),pair)) is not None}
+    packet,rows,box,candidate,failures=trial_data(args.endpoint,a,b)
     if args.preflight:
         save(args.output,dict(start=a,stop=b,packet_sha256=digest(packet),failures=failures))
         return
@@ -113,7 +131,7 @@ def main():
                               wall_seconds=result[1]['wall_seconds'],peak_rss_kib=result[1]['peak_rss_kib']))
         return
     from grouped_trial_jacobian_rows import finish
-    finish(stem,a,b,pairs,result,models,providers,args)
+    finish(stem,a,b,rows,result,models,providers,args)
 
 
 if __name__=='__main__':
