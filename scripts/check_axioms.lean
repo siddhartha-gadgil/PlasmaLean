@@ -916,3 +916,16 @@ run_cmd do
 #print axioms PlasmaLean.Kinetic.MirrorHeightBand.Branch.time_lt_of_above
 #print axioms PlasmaLean.Kinetic.MirrorHeightBand.Branch.lt_time_of_below
 #print axioms PlasmaLean.Kinetic.MirrorHeightBand.Branch.timeAt_derivative
+#print axioms PlasmaLean.Kinetic.FirstMirror.exists_family
+#print axioms PlasmaLean.Kinetic.FirstMirror.Family.strictMono
+#print axioms PlasmaLean.Kinetic.FirstMirror.Family.continuous_from_below
+#print axioms PlasmaLean.Kinetic.FirstMirror.Family.countable_exceptions
+#print axioms PlasmaLean.Kinetic.FirstMirror.critical_values_null
+#print axioms PlasmaLean.Kinetic.FirstMirror.Family.deriv_pos
+#print axioms PlasmaLean.Kinetic.FirstMirror.Family.ae_transverse
+#print axioms PlasmaLean.Kinetic.FirstMirror.ae_two_sided
+#print axioms PlasmaLean.Kinetic.FirstMirror.exists_ae_field_mirrors
+#print axioms PlasmaLean.Kinetic.FirstMirror.shallow_image_le
+#print axioms PlasmaLean.Kinetic.FirstMirror.Family.shallow_heights_le
+#print axioms PlasmaLean.Kinetic.FirstMirror.two_sided_shallow_heights_le
+#print axioms PlasmaLean.Kinetic.FirstMirror.two_sided_good_heights
