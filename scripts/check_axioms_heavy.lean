@@ -66,6 +66,7 @@ import PlasmaLean.Design.DommaschkTrappedBirthCoordinates
 import PlasmaLean.Design.DommaschkActionFlightFloor
 import PlasmaLean.Design.DommaschkSignedTracePrefix
 import PlasmaLean.Design.DommaschkPhysicalCentralJet
+import PlasmaLean.Design.DommaschkLocalLittlejohnBirth
 import PlasmaLean.Design.DommaschkEndpointTraceFamily
 import PlasmaLean.Design.DommaschkRadialActionCriterion
 import PlasmaLean.Design.DommaschkToroidalEnvelopeTest
@@ -467,3 +468,6 @@ run_cmd do
 #print axioms PlasmaLean.Design.DommaschkEndpointTraceFamily.common_of_entry
 #print axioms PlasmaLean.Design.DommaschkEndpointTraceFamily.pilot_chain
 #print axioms PlasmaLean.Design.DommaschkEndpointTraceFamily.pilot_from_entry
+#print axioms PlasmaLean.Design.DommaschkLocalLittlejohnBirth.parallel
+#print axioms PlasmaLean.Design.DommaschkLocalLittlejohnBirth.interior_of_reference
+#print axioms PlasmaLean.Design.DommaschkLocalLittlejohnBirth.from_path

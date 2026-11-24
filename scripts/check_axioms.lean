@@ -903,3 +903,7 @@ run_cmd do
 #print axioms PlasmaLean.Kinetic.MirrorActionVariation.first_variation
 #print axioms PlasmaLean.Kinetic.MirrorActionVariation.abs_variation_le
 #print axioms PlasmaLean.Kinetic.MirrorActionVariation.variation_lower
+#print axioms PlasmaLean.Kinetic.VacuumLittlejohnLocal.parallel_eq_norm
+#print axioms PlasmaLean.Kinetic.VacuumLittlejohnLocal.vacuum_parallel
+#print axioms PlasmaLean.Kinetic.VacuumLittlejohnLocal.velocity_smooth
+#print axioms PlasmaLean.Kinetic.VacuumLittlejohnLocal.exists_orbit
