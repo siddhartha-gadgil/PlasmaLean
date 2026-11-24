@@ -73,7 +73,8 @@ private theorem speed_of_bounds {d r z : ℝ} (hd : 0 < d)
   refine ⟨hd, ?_, ?_⟩ <;> rw [abs_div, abs_of_pos hd, div_le_iff₀ hd, abs_le] <;>
     constructor <;> linarith
 
-private theorem tube_speeds (inner : Bool) {phase sign t T : ℝ} (hs : |sign| ≤ 1)
+/-- Denominator positivity and both quotient speed bounds on either launch rectangle. -/
+theorem tube_speeds (inner : Bool) {phase sign t T : ℝ} (hs : |sign| ≤ 1)
     (hphase : |phase - sectionPhase inner| + T ≤ 1/32) (ht : t ∈ Icc 0 T) (x : State) (hx : x ∈ Icc (tubeLo inner) (tubeHi inner)) :
     let k := clockPoly phase sign
     0 < k dD (t,x) ∧ |k dnR (t,x) / k dD (t,x)| ≤ 1/4 ∧

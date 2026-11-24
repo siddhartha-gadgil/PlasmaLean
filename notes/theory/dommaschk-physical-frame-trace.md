@@ -13,6 +13,7 @@
 | Lean evidence | `exists_nested_section_entry`, `PositionFrameSlabs.Chain.sound`, `DommaschkHarmonicTrace.all_times`, `DommaschkReferenceFirst.framed_defect` |
 | Audit evidence | 54,345 default and 91,933 on-demand declarations passed the standard-axiom audits. All 16 generated chains passed an independent Lean replay. |
 | Last updated | 24 November 2026 |
+| Patched by | N-65 proves the first physical Jacobian bound and composes the moving-frame step with the physical birth. |
 | Patches | N-62 and N-63, physical start and Lean status of numerical hypotheses |
 
 ## Four checked results

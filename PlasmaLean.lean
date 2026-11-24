@@ -203,7 +203,7 @@ public import PlasmaLean.Certificates.RadialTile
 public import PlasmaLean.Certificates.RadialSlabs
 public import PlasmaLean.Certificates.RadialObservableDerivatives
 public import PlasmaLean.Certificates.TrajectoryTaylorModel
-public import PlasmaLean.Certificates.PositionFrameSlabs
+public import PlasmaLean.Certificates.PositionFrameChain
 public import PlasmaLean.Certificates.TrajectoryHarmonicSections
 public import PlasmaLean.Design.SolovevMercierQuadrature
 public import PlasmaLean.Design.SolovevMercierCertified

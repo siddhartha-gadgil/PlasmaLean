@@ -49,10 +49,15 @@ import PlasmaLean.Design.DommaschkActionQuadrature
 import PlasmaLean.Design.DommaschkLocalMirrorGraphs
 import PlasmaLean.Design.DommaschkMirrorSectorFlow
 import PlasmaLean.Design.DommaschkBounceObservables
-import PlasmaLean.Design.DommaschkFrameLaunch
+import PlasmaLean.Design.DommaschkMirrorFirstPassage
 import PlasmaLean.Design.DommaschkHarmonicTrace
 import PlasmaLean.Design.DommaschkBounceTaylorFirst
 import PlasmaLean.Design.DommaschkReferenceFirstDefect
+import PlasmaLean.Design.DommaschkPhysicalJacobian
+import PlasmaLean.Design.DommaschkJacobianFirstBound
+import PlasmaLean.Design.DommaschkTraceResidualBack000
+import PlasmaLean.Design.DommaschkTraceResidualForward390
+import PlasmaLean.Certificates.PositionFrameChain
 import PlasmaLean.Theory.Fields.MovingFrameSlabs
 import PlasmaLean.Design.DommaschkRadialSlabsS0H0
 import PlasmaLean.Design.DommaschkRadialSlabsS0H1
@@ -235,3 +240,10 @@ run_cmd do
 #print axioms PlasmaLean.Design.DommaschkHarmonicTrace.all_times
 #print axioms PlasmaLean.Design.DommaschkBounceTaylorFirst.physical_clock_ranges
 #print axioms PlasmaLean.Design.DommaschkReferenceFirst.framed_defect
+#print axioms PlasmaLean.Certificates.PositionFrameSlabs.Chain.cartesian_trajectory
+#print axioms PlasmaLean.Design.DommaschkJacobian.physical_derivative
+#print axioms PlasmaLean.Design.DommaschkJacobian.physical_clock_log_norm
+#print axioms PlasmaLean.Design.DommaschkTraceResidualBack000.physical_defect
+#print axioms PlasmaLean.Design.DommaschkTraceResidualForward390.physical_defect
+#print axioms PlasmaLean.Design.DommaschkPhysicalFirstStep.physical_first_step
+#print axioms PlasmaLean.Design.DommaschkMirrorLaunch.exists_nested_firstPassage
