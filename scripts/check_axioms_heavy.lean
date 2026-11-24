@@ -29,6 +29,8 @@ import PlasmaLean.Design.DommaschkFirstMirrorLaunchSign
 import PlasmaLean.Design.DommaschkMirrorBracketSlab
 import PlasmaLean.Certificates.PositionFrameObservables
 import PlasmaLean.Design.DommaschkSublevelActionGrids
+import PlasmaLean.Design.DommaschkPreMirrorSigns
+import PlasmaLean.Design.DommaschkSignedObservable
 import PlasmaLean.Design.RationalStellaratorGCMuWide
 import PlasmaLean.Design.RationalStellaratorGCMu3Confined
 import PlasmaLean.Design.RationalStellaratorGCMu4Confined
@@ -291,3 +293,7 @@ run_cmd do
 #print axioms PlasmaLean.Design.DommaschkSublevelActionGrids.Q1R464.endpoint
 #print axioms PlasmaLean.Design.DommaschkSublevelActionGrids.Q1R509.endpoint
 #print axioms PlasmaLean.Design.DommaschkSublevelActionGrids.Q1R517.endpoint
+#print axioms PlasmaLean.Design.DommaschkPreMirrorSigns.Matches.mem
+#print axioms PlasmaLean.Design.DommaschkSignedObservable.Path.at_row
+#print axioms PlasmaLean.Design.DommaschkSignedObservable.Path.below_on
+#print axioms PlasmaLean.Design.DommaschkSignedObservable.birth_with

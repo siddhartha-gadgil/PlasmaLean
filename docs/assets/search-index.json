@@ -2898,6 +2898,12 @@
     "text": "24 november 2026 — exact adaptive-grid target arithmetic (n-78) implementation plan"
   },
   {
+    "title": "24 November 2026 — exclude earlier mirror heights along the signed birth trajectory (N-79)",
+    "section": "Implementation plan",
+    "url": "implementation-plan.html#24-november-2026-exclude-earlier-mirror-heights-along-the-signed-birth-trajectory-n-79",
+    "text": "24 november 2026 — exclude earlier mirror heights along the signed birth trajectory (n-79) implementation plan"
+  },
+  {
     "title": "M0 · Exact symmetric equilibria: slab, screw pinch, Solov'ev, helical",
     "section": "Implementation plan · Lean verified — exact slab, screw-pinch, Solov'ev and helical equilibria with kernel force balance, all-time field-line/orbit confinement, Suydam both ways and screw-pinch Newcomb stability for every m ≠ 0 (reduced form supplied; idealized symmetric models).",
     "url": "implementation-plan.html",
