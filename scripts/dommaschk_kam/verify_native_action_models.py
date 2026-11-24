@@ -44,7 +44,7 @@ def footer(name):
 def static_data():
     native = polynomial_data()
     models = [group[0] for group in native] + [ShiftedStrength(native).diff[0]]
-    polynomials = sparse_fields()
+    polynomials = list(sparse_fields())
     polynomials.append(polynomials[0] + [
         (-HEIGHTS[0]*comb(7, j)*R0**(7-j), (j, 0, 0, 0)) for j in range(8)])
     result = []

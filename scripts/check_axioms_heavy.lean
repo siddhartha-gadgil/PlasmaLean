@@ -48,6 +48,9 @@ import PlasmaLean.Design.DommaschkReflectedPilot
 import PlasmaLean.Design.DommaschkBackwardRectangle
 import PlasmaLean.Design.DommaschkEndpointSignedTrace
 import PlasmaLean.Design.DommaschkArcDensitySensitivity
+import PlasmaLean.Design.DommaschkFirstMirrorWell
+import PlasmaLean.Design.DommaschkFirstMirrorActionFloor
+import PlasmaLean.Design.DommaschkSignedBirthApproach
 import PlasmaLean.Design.DommaschkNativeActionReflection
 import PlasmaLean.Design.DommaschkNativeActionColumns
 import PlasmaLean.Design.DommaschkNativeActionControls
@@ -377,3 +380,11 @@ run_cmd do
 #print axioms PlasmaLean.Design.DommaschkNativeActionControls.large_root_fails_minimality
 #print axioms PlasmaLean.Certificates.NativeActionInterval.forward_cells
 #print axioms PlasmaLean.Certificates.NativeActionInterval.backward_cells
+#print axioms PlasmaLean.Design.DommaschkSignedTraceDomain.on_path
+#print axioms PlasmaLean.Design.DommaschkSignedTraceDenominator.regular
+#print axioms PlasmaLean.Design.DommaschkSignedTraceDensity.continuousOn_density_region
+#print axioms PlasmaLean.Design.DommaschkSignedActionFloor.strict_floor
+#print axioms PlasmaLean.Design.DommaschkFirstMirrorActionFloor.from_core
+#print axioms PlasmaLean.Design.DommaschkFirstMirrorWell.identify
+#print axioms PlasmaLean.Design.DommaschkSignedBirthApproach.birth_position
+#print axioms PlasmaLean.Design.DommaschkSignedBirthApproach.from_birthWith

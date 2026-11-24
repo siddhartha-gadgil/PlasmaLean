@@ -118,3 +118,6 @@ Phase 8 (kam-route.md, finite-beta-stellarator.md):
 - [Physical partial action on a six-radian field line](dommaschk-signed-action-integral.md) (N-92). Both height bounds and the integrated central action on one trajectory.
 - [Cylindrical action sensitivity](cylindrical-action-sensitivity.md) (N-93). Sharp action error from differences of actual same-angle tangent components.
 - [Original action digits on both physical tubes of row 16](dommaschk-native-action-panels.md) (N-94). Exact Horner, division and square-root certificates for both directions of a previously unresolved row.
+- [First mirror contacts from a physical birth](dommaschk-first-mirrors-from-birth.md) (N-95). One signed pilot path reaches the first contacts at both heights in both directions.
+- [Physical action between the first upper mirrors](dommaschk-first-well-action-floor.md) (N-96). The dimensionless one-way physical action exceeds 553/2000 at the upper height.
+- [Connected wells and actual regular mirror births](regular-mirror-births-and-components.md) (N-97). Open and closed accessible components and the arclength contract at the original interpolated birth.

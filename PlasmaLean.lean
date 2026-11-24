@@ -348,6 +348,7 @@ public import PlasmaLean.Design.RationalStellaratorGCFamily
 public import PlasmaLean.Design.RationalStellaratorGCMuFamily
 public import PlasmaLean.Design.RationalStellaratorGCBoxConfined
 public import PlasmaLean.Theory.Fields.LogNormTrajectory
+public import PlasmaLean.Theory.Fields.ClosedIntervalODEUniqueness
 public import PlasmaLean.Theory.Fields.MovingFrameTrajectory
 public import PlasmaLean.Theory.Fields.RectangularODEStep
 public import PlasmaLean.Theory.Fields.TrajectorySlabs
@@ -385,6 +386,7 @@ public import PlasmaLean.Certificates.MirrorSpeedHistogram
 public import PlasmaLean.Theory.Kinetic.MirrorSublevelPartition
 public import PlasmaLean.Theory.Kinetic.MirrorActionComparison
 public import PlasmaLean.Theory.Kinetic.MirrorActionEnvelope
+public import PlasmaLean.Theory.Kinetic.MirrorWellComponent
 public import PlasmaLean.Theory.Kinetic.MirrorWellCriterion
 public import PlasmaLean.Theory.Fields.WeakQuasisymmetry
 public import PlasmaLean.Theory.Fields.CylAlgebra

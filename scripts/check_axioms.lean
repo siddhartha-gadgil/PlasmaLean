@@ -842,3 +842,8 @@ run_cmd do
 #print axioms PlasmaLean.Kinetic.CylindricalActionSensitivity.same_angle
 #print axioms PlasmaLean.Kinetic.CylindricalActionSensitivity.physical_action_window
 #print axioms PlasmaLean.Kinetic.CylindricalActionSensitivity.circle_action_attains
+#print axioms PlasmaLean.Fields.ode_eqOn_of_terminal
+#print axioms PlasmaLean.Kinetic.MirrorActionEnvelope.LaunchWell.strict_component
+#print axioms PlasmaLean.Kinetic.MirrorActionEnvelope.LaunchWell.transverse_component
+#print axioms PlasmaLean.Kinetic.MirrorActionEnvelope.LaunchWell.regular_at
+#print axioms PlasmaLean.Kinetic.MirrorActionEnvelope.tangent_closed_component
