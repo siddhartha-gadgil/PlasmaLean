@@ -49,7 +49,8 @@ def ranges(ins, fields):
         *square_root_bounds(us[0]/ds[1]**2, us[1]/ds[0]**2))
 
 
-def provider(a, i, radius, data, static):
+def native_provider(a, i, radius, data, static):
+    """Return the audited physical models and their exact arithmetic inputs on either radial label."""
     label, packet, traces, _ = load(radius)
     ins = native.row_inputs(i, traces[1], traces[0])
     # The shared input also proves that the independently archived negative row fits the
@@ -89,7 +90,12 @@ def provider(a, i, radius, data, static):
     physical = compile_modules(cache/stem, [(stem,source,thms)], [union(cache,leaves)],
                                [native.OUTPUT_PACKAGE,digest(DESIGN/'DommaschkNativeActionReflection.trace'),
                                 *[r['key'] for _,r in leaves]],a,native.OUTPUT_PACKAGE)
-    return [inputs,*fields,physical], ranges(ins,values), digest(packet)
+    return [inputs,*fields,physical], ins, values, digest(packet)
+
+
+def provider(a, i, radius, data, static):
+    pieces, ins, fields, packet = native_provider(a, i, radius, data, static)
+    return pieces, ranges(ins,fields), packet
 
 
 def direct(i, providers, enclosures):
