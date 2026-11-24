@@ -157,6 +157,7 @@ import PlasmaLean.Design.DommaschkSecondaryHeightCollar
 import PlasmaLean.Design.DommaschkIncomingHeightAction
 import PlasmaLean.Certificates.WeakenLowerActionCells
 import PlasmaLean.Design.DommaschkPhaseZeroRegularBirth
+import PlasmaLean.Design.DommaschkCompactLittlejohnArc
 
 /-! Audit all declarations owned by project modules in the import closure (the on-demand top
 modules and everything they import). Fails on any non-standard axiom. -/
@@ -580,3 +581,12 @@ run_cmd do
 #print axioms PlasmaLean.Design.DommaschkPhaseZeroRegularBirth.tube_of_centers
 #print axioms PlasmaLean.Design.DommaschkPhaseZeroRegularBirth.population
 #print axioms PlasmaLean.Design.DommaschkPhaseZeroRegularBirth.at_original_birth
+#print axioms PlasmaLean.Kinetic.VacuumLittlejohnWindow.familyControl_of_local
+#print axioms PlasmaLean.Kinetic.VacuumLittlejohnWindow.FamilyControl.thickening
+#print axioms PlasmaLean.Kinetic.VacuumLittlejohnWindow.exists_control_compact
+#print axioms PlasmaLean.Kinetic.VacuumLittlejohnWindow.compact_guidingCentreBand
+#print axioms PlasmaLean.Design.DommaschkCompactLittlejohnArc.Window.measured
+#print axioms PlasmaLean.Design.DommaschkCompactLittlejohnArc.Window.thickening
+#print axioms PlasmaLean.Design.DommaschkCompactLittlejohnArc.Uniform.unrestricted
+#print axioms PlasmaLean.Design.DommaschkCompactLittlejohnArc.of_compact
+#print axioms PlasmaLean.Design.DommaschkCompactLittlejohnArc.of_path
