@@ -1,5 +1,7 @@
 """Put several signed phase-zero submirror passages on one pair of embedded QA2R tori."""
 import argparse
+from dataclasses import dataclass
+from fractions import Fraction
 import json
 from pathlib import Path
 import subprocess
@@ -12,14 +14,24 @@ from verify_secondary_submirror_birth import PACKAGE
 from verify_signed_mirror_passage import merge_import_roots
 
 
+@dataclass(frozen=True)
+class Birth:
+    label: str
+    length: int
+    tag: str
+    module: str
+    package: str
+    drop: Fraction
+
+
 def declaration(rows):
-    name = 'DommaschkCommonSubmirror' + ''.join(f'{label}N{n:03}' for label,n,_ in rows)
-    imports = '\n'.join(f'public import {PACKAGE}.{module}' for _,_,module in rows)
-    passages = ' ∧\n      '.join(f'{module}.BelowFromBirth uC zC uA zA φ' for _,_,module in rows)
+    name = 'DommaschkCommonSubmirror' + ''.join(f'{r.tag}N{r.length:03}' for r in rows)
+    imports = '\n'.join(f'public import {r.package}.{r.module}' for r in rows)
+    passages = ' ∧\n      '.join(f'{r.module}.BelowFromBirth uC zC uA zA φ' for r in rows)
     conclusions = ',\n    '.join(
-        f'{module}.from_entry_below (actual .{label.lower()} (by\n'
+        f'{r.module}.from_entry_below (actual .{r.label.lower()} (by\n'
         f'      simpa [MirrorEndpoint.width, MirrorEndpoint.opposite, azimuth] using small))'
-        for label,_,module in rows)
+        for r in rows)
     text = f'''module
 {imports}
 
@@ -69,16 +81,23 @@ def main():
             or set(labels)-{'Q0R470','Q0R478','Q0R523','Q0R531'}):
         parser.error('require at least two distinct phase-zero radius labels')
     rows,keys,roots = [],[],[]
-    for record in data:
-        label,n = record['endpoint'],record['signed_length']
+    for item in data:
+        label = item['endpoint']
+        record = item.get('physical_birth',item)
+        n = record['signed_length']
+        drop = Fraction(item.get('drop',0))
+        if drop and (drop<=0 or 'physical_birth' not in item):
+            parser.error(f'missing the signed physical clearance for {label}')
+        tag = label+(f'Drop{drop.numerator}Over{drop.denominator}' if drop else '')
+        package = 'GroupedClearanceBirthCache' if drop else PACKAGE
         paths = list(map(Path,record['import_paths']))
-        name = f'Dommaschk{label}SubmirrorBirth{n:03}'
+        name = f'Dommaschk{tag}SubmirrorBirth{n:03}'
         if record['module'] != name:
             parser.error(f'wrong physical passage for {label}')
         marker = admitted(paths[0],name,record['key'])
         if f'PlasmaLean.Design.{name}.from_entry_below' not in marker['theorems']:
             parser.error(f'missing section-entry theorem for {label}')
-        rows.append((label,n,name))
+        rows.append(Birth(label,n,tag,name,package,drop))
         keys.append(marker['key'])
         roots.extend(paths)
     def lake(*cmd):
@@ -91,8 +110,10 @@ def main():
         [lake('lean','--version'),keys,digest(DESIGN/'DommaschkFrameLaunch.trace')],args,
         'CommonSubmirrorBirthCache')
     receipt = {k:result[k] for k in ('key','module','axioms','theorems')}
-    receipt.update(signed_lengths=dict((label,n) for label,n,_ in rows),parents=keys,
+    receipt.update(signed_lengths={r.label:r.length for r in rows},parents=keys,
                    import_paths=[str(root),str(overlay)])
+    if any(r.drop for r in rows):
+        receipt['height_drops'] = {r.label:str(r.drop) for r in rows}
     save(args.output,receipt)
     print(decl[0],result['key'])
 

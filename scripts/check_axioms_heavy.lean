@@ -72,6 +72,8 @@ import PlasmaLean.Design.DommaschkGroupedMirrorModels
 import PlasmaLean.Design.DommaschkEndpointMirrorBranch
 import PlasmaLean.Design.DommaschkEndpointTraceFamily
 import PlasmaLean.Design.DommaschkCenteredStrength
+import PlasmaLean.Design.DommaschkGroupGapRadius
+import PlasmaLean.Design.DommaschkGroupedHarmonicGap
 import PlasmaLean.Design.DommaschkComparedTracePrefixes
 import PlasmaLean.Design.DommaschkSecondaryActionCore
 import PlasmaLean.Design.DommaschkPairedArcRatio
@@ -528,3 +530,6 @@ run_cmd do
 #print axioms PlasmaLean.Certificates.PositionFrameSlabs.OnPairedTubes.on_nonempty_prefix
 #print axioms PlasmaLean.Design.DommaschkComparedTracePrefixes.compare_birth
 #print axioms PlasmaLean.Design.DommaschkComparedTracePrefixes.increment_of_compared
+#print axioms PlasmaLean.Design.DommaschkGroupGapRadius.at_lower
+#print axioms PlasmaLean.Design.DommaschkGroupedHarmonicGap.harmonic_mem
+#print axioms PlasmaLean.Design.DommaschkGroupedHarmonicGap.estimate_mem

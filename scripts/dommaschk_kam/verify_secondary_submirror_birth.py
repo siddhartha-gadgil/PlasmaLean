@@ -17,7 +17,7 @@ from verify_signed_mirror_passage import merge_import_roots
 PACKAGE = 'SecondarySubmirrorBirthCache'
 
 
-def source(label,n,prefix,early):
+def source(label,n,prefix,early,threshold='DommaschkFirstMirrorLaunchSign.height false'):
     name = f'Dommaschk{label}SubmirrorBirth{n:03}'
     text = f'''module
 public import {SIGNED_PACKAGE}.{prefix}
@@ -43,7 +43,7 @@ def BelowFromBirth (uC zC uA zA : FA) (φ : ℝ) : Prop :=
     y 0 = coordinates.symm (a duration) ∧
     Outward endpoint.start forwardRows 1 ({n}/64) y ∧
     Outward endpoint.start backwardRows (-1) ({n}/64) (fun t => y (-t)) ∧
-    (∀ t ∈ Icc (-({n}:ℝ)/64) ({n}/64), strength t (y t) < DommaschkFirstMirrorLaunchSign.height false)
+    (∀ t ∈ Icc (-({n}:ℝ)/64) ({n}/64), strength t (y t) < {threshold})
 
 theorem from_entry_below {{uC zC uA zA : FA}} {{φ : ℝ}} (entry : SectionEntry endpoint uC zC uA zA φ) :
     BelowFromBirth uC zC uA zA φ := by
@@ -55,12 +55,12 @@ theorem from_entry_below {{uC zC uA zA : FA}} {{φ : ℝ}} (entry : SectionEntry
 '''
     for name0,d,clock,paths in [('forward','fwd','t','f'),('backward','back','(-t)','b')]:
         rows = name0+'Rows'
-        text += f'''  have {d}Cert : OnTubes (fun t x => strength {clock} x < DommaschkFirstMirrorLaunchSign.height false)
+        text += f'''  have {d}Cert : OnTubes (fun t x => strength {clock} x < {threshold})
       endpoint.start 0 {rows} := by with_unfolding_all exact {early}.{d}_below endpoint.start
   have {d}All := {d}Cert.on_nonempty_prefix (post := []) (y := {('y' if d=='fwd' else 'fun t => y (-t)')})
     (by intro h; have size := congrArg List.length h; change {n} = 0 at size; omega)
     (by simpa only [List.append_nil] using {paths}.contained)
-  have {d}Bound : ∀ t ∈ Icc 0 ({n}/64:ℝ), strength {clock} (y {clock}) < DommaschkFirstMirrorLaunchSign.height false := by
+  have {d}Bound : ∀ t ∈ Icc 0 ({n}/64:ℝ), strength {clock} (y {clock}) < {threshold} := by
     simpa only [show {rows}.length = {n} by rfl, Nat.cast_ofNat,zero_add] using {d}All
 '''
     text += '''

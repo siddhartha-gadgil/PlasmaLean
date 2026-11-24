@@ -34,7 +34,8 @@ def compose(p,a,b):
             for j in range(len(p))]
 
 
-def partition(traces,stop):
+def span_models(traces):
+    """Enclose the original rows on a common affine clock, caching their individual models."""
     @lru_cache(None)
     def row(i):
         radial,(_,z,c,s),_ = joint_row(i,traces)
@@ -54,6 +55,12 @@ def partition(traces,stop):
                 error = max(error,ceil(exact.e+distance))
             group.append(Model(poly,error))
         return group
+
+    return grouped
+
+
+def partition(traces,stop):
+    grouped = span_models(traces)
 
     def visit(a,b):
         tube = grouped(a,b)
@@ -113,14 +120,15 @@ theorem below : group.Below (DommaschkFirstMirrorLaunchSign.height false) := by
     return [base,result]
 
 
-def join(name,tube,parts,providers,packages,args):
+def join(name,tube,parts,providers,packages,args,
+         threshold='DommaschkFirstMirrorLaunchSign.height false'):
     r,*_ = tube
     a,*p = r.a
     (_,l,dl),(_,rr,dr) = offsets(r.e)
     src = header(name,[GAPS+'.'+p for p in providers])
     src += 'open DommaschkGroupedMirrorModels\n'
     src += f'''def group : Group := {group_literal(tube)}
-theorem below : group.Below (DommaschkFirstMirrorLaunchSign.height false) := by
+theorem below : group.Below ({threshold}) := by
   intro w R z t hw hR hr hz hc hs
   obtain half | half := cover_spatial_radius (bits := 80) (a := {a}) (p := {p})
     (l := {l}) (dl := {dl}) (r := {rr}) (dr := {dr}) (e := {r.e})
@@ -134,19 +142,20 @@ theorem below : group.Below (DommaschkFirstMirrorLaunchSign.height false) := by
                            [args.keys,[r['key'] for _,r in packages]],args,JOINT)
 
 
-def run_group(task,label,traces,args):
+def run_group(task,label,traces,args,provider=gap,
+              threshold='DommaschkFirstMirrorLaunchSign.height false'):
     a,b,tube,parts = task
     stem = f'Dommaschk{label}Submirror{a:03}To{b:03}'
     packages = []
     if len(parts) == 1:
         pkg = GAPS
-        packages.extend(gap(stem,tube,args))
+        packages.extend(provider(stem,tube,args))
     else:
         pkg = JOINT
         providers = [stem+s for s in ('Left','Right')]
         for n,part in zip(providers,parts,strict=True):
-            packages.extend(gap(n,part,args))
-        packages.append(join(stem,tube,parts,providers,packages,args))
+            packages.extend(provider(n,part,args))
+        packages.append(join(stem,tube,parts,providers,packages,args,threshold))
     name = stem+'Rows'
     harmonics = [f'DommaschkHarmonicBlock{q:02}' for q in range(a//8,(b-1)//8+1)]
     src = header(name,[pkg+'.'+stem,*['PlasmaLean.Design.'+h for h in harmonics]])
@@ -167,7 +176,7 @@ def run_group(task,label,traces,args):
 theorem {tag}_below {{prev : State}} {{x : Plane}} {{t : ℝ}}
     (ht : t ∈ Set.Icc ({clock}/64) (({clock}+1)/64))
     (hx : x ∈ (physicalSlab prev {tag}Row ({start}/64)).tube t) :
-    strength {('(-t)' if back=='true' else 't')} x < DommaschkFirstMirrorLaunchSign.height false :=
+    strength {('(-t)' if back=='true' else 't')} x < {threshold} :=
   {tag}Covers.below {stem}.below ht hx
 '''
             labels.append(tag+'_below')
@@ -180,7 +189,7 @@ theorem {tag}_below {{prev : State}} {{x : Plane}} {{t : ℝ}}
     return {'start':a,'stop':b,'module':name,'key':rec[1]['key'],'pieces':len(parts)},packages
 
 
-def ordered(label,groups,packages,args):
+def ordered(label,groups,packages,args,threshold='DommaschkFirstMirrorLaunchSign.height false'):
     stop = groups[-1]['stop']
     name = f'Dommaschk{label}SubmirrorPrefix{stop:03}'
     src = header(name,['PlasmaLean.Certificates.PositionFrameObservables',
@@ -191,7 +200,7 @@ def ordered(label,groups,packages,args):
         mods = [(i,g['module']+'.'+d+f'{i:03}') for g in groups for i in range(g['start'],g['stop'])]
         src += f'def {d}Rows : List Step := [\n  '+',\n  '.join(m+'Row' for _,m in mods)+']\n'
         src += f'theorem {d}_below (entry : State) : OnTubes (fun t p => strength {t} p <\n'
-        src += f'    DommaschkFirstMirrorLaunchSign.height false) entry 0 {d}Rows := by\n'
+        src += f'    {threshold}) entry 0 {d}Rows := by\n'
         src += '  rw [show (0 : ℝ) = ((0 : ℕ) : ℝ) / 64 by norm_num]\n'
         for i,m in mods:
             src += f'  refine OnTubes.cons_at {i} ?_ ?_\n  · intro t ht x hx\n'
