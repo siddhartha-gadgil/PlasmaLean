@@ -249,6 +249,13 @@ def main():
                 native = [refdir, *checked_parents(ref,refdir,version)]
                 ref_roots = [merge_import_roots(args.cache,native,[ref['key'],'native-central-imports'])]
                 reference_package = native_package
+            elif 'signed_native_parents' in ref:
+                from verify_opposite_native_defects import PACKAGE as opposite_package, checked_parents
+                if ref['package'] != opposite_package or not label.startswith('q1'):
+                    raise ValueError('incorrect section or package for independent opposite-section defects')
+                native=[refdir,*checked_parents(ref,refdir,version)]
+                ref_roots=[merge_import_roots(args.cache,native,[ref['key'],'signed-native-imports'])]
+                reference_package=opposite_package
             source = physical_source(label, sign, pair, prev.forward if sign == 1 else prev.backward,
                                      jm, fm, reference_package)
             name, code = source

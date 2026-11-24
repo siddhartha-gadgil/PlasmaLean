@@ -61,7 +61,9 @@ def checked_shared_roots(jac, root, version):
     return roots
 
 
-def inputs_source(name, i, ins, section):
+def inputs_source(name, i, ins, section, backward=False):
+    if backward and not section:
+        raise ValueError('the signed-angle input convention here is defined at the opposite section')
     _,u,z,phase = ins
     harmonic = f'DommaschkHarmonicBlock{i//8:02}'
     src = header(name,['PlasmaLean.Design.DommaschkNativeActionModel','PlasmaLean.Design.'+harmonic])
@@ -87,6 +89,8 @@ def inputs_source(name, i, ins, section):
     exact h
 '''
     if section:
+        clock='(-t)' if backward else 't'
+        back='true' if backward else 'false'
         src = src.split('theorem angles')[0]
         src += f'''private theorem negate_value {{s x : ℝ}} {{m : Model}} (h : m.Mem s (-x)) :
     (Certificates.TrajectoryTrig.negative m).Mem s x := by
@@ -97,7 +101,7 @@ def inputs_source(name, i, ins, section):
   exact h
 
 theorem angles {{t : ℝ}} (ht : t ∈ Set.Icc ({i}/64:ℝ) ({i+1}/64)) (w : Wave) :
-    (phase w).Mem (128*t-{2*i+1}) (w.value (2*(Real.pi / 2+t))) := by
+    (phase w).Mem (128*t-{2*i+1}) (w.value (2*(Real.pi / 2+{clock}))) := by
   cases w
   · have h : Matches (constant 1) (phase .one) := {MATCH}
     rw [← h.eq]
@@ -105,7 +109,7 @@ theorem angles {{t : ℝ}} (ht : t ∈ Set.Icc ({i}/64:ℝ) ({i+1}/64)) (w : Wav
 '''
         for j in range(1,7):
             k, sine = (j-1)//2, 'true' if j%2 else 'false'
-            m = f'(({harmonic}.packet {i%8} false ({k}:Fin 3)).model {sine})'
+            m = f'(({harmonic}.packet {i%8} {back} ({k}:Fin 3)).model {sine})'
             reflected = f'(Certificates.TrajectoryTrig.negative {m})' if k%2==0 else m
             src += f'''  · have compare : Matches {reflected} (phase .{WAVES[j]}) := {MATCH}
     rw [← compare.eq]
@@ -115,7 +119,7 @@ theorem angles {{t : ℝ}} (ht : t ∈ Set.Icc ({i}/64:ℝ) ({i+1}/64)) (w : Wav
             src += f'''    have ht' : t ∈ Set.Icc ((({i}:ℕ):ℝ)/64) (((({i}:ℕ):ℝ)+1)/64) := by
       norm_num at ht ⊢; exact ht
     have h := Certificates.TrajectoryHarmonicPacket.physical_section
-      (i := {i}) ({harmonic}.packet {i%8}) true false ({k}:Fin 3) {sine} ht'
+      (i := {i}) ({harmonic}.packet {i%8}) true {back} ({k}:Fin 3) {sine} ht'
     norm_num [Wave.value, Certificates.TrajectoryTrig.wave] at h ⊢
     convert h using 2 <;> ring
 '''

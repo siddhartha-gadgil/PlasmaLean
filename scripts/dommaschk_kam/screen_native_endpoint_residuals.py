@@ -20,14 +20,16 @@ def sharp_budget(x, y, den):
     return F(isqrt(square.numerator // square.denominator) + 1, SCALE)
 
 
-def residual_data(forward):
-    _,_,i,coords,left,right,_,count=forward
+def residual_data(job):
+    section,sign,i,coords,left,right,_,count=job
     r,z=map(Model,coords)
-    phase=angle_models(F(2*i+1,128),F(1,128),F(0))
+    phase=angle_models(F(sign*(2*i+1),128),F(sign,128),F(0))
+    if section:
+        phase=[m.integer((-1)**((j+1)//2)) for j,m in enumerate(phase)]
     d,nr,nz=[evaluate(g[0],(r,z),phase)[0] for g in native_jet()]
     def slope(m):
         return Model([128*(j+1)*q for j,q in enumerate(m.a[1:])])
-    vr,vz=nr-slope(r)*d,nz-slope(z)*d
+    vr,vz=nr.integer(sign)-slope(r)*d,nz.integer(sign)-slope(z)*d
     _,_,adj,det,_=affine_frame(left,right,F(1,64))
     x,y=[a*vr+b*vz for a,b in adj]
     den=det*d

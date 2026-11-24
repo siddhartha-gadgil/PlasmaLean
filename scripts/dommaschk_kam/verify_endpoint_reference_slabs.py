@@ -7,6 +7,7 @@ import json
 from pathlib import Path
 import re
 import subprocess
+import sys
 from types import SimpleNamespace
 
 from emit_sparse_trace_defect_samples import emit_selected, reference_columns
@@ -18,6 +19,33 @@ from verify_physical_trace_slabs import RECORD, ROOT, digest, external_dependenc
 
 ENDPOINTS = ('q0r470','q0r478','q0r523','q0r531','q1r456','q1r464','q1r509','q1r517')
 PACKAGE = 'EndpointTraceCache'
+NATIVE_OPPOSITE_MARKER = 'use-independent-native-residuals.json'
+
+
+def use_campaign_backend(a):
+    """Route a single scheduled original row to its endpoint's selected backend."""
+    if (not a.output or len(a.endpoints)!=1 or a.endpoints[0] not in ENDPOINTS[4:] or
+            a.range[0]!=a.range[1] or a.output.parent.name!='references'):
+        return False
+    label=a.endpoints[0]
+    i=a.range[0]
+    base=a.output.parent.parent
+    marker=base/NATIVE_OPPOSITE_MARKER
+    if base.name!=label or a.output.name!=f'{i:03}.json' or not marker.is_file():
+        return False
+    selected=json.loads(marker.read_text())
+    checksum=digest(RECORD.with_name(f'bounce_frame_q1_u{label[3:]}.json.gz'))
+    if selected!={'endpoint':label,'packet_sha256':checksum,'backend':'independent-harmonic'}:
+        raise ValueError(f'invalid signed residual backend for the original packet at {base}')
+    cmd=[sys.executable,Path(__file__).with_name('verify_opposite_native_defects.py'),
+         '--endpoint',label,'--row',str(i),'--output',a.output]
+    if a.direction is not None:
+        cmd+=['--direction',str(a.direction)]
+    if subprocess.run(cmd,cwd=ROOT).returncode==0:
+        return True
+    print(f'Native central proof did not complete at {label} {i}; continuing with sparse original polynomials.',
+          flush=True)
+    return False
 
 
 def run_one(task):
@@ -54,6 +82,8 @@ def main():
     lo,hi = a.range
     if not 0 <= lo <= hi < 391 or len(set(a.endpoints)) != len(a.endpoints):
         p.error('choose distinct endpoints and a row range within 0..390')
+    if use_campaign_backend(a):
+        return
     def lake(*cmd):
         return subprocess.check_output(['lake','env',*cmd],cwd=ROOT,text=True).strip()
     version = lake('lean','--version')

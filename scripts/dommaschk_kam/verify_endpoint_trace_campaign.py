@@ -12,7 +12,7 @@ import subprocess
 import sys
 import time
 
-from verify_endpoint_reference_slabs import ENDPOINTS
+from verify_endpoint_reference_slabs import ENDPOINTS, NATIVE_OPPOSITE_MARKER
 from verify_mirror_physical_hit import admitted
 from verify_native_action_campaign import cpus
 from verify_physical_trace_slabs import RECORD, ROOT, digest, save
@@ -70,6 +70,8 @@ def records_for(path, stage, label, checksum):
 
 
 def residual_method(args):
+    if args.endpoint.startswith('q1') and (args.cache/NATIVE_OPPOSITE_MARKER).is_file():
+        return 'independent-harmonic'
     if args.native_residuals or (args.cache/'use-native-residuals').exists():
         return 'native-horner'
     if args.reflected_residuals or (args.cache/'use-reflected-residuals').exists():
