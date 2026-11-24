@@ -160,6 +160,7 @@ import PlasmaLean.Design.DommaschkPhaseZeroRegularBirth
 import PlasmaLean.Design.DommaschkCompactLittlejohnArc
 import PlasmaLean.Certificates.WeakenLowerActionCover
 import PlasmaLean.Design.DommaschkGroupedTrialJet
+import PlasmaLean.Design.DommaschkEnclosedLaunchArcs
 
 /-! Audit all declarations owned by project modules in the import closure (the on-demand top
 modules and everything they import). Fails on any non-standard axiom. -/
@@ -596,3 +597,11 @@ run_cmd do
 #print axioms PlasmaLean.Certificates.MirrorActionQuadrature.blocksLowerLE_append
 #print axioms PlasmaLean.Design.DommaschkGroupedTrialJet.BoxMap.mem
 #print axioms PlasmaLean.Design.DommaschkGroupedTrialJet.Pullback.mem
+#print axioms PlasmaLean.Kinetic.VacuumLittlejohnWindow.common_enclosure_time
+#print axioms PlasmaLean.Kinetic.VacuumLittlejohnWindow.control_of_compact_enclosure
+#print axioms PlasmaLean.Design.DommaschkCompactLaunchPhases.continuous_cylinder
+#print axioms PlasmaLean.Design.DommaschkCompactLaunchPhases.continuous_location
+#print axioms PlasmaLean.Design.DommaschkCompactLaunchPhases.uniform_launches
+#print axioms PlasmaLean.Design.DommaschkEnclosedLaunchArcs.positions_compact
+#print axioms PlasmaLean.Design.DommaschkEnclosedLaunchArcs.positions_regular
+#print axioms PlasmaLean.Design.DommaschkEnclosedLaunchArcs.uniform_enclosed
