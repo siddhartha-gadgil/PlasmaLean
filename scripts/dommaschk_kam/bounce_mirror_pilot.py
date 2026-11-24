@@ -71,14 +71,17 @@ class Model:
         return self+(-other)
 
     def __mul__(self, other):
+        return self.product(other,ORDER)
+
+    def product(self, other, order):
         a,b = self.a,other.a
         conv = [0]*(len(a)+len(b)-1)
         for i,v in enumerate(a):
             for j,w in enumerate(b):
                 conv[i+j] += v*w
-        c = [v//SCALE for v in conv[:ORDER+1]]
+        c = [v//SCALE for v in conv[:order+1]]
         # Charge discarded coefficients, dyadic rounding, then input remainders.
-        err = sum(abs(v) for v in conv[ORDER+1:])+sum(v%SCALE for v in conv[:ORDER+1])
+        err = sum(abs(v) for v in conv[order+1:])+sum(v%SCALE for v in conv[:order+1])
         err += self.e*(sum(map(abs,b))+other.e)+other.e*sum(map(abs,a))
         return Model(c, ceil_div(err, SCALE))
 

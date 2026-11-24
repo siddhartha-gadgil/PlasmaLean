@@ -256,6 +256,13 @@ def main():
                 native=[refdir,*checked_parents(ref,refdir,version)]
                 ref_roots=[merge_import_roots(args.cache,native,[ref['key'],'signed-native-imports'])]
                 reference_package=opposite_package
+            elif 'grouped_central_parents' in ref:
+                from grouped_central_defect_rows import PACKAGE as grouped_package, checked_parents
+                if ref['package']!=grouped_package or not label.startswith('q0'):
+                    raise ValueError('incorrect section or package for grouped central defects')
+                grouped=[refdir,*checked_parents(ref,refdir,version)]
+                ref_roots=[merge_import_roots(args.cache,grouped,[ref['key'],'group-central-imports'])]
+                reference_package=grouped_package
             source = physical_source(label, sign, pair, prev.forward if sign == 1 else prev.backward,
                                      jm, fm, reference_package)
             name, code = source

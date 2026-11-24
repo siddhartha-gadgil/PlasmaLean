@@ -32,14 +32,20 @@ THEOREMS = ['exact_pair','forward_sharp','forward_defect','backward_defect']
 TEMPLATE = HERE/'templates/native_central_residual.lean.tpl'
 
 
-def sharp_source(stem,forward,backward,ratios,box):
+def sharp_source(stem,forward,backward,ratios,box,*,providers=None,field_imports=None):
     _,_,i,_,left,right,budget,_ = forward
     x,y,den=box
     sharp=sharp_budget(x, y, den)
     if sharp>min(Fraction(budget),Fraction(backward[6])):
         raise ValueError(f'central norm exceeds one of the signed allowances at {i}')
     coords=reference_columns(0,-1,i,backward[3])
+    if providers is None:
+        providers={tag:stem+tag for tag in [*TAGS,'Inputs']}
+    if field_imports is None:
+        field_imports=[FIELDS+'.'+providers[t] for t in TAGS]
     source=Template(TEMPLATE.read_text()).substitute(
+        **{'field'+tag:n for tag,n in providers.items()},
+        field_imports='\n'.join('public import '+m for m in field_imports),
         name=stem,i=i,stop=i+1,off=2*i+1,back_coords=', '.join(map(model_literal,coords)),
         left=matrix_literal(left),right=matrix_literal(right),back_left=matrix_literal(backward[4]),
         back_right=matrix_literal(backward[5]),forward_budget=budget,back_budget=backward[6],
@@ -101,6 +107,10 @@ def main():
     a=p.parse_args()
     if not 0<=a.row<391:
         p.error('row must lie between 0 and 390')
+    if a.output.parent.name=='references' and (a.output.parent.parent/'grouped-central-plan.json').exists():
+        from campaign_grouped_central import dispatch
+        if dispatch(a):
+            return
     a.cache=a.cache.resolve()
     def lake(*cmd):
         return subprocess.check_output(['lake','env',*cmd],cwd=ROOT,text=True).strip()

@@ -1,9 +1,7 @@
 module
 public import PlasmaLean.Design.DommaschkPhysicalCentralJet
 public import PlasmaLean.Design.DommaschkSectionReflection
-public import NativeCentralFieldCache.${name}D
-public import NativeCentralFieldCache.${name}R
-public import NativeCentralFieldCache.${name}Z
+${field_imports}
 
 /-! # Both physical central defects from one seven-harmonic field evaluation -/
 @[expose] public section
@@ -14,8 +12,8 @@ open DommaschkKam DommaschkBounceField DommaschkBounceTaylor FramedTaylorResidua
 open DommaschkSectionReflection
 set_option maxRecDepth 12000
 
-def reference : Inputs := ⟨${name}Inputs.displacement, ${name}Inputs.vertical,
-  ${name}Inputs.phase .cos1, ${name}Inputs.phase .sin1⟩
+def reference : Inputs := ⟨${fieldInputs}.displacement, ${fieldInputs}.vertical,
+  ${fieldInputs}.phase .cos1, ${fieldInputs}.phase .sin1⟩
 def backReference : Inputs := ⟨${back_coords}⟩
 def frame : Frame := Frame.ofEndpoints (${left}) (${right})
 def backFrame : Frame := Frame.ofEndpoints (${back_left}) (${back_right})
@@ -33,7 +31,7 @@ private theorem accepted : Accepts ratio sharp (${x}/2^80) (${y}/2^80) (${den}/2
 
 private theorem built :
     build ⟨7,80⟩ false 128 frame reference.u reference.z
-      ${name}R.model ${name}Z.model ${name}D.model = ratio := by
+      ${fieldR}.model ${fieldZ}.model ${fieldD}.model = ratio := by
   apply Quotient.mk.injEq .. |>.mpr
   refine ⟨Matches.eq ?_, Matches.eq ?_, Matches.eq ?_⟩ <;>
     constructor <;> apply eq_of_beq <;> kernel_fact
@@ -64,11 +62,11 @@ theorem forward_sharp {t : ℝ} (ht : t ∈ Set.Icc (${i}/64:ℝ) (${stop}/64)) 
   rw [← built] at hcert
   apply DommaschkPhysicalCentralJet.of_memberships (back := false) (phase := 0) hcert hs pos
   · simpa only [clockPoly, sign, Bool.false_eq_true, ↓reduceIte, one_mul, zero_add, atPoint]
-      using ${name}R.sound hs hu hz (${name}Inputs.angles ht)
+      using ${fieldR}.sound hs hu hz (${fieldInputs}.angles ht)
   · simpa only [clockPoly, sign, Bool.false_eq_true, ↓reduceIte, one_mul, zero_add, atPoint]
-      using ${name}Z.sound hs hu hz (${name}Inputs.angles ht)
+      using ${fieldZ}.sound hs hu hz (${fieldInputs}.angles ht)
   · simpa only [clockPoly, sign, Bool.false_eq_true, ↓reduceIte, one_mul, zero_add, atPoint]
-      using ${name}D.sound hs hu hz (${name}Inputs.angles ht)
+      using ${fieldD}.sound hs hu hz (${fieldInputs}.angles ht)
   · exact ⟨by kernel_fact, by kernel_fact, by kernel_fact, by kernel_fact⟩
 
 theorem forward_defect {t : ℝ} (ht : t ∈ Set.Icc (${i}/64:ℝ) (${stop}/64)) :
