@@ -929,3 +929,12 @@ run_cmd do
 #print axioms PlasmaLean.Kinetic.FirstMirror.Family.shallow_heights_le
 #print axioms PlasmaLean.Kinetic.FirstMirror.two_sided_shallow_heights_le
 #print axioms PlasmaLean.Kinetic.FirstMirror.two_sided_good_heights
+#print axioms PlasmaLean.Kinetic.FirstWellContinuation.exists_first
+#print axioms PlasmaLean.Kinetic.FirstWellContinuation.FirstContact.crosses_of_deriv_pos
+#print axioms PlasmaLean.Kinetic.FirstWellContinuation.FirstContact.localMax_of_not_crosses
+#print axioms PlasmaLean.Kinetic.FirstWellContinuation.continuousAt_time
+#print axioms PlasmaLean.Kinetic.FirstWellContinuation.continuous_action
+#print axioms PlasmaLean.Kinetic.FirstWellContinuation.target_or_grazing
+#print axioms PlasmaLean.Kinetic.FirstWellContinuation.FirstContact.unique
+#print axioms PlasmaLean.Kinetic.FirstWellContinuation.action_split
+#print axioms PlasmaLean.Kinetic.FirstWellContinuation.CappedFamily.target_or_localMax

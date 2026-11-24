@@ -170,6 +170,7 @@ import PlasmaLean.Design.DommaschkClosedBandAction
 import PlasmaLean.Design.DommaschkPilotArcLengthPacket
 import PlasmaLean.Design.DommaschkPhysicalFirstMirrorValues
 import PlasmaLean.Design.DommaschkVariableHorner
+import PlasmaLean.Design.DommaschkRadialActionAlternative
 
 /-! Audit all declarations owned by project modules in the import closure (the on-demand top
 modules and everything they import). Fails on any non-standard axiom. -/
@@ -640,3 +641,4 @@ run_cmd do
 #print axioms PlasmaLean.Design.DommaschkVariableHorner.row_mem
 #print axioms PlasmaLean.Design.DommaschkVariableHorner.rows_mem
 #print axioms PlasmaLean.Design.DommaschkVariableHorner.channel_cons
+#print axioms PlasmaLean.Design.DommaschkRadialActionAlternative.of_endpoint_wells

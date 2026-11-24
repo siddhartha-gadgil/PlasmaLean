@@ -22,6 +22,8 @@ $$
 
 The radial spacing is $1/125$, giving a secant of at least $0.5062435436258055$ to the displayed precision. This finite difference concerns two specified radial labels. An intermediate birth of prescribed action would additionally require continuity of the first-well action, or a suitable continuation theorem, across the intervening radial interval. [Physical theorem and exact comparison](../../scripts/dommaschk_kam/templates/top_height_action_secant.lean.tpl)
 
+The connected-family continuation theorem now uses these two endpoint actions directly and identifies the remaining cap and grazing conditions. [Prescribed action or grazing first mirror](prescribed-first-well-action-or-grazing.md)
+
 ## Reproduction
 
 ```bash
