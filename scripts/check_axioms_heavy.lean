@@ -28,6 +28,7 @@ import PlasmaLean.Design.DommaschkReflectedProjectedTrial
 import PlasmaLean.Design.DommaschkFirstMirrorLaunchSign
 import PlasmaLean.Design.DommaschkMirrorBracketSlab
 import PlasmaLean.Certificates.PositionFrameObservables
+import PlasmaLean.Design.DommaschkSublevelActionGrids
 import PlasmaLean.Design.RationalStellaratorGCMuWide
 import PlasmaLean.Design.RationalStellaratorGCMu3Confined
 import PlasmaLean.Design.RationalStellaratorGCMu4Confined
@@ -281,3 +282,12 @@ run_cmd do
 #print axioms PlasmaLean.Design.DommaschkMirrorEndpointSign.physical_sign
 #print axioms PlasmaLean.Design.DommaschkMirrorBracketSlab.hit
 #print axioms PlasmaLean.Certificates.PositionFrameSlabs.first_contact_after_prefix
+#print axioms PlasmaLean.Certificates.SublevelActionGrid.action_target
+#print axioms PlasmaLean.Design.DommaschkSublevelActionGrids.Q0R470.endpoint
+#print axioms PlasmaLean.Design.DommaschkSublevelActionGrids.Q0R478.endpoint
+#print axioms PlasmaLean.Design.DommaschkSublevelActionGrids.Q0R523.endpoint
+#print axioms PlasmaLean.Design.DommaschkSublevelActionGrids.Q0R531.endpoint
+#print axioms PlasmaLean.Design.DommaschkSublevelActionGrids.Q1R456.endpoint
+#print axioms PlasmaLean.Design.DommaschkSublevelActionGrids.Q1R464.endpoint
+#print axioms PlasmaLean.Design.DommaschkSublevelActionGrids.Q1R509.endpoint
+#print axioms PlasmaLean.Design.DommaschkSublevelActionGrids.Q1R517.endpoint

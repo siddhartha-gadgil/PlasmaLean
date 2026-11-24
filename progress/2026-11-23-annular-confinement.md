@@ -120,3 +120,5 @@ The backward proof reuses the projected rectangles via a reflection lemma. A sin
 The signed trajectory reaches ±3/2 radians across 192 slabs. The physical steps on the isolated slab 226 also pass in both directions with two closed vertical half-boxes. [Signed interval, spatial cover and replay](https://github.com/siddhartha-gadgil/PlasmaLean/blob/main/notes/theory/dommaschk-signed-trace-spatial-split.md)
 
 Both proposed mirror heights now have actual field-line level contacts from their local entrance ellipsoids in both clock directions. A proved criterion expresses earliest contact from launch in terms of the intervening tube signs. [Four local contacts and their hypotheses](https://github.com/siddhartha-gadgil/PlasmaLean/blob/main/notes/theory/dommaschk-mirror-level-contact.md)
+
+Lean checks the widths and strict action comparisons for all eight adaptive speed grids, totaling 2,655 cells. Each physical action conclusion assumes directed arclength bounds at its own nodes. [Exact tables, assumptions and replay](https://github.com/siddhartha-gadgil/PlasmaLean/blob/main/notes/theory/dommaschk-adaptive-action-grids.md)

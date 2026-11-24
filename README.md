@@ -42,6 +42,8 @@ Lean now proves a 1/64-radian physical field-line collar on both Dommaschk mirro
 
 At the two proposed mirror heights, Lean proves that an actual field line from each admissible local entrance reaches the target inside slab 316 or 324, in either direction. Establishing the first encounter from launch requires the intervening physical path and its field-strength bounds. [Exact levels and four verified contacts](notes/theory/dommaschk-mirror-level-contact.md)
 
+Lean verifies the exact arithmetic of eight adaptive speed grids. Their 2,655 intervals give strict action comparisons once the measured field line satisfies the listed arclength bounds. [Adaptive grid certificates](notes/theory/dommaschk-adaptive-action-grids.md)
+
 **Geometry of a magnetic well.** Lean proves that a uniform discrepancy ε in the lengths below each field-strength threshold changes the single-passage bounce action by at most ε√(2(h−b₀)), where b₀ is a common lower field bound. It also bounds the action derivative when the lengths vary Lipschitz-continuously with the field-line label. [Theorem and application](notes/theory/bounce-action-sublevel-arclength.md) A finite speed grid gives a certified mesh correction. On the eight archived action endpoints an exact screen retained every target comparison with 253–433 adaptive speed intervals. [Finite-sample theorem and screen](notes/theory/finite-sublevel-action-comparison.md)
 
 **Trapped-particle theory (23 November 2026).** On a regular annulus of periodic orbits,

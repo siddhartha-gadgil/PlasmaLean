@@ -76,7 +76,7 @@ def first_uniform_grid(weights, upper, target):
     raise ValueError("target still unresolved at the source speed resolution")
 
 
-def adaptive_grid(weights, upper, target):
+def adaptive_table(weights, upper, target):
     """Bisect the cell with the largest gap between its endpoint rectangles."""
     speeds = sorted(weights)
     tails = [0] * (len(speeds) + 1)
@@ -102,10 +102,11 @@ def adaptive_grid(weights, upper, target):
         margin = target - bound if upper else bound - target
         if margin > 0:
             nodes = sorted(edges)
-            total = sum((b - a) * tail(a if upper else b) for a, b in zip(nodes, nodes[1:]))
+            cells = [(b-a, tail(a if upper else b)) for a, b in zip(nodes, nodes[1:])]
+            total = sum(width * height for width, height in cells)
             if total != mass:
                 raise ArithmeticError("adaptive endpoint sums disagree")
-            return len(nodes) - 1, margin
+            return cells, mass, margin
         if not heap:
             raise ValueError("adaptive mesh exhausted at source resolution")
         _, a, b = heapq.heappop(heap)
@@ -113,6 +114,11 @@ def adaptive_grid(weights, upper, target):
         edges.add(mid)
         old = (b - a) * tail(a if upper else b)
         mass += cell(a, mid) + cell(mid, b) - old
+
+
+def adaptive_grid(weights, upper, target):
+    cells, _, margin = adaptive_table(weights, upper, target)
+    return len(cells), margin
 
 
 if __name__ == "__main__":
