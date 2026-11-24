@@ -391,6 +391,8 @@ public import PlasmaLean.Theory.Kinetic.MirrorBounceTime
 public import PlasmaLean.Theory.Kinetic.MirrorHeightBand
 public import PlasmaLean.Theory.Kinetic.MirrorWellPersistence
 public import PlasmaLean.Theory.Kinetic.MirrorTimeActionBounds
+public import PlasmaLean.Theory.Kinetic.MirrorActionTransverse
+public import PlasmaLean.Theory.Kinetic.MirrorActionFlightExamples
 public import PlasmaLean.Theory.Kinetic.MirrorWellCriterion
 public import PlasmaLean.Theory.Fields.WeakQuasisymmetry
 public import PlasmaLean.Theory.Fields.CylAlgebra
