@@ -24,6 +24,13 @@ def Bracket (f : ℝ → ℝ) (a c b h : ℝ) : Prop :=
     (∀ t ∈ Icc a c, f t = h → deriv f t < 0) ∧
     (∀ t ∈ Icc c b, f t = h → 0 < deriv f t)
 
+/-- Supply the three strict height tests and oriented derivatives for every contact. -/
+theorem Bracket.of_signs {f : ℝ → ℝ} {a c b h : ℝ}
+    (left : h < f a) (center : f c < h) (right : h < f b)
+    (decreasing : ∀ t ∈ Icc a c, f t = h → deriv f t < 0)
+    (increasing : ∀ t ∈ Icc c b, f t = h → 0 < deriv f t) : Bracket f a c b h :=
+  ⟨left, center, right, decreasing, increasing⟩
+
 /-- A bracket transfers between profiles that agree in value and oriented slope
 on its closed window, including the two caps. -/
 theorem Bracket.congrOn {f g : ℝ → ℝ} {a c b h : ℝ} (good : Bracket f a c b h)

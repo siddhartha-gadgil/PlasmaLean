@@ -851,6 +851,7 @@ run_cmd do
 #print axioms PlasmaLean.Kinetic.MirrorHeightBand.exists_branch
 #print axioms PlasmaLean.Kinetic.MirrorHeightBand.Branch.time_lipschitz
 #print axioms PlasmaLean.Kinetic.MirrorHeightBand.Branch.continuous_time
+#print axioms PlasmaLean.Kinetic.MirrorWellPersistence.Bracket.of_signs
 #print axioms PlasmaLean.Kinetic.MirrorWellPersistence.Bracket.congrOn
 #print axioms PlasmaLean.Kinetic.MirrorWellPersistence.isOpen_stays
 #print axioms PlasmaLean.Kinetic.MirrorWellPersistence.isOpen_flowBracketIn
