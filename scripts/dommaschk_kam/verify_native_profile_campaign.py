@@ -1,7 +1,7 @@
 """Run the two-radius native profile certificates in a bounded, resumable workstation pool."""
 import argparse
-from collections import deque
 from concurrent.futures import FIRST_COMPLETED, ThreadPoolExecutor, wait
+import fcntl
 import json
 import os
 from pathlib import Path
@@ -26,13 +26,16 @@ def main():
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument('--range',type=int,nargs=2,default=(0,324),metavar=('FIRST','LAST'))
     p.add_argument('--workers',type=int,choices=range(1,13),default=2)
+    p.add_argument('--baseline-workers',type=int,default=1,
+                   help='minimum worker target, still subject to the available memory reserve')
     p.add_argument('--reserve-gib',type=int,default=32)
     p.add_argument('--reserve-cpus',type=int,default=2)
     p.add_argument('--cache',type=Path,default=ROOT/'.lake/native-paired-profiles')
     p.add_argument('--output',type=Path,required=True)
     a = p.parse_args()
     first,last = a.range
-    if not 0 <= first <= last <= 324 or a.reserve_gib < 0 or a.reserve_cpus < 0:
+    if (not 0 <= first <= last <= 324 or a.reserve_gib < 0 or a.reserve_cpus < 0
+            or not 1<=a.baseline_workers<=a.workers):
         p.error('invalid resource reserve or row interval')
     a.cache = a.cache.resolve()
     packets = [digest(load(r)[1]) for r in (470,478)]
@@ -48,7 +51,7 @@ def main():
     def ready(i):
         model = ROOT/'.lake/paired-action-profiles'/f'DommaschkNativeActionQ0R478Paired{i:03}'
         return any(model.glob('*/accepted.json'))
-    pending = deque(sorted(cases,key=lambda i:(not ready(i),i)))
+    pending = set(cases)
     records, errors, active = {}, {}, {}
     def validated(path,i):
         d = json.loads(path.read_text())
@@ -63,11 +66,14 @@ def main():
             pending.remove(i)
     def run(i):
         path = work/f'{i:03}.json'
-        with (work/f'{i:03}.log').open('w') as log:
-            subprocess.run([sys.executable,str(VERIFY),'--row',str(i),'--cache',str(a.cache),
-                            '--output',str(path)],cwd=ROOT,stdout=log,stderr=subprocess.STDOUT,check=True)
-        return validated(path,i)
-    idle, target, quiet = None, 1, 0
+        with (work/f'{i:03}.lock').open('a') as lock:
+            fcntl.flock(lock,fcntl.LOCK_EX)
+            if not path.exists():
+                with (work/f'{i:03}.log').open('w') as log:
+                    subprocess.run([sys.executable,str(VERIFY),'--row',str(i),'--cache',str(a.cache),
+                                    '--output',str(path)],cwd=ROOT,stdout=log,stderr=subprocess.STDOUT,check=True)
+            return validated(path,i)
+    idle, target, quiet = None, a.baseline_workers, 0
     previous, sampled = cpus(), time.monotonic()
     def report():
         save(a.output,dict(key=key,range=[first,last],packets=packets,complete=len(records)==len(cases),
@@ -86,12 +92,15 @@ def main():
                 if quiet >= 3:
                     target,quiet = min(a.workers,target+1),0
                 elif idle < a.reserve_cpus:
-                    target = max(1,target-1)
+                    target = max(a.baseline_workers,target-1)
             slots = max(0,min(target-len(active),int((available_ram()/GIB-a.reserve_gib)//6)))
-            while slots and pending and not errors:
-                i = pending.popleft()
-                active[pool.submit(run,i)] = i
-                slots -= 1
+            if slots and pending and not errors:
+                # Action integration can finish a new outer model while this pool is running.
+                # Prefer the now-cheap rows at each refill, and keep ascending order on ties.
+                chosen = sorted(pending,key=lambda i:(not ready(i),i))[:slots]
+                for i in chosen:
+                    pending.remove(i)
+                    active[pool.submit(run,i)] = i
             report()
             if not active:
                 time.sleep(5)

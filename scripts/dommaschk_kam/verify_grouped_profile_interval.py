@@ -59,8 +59,7 @@ theorem {tag}_on_paths {{a b : State}} {{x y : ℝ → Plane}} {{xs zs : List St
   exact result
 '''
         proofs.extend([tag+'_append',tag,tag+'_on_paths'])
-    src += f'''
-theorem signed_on_paths {{fi fo bi bo : State}} {{x y : ℝ → Plane}}
+    signed_inputs = f'''{{fi fo bi bo : State}} {{x y : ℝ → Plane}}
     {{fx fy bx by_ : List Step}}
     (fI : ∀ u ∈ physicalSlabs fi ((({start}:ℕ):ℝ)/64) (forwardInner ++ fx),
       ∀ t ∈ Icc u.start u.stop, x t ∈ u.tube t)
@@ -69,7 +68,9 @@ theorem signed_on_paths {{fi fo bi bo : State}} {{x y : ℝ → Plane}}
     (bI : ∀ u ∈ physicalSlabs bi ((({start}:ℕ):ℝ)/64) (backwardInner ++ bx),
       ∀ t ∈ Icc u.start u.stop, x (-t) ∈ u.tube t)
     (bO : ∀ u ∈ physicalSlabs bo ((({start}:ℕ):ℝ)/64) (backwardOuter ++ by_),
-      ∀ t ∈ Icc u.start u.stop, y (-t) ∈ u.tube t) :
+      ∀ t ∈ Icc u.start u.stop, y (-t) ∈ u.tube t)'''
+    src += f'''
+theorem signed_on_paths {signed_inputs} :
     (∀ θ ∈ Icc ({start}/64:ℝ) ({stop}/64), Compared θ (x θ) (y θ)) ∧
     (∀ θ ∈ Icc (-({stop}/64):ℝ) (-({start}/64)), Compared θ (x θ) (y θ)) := by
   refine ⟨forward_on_paths fI fO, ?_⟩
@@ -80,6 +81,18 @@ theorem signed_on_paths {{fi fo bi bo : State}} {{x y : ℝ → Plane}}
     (y := fun t => y (-t)) bI bO (-θ) inside
 '''
     proofs.append('signed_on_paths')
+    if start==0:
+        src += f'''
+theorem on_signed_interval {signed_inputs} :
+    ∀ θ ∈ Icc (-({stop}/64):ℝ) ({stop}/64), Compared θ (x θ) (y θ) := by
+  obtain ⟨forward,backward⟩ := signed_on_paths fI fO bI bO
+  simp only [zero_div,neg_zero] at forward backward
+  intro θ ht
+  by_cases hθ : 0 ≤ θ
+  · exact forward θ ⟨hθ,ht.2⟩
+  · exact backward θ ⟨ht.1,(lt_of_not_ge hθ).le⟩
+'''
+        proofs.append('on_signed_interval')
     return name,src+f'\nend PlasmaLean.Design.{name}\n',proofs
 
 
@@ -91,28 +104,40 @@ def reports(paths,first,last,packets):
             raise IncompleteCoverage(f'awaiting group report {path}')
         d = json.loads(path.read_text())
         if 'module' in d:
-            inputs.append(d)
+            inputs.append((path,d))
         else:
             if d['packets'] != packets:
                 raise ValueError(f'wrong source packets in {path}')
             if d.get('errors'):
                 raise ValueError(f'group producer failed: {d["errors"]}')
-            for info in d['groups']:
-                group = json.loads(Path(info['receipt']).read_text())
-                if any(info[k]!=group[k] for k in ('start','stop','key')):
-                    raise ValueError(f'wrong group receipt {info["receipt"]}')
-                inputs.append(group)
-    for d in inputs:
+            if 'groups' in d:
+                for info in d['groups']:
+                    receipt = Path(info['receipt'])
+                    group = json.loads(receipt.read_text())
+                    if any(info[k]!=group[k] for k in ('start','stop','key')):
+                        raise ValueError(f'wrong group receipt {receipt}')
+                    inputs.append((receipt,group))
+            else:
+                for key,info in d['rows'].items():
+                    receipt = Path(info['receipt'])
+                    row = json.loads(receipt.read_text())
+                    if row['row']!=int(key) or row['key']!=info['key'] or not row['direct']:
+                        raise ValueError(f'expected one complete signed comparison at {receipt}')
+                    inputs.append((receipt,row))
+    for path,d in inputs:
         if d['packets'] != packets:
             raise ValueError('expected the two original physical witness digests')
-        lo,hi = d['start'],d['stop']
-        expected = f'DommaschkGroupedProfile{lo:03}To{hi:03}Rows'
-        if not 236 <= lo < hi <= 325 or d['module'] != expected:
-            raise ValueError('invalid original signed group range')
+        if 'start' in d:
+            lo,hi = d['start'],d['stop']
+        else:
+            lo,hi = d['row'],d['row']+1
+        if not 0 <= lo < hi <= 325:
+            raise ValueError('invalid original signed comparison range')
+        row_data(d,lo,packets)
         for i in range(max(lo,first),min(hi,last)):
             if i in by_index and d['key']!=by_index[i]['key']:
                 raise ValueError(f'different signed groups at row {i}')
-            by_index[i] = d
+            by_index[i] = {**d,'receipt':str(path.resolve())}
     missing = [i for i in range(first,last) if i not in by_index]
     if missing:
         raise IncompleteCoverage(f'missing {len(missing)} signed row pairs, starting at {missing[0]}')
@@ -126,12 +151,14 @@ def main():
     p.add_argument('--reports',nargs='+',type=Path,required=True,help='signed group receipts or campaign manifests')
     p.add_argument('--range',nargs=2,type=int,default=(236,325),metavar=('FIRST','STOP'))
     p.add_argument('--output',required=True,type=Path)
+    p.add_argument('--evidence-output',type=Path,
+                   help='write the ordered input paths immediately after validating the complete cover')
     p.add_argument('--wait-seconds',type=int,default=0,help='wait for unfinished group campaigns')
     p.add_argument('--cache',type=Path,default=ROOT/'.lake/grouped-profile-intervals')
     args = p.parse_args()
     first,stop = args.range
-    if not 236<=first<stop<=325:
-        p.error('choose a nonempty subset of the hard suffix [236,325)')
+    if not 0<=first<stop<=325:
+        p.error('choose a nonempty subset of the original rows [0,325)')
     packets = [digest(load(k)[1]) for k in (470,478)]
     if args.wait_seconds<0:
         p.error('the waiting time must be nonnegative')
@@ -147,6 +174,10 @@ def main():
             print(exc,flush=True)
             time.sleep(min(30,remaining))
     rows = [row_data(d,i,packets) for i,d in enumerate(checked,first)]
+    if args.evidence_output:
+        save(args.evidence_output,dict(start=first,stop=stop,packets=packets,
+             receipts=list(dict.fromkeys(d['receipt'] for d in checked)),
+             rows=[dict(index=i,receipt=d['receipt'],key=d['key']) for i,d in enumerate(checked,first)]))
     def lake(*cmd):
         return subprocess.check_output(['lake','env',*cmd],text=True,cwd=ROOT).strip()
     args.lean = str(Path(lake('lean','--print-prefix'))/'bin/lean')

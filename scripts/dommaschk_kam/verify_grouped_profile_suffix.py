@@ -1,6 +1,7 @@
 """Certify groups of original signed 470/478 rows on a common rescaled angular clock."""
 import argparse
 from concurrent.futures import FIRST_COMPLETED, ThreadPoolExecutor, wait
+import fcntl
 import json
 from pathlib import Path
 import re
@@ -97,13 +98,13 @@ def values(stem,tubes,args):
     return result
 
 
-def campaign(args,records):
+def campaign(args,records,spans):
     from verify_mirror_physical_hit import admitted
     from verify_physical_trace_slabs import key_of
     packets = [digest(path) for _,path,_,_ in records]
     code = [Path(__file__).resolve(),*[Path(__file__).with_name(s) for s in
             ('grouped_profile_arithmetic.py','grouped_profile_harmonics.py')]]
-    key = key_of([packets,[digest(p) for p in code],SPANS,args.backend,
+    key = key_of([packets,[digest(p) for p in code],spans,args.backend,
                   digest(DESIGN/'DommaschkGroupedProfileCompare.trace')])
     output = args.cache.resolve()/'campaign'/key
     output.mkdir(parents=True,exist_ok=True)
@@ -111,20 +112,19 @@ def campaign(args,records):
     def run(span):
         a,b = span
         path = output/f'{a:03}.json'
-        cmd = [sys.executable,str(code[0]),'--group',str(a),'--backend',args.backend,
+        cmd = [sys.executable,str(code[0]),'--span',str(a),str(b),'--backend',args.backend,
                '--cache',str(args.cache),'--output',str(path)]
-        with (output/f'{a:03}.log').open('w') as log:
-            subprocess.run(cmd,check=True,cwd=ROOT,stdout=log,stderr=subprocess.STDOUT)
+        with (output/f'{a:03}.lock').open('a') as lock:
+            fcntl.flock(lock,fcntl.LOCK_EX)
+            if not path.exists():
+                with (output/f'{a:03}.log').open('w') as log:
+                    subprocess.run(cmd,check=True,cwd=ROOT,stdout=log,stderr=subprocess.STDOUT)
         d = json.loads(path.read_text())
         expected = f'DommaschkGroupedProfile{a:03}To{b:03}Rows'
         if (d['start'],d['stop'],d['module'],d['packets']) != (a,b,expected,packets):
             raise ValueError(f'wrong signed group receipt {path}')
         admitted(Path(d['import_paths'][0]),expected,d['key'])
         return dict(start=a,stop=b,key=d['key'],receipt=str(path))
-    starts = args.groups or [a for a,_ in SPANS]
-    if len(starts)!=len(set(starts)):
-        raise ValueError('a group was requested twice')
-    spans = [(a,dict(SPANS)[a]) for a in starts]
     def update():
         save(args.output,dict(key=key,packets=packets,requested=spans,
                               accepted_rows=sum(r['stop']-r['start'] for r in completed.values()),
@@ -162,6 +162,9 @@ def main():
     selection = p.add_mutually_exclusive_group(required=True)
     selection.add_argument('--group',type=int,choices=[a for a,_ in SPANS])
     selection.add_argument('--groups',type=int,nargs='+',choices=[a for a,_ in SPANS])
+    selection.add_argument('--span',type=int,nargs=2,metavar=('FIRST','STOP'))
+    selection.add_argument('--spans',nargs='+',metavar='FIRST:STOP',
+                           help='verify distinct original groups with explicit stop indices')
     selection.add_argument('--all',action='store_true',help='verify all 13 groups and record their signed receipts')
     selection.add_argument('--screen',action='store_true',help='replay every group using exact arithmetic')
     p.add_argument('--cache',type=Path,default=ROOT/'.lake/grouped-profile-suffix')
@@ -171,19 +174,38 @@ def main():
     mode = p.add_mutually_exclusive_group()
     mode.add_argument('--gradient-only',action='store_true')
     mode.add_argument('--values-only',action='store_true')
+    mode.add_argument('--preflight',action='store_true',help='run only the exact arithmetic for the selected spans')
     p.add_argument('--output',type=Path,required=True)
     args = p.parse_args()
     records = [load(k) for k in (470,478)]
-    if (args.gradient_only or args.values_only) and args.group is None:
-        p.error('intermediate checks require one --group')
-    if args.groups or args.all:
-        campaign(args,records)
-        return
-    if args.screen:
+    if args.spans:
+        try:
+            spans = [tuple(map(int,s.split(':'))) for s in args.spans]
+        except ValueError:
+            p.error('expected integer endpoints in FIRST:STOP')
+    elif args.span:
+        spans = [tuple(args.span)]
+    elif args.group is not None:
+        spans = [(args.group,dict(SPANS)[args.group])]
+    elif args.groups:
+        spans = [(a,dict(SPANS)[a]) for a in args.groups]
+    else:
+        spans = SPANS
+    if any(len(s)!=2 or not 0<=s[0]<s[1]<=325 for s in spans):
+        p.error('spans must be nonempty subsets of [0,325)')
+    ordered = sorted(spans)
+    if any(x[1]>y[0] for x,y in zip(ordered,ordered[1:])):
+        p.error('each original row must occur at most once in a campaign')
+    if (args.gradient_only or args.values_only) and len(spans)!=1:
+        p.error('intermediate checks require one span')
+    if args.screen or args.preflight:
         from grouped_profile_arithmetic import screen_group
-        groups = [screen_group(a,b,*group_data(a,b,records)) for a,b in SPANS]
+        groups = [screen_group(a,b,*group_data(a,b,records)) for a,b in spans]
         save(args.output,dict(kind='exact arithmetic preflight',packets=[digest(p) for _,p,_,_ in records],
-                              rows=sum(b-a for a,b in SPANS),groups=groups))
+                              rows=sum(b-a for a,b in spans),groups=groups))
+        return
+    if args.groups or args.spans or args.all:
+        campaign(args,records,spans)
         return
     def lake(*cmd):
         return subprocess.check_output(['lake','env',*cmd],cwd=ROOT,text=True).strip()
@@ -194,7 +216,7 @@ def main():
     if args.backend!='sparse':
         from grouped_profile_harmonics import prepare
         prepare(args)
-    a,b = args.group,dict(SPANS)[args.group]
+    a,b = spans[0]
     tubes,common = group_data(a,b,records)
     stem = f'DommaschkGroupedProfile{a:03}To{b:03}'
     if args.values_only:
