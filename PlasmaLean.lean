@@ -394,6 +394,7 @@ public import PlasmaLean.Theory.Kinetic.MirrorWellPersistence
 public import PlasmaLean.Theory.Kinetic.MirrorLocalFlowPersistence
 public import PlasmaLean.Theory.Kinetic.MirrorActionInverseBounds
 public import PlasmaLean.Theory.Kinetic.MirrorActionVariation
+public import PlasmaLean.Theory.Kinetic.MirrorBranchCaps
 public import PlasmaLean.Theory.Kinetic.MirrorActionHeightShift
 public import PlasmaLean.Theory.Kinetic.MirrorActionVariationLower
 public import PlasmaLean.Theory.Kinetic.VacuumLittlejohnLocal

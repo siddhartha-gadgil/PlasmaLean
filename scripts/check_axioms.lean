@@ -913,3 +913,6 @@ run_cmd do
 #print axioms PlasmaLean.Kinetic.VacuumLittlejohnWindow.Control.radial
 #print axioms PlasmaLean.Kinetic.VacuumLittlejohnWindow.guidingCentreBand
 #print axioms PlasmaLean.Kinetic.MirrorActionEnvelope.LaunchWell.transfer_height
+#print axioms PlasmaLean.Kinetic.MirrorHeightBand.Branch.time_lt_of_above
+#print axioms PlasmaLean.Kinetic.MirrorHeightBand.Branch.lt_time_of_below
+#print axioms PlasmaLean.Kinetic.MirrorHeightBand.Branch.timeAt_derivative
