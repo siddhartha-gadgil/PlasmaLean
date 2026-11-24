@@ -6,7 +6,7 @@ from pathlib import Path
 import subprocess
 
 from emit_position_slabs import step as step_literal
-from endpoint_reflected_trials import paired_rows
+from screen_independent_endpoint_frames import trial_frames
 from verify_backward_physical_prefix import compile_modules
 from verify_endpoint_backward_launches import PACKAGE as BACKWARD
 from verify_endpoint_forward_jacobians import PACKAGE as JACOBIAN
@@ -183,29 +183,44 @@ def main():
     args.lean_path = lake('printenv','LEAN_PATH')
     base = [checksum, version, digest(DESIGN/(DEPENDENCY+'.trace'))]
     references = {(r['direction'],r['index']): r for r in reports(args.references) if r['endpoint'] == label}
-    jacobians = {r['index']: r for r in reports(args.jacobians) if r['endpoint'] == label}
+    jacobians = {(r['index'],r.get('matrix_direction')): r for r in reports(args.jacobians)
+                 if r['endpoint'] == label}
     roots, keys, branches = [], [], {1: [], -1: []}
     for sign, launch in [(1, args.forward_launches), (-1, args.backward_launches)]:
         first = read_rows(launch)[label]
         roots.extend(verify_dependencies(label, sign, first))
         keys.append(first['key'])
         branches[sign].append(first)
-    pairs = list(paired_rows(packet, 0, n-1))
+    frames = list(trial_frames(packet, 0, n-1))
     for i in range(1,n):
-        pair, prev = pairs[i], pairs[i-1]
-        jac = jacobians[i]
-        jm = f'DommaschkJacobian{label.upper()}PairedForward{i:03}'
-        jacdir = input_root(jac,label,1,i,jm,checksum,version)
-        jac_roots = [jacdir]
-        jac_import = jacdir
-        if 'shared_parents' in jac:
-            from verify_horner_endpoint_jacobian import checked_shared_roots
-            jac_roots.extend(checked_shared_roots(jac,jacdir,version))
-            jac_import = merge_import_roots(args.cache,jac_roots,[jac['key'],'physical-field-imports'])
-        if (not jac.get('paired_trials') or tuple(jac['projected_radii']) != pair.common_radii
-                or Fraction(jac['common_rate']) != pair.common_rate):
-            raise ValueError(f'incorrect two-direction rectangle for {label} row {i}')
+        pair, reflected = frames[i]
+        prev = frames[i-1][0]
+        loaded = {}
         for sign, tag in [(1, 'Forward'), (-1, 'Back')]:
+            jac = jacobians.get((i,sign),jacobians.get((i,None)))
+            if jac is None:
+                raise ValueError(f'missing signed spatial matrix for {label} row {i} direction {sign}')
+            joint = 'matrix_direction' not in jac
+            if joint and (pair.forward_left != reflected.forward_left or
+                          pair.forward['frame_end'] != reflected.forward['frame_end']):
+                raise ValueError(f'{label} row {i} requires a separately verified backward frame')
+            suffix = 'PairedForward' if joint else 'Independent'+tag
+            jm = f'DommaschkJacobian{label.upper()}{suffix}{i:03}'
+            target = min(pair.common_rate,reflected.common_rate) if joint else (
+                pair.common_rate if sign==1 else reflected.common_rate)
+            if (not jac.get('paired_trials') or tuple(jac['projected_radii']) != pair.common_radii
+                    or Fraction(jac['common_rate']) != target):
+                raise ValueError(f'incorrect rectangle or frame budget for {label} row {i}')
+            if jm not in loaded:
+                jacdir = input_root(jac,label,1,i,jm,checksum,version)
+                jac_roots = [jacdir]
+                jac_import = jacdir
+                if 'shared_parents' in jac:
+                    from verify_horner_endpoint_jacobian import checked_shared_roots
+                    jac_roots.extend(checked_shared_roots(jac,jacdir,version))
+                    jac_import = merge_import_roots(args.cache,jac_roots,[jac['key'],'physical-field-imports'])
+                loaded[jm] = jac_import,jac_roots
+            jac_import,jac_roots = loaded[jm]
             ref = references[sign,i]
             fm = f'DommaschkTraceResidual{label.upper()}{tag}{i:03}'
             refdir = input_root(ref,label,sign,i,fm,checksum,version)

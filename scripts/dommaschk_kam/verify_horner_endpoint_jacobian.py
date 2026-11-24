@@ -124,9 +124,10 @@ theorem angles {{t : ℝ}} (ht : t ∈ Set.Icc ({i}/64:ℝ) ({i+1}/64)) (w : Wav
     return name,src+footer(name),['angles']
 
 
-def endpoint_modules(label, pair, jet, fields, shared):
+def endpoint_modules(label, pair, jet, fields, shared, matrix_sign=None):
     i = pair.index
-    stem = f'DommaschkJacobian{label.upper()}PairedForward{i:03}'
+    tag = {None:'PairedForward', 1:'IndependentForward', -1:'IndependentBack'}[matrix_sign]
+    stem = f'DommaschkJacobian{label.upper()}{tag}{i:03}'
     panel, core = stem+'Panels',stem+'Bounds'
     psrc = panel_certificate(panel,frame_models(jet,pair),pair.common_rate)
     leaves = {tag:(f'{field}.model',symbol,m)
@@ -175,20 +176,25 @@ theorem physical_clock_log_norm {{t R z : ℝ}} (ht : t ∈ Set.Icc ({i}/64 : �
   exact models_mem hs
 '''
     src += ''.join(f'    ({m}.sound hs u v ({shared}.angles ht))\n' for m in fields)
-    src += f'''
-theorem fits_record : logNorm ≤ {pair.forward['log_norm_upper']} := by norm_num [logNorm]
-theorem fits_backward_record : logNorm ≤ {pair.backward['log_norm_upper']} := by norm_num [logNorm]
-'''
+    checks = ['clock_inputs','denominator_pos','physical_clock_log_norm']
+    src += '\n'
+    if matrix_sign in (None,1):
+        src += f'theorem fits_record : logNorm ≤ {pair.forward["log_norm_upper"]} := by norm_num [logNorm]\n'
+        checks.append('fits_record')
+    if matrix_sign in (None,-1):
+        src += f'theorem fits_backward_record : logNorm ≤ {pair.backward["log_norm_upper"]} := by norm_num [logNorm]\n'
+        checks.append('fits_backward_record')
     if label[1]=='1':
         src = src.replace('(2*t)', '(2*(Real.pi / 2+t))')
-    return [(panel,psrc,[]),(core,body,[]),(stem,src+footer(stem),
-            ['clock_inputs','denominator_pos','physical_clock_log_norm','fits_record','fits_backward_record'])]
+    return [(panel,psrc,[]),(core,body,[]),(stem,src+footer(stem),checks)]
 
 
 def main():
     p=argparse.ArgumentParser(description=__doc__)
     p.add_argument('--endpoints',nargs='+',choices=ENDPOINTS,required=True)
     p.add_argument('--row',type=int,required=True)
+    p.add_argument('--independent-frames',action='store_true',
+                   help='evaluate both original frame pairs and their separate log-norm budgets')
     p.add_argument('--output',type=Path,required=True)
     p.add_argument('--cache',type=Path,default=ROOT/'.lake/endpoint-horner-jacobians')
     args=p.parse_args()
@@ -202,7 +208,12 @@ def main():
     args.lean_path=lake('printenv','LEAN_PATH')
     version=lake('lean','--version')
     paths=[RECORD.with_name(f'bounce_frame_{label[:2]}_u{label[3:]}.json.gz') for label in args.endpoints]
-    pairs=[next(paired_rows(path,args.row,args.row)) for path in paths]
+    if args.independent_frames:
+        from screen_independent_endpoint_frames import trial_frames
+        branches=[next(trial_frames(path,args.row,args.row)) for path in paths]
+        pairs=[b[0] for b in branches]
+    else:
+        pairs=[next(paired_rows(path,args.row,args.row)) for path in paths]
     hashes=[digest(path) for path in paths]
     coords=[own_models(pair) for pair in pairs]
     r,z=joint_models(*coords) if len(coords)==2 else coords[0]
@@ -240,8 +251,12 @@ def main():
     parent_imports=merged(parents)
     parent_keys=[r['key'] for _,r in parents]
     results=[]
-    for label,pair,checksum in zip(args.endpoints,pairs,hashes,strict=True):
-        modules=endpoint_modules(label,pair,jet,[r['module'] for _,r in fields],inp[1]['module'])
+    jobs=[(e,h,p,None) for e,h,p in zip(args.endpoints,hashes,pairs,strict=True)]
+    if args.independent_frames:
+        jobs=[(e,h,p,sign) for e,h,branch in zip(args.endpoints,hashes,branches,strict=True)
+              for sign,p in zip((1,-1),branch,strict=True)]
+    for label,checksum,pair,sign in jobs:
+        modules=endpoint_modules(label,pair,jet,[r['module'] for _,r in fields],inp[1]['module'],sign)
         root,record=check(modules,[parent_imports],[*hashes,*parent_keys,digest(DESIGN/'DommaschkJacobianPanels.trace')],JACOBIAN)
         report={k:v for k,v in record.items() if k!='artifacts'}
         report.update(endpoint=label,launch_u=str(F(int(label[3:]),1000)),section_in_half_pi=section,
@@ -250,6 +265,8 @@ def main():
             import_paths=[str(root)], shared_endpoints=args.endpoints,
             shared_parents=[{'root':str(base),'key':m['key'],'module':m['module']}
                                                      for base,m in parents])
+        if sign is not None:
+            report['matrix_direction']=sign
         save(root/'row.json',report)
         results.append(report)
     save(args.output,results)
