@@ -2,6 +2,8 @@
 
 The QA2R pilot at radial label \(u=47/100\) and its neighbor at \(u=239/500\) now have a direct physical comparison on one embedded pair of invariant tori throughout \(-1\leq\phi\leq1\). For every admitted birth angle, their field strengths obey \(f_o\le f_i-1/18000\) and their increasing-angle Cartesian arclength densities obey \(w_o\ge (3999/4000)w_i\) there. The archived pilot is calibrated through both first mirrors. The neighboring trajectory needs to reach its own first mirrors to compare the full integrals. [Compared physical trajectories](compared-signed-trace-prefixes.md) · [Ordered outer 89 slabs](ordered-paired-profile-suffix.md)
 
+The 328-slab second trajectory and full 325-pair comparison now discharge both finite hypotheses. [Physical first-well secant](two-physical-first-well-actions.md)
+
 ## First-well theorem
 
 Let \(J_u(h)\) be the single-passage action between the first two field-strength contacts enclosing the birth section at height \(h\), integrated with respect to Cartesian arclength. Use the same two nested embedded tori and the same birth angle \(|\phi_0|\le2^{-19}\) for both labels. For the full conclusion the two remaining finite inputs are:
