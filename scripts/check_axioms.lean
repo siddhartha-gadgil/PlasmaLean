@@ -896,3 +896,9 @@ run_cmd do
 #print axioms PlasmaLean.Contract.TrappedBirthCoordinates.mem_interior
 #print axioms PlasmaLean.Contract.TrappedBirthCoordinates.lift_mem_interior
 #print axioms PlasmaLean.Contract.TrappedBirthCoordinates.positive_mass
+#print axioms PlasmaLean.Kinetic.MirrorActionVariation.hasDerivAt_integral_sqrt
+#print axioms PlasmaLean.Kinetic.MirrorActionVariation.transverse_window
+#print axioms PlasmaLean.Kinetic.MirrorActionVariation.hasDerivAt_action
+#print axioms PlasmaLean.Kinetic.MirrorActionVariation.weighted_derivative_eq
+#print axioms PlasmaLean.Kinetic.MirrorActionVariation.first_variation
+#print axioms PlasmaLean.Kinetic.MirrorActionVariation.abs_variation_le
