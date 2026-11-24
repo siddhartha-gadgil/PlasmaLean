@@ -851,6 +851,15 @@ run_cmd do
 #print axioms PlasmaLean.Kinetic.MirrorHeightBand.exists_branch
 #print axioms PlasmaLean.Kinetic.MirrorHeightBand.Branch.time_lipschitz
 #print axioms PlasmaLean.Kinetic.MirrorHeightBand.Branch.continuous_time
+#print axioms PlasmaLean.Kinetic.MirrorWellPersistence.Bracket.congrOn
+#print axioms PlasmaLean.Kinetic.MirrorWellPersistence.isOpen_stays
+#print axioms PlasmaLean.Kinetic.MirrorWellPersistence.isOpen_flowBracketIn
+#print axioms PlasmaLean.Kinetic.MirrorWellPersistence.isOpen_flowBracket
+#print axioms PlasmaLean.Kinetic.MirrorWellPersistence.regular_birth_open_of_model
+#print axioms PlasmaLean.Kinetic.MirrorWellPersistence.regular_birth_open_neighborhood
+#print axioms PlasmaLean.Kinetic.MirrorWellPersistence.regular_birth_mass_of_flow
+#print axioms PlasmaLean.Kinetic.MirrorWellPersistence.regular_birth_open_of_local
+#print axioms PlasmaLean.Kinetic.MirrorWellPersistence.regular_birth_mass_of_local
 #print axioms PlasmaLean.Kinetic.MirrorWellPersistence.isOpen_bracket
 #print axioms PlasmaLean.Kinetic.MirrorWellPersistence.measure_bracket_pos
 #print axioms PlasmaLean.Kinetic.MirrorWellPersistence.Bracket.exists_well

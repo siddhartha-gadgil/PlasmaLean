@@ -24,6 +24,21 @@ def Bracket (f : ℝ → ℝ) (a c b h : ℝ) : Prop :=
     (∀ t ∈ Icc a c, f t = h → deriv f t < 0) ∧
     (∀ t ∈ Icc c b, f t = h → 0 < deriv f t)
 
+/-- A bracket transfers between profiles that agree in value and oriented slope
+on its closed window, including the two caps. -/
+theorem Bracket.congrOn {f g : ℝ → ℝ} {a c b h : ℝ} (good : Bracket f a c b h)
+    (ac : a ≤ c) (cb : c ≤ b) (values : EqOn f g (Icc a b))
+    (slopes : EqOn (deriv f) (deriv g) (Icc a b)) : Bracket g a c b h := by
+  obtain ⟨lo, mid, hi, left, right⟩ := good
+  refine ⟨values ⟨le_rfl, ac.trans cb⟩ ▸ lo, values ⟨ac, cb⟩ ▸ mid,
+    values ⟨ac.trans cb, le_rfl⟩ ▸ hi, ?_, ?_⟩
+  · intro t ht hit
+    have whole := (Icc_subset_Icc_right cb) ht
+    exact slopes whole ▸ left t ht ((values whole).trans hit)
+  · intro t ht hit
+    have whole := (Icc_subset_Icc_left ac) ht
+    exact slopes whole ▸ right t ht ((values whole).trans hit)
+
 private theorem open_forall_compact {X K : Type*} [TopologicalSpace X] [TopologicalSpace K]
     [CompactSpace K] {s : Set (X × K)} (hs : IsOpen s) :
     IsOpen {x : X | ∀ k : K, (x, k) ∈ s} := by
@@ -32,6 +47,20 @@ private theorem open_forall_compact {X K : Type*} [TopologicalSpace X] [Topologi
     simp [Set.mem_image, Prod.exists]
   rw [eq]
   exact (isClosedMap_fst_of_compactSpace _ hs.isClosed_compl).isOpen_compl
+
+/-- Staying in an open spatial region for a compact time window is open in the
+initial data of a jointly continuous family. -/
+theorem isOpen_stays {P E : Type*} [TopologicalSpace P] [TopologicalSpace E] {a b : ℝ}
+    {Y : P → ℝ → E} {U : Set E} (op : IsOpen U)
+    (hy : ContinuousOn (fun z : P × ℝ => Y z.1 z.2) (univ ×ˢ Icc a b)) :
+    IsOpen {p | ∀ t ∈ Icc a b, Y p t ∈ U} := by
+  have joint : Continuous (fun z : P × Icc a b => Y z.1 z.2) :=
+    hy.comp_continuous (continuous_fst.prodMk (continuous_subtype_val.comp continuous_snd))
+      fun z => ⟨mem_univ _, z.2.property⟩
+  have keep := open_forall_compact (op.preimage joint)
+  convert keep using 1
+  ext p
+  simp
 
 variable {P : Type*} [TopologicalSpace P] {F : P → ℝ → ℝ} {a c b : ℝ}
 
