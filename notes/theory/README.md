@@ -117,3 +117,4 @@ Phase 8 (kam-route.md, finite-beta-stellarator.md):
 - [Signed physical paths at all eight launches](dommaschk-eight-signed-launches.md) (N-91). The original two signed tubes enclose one field line per birth on one shared pair of nested tori.
 - [Physical partial action on a six-radian field line](dommaschk-signed-action-integral.md) (N-92). Both height bounds and the integrated central action on one trajectory.
 - [Cylindrical action sensitivity](cylindrical-action-sensitivity.md) (N-93). Sharp action error from differences of actual same-angle tangent components.
+- [Original action digits on both physical tubes of row 16](dommaschk-native-action-panels.md) (N-94). Exact Horner, division and square-root certificates for both directions of a previously unresolved row.

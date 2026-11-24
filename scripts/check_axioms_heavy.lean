@@ -48,6 +48,10 @@ import PlasmaLean.Design.DommaschkReflectedPilot
 import PlasmaLean.Design.DommaschkBackwardRectangle
 import PlasmaLean.Design.DommaschkEndpointSignedTrace
 import PlasmaLean.Design.DommaschkArcDensitySensitivity
+import PlasmaLean.Design.DommaschkNativeActionReflection
+import PlasmaLean.Design.DommaschkNativeActionColumns
+import PlasmaLean.Design.DommaschkNativeActionControls
+import PlasmaLean.Certificates.NativeActionArchivePair
 import PlasmaLean.Certificates.MirrorActionBlockBounds
 import PlasmaLean.Design.DommaschkReflectedActionBounds
 import PlasmaLean.Certificates.MirrorActionUniformCells
@@ -364,3 +368,12 @@ run_cmd do
 #print axioms PlasmaLean.Certificates.MirrorActionQuadrature.action_le_uniform
 #print axioms PlasmaLean.Certificates.MirrorActionQuadrature.covers_append_iff
 #print axioms PlasmaLean.Certificates.MirrorActionQuadrature.covers_of_floor
+#print axioms PlasmaLean.Design.DommaschkHarmonicHorner.expand_sound
+#print axioms PlasmaLean.Design.DommaschkNativeActionGeometry.compensated_numerator
+#print axioms PlasmaLean.Design.DommaschkNativeActionReflection.norm
+#print axioms PlasmaLean.Design.DommaschkNativeActionColumns.physical
+#print axioms PlasmaLean.Design.DommaschkNativeActionControls.unreversed_record_differs
+#print axioms PlasmaLean.Design.DommaschkNativeActionControls.small_root_rejected
+#print axioms PlasmaLean.Design.DommaschkNativeActionControls.large_root_fails_minimality
+#print axioms PlasmaLean.Certificates.NativeActionInterval.forward_cells
+#print axioms PlasmaLean.Certificates.NativeActionInterval.backward_cells
