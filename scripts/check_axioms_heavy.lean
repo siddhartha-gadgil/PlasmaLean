@@ -71,6 +71,7 @@ import PlasmaLean.Design.DommaschkLocalLittlejohnBirth
 import PlasmaLean.Design.DommaschkGroupedMirrorModels
 import PlasmaLean.Design.DommaschkEndpointMirrorBranch
 import PlasmaLean.Design.DommaschkEndpointTraceFamily
+import PlasmaLean.Design.DommaschkCenteredStrength
 import PlasmaLean.Design.DommaschkPairedActionBirth
 import PlasmaLean.Design.DommaschkCommonPilotObservables
 import PlasmaLean.Design.DommaschkPilotBirthVariation
@@ -501,3 +502,7 @@ run_cmd do
 #print axioms PlasmaLean.Design.DommaschkPairedActionProfiles.compare_ranges
 #print axioms PlasmaLean.Design.DommaschkPairedActionBirth.Launch.weight
 #print axioms PlasmaLean.Design.DommaschkPairedActionBirth.from_launch
+#print axioms PlasmaLean.Design.DommaschkCenteredStrength.mean_value
+#print axioms PlasmaLean.Design.DommaschkCenteredStrength.physical_derivative
+#print axioms PlasmaLean.Design.DommaschkCenteredStrength.centered
+#print axioms PlasmaLean.Design.DommaschkCenteredStrength.compare
