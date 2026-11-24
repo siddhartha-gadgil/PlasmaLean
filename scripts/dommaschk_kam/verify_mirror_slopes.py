@@ -84,8 +84,8 @@ def angular(i, version, args):
         [digest(RECORD),version,jac['key'],jac['artifacts']],args,package=ANGLES)
 
 
-def bounds_source(i,jac,angles):
-    r,cols,_ = data(i)
+def bounds_source(i,jac,angles,*,row_data=None):
+    r,cols,_ = data(i) if row_data is None else row_data
     name=f'DommaschkMirrorSlope{i:03}'
     rate=Fraction(1,128 if i==316 else 400)
     head=f'''module
@@ -168,8 +168,8 @@ set_option Elab.async false
     return name,head+'\n'.join(defs+['']+lines)+f'\nend PlasmaLean.Design.{name}\n',rate
 
 
-def tube_source(i,jac,num,rate,closed=False):
-    _,_,rows=data(i)
+def tube_source(i,jac,num,rate,closed=False,*,row_data=None,frame_rows=None):
+    radial,_,rows=data(i) if row_data is None else row_data
     name=f'DommaschkMirrorSlope{i:03}' + ('ClosedTube' if closed else 'Tube')
     out=f'''module
 public import {SLOPES}.{num}
@@ -204,8 +204,9 @@ private theorem clock (t : ℝ) : coord ({i}/64) t = 128*t-{2*i+1} := by unfold 
         euclidean_support = '' if closed else f'(Icc {a} {b}) '
         composition = 'comp_hasDerivAt' if closed else 'comp_hasDerivWithinAt'
         zp=f'{jac}.trial.z.poly' if sign==1 else f'QPoly.scale (-1) {jac}.trial.z.poly'
+        entry = f'DommaschkPositionFrames{frame}.block{i//16}[{i%16}]' if frame_rows is None else frame_rows[sign]
         out+=f'''
-abbrev {rn} := DommaschkPositionFrames{frame}.block{i//16}[{i%16}]
+abbrev {rn} := {entry}
 
 /-- The squared physical field strength has a strictly positive derivative at every
 interior point of the original {word} bracket tube on any actual field solution. -/
@@ -226,7 +227,7 @@ theorem {tag}_transverse {{t : ℝ}} (ht : t ∈ {domain} {a} {b}) {{y : ℝ →
     Rat.cast_ofNat] at hu0
   rw [clock,ez{',QPoly.eval_scale' if sign==-1 else ''}] at hz0
   have cap : {rn}.physicalOut / (2:ℝ)^80 ≤ ({jac}.trial.u.radius:ℝ) := by
-    change ({step['physical_radius_out']}:ℝ)/2^80 ≤ (({rows[1]['physical_trial_radius']}/2^80 : ℚ):ℝ)
+    change ({step['physical_radius_out']}:ℝ)/2^80 ≤ (({radial.e}/2^80 : ℚ):ℝ)
     norm_num
   have hu : {jac}.trial.u.Mem {w} (y t 0-dkR0) := by
     unfold Model.Mem
