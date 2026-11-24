@@ -112,18 +112,30 @@ def tracked_jacobian(name, packet_hash, version):
     return library, {'module':name,'key':key,'artifacts':artifacts,'package':'PlasmaLean.Design'}
 
 
-def source_for(index, error, spatial, central, jac_package=JACOBIAN_PACKAGE):
+def source_for(index, error, spatial, central, jac_package=JACOBIAN_PACKAGE, radii=None):
     name = f'DommaschkPhysicalForward{index:03}'
     prior = 'next ' + stored(index-1) if index else 'DommaschkPositionFramesFwd.start'
+    if radii is None:
+        trial_file = 'physical_trial_square.lean.tpl'
+        values = {'jac':spatial,'error':error}
+        rectangle_import = ''
+    else:
+        trial_file = 'physical_trial_rectangle.lean.tpl'
+        values = {'jac':spatial,'radial':radii[0],'vertical':radii[1]}
+        rectangle_import = '\npublic import PlasmaLean.Design.DommaschkProjectedTrial'
+    membership = Template(TEMPLATE.with_name(trial_file).read_text().rstrip('\n')).substitute(values)
     return name, Template(TEMPLATE.read_text()).substitute(
         name=name, jac=spatial, jac_package=jac_package, central=central, index=index, end=index+1,
-        offset=2*index+1, stored=stored(index), previous=prior, error=error)
+        offset=2*index+1, stored=stored(index), previous=prior, membership=membership,
+        rectangle_import=rectangle_import)
 
 
-def verify_row(index, error, packages, args, common):
+def verify_row(index, error, packages, args, common, radii=None):
     (jacdir, jac), (resdir, res) = packages
     name, source = source_for(index, error, jac['module'], res['theorem'].split('.')[0],
-                              jac.get('package', JACOBIAN_PACKAGE))
+                              jac.get('package', JACOBIAN_PACKAGE), radii)
+    if radii is not None:
+        common = [*common,digest(DESIGN/'DommaschkProjectedTrial.trace')]
     key = key_of([common, source, jac['key'], res['key'], jac['artifacts'], res['artifacts']])
     directory = args.cache / name / key
     tree = directory / PACKAGE
@@ -205,12 +217,21 @@ def main():
     parser.add_argument('--output', type=Path, help='write a compact verified row and imports manifest')
     parser.add_argument('--shared-from',type=int,metavar='INDEX',
                         help='use shared-power Jacobian certificates at and above this row')
+    parser.add_argument('--square-panels',nargs='+',type=int,default=[],metavar='INDEX',
+                        help='indices with whole spatial boxes and eight time panels')
+    parser.add_argument('--projected',nargs='+',type=int,default=[],metavar='INDEX',
+                        help='indices with separate radial and vertical trial widths')
     args = parser.parse_args()
     lo,hi = args.range
     if not 0 <= lo <= hi < 391 or args.wait_seconds < 0:
         parser.error('expected an inclusive range in 0..390 and a nonnegative wait')
     if args.shared_from is not None and not 0 <= args.shared_from < 391:
         parser.error('--shared-from must lie in 0..390')
+    if any(not 0 <= i < 391 for i in [*args.square_panels,*args.projected]):
+        parser.error('panel and projected indices must lie in 0..390')
+    if ((set(args.square_panels) & set(args.projected)) or
+            ((set(args.square_panels) | set(args.projected)) & TRACKED_PANEL_ROWS.keys())):
+        parser.error('each row must use a single Jacobian source')
     args.cache = args.cache.resolve()
     jac_cache, res_cache = args.jacobian_cache.resolve(), args.residual_cache.resolve()
     static = [*LIBRARIES, 'DommaschkJacobianFrames', 'DommaschkFramedTaylorResidual',
@@ -218,6 +239,10 @@ def main():
                                         for i in range(lo//8,hi//8+1))]
     if args.shared_from is not None and hi >= args.shared_from:
         static.append('DommaschkStoredPowers')
+    if args.projected or args.square_panels:
+        static.extend(['DommaschkJacobianPanels','DommaschkStoredPowers'])
+    if args.projected:
+        static.append('DommaschkProjectedTrial')
     static.extend(name for index,name in TRACKED_PANEL_ROWS.items() if lo <= index <= hi)
     subprocess.run(['lake','build','--no-build',*['PlasmaLean.Design.'+m for m in static]],
                    check=True,cwd=ROOT,stdout=subprocess.DEVNULL)
@@ -240,11 +265,19 @@ def main():
         if direction != 1 or not lo <= index <= hi:
             continue
         deadline = time.monotonic()+args.wait_seconds
+        radii = None
         if index in TRACKED_PANEL_ROWS:
             jac = tracked_jacobian(TRACKED_PANEL_ROWS[index],packet_hash,version)
         else:
             shared = args.shared_from is not None and index >= args.shared_from
-            emitted = emit_jacobian(index,shared=True) if shared else emit_jacobian(index)
+            if index in args.projected:
+                from emit_rectangular_jacobian import emit, rectangular_data
+                emitted = emit(index)
+                radii = rectangular_data(index)[2]
+            elif index in args.square_panels:
+                emitted = emit_jacobian(index,panels=True,shared=True)
+            else:
+                emitted = emit_jacobian(index,shared=True) if shared else emit_jacobian(index)
             info = upstream(jac_cache,list(emitted.items()),'verify_sparse_forward_jacobians.py',
                             packet_hash,version,JACOBIAN_PACKAGE)
             jac = accepted(info,index,deadline)
@@ -252,7 +285,7 @@ def main():
                        packet_hash,version,'TraceCache')
         packages = [jac,accepted(res,index,deadline)]
         work,record,resumed = verify_row(index,forward['steps'][index]['physical_trial_radius'],
-                                          packages,args,common)
+                                          packages,args,common,radii)
         artifacts.extend([*packages,(work,record)])
         row = {k:v for k,v in record.items() if k != 'artifacts'}
         rows.append(row)

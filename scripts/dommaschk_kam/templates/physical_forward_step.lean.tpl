@@ -6,7 +6,7 @@ Authors: PlasmaLean contributors
 module
 
 public import PlasmaLean.Design.DommaschkPositionFramesFwd
-public import PlasmaLean.Design.DommaschkPhysicalTraceStep
+public import PlasmaLean.Design.DommaschkPhysicalTraceStep${rectangle_import}
 public import ${jac_package}.${jac}
 public import TraceCache.${central}
 
@@ -47,11 +47,7 @@ private theorem member {t : ℝ} (ht : t ∈ Icc (${index} / 64) (${index} / 64 
     let x := reference (${index} / 64) row t + moving previous row (${index} / 64) t v
     ${jac}.trial.u.Mem (128*t-${offset}) (x 0 - dkR0) ∧
       ${jac}.trial.z.Mem (128*t-${offset}) (x 1) := by
-  have radius : (${jac}.trial.u.radius : ℝ) =
-      row.physicalTrial / (2 : ℝ) ^ 80 := by
-    change ((${error} / 2^80 : ℚ) : ℝ) = ${error} / (2 : ℝ) ^ 80
-    norm_num
-  simpa only [clock] using trial_membership checked trialMatches radius (by rfl) ht hv
+${membership}
 
 /-- Physical slab with regularity, transformed logarithmic norm, and
 defect all certified on the same Euclidean trial ball. -/

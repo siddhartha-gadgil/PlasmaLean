@@ -97,3 +97,4 @@ Phase 8 (kam-route.md, finite-beta-stellarator.md):
 - [One radian forward and a signed field-line trace from a common birth](dommaschk-one-radian-and-signed-trace.md) (N-71). Lean checks 64 slabs forward, 64 each way from one birth, and the reference defects on all 391 slabs in each direction at this endpoint.
 - [Bounce action from sublevel arclength](bounce-action-sublevel-arclength.md) (N-72). An exact representation, sharp comparison and field-line-label derivative bound for finite measured wells.
 - [Comparing bounce actions from finitely many sublevel lengths](finite-sublevel-action-comparison.md) (N-73). Finite action bounds and a mesh-corrected comparison, with an eight-endpoint exact arithmetic screen.
+- [A physical field line through three projected Jacobian boxes](dommaschk-projected-physical-trace.md) (N-74). Smaller coordinate boxes certify the physical solution across rows 69–71 and through 9/8 radian.
