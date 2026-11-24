@@ -160,17 +160,23 @@ def prefix_source(label, branches):
 def main():
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument('--endpoint', choices=ENDPOINTS[1:], required=True)
-    p.add_argument('--length', type=int, required=True)
-    p.add_argument('--forward-launches', type=Path, required=True)
-    p.add_argument('--backward-launches', type=Path, required=True)
+    mode = p.add_mutually_exclusive_group(required=True)
+    mode.add_argument('--length', type=int)
+    mode.add_argument('--row', type=int, help='verify only the two local physical steps at this original index')
+    p.add_argument('--forward-launches', type=Path)
+    p.add_argument('--backward-launches', type=Path)
     p.add_argument('--references', type=Path, nargs='+', required=True)
     p.add_argument('--jacobians', type=Path, nargs='+', required=True)
     p.add_argument('--cache', type=Path, default=ROOT/'.lake/endpoint-prefixes')
     p.add_argument('--output', type=Path, required=True)
     args = p.parse_args()
-    label, n = args.endpoint, args.length
+    label = args.endpoint
+    n = args.row+1 if args.row is not None else args.length
     if not 2 <= n <= 391:
-        p.error('length must be between 2 and 391')
+        p.error('the prefix length must be 2–391, or the local row must be 1–390')
+    launches = [(1,args.forward_launches),(-1,args.backward_launches)] if args.row is None else []
+    if any(path is None for _,path in launches):
+        p.error('a full prefix requires both physical launch proofs')
     args.cache = args.cache.resolve()
     packet = RECORD.with_name(f'bounce_frame_{label[:2]}_u{label[3:]}.json.gz')
     checksum = digest(packet)
@@ -186,13 +192,13 @@ def main():
     jacobians = {(r['index'],r.get('matrix_direction')): r for r in reports(args.jacobians)
                  if r['endpoint'] == label}
     roots, keys, branches = [], [], {1: [], -1: []}
-    for sign, launch in [(1, args.forward_launches), (-1, args.backward_launches)]:
+    for sign, launch in launches:
         first = read_rows(launch)[label]
         roots.extend(verify_dependencies(label, sign, first))
         keys.append(first['key'])
         branches[sign].append(first)
     frames = list(trial_frames(packet, 0, n-1))
-    for i in range(1,n):
+    for i in ([args.row] if args.row is not None else range(1,n)):
         pair, reflected = frames[i]
         prev = frames[i-1][0]
         loaded = {}
@@ -219,6 +225,10 @@ def main():
                     from verify_horner_endpoint_jacobian import checked_shared_roots
                     jac_roots.extend(checked_shared_roots(jac,jacdir,version))
                     jac_import = merge_import_roots(args.cache,jac_roots,[jac['key'],'physical-field-imports'])
+                elif 'grouped_parents' in jac:
+                    from grouped_trial_jacobian_rows import checked_grouped_roots
+                    jac_roots.extend(checked_grouped_roots(jac,jacdir,version))
+                    jac_import = merge_import_roots(args.cache,jac_roots,[jac['key'],'grouped-trial-imports'])
                 loaded[jm] = jac_import,jac_roots
             jac_import,jac_roots = loaded[jm]
             ref = references[sign,i]
@@ -251,6 +261,9 @@ def main():
                  'jacobian_key': jac['key'], 'residual_key': ref['key'],
                  'import_paths': list(map(str, [root, jac_import, *ref_roots]))})
             print(f'{label} {tag} {i} accepted {row["key"]}',flush=True)
+    if args.row is not None:
+        save(args.output,[branches[1][0],branches[-1][0]])
+        return
     imports = merge_import_roots(args.cache, roots, keys)
     name, code = prefix_source(label,branches)
     theorems = ['forward_chain','backward_chain','from_entry','from_birth','common_with_pilot']

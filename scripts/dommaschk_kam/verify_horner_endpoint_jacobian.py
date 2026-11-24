@@ -124,7 +124,7 @@ theorem angles {{t : ℝ}} (ht : t ∈ Set.Icc ({i}/64:ℝ) ({i+1}/64)) (w : Wav
     return name,src+footer(name),['angles']
 
 
-def endpoint_modules(label, pair, jet, fields, shared, matrix_sign=None):
+def endpoint_modules(label, pair, jet, fields, shared, matrix_sign=None, field_imports=None):
     i = pair.index
     tag = {None:'PairedForward', 1:'IndependentForward', -1:'IndependentBack'}[matrix_sign]
     stem = f'DommaschkJacobian{label.upper()}{tag}{i:03}'
@@ -135,8 +135,10 @@ def endpoint_modules(label, pair, jet, fields, shared, matrix_sign=None):
     body = matrix_certificate(leaves,pair.forward,namespace=stem,start=pair.forward_left,
                               dependencies=[panel],context='DommaschkJacobian',panel=panel,free_leaves=True)
     body = body.replace('firstLeft','leftFrame').replace('firstRight','rightFrame')
+    if field_imports is None:
+        field_imports = [FIELDS+'.'+m for m in fields]
     body = body.replace('public import PlasmaLean.Design.'+panel,
-        'public import '+JACOBIAN+'.'+panel+'\n'+''.join('public import '+FIELDS+'.'+m+'\n' for m in fields))
+        'public import '+JACOBIAN+'.'+panel+'\n'+''.join('public import '+m+'\n' for m in field_imports))
     r,z = own_models(pair)
     src = header(stem,[JACOBIAN+'.'+core])
     src += 'open DommaschkKam.DkPoly DommaschkJacobian Certificates.PositionFrameSlabs\n'
