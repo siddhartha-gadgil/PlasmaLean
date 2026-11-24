@@ -878,3 +878,4 @@ run_cmd do
 #print axioms PlasmaLean.Kinetic.MirrorActionFlight.flat_time
 #print axioms PlasmaLean.Kinetic.MirrorActionFlight.flat_regular
 #print axioms PlasmaLean.Kinetic.MirrorActionFlight.flat_critical
+#print axioms PlasmaLean.Kinetic.MirrorActionEnvelope.branch_time_upper

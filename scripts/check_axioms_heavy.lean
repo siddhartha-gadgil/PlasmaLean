@@ -56,6 +56,8 @@ import PlasmaLean.Design.DommaschkMirrorBandPassage
 import PlasmaLean.Design.DommaschkMirrorBirthArea
 import PlasmaLean.Design.DommaschkMirrorFlightBounds
 import PlasmaLean.Design.DommaschkMirrorBandFlightIdentity
+import PlasmaLean.Design.DommaschkSharpFlightBounds
+import PlasmaLean.Design.DommaschkToroidalEnvelopeTest
 import PlasmaLean.Design.DommaschkEndpointContinuation
 import PlasmaLean.Design.DommaschkNativeActionReflection
 import PlasmaLean.Design.DommaschkNativeActionColumns
@@ -408,3 +410,15 @@ run_cmd do
 #print axioms PlasmaLean.Design.DommaschkMirrorFlightBounds.density_upper
 #print axioms PlasmaLean.Design.DommaschkMirrorFlightBounds.of_passage
 #print axioms PlasmaLean.Design.DommaschkMirrorBandFlightIdentity.on_path
+#print axioms PlasmaLean.Design.DommaschkHarmonicBoxes.run_mem
+#print axioms PlasmaLean.Design.DommaschkHarmonicBoxes.row_mem
+#print axioms PlasmaLean.Design.DommaschkHarmonicBoxes.rows_mem
+#print axioms PlasmaLean.Design.DommaschkHarmonicBoxes.wave_mem
+#print axioms PlasmaLean.Design.DommaschkHarmonicBoxes.enclosure_mem
+#print axioms PlasmaLean.Design.DommaschkToroidalEnvelope.cylBphi_lower
+#print axioms PlasmaLean.Design.DommaschkToroidalEnvelope.boundary_value
+#print axioms PlasmaLean.Design.DommaschkToroidalFieldBounds.strength_lower
+#print axioms PlasmaLean.Design.DommaschkToroidalFieldBounds.density_upper
+#print axioms PlasmaLean.Design.DommaschkToroidalFieldBounds.speed_upper
+#print axioms PlasmaLean.Design.DommaschkSharpFlightBounds.half_upper
+#print axioms PlasmaLean.Design.DommaschkSharpFlightBounds.of_passage
