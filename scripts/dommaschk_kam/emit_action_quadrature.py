@@ -173,8 +173,8 @@ def mirror(common, index, dest):
 
 def slab_witness(packed, mass, upper, splits):
     """Verify the coarse roots and mass while encoding all 48 uniform panels."""
-    if splits not in (8, PANELS):
-        raise ValueError('unexpected panel count')
+    if splits <= 0 or PANELS % splits:
+        raise ValueError('the coarse panel count must divide the 48-cell storage format')
     repeats = PANELS // splits
     expanded = 0
     weight = 0

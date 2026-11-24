@@ -72,6 +72,7 @@ import PlasmaLean.Design.DommaschkGroupedMirrorModels
 import PlasmaLean.Design.DommaschkEndpointMirrorBranch
 import PlasmaLean.Design.DommaschkEndpointTraceFamily
 import PlasmaLean.Design.DommaschkCenteredStrength
+import PlasmaLean.Design.DommaschkLowerActionWindows
 import PlasmaLean.Design.DommaschkSubmirrorPrefixObservation
 import PlasmaLean.Design.DommaschkLowerActionPath
 import PlasmaLean.Design.DommaschkGroupedProfileCompare
@@ -544,3 +545,7 @@ run_cmd do
 #print axioms PlasmaLean.Certificates.PositionFrameSlabs.OnTubes.take
 #print axioms PlasmaLean.Certificates.PositionFrameSlabs.OnTubes.on_initial
 #print axioms PlasmaLean.Design.DommaschkSubmirrorPrefixObservation.of_birth
+#print axioms PlasmaLean.Design.DommaschkLowerActionWindows.mass_monotone
+#print axioms PlasmaLean.Design.DommaschkLowerActionWindows.first_crossing
+#print axioms PlasmaLean.Design.DommaschkLowerActionWindows.at_cutoff
+#print axioms PlasmaLean.Design.DommaschkLowerActionWindows.action_on_enclosing_interval
