@@ -92,3 +92,4 @@ Phase 8 (kam-route.md, finite-beta-stellarator.md):
 - [Full-trace Jacobian budgets and the physical chain criterion](dommaschk-full-frame-budgets.md) (N-66, Q-35). All 6,256 Jacobian budgets pass exact screening. Lean states the remaining requirements on the actual trial balls.
 - [Two consecutive physical field-line slabs from a Q-16 birth](dommaschk-two-physical-slabs.md) (N-67, Q-35). A true solution reaches 1/32 radian and stays within 1.232 × 10⁻⁶ of the two recorded references.
 - [A quarter-radian physical field-line trace from a Q-16 birth](dommaschk-quarter-radian-trace.md) (N-68, Q-35). Sixteen consecutive forward slabs and one signed two-sided first passage are kernel-checked at radius 0.470.
+- [Stellarator conditions C1–C5 and three geometric research questions](stellarator-conditions-and-geometric-questions.md) (N-69). Common-candidate progress, well continuation and action, first pressure deformations, and toroidal interface energy.
