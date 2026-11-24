@@ -147,11 +147,15 @@ def main():
                         help='combine all nine rows on the paired 325-row Q-16 birth path')
     parser.add_argument('--passage-output', type=Path,
                         help='also certify all-height regular births, finite flights and action')
+    parser.add_argument('--area-output', type=Path,
+                        help='certify the exact area of the regular birth rectangle on the pilot')
     parser.add_argument('--output', type=Path)
     parser.add_argument('--cache', type=Path, default=ROOT / '.lake/mirror-height-band')
     args = parser.parse_args()
     if args.passage_output and not args.first_contacts:
         parser.error('--passage-output needs the actual first contacts and all nine rows')
+    if args.area_output and not args.passage_output:
+        parser.error('--area-output needs --passage-output on the same birth family')
     rows = {}
     for path in args.slopes:
         data = json.loads(path.read_text())
@@ -204,6 +208,30 @@ def main():
         physical.update(packet_sha256=packet, lean_version=version, band_key=result['key'],
                         import_paths=[str(final_root), str(root), str(overlay)])
         save(args.passage_output, physical)
+        if args.area_output:
+            name = 'DommaschkRegularBirthArea325'
+            body = '''module
+public import PlasmaLean.Design.DommaschkMirrorBirthArea
+public import RegularMirrorBandCache.DommaschkRegularMirrorHeightBand325
+
+@[expose] public section
+namespace PlasmaLean.Design.DommaschkRegularBirthArea325
+
+/-- The same nested pilot tori carry a rectangle of known positive area in angle and height. -/
+theorem from_birth : DommaschkMirrorBirthArea.AreaBound :=
+  DommaschkMirrorBirthArea.of_passage DommaschkRegularMirrorHeightBand325.from_birth
+    (fun _ _ h => let ⟨_, _, passage⟩ := h; passage)
+
+end PlasmaLean.Design.DommaschkRegularBirthArea325
+'''
+            area_keys = [version, packet, physical['key'], digest(DESIGN / 'DommaschkMirrorBirthArea.trace')]
+            area_imports = [final_root, root, overlay]
+            area_root, area = compile_modules(args.cache / name, [(name, body, ['from_birth'])],
+                                              area_imports, area_keys, env, 'MirrorBirthAreaCache')
+            report = {key: value for key, value in area.items() if key != 'artifacts'}
+            report.update(packet_sha256=packet, passage_key=physical['key'],
+                          import_paths=[str(path) for path in [area_root, *area_imports]])
+            save(args.area_output, report)
     print(json.dumps(result), flush=True)
 
 

@@ -53,6 +53,7 @@ import PlasmaLean.Design.DommaschkFirstMirrorActionFloor
 import PlasmaLean.Design.DommaschkSignedBirthApproach
 import PlasmaLean.Design.DommaschkFirstMirrorBounceTime
 import PlasmaLean.Design.DommaschkMirrorBandPassage
+import PlasmaLean.Design.DommaschkMirrorBirthArea
 import PlasmaLean.Design.DommaschkNativeActionReflection
 import PlasmaLean.Design.DommaschkNativeActionColumns
 import PlasmaLean.Design.DommaschkNativeActionControls
@@ -396,3 +397,5 @@ run_cmd do
 #print axioms PlasmaLean.Design.DommaschkSignedMirrorBand.Branches.first_transverse
 #print axioms PlasmaLean.Design.DommaschkMirrorBandAction.family
 #print axioms PlasmaLean.Design.DommaschkMirrorBandPassage.on_path
+#print axioms PlasmaLean.Design.DommaschkMirrorBirthArea.rectangle_area
+#print axioms PlasmaLean.Design.DommaschkMirrorBirthArea.of_passage
