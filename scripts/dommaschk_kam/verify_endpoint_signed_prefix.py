@@ -232,6 +232,13 @@ def main():
                     raise ValueError('incorrect direction or package for a reflected central defect')
                 ref_roots.append(checked_reflected_parent(ref,refdir,version))
                 reference_package = reflected_package
+            elif 'native_parents' in ref:
+                from verify_native_endpoint_residuals import PACKAGE as native_package, checked_parents
+                if ref['package'] != native_package or not label.startswith('q0'):
+                    raise ValueError('incorrect section or package for a native central defect')
+                native = [refdir, *checked_parents(ref,refdir,version)]
+                ref_roots = [merge_import_roots(args.cache,native,[ref['key'],'native-central-imports'])]
+                reference_package = native_package
             source = physical_source(label, sign, pair, prev.forward if sign == 1 else prev.backward,
                                      jm, fm, reference_package)
             name, code = source

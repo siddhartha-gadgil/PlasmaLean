@@ -349,6 +349,7 @@ superseded; mixed notes list the status of their parts. "Lean" names compiled ev
 | `N-116` | `notes/theory/action-floor-for-first-mirror-flight-time.md` — Joint action and flight-time bounds for the complete first well | G-6, G-10, Q-16, Q-35 | N-99, N-101, N-103, N-106, N-108, N-109 | complete signed field line, first upper well action cap, restricted 316-row speed budget | 54.98668 < T < 264 throughout the closed band, with T > 57.80606 at the upper endpoint. The action cap holds on the same well throughout. | compare action and flight estimates at the second radial label |
 | `N-117` | `notes/theory/qa2r-trapped-birth-coordinates.md` — Open subsets in the contracted guiding-centre birth variables | G-6, G-10, Q-1, Q-16, Q-19 | N-99, N-100, N-112, N-114 | strict pilot birth, continuous Hamiltonian/pitch/height maps, interior reference cuts | The five-dimensional trapped reference contains an open set for each strict sign of parallel velocity and has positive mass under every measure charging open sets. | supply numerical mass coverage and a radial survival theorem |
 | `N-118` | `notes/theory/first-variation-across-mirror-field-lines.md` — First variation across field-line labels | G-6, G-10, Q-1, Q-16, Q-19, Q-35 | N-85, N-93, N-104 | derivative and uniform secant control of the field profiles on a common window, two transverse first mirrors | Signed transverse action derivative and bound by A J + B T for the arclength and field sensitivities. | certify label derivatives on QA2R and attach the bounce-drift law |
+| `N-119` | `notes/theory/native-harmonic-central-defects.md` — Physical central defects in a common harmonic representation | G-10, Q-16, Q-35 | N-94, N-102, N-105, N-111 | exact physical field models, the original reference and each stored signed allowance | A mixed-method physical birth chain and audited central defects at rows 4 and 317. The row-4 signed check is about 2.5 times faster. | continue the secondary trace with authenticated reusable leaves |
 
 Main dependency edges: N-9 → N-10 → N-14 → N-15 → (Q-4, Q-5); N-10 → N-13 → (N-16 → Q-2, Q-14);
 N-4 → (N-8, N-7 → N-17 → Q-1); N-12 → (Q-3, Q-14, Q-16) → G-4; N-4 → Q-16 → G-6; N-2, N-6 → Q-10 → G-2, G-7;
@@ -2961,3 +2962,7 @@ Restricting a certified path preserves its pointwise solution and its final exit
 ### 25 November 2026 — physical mirror brackets on the u=0.478 tubes (N-115)
 
 Five signed endpoint tests give strict opposite signs across each candidate mirror bracket on both directions. Three closed-slab gradient certificates give positive outgoing squared-strength slope above 1/400. The next phase must attach these rows to the actual secondary birth over the complete incoming interval.
+
+### 25 November 2026 — faster signed residuals on the secondary trace (N-119)
+
+At q0r478 the paired central defect on row 4 takes 66.50 seconds with the native harmonic method, compared with 166.95 seconds for sparse forward plus reflected backward. The exact all-row feasibility test passes 391 rows. The physical campaign switched after its previous workers finished. Opposite-section campaigns use separate numerical certificates for the two signed frames.

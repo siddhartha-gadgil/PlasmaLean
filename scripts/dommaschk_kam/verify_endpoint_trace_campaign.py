@@ -45,12 +45,14 @@ def records_for(path, stage, label, checksum):
         if row['endpoint'] != label:
             continue
         i, direction = row['index'],row['direction']
+        matrix = row.get('matrix_direction') if stage == 'jacobians' else direction
         if (row['packet_sha256'] != checksum or not 0 <= i <= 390 or direction not in (-1,1)
-                or (i,direction) in seen):
+                or matrix not in (None, 1, -1) or (i,matrix) in seen):
             raise ValueError(f'wrong or repeated packet row in {path}')
-        seen.add((i,direction))
+        seen.add((i,matrix))
         if stage == 'jacobians':
-            name = f'DommaschkJacobian{label.upper()}PairedForward{i:03}'
+            tag = {None: 'PairedForward', 1: 'IndependentForward', -1: 'IndependentBack'}[matrix]
+            name = f'DommaschkJacobian{label.upper()}{tag}{i:03}'
             if direction != 1 or not row.get('paired_trials'):
                 raise ValueError(f'missing two-clock spatial data in {path}')
         else:
@@ -60,23 +62,37 @@ def records_for(path, stage, label, checksum):
         if name != row['module'] or admitted(root,name,row['key'])['theorems'] != row['theorems']:
             raise ValueError(f'wrong proof for {label} in {path}')
         by_index.setdefault(i,[]).append(row)
-    required = {1} if stage=='jacobians' else {-1,1}
-    return {i:rows for i,rows in by_index.items() if {r['direction'] for r in rows} == required}
+    if stage == 'jacobians':
+        return {i: rows for i, rows in by_index.items()
+                if {r.get('matrix_direction') for r in rows} in ({None}, {-1, 1})}
+    return {i: rows for i, rows in by_index.items() if {r['direction'] for r in rows} == {-1, 1}}
+
+
+def residual_method(args):
+    if args.native_residuals or (args.cache/'use-native-residuals').exists():
+        return 'native-horner'
+    if args.reflected_residuals or (args.cache/'use-reflected-residuals').exists():
+        return 'reflected'
+    return 'both-signed'
 
 
 def produce(args, stage, i):
     path = row_path(args.cache,stage,i)
     py = sys.executable
     if stage=='references':
-        if args.reflected_residuals or (args.cache/'use-reflected-residuals').exists():
-            cmd=[py,HERE/'verify_reflected_endpoint_residuals.py','--endpoint',args.endpoint,
-                 '--row',str(i),'--output',path]
+        method = residual_method(args)
+        if method in ('native-horner','reflected'):
+            script = ('verify_native_endpoint_residuals.py' if method == 'native-horner'
+                      else 'verify_reflected_endpoint_residuals.py')
+            cmd = [py, HERE/script, '--endpoint', args.endpoint, '--row', str(i), '--output', path]
         else:
             cmd=[py,HERE/'verify_endpoint_reference_slabs.py','--endpoints',args.endpoint,
                  '--range',str(i),str(i),'--workers','1','--shared','--output',path]
     elif stage=='jacobians':
         cmd=[py,HERE/'verify_horner_endpoint_jacobian.py','--endpoints',args.endpoint,
              '--row',str(i),'--output',path]
+        if args.endpoint.startswith('q1'):
+            cmd.append('--independent-frames')
     else:
         cmd=[py,HERE/'verify_endpoint_signed_prefix.py','--endpoint',args.endpoint,'--length',str(i),
              '--forward-launches',args.forward_launches,'--backward-launches',args.backward_launches,
@@ -140,8 +156,7 @@ def campaign(a):
     def status():
         data={'endpoint':a.endpoint,'packet_sha256':a.checksum,'target_length_each_way':a.length,
               'complete':a.length in prefixes,'largest_signed_prefix':max(prefixes,default=1),
-              'residual_method':'reflected' if a.reflected_residuals or
-                  (a.cache/'use-reflected-residuals').exists() else 'both-signed',
+              'residual_method':residual_method(a),
               'checkpoints':prefixes,'rows_with_both_residuals':len(stages['references']),
               'rows_with_both_spatial_bounds':len(stages['jacobians']),
               'active_jobs':sorted(running.values()),'other_endpoint_workers':external,
@@ -234,13 +249,16 @@ def campaign(a):
 
 def main():
     p=argparse.ArgumentParser(description=__doc__)
-    p.add_argument('--endpoint',choices=ENDPOINTS[1:4],required=True)
+    p.add_argument('--endpoint',choices=ENDPOINTS[1:],required=True)
     p.add_argument('--length',type=int,default=328)
     p.add_argument('--checkpoint',type=int,nargs='*',default=CHECKPOINTS)
     p.add_argument('--forward-launches',type=Path,required=True)
     p.add_argument('--backward-launches',type=Path,required=True)
     p.add_argument('--references-input',nargs='*',default=[])
-    p.add_argument('--reflected-residuals',action='store_true')
+    method = p.add_mutually_exclusive_group()
+    method.add_argument('--reflected-residuals',action='store_true')
+    method.add_argument('--native-residuals',action='store_true',
+                        help='use the seven-harmonic central jet on the phase-zero reference')
     p.add_argument('--jacobians-input',nargs='*',default=[])
     p.add_argument('--baseline',type=int,default=2)
     p.add_argument('--workers',type=int,default=8)
@@ -258,6 +276,8 @@ def main():
     a=p.parse_args()
     if not 2<=a.length<=391 or not 1<=a.baseline<=a.workers_during_cells<=a.workers:
         p.error('require length 2–391 and baseline ≤ during-cells limit ≤ workers')
+    if (a.reflected_residuals or a.native_residuals) and not a.endpoint.startswith('q0'):
+        p.error('shared signed central residuals require a phase-zero endpoint')
     a.cache=a.cache.resolve()/a.endpoint
     a.cache.mkdir(parents=True,exist_ok=True)
     a.checksum=digest(RECORD.with_name(f'bounce_frame_{a.endpoint[:2]}_u{a.endpoint[3:]}.json.gz'))
