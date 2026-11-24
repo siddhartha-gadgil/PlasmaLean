@@ -72,6 +72,7 @@ import PlasmaLean.Design.DommaschkGroupedMirrorModels
 import PlasmaLean.Design.DommaschkEndpointMirrorBranch
 import PlasmaLean.Design.DommaschkEndpointTraceFamily
 import PlasmaLean.Design.DommaschkCenteredStrength
+import PlasmaLean.Design.DommaschkSecondaryActionCore
 import PlasmaLean.Design.DommaschkPairedArcRatio
 import PlasmaLean.Design.DommaschkNativePairedProfiles
 import PlasmaLean.Design.DommaschkOppositeMirrorExclusion
@@ -517,3 +518,8 @@ run_cmd do
 #print axioms PlasmaLean.Design.DommaschkNativePairedProfiles.native_weight_identity
 #print axioms PlasmaLean.Design.DommaschkNativePairedProfiles.native_ratio
 #print axioms PlasmaLean.Design.DommaschkNativePairedProfiles.native_field
+#print axioms PlasmaLean.Certificates.NativeActionInterval.lower_cells
+#print axioms PlasmaLean.Certificates.NativeActionInterval.exact_lower_mass
+#print axioms PlasmaLean.Design.DommaschkSecondaryActionMass.floor_of_cover
+#print axioms PlasmaLean.Design.DommaschkSecondaryActionCore.crosses_target
+#print axioms PlasmaLean.Design.DommaschkSecondaryActionCore.floor_on_enclosing_interval
