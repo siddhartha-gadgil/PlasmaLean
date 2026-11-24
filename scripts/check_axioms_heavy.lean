@@ -44,6 +44,7 @@ import PlasmaLean.Design.DommaschkOppositeHarmonic
 import PlasmaLean.Design.DommaschkPerturbedFieldModel
 import PlasmaLean.Design.DommaschkUniformFieldError
 import PlasmaLean.Design.DommaschkPhysicalActionCap
+import PlasmaLean.Design.DommaschkReflectedPilot
 import PlasmaLean.Design.DommaschkSignedMirrorSlope
 import PlasmaLean.Design.DommaschkMirrorStrengthSlope
 import PlasmaLean.Design.RationalStellaratorGCMuWide
@@ -339,3 +340,6 @@ run_cmd do
 #print axioms PlasmaLean.Design.DommaschkPhysicalActionPanel.upper_columns
 #print axioms PlasmaLean.Design.DommaschkPhysicalActionPanel.arcDensity_le_of_ranges
 #print axioms PlasmaLean.Design.DommaschkPhysicalActionPanel.zero_speed_of_monotone
+#print axioms PlasmaLean.Design.DommaschkReflectedPath.endpoint_trajectory
+#print axioms PlasmaLean.Design.DommaschkReflectedPath.action
+#print axioms PlasmaLean.Design.DommaschkReflectedPilot.archive

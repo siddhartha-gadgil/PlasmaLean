@@ -112,3 +112,4 @@ Phase 8 (kam-route.md, finite-beta-stellarator.md):
 - [Physical action bounds on three original time panels](dommaschk-first-physical-action-cells.md) (N-86). The two cells straddling the Q-16 birth and the earliest chronological cell from local mirror entry.
 - [Linear action stability near mirror height](mirror-action-collar.md) (N-87). Quantitative regularity is needed only in a collar of the height, allowing critical well bottoms.
 - [Action when arclength density varies](mirror-action-changing-arclength.md) (N-88). Sharp L¹ control of density perturbations and the associated label derivative term.
+- [Five-radian physical birth trajectory](dommaschk-five-radian-birth-trace.md) (N-89). Both strict mirror-height bounds on the shared birth path through 160 slabs in each direction.
