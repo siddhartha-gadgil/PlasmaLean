@@ -4,6 +4,7 @@ Run the central-defect and forward-Jacobian verifiers for the same range first.
 Their exact emitted sources, compiler, witness and current dependency hashes
 identify the upstream packages. Every recorded artifact is rehashed before use.
 The output includes a single LEAN_PATH entry for importing every selected row.
+Use --shared-from 16 with the shared-power forward Jacobian campaign.
 """
 
 import argparse
@@ -31,6 +32,11 @@ TEMPLATE = HERE / 'templates/physical_forward_step.lean.tpl'
 PACKAGE = 'PhysicalTraceCache'
 THEOREMS = ('checked', 'field_bounds', 'physical_step')
 LIBRARIES = ('DommaschkPositionFramesFwd', 'DommaschkPhysicalTraceStep')
+# Version one used the verifier's source digest as the physical artifact schema
+# identifier. Keep it stable for CLI and scheduling changes. The generated Lean
+# proof, both upstream manifests, compiler, witness and imported .trace files
+# are hashed independently. Change the schema when the artifact contract changes.
+ROW_SCHEMA_V1 = 'ce95f46c0f823732d95a3e8971b353bdae28fc78801036007af9bf727d0c2114'
 
 
 def key_of(data):
@@ -179,15 +185,21 @@ def main():
     parser.add_argument('--jacobian-cache', type=Path, default=ROOT/'.lake/jacobian-checks')
     parser.add_argument('--wait-seconds', type=int, default=0, help='per-row wait for upstream jobs')
     parser.add_argument('--output', type=Path, help='write a compact verified row and imports manifest')
+    parser.add_argument('--shared-from',type=int,metavar='INDEX',
+                        help='use shared-power Jacobian certificates at and above this row')
     args = parser.parse_args()
     lo,hi = args.range
     if not 0 <= lo <= hi < 391 or args.wait_seconds < 0:
         parser.error('expected an inclusive range in 0..390 and a nonnegative wait')
+    if args.shared_from is not None and not 0 <= args.shared_from < 391:
+        parser.error('--shared-from must lie in 0..390')
     args.cache = args.cache.resolve()
     jac_cache, res_cache = args.jacobian_cache.resolve(), args.residual_cache.resolve()
     static = [*LIBRARIES, 'DommaschkJacobianFrames', 'DommaschkFramedTaylorResidual',
               'DommaschkBounceTaylor', *(f'DommaschkHarmonicBlock{i:02}'
                                         for i in range(lo//8,hi//8+1))]
+    if args.shared_from is not None and hi >= args.shared_from:
+        static.append('DommaschkStoredPowers')
     subprocess.run(['lake','build','--no-build',*['PlasmaLean.Design.'+m for m in static]],
                    check=True,cwd=ROOT,stdout=subprocess.DEVNULL)
     def lake(*cmd):
@@ -201,14 +213,16 @@ def main():
             or packet['format'] != 'DommaschkN60Frame/v1'):
         raise ValueError('expected the archived pilot endpoint')
     forward, = [t for t in packet['traces'] if t['direction'] == 1]
-    common = [packet_hash,version,digest(Path(__file__)),
+    common = [packet_hash,version,ROW_SCHEMA_V1,
               [(m,digest(DESIGN/(m+'.trace'))) for m in LIBRARIES]]
     artifacts, rows = [], []
     for job in jobs(RECORD,8,False):
         _,direction,index,*_ = job
         if direction != 1 or not lo <= index <= hi:
             continue
-        jac = upstream(jac_cache,list(emit_jacobian(index).items()),'verify_sparse_forward_jacobians.py',
+        shared = args.shared_from is not None and index >= args.shared_from
+        emitted = emit_jacobian(index,shared=True) if shared else emit_jacobian(index)
+        jac = upstream(jac_cache,list(emitted.items()),'verify_sparse_forward_jacobians.py',
                        packet_hash,version,JACOBIAN_PACKAGE)
         res = upstream(res_cache,list(emit_selected([job])),'verify_sparse_reference_slabs.py',
                        packet_hash,version,'TraceCache')

@@ -3,6 +3,7 @@
 The first two rows use the checked-in physical modules. Further rows are
 authenticated and assembled by verify_physical_trace_slabs.py. The final Lean
 proof composes their actual ellipsoids and ODE bounds at each exact clock.
+For example, --length 17 --shared-from 16 includes the first shared-power row.
 """
 
 import argparse
@@ -159,15 +160,20 @@ def main():
     parser.add_argument('--jacobian-cache',type=Path,default=ROOT/'.lake/jacobian-checks')
     parser.add_argument('--wait-seconds',type=int,default=0)
     parser.add_argument('--output',type=Path)
+    parser.add_argument('--shared-from',type=int,metavar='INDEX',
+                        help='use shared-power Jacobian certificates at and above this row')
     args = parser.parse_args()
     if not 2 <= args.length <= 391 or args.wait_seconds < 0:
         parser.error('length must be 2..391 and the wait nonnegative')
+    if args.shared_from is not None and not 0 <= args.shared_from < 391:
+        parser.error('--shared-from must lie in 0..390')
     args.cache = args.cache.resolve()
     with TemporaryDirectory() as temporary:
         rows = {'rows':[]}
         if args.length > 2:
             manifest = Path(temporary)/'rows.json'
-            subprocess.run([sys.executable,str(HERE/'verify_physical_trace_slabs.py'),
+            backend = [] if args.shared_from is None else ['--shared-from',str(args.shared_from)]
+            subprocess.run([sys.executable,str(HERE/'verify_physical_trace_slabs.py'),*backend,
                             '--range','2',str(args.length-1),'--cache',str(args.cache),
                             '--residual-cache',str(args.residual_cache),'--jacobian-cache',
                             str(args.jacobian_cache),'--wait-seconds',str(args.wait_seconds),
