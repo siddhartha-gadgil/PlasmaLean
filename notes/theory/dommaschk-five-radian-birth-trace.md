@@ -1,6 +1,6 @@
 # A five-radian physical birth trajectory below both mirror heights
 
-At the phase-zero, radius-0.470 launch, every admissible birth on the certified pair of nested Q-16 tori reaches its section state and lies on one physical field line enclosed for $-5/2\le t\le5/2$. Here $t$ is signed geometric angle in radians. Lean certifies **160 consecutive physical slabs on each side**, with the physical ODE also satisfied at the common section and the slab joins. The maximum dimensionless position error from the archived moving references is
+At the phase-zero, radius-0.470 launch, every admissible birth defined by interpolation between the two certified Q-16 tori reaches its section state and lies on one physical field line enclosed for $-5/2\le t\le5/2$. Here $t$ is signed geometric angle in radians. Lean certifies **160 consecutive physical slabs on each side**, with the physical ODE also satisfied at the common section and the slab joins. The maximum dimensionless position error from the archived moving references is
 
 $$
 2678772121456213228 / 2^{80} < 2.216\times10^{-6}.

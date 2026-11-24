@@ -142,3 +142,5 @@ For field lines with distinct arclength densities, the action comparison now cha
 The physical phase-zero trajectory from every admitted radius-0.470 birth reaches [−5/2,5/2], stays below both mirror heights and has position error below 2.216 × 10⁻⁶. [Five-radian certificate and exact replay](https://github.com/siddhartha-gadgil/PlasmaLean/blob/main/notes/theory/dommaschk-five-radian-birth-trace.md)
 
 The two complete upper action blocks straddling the radius-0.470 launch now hold on one physical trajectory. All 96 original panels satisfy their pointwise physical bounds, including the version using the Cartesian derivative for actual arclength. [Complete block proofs](https://github.com/siddhartha-gadgil/PlasmaLean/blob/main/notes/theory/dommaschk-two-physical-action-blocks.md)
+
+At all eight action endpoints, one pair of certified Q-16 tori now supports the signed physical first rows. Every admissible birth reaches its section and has a single field line in the original two moving tubes for angles [−1/64,1/64]. [Signed launch theorem and exact replay](https://github.com/siddhartha-gadgil/PlasmaLean/blob/main/notes/theory/dommaschk-eight-signed-launches.md)

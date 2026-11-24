@@ -1,7 +1,7 @@
 [
   {
     "title": "Progress slideshow",
-    "section": "Evidence updated 2026-11-24 · The same two embedded Dommaschk tori have zero net toroidal current, absolute transform at least 0.2386 and off-QA defect at most 0.0063 and 0.0090 times the absolute transform on C and A respectively. Embedded C1 also holds on the rational stellarator KAM torus. A separate annular theorem constructs a radial label and trajectories confined through time c/ε² under averaged tangency and nonsingularity. A volume-filling flux chart, thermal-particle confinement and performance on the Dommaschk candidate remain open. The mirror launch theorem now reaches 1/64 radian on both sectors, with 28 endpoint comparisons conditional on full-trace enclosures.",
+    "section": "Evidence updated 2026-11-25 · The same two embedded Dommaschk tori have zero net toroidal current, absolute transform at least 0.2386 and off-QA defect at most 0.0063 and 0.0090 times the absolute transform on C and A respectively. Embedded C1 also holds on the rational stellarator KAM torus. A separate annular theorem constructs a radial label and trajectories confined through time c/ε² under averaged tangency and nonsingularity. A volume-filling flux chart, thermal-particle confinement and performance on the Dommaschk candidate remain open. The mirror launch theorem now reaches 1/64 radian on both sectors, with 28 endpoint comparisons conditional on full-trace enclosures.",
     "url": "slides.html",
     "text": "progress slideshow presentation latest run evidence vacuum fixture"
   },
@@ -2956,6 +2956,12 @@
     "section": "Implementation plan",
     "url": "implementation-plan.html#24-november-2026-complete-action-cover-on-both-launch-adjacent-blocks-n-90",
     "text": "24 november 2026 — complete action cover on both launch-adjacent blocks (n-90) implementation plan"
+  },
+  {
+    "title": "25 November 2026 — both original moving tubes at every launch (N-91)",
+    "section": "Implementation plan",
+    "url": "implementation-plan.html#25-november-2026-both-original-moving-tubes-at-every-launch-n-91",
+    "text": "25 november 2026 — both original moving tubes at every launch (n-91) implementation plan"
   },
   {
     "title": "M0 · Exact symmetric equilibria: slab, screw pinch, Solov'ev, helical",

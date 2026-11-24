@@ -112,9 +112,21 @@ def tracked_jacobian(name, packet_hash, version):
     return library, {'module':name,'key':key,'artifacts':artifacts,'package':'PlasmaLean.Design'}
 
 
-def source_for(index, error, spatial, central, jac_package=JACOBIAN_PACKAGE, radii=None):
-    name = f'DommaschkPhysicalForward{index:03}'
-    prior = 'next ' + stored(index-1) if index else 'DommaschkPositionFramesFwd.start'
+def source_for(index, error, spatial, central, jac_package=JACOBIAN_PACKAGE, radii=None,
+               *, endpoint=None, position_row=None, opposite=False, central_package='TraceCache'):
+    if endpoint is None:
+        name = f'DommaschkPhysicalForward{index:03}'
+        prior = 'next ' + stored(index-1) if index else 'DommaschkPositionFramesFwd.start'
+        position_row = stored(index)
+        position_import = 'PlasmaLean.Design.DommaschkPositionFramesFwd'
+        endpoint_title = 'the phase-zero 47/100 endpoint'
+    else:
+        if index != 0 or position_row is None:
+            raise ValueError('an endpoint launch requires its first archived row')
+        name = f'DommaschkPhysical{endpoint.upper()}Forward000'
+        prior = f'DommaschkMirrorLaunch.MirrorEndpoint.start .{endpoint}'
+        position_import = 'PlasmaLean.Design.DommaschkEndpointFirstSlab'
+        endpoint_title = endpoint
     if radii is None:
         trial_file = 'physical_trial_square.lean.tpl'
         values = {'jac':spatial,'error':error}
@@ -124,10 +136,32 @@ def source_for(index, error, spatial, central, jac_package=JACOBIAN_PACKAGE, rad
         values = {'jac':spatial,'radial':radii[0],'vertical':radii[1]}
         rectangle_import = '\npublic import PlasmaLean.Design.DommaschkProjectedTrial'
     membership = Template(TEMPLATE.with_name(trial_file).read_text().rstrip('\n')).substitute(values)
-    return name, Template(TEMPLATE.read_text()).substitute(
+    template = TEMPLATE.read_text()
+    if endpoint:
+        # Long-lived pilot workers read this file between slabs. Preserve their
+        # original template on disk and specialize its physical parameters here.
+        substitutions = {
+            'PlasmaLean.Design.DommaschkPositionFramesFwd': '${position_import}',
+            'TraceCache.${central}': '${central_package}.${central}',
+            'the phase-zero 47/100 endpoint': '${endpoint_title}',
+            'test pilotLimits': 'test ${limits}',
+            'euclideanFlow 0 1': 'euclideanFlow ${phase} 1',
+            'velocityJacobian 0 1': 'velocityJacobian ${phase} 1',
+            'velocityJacobian_spatial 0 1': 'velocityJacobian_spatial ${phase} 1',
+            '[zero_add,one_mul,atPoint]': '[${phase_simp}one_mul,atPoint]',
+            '[zero_add, one_mul, one_smul]': '[${phase_simp_spaced}one_mul, one_smul]',
+        }
+        for original, replacement in substitutions.items():
+            if original not in template:
+                raise ValueError(f'physical-step template no longer contains {original!r}')
+            template = template.replace(original, replacement)
+    return name, Template(template).substitute(
         name=name, jac=spatial, jac_package=jac_package, central=central, index=index, end=index+1,
-        offset=2*index+1, stored=stored(index), previous=prior, membership=membership,
-        rectangle_import=rectangle_import)
+        offset=2*index+1, stored=position_row, previous=prior, membership=membership,
+        rectangle_import=rectangle_import, position_import=position_import,
+        central_package=central_package, endpoint_title=endpoint_title,
+        limits='allLimits' if endpoint else 'pilotLimits', phase='(Real.pi / 2)' if opposite else '0',
+        phase_simp='' if opposite else 'zero_add,', phase_simp_spaced='' if opposite else 'zero_add, ')
 
 
 def verify_row(index, error, packages, args, common, radii=None):

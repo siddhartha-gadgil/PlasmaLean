@@ -50,13 +50,35 @@ def panel_certificate(name, packet, rate):
     return source+f'theorem accepted : MinorCover models budget (-1) 1 := {leaves[0]}\n\nend PlasmaLean.Design.{name}\n'
 
 
-def emit(index):
-    start, step, radii = rectangular_data(index)
+def clock_template(section):
+    source = CLOCK.read_text()
+    if not section:
+        return Template(source)
+    parts = ['  refine ⟨hu,hz,?_,?_⟩']
+    for field, sine in [('cos','false'),('sin','true')]:
+        parts.append(f'''  · have m : trial.{field} = Certificates.TrajectoryTrig.negative ((p false 0).model {sine}) := by
+      apply Matches.eq
+      constructor <;> apply eq_of_beq <;> kernel_fact
+    rw [m]
+    have v := DommaschkOppositeHarmonic.first p false {sine} h
+    norm_num [Certificates.TrajectoryTrig.wave] at v ⊢
+    exact v''')
+    # The two clocks share every matrix operation. Only their input harmonic
+    # witnesses and the physical angular argument differ.
+    begin = source.index('  have hc := Certificates.TrajectoryHarmonicPacket.physical')
+    end = source.index('\n\n/-- The physical field denominator',begin)
+    shifted = (source[:begin] + '\n'.join(parts) + source[end:]).replace('(2*t)','(2*(Real.pi / 2 + t))')
+    return Template(shifted)
+
+
+def emit_rectangle(index, section, start, step, radii, stem, forward_rate):
+    """Compile sparse fields and derivatives on one positive-clock physical rectangle."""
+    if section not in (0,1):
+        raise ValueError('only the two archived QA2R toroidal sections are defined')
     r,z = [Model(p,e) for p,e in zip(step['coefficients'],radii,strict=True)]
     rate = Fraction(step['log_norm_upper'])
     waves = angle_models(Fraction(2*index+1,128),Fraction(1,128),Fraction(0))
-    columns = (r-R0M,z,waves[2],waves[1])
-    stem = f'DommaschkProjectedJacobian{index:03}'
+    columns = (r-R0M,z,waves[2].integer((-1)**section),waves[1].integer((-1)**section))
     inputs, panel, core = stem+'Inputs',stem+'Panels',stem+'Bounds'
     end = f'\nend PlasmaLean.Design.{stem}\n'
     def module(imports,title): return header(imports,title,stem,'DommaschkJacobian')
@@ -72,17 +94,24 @@ def emit(index):
             blocks = models(jet[axis+1],columns)
             files[stem+label] = derivative_file(scalar,symbol,axis,blocks,stem,inputs,'DommaschkJacobian')
             leaves[label] = symbol+'0',symbol,sum(blocks,ZERO)
-    packets = symmetric_models(0,1,index,start,step,r,z)
+    packets = symmetric_models(section,1,index,start,step,r,z)
     files[panel] = panel_certificate(panel,packets,rate)
     body = matrix_certificate(leaves,step,namespace=stem,start=start,dependencies=list(files),
                               context='DommaschkJacobian',panel=panel)
     files[core] = body.replace('firstLeft','leftFrame').replace('firstRight','rightFrame')
     block,local = divmod(index,8)
     harmonic = f'DommaschkHarmonicBlock{block:02}'
+    clock = clock_template(section).substitute(i=index,end=index+1,offset=2*index+1,
+        local=local,base=8*block,count=min(8,391-8*block),harmonic=harmonic,panel=panel,
+        rate=rate,forward_rate=forward_rate)
+    deps = [core,harmonic] + (['DommaschkOppositeHarmonic'] if section else [])
+    files[stem] = module(deps,'Physical field Jacobian on the projected rectangle')+clock+end
+    return add_shared_powers(files,inputs,stem,columns)
+
+
+def emit(index):
+    start, step, radii = rectangular_data(index)
     with gzip.open(RECORD,'rt') as fp:
         forward, = [x for x in json.load(fp)['traces'] if x['direction']==1]
-    clock = Template(CLOCK.read_text()).substitute(i=index,end=index+1,offset=2*index+1,
-        local=local,base=8*block,count=min(8,391-8*block),harmonic=harmonic,panel=panel,
-        rate=rate,forward_rate=forward['steps'][index]['log_norm_upper'])
-    files[stem] = module([core,harmonic],'Physical field Jacobian on the projected rectangle')+clock+end
-    return add_shared_powers(files,inputs,stem,columns)
+    return emit_rectangle(index,0,start,step,radii,f'DommaschkProjectedJacobian{index:03}',
+                          forward['steps'][index]['log_norm_upper'])

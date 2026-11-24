@@ -44,7 +44,7 @@ At the two proposed mirror heights, Lean proves that an actual field line from e
 
 Lean derives all eight strict one-passage action comparisons from the original time-panel covers. The proof checks all 2,655 adaptive arclength bounds in one pass through each archive, totaling 250,848 time cells. Physical speed and arclength-density bounds on those cells remain open. [Complete action-grid proof](notes/theory/dommaschk-complete-sublevel-archive.md)
 
-All eight Dommaschk launches now have Lean proofs of their central reference error in both directions over the first 1/64 radian. A comparison of 88 nearby-launch transfers supports retaining separate Jacobian bounds for each launch. [Eight physical reference defects](notes/theory/dommaschk-eight-reference-defects.md)
+For all eight Dommaschk launches, Lean verifies that each admissible birth between one shared pair of nested tori reaches its section and follows one physical field line through both original moving tubes on [−1/64,1/64]. The proof includes all four launches at each symmetry section, 0 and π/2. [Signed launch theorem and reproduction](notes/theory/dommaschk-eight-signed-launches.md)
 
 Lean excludes premature mirror contacts on every archived spatial tube before either bracket at radius 0.470. The physical birth-to-bracket propagation is still being assembled. A general theorem also bounds the change in action under a perturbation of the field profile. [Complete tube signs](notes/theory/dommaschk-complete-pre-mirror-signs.md) · [Mirror profile stability](notes/theory/mirror-profile-stability.md)
 
