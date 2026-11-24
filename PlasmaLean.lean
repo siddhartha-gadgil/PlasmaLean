@@ -387,6 +387,7 @@ public import PlasmaLean.Theory.Kinetic.MirrorSublevelPartition
 public import PlasmaLean.Theory.Kinetic.MirrorActionComparison
 public import PlasmaLean.Theory.Kinetic.MirrorActionEnvelope
 public import PlasmaLean.Theory.Kinetic.MirrorWellComponent
+public import PlasmaLean.Theory.Kinetic.MirrorBounceTime
 public import PlasmaLean.Theory.Kinetic.MirrorWellCriterion
 public import PlasmaLean.Theory.Fields.WeakQuasisymmetry
 public import PlasmaLean.Theory.Fields.CylAlgebra

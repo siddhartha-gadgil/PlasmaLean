@@ -847,3 +847,4 @@ run_cmd do
 #print axioms PlasmaLean.Kinetic.MirrorActionEnvelope.LaunchWell.transverse_component
 #print axioms PlasmaLean.Kinetic.MirrorActionEnvelope.LaunchWell.regular_at
 #print axioms PlasmaLean.Kinetic.MirrorActionEnvelope.tangent_closed_component
+#print axioms PlasmaLean.Kinetic.MirrorActionEnvelope.LaunchWell.finite_bounce_time

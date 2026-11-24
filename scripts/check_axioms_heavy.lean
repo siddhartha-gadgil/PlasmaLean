@@ -51,6 +51,7 @@ import PlasmaLean.Design.DommaschkArcDensitySensitivity
 import PlasmaLean.Design.DommaschkFirstMirrorWell
 import PlasmaLean.Design.DommaschkFirstMirrorActionFloor
 import PlasmaLean.Design.DommaschkSignedBirthApproach
+import PlasmaLean.Design.DommaschkFirstMirrorBounceTime
 import PlasmaLean.Design.DommaschkNativeActionReflection
 import PlasmaLean.Design.DommaschkNativeActionColumns
 import PlasmaLean.Design.DommaschkNativeActionControls
@@ -388,3 +389,4 @@ run_cmd do
 #print axioms PlasmaLean.Design.DommaschkFirstMirrorWell.identify
 #print axioms PlasmaLean.Design.DommaschkSignedBirthApproach.birth_position
 #print axioms PlasmaLean.Design.DommaschkSignedBirthApproach.from_birthWith
+#print axioms PlasmaLean.Design.DommaschkFirstMirrorBounceTime.of_contacts
