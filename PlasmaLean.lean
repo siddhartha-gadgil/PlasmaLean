@@ -391,6 +391,7 @@ public import PlasmaLean.Theory.Kinetic.MirrorBounceTime
 public import PlasmaLean.Theory.Kinetic.MirrorHeightBand
 public import PlasmaLean.Theory.Kinetic.MirrorWellPersistence
 public import PlasmaLean.Theory.Kinetic.MirrorLocalFlowPersistence
+public import PlasmaLean.Theory.Kinetic.MirrorActionInverseBounds
 public import PlasmaLean.Theory.Kinetic.MirrorTimeActionBounds
 public import PlasmaLean.Theory.Kinetic.MirrorBranchTimeUpper
 public import PlasmaLean.Theory.Kinetic.MirrorActionTransverse

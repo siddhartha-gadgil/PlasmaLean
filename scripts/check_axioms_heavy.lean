@@ -59,6 +59,7 @@ import PlasmaLean.Design.DommaschkMirrorBandFlightIdentity
 import PlasmaLean.Design.DommaschkSharpFlightBounds
 import PlasmaLean.Design.DommaschkFullBandFlightBounds
 import PlasmaLean.Design.DommaschkRowFlightBudget
+import PlasmaLean.Design.DommaschkActionHeightInverse
 import PlasmaLean.Design.DommaschkToroidalEnvelopeTest
 import PlasmaLean.Design.DommaschkEndpointContinuation
 import PlasmaLean.Design.DommaschkNativeActionReflection
@@ -431,3 +432,5 @@ run_cmd do
 #print axioms PlasmaLean.Design.DommaschkRowFlightBudget.Budget.append
 #print axioms PlasmaLean.Design.DommaschkRowFlightBudget.from_row
 #print axioms PlasmaLean.Design.DommaschkRowFlightBudget.complete
+#print axioms PlasmaLean.Design.DommaschkActionHeightInverse.of_identity
+#print axioms PlasmaLean.Design.DommaschkActionHeightInverse.endpoint_width

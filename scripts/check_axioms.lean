@@ -888,3 +888,6 @@ run_cmd do
 #print axioms PlasmaLean.Kinetic.MirrorActionFlight.flat_regular
 #print axioms PlasmaLean.Kinetic.MirrorActionFlight.flat_critical
 #print axioms PlasmaLean.Kinetic.MirrorActionEnvelope.branch_time_upper
+#print axioms PlasmaLean.Kinetic.MirrorActionInverseBounds.secants_of_derivatives
+#print axioms PlasmaLean.Kinetic.MirrorActionInverseBounds.inverse_of_secants
+#print axioms PlasmaLean.Kinetic.MirrorActionInverseBounds.range_eq_interval
