@@ -858,3 +858,7 @@ run_cmd do
 #print axioms PlasmaLean.Kinetic.MirrorWellPersistence.regular_birth_measure_pos
 #print axioms PlasmaLean.Kinetic.MirrorWellPersistence.quadratic_bracket_iff
 #print axioms PlasmaLean.Kinetic.MirrorWellPersistence.uniform_profile_error_counterexample
+#print axioms PlasmaLean.Kinetic.MirrorActionEnvelope.LaunchWell.time_lower
+#print axioms PlasmaLean.Kinetic.MirrorActionEnvelope.length_sq_le_action_mul_time
+#print axioms PlasmaLean.Kinetic.MirrorActionEnvelope.half_time_upper
+#print axioms PlasmaLean.Kinetic.MirrorActionEnvelope.branch_collar_time_bound

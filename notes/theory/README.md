@@ -125,3 +125,4 @@ Phase 8 (kam-route.md, finite-beta-stellarator.md):
 - [First mirror wells across the Dommaschk height band](dommaschk-mirror-height-band.md) (N-99). The first mirror positions vary Lipschitz-continuously, the one-way action increases strictly with height and each well has finite positive flight time.
 - [Persistence of mirror wells and the area of certified births](open-mirror-wells-and-birth-area.md) (N-100). A compactness criterion gives openness in a family, and the pilot has an explicit positive angle-height area at fixed radial label.
 - [Continuing field lines at the other QA2R birth labels](continuing-endpoint-field-lines.md) (N-102). Two signed physical slabs in both directions at u=0.478 near zero and u=0.456 near π/2.
+- [Numerical one-way flight times](quantitative-first-mirror-flight-times.md) (N-103). Dimensionless time exceeds 5.925 across the whole pilot band and is below 34000 throughout its upper half.

@@ -149,6 +149,8 @@ def main():
                         help='also certify all-height regular births, finite flights and action')
     parser.add_argument('--area-output', type=Path,
                         help='certify the exact area of the regular birth rectangle on the pilot')
+    parser.add_argument('--time-output', type=Path,
+                        help='certify numerical flight-time bounds through the actual first mirrors')
     parser.add_argument('--output', type=Path)
     parser.add_argument('--cache', type=Path, default=ROOT / '.lake/mirror-height-band')
     args = parser.parse_args()
@@ -156,6 +158,8 @@ def main():
         parser.error('--passage-output needs the actual first contacts and all nine rows')
     if args.area_output and not args.passage_output:
         parser.error('--area-output needs --passage-output on the same birth family')
+    if args.time_output and not args.passage_output:
+        parser.error('--time-output needs --passage-output on the same birth trajectories')
     rows = {}
     for path in args.slopes:
         data = json.loads(path.read_text())
@@ -232,6 +236,38 @@ end PlasmaLean.Design.DommaschkRegularBirthArea325
             report.update(packet_sha256=packet, passage_key=physical['key'],
                           import_paths=[str(path) for path in [area_root, *area_imports]])
             save(args.area_output, report)
+        if args.time_output:
+            name = 'DommaschkMirrorFlightBounds325'
+            body = '''module
+public import PlasmaLean.Design.DommaschkMirrorFlightBounds
+public import RegularMirrorBandCache.DommaschkRegularMirrorHeightBand325
+
+@[expose] public section
+namespace PlasmaLean.Design.DommaschkMirrorFlightBounds325
+open DommaschkSignedBirthApproach DommaschkMirrorBandPassage DommaschkMirrorFlightBounds
+set_option maxRecDepth 16384
+
+/-- A common pilot trace has quantitative flight-time bounds through all its first wells. -/
+theorem from_birth : ThroughBirth (fun φ y => Passage φ y ∧ TimeBound φ y) := by
+  obtain ⟨uC, zC, uA, zA, R, z, C, A, ic, ia, nested, each⟩ :=
+    DommaschkRegularMirrorHeightBand325.from_birth
+  refine ⟨uC, zC, uA, zA, R, z, C, A, ic, ia, nested, ?_⟩
+  intro φ small
+  obtain ⟨y, start, x, path, passage⟩ := each φ small
+  refine ⟨y, start, passage, of_passage passage ?_⟩
+  simpa only [Nat.cast_ofNat, neg_div] using DommaschkSignedTraceDomain.on_path path (by norm_num)
+    (by with_unfolding_all rfl) (by with_unfolding_all rfl) rfl rfl
+
+end PlasmaLean.Design.DommaschkMirrorFlightBounds325
+'''
+            time_keys = [version, packet, physical['key'], digest(DESIGN / 'DommaschkMirrorFlightBounds.trace')]
+            time_imports = [final_root, root, overlay]
+            time_root, times = compile_modules(args.cache / name, [(name, body, ['from_birth'])],
+                                               time_imports, time_keys, env, 'MirrorFlightBoundsCache')
+            report = {key: value for key, value in times.items() if key != 'artifacts'}
+            report.update(packet_sha256=packet, passage_key=physical['key'],
+                          import_paths=[str(path) for path in [time_root, *time_imports]])
+            save(args.time_output, report)
     print(json.dumps(result), flush=True)
 
 

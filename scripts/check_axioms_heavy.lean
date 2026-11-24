@@ -54,6 +54,7 @@ import PlasmaLean.Design.DommaschkSignedBirthApproach
 import PlasmaLean.Design.DommaschkFirstMirrorBounceTime
 import PlasmaLean.Design.DommaschkMirrorBandPassage
 import PlasmaLean.Design.DommaschkMirrorBirthArea
+import PlasmaLean.Design.DommaschkMirrorFlightBounds
 import PlasmaLean.Design.DommaschkEndpointContinuation
 import PlasmaLean.Design.DommaschkNativeActionReflection
 import PlasmaLean.Design.DommaschkNativeActionColumns
@@ -403,3 +404,5 @@ run_cmd do
 #print axioms PlasmaLean.Design.DommaschkEndpointContinuation.forward_rectangle
 #print axioms PlasmaLean.Design.DommaschkEndpointContinuation.cons_step
 #print axioms PlasmaLean.Design.DommaschkEndpointContinuation.with_pilot_of_entry
+#print axioms PlasmaLean.Design.DommaschkMirrorFlightBounds.density_upper
+#print axioms PlasmaLean.Design.DommaschkMirrorFlightBounds.of_passage
