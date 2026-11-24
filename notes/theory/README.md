@@ -86,3 +86,4 @@ Phase 8 (kam-route.md, finite-beta-stellarator.md):
 - [Two separated fixed-action curves on each of two Dommaschk phase sectors](dommaschk-local-action-graphs.md) (N-60, Q-35). Continuous local roots and a gap greater than 0.045 on the actual field, checked externally using radial first variations.
 - [Lean replay of the Dommaschk mirror certificates](dommaschk-mirror-certificate-replay.md) (N-61, Q-35). Two physical launch sectors, 28 directed action comparisons and 12,512 radial slabs. The full physical trace remains open.
 - [A two-sided long-trace witness for the Dommaschk mirror calculation](dommaschk-long-trace-witness.md) (N-62, Q-35). Exact replay through ±391/64 radians for one endpoint, with Lean proofs of the general gluing step and physical observable identities.
+- [Long field-line traces at all eight local-action endpoints](dommaschk-eight-long-traces.md) (N-63, Q-35). Exact external replay of 6,256 steps on both symmetry sectors.

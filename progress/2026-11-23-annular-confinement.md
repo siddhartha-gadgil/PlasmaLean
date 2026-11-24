@@ -92,3 +92,5 @@ The nested Dommaschk launch theorem now reaches 1/64 geometric radian from every
 ### Long-trace witness
 
 For the phase-zero radius 0.470, exact external replay covers 391 slabs in each direction. The general Lean gluing theorem passes the actual exit of each slab to the next one. The physical tangent theorem identifies the arclength density used by the action. Linking every slab to the physical trajectory in Lean remains open. [Long-trace verification record](https://github.com/siddhartha-gadgil/PlasmaLean/blob/main/notes/theory/dommaschk-long-trace-witness.md)
+
+At all eight local-action endpoints, 16 independent directed traces now reproduce the archived crossings and action bounds over 6,256 exact steps. The physical Lean theorem still reaches 1/64 radian in both directions across both launch sectors. [Eight-endpoint verification](https://github.com/siddhartha-gadgil/PlasmaLean/blob/main/notes/theory/dommaschk-eight-long-traces.md)

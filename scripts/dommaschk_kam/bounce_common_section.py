@@ -94,6 +94,19 @@ def transfer_at(cs,sn,anchor,alpha_width,u_width,u):
     return pulled,summary
 
 
+def section_polynomial_data(section):
+    """Exact field polynomials and spatial derivatives on a symmetry-section clock."""
+    if section not in (0,1):
+        raise ValueError('section must be 0 or 1 in units of pi/2')
+    data = polynomial_data()
+    if section == 0:
+        return data
+    # sin and cos at 2k*(pi/2+tau) both acquire (-1)^k. The same factor
+    # multiplies every spatial derivative in the Jacobian.
+    return [[{i:[[v.integer((-1)**((i+1)//2)) for v in row] for row in rows]
+                 for i,rows in p.items()} for p in group] for group in data]
+
+
 def common_section_inputs(alpha_width=PHASE_WIDTH,u_width=U_WIDTH,u=F(49,100),section=0):
     """Return ((data,seed,ev,init), transfer_report). Use alpha_width=0 in certified_segments."""
     check_arithmetic()
@@ -101,12 +114,8 @@ def common_section_inputs(alpha_width=PHASE_WIDTH,u_width=U_WIDTH,u=F(49,100),se
     ev,seeds = load_inputs()
     section_angle = section*np.pi/2
     c,a = [seed_cut(*s,np.array([section_angle]))[0][:,0] for s in seeds]
-    data = polynomial_data()
+    data = section_polynomial_data(section)
     if section:
-        # sin and cos at 2k*(pi/2+tau) both acquire the factor (-1)^k.
-        # The same change applies to every spatial derivative in the Jacobian.
-        data = [[{i:[[v.integer((-1)**((i+1)//2)) for v in row] for row in rows]
-                       for i,rows in p.items()} for p in group] for group in data]
         class ShiftedProposer:
             def rhs(self, t, r, z):
                 return ev.rhs(section_angle+t,r,z)

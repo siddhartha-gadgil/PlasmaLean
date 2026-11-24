@@ -12,6 +12,7 @@
 | Status | Exact external trajectory replay. Lean verifies the general gluing theorem, the moving-frame step and the physical observable identities. |
 | Lean evidence | `TrajectorySlabs.Chain.exists_trajectory`, `TrajectorySlabs.MovingFrame.step_of_defect`, `DommaschkBounceField.physical_trace_tangent` |
 | Audit evidence | Workstation builds and standard-axiom audits. The external checker reproduces archived action and crossing bounds and rejects corruption. |
+| Patched by | N-63 extends the external witness to all eight endpoints. |
 | Last updated | 24 November 2026 |
 
 ## What the witness covers
