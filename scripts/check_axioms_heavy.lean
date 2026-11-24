@@ -162,6 +162,7 @@ import PlasmaLean.Certificates.WeakenLowerActionCover
 import PlasmaLean.Design.DommaschkGroupedTrialJet
 import PlasmaLean.Design.DommaschkEnclosedLaunchArcs
 import PlasmaLean.Design.DommaschkOriginalBirthMargin
+import PlasmaLean.Certificates.ActionFloorShells
 
 /-! Audit all declarations owned by project modules in the import closure (the on-demand top
 modules and everything they import). Fails on any non-standard axiom. -/
@@ -607,3 +608,7 @@ run_cmd do
 #print axioms PlasmaLean.Design.DommaschkEnclosedLaunchArcs.positions_regular
 #print axioms PlasmaLean.Design.DommaschkEnclosedLaunchArcs.uniform_enclosed
 #print axioms PlasmaLean.Design.DommaschkOriginalBirthMargin.from_passage
+#print axioms PlasmaLean.Certificates.PolynomialActionFloor.point
+#print axioms PlasmaLean.Certificates.PolynomialActionFloor.integral_group
+#print axioms PlasmaLean.Certificates.PolynomialActionFloor.shell_of_bounds
+#print axioms PlasmaLean.Certificates.PolynomialActionFloor.Shell.adjoin
