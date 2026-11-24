@@ -168,6 +168,7 @@ import PlasmaLean.Design.DommaschkJointLaunchArcs
 import PlasmaLean.Certificates.MirrorGapAtTime
 import PlasmaLean.Design.DommaschkClosedBandAction
 import PlasmaLean.Design.DommaschkPilotArcLengthPacket
+import PlasmaLean.Design.DommaschkPhysicalFirstMirrorValues
 
 /-! Audit all declarations owned by project modules in the import closure (the on-demand top
 modules and everything they import). Fails on any non-standard axiom. -/
@@ -628,3 +629,8 @@ run_cmd do
 #print axioms PlasmaLean.Design.DommaschkPilotArcLength.exact_sum
 #print axioms PlasmaLean.Design.DommaschkPilotArcLength.packet
 #print axioms PlasmaLean.Design.DommaschkClosedBandAction.on_paths
+#print axioms PlasmaLean.Design.DommaschkPhysicalFirstMirrorValues.vector_differentiableOn
+#print axioms PlasmaLean.Design.DommaschkPhysicalFirstMirrorValues.on_signed
+#print axioms PlasmaLean.Design.DommaschkPhysicalFirstMirrorValues.Side.inputs
+#print axioms PlasmaLean.Design.DommaschkPhysicalFirstMirrorValues.original_position
+#print axioms PlasmaLean.Design.DommaschkPhysicalFirstMirrorValues.from_passage
