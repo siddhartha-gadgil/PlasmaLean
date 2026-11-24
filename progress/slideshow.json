@@ -72,6 +72,12 @@
    ],
    "cards": [
     {
+     "title": "How do well lengths control the bounce action?",
+     "text": "At height h, a discrepancy ε in arclength below each field-strength threshold changes the action by at most ε√(2(h−b₀)). A labelwise Lipschitz estimate for those lengths bounds the derivative wherever it exists. Constant-field wells attain the comparison bound.",
+     "status": "Proved for finite arclength measures",
+     "kind": "checked"
+    },
+    {
      "title": "Can a different correction improve the result?",
      "text": "On a single bounce orbit, the absolute mean drift of a proposed radial label is exactly the smallest uniform first-order residual achievable by a periodic correction.",
      "status": "Proved",

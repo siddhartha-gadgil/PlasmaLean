@@ -64,7 +64,7 @@ Pursue well continuation and quantitative action control for C2 alongside the in
 | Dependency requirement | Use the same field for a combined claim. Thermal C2 additionally requires a physical dynamics model and population. |
 | Produces | A condition-by-condition assessment and three proposed mathematical research directions. |
 | Difficulty | Research. The outstanding steps concern global well continuation, quantitative physical averaging, pressure solvability and toroidal interface energy. |
-| Status | Exploratory. The three proposed research directions are open. |
+| Status | Exploratory. N-72 proves the sublevel-length comparison and derivative estimate in the first research direction. Its physical hypotheses and the other two directions remain open. [Compiled action theorem](bounce-action-sublevel-arclength.md) |
 | Lean evidence | Existing on-demand candidate results include `dommaschk_nested_embedded_C1`, `dommaschk_Q16_embedded` and `DommaschkPhysicalPrefix016.exists_nested_prefix`. The reusable results include `FieldTorus.embeddedTorus_of_irrational` and `FaceBounds.stays_inside`. |
 | Audit evidence | [23 November audit](../audit/2026-11-23-refresh-audit.md), especially AV-M7 and AV-M8 on the scope of C2. The 20-slab workstation snapshot used prefix key `c9d961f1b210`. |
 | Last updated | 24 November 2026. Assessment requested in discussion of the C1–C5 conditions and priorities for geometry and topology. |

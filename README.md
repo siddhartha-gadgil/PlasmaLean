@@ -40,6 +40,8 @@ Heavy numerics and large certificate builds can be offloaded to a workstation; s
 
 Lean now proves a 1/64-radian physical field-line collar on both Dommaschk mirror-launch sectors. The endpoint and radial certificates cover 28 action comparisons and 16 radial tiles. Exact external checks reproduce the crossings and action bounds on 16 long traces at all eight local-action endpoints. Lean verifies the physical entry on smaller sectors, all 6,256 scalar frame steps, the harmonics, and the first physical reference defect. At radius 0.470 one physical field line follows 64 forward references through one radian with dimensionless position error below 2.166 × 10⁻⁶. A signed solution from a single birth follows 64 references each way on [−1,1], with error below 2.166 × 10⁻⁶. All 391 reference defects in each direction passed Lean at this endpoint. [Verified intervals and replay](notes/theory/dommaschk-one-radian-and-signed-trace.md)
 
+**Geometry of a magnetic well.** Lean proves that a uniform discrepancy ε in the lengths below each field-strength threshold changes the single-passage bounce action by at most ε√(2(h−b₀)), where b₀ is a common lower field bound. It also bounds the action derivative when the lengths vary Lipschitz-continuously with the field-line label. [Theorem and application](notes/theory/bounce-action-sublevel-arclength.md)
+
 **Trapped-particle theory (23 November 2026).** On a regular annulus of periodic orbits,
 a common invariant volume and a nonvanishing averaged drift tangent to both edges give a
 radial label. Lean proves that trajectories starting on any closed interior subband exist and

@@ -372,6 +372,7 @@ public import PlasmaLean.Theory.Geometry.LocalLevelGraphs
 public import PlasmaLean.Theory.Kinetic.MirrorAction
 public import PlasmaLean.Theory.Kinetic.MirrorArclength
 public import PlasmaLean.Theory.Kinetic.MirrorHeightAction
+public import PlasmaLean.Theory.Kinetic.MirrorSublevelAction
 public import PlasmaLean.Theory.Kinetic.MirrorActionComparison
 public import PlasmaLean.Theory.Kinetic.MirrorActionEnvelope
 public import PlasmaLean.Theory.Kinetic.MirrorWellCriterion

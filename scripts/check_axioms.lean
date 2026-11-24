@@ -808,6 +808,12 @@ run_cmd do
 #print axioms PlasmaLean.Kinetic.MirrorWell.regularMirrorBirth_of_parametrized_crossings
 #print axioms PlasmaLean.Kinetic.MirrorHeightAction.action_eq_well_of_crossings
 #print axioms PlasmaLean.Kinetic.MirrorHeightAction.unique_height
+#print axioms PlasmaLean.Kinetic.MirrorSublevelAction.action_trace
+#print axioms PlasmaLean.Kinetic.MirrorSublevelAction.action_eq_integral_sublevel
+#print axioms PlasmaLean.Kinetic.MirrorSublevelAction.action_difference_le
+#print axioms PlasmaLean.Kinetic.MirrorSublevelAction.action_eq_of_sublevels
+#print axioms PlasmaLean.Kinetic.MirrorSublevelAction.abs_action_derivative_le
+#print axioms PlasmaLean.Kinetic.MirrorSublevelAction.flat_wells_attain_bound
 #print axioms PlasmaLean.Fields.LogNormTrajectory.MovingFrame.exists_rational_step
 #print axioms PlasmaLean.Fields.LogNormTrajectory.MovingFrame.exact_shear
 #print axioms PlasmaLean.Kinetic.MirrorActionEnvelope.exists_launchWell
