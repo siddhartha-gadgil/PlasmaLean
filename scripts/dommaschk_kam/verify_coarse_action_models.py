@@ -114,14 +114,20 @@ def physical(stem,inp,fields,models,ops,i,sign,section,high):
     return stem,src+native.footer(stem),['physical']
 
 
-def verify(a,label,i,sign,data,static):
+def verify(a,label,i,sign,data,static,*,mirror_height=None):
     upper,height,counts,_,traces,packet,ar=endpoint_inputs(label)
     section=int(label[1])
     trace=traces[int(sign==1)]
-    if not 0<=i<counts[int(sign==1)]:
-        raise ValueError('row outside the selected signed action packet')
+    if mirror_height is not None and mirror_height not in HEIGHTS:
+        raise ValueError('expected one of the two original mirror heights')
+    limit = len(trace['steps']) if mirror_height is not None else counts[int(sign==1)]
+    if not 0<=i<limit:
+        raise ValueError('row outside the selected signed archive')
     ins=native.row_inputs(i,trace)
     stem='DommaschkCoarseModel'+label.upper()+('Fwd' if sign==1 else 'Back')+f'{i:03}'
+    if mirror_height is not None and mirror_height != height:
+        height = mirror_height
+        stem += 'AtUpper' if height == HEIGHTS[1] else 'AtLower'
     old,src,thms=native.emit_input(i,sign,ins)
     inp=stem+'Inputs'
     lookup=f'DommaschkPositionFrames{"Fwd" if sign==1 else "Back"}.block{i//16}[{i%16}]'
