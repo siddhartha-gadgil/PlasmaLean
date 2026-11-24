@@ -5,7 +5,7 @@ Authors: PlasmaLean contributors
 -/
 module
 
-public import PlasmaLean.Certificates.PositionFrameChain
+public import PlasmaLean.Certificates.PositionFrameBall
 public import PlasmaLean.Design.DommaschkPositionFramesFwd
 public import PlasmaLean.Design.DommaschkReferenceFirstDefect
 public import PlasmaLean.Design.DommaschkJacobianFirstBound
@@ -97,7 +97,7 @@ theorem trial_membership {t : ℝ} (ht : t ∈ Icc 0 (1 / 64)) {v : Plane}
 private theorem square_regular {t : ℝ} (ht : t ∈ Icc 0 (1 / 64)) {v : Plane}
     (hv : v ∈ trialSquare (row.trial / (2 : ℝ) ^ 80)) :
     let x := reference 0 row t + moving seed row 0 t v
-    0 < x 0 ∧ atPoint dD (x 0) (0+1*t) (x 1) ≠ 0 := by
+    0 < x 0 ∧ atPoint dD (x 0) (0 + 1 * t) (x 1) ≠ 0 := by
   let x := reference 0 row t + moving seed row 0 t v
   have hT : row.trial/(2:ℝ)^80 ≤ 1/100000 := by
     change 2950393085339130478/(2:ℝ)^80 ≤ 1/100000
@@ -182,11 +182,14 @@ theorem physical_residual {t : ℝ} (ht : t ∈ Icc 0 (1 / 64)) :
     sq_abs, sq_abs]
   exact DommaschkReferenceFirst.framed_defect ht
 
-/-- All analytic inputs of the first recorded forward position slab concern
-the actual physical QA2R field. -/
-theorem field_bounds : FieldBounds seed row 0 (DommaschkJacobian.euclideanFlow 0 1)
-    (DommaschkJacobian.velocityJacobian 0 1) := by
-  let S := Icc (0 : ℝ) (1/64) ×ˢ trialSquare (row.trial / (2 : ℝ) ^ 80)
+private theorem bounds_of_regular (domain : RegularityDomain)
+    (reg : ∀ {t : ℝ}, t ∈ Icc 0 (1 / 64) → ∀ {v : Plane},
+      v ∈ domain.region (row.trial / (2 : ℝ) ^ 80) →
+      let x := reference 0 row t + moving seed row 0 t v
+      0 < x 0 ∧ atPoint dD (x 0) (0 + 1 * t) (x 1) ≠ 0) :
+    FieldBounds seed row 0 (DommaschkJacobian.euclideanFlow 0 1)
+      (DommaschkJacobian.velocityJacobian 0 1) domain := by
+  let S := Icc (0 : ℝ) (1/64) ×ˢ domain.region (row.trial / (2 : ℝ) ^ 80)
   let x := fun q : ℝ × Plane => reference 0 row q.1 + moving seed row 0 q.1 q.2
   let g := fun q : ℝ × Plane => (q.1,x q)
   have cm : ContinuousOn (fun t => (moving seed row 0 t).toContinuousLinearMap) (Icc 0 (1/64)) := by
@@ -200,7 +203,7 @@ theorem field_bounds : FieldBounds seed row 0 (DommaschkJacobian.euclideanFlow 0
     ((cp.comp continuous_fst).continuousOn.add
       ((cm.comp continuous_fst.continuousOn fstmem).clm_apply continuous_snd.continuousOn))
   have regular {q : ℝ × Plane} (hq : q ∈ S) :
-      0 < x q 0 ∧ DommaschkJacobian.clockValue dD 0 1 (g q) ≠ 0 := square_regular hq.1 hq.2
+      0 < x q 0 ∧ DommaschkJacobian.clockValue dD 0 1 (g q) ≠ 0 := reg hq.1 hq.2
   constructor
   · simp only [zero_add]
     intro q hq
@@ -212,7 +215,7 @@ theorem field_bounds : FieldBounds seed row 0 (DommaschkJacobian.euclideanFlow 0
       (regular hq).2).comp_continuousWithinAt (cg q hq)
   · simp only [zero_add]
     intro t ht v hv
-    obtain ⟨hr,hd⟩ := square_regular ht hv
+    obtain ⟨hr,hd⟩ := reg ht hv
     exact DommaschkJacobian.physical_derivative 0 1 t _ hr hd
   · simp only [zero_add]
     intro t ht v hv w
@@ -234,12 +237,39 @@ theorem field_bounds : FieldBounds seed row 0 (DommaschkJacobian.euclideanFlow 0
   · simp only [zero_add]
     exact fun _ ht => physical_residual (Ico_subset_Icc_self ht)
 
+/-- Regularity and numerical inputs on the larger Cartesian square. -/
+theorem field_bounds : FieldBounds seed row 0 (DommaschkJacobian.euclideanFlow 0 1)
+    (DommaschkJacobian.velocityJacobian 0 1) :=
+  bounds_of_regular squareDomain square_regular
+
+/-- On the Euclidean trial ball, the quantitative Taylor enclosures also give
+all denominator and radius conditions for local existence. -/
+theorem ball_field_bounds : FieldBounds seed row 0 (DommaschkJacobian.euclideanFlow 0 1)
+    (DommaschkJacobian.velocityJacobian 0 1) ballDomain := by
+  apply bounds_of_regular
+  intro t ht v hv
+  let x := reference 0 row t + moving seed row 0 t v
+  obtain ⟨hu,hz⟩ := trial_membership ht hv
+  have hs : |128*t-1| ≤ 1 := by simpa [coord] using norm_clock ht
+  have radial := enclose (c := ⟨[1/10],1/20⟩) hs hu (by kernel_fact)
+  have hr : 0 < x 0 := by
+    change (⟨[1/10],1/20⟩ : Model).Mem (128*t-1) (x 0 - dkR0) at radial
+    norm_num [Model.Mem, dkR0, abs_le] at radial
+    linarith
+  have hD := (physical_clock_ranges ht hu hz).1
+  have eq := (field_id hr t (x 1)).1
+  refine ⟨hr, ?_⟩
+  simp only [zero_add, one_mul]
+  change atPoint dD (x 0) t (x 1) ≠ 0
+  rw [eq]
+  exact (zero_lt_one.trans hD).ne'
+
 /-- The first forward interval of the archived pilot now has a physical QA2R
 solution through every transferred entry point, with its certified Euclidean
 error at all times and its exact exit ellipsoid ready for the next step. -/
 theorem physical_first_step :
     Fields.TrajectorySlabs.Step (DommaschkJacobian.euclideanFlow 0 1)
       (physicalSlab seed row 0) (stateSet seed) (stateSet (next row)) :=
-  physical_step checked field_bounds
+  physical_step_ball checked ball_field_bounds
 
 end PlasmaLean.Design.DommaschkPhysicalFirstStep

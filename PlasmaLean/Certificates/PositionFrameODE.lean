@@ -289,7 +289,8 @@ theorem mem_stateSet_identity {s : State} (hs : s.frame = ⟨2 ^ 40, 0, 0, 2 ^ 4
 def trialSquare (r : ℝ) : Set Plane :=
   {v | ∀ i, v i ∈ Icc (-r) r}
 
-private theorem square_facts {T : ℝ} (hT : 0 ≤ T) :
+/-- Compactness, convexity, trial-ball containment and Cartesian clamping. -/
+theorem square_facts {T : ℝ} (hT : 0 ≤ T) :
     IsCompact (trialSquare T) ∧ Convex ℝ (trialSquare T) ∧
     Metric.closedBall (0 : Plane) T ⊆ trialSquare T ∧
     ∃ P : Plane → Plane, LipschitzWith 1 P ∧ (∀ v, P v ∈ trialSquare T) ∧
@@ -321,16 +322,27 @@ def physicalSlab (s : State) (r : Step) (a : ℝ) : Fields.TrajectorySlabs.Slab 
     (moving s r a t) (reference a r t) (r.outgoing/(2 : ℝ)^80) ∩
     {x | dist x (reference a r t) ≤ r.physicalOut/(2 : ℝ)^80}⟩
 
+/-- A compact convex regularity domain containing the trial ball together with
+a nonexpansive retraction used in the local existence argument. -/
+structure RegularityDomain where
+  region : ℝ → Set Plane
+  facts : ∀ {T : ℝ}, 0 ≤ T → IsCompact (region T) ∧ Convex ℝ (region T) ∧
+    Metric.closedBall (0 : Plane) T ⊆ region T ∧
+    ∃ P : Plane → Plane, LipschitzWith 1 P ∧ (∀ v, P v ∈ region T) ∧ ∀ v ∈ region T, P v = v
+
+/-- Cartesian square used in the initial position-frame closure. -/
+def squareDomain : RegularityDomain := ⟨trialSquare, square_facts⟩
+
 /-- The outstanding analytic field inputs for one slab. Only continuity and
-differentiability require the larger square. The quantitative spatial test
+differentiability use the selected compact domain. The quantitative spatial test
 uses the Euclidean trial ball and the defect uses the central reference. -/
 structure FieldBounds (s : State) (r : Step) (a : ℝ) (F : ℝ → Plane → Plane)
-    (J : ℝ → Plane → Plane →L[ℝ] Plane) : Prop where
+    (J : ℝ → Plane → Plane →L[ℝ] Plane) (domain : RegularityDomain := squareDomain) : Prop where
   field : ContinuousOn (fun q : ℝ × Plane => F q.1 (reference a r q.1 + moving s r a q.1 q.2))
-    (Icc a (a + 1 / 64) ×ˢ trialSquare (r.trial/(2 : ℝ)^80))
+    (Icc a (a + 1 / 64) ×ˢ domain.region (r.trial/(2 : ℝ)^80))
   jac : ContinuousOn (fun q : ℝ × Plane => J q.1 (reference a r q.1 + moving s r a q.1 q.2))
-    (Icc a (a + 1 / 64) ×ˢ trialSquare (r.trial/(2 : ℝ)^80))
-  derivative : ∀ t ∈ Icc a (a + 1 / 64), ∀ v ∈ trialSquare (r.trial/(2 : ℝ)^80),
+    (Icc a (a + 1 / 64) ×ˢ domain.region (r.trial/(2 : ℝ)^80))
+  derivative : ∀ t ∈ Icc a (a + 1 / 64), ∀ v ∈ domain.region (r.trial/(2 : ℝ)^80),
     HasFDerivAt (F t) (J t (reference a r t + moving s r a t v))
       (reference a r t + moving s r a t v)
   quadratic : ∀ t ∈ Ico a (a + 1 / 64), ∀ v ∈ Metric.closedBall (0 : Plane) (r.trial/(2 : ℝ)^80),
@@ -342,9 +354,10 @@ structure FieldBounds (s : State) (r : Step) (a : ℝ) (F : ℝ → Plane → Pl
 
 /-- Realize a checked datum as a physical ODE step, including the reference
 jump, the shared endpoint states, and the rounded physical position error. -/
-theorem physical_step {lim : Limits} {s : State} {r : Step} {a : ℝ} {F : ℝ → Plane → Plane}
+theorem physical_step_on {domain : RegularityDomain} {lim : Limits} {s : State} {r : Step}
+    {a : ℝ} {F : ℝ → Plane → Plane}
     {J : ℝ → Plane → Plane →L[ℝ] Plane} (ok : test lim s r = true)
-    (bounds : FieldBounds s r a F J) :
+    (bounds : FieldBounds s r a F J domain) :
     Fields.TrajectorySlabs.Step F (physicalSlab s r a) (stateSet s) (stateSet (next r)) := by
   obtain ⟨hg,hr⟩ := Bool.and_eq_true_iff.mp ok
   obtain ⟨inc,hε,hlen,hprop,htrial,_,hop,_,_,_⟩ := growth_sound hr
@@ -354,7 +367,7 @@ theorem physical_step {lim : Limits} {s : State} {r : Step} {a : ℝ} {F : ℝ �
       (r.incoming/(2:ℝ)^80) r.mu r.defect ≤ r.outgoing/(2:ℝ)^80 := by
     simpa only [Fields.TrajectorySlabs.MovingFrame.propagated, len, mul_one_div, one_div_mul_eq_div]
       using hprop
-  obtain ⟨compact,conv,tube,retract⟩ := square_facts (T := r.trial/(2:ℝ)^80) (by positivity)
+  obtain ⟨compact,conv,tube,retract⟩ := domain.facts (T := r.trial/(2:ℝ)^80) (by positivity)
   have step := Fields.TrajectorySlabs.MovingFrame.step_of_defect
     (a := a) (b := a + 1 / 64) (r := r.incoming/(2:ℝ)^80) (L := (r.mu : ℝ))
     (ε := (r.defect : ℝ)) (T := r.trial/(2:ℝ)^80) ab (by positivity) hε
@@ -390,6 +403,13 @@ theorem physical_step {lim : Limits} {s : State} {r : Step} {a : ℝ} {F : ℝ �
     apply physical.trans
     apply (mul_le_mul_of_nonneg_right (frame_op_norm hg (abs_coord_le ht)) (by positivity)).trans
     simpa only [← mul_div_assoc] using div_le_div_of_nonneg_right hop (by positivity : (0:ℝ) ≤ 2^80)
+
+/-- Physical step using the Cartesian square as its regularity domain. -/
+theorem physical_step {lim : Limits} {s : State} {r : Step} {a : ℝ} {F : ℝ → Plane → Plane}
+    {J : ℝ → Plane → Plane →L[ℝ] Plane} (ok : test lim s r = true)
+    (bounds : FieldBounds s r a F J) :
+    Fields.TrajectorySlabs.Step F (physicalSlab s r a) (stateSet s) (stateSet (next r)) :=
+  physical_step_on ok bounds
 
 private theorem stationaryVelocity (a t : ℝ) : referenceVelocity a stationary t = 0 := by
   ext i

@@ -1,0 +1,261 @@
+{
+  "field_sha256": "6fa28479f725ad01686e0992788b5d7fbf0ecb6f7962e66e0988ac3fa34ba09b",
+  "records": [
+    {
+      "source": "bounce_frame_q0_u470.json.gz",
+      "input_sha256": "203174bc83dc40b46bca175b2ac03a39e9631c1d9cf6f35209df9660ae213a3d",
+      "sign": -1,
+      "rows": 391,
+      "whole_trace_pass": 348,
+      "time_panels_pass": 366,
+      "spatial_resolution": {
+        "1": 366,
+        "2": 24,
+        "4": 1
+      },
+      "total_pass": 391,
+      "panels": 8,
+      "failures": []
+    },
+    {
+      "source": "bounce_frame_q0_u470.json.gz",
+      "input_sha256": "203174bc83dc40b46bca175b2ac03a39e9631c1d9cf6f35209df9660ae213a3d",
+      "sign": 1,
+      "rows": 391,
+      "whole_trace_pass": 348,
+      "time_panels_pass": 366,
+      "spatial_resolution": {
+        "1": 366,
+        "2": 24,
+        "4": 1
+      },
+      "total_pass": 391,
+      "panels": 8,
+      "failures": []
+    },
+    {
+      "source": "bounce_frame_q0_u478.json.gz",
+      "input_sha256": "07763b1926fb24bb93889e651ced079f4871c59c72f443f6b7f2392fc5eb6f83",
+      "sign": -1,
+      "rows": 391,
+      "whole_trace_pass": 346,
+      "time_panels_pass": 366,
+      "spatial_resolution": {
+        "1": 366,
+        "2": 24,
+        "4": 1
+      },
+      "total_pass": 391,
+      "panels": 8,
+      "failures": []
+    },
+    {
+      "source": "bounce_frame_q0_u478.json.gz",
+      "input_sha256": "07763b1926fb24bb93889e651ced079f4871c59c72f443f6b7f2392fc5eb6f83",
+      "sign": 1,
+      "rows": 391,
+      "whole_trace_pass": 346,
+      "time_panels_pass": 366,
+      "spatial_resolution": {
+        "1": 366,
+        "2": 24,
+        "4": 1
+      },
+      "total_pass": 391,
+      "panels": 8,
+      "failures": []
+    },
+    {
+      "source": "bounce_frame_q0_u523.json.gz",
+      "input_sha256": "60aa38c42b74fac7631fb29ef1bcad5dcb629b413d89eaa464c984235ee10e68",
+      "sign": -1,
+      "rows": 391,
+      "whole_trace_pass": 346,
+      "time_panels_pass": 366,
+      "spatial_resolution": {
+        "1": 366,
+        "2": 25,
+        "4": 0
+      },
+      "total_pass": 391,
+      "panels": 8,
+      "failures": []
+    },
+    {
+      "source": "bounce_frame_q0_u523.json.gz",
+      "input_sha256": "60aa38c42b74fac7631fb29ef1bcad5dcb629b413d89eaa464c984235ee10e68",
+      "sign": 1,
+      "rows": 391,
+      "whole_trace_pass": 346,
+      "time_panels_pass": 366,
+      "spatial_resolution": {
+        "1": 366,
+        "2": 25,
+        "4": 0
+      },
+      "total_pass": 391,
+      "panels": 8,
+      "failures": []
+    },
+    {
+      "source": "bounce_frame_q0_u531.json.gz",
+      "input_sha256": "96dd92ee595561eb6ac77036ac1858f5ed49ffa410406e32c7a0508d969e7c03",
+      "sign": -1,
+      "rows": 391,
+      "whole_trace_pass": 347,
+      "time_panels_pass": 366,
+      "spatial_resolution": {
+        "1": 366,
+        "2": 25,
+        "4": 0
+      },
+      "total_pass": 391,
+      "panels": 8,
+      "failures": []
+    },
+    {
+      "source": "bounce_frame_q0_u531.json.gz",
+      "input_sha256": "96dd92ee595561eb6ac77036ac1858f5ed49ffa410406e32c7a0508d969e7c03",
+      "sign": 1,
+      "rows": 391,
+      "whole_trace_pass": 347,
+      "time_panels_pass": 366,
+      "spatial_resolution": {
+        "1": 366,
+        "2": 25,
+        "4": 0
+      },
+      "total_pass": 391,
+      "panels": 8,
+      "failures": []
+    },
+    {
+      "source": "bounce_frame_q1_u456.json.gz",
+      "input_sha256": "73141fe1c213ea5485b699a6a4aad2d8cd0388ceb55e3761ace4fdb68626d7d6",
+      "sign": -1,
+      "rows": 391,
+      "whole_trace_pass": 334,
+      "time_panels_pass": 339,
+      "spatial_resolution": {
+        "1": 339,
+        "2": 51,
+        "4": 1
+      },
+      "total_pass": 391,
+      "panels": 8,
+      "failures": []
+    },
+    {
+      "source": "bounce_frame_q1_u456.json.gz",
+      "input_sha256": "73141fe1c213ea5485b699a6a4aad2d8cd0388ceb55e3761ace4fdb68626d7d6",
+      "sign": 1,
+      "rows": 391,
+      "whole_trace_pass": 334,
+      "time_panels_pass": 339,
+      "spatial_resolution": {
+        "1": 339,
+        "2": 51,
+        "4": 1
+      },
+      "total_pass": 391,
+      "panels": 8,
+      "failures": []
+    },
+    {
+      "source": "bounce_frame_q1_u464.json.gz",
+      "input_sha256": "15de8c585f95516b2e702217916a63567b4113ac2f30e801f36b79bdede68fa8",
+      "sign": -1,
+      "rows": 391,
+      "whole_trace_pass": 334,
+      "time_panels_pass": 339,
+      "spatial_resolution": {
+        "1": 339,
+        "2": 51,
+        "4": 1
+      },
+      "total_pass": 391,
+      "panels": 8,
+      "failures": []
+    },
+    {
+      "source": "bounce_frame_q1_u464.json.gz",
+      "input_sha256": "15de8c585f95516b2e702217916a63567b4113ac2f30e801f36b79bdede68fa8",
+      "sign": 1,
+      "rows": 391,
+      "whole_trace_pass": 334,
+      "time_panels_pass": 339,
+      "spatial_resolution": {
+        "1": 339,
+        "2": 51,
+        "4": 1
+      },
+      "total_pass": 391,
+      "panels": 8,
+      "failures": []
+    },
+    {
+      "source": "bounce_frame_q1_u509.json.gz",
+      "input_sha256": "d52394eb5665712cdaac61eb7145ec65184205de2fe9d3aa8f941c69b00207fb",
+      "sign": -1,
+      "rows": 391,
+      "whole_trace_pass": 334,
+      "time_panels_pass": 340,
+      "spatial_resolution": {
+        "1": 340,
+        "2": 50,
+        "4": 1
+      },
+      "total_pass": 391,
+      "panels": 8,
+      "failures": []
+    },
+    {
+      "source": "bounce_frame_q1_u509.json.gz",
+      "input_sha256": "d52394eb5665712cdaac61eb7145ec65184205de2fe9d3aa8f941c69b00207fb",
+      "sign": 1,
+      "rows": 391,
+      "whole_trace_pass": 334,
+      "time_panels_pass": 340,
+      "spatial_resolution": {
+        "1": 340,
+        "2": 50,
+        "4": 1
+      },
+      "total_pass": 391,
+      "panels": 8,
+      "failures": []
+    },
+    {
+      "source": "bounce_frame_q1_u517.json.gz",
+      "input_sha256": "1fb702625e62eba29bf47e62fb536c6be51f5cd1b6ec6a6e4776e181083a32e4",
+      "sign": -1,
+      "rows": 391,
+      "whole_trace_pass": 334,
+      "time_panels_pass": 340,
+      "spatial_resolution": {
+        "1": 340,
+        "2": 51,
+        "4": 0
+      },
+      "total_pass": 391,
+      "panels": 8,
+      "failures": []
+    },
+    {
+      "source": "bounce_frame_q1_u517.json.gz",
+      "input_sha256": "1fb702625e62eba29bf47e62fb536c6be51f5cd1b6ec6a6e4776e181083a32e4",
+      "sign": 1,
+      "rows": 391,
+      "whole_trace_pass": 334,
+      "time_panels_pass": 340,
+      "spatial_resolution": {
+        "1": 340,
+        "2": 51,
+        "4": 0
+      },
+      "total_pass": 391,
+      "panels": 8,
+      "failures": []
+    }
+  ]
+}

@@ -26,10 +26,11 @@ def physicalSlabs : State → ℝ → List Step → List (Fields.TrajectorySlabs
   | s, a, r :: rs => physicalSlab s r a :: physicalSlabs (next r) (a+1/64) rs
 
 /-- Field estimates for the consecutive records of one trajectory. -/
-def FieldBoundsOn (F : ℝ → Plane → Plane) (J : ℝ → Plane → Plane →L[ℝ] Plane) :
-    State → ℝ → List Step → Prop
-  | _, _, [] => True
-  | s, a, r :: rs => FieldBounds s r a F J ∧ FieldBoundsOn F J (next r) (a+1/64) rs
+def FieldBoundsOn (F : ℝ → Plane → Plane) (J : ℝ → Plane → Plane →L[ℝ] Plane)
+    (s : State) (a : ℝ) (rows : List Step) (domain : RegularityDomain := squareDomain) : Prop :=
+  match rows with
+  | [] => True
+  | r :: rs => FieldBounds s r a F J domain ∧ FieldBoundsOn F J (next r) (a+1/64) rs domain
 
 private theorem run_append (lim : Limits) (l r : List Step) (s : State) :
     run lim s (l ++ r) =
@@ -40,7 +41,8 @@ private theorem run_append (lim : Limits) (l r : List Step) (s : State) :
 
 /-- Reading the arbitrarily chunked Lean proof as an ordered flat witness
 preserves its initial and final data and the exact number of steps. -/
-theorem Chain.flatten {lim : Limits} {s e : State} {blocks : List (List Step)} {n : ℕ}
+theorem Chain.flatten {lim : Limits} {s e : State}
+    {blocks : List (List Step)} {n : ℕ}
     (h : Chain lim s blocks n e) :
     run lim s blocks.flatten = (true, e) ∧ blocks.flatten.length = n := by
   induction h with
@@ -49,9 +51,10 @@ theorem Chain.flatten {lim : Limits} {s e : State} {blocks : List (List Step)} {
     simp only [List.flatten_cons, run_append, ok, ih.1, Bool.true_and, List.length_append, ih.2,
       and_self]
 
-private theorem run_physical {lim : Limits} {s e : State} {a : ℝ} {rows : List Step}
+private theorem run_physical {domain : RegularityDomain} {lim : Limits} {s e : State} {a : ℝ}
+    {rows : List Step}
     {F : ℝ → Plane → Plane} {J : ℝ → Plane → Plane →L[ℝ] Plane}
-    (h : run lim s rows = (true, e)) (bounds : FieldBoundsOn F J s a rows) :
+    (h : run lim s rows = (true, e)) (bounds : FieldBoundsOn F J s a rows domain) :
     Fields.TrajectorySlabs.Chain F a (stateSet s) (a + rows.length/64) (stateSet e)
       (physicalSlabs s a rows) := by
   induction rows generalizing s a with
@@ -66,7 +69,7 @@ private theorem run_physical {lim : Limits} {s e : State} {a : ℝ} {rows : List
     obtain ⟨ok,tail⟩ := Bool.and_eq_true_iff.mp check
     have endState := congrArg Prod.snd h
     change (run lim (next r) rs).2 = e at endState
-    have step := physical_step ok bounds.1
+    have step := physical_step_on ok bounds.1
     have rest := ih (Prod.ext tail endState) bounds.2
     have time : (a+1/64) + rs.length/64 = a + (r::rs).length/64 := by
       rw [List.length_cons, Nat.cast_add, Nat.cast_one]
@@ -76,9 +79,10 @@ private theorem run_physical {lim : Limits} {s e : State} {a : ℝ} {rows : List
 
 /-- When all analytic inputs have been discharged for the saved records, the
 scalar chain proves one physical ODE chain on exactly n/64 units of angle. -/
-theorem Chain.physical {lim : Limits} {s e : State} {blocks : List (List Step)} {n : ℕ} {a : ℝ}
+theorem Chain.physical {domain : RegularityDomain} {lim : Limits} {s e : State}
+    {blocks : List (List Step)} {n : ℕ} {a : ℝ}
     {F : ℝ → Plane → Plane} {J : ℝ → Plane → Plane →L[ℝ] Plane}
-    (h : Chain lim s blocks n e) (bounds : FieldBoundsOn F J s a blocks.flatten) :
+    (h : Chain lim s blocks n e) (bounds : FieldBoundsOn F J s a blocks.flatten domain) :
     Fields.TrajectorySlabs.Chain F a (stateSet s) (a + n/64) (stateSet e)
       (physicalSlabs s a blocks.flatten) := by
   obtain ⟨ok,len⟩ := h.flatten
@@ -86,9 +90,10 @@ theorem Chain.physical {lim : Limits} {s e : State} {blocks : List (List Step)} 
 
 /-- The physical launch stays in all recorded Euclidean enclosures through the
 declared endpoint. Its derivative also agrees with the field at internal joins. -/
-theorem Chain.trajectory {lim : Limits} {s e : State} {blocks : List (List Step)} {n : ℕ} {a : ℝ}
+theorem Chain.trajectory {domain : RegularityDomain} {lim : Limits} {s e : State}
+    {blocks : List (List Step)} {n : ℕ} {a : ℝ}
     {F : ℝ → Plane → Plane} {J : ℝ → Plane → Plane →L[ℝ] Plane}
-    (h : Chain lim s blocks n e) (bounds : FieldBoundsOn F J s a blocks.flatten)
+    (h : Chain lim s blocks n e) (bounds : FieldBoundsOn F J s a blocks.flatten domain)
     {x : Plane} (entry : x ∈ stateSet s) :
     ∃ v : ℝ → Plane, v a = x ∧ v (a+n/64) ∈ stateSet e ∧
       (∀ t ∈ Icc a (a+n/64), HasDerivWithinAt v (F t (v t)) (Icc a (a+n/64)) t) ∧
@@ -118,9 +123,11 @@ theorem hasFDerivAt_euclideanField {F : ℝ → (Fin 2 → ℝ) → (Fin 2 → �
 
 /-- Return the concatenated trajectory to the original Cartesian ODE and
 retain its Euclidean error in every recorded tube. -/
-theorem Chain.cartesian_trajectory {lim : Limits} {s e : State} {blocks : List (List Step)}
+theorem Chain.cartesian_trajectory {domain : RegularityDomain} {lim : Limits} {s e : State}
+    {blocks : List (List Step)}
     {n : ℕ} {a : ℝ} {F : ℝ → (Fin 2 → ℝ) → (Fin 2 → ℝ)} {J : ℝ → Plane → Plane →L[ℝ] Plane}
-    (h : Chain lim s blocks n e) (bounds : FieldBoundsOn (euclideanField F) J s a blocks.flatten)
+    (h : Chain lim s blocks n e)
+    (bounds : FieldBoundsOn (euclideanField F) J s a blocks.flatten domain)
     {x : Fin 2 → ℝ} (entry : coordinates.symm x ∈ stateSet s) :
     ∃ v : ℝ → (Fin 2 → ℝ), v a = x ∧ coordinates.symm (v (a+n/64)) ∈ stateSet e ∧
       (∀ t ∈ Icc a (a+n/64), HasDerivWithinAt v (F t (v t)) (Icc a (a+n/64)) t) ∧

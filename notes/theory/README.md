@@ -89,3 +89,4 @@ Phase 8 (kam-route.md, finite-beta-stellarator.md):
 - [Long field-line traces at all eight local-action endpoints](dommaschk-eight-long-traces.md) (N-63, Q-35). Exact external replay of 6,256 steps on both symmetry sectors.
 - [Physical entry, frame arithmetic and the first trajectory defect](dommaschk-physical-frame-trace.md) (N-64, Q-35). Lean checks all 16 scalar chains and the first physical reference defect.
 - [The first physical moving-frame step from a Dommaschk mirror birth](dommaschk-first-physical-step.md) (N-65, Q-35). A true Q-16 launch follows the forward reference with controlled Euclidean error throughout the first slab.
+- [Full-trace Jacobian budgets and the physical chain criterion](dommaschk-full-frame-budgets.md) (N-66, Q-35). All 6,256 Jacobian budgets pass exact screening. Lean states the remaining requirements on the actual trial balls.

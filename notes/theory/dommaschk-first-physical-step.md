@@ -13,6 +13,7 @@
 | Lean evidence | `DommaschkMirrorLaunch.exists_nested_firstPassage`, `DommaschkPhysicalFirstStep.physical_first_step`, `DommaschkJacobian.physical_derivative`, `DommaschkJacobian.physical_clock_log_norm`, `PositionFrameSlabs.Chain.cartesian_trajectory` |
 | Audit evidence | Default and heavy standard-axiom checks passed for 54,471 and 93,099 project declarations, respectively. |
 | Last updated | 24 November 2026 |
+| Patched by | N-66 tests every Jacobian budget externally and proves the physical chain criterion on trial balls. |
 | Patches | N-64, physical Jacobian and composition on the first forward step |
 
 ## Physical statement
