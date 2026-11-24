@@ -110,8 +110,10 @@ def main():
     out={k:r[k] for k in ['module','key','axioms','theorems']}
     out.update(endpoint=label,coarse_packet=pack['key'],signed= signed['key'],signed_length=n,
                splits=pack['splits'],upper=pack['upper'],height=pack['height'],blocks=2,
-               independently_checked_panels=2*pack['splits'],chronological_cells=96,
+               signed_panel_applications=2*pack['splits'],chronological_cells=96,
                import_paths=[str(base),str(overlay)])
+    if all('ticks' in row for row in cells):
+        out['independently_checked_panels']=pack['splits']*len({row['ticks'] for row in cells})
     save(a.output,out)
     print(out['module'],out['key'],flush=True)
 
