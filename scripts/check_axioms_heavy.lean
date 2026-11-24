@@ -47,6 +47,8 @@ import PlasmaLean.Design.DommaschkPhysicalActionCap
 import PlasmaLean.Design.DommaschkReflectedPilot
 import PlasmaLean.Design.DommaschkBackwardRectangle
 import PlasmaLean.Design.DommaschkEndpointSignedTrace
+import PlasmaLean.Design.DommaschkArcDensitySensitivity
+import PlasmaLean.Certificates.MirrorActionBlockBounds
 import PlasmaLean.Design.DommaschkReflectedActionBounds
 import PlasmaLean.Certificates.MirrorActionUniformCells
 import PlasmaLean.Design.DommaschkPhysicalArcTrace
@@ -358,3 +360,7 @@ run_cmd do
 #print axioms PlasmaLean.Design.DommaschkShiftedTrial.membership
 #print axioms PlasmaLean.Design.DommaschkBackwardRectangle.field_bounds
 #print axioms PlasmaLean.Design.DommaschkReflectedActionBounds.transfer
+#print axioms PlasmaLean.Design.DommaschkArcDensitySensitivity.density_lipschitz
+#print axioms PlasmaLean.Certificates.MirrorActionQuadrature.action_le_uniform
+#print axioms PlasmaLean.Certificates.MirrorActionQuadrature.covers_append_iff
+#print axioms PlasmaLean.Certificates.MirrorActionQuadrature.covers_of_floor

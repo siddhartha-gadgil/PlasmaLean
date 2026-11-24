@@ -839,3 +839,6 @@ run_cmd do
 #print axioms PlasmaLean.Kinetic.MirrorAction.hasDerivAt_action
 #print axioms PlasmaLean.Kinetic.MirrorAction.quadratic_shape
 #print axioms PlasmaLean.Kinetic.MirrorAction.double_root_no_shape_lower
+#print axioms PlasmaLean.Kinetic.CylindricalActionSensitivity.same_angle
+#print axioms PlasmaLean.Kinetic.CylindricalActionSensitivity.physical_action_window
+#print axioms PlasmaLean.Kinetic.CylindricalActionSensitivity.circle_action_attains

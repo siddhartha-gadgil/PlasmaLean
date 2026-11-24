@@ -115,3 +115,5 @@ Phase 8 (kam-route.md, finite-beta-stellarator.md):
 - [Five-radian physical birth trajectory](dommaschk-five-radian-birth-trace.md) (N-89). Both strict mirror-height bounds on the shared birth path through 160 slabs in each direction.
 - [Two complete physical action blocks](dommaschk-two-physical-action-blocks.md) (N-90). All 96 original panels around the launch hold on one true field line, with arclength given by the Cartesian derivative.
 - [Signed physical paths at all eight launches](dommaschk-eight-signed-launches.md) (N-91). The original two signed tubes enclose one field line per birth on one shared pair of nested tori.
+- [Physical partial action on a six-radian field line](dommaschk-signed-action-integral.md) (N-92). Both height bounds and the integrated central action on one trajectory.
+- [Cylindrical action sensitivity](cylindrical-action-sensitivity.md) (N-93). Sharp action error from differences of actual same-angle tangent components.
