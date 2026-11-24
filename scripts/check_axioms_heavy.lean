@@ -43,6 +43,7 @@ import PlasmaLean.Design.DommaschkSpeedHistogramQ1R517
 import PlasmaLean.Design.DommaschkOppositeHarmonic
 import PlasmaLean.Design.DommaschkPerturbedFieldModel
 import PlasmaLean.Design.DommaschkUniformFieldError
+import PlasmaLean.Design.DommaschkPhysicalActionCap
 import PlasmaLean.Design.DommaschkSignedMirrorSlope
 import PlasmaLean.Design.DommaschkMirrorStrengthSlope
 import PlasmaLean.Design.RationalStellaratorGCMuWide
@@ -334,3 +335,7 @@ run_cmd do
 #print axioms PlasmaLean.Design.DommaschkUniformFieldError.dnZ_bound
 #print axioms PlasmaLean.Design.DommaschkSignedMirrorSlope.clock_odes
 #print axioms PlasmaLean.Design.DommaschkSignedMirrorSlope.first_transverse
+#print axioms PlasmaLean.Design.DommaschkPhysicalActionPanel.norm_deriv_eq_density
+#print axioms PlasmaLean.Design.DommaschkPhysicalActionPanel.upper_columns
+#print axioms PlasmaLean.Design.DommaschkPhysicalActionPanel.arcDensity_le_of_ranges
+#print axioms PlasmaLean.Design.DommaschkPhysicalActionPanel.zero_speed_of_monotone

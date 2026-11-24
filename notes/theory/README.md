@@ -109,3 +109,5 @@ Phase 8 (kam-route.md, finite-beta-stellarator.md):
 - [First-slab ODE defects at eight physical launches](dommaschk-eight-reference-defects.md) (N-83). Sixteen signed reference-curve bounds and an exact external comparison of Jacobian transfer between launch radii.
 - [Complete strict signs before both mirror brackets](dommaschk-complete-pre-mirror-signs.md) (N-84). All 648 directed tube signs and the ordered bounds on each side of the launch.
 - [Mirror profile stability](mirror-profile-stability.md) (N-85). Sharp action bounds, stability of crossing times and estimates from measured field-strength bands.
+- [Physical action bounds on three original time panels](dommaschk-first-physical-action-cells.md) (N-86). The two cells straddling the Q-16 birth and the earliest chronological cell from local mirror entry.
+- [Linear action stability near mirror height](mirror-action-collar.md) (N-87). Quantitative regularity is needed only in a collar of the height, allowing critical well bottoms.
