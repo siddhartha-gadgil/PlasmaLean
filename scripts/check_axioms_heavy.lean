@@ -32,6 +32,7 @@ import PlasmaLean.Design.DommaschkSublevelActionGrids
 import PlasmaLean.Design.DommaschkPreMirrorSigns
 import PlasmaLean.Design.DommaschkSignedObservable
 import PlasmaLean.Design.DommaschkSublevelArchiveNodes
+import PlasmaLean.Design.DommaschkMirrorStrengthSlope
 import PlasmaLean.Design.RationalStellaratorGCMuWide
 import PlasmaLean.Design.RationalStellaratorGCMu3Confined
 import PlasmaLean.Design.RationalStellaratorGCMu4Confined
@@ -301,3 +302,6 @@ run_cmd do
 #print axioms PlasmaLean.Certificates.MirrorSublevelQuadrature.covers_sublevel
 #print axioms PlasmaLean.Design.DommaschkSublevelArchiveNodes.Upper.node
 #print axioms PlasmaLean.Design.DommaschkSublevelArchiveNodes.Lower.node
+#print axioms PlasmaLean.Design.DommaschkMirrorStrengthSlope.forward_of_physical
+#print axioms PlasmaLean.Design.DommaschkMirrorStrengthSlope.backward_of_physical
+#print axioms PlasmaLean.Design.DommaschkMirrorStrengthSlope.at_positive_level
