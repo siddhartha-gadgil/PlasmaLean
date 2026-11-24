@@ -71,6 +71,7 @@ import PlasmaLean.Design.DommaschkLocalLittlejohnBirth
 import PlasmaLean.Design.DommaschkGroupedMirrorModels
 import PlasmaLean.Design.DommaschkEndpointMirrorBranch
 import PlasmaLean.Design.DommaschkEndpointTraceFamily
+import PlasmaLean.Design.DommaschkPilotBirthVariation
 import PlasmaLean.Design.DommaschkFiniteRadialAction
 import PlasmaLean.Design.DommaschkRadialActionCriterion
 import PlasmaLean.Design.DommaschkToroidalEnvelopeTest
@@ -485,3 +486,10 @@ run_cmd do
 #print axioms PlasmaLean.Design.DommaschkFiniteRadialAction.endpoint_width
 #print axioms PlasmaLean.Design.DommaschkFiniteRadialAction.first_action
 #print axioms PlasmaLean.Design.DommaschkFiniteRadialAction.pair_test
+#print axioms PlasmaLean.Design.DommaschkBirthVariation.birth_derivative
+#print axioms PlasmaLean.Design.DommaschkBirthVariation.geometry
+#print axioms PlasmaLean.Design.DommaschkBirthVariation.pilot_numerators
+#print axioms PlasmaLean.Design.DommaschkBirthVariation.observable_slopes
+#print axioms PlasmaLean.Design.DommaschkBirthVariation.pilot_of_close
+#print axioms PlasmaLean.Design.DommaschkBirthVariation.line_of_section
+#print axioms PlasmaLean.Design.DommaschkBirthVariation.common_pilot
