@@ -34,7 +34,7 @@ def input_root(row, label, direction, index, module, checksum, version):
     return root
 
 
-def physical_source(label, sign, pair, previous, jac, ref):
+def physical_source(label, sign, pair, previous, jac, ref, reference_package=REFERENCE):
     i = pair.index
     tag = 'Forward' if sign == 1 else 'Back'
     angle = '0' if label[1] == '0' else '(Real.pi / 2)'
@@ -60,7 +60,7 @@ def physical_source(label, sign, pair, previous, jac, ref):
     return name, f'''module
 public import PlasmaLean.Design.{DEPENDENCY}
 public import {JACOBIAN}.{jac}
-public import {REFERENCE}.{ref}
+public import {reference_package}.{ref}
 
 /-! # Physical {tag.lower()} continuation at {label}, slab {i} -/
 @[expose] public section
@@ -224,16 +224,25 @@ def main():
             ref = references[sign,i]
             fm = f'DommaschkTraceResidual{label.upper()}{tag}{i:03}'
             refdir = input_root(ref,label,sign,i,fm,checksum,version)
-            source = physical_source(label, sign, pair, prev.forward if sign == 1 else prev.backward, jm, fm)
+            ref_roots = [refdir]
+            reference_package = REFERENCE
+            if 'reflected_forward' in ref:
+                from verify_reflected_endpoint_residuals import PACKAGE as reflected_package, checked_reflected_parent
+                if sign != -1 or ref['package'] != reflected_package:
+                    raise ValueError('incorrect direction or package for a reflected central defect')
+                ref_roots.append(checked_reflected_parent(ref,refdir,version))
+                reference_package = reflected_package
+            source = physical_source(label, sign, pair, prev.forward if sign == 1 else prev.backward,
+                                     jm, fm, reference_package)
             name, code = source
             root, row = compile_modules(args.cache/name, [(name, code, ['checked','field_bounds','physical_step'])],
-                [jac_import, refdir], [*base,jac['key'],ref['key']], args, PACKAGE)
-            roots.extend([*jac_roots, refdir, root])
+                [jac_import, *ref_roots], [*base,jac['key'],ref['key']], args, PACKAGE)
+            roots.extend([*jac_roots, *ref_roots, root])
             keys.append(row['key'])
             branches[sign].append({k: v for k, v in row.items() if k != 'artifacts'} |
                 {'index': i, 'direction': sign, 'endpoint': label, 'packet_sha256': checksum,
                  'jacobian_key': jac['key'], 'residual_key': ref['key'],
-                 'import_paths': list(map(str, [root, jac_import, refdir]))})
+                 'import_paths': list(map(str, [root, jac_import, *ref_roots]))})
             print(f'{label} {tag} {i} accepted {row["key"]}',flush=True)
     imports = merge_import_roots(args.cache, roots, keys)
     name, code = prefix_source(label,branches)

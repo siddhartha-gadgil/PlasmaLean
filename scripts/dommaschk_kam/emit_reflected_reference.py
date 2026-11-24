@@ -12,7 +12,7 @@ from screen_reflected_reference import paired_jobs
 from screen_sparse_reference_defects import evaluate, jobs
 
 
-def render(path, index, forward_package):
+def render(path, index, forward_package, *, backward_name=None, forward_name=None):
     # paired_jobs checks the two central coordinates and both complete matrices.
     f,back_budget = list(paired_jobs(path))[index]
     back, = (j for j in jobs(path,8,False) if (j[1],j[2]) == (-1,index))
@@ -23,8 +23,8 @@ def render(path, index, forward_package):
     sharp = isqrt((square*SCALE*SCALE).numerator // (square*SCALE*SCALE).denominator)+1
     if Fraction(sharp,SCALE) > back_budget:
         raise ArithmeticError('sharp forward bound exceeds the backward budget')
-    bname = f'DommaschkReflectedBack{index:03}'
-    fname = f'DommaschkTraceResidualForward{index:03}'
+    bname = backward_name or f'DommaschkReflectedBack{index:03}'
+    fname = forward_name or f'DommaschkTraceResidualForward{index:03}'
     block,j = divmod(index,8)
     size = min(8,391-block*8)
     offset = 2*index+1
