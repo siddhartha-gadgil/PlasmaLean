@@ -42,6 +42,8 @@ At the Dommaschk phase-zero launch with interpolation parameter 0.470, every adm
 
 Lean derives all eight strict one-passage action comparisons from the original time-panel covers. The proof checks all 2,655 adaptive arclength bounds in one pass through each archive, totaling 250,848 time cells. The full set of physical bounds remains open. At interpolation parameter 0.470, Lean verifies the original density and speed bounds on 96 additional panels in blocks 308 and 341, including the exact rounding of every speed digit. [Physical proof of those panels](notes/theory/dommaschk-native-action-panels.md) [Complete action-grid proof](notes/theory/dommaschk-complete-sublevel-archive.md)
 
+The u=0.470 pilot now has a Lean-checked field line through the actual interpolated birth on all **782 signed slabs**, covering [−391/64, 391/64] radians with position error below **3.327 × 10⁻⁶**. Both pairs of first mirrors are identified on that same path. [Full signed trace and replay](notes/theory/full-signed-pilot-birth.md)
+
 For all eight Dommaschk launches, Lean verifies that each admissible birth between one shared pair of nested tori reaches its section and follows one physical field line through both original moving tubes on [−1/64,1/64]. The proof includes all four launches at each symmetry section, 0 and π/2. Beyond the pilot, u=0.478 reaches ±1/16 radian from section zero. The u=0.523 and 0.531 trajectories at zero and u=0.456 near π/2 reach ±3/64. [Four-branch derivative certificate](notes/theory/shared-harmonic-endpoint-jacobians.md) · [Nonpilot continuation proofs](notes/theory/continuing-endpoint-field-lines.md) · [Signed launch theorem and reproduction](notes/theory/dommaschk-eight-signed-launches.md)
 
 
