@@ -44,6 +44,8 @@ At the two proposed mirror heights, Lean proves that an actual field line from e
 
 Lean derives all eight strict one-passage action comparisons from the original time-panel covers. The proof checks all 2,655 adaptive arclength bounds in one pass through each archive, totaling 250,848 time cells. Physical speed and arclength-density bounds on those cells remain open. [Complete action-grid proof](notes/theory/dommaschk-complete-sublevel-archive.md)
 
+All eight Dommaschk launches now have Lean proofs of their central reference error in both directions over the first 1/64 radian. A comparison of 88 nearby-launch transfers supports retaining separate Jacobian bounds for each launch. [Eight physical reference defects](notes/theory/dommaschk-eight-reference-defects.md)
+
 **Geometry of a magnetic well.** Lean proves that a uniform discrepancy ε in the lengths below each field-strength threshold changes the single-passage bounce action by at most ε√(2(h−b₀)), where b₀ is a common lower field bound. It also bounds the action derivative when the lengths vary Lipschitz-continuously with the field-line label. [Theorem and application](notes/theory/bounce-action-sublevel-arclength.md) A finite speed grid gives a certified mesh correction. On the eight archived action endpoints an exact screen retained every target comparison with 253–433 adaptive speed intervals. [Finite-sample theorem and screen](notes/theory/finite-sublevel-action-comparison.md)
 
 **Trapped-particle theory (23 November 2026).** On a regular annulus of periodic orbits,

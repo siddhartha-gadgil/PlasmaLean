@@ -40,6 +40,7 @@ import PlasmaLean.Design.DommaschkSpeedHistogramQ1R456
 import PlasmaLean.Design.DommaschkSpeedHistogramQ1R464
 import PlasmaLean.Design.DommaschkSpeedHistogramQ1R509
 import PlasmaLean.Design.DommaschkSpeedHistogramQ1R517
+import PlasmaLean.Design.DommaschkOppositeHarmonic
 import PlasmaLean.Design.DommaschkMirrorStrengthSlope
 import PlasmaLean.Design.RationalStellaratorGCMuWide
 import PlasmaLean.Design.RationalStellaratorGCMu3Confined
@@ -322,3 +323,4 @@ run_cmd do
 #print axioms PlasmaLean.Design.DommaschkSpeedHistogramQ1R464.endpoint
 #print axioms PlasmaLean.Design.DommaschkSpeedHistogramQ1R509.endpoint
 #print axioms PlasmaLean.Design.DommaschkSpeedHistogramQ1R517.endpoint
+#print axioms PlasmaLean.Design.DommaschkOppositeHarmonic.first
