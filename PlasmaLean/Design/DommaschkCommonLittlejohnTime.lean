@@ -38,29 +38,24 @@ def UniformAt (x : Space) : Prop :=
         W ⊆ trappedReference B m (S neg) energies pitches ∩ signSet neg ∧
         ∀ b ∈ W, Control B m q T d b
 
-theorem from_path {n : ℕ} {fs bs : State} {fr br : List Step} {x : Plane} {y : ℝ → Plane}
-    {φ : ℝ} (p : Path n fs bs fr br x y) (reached : 325 ≤ n)
-    (region : ∀ t ∈ Icc (-(n : ℝ) / 64) (n / 64), Region (y t))
-    (band : Branches y) (small : |φ| < 316 / 64) : UniformAt (point y φ) := by
+/-- Common local orbit control requires only the lifted reference neighborhoods and
+strict accessibility at this position in the regular vacuum region. -/
+theorem uniform_of_lifted {x : Space} (cart : x ∈ DommaschkCartesianAngleFlow.regular)
+    (strict : ∀ h ∈ Icc (height false : ℝ) (height true), ‖B x‖ < h)
+    (ref : DommaschkTrappedBirthCoordinates.Lifted x) : UniformAt x := by
   intro m q e h d hm _hq he hh hd S energies pitches supp energy pitch
-  have size : (325 : ℝ) ≤ n := by exact_mod_cast reached
-  have time : φ ∈ Icc (-(n : ℝ) / 64) (n / 64) :=
-    ⟨by linarith [(abs_lt.mp small).1], by linarith [(abs_lt.mp small).2]⟩
-  have cart := in_regular (region φ time) φ
-  have strict := DommaschkTrappedBirthCoordinates.strict_at_birth band small hh
-  have ref := DommaschkTrappedBirthCoordinates.from_path p reached region band small
   have each (neg : Bool) : ∃ T > 0, ∃ W : Set GCBirth, IsOpen W ∧
-      lift B m (point y φ) e h neg ∈ W ∧
+      lift B m x e h neg ∈ W ∧
       W ⊆ trappedReference B m (S neg) energies pitches ∩ signSet neg ∧
       ∀ b ∈ W, Control B m q T d b := by
     obtain ⟨U, op, seed, T, pos, good⟩ := exists_control
-      (DommaschkQA2R.field_vacuum _) m q (p := lift B m (point y φ) e h neg)
-      (show point y φ ∈ DommaschkLocalLittlejohnBirth.vacuumRegion from
+      (DommaschkQA2R.field_vacuum _) m q (p := lift B m x e h neg)
+      (show x ∈ DommaschkLocalLittlejohnBirth.vacuumRegion from
         ⟨cart.1, field_ne_zero cart⟩) hd
     refine ⟨T, pos, U ∩ interior (trappedReference B m (S neg) energies pitches) ∩ signSet neg,
       (op.inter isOpen_interior).inter (signSet_open neg),
       ⟨⟨seed, ref m e h hm he hh neg (S neg) energies pitches (supp neg) energy pitch⟩,
-        (lift_values neg hm he strict).2.2.1⟩,
+        (lift_values neg hm he (strict h hh)).2.2.1⟩,
       fun _ hb => ⟨interior_subset hb.1.2, hb.2⟩, fun b hb => good b hb.1.1⟩
   choose T pos W op seed contained all using each
   refine ⟨min (T false) (T true), lt_min (pos false) (pos true), fun neg =>
@@ -68,6 +63,17 @@ theorem from_path {n : ℕ} {fs bs : State} {fr br : List Step} {x : Plane} {y :
   cases neg
   · exact min_le_left _ _
   · exact min_le_right _ _
+
+theorem from_path {n : ℕ} {fs bs : State} {fr br : List Step} {x : Plane} {y : ℝ → Plane}
+    {φ : ℝ} (p : Path n fs bs fr br x y) (reached : 325 ≤ n)
+    (region : ∀ t ∈ Icc (-(n : ℝ) / 64) (n / 64), Region (y t))
+    (band : Branches y) (small : |φ| < 316 / 64) : UniformAt (point y φ) := by
+  have size : (325 : ℝ) ≤ n := by exact_mod_cast reached
+  have time : φ ∈ Icc (-(n : ℝ) / 64) (n / 64) :=
+    ⟨by linarith [(abs_lt.mp small).1], by linarith [(abs_lt.mp small).2]⟩
+  have cart := in_regular (region φ time) φ
+  exact uniform_of_lifted cart (fun _ hh => DommaschkTrappedBirthCoordinates.strict_at_birth
+    band small hh) (DommaschkTrappedBirthCoordinates.from_path p reached region band small)
 
 /-- Both sign neighborhoods contribute to a single covered set in the predeclared reference. -/
 def BandAt (x : Space) : Prop :=

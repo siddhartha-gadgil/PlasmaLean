@@ -156,6 +156,7 @@ import PlasmaLean.Design.DommaschkCoarseActionPhase
 import PlasmaLean.Design.DommaschkSecondaryHeightCollar
 import PlasmaLean.Design.DommaschkIncomingHeightAction
 import PlasmaLean.Certificates.WeakenLowerActionCells
+import PlasmaLean.Design.DommaschkPhaseZeroRegularBirth
 
 /-! Audit all declarations owned by project modules in the import closure (the on-demand top
 modules and everything they import). Fails on any non-standard axiom. -/
@@ -572,3 +573,10 @@ run_cmd do
 #print axioms PlasmaLean.Design.DommaschkIncomingHeightAction.closed_inputs
 #print axioms PlasmaLean.Design.DommaschkIncomingHeightAction.lower_on_window
 #print axioms PlasmaLean.Certificates.MirrorActionQuadrature.cells_of_lowerColumnsLE
+#print axioms PlasmaLean.Kinetic.MirrorHeightBand.Branch.central_below
+#print axioms PlasmaLean.Kinetic.MirrorHeightBand.Branch.bracket
+#print axioms PlasmaLean.Design.DommaschkCommonLittlejohnTime.uniform_of_lifted
+#print axioms PlasmaLean.Design.DommaschkPhaseZeroRegularBirth.open_birth
+#print axioms PlasmaLean.Design.DommaschkPhaseZeroRegularBirth.tube_of_centers
+#print axioms PlasmaLean.Design.DommaschkPhaseZeroRegularBirth.population
+#print axioms PlasmaLean.Design.DommaschkPhaseZeroRegularBirth.at_original_birth
