@@ -71,6 +71,7 @@ import PlasmaLean.Design.DommaschkLocalLittlejohnBirth
 import PlasmaLean.Design.DommaschkGroupedMirrorModels
 import PlasmaLean.Design.DommaschkEndpointMirrorBranch
 import PlasmaLean.Design.DommaschkEndpointTraceFamily
+import PlasmaLean.Design.DommaschkFiniteRadialAction
 import PlasmaLean.Design.DommaschkRadialActionCriterion
 import PlasmaLean.Design.DommaschkToroidalEnvelopeTest
 import PlasmaLean.Design.DommaschkEndpointContinuation
@@ -480,3 +481,7 @@ run_cmd do
 #print axioms PlasmaLean.Design.DommaschkEndpointMirrorBranch.branch
 #print axioms PlasmaLean.Design.DommaschkCommonLittlejohnTime.from_path
 #print axioms PlasmaLean.Design.DommaschkCommonLittlejohnTime.UniformAt.band
+#print axioms PlasmaLean.Design.DommaschkFiniteRadialAction.height_scale
+#print axioms PlasmaLean.Design.DommaschkFiniteRadialAction.endpoint_width
+#print axioms PlasmaLean.Design.DommaschkFiniteRadialAction.first_action
+#print axioms PlasmaLean.Design.DommaschkFiniteRadialAction.pair_test
