@@ -81,7 +81,7 @@ theorem {name}_checked : Blocks {FORMAT} trial {name} {name}0 := {name}0_checked
 
 
 def matrix_certificate(source_models, step, *, namespace=PREFIX, start=None, dependencies=None,
-                       context="DommaschkBounceTaylorFirst", numeric=None):
+                       context="DommaschkBounceTaylorFirst", numeric=None, panel=None):
     from bounce_phase_frame import FRAME_SCALE, affine_frame
 
     columns = ['DU', 'DZ', 'RU', 'RZ', 'ZU', 'ZZ']
@@ -156,6 +156,24 @@ def matrix_certificate(source_models, step, *, namespace=PREFIX, start=None, dep
     t = binary('tr','add',A[0][0],A[1][1])
     v = binary('dif','sub',A[0][0],A[1][1])
     w = binary('off','add',A[0][1],A[1][0])
+    if panel is not None:
+        out += '\n'.join(defs)
+        out += f"""
+/-- The actual sparse numerator matrix and denominator have all four joint
+memberships required by the panel-wise positive-semidefinite test. -/
+theorem models_mem {{t u z c s : ℝ}} (ht : |t| ≤ 1) (hin : trial.Mem t u z c s) :
+    let m := frameEntries firstLeft firstRight t
+    let denSq := evR u z c s dD * evR u z c s dD
+    {panel}.models.Mem t (m.det * denSq) (transformedNumerator (spatialNumerator u z c s)
+      m (velocityEntries firstLeft firstRight) denSq) := by
+"""
+        out += '\n'.join(proof) + f"""
+  dsimp only [SymmetricModels.Mem, {panel}.models, transformedNumerator, spatialNumerator,
+    quotientNumerator, Entries.product, Entries.adj, Entries.sub, Entries.scale, Entries.det]
+  exact ⟨hden, hnum00, hnum11, hoff⟩
+
+"""
+        return out + f'end PlasmaLean.Design.{namespace}\n'
     bounds = ['10173/10000','3/10000','1017/1000','943/1000000','39764/1000000','2884/1000000']
     if numeric is not None:
         bounds = numeric(table,step)

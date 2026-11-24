@@ -13,6 +13,7 @@
 | Lean evidence | `DommaschkMirrorLaunch.exists_nested_two_slabs`, `two_tube_error`, `DommaschkPhysicalSecondStep.physical_second_step` |
 | Audit evidence | Heavy audit passed on 94,013 project declarations with standard axioms. |
 | Last updated | 24 November 2026 |
+| Patched by | N-68 extends the forward physical trajectory to 16 slabs and proves a two-sided first passage. |
 | Patches | N-65 and N-66, unconditional physical duration at one radius |
 
 ## Physical statement

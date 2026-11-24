@@ -51,6 +51,10 @@ import PlasmaLean.Design.DommaschkMirrorSectorFlow
 import PlasmaLean.Design.DommaschkBounceObservables
 import PlasmaLean.Design.DommaschkMirrorFirstPassage
 import PlasmaLean.Design.DommaschkMirrorTwoSlabs
+import PlasmaLean.Design.DommaschkMirrorBidirectional
+import PlasmaLean.Design.DommaschkReflectedBack001
+import PlasmaLean.Design.DommaschkJacobianForward042
+import PlasmaLean.Design.DommaschkStoredPowers
 import PlasmaLean.Design.DommaschkHarmonicTrace
 import PlasmaLean.Design.DommaschkBounceTaylorFirst
 import PlasmaLean.Design.DommaschkReferenceFirstDefect
@@ -252,3 +256,7 @@ run_cmd do
 #print axioms PlasmaLean.Design.DommaschkPhysicalSecondStep.physical_second_step
 #print axioms PlasmaLean.Design.DommaschkMirrorLaunch.exists_nested_two_slabs
 #print axioms PlasmaLean.Design.DommaschkMirrorLaunch.two_tube_error
+#print axioms PlasmaLean.Design.DommaschkMirrorLaunch.exists_nested_bidirectional
+#print axioms PlasmaLean.Design.DommaschkReflectedBack001.physical_defect
+#print axioms PlasmaLean.Design.DommaschkJacobianForward042.physical_clock_log_norm
+#print axioms PlasmaLean.Design.DommaschkStoredPowers.checkedChunk

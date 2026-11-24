@@ -102,3 +102,5 @@ The first forward tube now contains a true solution from the actual Q-16 section
 All 6,256 Jacobian budgets pass an exact sparse-polynomial screen on their full trial tubes. A Hilbert-space projection now lets the Lean step use this same ball for both regularity and the quantitative bound. [Screen and sufficient long-trace theorem](https://github.com/siddhartha-gadgil/PlasmaLean/blob/main/notes/theory/dommaschk-full-frame-budgets.md)
 
 A single Q-16-launched physical solution now traverses two consecutive forward slabs at radius 0.470. It reaches 1/32 radian, stays within 1.232 × 10⁻⁶ of the corresponding dimensionless coordinates, and satisfies the ODE at the internal join. [Two-slab theorem](https://github.com/siddhartha-gadgil/PlasmaLean/blob/main/notes/theory/dommaschk-two-physical-slabs.md)
+
+The connected forward proof now reaches 1/4 geometric radian at radius 0.470. Lean bounds the reference error by 1.344 × 10⁻⁶ across 16 consecutive slabs. A separate two-sided signed-angle solution covers [−1/64,1/64]. [Sixteen-slab theorem and replay](https://github.com/siddhartha-gadgil/PlasmaLean/blob/main/notes/theory/dommaschk-quarter-radian-trace.md)

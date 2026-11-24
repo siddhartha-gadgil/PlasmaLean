@@ -1,9 +1,10 @@
-"""Emit a q0,u=.470 forward Jacobian packet when the whole-slab trace test closes."""
+"""Emit whole-slab or panel-wise physical Jacobian certificates for q0,u=.470 forward rows."""
 import argparse
 from fractions import Fraction as F
 import gzip
 import json
 from math import ceil, floor, isqrt
+from pathlib import Path
 
 from bounce_mirror_pilot import Model, R0M, ZERO, angle_models
 from bounce_phase_frame import FRAME_SCALE
@@ -11,7 +12,7 @@ from emit_sparse_jacobian import derivative, derivative_file, header, matrix_cer
 from emit_sparse_taylor_slab import DATA, DEST, RECORD, coefficients, field, model_literal, models
 
 
-def emit(index):
+def emit(index, panels=False, shared=False):
     with gzip.open(RECORD,'rt') as fp:
         packet = json.load(fp)
     if (packet['coordinate_denominator'] != 2**80 or packet['frame_denominator'] != FRAME_SCALE
@@ -68,8 +69,15 @@ def emit(index):
         limits.update(dl=dl,tr=tr,di=di,off=off,disk=disk,mu=budget)
         return list(map(str,[mid,radius,dl,tr,di,off]))
 
+    panel = None
+    if panels:
+        from emit_sparse_jacobian_panels import emit as emit_panels
+        panel,source = emit_panels(index)
+        modules.append(panel)
+        files[panel] = source
+        limits['mu'] = F(step['log_norm_upper'])
     core = matrix_certificate(source_models,step,namespace=stem,start=start,dependencies=modules,
-                              context='DommaschkJacobian',numeric=numeric)
+                              context='DommaschkJacobian',numeric=numeric,panel=panel)
     core = core.replace('firstLeft','leftFrame').replace('firstRight','rightFrame')
     files[stem+'Bounds'] = core
     block,j = divmod(index,8)
@@ -77,6 +85,13 @@ def emit(index):
     out = head([stem+'Bounds',f'DommaschkHarmonicBlock{block:02}'],
                'Physical forward-clock logarithmic norm on the full trial tube')
     out += 'open PlasmaLean.Certificates.PositionFrameSlabs\nopen scoped RealInnerProductSpace\n'
+    if panels:
+        matrix_application = f'''  exact spatial_log_norm_of_cover {panel}.accepted leftFrame rightFrame
+    (128 * t - {2*index+1}) (R - dkR0) z _ _ hs (models_mem hs hin) x'''
+    else:
+        matrix_application = f'''  apply spatial_log_norm_of_bounds leftFrame rightFrame (128 * t - {2*index+1}) (R - dkR0) z _ _
+    (dl := {limits['dl']}) (tr := {limits['tr']}) (di := {limits['di']}) (off := {limits['off']})
+    (disk := {limits['disk']}) <;> first | exact symmetric_bounds hs hin | norm_num [logNorm]'''
     out += f'''
 /-- Checked rational logarithmic norm, rounded upward to an eight-decimal grid. -/
 def logNorm : ℚ := {limits['mu']}
@@ -117,15 +132,16 @@ theorem physical_clock_log_norm {{t R z : ℝ}} (ht : t ∈ Set.Icc ({index} / 6
       (logNorm : ℝ) * ‖x‖ ^ 2 := by
   have hs : |128 * t - {2*index+1}| ≤ 1 := abs_le.mpr ⟨by linarith [ht.1], by linarith [ht.2]⟩
   have hin := clock_inputs ht hu hz
-  apply spatial_log_norm_of_bounds leftFrame rightFrame (128 * t - {2*index+1}) (R - dkR0) z _ _
-    (dl := {limits['dl']}) (tr := {limits['tr']}) (di := {limits['di']}) (off := {limits['off']})
-    (disk := {limits['disk']}) <;> first | exact symmetric_bounds hs hin | norm_num [logNorm]
+{matrix_application}
 
 /-- This bound fits the exact allowance stored in the forward witness row. -/
 theorem fits_record : logNorm ≤ {step['log_norm_upper']} := by norm_num [logNorm]
 
 '''
     files[stem] = out+finish
+    if shared:
+        from shared_sparse_powers import add_shared_powers
+        return add_shared_powers(files,inputs_module,stem,columns)
     return files
 
 
@@ -133,9 +149,12 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--index',default=1,type=int,choices=range(391),metavar='0..390')
     parser.add_argument('--check',action='store_true')
+    parser.add_argument('--panels',action='store_true',help='use the panel principal-minor bound')
+    parser.add_argument('--shared-powers',action='store_true',help='reuse checked coordinate powers')
+    parser.add_argument('--output-dir',default=DEST,type=Path)
     args = parser.parse_args()
-    for name,source in emit(args.index).items():
-        target = DEST/(name+'.lean')
+    for name,source in emit(args.index,args.panels,args.shared_powers).items():
+        target = args.output_dir/(name+'.lean')
         if args.check:
             if target.read_text() != source:
                 raise SystemExit('regenerate '+target.name)

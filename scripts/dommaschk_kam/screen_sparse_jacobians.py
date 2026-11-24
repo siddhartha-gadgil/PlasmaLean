@@ -25,7 +25,7 @@ def field_jet():
     return [(p, derivative(p,0), derivative(p,1)) for p in sparse_fields()]
 
 
-def evaluate_box(section, sign, index, start, step, panels, r, z):
+def symmetric_models(section, sign, index, start, step, r, z):
     angles = angle_models(F(sign*(2*index+1),128),F(sign,128),F(0))
     angle_sign = (-1)**section
     columns = (r-R0M,z,angles[2].integer(angle_sign),angles[1].integer(angle_sign))
@@ -38,18 +38,22 @@ def evaluate_box(section, sign, index, start, step, panels, r, z):
     den = det*den_sq
     jm = product(j,m)
     a = product(adj, [[jm[i][k]-den_sq*velocity[i][k] for k in (0,1)] for i in (0,1)])
+    return den, a[0][0], a[1][1], a[0][1]+a[1][0]
+
+
+def evaluate_box(section, sign, index, start, step, panels, r, z):
+    den, first, second, off = symmetric_models(section,sign,index,start,step,r,z)
     mu = F(step['log_norm_upper'])
     if mu <= 0:
         raise ValueError('nonpositive budget requires a two-sided denominator test')
-    off = a[0][1]+a[1][0]
     # In the whole-slab test the trace and diagonal difference retain cancellation.
-    base = 2 * mu * den.bound()[0] - (a[0][0]+a[1][1]).bound()[1]
-    diff = max(map(abs,(a[0][0]-a[1][1]).bound()))
+    base = 2 * mu * den.bound()[0] - (first+second).bound()[1]
+    diff = max(map(abs,(first-second).bound()))
     width = max(map(abs,off.bound()))
     trace_pass = den.bound()[0] > 0 and base >= 0 and diff**2+width**2 <= base**2
     if trace_pass:
         return True,True
-    for bd,aa,dd,bc in zip(*(bounds(model,panels) for model in (den,a[0][0],a[1][1],off)),
+    for bd,aa,dd,bc in zip(*(bounds(model,panels) for model in (den,first,second,off)),
                             strict=True):
         l = mu*bd[0]-aa[1]
         r = mu*bd[0]-dd[1]
