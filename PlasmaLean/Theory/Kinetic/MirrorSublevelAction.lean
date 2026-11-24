@@ -69,18 +69,21 @@ theorem action_eq_integral_sublevel (μ : Measure X) [IsFiniteMeasure μ]
   simp only [mem_ofPred_eq, speed, Real.le_sqrt' hv.1]
   constructor <;> intro step <;> linarith
 
+/-- Increasing the speed threshold can only reduce the length that meets it. -/
+theorem antitone_sublevel_speed (μ : Measure X) [IsFiniteMeasure μ] (B : X → ℝ) (h : ℝ) :
+    AntitoneOn (fun v => sublevelLength μ B (h - v^2 / 2)) (Ici 0) := by
+  intro u hu v _ huv
+  refine measureReal_mono ?_ (measure_ne_top _ _)
+  intro x hx
+  change B x ≤ h - v^2 / 2 at hx
+  change B x ≤ h - u^2 / 2
+  nlinarith [sq_le_sq' (by linarith [mem_Ici.mp hu] : -v ≤ u) huv]
+
 private theorem integrableOn_profile (μ : Measure X) [IsFiniteMeasure μ] (B : X → ℝ)
     (h L : ℝ) (hL : 0 ≤ L) :
-    IntegrableOn (fun v => sublevelLength μ B (h - v^2 / 2)) (Ioc 0 L) := by
-  have anti : AntitoneOn (fun v => sublevelLength μ B (h - v^2 / 2)) (uIcc 0 L) := by
-    rw [uIcc_of_le hL]
-    intro u hu v _ huv
-    refine measureReal_mono ?_ (measure_ne_top _ _)
-    intro x hx
-    change B x ≤ h - v^2 / 2 at hx
-    change B x ≤ h - u^2 / 2
-    nlinarith [sq_le_sq' (by linarith [hu.1] : -v ≤ u) huv]
-  exact anti.intervalIntegrable.1
+    IntegrableOn (fun v => sublevelLength μ B (h - v^2 / 2)) (Ioc 0 L) :=
+  ((antitone_sublevel_speed μ B h).mono (by
+    rw [uIcc_of_le hL]; exact Icc_subset_Ici_self)).intervalIntegrable.1
 
 /-- A uniform discrepancy in sublevel arclength gives a sharp action bound.
 The two wells can have different parameter spaces, total lengths and measures. -/

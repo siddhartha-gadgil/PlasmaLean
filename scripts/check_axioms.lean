@@ -814,6 +814,10 @@ run_cmd do
 #print axioms PlasmaLean.Kinetic.MirrorSublevelAction.action_eq_of_sublevels
 #print axioms PlasmaLean.Kinetic.MirrorSublevelAction.abs_action_derivative_le
 #print axioms PlasmaLean.Kinetic.MirrorSublevelAction.flat_wells_attain_bound
+#print axioms PlasmaLean.Kinetic.MirrorSublevelAction.action_between_panel_sums
+#print axioms PlasmaLean.Kinetic.MirrorSublevelAction.panel_gap_le
+#print axioms PlasmaLean.Kinetic.MirrorSublevelAction.sampled_action_difference_le
+#print axioms PlasmaLean.Kinetic.MirrorSublevelAction.two_thresholds_miss_action
 #print axioms PlasmaLean.Fields.LogNormTrajectory.MovingFrame.exists_rational_step
 #print axioms PlasmaLean.Fields.LogNormTrajectory.MovingFrame.exact_shear
 #print axioms PlasmaLean.Kinetic.MirrorActionEnvelope.exists_launchWell

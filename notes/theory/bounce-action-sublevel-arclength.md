@@ -46,3 +46,4 @@ For a stellarator, the two measures must describe corresponding physical wells. 
 | Lean evidence | `Kinetic.MirrorSublevelAction.action_trace`, `action_eq_integral_sublevel`, `action_difference_le`, `action_eq_of_sublevels`, `abs_action_derivative_le` and `flat_wells_attain_bound` in that namespace. |
 | Audit evidence | The default axiom audit includes these six entry points. |
 | Last updated | 24 November 2026 |
+| Additional results | N-73 gives finite node-length tests and the mesh correction. [Finite-sample theory](finite-sublevel-action-comparison.md) |
