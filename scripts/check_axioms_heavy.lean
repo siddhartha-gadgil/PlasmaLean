@@ -151,6 +151,8 @@ import PlasmaLean.Design.DommaschkRadialSlabsS1H0
 import PlasmaLean.Design.DommaschkRadialSlabsS1H1
 import PlasmaLean.Design.DommaschkSecondaryActionHeight
 import PlasmaLean.Design.DommaschkPairedFirstWellAction
+import PlasmaLean.Certificates.CoarseActionCells
+import PlasmaLean.Design.DommaschkCoarseActionPhase
 
 /-! Audit all declarations owned by project modules in the import closure (the on-demand top
 modules and everything they import). Fails on any non-standard axiom. -/
@@ -559,3 +561,6 @@ run_cmd do
 #print axioms PlasmaLean.Design.DommaschkPairedFirstWellAction.gains_of_branches
 #print axioms PlasmaLean.Design.DommaschkPairedFirstWellAction.physical_secant
 #print axioms PlasmaLean.Design.DommaschkPairedFirstWellAction.common
+#print axioms PlasmaLean.Certificates.NativeActionInterval.coarse_time_mem
+#print axioms PlasmaLean.Certificates.NativeActionInterval.directed_cells
+#print axioms PlasmaLean.Design.DommaschkCoarseActionPhase.physical_phase
