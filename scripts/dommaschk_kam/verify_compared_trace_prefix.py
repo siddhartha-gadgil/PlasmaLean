@@ -20,8 +20,17 @@ PACKAGE = 'ComparedTraceCache'
 
 def row_data(report, index, packets):
     name = report['module']
-    if report['row'] != index or report['packets'] != packets:
+    if report['packets'] != packets:
         raise ValueError(f'expected the original signed pair at index {index}')
+    if 'start' in report and 'stop' in report:
+        lo,hi = report['start'],report['stop']
+        if not 0 <= lo <= index < hi <= 325 or name != f'DommaschkGroupedProfile{lo:03d}To{hi:03d}Rows':
+            raise ValueError(f'incorrect signed group at index {index}')
+        rows = [[name+'.'+side+end+f'{index:03d}' for end in ('Inner','Outer')] for side in ('fwd','back')]
+        proofs = [name+'.'+side+f'{index:03d}' for side in ('fwd','back')]
+        return 'GroupedProfileRowsCache.'+name, proofs, rows
+    if report['row'] != index:
+        raise ValueError(f'wrong individual pair at index {index}')
     if name == f'DommaschkNativePairedProfile{index:03d}' and report['direct'] is True:
         providers = [f'DommaschkNativeActionPaired{index:03d}', f'DommaschkNativeActionQ0R478Paired{index:03d}']
         if report['providers'] != providers:
@@ -33,13 +42,13 @@ def row_data(report, index, packets):
         package = 'ComparedProfileCache'
     else:
         raise ValueError(f'missing the full field and arclength comparison on both clocks at {index}')
-    return package+'.'+name, name, rows
+    return package+'.'+name, [name+'.forward',name+'.backward'], rows
 
 
 def block_source(start, rows):
     stop = start+len(rows)
     name = f'DommaschkComparedRows{start:03d}To{stop:03d}'
-    src = header(name, ['PlasmaLean.Design.'+THEORY, *[r[0] for r in rows]])
+    src = header(name, ['PlasmaLean.Design.'+THEORY, *dict.fromkeys(r[0] for r in rows)])
     src += 'open Certificates.PositionFrameSlabs DommaschkPairedActionProfiles\nset_option maxHeartbeats 2000000\n'
     for sign, direction in enumerate(('forward','backward')):
         rel = 'Compared' if sign == 0 else '(fun t => Compared (-t))'
@@ -56,7 +65,7 @@ def block_source(start, rows):
     have endClock : ((({i}+1:ℕ):ℝ)) = {i+1} := by norm_num
     rw [beginClock,endClock] at ht
     rw [beginClock] at hx hz
-    exact {row[1]}.{direction} ht hx hz
+    exact {row[1][sign]} ht hx hz
 '''
         src += '  exact tail\n'
     return name,src+f'end PlasmaLean.Design.{name}\n',['forward','backward']
@@ -106,7 +115,7 @@ theorem paired : ComparedRows {n} (checkpoint .q0r470) (checkpoint .q0r478) := b
     (by change {n} ≤ {counts['q0r470']}; norm_num) (by change {n} ≤ {counts['q0r470']}; norm_num)
     (by with_unfolding_all rfl) (by with_unfolding_all rfl)
 '''
-    for side, back in [('forward',False),('backward',True)]:
+    for side in ('forward','backward'):
         src += f'''    (by
       intro prev t x ht hx
       have h := DommaschkPairedActionProfile000.outer_{side}_regular (prev := prev) (x := x) (t := t)
@@ -125,7 +134,7 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--calibrated', required=True,type=Path)
     parser.add_argument('--launch-profile',required=True,type=Path)
-    parser.add_argument('--rows',required=True,type=Path,nargs='+',help='ordered full signed comparisons, starting at zero')
+    parser.add_argument('--rows',required=True,type=Path,nargs='+',help='ordered signed row or row-group receipts, starting at zero')
     parser.add_argument('--cache',type=Path,default=ROOT/'.lake/compared-trace-prefix')
     parser.add_argument('--output',required=True,type=Path)
     args = parser.parse_args()
@@ -137,7 +146,13 @@ def main():
     args.lean_path = lake('printenv','LEAN_PATH')
     args.cache = args.cache.resolve()
     cal,launch = read(args.calibrated),read(args.launch_profile)
-    reports = list(map(read,args.rows))
+    reports = []
+    for path in args.rows:
+        record = read(path)
+        lo,hi = record.get('start',len(reports)),record.get('stop',len(reports)+1)
+        if type(lo) is not int or type(hi) is not int or lo != len(reports) or not lo < hi <= 325:
+            parser.error(f'nonconsecutive comparison receipt {path}')
+        reports.extend([record]*(hi-lo))
     n,counts = len(reports),cal['lengths_each_direction']
     if set(counts) != set(ENDPOINTS) or not 1 <= n <= min(325,counts['q0r470'],counts['q0r478']):
         parser.error('the calibrated family must enclose the whole requested pair of prefixes')
@@ -149,11 +164,12 @@ def main():
     rows = [row_data(report,index,packets) for index,report in enumerate(reports)]
     def imports(group):
         roots = []
-        for report in group:
+        unique = {r['key']:r for r in group}
+        for report in unique.values():
             paths = list(map(Path,report['import_paths']))
             admitted(paths[0],report['module'],report['key'])
             roots.extend(paths)
-        return merge_import_roots(args.cache,roots,[r['key'] for r in group])
+        return merge_import_roots(args.cache,roots,list(unique))
     keys = [lake('lean','--version'),digest(DESIGN/(THEORY+'.trace'))]
     blocks = []
     for start in range(0,n,8):
