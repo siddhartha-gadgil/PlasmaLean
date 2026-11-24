@@ -114,3 +114,5 @@ On any two finite measured wells, the clipped single-passage action difference i
 The finite-sample theorem gives an explicit mesh correction for comparing well actions. A counterexample has identical lengths at two thresholds and different actions. Exact regrouping of the eight N-60 endpoint packets retained all directed action comparisons using 253–433 adaptive speed intervals. [Finite estimates, example and replay](https://github.com/siddhartha-gadgil/PlasmaLean/blob/main/notes/theory/finite-sublevel-action-comparison.md)
 
 The three projected Jacobian certificates on rows 69–71 extend the physical solution to 9/8 radian. The uniform position error is below 2.214 × 10⁻⁶. [One-and-one-eighth-radian theorem and replay](https://github.com/siddhartha-gadgil/PlasmaLean/blob/main/notes/theory/dommaschk-projected-physical-trace.md)
+
+The backward proof reuses the projected rectangles via a reflection lemma. A single signed trajectory now covers [−9/8,9/8] with the same uniform error bound. [Signed theorem and replay](https://github.com/siddhartha-gadgil/PlasmaLean/blob/main/notes/theory/dommaschk-signed-projected-trace.md)

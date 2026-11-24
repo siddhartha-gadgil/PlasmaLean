@@ -145,6 +145,10 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--length',type=int,default=3)
     parser.add_argument('--shared-from',type=int,default=16)
+    parser.add_argument('--square-panels',nargs='+',type=int,default=[],metavar='INDEX',
+                        help='reuse a forward square with normalized-time panels on these rows')
+    parser.add_argument('--projected',nargs='+',type=int,default=[],metavar='INDEX',
+                        help='reuse the common signed rectangular bounds on these rows')
     parser.add_argument('--cache',type=Path,default=ROOT/'.lake/backward-physical')
     parser.add_argument('--jacobian-cache',type=Path,default=ROOT/'.lake/jacobian-checks')
     parser.add_argument('--residual-cache',type=Path,default=ROOT/'.lake/trace-residual')
@@ -153,10 +157,17 @@ def main():
     a = parser.parse_args()
     if not 3 <= a.length <= 391:
         parser.error('length must be in [3,391]')
+    chosen = set(a.square_panels) | set(a.projected)
+    if set(a.square_panels) & set(a.projected) or chosen & TRACKED_PANEL_ROWS.keys():
+        parser.error('each row must use one Jacobian source')
+    if any(not 2 <= i < 391 for i in chosen) or a.wait_seconds < 0:
+        parser.error('explicit row indices must be 2..390 and the wait must be nonnegative')
     def lake(*cmd):
         return subprocess.check_output(['lake','env',*cmd],cwd=ROOT,text=True).strip()
-    subprocess.run(['lake','build','--no-build',*['PlasmaLean.Design.'+m
-                    for m in (*STATIC,'DommaschkBackwardPrefixRadius')]],
+    required = [*STATIC,'DommaschkBackwardPrefixRadius']
+    if a.projected:
+        required.append('DommaschkReflectedProjectedTrial')
+    subprocess.run(['lake','build','--no-build',*['PlasmaLean.Design.'+m for m in required]],
                    cwd=ROOT,check=True,stdout=subprocess.DEVNULL)
     version = lake('lean','--version')
     a.lean = str(Path(lake('lean','--print-prefix'))/'bin/lean')
@@ -173,8 +184,16 @@ def main():
         if direction != 1 or not 2 <= i < a.length:
             continue
         deadline = time.monotonic()+a.wait_seconds
+        radii = None
         if i in TRACKED_PANEL_ROWS:
             jac = tracked_jacobian(TRACKED_PANEL_ROWS[i],checksum,version)
+        elif i in chosen:
+            from verify_explicit_jacobians import explicit_package
+            _,info = explicit_package(i,i in a.square_panels,a.jacobian_cache.resolve(),checksum,version)
+            jac = accepted(info,i,deadline)
+            if i in a.projected:
+                from emit_rectangular_jacobian import rectangular_data
+                radii = rectangular_data(i)[2]
         else:
             jm = emit_jacobian(i,shared=True) if i >= a.shared_from else emit_jacobian(i)
             info = upstream(a.jacobian_cache.resolve(),list(jm.items()),'verify_sparse_forward_jacobians.py',
@@ -189,18 +208,26 @@ def main():
         jac_name = jac[1]['module']
         source = TEMPLATE.read_text().replace('public import JacobianTraceCache.',
                                               'public import '+jac[1].get('package',JACOBIAN_PACKAGE)+'.')
-        if i in TRACKED_PANEL_ROWS:
-            rate = backward_rate(i,fwd[i-1]['frame_end'],fwd[i],jac_name,back[i]['log_norm_upper'])
+        if i in TRACKED_PANEL_ROWS or i in a.square_panels:
+            rate = backward_rate(i,fwd[i-1]['frame_end'],fwd[i],jac_name,back[i]['log_norm_upper'],
+                                 import_package=jac[1].get('package',JACOBIAN_PACKAGE))
             declarations.append(rate)
             source = source.replace('module\n',f'module\n\npublic import {PACKAGE}.{rate[0]}\n',1)
             source = source.replace('${jac}.logNorm',rate[0]+'.rate')
             source = source.replace('${jac}.physical_clock_log_norm',rate[0]+'.physical_clock_log_norm')
+        membership = 'backward_trial_square.lean.tpl' if radii is None else 'backward_trial_rectangle.lean.tpl'
+        source = source.replace('${membership}',TEMPLATE.with_name(membership).read_text().rstrip('\n'))
+        extra_import = '' if radii is None else '\npublic import PlasmaLean.Design.DommaschkReflectedProjectedTrial'
+        dimensions = {} if radii is None else dict(radial=radii[0],vertical=radii[1])
         source = Template(source).substitute(name=row,reflected=ref,jac=jac_name,index=i,end=i+1,
                                              offset=2*i+1,radius=fwd[i]['physical_trial_radius'],
-                                             stored=stored(i),previous=stored(i-1))
+                                             stored=stored(i),previous=stored(i-1),
+                                             extra_import=extra_import,**dimensions)
         declarations.append((row,source,['projections','checked','field_bounds','physical_step']))
-        result = compile_modules(cache/row,declarations,[d for d,_ in parents],
-                                 [common,[(r['key'],r['artifacts']) for _,r in parents]],a)
+        row_deps = [common,[(r['key'],r['artifacts']) for _,r in parents]]
+        if radii is not None:
+            row_deps.append(digest(DESIGN/'DommaschkReflectedProjectedTrial.trace'))
+        result = compile_modules(cache/row,declarations,[d for d,_ in parents],row_deps,a)
         packages.extend([*parents,result])
         proof_keys.append(result[1]['key'])
         print(f'verified backward physical row {i}: {result[1]["key"][:12]}',flush=True)

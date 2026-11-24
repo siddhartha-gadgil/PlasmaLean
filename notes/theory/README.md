@@ -98,3 +98,4 @@ Phase 8 (kam-route.md, finite-beta-stellarator.md):
 - [Bounce action from sublevel arclength](bounce-action-sublevel-arclength.md) (N-72). An exact representation, sharp comparison and field-line-label derivative bound for finite measured wells.
 - [Comparing bounce actions from finitely many sublevel lengths](finite-sublevel-action-comparison.md) (N-73). Finite action bounds and a mesh-corrected comparison, with an eight-endpoint exact arithmetic screen.
 - [A physical field line through three projected Jacobian boxes](dommaschk-projected-physical-trace.md) (N-74). Smaller coordinate boxes certify the physical solution across rows 69–71 and through 9/8 radian.
+- [One physical trajectory on both sides of a Dommaschk birth](dommaschk-signed-projected-trace.md) (N-75). One signed-angle field line follows 72 slabs in each direction through the reflected rectangular bounds.

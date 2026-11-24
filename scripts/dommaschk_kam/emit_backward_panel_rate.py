@@ -6,7 +6,8 @@ from screen_sparse_jacobians import symmetric_models
 from screen_sparse_reference_defects import bounds
 
 
-def backward_rate(index, previous, step, forward_module, backward_budget, panels=8):
+def backward_rate(index, previous, step, forward_module, backward_budget, panels=8,
+                  import_package='PlasmaLean.Design'):
     if panels < 1 or panels & (panels - 1):
         raise ValueError('expected a power of two time panels')
     rate = Fraction(backward_budget)
@@ -14,7 +15,7 @@ def backward_rate(index, previous, step, forward_module, backward_budget, panels
     models = symmetric_models(0, 1, index, previous, step, *coordinates)
     name = f'DommaschkBackwardRate{index:03}'
     lines = [f'''module
-public import PlasmaLean.Design.{forward_module}
+public import {import_package}.{forward_module}
 
 /-! # Forward spatial Jacobian with the exact archived backward allowance -/
 @[expose] public section
