@@ -166,6 +166,8 @@ import PlasmaLean.Certificates.ActionFloorShells
 import PlasmaLean.Design.DommaschkFirstContactHeightBudget
 import PlasmaLean.Design.DommaschkJointLaunchArcs
 import PlasmaLean.Certificates.MirrorGapAtTime
+import PlasmaLean.Design.DommaschkClosedBandAction
+import PlasmaLean.Design.DommaschkPilotArcLengthPacket
 
 /-! Audit all declarations owned by project modules in the import closure (the on-demand top
 modules and everything they import). Fails on any non-standard axiom. -/
@@ -621,3 +623,8 @@ run_cmd do
 #print axioms PlasmaLean.Design.DommaschkJointLaunchArcs.simultaneous
 #print axioms PlasmaLean.Design.DommaschkJointLaunchArcs.two_families
 #print axioms PlasmaLean.Certificates.TrajectoryTaylorModel.strength_at
+#print axioms PlasmaLean.Kinetic.MirrorActionEnvelope.affine_le_speed
+#print axioms PlasmaLean.Kinetic.MirrorActionEnvelope.LaunchWell.affine_gain
+#print axioms PlasmaLean.Design.DommaschkPilotArcLength.exact_sum
+#print axioms PlasmaLean.Design.DommaschkPilotArcLength.packet
+#print axioms PlasmaLean.Design.DommaschkClosedBandAction.on_paths

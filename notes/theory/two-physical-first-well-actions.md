@@ -11,6 +11,8 @@ $$
 
 Here $h_L=5297961656084411/5000000000000000$ and $h_U=5300546391395933/5000000000000000$. The upper endpoint has independent absolute action enclosures. This secant measures variation between two radial interpolation labels. A particle transport bound would also require a connection to guiding-centre evolution. [Earlier conditional theorem](paired-first-well-actions.md) · [Upper-endpoint action floor](second-first-well-polynomial-floors.md)
 
+The later equal-height theorem gives a stronger secant on every height of the closed band, including the upper strip. [Closed-band action comparison](closed-height-band-action-secant.md)
+
 ## How the finite inputs close the proof
 
 The signed ODE extends 391 slabs in each direction on the pilot and 328 on its neighbor. Each slab spans $1/64$ radian. On the aligned interval $[-325/64,325/64]$, the outer physical strength is at least $1/18000$ lower and its Cartesian arclength density is at least $3999/4000$ of the inner density. The 325 original slab pairs on each clock cover the pilot well. These comparisons and the first-well integrals use the same two physical paths. [Paired field and speed estimates](full-paired-physical-profiles.md) · [Action comparison proof](../../scripts/dommaschk_kam/verify_paired_first_well_action.py)
