@@ -7,11 +7,11 @@
 | Addresses | G-6, G-10, Q-1, Q-35 |
 | Depends on | N-64–N-68 |
 | Dependency requirement | The reference defects, spatial Jacobian bounds, inherited ellipsoids and physical clocks must match at each join. |
-| Produces | A 24-slab forward proof and a four-slab signed proof from the same launch family. |
+| Produces | A 42-slab forward proof and a four-slab signed proof from the same launch family. |
 | Difficulty | Extending the physical inequalities to every slab up to both mirrors, then controlling action and radial variation. |
-| Status | Kernel-checked forward milestones through 24 and 32 slabs and the signed four-slab passage. The all-radius projection screen uses external exact arithmetic. |
-| Lean evidence | On-demand `DommaschkMirrorLaunch.exists_nested_four_slabs`, `DommaschkPhysicalPrefix024.exists_nested_prefix`, `DommaschkPhysicalPrefix032.exists_nested_prefix`, `DommaschkPhysicalPrefix032.uniform_tube_error`, and `PositionFrameProjection.coordinates_le`. |
-| Audit evidence | Standard axioms for the signed passage, physical backward step, projection theorem and four generated prefix theorems. Forward prefix keys `546a6c4056fe` (24 slabs) and `c17a99c688e5` (32 slabs). |
+| Status | Kernel-checked forward milestones through 24, 32 and 42 slabs and the signed four-slab passage. The all-radius projection screen uses external exact arithmetic. |
+| Lean evidence | On-demand `DommaschkMirrorLaunch.exists_nested_four_slabs`, `DommaschkPhysicalPrefix024.exists_nested_prefix`, `DommaschkPhysicalPrefix032.exists_nested_prefix`, `DommaschkPhysicalPrefix042.exists_nested_prefix`, `DommaschkPhysicalPrefix042.uniform_tube_error`, and `PositionFrameProjection.coordinates_le`. |
+| Audit evidence | Standard axioms for the signed passage, physical backward step, projection theorem and four generated prefix theorems. Forward prefix keys `546a6c4056fe` (24 slabs), `c17a99c688e5` (32 slabs) and `4a1e0425b3c9` (42 slabs). |
 | Last updated | 24 November 2026 |
 
 ## Certified intervals
@@ -23,6 +23,12 @@ Under the same birth hypotheses a single physical field line follows two backwar
 ## Half-radian extension
 
 At the same radius and on the same birth sector, the 32-slab theorem gives one physical field-line solution on $[0,1/2]$ with dimensionless Euclidean error at most $1960457298773104133/2^{80}<1.622\times10^{-6}$. The four generated theorems passed the standard-axiom audit. The longer proof uses the same replay procedure below. Build `PlasmaLean.Design.DommaschkHarmonicBlock03`, extend the reference and shared-power Jacobian ranges to row 31, and run `.venv-ws/bin/python scripts/dommaschk_kam/verify_physical_trace_prefix.py --length 32 --shared-from 16`.
+
+## Completed 42-slab forward batch
+
+For every birth in the same sector at $u=0.470$, the physical solution from the transferred section state follows the reference through $42/64=21/32$ geometric radians. The uniform dimensionless Euclidean error is at most $2195460214760622355/2^{80}<1.817\times10^{-6}$. The 25 Jacobian certificates for rows 17–41 each passed three theorem audits. The prefix itself passed four. The two-sided result still covers $[-1/32,1/32]$. The first physical mirror passage on the long trace remains open.
+
+For a fresh replay of the forward proof, use the commands below with the additional harmonic blocks `DommaschkHarmonicBlock03`, `DommaschkHarmonicBlock04` and `DommaschkHarmonicBlock05` in the same `PlasmaLean.Design` namespace. Extend the reference and shared-power Jacobian ranges to row 41 and assemble the trajectory with `.venv-ws/bin/python scripts/dommaschk_kam/verify_physical_trace_prefix.py --length 42 --shared-from 16`.
 
 ## Reusing the spatial bound under reflection
 
