@@ -67,6 +67,8 @@ import PlasmaLean.Design.DommaschkActionFlightFloor
 import PlasmaLean.Design.DommaschkSignedTracePrefix
 import PlasmaLean.Design.DommaschkPhysicalCentralJet
 import PlasmaLean.Design.DommaschkLocalLittlejohnBirth
+import PlasmaLean.Design.DommaschkGroupedMirrorModels
+import PlasmaLean.Design.DommaschkEndpointMirrorBranch
 import PlasmaLean.Design.DommaschkEndpointTraceFamily
 import PlasmaLean.Design.DommaschkRadialActionCriterion
 import PlasmaLean.Design.DommaschkToroidalEnvelopeTest
@@ -471,3 +473,7 @@ run_cmd do
 #print axioms PlasmaLean.Design.DommaschkLocalLittlejohnBirth.parallel
 #print axioms PlasmaLean.Design.DommaschkLocalLittlejohnBirth.interior_of_reference
 #print axioms PlasmaLean.Design.DommaschkLocalLittlejohnBirth.from_path
+#print axioms PlasmaLean.Design.DommaschkGroupedMirrorModels.Fits.mem
+#print axioms PlasmaLean.Design.DommaschkGroupedMirrorModels.Covers.below
+#print axioms PlasmaLean.Design.DommaschkEndpointMirrorBranch.of_joined
+#print axioms PlasmaLean.Design.DommaschkEndpointMirrorBranch.branch
