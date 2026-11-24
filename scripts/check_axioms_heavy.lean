@@ -149,6 +149,7 @@ import PlasmaLean.Design.DommaschkRadialSlabsS0H0
 import PlasmaLean.Design.DommaschkRadialSlabsS0H1
 import PlasmaLean.Design.DommaschkRadialSlabsS1H0
 import PlasmaLean.Design.DommaschkRadialSlabsS1H1
+import PlasmaLean.Design.DommaschkSecondaryActionHeight
 
 /-! Audit all declarations owned by project modules in the import closure (the on-demand top
 modules and everything they import). Fails on any non-standard axiom. -/
@@ -549,3 +550,7 @@ run_cmd do
 #print axioms PlasmaLean.Design.DommaschkLowerActionWindows.first_crossing
 #print axioms PlasmaLean.Design.DommaschkLowerActionWindows.at_cutoff
 #print axioms PlasmaLean.Design.DommaschkLowerActionWindows.action_on_enclosing_interval
+#print axioms PlasmaLean.Certificates.LowerActionHeightShift.clipped_lower
+#print axioms PlasmaLean.Certificates.LowerActionHeightShift.covers
+#print axioms PlasmaLean.Design.DommaschkSecondaryActionHeight.shifted_cover
+#print axioms PlasmaLean.Design.DommaschkSecondaryActionHeight.first_well
