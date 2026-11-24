@@ -179,20 +179,21 @@ theorem section_box {uC zC uA zA : FA}
     unfold blend
     constructor <;> linarith
 
-/-- A joint bound for every birth in the closed phase sector. -/
-theorem sector_box {uC zC uA zA : FA}
+/-- Uniform azimuthal displacement of the true interpolated launch from its symmetry section. -/
+theorem launch_displacement {uC zC uA zA : FA}
     (hc : Close (9/1400) DommaschkKamDio.dkIotaC uC zC u₀C z₀C (1/10^12))
     (ha : Close (9/1400) DommaschkKamDio.dkIotaA uA zA DommaschkKamA.u₀A DommaschkKamA.z₀A
-      (1/10^12)) (q : Bool) {u φ : ℝ} (hu : u ∈ Set.Icc (11/25) (27/50))
-    (hφ : |φ-azimuth q| ≤ 1/4096) :
-    blend u (RofC uC 0 φ) (RofC uA 0 φ) ∈
-      (if q then Set.Icc (8939/10000) (8956/10000) else Set.Icc (9951/10000) (9963/10000)) ∧
-    |blend u (Zof zC 0 φ) (Zof zA 0 φ)| ≤ 1/24000 := by
+      (1/10^12)) (q : Bool) {u φ : ℝ} (hu : u ∈ Set.Icc 0 1) :
+    |blend u (RofC uC 0 φ) (RofC uA 0 φ) -
+      blend u (RofC uC 0 (azimuth q)) (RofC uA 0 (azimuth q))| ≤
+      2 / 10^12 + |φ - azimuth q| / 6 ∧
+    |blend u (Zof zC 0 φ) (Zof zA 0 φ) -
+      blend u (Zof zC 0 (azimuth q)) (Zof zA 0 (azimuth q))| ≤
+      2 / 10^12 + |φ - azimuth q| / 6 := by
   have hr : (0:ℝ) < 9/1400 := by norm_num
-  have hu' : u ∈ Set.Icc 0 1 := ⟨by linarith [hu.1], by linarith [hu.2]⟩
   have error {f s : ℝ → ℝ} (he : ∀ t, |f t - s t| ≤ 1/10^12)
       (moving : |s φ - s (azimuth q)| ≤ 1/6 * |φ-azimuth q|) :
-      |f φ - f (azimuth q)| ≤ 1/24020 := by
+      |f φ - f (azimuth q)| ≤ 2 / 10^12 + |φ - azimuth q| / 6 := by
     have left := abs_sub_le (f φ) (s φ) (f (azimuth q))
     have right := abs_sub_le (s φ) (s (azimuth q)) (f (azimuth q))
     rw [abs_sub_comm (s (azimuth q))] at right
@@ -210,8 +211,21 @@ theorem sector_box {uC zC uA zA : FA}
   have z₂ := error (aZ.value 0) (by
     simp only [height_seed_eq]
     exact jet_displacement true true 1 (azimuth q) φ)
-  have δR := abs_le.mp (blend_error hu' r₁ r₂)
-  have δz := abs_le.mp (blend_error hu' z₁ z₂)
+  exact ⟨blend_error hu r₁ r₂, blend_error hu z₁ z₂⟩
+
+/-- A joint bound for every birth in the closed phase sector. -/
+theorem sector_box {uC zC uA zA : FA}
+    (hc : Close (9/1400) DommaschkKamDio.dkIotaC uC zC u₀C z₀C (1/10^12))
+    (ha : Close (9/1400) DommaschkKamDio.dkIotaA uA zA DommaschkKamA.u₀A DommaschkKamA.z₀A
+      (1/10^12)) (q : Bool) {u φ : ℝ} (hu : u ∈ Set.Icc (11/25) (27/50))
+    (hφ : |φ-azimuth q| ≤ 1/4096) :
+    blend u (RofC uC 0 φ) (RofC uA 0 φ) ∈
+      (if q then Set.Icc (8939/10000) (8956/10000) else Set.Icc (9951/10000) (9963/10000)) ∧
+    |blend u (Zof zC 0 φ) (Zof zA 0 φ)| ≤ 1/24000 := by
+  obtain ⟨dR,dz⟩ := launch_displacement hc ha q (φ := φ) (u := u)
+    ⟨by linarith [hu.1], by linarith [hu.2]⟩
+  have δR := abs_le.mp dR
+  have δz := abs_le.mp dz
   obtain ⟨hR,hz⟩ := section_box hc ha q hu
   constructor
   · cases q <;> change _ ∈ Set.Icc _ _ at hR ⊢ <;> constructor <;> linarith [hR.1,hR.2]

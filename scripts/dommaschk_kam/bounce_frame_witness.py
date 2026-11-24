@@ -197,6 +197,7 @@ def process(job):
         try:
             with out:
                 out.write(gzip.compress(payload,mtime=0))
+            temporary.chmod(ARCHIVE.stat().st_mode & 0o666)
             temporary.replace(path)
         finally:
             temporary.unlink(missing_ok=True)

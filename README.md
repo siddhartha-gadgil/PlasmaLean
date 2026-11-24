@@ -38,7 +38,7 @@ Heavy numerics and large certificate builds can be offloaded to a workstation; s
 
 ## Progress
 
-Lean now proves a 1/64-radian physical field-line collar on both Dommaschk mirror-launch sectors. The endpoint and radial certificates cover 28 action comparisons and 16 radial tiles. Exact external checks reproduce the crossings and action bounds on 16 long traces at all eight local-action endpoints. A Lean proof over a complete mirror passage still requires physical trajectory and radial derivative bounds. [Eight-endpoint verification](notes/theory/dommaschk-eight-long-traces.md)
+Lean now proves a 1/64-radian physical field-line collar on both Dommaschk mirror-launch sectors. The endpoint and radial certificates cover 28 action comparisons and 16 radial tiles. Exact external checks reproduce the crossings and action bounds on 16 long traces at all eight local-action endpoints. Lean verifies the physical entry on smaller sectors, all 6,256 scalar frame steps, the harmonics, and the first physical reference defect. Propagating the physical solution still requires derivative bounds on the moving tubes. [Physical proof and scope](notes/theory/dommaschk-physical-frame-trace.md)
 
 **Trapped-particle theory (23 November 2026).** On a regular annulus of periodic orbits,
 a common invariant volume and a nonvanishing averaged drift tangent to both edges give a

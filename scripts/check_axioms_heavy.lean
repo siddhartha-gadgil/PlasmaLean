@@ -49,6 +49,10 @@ import PlasmaLean.Design.DommaschkActionQuadrature
 import PlasmaLean.Design.DommaschkLocalMirrorGraphs
 import PlasmaLean.Design.DommaschkMirrorSectorFlow
 import PlasmaLean.Design.DommaschkBounceObservables
+import PlasmaLean.Design.DommaschkFrameLaunch
+import PlasmaLean.Design.DommaschkHarmonicTrace
+import PlasmaLean.Design.DommaschkBounceTaylorFirst
+import PlasmaLean.Design.DommaschkReferenceFirstDefect
 import PlasmaLean.Theory.Fields.MovingFrameSlabs
 import PlasmaLean.Design.DommaschkRadialSlabsS0H0
 import PlasmaLean.Design.DommaschkRadialSlabsS0H1
@@ -225,3 +229,9 @@ run_cmd do
 #print axioms PlasmaLean.Fields.TrajectorySlabs.Chain.exists_trajectory
 #print axioms PlasmaLean.Fields.TrajectorySlabs.MovingFrame.step_of_defect
 #print axioms PlasmaLean.Design.DommaschkLocalMirrorGraphs.sector_graphs
+#print axioms PlasmaLean.Design.DommaschkMirrorLaunch.exists_nested_section_entry
+#print axioms PlasmaLean.Design.DommaschkPositionFramesBack.checked
+#print axioms PlasmaLean.Design.DommaschkPositionFramesFwd.checked
+#print axioms PlasmaLean.Design.DommaschkHarmonicTrace.all_times
+#print axioms PlasmaLean.Design.DommaschkBounceTaylorFirst.physical_clock_ranges
+#print axioms PlasmaLean.Design.DommaschkReferenceFirst.framed_defect
