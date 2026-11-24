@@ -32,6 +32,14 @@ import PlasmaLean.Design.DommaschkSublevelActionGrids
 import PlasmaLean.Design.DommaschkPreMirrorSigns
 import PlasmaLean.Design.DommaschkSignedObservable
 import PlasmaLean.Design.DommaschkSublevelArchiveNodes
+import PlasmaLean.Design.DommaschkSpeedHistogramQ0R470
+import PlasmaLean.Design.DommaschkSpeedHistogramQ0R478
+import PlasmaLean.Design.DommaschkSpeedHistogramQ0R523
+import PlasmaLean.Design.DommaschkSpeedHistogramQ0R531
+import PlasmaLean.Design.DommaschkSpeedHistogramQ1R456
+import PlasmaLean.Design.DommaschkSpeedHistogramQ1R464
+import PlasmaLean.Design.DommaschkSpeedHistogramQ1R509
+import PlasmaLean.Design.DommaschkSpeedHistogramQ1R517
 import PlasmaLean.Design.DommaschkMirrorStrengthSlope
 import PlasmaLean.Design.RationalStellaratorGCMuWide
 import PlasmaLean.Design.RationalStellaratorGCMu3Confined
@@ -305,3 +313,12 @@ run_cmd do
 #print axioms PlasmaLean.Design.DommaschkMirrorStrengthSlope.forward_of_physical
 #print axioms PlasmaLean.Design.DommaschkMirrorStrengthSlope.backward_of_physical
 #print axioms PlasmaLean.Design.DommaschkMirrorStrengthSlope.at_positive_level
+#print axioms PlasmaLean.Certificates.MirrorSpeedHistogram.scan_spec
+#print axioms PlasmaLean.Design.DommaschkSpeedHistogramQ0R470.endpoint
+#print axioms PlasmaLean.Design.DommaschkSpeedHistogramQ0R478.endpoint
+#print axioms PlasmaLean.Design.DommaschkSpeedHistogramQ0R523.endpoint
+#print axioms PlasmaLean.Design.DommaschkSpeedHistogramQ0R531.endpoint
+#print axioms PlasmaLean.Design.DommaschkSpeedHistogramQ1R456.endpoint
+#print axioms PlasmaLean.Design.DommaschkSpeedHistogramQ1R464.endpoint
+#print axioms PlasmaLean.Design.DommaschkSpeedHistogramQ1R509.endpoint
+#print axioms PlasmaLean.Design.DommaschkSpeedHistogramQ1R517.endpoint
