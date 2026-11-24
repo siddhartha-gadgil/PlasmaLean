@@ -164,6 +164,7 @@ import PlasmaLean.Design.DommaschkEnclosedLaunchArcs
 import PlasmaLean.Design.DommaschkOriginalBirthMargin
 import PlasmaLean.Certificates.ActionFloorShells
 import PlasmaLean.Design.DommaschkFirstContactHeightBudget
+import PlasmaLean.Design.DommaschkJointLaunchArcs
 
 /-! Audit all declarations owned by project modules in the import closure (the on-demand top
 modules and everything they import). Fails on any non-standard axiom. -/
@@ -615,3 +616,6 @@ run_cmd do
 #print axioms PlasmaLean.Certificates.PolynomialActionFloor.Shell.adjoin
 #print axioms PlasmaLean.Design.DommaschkFirstContactHeightBudget.good_height_measure
 #print axioms PlasmaLean.Design.DommaschkFirstContactHeightBudget.majority
+#print axioms PlasmaLean.Design.DommaschkJointLaunchArcs.in_positions
+#print axioms PlasmaLean.Design.DommaschkJointLaunchArcs.simultaneous
+#print axioms PlasmaLean.Design.DommaschkJointLaunchArcs.two_families
