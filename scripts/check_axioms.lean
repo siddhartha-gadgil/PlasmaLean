@@ -907,3 +907,8 @@ run_cmd do
 #print axioms PlasmaLean.Kinetic.VacuumLittlejohnLocal.vacuum_parallel
 #print axioms PlasmaLean.Kinetic.VacuumLittlejohnLocal.velocity_smooth
 #print axioms PlasmaLean.Kinetic.VacuumLittlejohnLocal.exists_orbit
+#print axioms PlasmaLean.Fields.LocalFlowDisplacement.common_window
+#print axioms PlasmaLean.Fields.LocalFlowDisplacement.agree_from_start
+#print axioms PlasmaLean.Kinetic.VacuumLittlejohnWindow.exists_control
+#print axioms PlasmaLean.Kinetic.VacuumLittlejohnWindow.Control.radial
+#print axioms PlasmaLean.Kinetic.VacuumLittlejohnWindow.guidingCentreBand

@@ -66,6 +66,7 @@ import PlasmaLean.Design.DommaschkTrappedBirthCoordinates
 import PlasmaLean.Design.DommaschkActionFlightFloor
 import PlasmaLean.Design.DommaschkSignedTracePrefix
 import PlasmaLean.Design.DommaschkPhysicalCentralJet
+import PlasmaLean.Design.DommaschkCommonLittlejohnTime
 import PlasmaLean.Design.DommaschkLocalLittlejohnBirth
 import PlasmaLean.Design.DommaschkGroupedMirrorModels
 import PlasmaLean.Design.DommaschkEndpointMirrorBranch
@@ -477,3 +478,5 @@ run_cmd do
 #print axioms PlasmaLean.Design.DommaschkGroupedMirrorModels.Covers.below
 #print axioms PlasmaLean.Design.DommaschkEndpointMirrorBranch.of_joined
 #print axioms PlasmaLean.Design.DommaschkEndpointMirrorBranch.branch
+#print axioms PlasmaLean.Design.DommaschkCommonLittlejohnTime.from_path
+#print axioms PlasmaLean.Design.DommaschkCommonLittlejohnTime.UniformAt.band
