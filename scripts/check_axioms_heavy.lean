@@ -57,6 +57,7 @@ import PlasmaLean.Design.DommaschkMirrorBirthArea
 import PlasmaLean.Design.DommaschkMirrorFlightBounds
 import PlasmaLean.Design.DommaschkMirrorBandFlightIdentity
 import PlasmaLean.Design.DommaschkSharpFlightBounds
+import PlasmaLean.Design.DommaschkFullBandFlightBounds
 import PlasmaLean.Design.DommaschkToroidalEnvelopeTest
 import PlasmaLean.Design.DommaschkEndpointContinuation
 import PlasmaLean.Design.DommaschkNativeActionReflection
@@ -422,3 +423,5 @@ run_cmd do
 #print axioms PlasmaLean.Design.DommaschkToroidalFieldBounds.speed_upper
 #print axioms PlasmaLean.Design.DommaschkSharpFlightBounds.half_upper
 #print axioms PlasmaLean.Design.DommaschkSharpFlightBounds.of_passage
+#print axioms PlasmaLean.Design.DommaschkCoreClearance.of_gap
+#print axioms PlasmaLean.Design.DommaschkFullBandFlightBounds.on_path
