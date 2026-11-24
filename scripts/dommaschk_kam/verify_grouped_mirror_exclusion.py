@@ -189,7 +189,7 @@ theorem {tag}_below {{prev : State}} {{x : Plane}} {{t : ℝ}}
     return {'start':a,'stop':b,'module':name,'key':rec[1]['key'],'pieces':len(parts)},packages
 
 
-def ordered(label,groups,packages,args,threshold='DommaschkFirstMirrorLaunchSign.height false'):
+def ordered(label,groups,packages,args,threshold='DommaschkFirstMirrorLaunchSign.height false',*,opposite=False):
     stop = groups[-1]['stop']
     name = f'Dommaschk{label}SubmirrorPrefix{stop:03}'
     src = header(name,['PlasmaLean.Certificates.PositionFrameObservables',
@@ -197,6 +197,8 @@ def ordered(label,groups,packages,args,threshold='DommaschkFirstMirrorLaunchSign
     src += ('open Certificates.PositionFrameSlabs DommaschkMirrorTubeCrossing\n'
             'set_option maxHeartbeats 3500000\n')
     for d,t in [('back','(-t)'),('fwd','t')]:
+        if opposite:
+            t = '(Real.pi / 2 + '+t+')'
         mods = [(i,g['module']+'.'+d+f'{i:03}') for g in groups for i in range(g['start'],g['stop'])]
         src += f'def {d}Rows : List Step := [\n  '+',\n  '.join(m+'Row' for _,m in mods)+']\n'
         src += f'theorem {d}_below (entry : State) : OnTubes (fun t p => strength {t} p <\n'

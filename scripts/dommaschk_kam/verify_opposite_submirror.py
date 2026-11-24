@@ -40,13 +40,16 @@ def read_packet(label):
     return trs, digest(path)
 
 
-def shared_group(traces):
+def shared_group(traces, start=0, stop=COUNT):
     """Fit one common polynomial clock. Each original row retains its own error radius."""
+    if not traces or not 0 <= start < stop:
+        raise ValueError("expected a nonempty set of signed tubes and a nonempty index range")
+    n = stop - start
     inputs = []
-    for i in range(COUNT):
+    for i in range(start, stop):
         waves = angle_models(F(2*i+1,128),F(1,128),F(0))
         points = []
-        for label in LABELS:
+        for label in traces:
             for tr in traces[label]:
                 row = tr['steps'][i]
                 if row['index'] != i:
@@ -55,14 +58,14 @@ def shared_group(traces):
                 points.append((r, z.integer(tr['direction']), -waves[2], -waves[1]))
         inputs.append(points)
     group = []
-    mid = (COUNT - 1) // 2
+    mid = (n - 1) // 2
     for axis in range(4):
         originals = [p[axis].a for p in inputs[mid]]
         center = [(min(values) + max(values)) // 2 for values in zip(*originals, strict=True)]
-        transformed = compose(center, COUNT-1-2*mid, COUNT)
+        transformed = compose(center, n-1-2*mid, n)
         radius = 0
         for i, rows in enumerate(inputs):
-            local = compose(transformed, F(2*i+1-COUNT, COUNT), F(1, COUNT))
+            local = compose(transformed, F(2*i+1-n, n), F(1, n))
             for row in rows:
                 own = row[axis]
                 difference = sum(abs(a-b) for a,b in zip(own.a,local,strict=True))
@@ -111,29 +114,38 @@ def row_source(label, traces):
     return name, text+f'end PlasmaLean.Design.{name}\n', theorems
 
 
-def ground_source(family, calibrated, counts, modules):
+def ground_source(family, calibrated, counts, modules, coverage=None):
     suffix = '_'.join(str(counts[e]) for e in ENDPOINTS)
     name = 'DommaschkOppositeSubmirrorBirths'+suffix
-    text = header(name, ['CalibratedFamilyCache.'+calibrated,
-                         *[ROWS+'.'+m for m in modules]])
+    package = ROWS
+    extra = []
+    if coverage is not None:
+        from verify_grouped_mirror_exclusion import FINAL as package
+        name += 'From'+'_'.join(str(coverage[e]) for e in LABELS)
+        extra = ['PlasmaLean.Design.DommaschkSubmirrorPrefixObservation']
+    text = header(name, ['CalibratedFamilyCache.'+calibrated,*extra,
+                         *[package+'.'+m for m in modules]])
     text += f'''open Real Set Certificates.PositionFrameSlabs DommaschkOppositeMirrorExclusion
 open DommaschkMirrorLaunch DommaschkKamC KamNewton Contract Forms Fields.VacuumBoozer Theory.KAM WEll1Z2
 open {family} (checkpoint)
 '''
-    sizes = {label: COUNT if counts[label] >= COUNT else 5 for label in LABELS}
+    sizes = ({e:min(counts[e],coverage[e]) for e in LABELS} if coverage is not None else
+             {label: COUNT if counts[label] >= COUNT else 5 for label in LABELS})
     if any(counts[e] < sizes[e] for e in LABELS):
         raise ValueError('each opposite-sector family must already cover five rows each way')
     theorems = []
     for label, mod in zip(LABELS, modules, strict=True):
         k = sizes[label]
+        front = f'{mod}.fwd{k}_below _' if coverage is None else f'({mod}.fwd_below _).take {k}'
+        back = f'{mod}.back{k}_below _' if coverage is None else f'({mod}.back_below _).take {k}'
         text += f'''theorem {label}_of_passage {{uC zC uA zA : FA}} {{φ : ℝ}}
     (path : (checkpoint .{label}).Passage .{label} uC zC uA zA φ) :
     SubmirrorBirth (checkpoint .{label}) .{label} {k} (DommaschkFirstMirrorLaunchSign.height false)
       uC zC uA zA φ := by
   apply from_passage path (by norm_num)
     (by change {k} ≤ {counts[label]}; norm_num) (by change {k} ≤ {counts[label]}; norm_num)
-  · with_unfolding_all exact {mod}.fwd{k}_below _
-  · with_unfolding_all exact {mod}.back{k}_below _
+  · with_unfolding_all exact {front}
+  · with_unfolding_all exact {back}
 '''
         theorems.append(label+'_of_passage')
     text += '''theorem from_common_tori :
