@@ -66,6 +66,7 @@ import PlasmaLean.Design.DommaschkTrappedBirthCoordinates
 import PlasmaLean.Design.DommaschkActionFlightFloor
 import PlasmaLean.Design.DommaschkSignedTracePrefix
 import PlasmaLean.Design.DommaschkPhysicalCentralJet
+import PlasmaLean.Design.DommaschkRadialActionCriterion
 import PlasmaLean.Design.DommaschkToroidalEnvelopeTest
 import PlasmaLean.Design.DommaschkEndpointContinuation
 import PlasmaLean.Design.DommaschkNativeActionReflection
@@ -460,3 +461,5 @@ run_cmd do
 #print axioms PlasmaLean.Design.DommaschkActionFlightFloor.of_passage
 #print axioms PlasmaLean.Design.DommaschkActionFlightFloor.join_bounds
 #print axioms PlasmaLean.Design.DommaschkPhysicalCentralJet.of_memberships
+#print axioms PlasmaLean.Design.DommaschkRadialActionCriterion.slope_gt_third
+#print axioms PlasmaLean.Design.DommaschkRadialActionCriterion.at_first_well

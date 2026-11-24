@@ -902,3 +902,4 @@ run_cmd do
 #print axioms PlasmaLean.Kinetic.MirrorActionVariation.weighted_derivative_eq
 #print axioms PlasmaLean.Kinetic.MirrorActionVariation.first_variation
 #print axioms PlasmaLean.Kinetic.MirrorActionVariation.abs_variation_le
+#print axioms PlasmaLean.Kinetic.MirrorActionVariation.variation_lower
