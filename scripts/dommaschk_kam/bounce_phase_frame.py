@@ -79,7 +79,7 @@ def radius_in_frame(data, angles, nominal, incoming, dt, sign, trial, frame, res
     return linear_step_in_frame(jnum,den2,incoming,dt,frame,residual,den)
 
 
-def linear_step_in_frame(jnum,den2,incoming,dt,frame,residual,den):
+def linear_step_in_frame(jnum,den2,incoming,dt,frame,residual,den,*,record=None):
     """Bound v'=M^-1((J M-M')v+f) given J=jnum/den2 and f=residual/den."""
     m,rate,adj,det,_ = frame
     jm = product(jnum,m)
@@ -94,6 +94,8 @@ def linear_step_in_frame(jnum,den2,incoming,dt,frame,residual,den):
         bounds = pilot.quotient_range(a*residual[0]+b*residual[1],det*den)
         err.append(max(map(abs,bounds))*pilot.SCALE)
     defect = F(norm_upper(err),pilot.SCALE)
+    if record is not None:
+        record(mu)
     return pilot.radius_step(incoming,defect,mu,dt),defect
 
 

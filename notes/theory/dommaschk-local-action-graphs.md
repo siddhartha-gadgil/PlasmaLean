@@ -14,6 +14,7 @@
 | Status | Abstract action comparison, continuity and graph theorems verified in the default Lean library. Candidate arithmetic and its application to the roots checked externally. |
 | Lean evidence | `MirrorHeightAction.action_gap_ge_of_core`, `strictMonoOn_action_of_trace_order`, `continuousOn_action_family`, `LocalLevelGraphs.separated_graphs_of_local_secants`. |
 | Audit evidence | The two-sided root tests use 16 radial tiles and eight endpoints. The assembler rechecks section, heights, radial coverage, outward slopes, action separation and derivative bounds. |
+| Patched by | [N-61, Lean replay and physical launch theorem](dommaschk-mirror-certificate-replay.md) |
 | Last updated | 23 November 2026 |
 
 ## Local result

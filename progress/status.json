@@ -1,11 +1,11 @@
 {
-  "updated": "2026-11-23",
+  "updated": "2026-11-24",
   "report": "2026-11-23-annular-confinement.md",
   "panel": {
     "stat": "Contract C1–C5",
     "headline": "Embedded C1 is proved on both vacuum examples. Applying the trapped-orbit theorem requires a physical bounce band."
   },
-  "summary": "The same two embedded Dommaschk tori have zero net toroidal current, absolute transform at least 0.2386 and off-QA defect at most 0.0063 and 0.0090 times the absolute transform on C and A respectively. Embedded C1 also holds on the rational stellarator KAM torus. A separate annular theorem constructs a radial label and trajectories confined through time c/ε² under averaged tangency and nonsingularity. A volume-filling flux chart, thermal-particle confinement and performance on the Dommaschk candidate remain open.",
+  "summary": "The same two embedded Dommaschk tori have zero net toroidal current, absolute transform at least 0.2386 and off-QA defect at most 0.0063 and 0.0090 times the absolute transform on C and A respectively. Embedded C1 also holds on the rational stellarator KAM torus. A separate annular theorem constructs a radial label and trajectories confined through time c/ε² under averaged tangency and nonsingularity. A volume-filling flux chart, thermal-particle confinement and performance on the Dommaschk candidate remain open. The mirror launch theorem now reaches 1/64 radian on both sectors, with 28 endpoint comparisons conditional on full-trace enclosures.",
   "tasks": {
     "model-contracts:I1": "Partially implemented — algebraic force balance and tangency; positive permeability and actual differential laws in the restricted slab model.",
     "model-contracts:I2": "Lean verified — uniform-field and nonzero-current force-free witnesses in the Cartesian slab model; not toroidal confinement.",

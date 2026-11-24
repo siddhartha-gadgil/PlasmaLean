@@ -85,7 +85,7 @@ def proposals(ev, initial, tangent, sign, step, count):
         yield [pilot.Model([round(float(v)*pilot.SCALE) for v in row]) for row in coefficients]
 
 
-def tangent_radius(fields, gradients, nominal, radius, dt, sign, frame_start=None):
+def tangent_radius(fields, gradients, nominal, radius, dt, sign, frame_start=None, *, record=None):
     den, *nums = fields
     den2 = den*den
     # J_ij is sign*(grad(n_i)*D - n_i*grad(D))/D².
@@ -99,7 +99,8 @@ def tangent_radius(fields, gradients, nominal, radius, dt, sign, frame_start=Non
         from bounce_phase_frame import affine_frame, linear_step_in_frame, propose_frame
         frame_end = propose_frame(frame_start, jac, den2, dt)
         frame = affine_frame(frame_start, frame_end, dt)
-        final, defect = linear_step_in_frame(jac, den2, radius, dt, frame, residual, den2)
+        final, defect = linear_step_in_frame(jac, den2, radius, dt, frame, residual, den2,
+                                            record=record)
         return final, defect, frame[-1], frame_end
     diagonal = max(pilot.quotient_range(jac[i][i], den2)[1] for i in (0, 1))
     off = pilot.quotient_range(jac[0][1]+jac[1][0], den2.integer(2))
@@ -203,7 +204,7 @@ def core_slope(bounds, height):
     return squared_slope/(2*action_upper)
 
 
-def directed(data, seed, ev, initial, v0, tangent, sign, dt, limit, alpha_width, framed):
+def directed(data, seed, ev, initial, v0, tangent, sign, dt, limit, alpha_width, framed, *, record=None):
     count = ceil(limit/dt)
     refs = proposals(ev, initial, tangent, sign, dt, count)
     build, frame_start = pilot.certified_segments, None
@@ -226,8 +227,11 @@ def directed(data, seed, ev, initial, v0, tangent, sign, dt, limit, alpha_width,
         jump = shifted_jump(frame_start, jumps) if framed else isqrt(sum(x*x for x in jumps))+1
         tube, angles, fields = segment.fields(data)
         gradients = [[pilot.evaluate(p, tube, angles)[0] for p in g[1:]] for g in data]
+        incoming = radius
+        norms = []
         radius, defect, op, frame_start = tangent_radius(fields, gradients, nominal, radius+jump,
-                                                        dt, sign, frame_start)
+                                                        dt, sign, frame_start,
+                                                        record=norms.append if record else None)
         physical_error = ceil(op*radius)
         enclosed = [pilot.Model(x.a, physical_error) for x in nominal]
         obs = observables(tube, fields, gradients, enclosed, shifted, angles)
@@ -240,9 +244,13 @@ def directed(data, seed, ev, initial, v0, tangent, sign, dt, limit, alpha_width,
             max_core = upper if max_core is None else max(max_core, upper)
         if segment.index*dt < limit <= (segment.index+1)*dt:
             min_last = obs['B2'][0]
+        slope = None
         if obs['B2'][1] >= pilot.HEIGHTS[0]**2 and obs['B2'][0] <= pilot.HEIGHTS[1]**2:
             _, slope = shifted.geometry(data, angles, tube, fields, gradients, sign, True)
             min_orientation = slope[0] if min_orientation is None else min(min_orientation, slope[0])
+        if record is not None:
+            record(segment.index, incoming, jump, radius, defect, op, physical_error, norms[0],
+                   obs, slope)
         max_error = max(max_error, physical_error)
         max_defect = max(max_defect, defect)
         previous = [x.endpoint(1) for x in nominal]

@@ -38,6 +38,8 @@ Heavy numerics and large certificate builds can be offloaded to a workstation; s
 
 ## Progress
 
+Lean now proves a 1/64-radian physical field-line collar on both Dommaschk mirror-launch sectors. The endpoint and radial certificates cover 28 action comparisons and 16 radial tiles. Their application over a complete mirror passage still requires bounds on the same physical trajectory and its radial derivative. [Mirror certificate status](notes/theory/dommaschk-mirror-certificate-replay.md)
+
 **Trapped-particle theory (23 November 2026).** On a regular annulus of periodic orbits,
 a common invariant volume and a nonvanishing averaged drift tangent to both edges give a
 radial label. Lean proves that trajectories starting on any closed interior subband exist and

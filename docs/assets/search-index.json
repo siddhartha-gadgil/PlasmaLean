@@ -1,7 +1,7 @@
 [
   {
     "title": "Progress slideshow",
-    "section": "Evidence updated 2026-11-23 · The same two embedded Dommaschk tori have zero net toroidal current, absolute transform at least 0.2386 and off-QA defect at most 0.0063 and 0.0090 times the absolute transform on C and A respectively. Embedded C1 also holds on the rational stellarator KAM torus. A separate annular theorem constructs a radial label and trajectories confined through time c/ε² under averaged tangency and nonsingularity. A volume-filling flux chart, thermal-particle confinement and performance on the Dommaschk candidate remain open.",
+    "section": "Evidence updated 2026-11-24 · The same two embedded Dommaschk tori have zero net toroidal current, absolute transform at least 0.2386 and off-QA defect at most 0.0063 and 0.0090 times the absolute transform on C and A respectively. Embedded C1 also holds on the rational stellarator KAM torus. A separate annular theorem constructs a radial label and trajectories confined through time c/ε² under averaged tangency and nonsingularity. A volume-filling flux chart, thermal-particle confinement and performance on the Dommaschk candidate remain open. The mirror launch theorem now reaches 1/64 radian on both sectors, with 28 endpoint comparisons conditional on full-trace enclosures.",
     "url": "slides.html",
     "text": "progress slideshow presentation latest run evidence vacuum fixture"
   },
@@ -2790,6 +2790,12 @@
     "text": "23 november 2026 — separated local fixed-action curves at both symmetry phases (n-60) implementation plan"
   },
   {
+    "title": "24 November 2026 — Lean replay of the local mirror certificates (N-61)",
+    "section": "Implementation plan",
+    "url": "implementation-plan.html#24-november-2026-lean-replay-of-the-local-mirror-certificates-n-61",
+    "text": "24 november 2026 — lean replay of the local mirror certificates (n-61) implementation plan"
+  },
+  {
     "title": "M0 · Exact symmetric equilibria: slab, screw pinch, Solov'ev, helical",
     "section": "Implementation plan · Lean verified — exact slab, screw-pinch, Solov'ev and helical equilibria with kernel force balance, all-time field-line/orbit confinement, Suydam both ways and screw-pinch Newcomb stability for every m ≠ 0 (reduced form supplied; idealized symmetric models).",
     "url": "implementation-plan.html",
@@ -2971,9 +2977,9 @@
   },
   {
     "title": "Verified progress",
-    "section": "The same two embedded Dommaschk tori have zero net toroidal current, absolute transform at least 0.2386 and off-QA defect at most 0.0063 and 0.0090 times the absolute transform on C and A respectively. Embedded C1 also holds on the rational stellarator KAM torus. A separate annular theorem constructs a radial label and trajectories confined through time c/ε² under averaged tangency and nonsingularity. A volume-filling flux chart, thermal-particle confinement and performance on the Dommaschk candidate remain open.",
+    "section": "The same two embedded Dommaschk tori have zero net toroidal current, absolute transform at least 0.2386 and off-QA defect at most 0.0063 and 0.0090 times the absolute transform on C and A respectively. Embedded C1 also holds on the rational stellarator KAM torus. A separate annular theorem constructs a radial label and trajectories confined through time c/ε² under averaged tangency and nonsingularity. A volume-filling flux chart, thermal-particle confinement and performance on the Dommaschk candidate remain open. The mirror launch theorem now reaches 1/64 radian on both sectors, with 28 endpoint comparisons conditional on full-trace enclosures.",
     "url": "progress.html",
-    "text": "verified progress the same two embedded dommaschk tori have zero net toroidal current, absolute transform at least 0.2386 and off-qa defect at most 0.0063 and 0.0090 times the absolute transform on c and a respectively. embedded c1 also holds on the rational stellarator kam torus. a separate annular theorem constructs a radial label and trajectories confined through time c/ε² under averaged tangency and nonsingularity. a volume-filling flux chart, thermal-particle confinement and performance on the dommaschk candidate remain open."
+    "text": "verified progress the same two embedded dommaschk tori have zero net toroidal current, absolute transform at least 0.2386 and off-qa defect at most 0.0063 and 0.0090 times the absolute transform on c and a respectively. embedded c1 also holds on the rational stellarator kam torus. a separate annular theorem constructs a radial label and trajectories confined through time c/ε² under averaged tangency and nonsingularity. a volume-filling flux chart, thermal-particle confinement and performance on the dommaschk candidate remain open. the mirror launch theorem now reaches 1/64 radian on both sectors, with 28 endpoint comparisons conditional on full-trace enclosures."
   },
   {
     "title": "Outcome",
@@ -3058,5 +3064,11 @@
     "section": "Verified progress",
     "url": "progress.html#fixed-action-curves-on-two-phase-sectors",
     "text": "fixed-action curves on two phase sectors verified progress"
+  },
+  {
+    "title": "Mirror certificate replay, 24 November 2026",
+    "section": "Verified progress",
+    "url": "progress.html#mirror-certificate-replay-24-november-2026",
+    "text": "mirror certificate replay, 24 november 2026 verified progress"
   }
 ]

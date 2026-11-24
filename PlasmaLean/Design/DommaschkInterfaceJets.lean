@@ -31,7 +31,8 @@ structure ProfileJetBound (exact seed : ℝ → ℝ → ℝ) (ρ M : ℝ) : Prop
     |b.partialD (a.partialD exact) θ φ - b.partialD (a.partialD seed) θ φ| ≤
       b.factor / ρ * (a.factor / ρ * M)
 
-private theorem profileJetBound {x y : FA} {ρ M : ℝ} (hρ : 0 < ρ)
+/-- Strip closeness bounds the value and the first two jets of an offset profile. -/
+theorem profileJetBound {x y : FA} {ρ M : ℝ} (hρ : 0 < ρ)
     (hd : Bd ρ (x - y) M) (hy : Ana y) (offset : ℝ) :
     ProfileJetBound (fun θ φ => offset + Zof x θ φ) (fun θ φ => offset + Zof y θ φ) ρ M := by
   have shift (a : ProfileAngle) (w : FA) :

@@ -82,3 +82,7 @@ Two radial face estimates hold on six positive-width launch sectors in the physi
 ## Fixed-action curves on two phase sectors
 
 For every phase within 1/4096 radian of 0 or π/2, two unique roots in disjoint radial brackets realize the prescribed action. Their radial separation exceeds 9/200. The abstract continuity and secant theorems are compiled in Lean, and sixteen external interval tubes plus eight endpoint calculations supply the candidate data. The two sectors have total angular length 1/1024 radians in the period π. The dimensional excursion, thermal birth fraction and physical time remain open. [Intervals, audit and replay](https://github.com/siddhartha-gadgil/PlasmaLean/blob/main/notes/theory/dommaschk-local-action-graphs.md)
+
+## Mirror certificate replay, 24 November 2026
+
+The nested Dommaschk launch theorem now reaches 1/64 geometric radian from every point in each of the two specified symmetry sectors. For a complete mirror passage, Lean checks 28 directed quadrature comparisons from pointwise field and arclength bounds. The four radial brackets use 16 tiles and 12,512 directed time slabs. Identifying the physical trajectory and its first variation on the full 6.1-radian trace remains open. [Verification record](https://github.com/siddhartha-gadgil/PlasmaLean/blob/main/notes/theory/dommaschk-mirror-certificate-replay.md)

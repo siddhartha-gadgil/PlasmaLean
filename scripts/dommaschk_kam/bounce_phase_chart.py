@@ -99,7 +99,8 @@ def enclose_face(inputs, u, dt, panels, limit, strength, origin, segment_builder
                 step=str(dt), panels_per_step=panels, extents=extents)
 
 
-def run(quadrant, t, width, dt, panels, limit, framed=False, face_only=False):
+def chart_inputs(quadrant, t, width):
+    """Construct a common-section launch cell for each radius in a rational chart."""
     if quadrant not in range(4) or not 0 <= t <= 1:
         raise ValueError('expected a unit-circle chart and a centre in [0,1]')
     check_arithmetic()
@@ -110,12 +111,6 @@ def run(quadrant, t, width, dt, panels, limit, framed=False, face_only=False):
     cs, sn = harmonics(t, quadrant, degree)
     origin = tuple(zip(cs[1:4], sn[1:4], strict=True))
     data = polynomial_data()
-    strength = ShiftedStrength(data)
-    builder = certified_segments
-    if framed:
-        from bounce_phase_frame import check_frame, framed_segments
-        check_frame()
-        builder = framed_segments
     ev, seeds = load_inputs()
     angle = quadrant*pi/4 + atan(float(t))
     c, a = [seed_cut(*seed, np.array([angle]))[0][:, 0] for seed in seeds]
@@ -124,11 +119,26 @@ def run(quadrant, t, width, dt, panels, limit, framed=False, face_only=False):
         def rhs(self, tau, radius, z):
             return ev.rhs(angle+tau, radius, z)
 
-    faces = []
-    for u in (F(11, 25), F(27, 50)):
+    def inputs_at(u):
         anchor = launch_anchor(profiles, cs, sn, u)
         seed, transfer = transfer_at(cs, sn, anchor, width, F(0), u)
-        inputs = (data, seed, Proposer(), c + float(u)*(a-c))
+        return (data, seed, Proposer(), c + float(u)*(a-c)), transfer
+
+    return inputs_at, origin
+
+
+def run(quadrant, t, width, dt, panels, limit, framed=False, face_only=False):
+    inputs_at, origin = chart_inputs(quadrant, t, width)
+    builder = certified_segments
+    if framed:
+        from bounce_phase_frame import check_frame, framed_segments
+        check_frame()
+        builder = framed_segments
+
+    faces = []
+    for u in (F(11, 25), F(27, 50)):
+        inputs, transfer = inputs_at(u)
+        strength = ShiftedStrength(inputs[0])
         if face_only:
             result = enclose_face(inputs, u, dt, panels, limit, strength, origin, builder)
         else:

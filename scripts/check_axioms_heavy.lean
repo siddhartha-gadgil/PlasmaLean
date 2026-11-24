@@ -45,6 +45,13 @@ import PlasmaLean.Design.DommaschkKamEmbedded
 import PlasmaLean.Design.DommaschkKamLoopCurrent
 import PlasmaLean.Design.DommaschkInterfaceArcWitness
 import PlasmaLean.Design.DommaschkInterfaceFundamentalForms
+import PlasmaLean.Design.DommaschkActionQuadrature
+import PlasmaLean.Design.DommaschkLocalMirrorGraphs
+import PlasmaLean.Design.DommaschkMirrorSectorFlow
+import PlasmaLean.Design.DommaschkRadialSlabsS0H0
+import PlasmaLean.Design.DommaschkRadialSlabsS0H1
+import PlasmaLean.Design.DommaschkRadialSlabsS1H0
+import PlasmaLean.Design.DommaschkRadialSlabsS1H1
 
 /-! Audit all declarations owned by project modules in the import closure (the on-demand top
 modules and everything they import). Fails on any non-standard axiom. -/
@@ -211,3 +218,5 @@ run_cmd do
 #print axioms PlasmaLean.Design.DommaschkInterfaceFundamentalForms.surface_derivatives
 #print axioms PlasmaLean.Design.DommaschkInterfaceFundamentalForms.field_eq_speed_tangent
 #print axioms PlasmaLean.Design.DommaschkInterfaceFundamentalForms.exactTorusA_field_normalDerivative_obstruction
+#print axioms PlasmaLean.Design.DommaschkMirrorLaunch.exists_nested_collar
+#print axioms PlasmaLean.Design.DommaschkLocalMirrorGraphs.sector_graphs

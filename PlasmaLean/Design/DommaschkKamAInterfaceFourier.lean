@@ -77,7 +77,8 @@ def gridJet (S N M p : ℕ) (g : ℕ → ℕ → ℤ) (a b : ℕ) (θ φ : ℝ) 
   ∑ k ∈ modes N M, amplitude S N M g k * (k.1 : ℝ)^a * (2*k.2 : ℝ)^b *
     Real.cos (k.1*θ + (2*k.2)*φ + ((a : ℝ)+b-p)*(Real.pi/2))
 
-private theorem zeroJet (S N M p : ℕ) (g : ℕ → ℕ → ℤ) (θ φ : ℝ) :
+/-- The physical grid evaluates to its zeroth angular jet. -/
+theorem zeroJet (S N M p : ℕ) (g : ℕ → ℕ → ℤ) (θ φ : ℝ) :
     (eval (ctr S N M (1,0,p) (gridPolyNM N M g)) θ (2*φ)).re =
     gridJet S N M p g 0 0 θ φ := by
   simpa [gridJet, sub_eq_add_neg] using grid_eq_sum S N M p g θ φ

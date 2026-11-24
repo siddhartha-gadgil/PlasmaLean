@@ -198,6 +198,11 @@ public import PlasmaLean.Design.QuasilinearBarrier
 public import PlasmaLean.Design.SolovevOnePlasma
 public import PlasmaLean.Design.SolovevBand
 public import PlasmaLean.Certificates.ValidatedQuadrature
+public import PlasmaLean.Certificates.MirrorActionQuadrature
+public import PlasmaLean.Certificates.RadialTile
+public import PlasmaLean.Certificates.RadialSlabs
+public import PlasmaLean.Certificates.RadialObservableDerivatives
+public import PlasmaLean.Certificates.TrajectoryTaylorModel
 public import PlasmaLean.Design.SolovevMercierQuadrature
 public import PlasmaLean.Design.SolovevMercierCertified
 public import PlasmaLean.Theory.Kinetic.TrappedOrbits

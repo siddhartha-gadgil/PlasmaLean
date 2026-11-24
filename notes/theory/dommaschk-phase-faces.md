@@ -16,6 +16,7 @@
 | Status | General theorems compiled in Lean. Candidate intervals checked externally in directed arithmetic. |
 | Lean evidence | `MovingFrame.exists_rational_step`, `MirrorActionEnvelope.exists_launchWell`, `LaunchWell.action_bounds`, `LaunchWell.action_strictly_increases`. |
 | Audit evidence | Exact shear, rejected singular frame, compensated field-strength identity, exact harmonic rotation, independent integration steps, and a nonintegrable bounce-time example. |
+| Patched by | [N-61, Lean replay and physical launch theorem](dommaschk-mirror-certificate-replay.md) |
 | Last updated | 23 November 2026 |
 
 ## Candidate results

@@ -18,6 +18,7 @@
 | Status | Local candidate conclusions externally checked. The general existence, reparametrization and action lemmas are verified in the default Lean build. |
 | Lean evidence | `dist_le_rational_step`, `regularMirrorBirth_of_parametrized_crossings`, `action_eq_well_of_crossings`, `unique_height`, `hasDerivAt_action`. |
 | Audit evidence | Independent step sizes, constant-field and polynomial fixtures, signed material derivatives, both allowed and forbidden regions, and a deliberately enlarged cell that loses its certificate. |
+| Patched by | [N-61, Lean replay and physical launch theorem](dommaschk-mirror-certificate-replay.md) |
 | Last updated | 23 November 2026 |
 
 ## Which launches and what is proved

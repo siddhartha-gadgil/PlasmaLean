@@ -84,3 +84,4 @@ Phase 8 (kam-route.md, finite-beta-stellarator.md):
 - [Action bounds on two radial faces](action-faces-and-winding.md) (N-58, Q-1, Q-35). Finite-time confinement from boundary values and an action budget. Positive orientation on the target level gives winding graphs.
 - [Action bounds on six Dommaschk launch sectors](dommaschk-phase-faces.md) (N-59, Q-35). Externally checked face margins, a verified moving-frame estimator and launch-well action bounds.
 - [Two separated fixed-action curves on each of two Dommaschk phase sectors](dommaschk-local-action-graphs.md) (N-60, Q-35). Continuous local roots and a gap greater than 0.045 on the actual field, checked externally using radial first variations.
+- [Lean replay of the Dommaschk mirror certificates](dommaschk-mirror-certificate-replay.md) (N-61, Q-35). Two physical launch sectors, 28 directed action comparisons and 12,512 radial slabs. The full physical trace remains open.
