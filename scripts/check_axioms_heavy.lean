@@ -72,6 +72,7 @@ import PlasmaLean.Design.DommaschkGroupedMirrorModels
 import PlasmaLean.Design.DommaschkEndpointMirrorBranch
 import PlasmaLean.Design.DommaschkEndpointTraceFamily
 import PlasmaLean.Design.DommaschkCenteredStrength
+import PlasmaLean.Design.DommaschkLowerActionPath
 import PlasmaLean.Design.DommaschkGroupedProfileCompare
 import PlasmaLean.Design.DommaschkGroupGapRadius
 import PlasmaLean.Design.DommaschkGroupedHarmonicGap
@@ -536,3 +537,6 @@ run_cmd do
 #print axioms PlasmaLean.Design.DommaschkGroupedHarmonicGap.estimate_mem
 #print axioms PlasmaLean.Design.DommaschkGroupedProfileCompare.row_inputs
 #print axioms PlasmaLean.Design.DommaschkGroupedProfileCompare.compare_rows
+#print axioms PlasmaLean.Design.DommaschkLowerActionPath.from_joined
+#print axioms PlasmaLean.Design.DommaschkLowerActionPath.Signed.inputs
+#print axioms PlasmaLean.Design.DommaschkLowerActionPath.regions
