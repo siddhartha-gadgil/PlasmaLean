@@ -892,3 +892,7 @@ run_cmd do
 #print axioms PlasmaLean.Kinetic.MirrorActionInverseBounds.secants_of_derivatives
 #print axioms PlasmaLean.Kinetic.MirrorActionInverseBounds.inverse_of_secants
 #print axioms PlasmaLean.Kinetic.MirrorActionInverseBounds.range_eq_interval
+#print axioms PlasmaLean.Contract.TrappedBirthCoordinates.lift_values
+#print axioms PlasmaLean.Contract.TrappedBirthCoordinates.mem_interior
+#print axioms PlasmaLean.Contract.TrappedBirthCoordinates.lift_mem_interior
+#print axioms PlasmaLean.Contract.TrappedBirthCoordinates.positive_mass

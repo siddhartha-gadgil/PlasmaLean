@@ -55,19 +55,20 @@ end PlasmaLean.Design.DommaschkCartesianMirrorBirth325
 '''
 
 
-def main():
-    p = argparse.ArgumentParser(description=__doc__)
+def verify_passage(name, source, theorems, dependency, package, cache, description):
+    """Check an on-demand consequence of the original audited N-99 height-band passage."""
+    p = argparse.ArgumentParser(description=description)
     p.add_argument('--passage', type=Path, required=True, help='the N-99 through-birth height-band report')
-    p.add_argument('--cache', type=Path, default=ROOT/'.lake/cartesian-mirror-birth')
+    p.add_argument('--cache', type=Path, default=ROOT/'.lake'/cache)
     p.add_argument('--output', type=Path, required=True)
     args = p.parse_args()
     report = json.loads(args.passage.read_text())
-    name = 'DommaschkRegularMirrorHeightBand325'
+    parent = 'DommaschkRegularMirrorHeightBand325'
     packet = digest(RECORD)
-    if report['module'] != name or report['packet_sha256'] != packet:
+    if report['module'] != parent or report['packet_sha256'] != packet:
         p.error('expected the complete phase-zero radius-0.470 physical height-band passage')
     roots = list(map(Path, report['import_paths']))
-    admitted(roots[0], name, report['key'])
+    admitted(roots[0], parent, report['key'])
     admitted(roots[1], 'DommaschkMirrorHeightBand325', report['band_key'])
 
     def lake(*cmd):
@@ -78,13 +79,18 @@ def main():
         p.error('the passage uses a different Lean version')
     args.lean = str(Path(lake('lean', '--print-prefix'))/'bin/lean')
     args.lean_path = lake('printenv', 'LEAN_PATH')
-    declarations = [(NAME, SOURCE, ['from_birth', 'nonempty_interior', 'positive_mass', 'positive_volume'])]
-    identity = [version, packet, report['key'], digest(DESIGN/'DommaschkCartesianMirrorBirth.trace')]
-    root, proof = compile_modules(args.cache/NAME, declarations, roots, identity, args, 'CartesianBirthCache')
+    declarations = [(name, source, theorems)]
+    identity = [version, packet, report['key'], digest(DESIGN/(dependency+'.trace'))]
+    root, proof = compile_modules(args.cache/name, declarations, roots, identity, args, package)
     result = {k:v for k,v in proof.items() if k != 'artifacts'}
     result.update(packet_sha256=packet, passage_key=report['key'], import_paths=list(map(str, [root, *roots])))
     save(args.output, result)
-    print(NAME, result['key'], flush=True)
+    print(name, result['key'], flush=True)
+
+
+def main():
+    verify_passage(NAME, SOURCE, ['from_birth', 'nonempty_interior', 'positive_mass', 'positive_volume'],
+                   'DommaschkCartesianMirrorBirth', 'CartesianBirthCache', 'cartesian-mirror-birth', __doc__)
 
 
 if __name__ == '__main__':

@@ -144,6 +144,7 @@ public import PlasmaLean.Theory.Fields.FormHYMBundle
 public import PlasmaLean.Sanity.FormHYMBundle
 public import PlasmaLean.Theory.Contract.EmbeddedSurfaces
 public import PlasmaLean.Theory.Contract.TrappedBirthBand
+public import PlasmaLean.Theory.Contract.TrappedBirthCoordinates
 public import PlasmaLean.Sanity.EmbeddedSurfaces
 public import PlasmaLean.Theory.Fluids.EulerianODE
 public import PlasmaLean.Theory.Transport.PowerBalance

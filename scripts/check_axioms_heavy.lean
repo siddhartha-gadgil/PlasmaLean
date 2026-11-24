@@ -62,6 +62,7 @@ import PlasmaLean.Design.DommaschkRowFlightBudget
 import PlasmaLean.Design.DommaschkActionHeightInverse
 import PlasmaLean.Design.DommaschkNativeWellAction
 import PlasmaLean.Design.DommaschkCartesianMirrorBirth
+import PlasmaLean.Design.DommaschkTrappedBirthCoordinates
 import PlasmaLean.Design.DommaschkToroidalEnvelopeTest
 import PlasmaLean.Design.DommaschkEndpointContinuation
 import PlasmaLean.Design.DommaschkNativeActionReflection
@@ -449,3 +450,5 @@ run_cmd do
 #print axioms PlasmaLean.Design.DommaschkCartesianAngleFlow.cartesian_ode
 #print axioms PlasmaLean.Design.DommaschkCartesianMirrorBirth.flow_bracket
 #print axioms PlasmaLean.Design.DommaschkCartesianMirrorBirth.neighborhood
+#print axioms PlasmaLean.Design.DommaschkTrappedBirthCoordinates.strict_at_birth
+#print axioms PlasmaLean.Design.DommaschkTrappedBirthCoordinates.from_path
