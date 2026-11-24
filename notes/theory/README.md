@@ -111,3 +111,4 @@ Phase 8 (kam-route.md, finite-beta-stellarator.md):
 - [Mirror profile stability](mirror-profile-stability.md) (N-85). Sharp action bounds, stability of crossing times and estimates from measured field-strength bands.
 - [Physical action bounds on three original time panels](dommaschk-first-physical-action-cells.md) (N-86). The two cells straddling the Q-16 birth and the earliest chronological cell from local mirror entry.
 - [Linear action stability near mirror height](mirror-action-collar.md) (N-87). Quantitative regularity is needed only in a collar of the height, allowing critical well bottoms.
+- [Action when arclength density varies](mirror-action-changing-arclength.md) (N-88). Sharp L¹ control of density perturbations and the associated label derivative term.
