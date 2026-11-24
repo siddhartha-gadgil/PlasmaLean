@@ -107,3 +107,5 @@ Phase 8 (kam-route.md, finite-beta-stellarator.md):
 - [Unique transverse contacts in both physical mirror brackets](dommaschk-transverse-physical-mirror-brackets.md) (N-81). Signed field-strength derivatives and strict monotonicity certify four local crossings; the launched path excludes either height through ±2 radians.
 - [All eight adaptive grids from their original physical packet covers](dommaschk-complete-sublevel-archive.md) (N-82). One kernel-checked pass through each packet binds every arclength threshold and the original strict action target.
 - [First-slab ODE defects at eight physical launches](dommaschk-eight-reference-defects.md) (N-83). Sixteen signed reference-curve bounds and an exact external comparison of Jacobian transfer between launch radii.
+- [Complete strict signs before both mirror brackets](dommaschk-complete-pre-mirror-signs.md) (N-84). All 648 directed tube signs and the ordered bounds on each side of the launch.
+- [Mirror profile stability](mirror-profile-stability.md) (N-85). Sharp action bounds, stability of crossing times and estimates from measured field-strength bands.

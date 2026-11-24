@@ -40,11 +40,42 @@ def inputs(row,index,er,ez,shift=0):
     return r,(r-R0M,Model(vertical,ez),waves[2],waves[1])
 
 
-def split(index,record,error):
+def offsets(error):
     left=-error//2
     right=error//2
-    return [(side,off,inputs(record,index,max(error+off,-off) if off<0 else max(off,error-off),
-                              error,off)) for side,off in [('Left',left),('Right',right)]]
+    return [('Left',left,max(error+left,-left)),('Right',right,max(right,error-right))]
+
+
+def split(index,record,error):
+    return [(side,off,inputs(record,index,width,error,off)) for side,off,width in offsets(error)]
+
+
+def quarters(index,record,error):
+    return [(side+sub,off+delta,inputs(record,index,width,error,off+delta))
+            for side,off,half in offsets(error) for sub,delta,width in offsets(half)]
+
+
+def quarter_cover(base_radius,parts):
+    a,*p=base_radius.a
+
+    def divide(center,error,source,indent):
+        (_,l,dl),(_,r,dr)=offsets(error)
+        return (f'{indent}obtain part | part := cover_spatial_radius (bits := 80) '
+                f'(a := {center}) (p := {p})\n'
+                f'{indent}  (l := {l}) (dl := {dl}) (r := {r}) (dr := {dr}) (e := {error})\n'
+                f'{indent}  (by norm_num) (by norm_num) (by norm_num) {source}\n')
+
+    src=divide(a,base_radius.e,'rad','  ')
+    for index,(_,shift,radius) in enumerate(offsets(base_radius.e)):
+        src+=f'  · change (ofDyadic 80 {[a+shift,*p]} ({radius})).Mem _ _ at part\n'
+        src+=divide(a+shift,radius,'part','    ')
+        for gap,provider,rad,off in parts[2*index:2*index+2]:
+            src+=f'''    · change ({model_literal(rad)}).Mem _ _ at part
+      have shifted := shifted_mem (u := {provider}.trial.u) part
+        (eq_of_beq (by kernel_fact)) (by kernel_fact)
+      exact {gap}.sign_on_models hs part ⟨shifted,inp.2.1,inp.2.2.1,inp.2.2.2⟩
+'''
+    return src
 
 
 def own_fields(args,index,tag,cols):
@@ -106,7 +137,7 @@ def jacobian(args,index,row,out):
     return None
 
 
-def prove_row(args,i,row,error,models):
+def prove_row(args,i,row,error,models,*,field_values=None,upper=False):
     parts=[]
     parents=[]
     base_radius,base=inputs(row,i,error,error) if len(models)>1 else models[0][2][:2]
@@ -114,7 +145,8 @@ def prove_row(args,i,row,error,models):
         gap=f'DommaschkBeforeGap{i:03}'+tag
         src=header(gap,['PlasmaLean.Design.DommaschkPreMirrorSigns',*imports])
         src+='open DommaschkMirrorEndpointSign '+provider+'\n'
-        src+=gap_proof(False,False,HEIGHTS[0],rad,cols)+'\nend PlasmaLean.Design.'+gap+'\n'
+        src+=gap_proof(upper,False,HEIGHTS[int(upper)],rad,cols,field_values=field_values)
+        src+='\nend PlasmaLean.Design.'+gap+'\n'
         tracked=(digest(DESIGN/(provider+'.trace')) if imports==['PlasmaLean.Design.'+provider] else None)
         common=args.keys+[tracked,[(r['key'],r['artifacts']) for _,r in upstream],
                          digest(DESIGN/'DommaschkPreMirrorSigns.trace')]
@@ -122,7 +154,7 @@ def prove_row(args,i,row,error,models):
         result=compile_modules(args.cache/gap,[(gap,src,['sign_on_models'])],[overlay],common,args,GAPS)
         parts.append((gap,provider,rad,shift))
         parents.extend([*upstream,result])
-    name=f'DommaschkPreMirrorSign{i:03}'
+    name=('DommaschkUpperPreMirrorSign' if upper else 'DommaschkPreMirrorSign')+f'{i:03}'
     block,offset=divmod(i,8)
     harmonic=f'DommaschkHarmonicBlock{block:02}'
     src=header(name,['PlasmaLean.Design.'+harmonic,*[GAPS+'.'+part[0] for part in parts]])
@@ -152,12 +184,13 @@ def prove_row(args,i,row,error,models):
   apply physical_sign false pos (by norm_num [DommaschkFirstMirrorLaunchSign.height])
 '''
     if len(parts)==1:
-        src+=f'  exact {parts[0][0]}.sign_on_models hs rad inp\n'
-    else:
+        waves=' (Real.abs_cos_le_one _) (Real.abs_sin_le_one _)' if field_values is not None else ''
+        src+=f'  exact {parts[0][0]}.sign_on_models hs{waves} rad inp\n'
+    elif len(parts)==2:
         a,*p=base_radius.a
-        (_,_,lower,l),(_,_,upper,r)=parts
+        (_,_,lower,l),(_,_,right,r)=parts
         src+=f'''  obtain part | part := cover_spatial_radius (bits := 80) (a := {a}) (p := {p})
-    (l := {l}) (dl := {lower.e}) (r := {r}) (dr := {upper.e}) (e := {base_radius.e})
+    (l := {l}) (dl := {lower.e}) (r := {r}) (dr := {right.e}) (e := {base_radius.e})
     (by norm_num) (by norm_num) (by norm_num) rad
 '''
         for gap,provider,rad,off in parts:
@@ -166,6 +199,10 @@ def prove_row(args,i,row,error,models):
       (eq_of_beq (by kernel_fact)) (by kernel_fact)
     exact {gap}.sign_on_models hs part ⟨shifted,inp.2.1,inp.2.2.1,inp.2.2.2⟩
 '''
+    elif len(parts)==4:
+        src+=quarter_cover(base_radius,parts)
+    else:
+        raise ValueError('expected one, two or four radial cells')
     for tag,back in [('fwd','false'),('back','true')]:
         stored=f'DommaschkPositionFrames{tag.title()}.block{i//16}[{i%16}]'
         phase='t' if tag=='fwd' else '(-t)'
@@ -203,6 +240,8 @@ theorem {tag}_tube_below {{prev : State}} {{t : ℝ}} {{x : Plane}} (ht : t ∈ 
   exact below ht pos r u z
 '''
     src+='\nend PlasmaLean.Design.'+name+'\n'
+    if upper:
+        src=src.replace('height false','height true').replace('lower mirror height','upper mirror height')
     overlay=union(args.cache,parents)
     root,r=compile_modules(args.cache/name,[(name,src,['fwd_tube_below','back_tube_below'])],[overlay],
                            [args.keys,*[r['key'] for _,r in parents],digest(DESIGN/(harmonic+'.trace'))],

@@ -108,16 +108,27 @@ set_option linter.style.longLine false
     return name, src + f'\nend PlasmaLean.Design.{name}\n', theorems
 
 
-def from_birth(n):
+def from_birth(n, strict_prefixes, slopes=()):
     indices = [i for i in INDICES if i < n]
     f, b = f'DommaschkPhysicalPrefix{n:03}', f'DommaschkBackwardPrefix{n:03}'
-    name = f'DommaschkSignedMirrorBirth{n:03}'
-    props = [f'HitsBoth ({i}/64) ({i+1}/64) (DommaschkFirstMirrorLaunchSign.height '
-             + str(i == 324).lower() + ') y' for i in indices]
+    if slopes:
+        name = f'DommaschkTransverseMirrorBirth{n:03}'
+    else:
+        name = ('DommaschkFirstMirrorBirth' if strict_prefixes else 'DommaschkSignedMirrorBirth') + f'{n:03}'
+    props = []
+    for i in indices:
+        args = f' ({i}/64) ({i+1}/64) (DommaschkFirstMirrorLaunchSign.height {str(i == 324).lower()})'
+        if i in slopes:
+            props.append('DommaschkSignedMirrorSlope.FirstTransverseBoth' + args +
+                         (' (1/128) y' if i == 316 else ' (1/400) y'))
+        else:
+            props.append(('FirstBoth' if i in strict_prefixes else 'HitsBoth') + args + ' y')
+    strict_imports = ''.join(f'public import SubmirrorPrefixCache.{m}\n' for m in strict_prefixes.values())
+    strict_imports += ''.join(f'public import SignedSlopeCache.DommaschkSignedSlope{i}\n' for i in slopes)
     src = f'''module
 public import {PACKAGE}.DommaschkSignedMirrorBrackets
 public import PairedPrefixCache.DommaschkPairedPrefix{n:03}
-
+{strict_imports}
 /-! # Paired physical mirror contacts from every admitted Q-16 birth -/
 @[expose] public section
 noncomputable section
@@ -137,8 +148,14 @@ theorem contacts_from_birth :
     for i in indices:
         lead = '  · ' if len(indices) == 2 else '  '
         length = f'(by change {i} < {n}; norm_num)'
-        src += lead + (f'exact DommaschkSignedMirrorBrackets.hits{i} path (by norm_num) '
-                       f'{length} {length} rfl rfl\n')
+        tag = 'first' if i in strict_prefixes else 'hits'
+        extra = (f' (path.below_on (k := {i}) (by norm_num) rfl rfl '
+                 f'{strict_prefixes[i]}.fwd_checked {strict_prefixes[i]}.back_checked)') if i in strict_prefixes else ''
+        row = f'path (by norm_num) {length} {length} rfl rfl'
+        first = f'DommaschkSignedMirrorBrackets.{tag}{i} {row}{extra}'
+        if i in slopes:
+            first = f'DommaschkSignedMirrorSlope.first_transverse ({first}) (DommaschkSignedSlope{i}.regular {row})'
+        src += lead + f'exact {first}\n'
     return name, src + f'\nend PlasmaLean.Design.{name}\n', ['contacts_from_birth']
 
 
@@ -146,9 +163,17 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--brackets', required=True, type=Path)
     parser.add_argument('--paired', type=Path)
+    parser.add_argument('--lower-prefix', type=Path,
+                        help='attach signs on all 316 earlier tubes to prove earliest lower contacts')
+    parser.add_argument('--upper-prefix', type=Path,
+                        help='attach signs on all 324 earlier tubes to prove earliest higher contacts')
+    parser.add_argument('--slopes', type=Path, nargs='+', default=[],
+                        help='add certified slopes and uniqueness to the corresponding earliest contacts')
     parser.add_argument('--output', type=Path)
     parser.add_argument('--cache', type=Path, default=ROOT/'.lake/signed-mirrors')
     args = parser.parse_args()
+    if (args.lower_prefix or args.upper_prefix or args.slopes) and not args.paired:
+        parser.error('earlier signs require the paired birth trajectory')
     def lake(*cmd):
         return subprocess.check_output(['lake', 'env', *cmd], cwd=ROOT, text=True).strip()
     lean = SimpleNamespace(lean=str(Path(lake('lean', '--print-prefix'))/'bin/lean'),
@@ -174,8 +199,33 @@ def main():
             parser.error('the paired trajectory must cover the first bracket in this archive')
         deps = list(map(Path, paired['import_paths']))
         admitted(deps[0], f'DommaschkPairedPrefix{n:03}', paired['key'])
-        decl = from_birth(n)
+        strict = {}
         parents = [record['key'], paired['key'], version]
+        for i, file in zip(INDICES, (args.lower_prefix, args.upper_prefix), strict=True):
+            if file is None:
+                continue
+            levels = json.loads(file.read_text())
+            upper = i == 324
+            if (levels['paired_key'] != paired['key'] or n <= i or levels['slabs'] != i or
+                    levels.get('upper', False) != upper):
+                parser.error(f'the earlier signs must cover {i} rows at the correct height on this trajectory')
+            strict[i] = ('DommaschkUpperSubmirror' if upper else 'DommaschkSubmirror') + f'{i}Of{n:03}'
+            level_roots = list(map(Path, levels['import_paths']))
+            admitted(level_roots[0], strict[i], levels['key'])
+            deps.extend(level_roots)
+            parents.append(levels['key'])
+        slopes = []
+        for file in args.slopes:
+            slope = json.loads(file.read_text())
+            i = slope['index']
+            if i in slopes or i not in strict:
+                parser.error('each slope requires an earlier-sign proof at its distinct bracket')
+            sr = list(map(Path, slope['import_paths']))
+            admitted(sr[0], f'DommaschkSignedSlope{i}', slope['key'])
+            deps.extend(sr)
+            parents.append(slope['key'])
+            slopes.append(i)
+        decl = from_birth(n, strict, sorted(slopes))
         library = merge_import_roots(args.cache, [*roots, *deps], parents)
         base, record = compile_modules(args.cache/decl[0], [decl], [library], parents, lean,
                                        'SignedMirrorBirthCache')

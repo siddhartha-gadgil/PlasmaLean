@@ -43,7 +43,7 @@ def endpoint_data(index, right, traces):
     return radial,columns
 
 
-def gap_proof(upper,right,height,radial,cols):
+def gap_proof(upper,right,height,radial,cols,*,field_values=None):
     upper_s,right_s = (str(k).lower() for k in (bool(upper),right))
     height_expr = f'((DommaschkFirstMirrorLaunchSign.height {upper_s} : ℚ) : ℝ)'
     decl = []
@@ -52,10 +52,16 @@ def gap_proof(upper,right,height,radial,cols):
     oriented {right_s} (gap R {height_expr} (evR (R-dkR0) z c s dD)
       (evR (R-dkR0) z c s dnR) (evR (R-dkR0) z c s dnZ)) 0 := by''']
     table = {'R': (radial,'R','rad')}
-    for key,poly,terms in zip(('D','nr','nz'),('dD','dnR','dnZ'),sparse_fields(),strict=True):
+    physical_angles=field_values is not None
+    if physical_angles:
+        lines[0]=lines[0].replace('(hw : |w| ≤ 1)','(hw : |w| ≤ 1) (hc : |c| ≤ 1) (hs : |s| ≤ 1)')
+    else:
+        field_values=[sum(models(terms,cols),ZERO) for terms in sparse_fields()]
+    for key,poly,value in zip(('D','nr','nz'),('dD','dnR','dnZ'),field_values,strict=True):
         lines.append(f'  let {key} := evR (R-dkR0) z c s {poly}')
-        lines.append(f'  have in_{key} : {poly}0.Mem w {key} := {poly}_checked.mem hw inp')
-        table[key] = (sum(models(terms,cols),ZERO),key,'in_'+key)
+        checked=f'{poly}_checked.mem hw inp'+(' hc hs' if physical_angles else '')
+        lines.append(f'  have in_{key} : {poly}0.Mem w {key} := {checked}')
+        table[key] = (value,key,'in_'+key)
     for key,value,expr in [('h',height,height_expr),('neg',F(-1),'(-1:ℝ)')]:
         model = Model.rational(value)
         decl.append(f'private def model_{key} : Model := {model_literal(model)}')
