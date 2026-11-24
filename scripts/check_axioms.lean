@@ -848,3 +848,6 @@ run_cmd do
 #print axioms PlasmaLean.Kinetic.MirrorActionEnvelope.LaunchWell.regular_at
 #print axioms PlasmaLean.Kinetic.MirrorActionEnvelope.tangent_closed_component
 #print axioms PlasmaLean.Kinetic.MirrorActionEnvelope.LaunchWell.finite_bounce_time
+#print axioms PlasmaLean.Kinetic.MirrorHeightBand.exists_branch
+#print axioms PlasmaLean.Kinetic.MirrorHeightBand.Branch.time_lipschitz
+#print axioms PlasmaLean.Kinetic.MirrorHeightBand.Branch.continuous_time

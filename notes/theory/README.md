@@ -122,3 +122,4 @@ Phase 8 (kam-route.md, finite-beta-stellarator.md):
 - [Physical action between the first upper mirrors](dommaschk-first-well-action-floor.md) (N-96). The dimensionless one-way physical action exceeds 553/2000 at the upper height.
 - [Connected wells and actual regular mirror births](regular-mirror-births-and-components.md) (N-97). Open and closed accessible components and the arclength contract at the original interpolated birth.
 - [Finite time between the first physical mirrors](finite-transverse-mirror-bounce-time.md) (N-98). Transverse endpoints make inverse parallel speed integrable with arclength weight. The one-way time is strictly positive at both pilot heights.
+- [First mirror wells across the Dommaschk height band](dommaschk-mirror-height-band.md) (N-99). The first mirror positions vary Lipschitz-continuously, the one-way action increases strictly with height and each well has finite positive flight time.

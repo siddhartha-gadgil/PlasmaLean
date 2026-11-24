@@ -168,9 +168,9 @@ set_option Elab.async false
     return name,head+'\n'.join(defs+['']+lines)+f'\nend PlasmaLean.Design.{name}\n',rate
 
 
-def tube_source(i,jac,num,rate):
+def tube_source(i,jac,num,rate,closed=False):
     _,_,rows=data(i)
-    name=f'DommaschkMirrorSlope{i:03}Tube'
+    name=f'DommaschkMirrorSlope{i:03}' + ('ClosedTube' if closed else 'Tube')
     out=f'''module
 public import {SLOPES}.{num}
 public import {JACOBIAN_PACKAGE}.{jac}
@@ -194,15 +194,24 @@ private theorem clock (t : ℝ) : coord ({i}/64) t = 128*t-{2*i+1} := by unfold 
         z='(y t 1)' if sign==1 else '(-(y t 1))'
         phi='a' if sign==1 else '(-a)'
         a=f'({i}/64 : ℝ)'; b=f'({i+1}/64 : ℝ)'; w=f'(128*t-{2*i+1})'
+        # The longer signed solution supplies a two-sided derivative at an internal seam.
+        # The polynomial and physical-tube inputs are valid on the entire closed cell.
+        domain = 'Icc' if closed else 'Ioo'
+        derivative = 'HasDerivAt' if closed else 'HasDerivWithinAt'
+        support = '' if closed else f' (Icc {a} {b})'
+        flow = 'field' if closed else '(field.hasDerivAt (Icc_mem_nhds ht.1 ht.2))'
+        hc = 'ht' if closed else 'Ioo_subset_Icc_self ht'
+        euclidean_support = '' if closed else f'(Icc {a} {b}) '
+        composition = 'comp_hasDerivAt' if closed else 'comp_hasDerivWithinAt'
         zp=f'{jac}.trial.z.poly' if sign==1 else f'QPoly.scale (-1) {jac}.trial.z.poly'
         out+=f'''
 abbrev {rn} := DommaschkPositionFrames{frame}.block{i//16}[{i%16}]
 
 /-- The squared physical field strength has a strictly positive derivative at every
 interior point of the original {word} bracket tube on any actual field solution. -/
-theorem {tag}_transverse {{t : ℝ}} (ht : t ∈ Ioo {a} {b}) {{y : ℝ → DommaschkBounceField.State}}
+theorem {tag}_transverse {{t : ℝ}} (ht : t ∈ {domain} {a} {b}) {{y : ℝ → DommaschkBounceField.State}}
     {{prev : PositionFrameSlabs.State}} (hx : coordinates.symm (y t) ∈ (physicalSlab prev {rn} {a}).tube t)
-    (field : HasDerivWithinAt y (physicalFlow 0 {signed} t (y t)) (Icc {a} {b}) t) :
+    (field : {derivative} y (physicalFlow 0 {signed} t (y t)){support} t) :
     ∃ v > ({rate}:ℝ), HasDerivAt (fun a => ‖DommaschkQA2R.field DommaschkQA2R.candidate
       (cylPoint (y a 0) {phi} (y a 1))‖^2) v t := by
   have hs : |128*t-{2*i+1}| ≤ 1 := abs_le.mpr ⟨by linarith [ht.1],by linarith [ht.2]⟩
@@ -238,7 +247,7 @@ theorem {tag}_transverse {{t : ℝ}} (ht : t ∈ Ioo {a} {b}) {{y : ℝ → Domm
         -(y t 1 - -QPoly.eval {jac}.trial.z.poly {w}) by ring,abs_neg]
     exact hz0
 '''
-        out+=f'''  have hc := Ioo_subset_Icc_self ht
+        out+=f'''  have hc := {hc}
   have den := {jac}.denominator_pos hc hu hz
   have input := {jac}.clock_inputs hc hu hz
   have margin := {num}.numerator_margin hs input
@@ -247,19 +256,19 @@ theorem {tag}_transverse {{t : ℝ}} (ht : t ∈ Ioo {a} {b}) {{y : ℝ → Domm
     change (⟨[0],1/2⟩ : Model).Mem _ (y t 0 - dkR0) at h
     norm_num [Model.Mem, dkR0, abs_le] at h
     linarith
-  exact {word}_of_physical (field.hasDerivAt (Icc_mem_nhds ht.1 ht.2)) radius den margin
+  exact {word}_of_physical {flow} radius den margin
 
 /-- The physical strength itself crosses any positive attained level transversely.
 The Euclidean hypotheses are the ones returned by the actual field-step solver. -/
-theorem {tag}_level_transverse {{t h : ℝ}} (ht : t ∈ Ioo {a} {b}) {{y : ℝ → Plane}}
+theorem {tag}_level_transverse {{t h : ℝ}} (ht : t ∈ {domain} {a} {b}) {{y : ℝ → Plane}}
     {{prev : PositionFrameSlabs.State}} (hx : y t ∈ (physicalSlab prev {rn} {a}).tube t)
-    (field : HasDerivWithinAt y (DommaschkJacobian.euclideanFlow 0 {signed} t (y t))
-      (Icc {a} {b}) t) (hp : 0 < h)
+    (field : {derivative} y (DommaschkJacobian.euclideanFlow 0 {signed} t (y t))
+      {euclidean_support}t) (hp : 0 < h)
     (hit : DommaschkMirrorTubeCrossing.strength {'t' if sign==1 else '(-t)'} (y t) = h) :
     ∃ v > ({rate}:ℝ) / (2*h), HasDerivAt (fun a => DommaschkMirrorTubeCrossing.strength {phi} (y a)) v t := by
   apply at_positive_level (f := fun a => DommaschkMirrorTubeCrossing.strength {phi} (y a))
     (k := {rate}) (t := t) (fun a => norm_nonneg _) hp hit
-  have d := coordinates.toContinuousLinearMap.hasFDerivAt.comp_hasDerivWithinAt t field
+  have d := coordinates.toContinuousLinearMap.hasFDerivAt.{composition} t field
   apply {tag}_transverse (y := fun a => coordinates (y a)) ht
   · simpa only [ContinuousLinearEquiv.symm_apply_apply] using hx
   · apply d.congr_deriv
@@ -270,8 +279,8 @@ theorem {tag}_level_transverse {{t h : ℝ}} (ht : t ∈ Ioo {a} {b}) {{y : ℝ 
 
 def main():
     parser=argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--index',required=True,type=int,choices=(316,324))
-    parser.add_argument('--part',choices=('angles','bounds','tube'),default='angles')
+    parser.add_argument('--index',required=True,type=int,choices=range(316,325))
+    parser.add_argument('--part',choices=('angles','bounds','tube','closed-tube'),default='angles')
     parser.add_argument('--output',type=Path,help='write a replay manifest with Lean import paths')
     args=parser.parse_args()
     def lake(*cmd):
@@ -291,13 +300,14 @@ def main():
             [jac_root,angle_root],[v,digest(RECORD),jac['key'],angle_record['key'],
                  digest(DESIGN/'DommaschkMirrorStrengthSlope.trace')],namespace,package=SLOPES)
         paths=[root,angle_root,jac_root]
-        if args.part=='tube':
-            n,src=tube_source(args.index,jac['module'],name,rate)
+        if args.part in ('tube', 'closed-tube'):
+            n,src=tube_source(args.index,jac['module'],name,rate,closed=args.part=='closed-tube')
             deps=[digest(DESIGN/(m+'.trace')) for m in ('DommaschkMirrorEndpointSign',
                 'DommaschkPositionFramesFwd','DommaschkPositionFramesBack')]
             labels=['fwd_transverse','back_transverse','fwd_level_transverse','back_level_transverse']
+            package = 'MirrorSlopeClosedTubeCache' if args.part == 'closed-tube' else TUBES
             root,record=compile_modules(CACHE/n,[(n,src,labels)],
-                paths,[v,digest(RECORD),record['key'],deps],namespace,package=TUBES)
+                paths,[v,digest(RECORD),record['key'],deps],namespace,package=package)
             paths=[root,*paths]
     result={k:record[k] for k in ('module','key','theorems','axioms')}
     result.update(index=args.index,part=args.part,rate_lower=str(rate) if rate else None,
