@@ -1,8 +1,10 @@
 """Prove both chronological action blocks on one signed physical path using one native Horner trace."""
 
 import argparse
-from concurrent.futures import FIRST_COMPLETED, ThreadPoolExecutor, wait
+from concurrent.futures import FIRST_COMPLETED, ProcessPoolExecutor, wait
+from functools import lru_cache
 import json
+import os
 from pathlib import Path
 import subprocess
 from types import SimpleNamespace
@@ -14,13 +16,25 @@ import verify_native_action_columns as ticks
 import verify_native_action_models as models
 from verify_physical_trace_slabs import DESIGN, digest, save
 from verify_sparse_reference_slabs import GIB, available_ram
+from verify_native_action_campaign import cpus
 
 
 PACKAGE = 'NativePathCellCache'
 
 
+@lru_cache(maxsize=1)
+def field_identities():
+    return models.static_data()
+
+
 def row_source(i, model, tick):
     name = f'DommaschkNativePathCellsPaired{i:03d}'
+    # Casts from Nat and the ordered field's numeral instances differ at zero and one.
+    cast = f'(({i}:ℕ):ℝ)' if i < 2 else f'({i}:ℝ)'
+    cast_simp = ('Nat.cast_zero','Nat.cast_one')[i] if i < 2 else None
+    tube_simp = f'  simp only [{cast_simp}] at tube\n' if cast_simp else ''
+    hq_simp = f'  simp only [{cast_simp}] at hq\n' if cast_simp else ''
+    tube_arg = f'(by simpa only [{cast_simp}] using hq)' if cast_simp else 'hq'
     src = ticks.header(name, [models.OUTPUT_PACKAGE+'.'+model, ticks.PACKAGE+'.'+tick,
                       'PlasmaLean.Certificates.NativeActionArchivePair',
                       'PlasmaLean.Design.DommaschkSignedObservable'])
@@ -46,7 +60,7 @@ theorem mirrored (j : Fin 48) : SameDigits ({tick}.record j) (backwardRecord j) 
         arc = f'{mode}Archive'
         record = 'backwardRecord' if backward else tick+'.record'
         chrono = 324-i if backward else 325+i
-        time = f'(-((({i}:ℝ)+1)/64))' if backward else f'(({i}:ℝ)/64)'
+        time = f'(-(({cast}+1)/64))' if backward else f'({cast}/64)'
         branch = 'br' if backward else 'fr'
         flag = 'true' if backward else 'false'
         src += f'''
@@ -83,14 +97,14 @@ theorem {mode}_cells {{n : ℕ}} {{fs bs : Certificates.PositionFrameSlabs.State
   rw [{mode}_archive]
   apply NativeActionInterval.{mode}_cells (i := {i})
   obtain ⟨_,prev,tube⟩ := path.at_row within {flag} hr
-  change ∀ q ∈ Icc ({i}/64:ℝ) ((({i}:ℝ)+1)/64), y {phi} ∈
+{tube_simp}  change ∀ q ∈ Icc ({i}/64:ℝ) ((({i}:ℝ)+1)/64), y {phi} ∈
     (physicalSlab prev {branch}[{i}] ({i}/64)).tube q at tube
   rw [row_eq] at tube
   intro j q hq hs
-  have space := tube q hq
+  have space := tube q {tube_arg}
   rw [show (({i}:ℕ):ℝ) + 1 = {i+1} by norm_num] at hq
   rw [show 2*(({i}:ℕ):ℝ)+1 = {2*i+1} by norm_num] at hs
-  exact {mode}_point j hq space hs
+{hq_simp}  exact {mode}_point j hq space hs
 '''
     return name, src+f'end PlasmaLean.Design.{name}\n', ['forward_cells','backward_cells']
 
@@ -101,7 +115,7 @@ def verify(i,args):
     tick = (tick_dir,json.loads((tick_dir/'accepted.json').read_text()))
     ma = SimpleNamespace(**{**vars(args), 'cache':args.model_cache, 'row':i, 'direction':1,
                             'paired':True, 'fields':list(range(4))})
-    field_data = models.static_data()
+    field_data = field_identities()
     static = models.verify_static(ma,field_data)
     pieces = models.verify_row(ma,field_data,static)
     deps = [*static,*pieces,tick]
@@ -127,8 +141,9 @@ def main():
     select = parser.add_mutually_exclusive_group(required=True)
     select.add_argument('--row', type=int, choices=range(325), metavar='0..324')
     select.add_argument('--range', type=int, nargs=2, metavar=('FIRST','LAST'))
-    parser.add_argument('--workers', type=int, choices=range(1,9), default=2)
+    parser.add_argument('--workers', type=int, choices=range(1,25), default=2)
     parser.add_argument('--reserve-gib', type=int, default=32)
+    parser.add_argument('--reserve-cores', type=int, default=2)
     parser.add_argument('--cache', type=Path, default=ROOT/'.lake/native-path-cells')
     parser.add_argument('--model-cache', type=Path, default=ROOT/'.lake/native-action-checks')
     parser.add_argument('--tick-cache', type=Path, default=ROOT/'.lake/native-action-columns')
@@ -146,15 +161,32 @@ def main():
             save(args.output,result)
         return
     first, last = args.range
-    if not (0 <= first <= last < 325) or args.reserve_gib < 0:
-        parser.error('require 0 ≤ FIRST ≤ LAST < 325 and a nonnegative memory reserve')
+    if not (0 <= first <= last < 325) or min(args.reserve_gib,args.reserve_cores) < 0:
+        parser.error('require 0 ≤ FIRST ≤ LAST < 325 and nonnegative CPU and RAM reserves')
     pending = set(range(first,last+1))
     active, records = {}, {}
-    began = time.monotonic()
-    with ThreadPoolExecutor(max_workers=args.workers) as pool:
+    began = sample_at = time.monotonic()
+    samples, before = [], cpus()
+    baseline = min(2,args.workers)
+    target = baseline
+    with ProcessPoolExecutor(max_workers=args.workers) as pool:
         while pending or active:
+            now = time.monotonic()
+            if now - sample_at >= 8:
+                after = cpus()
+                idle = len(os.sched_getaffinity(0)) * (after[1]-before[1]) / max(1,after[0]-before[0])
+                before, sample_at = after, now
+                samples.append(idle)
+                if len(samples) >= 3:
+                    ready = len(list((args.model_cache/'paired-rows').glob('*.json')))
+                    ceiling = min(args.workers, 4) if ready < 325 else args.workers
+                    if min(samples) >= args.reserve_cores + 1:
+                        target = min(ceiling, target+1)
+                    elif max(samples) < args.reserve_cores:
+                        target = max(baseline, target-1)
+                    samples.clear()
             for i in sorted(pending):
-                if len(active) >= args.workers or available_ram() < (args.reserve_gib+4)*GIB:
+                if len(active) >= target or available_ram() < (args.reserve_gib+4)*GIB:
                     break
                 if (args.model_cache/'paired-rows'/f'{i:03}.json').is_file():
                     active[pool.submit(verify,i,args)] = i
@@ -170,6 +202,7 @@ def main():
             if args.output:
                 save(args.output, {'range':[first,last],'accepted_pairs':len(records),
                      'accepted_cells':96*len(records),'complete':not pending and not active,
+                     'worker_target':target, 'available_gib':round(available_ram()/GIB,1),
                      'active_indices':sorted(active.values()), 'elapsed_seconds':round(time.monotonic()-began),
                      'records':[records[i] for i in sorted(records)]})
 
