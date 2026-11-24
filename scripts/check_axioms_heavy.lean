@@ -45,6 +45,9 @@ import PlasmaLean.Design.DommaschkPerturbedFieldModel
 import PlasmaLean.Design.DommaschkUniformFieldError
 import PlasmaLean.Design.DommaschkPhysicalActionCap
 import PlasmaLean.Design.DommaschkReflectedPilot
+import PlasmaLean.Certificates.MirrorActionUniformCells
+import PlasmaLean.Design.DommaschkPhysicalArcTrace
+import PlasmaLean.Design.DommaschkCompensatedAction
 import PlasmaLean.Design.DommaschkSignedMirrorSlope
 import PlasmaLean.Design.DommaschkMirrorStrengthSlope
 import PlasmaLean.Design.RationalStellaratorGCMuWide
@@ -343,3 +346,6 @@ run_cmd do
 #print axioms PlasmaLean.Design.DommaschkReflectedPath.endpoint_trajectory
 #print axioms PlasmaLean.Design.DommaschkReflectedPath.action
 #print axioms PlasmaLean.Design.DommaschkReflectedPilot.archive
+#print axioms PlasmaLean.Certificates.MirrorActionQuadrature.cells_of_floor
+#print axioms PlasmaLean.Design.DommaschkCompensatedAction.gap_from_shift
+#print axioms PlasmaLean.Design.DommaschkPhysicalActionPanel.arcDensity_on_path

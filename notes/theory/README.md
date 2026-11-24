@@ -113,3 +113,4 @@ Phase 8 (kam-route.md, finite-beta-stellarator.md):
 - [Linear action stability near mirror height](mirror-action-collar.md) (N-87). Quantitative regularity is needed only in a collar of the height, allowing critical well bottoms.
 - [Action when arclength density varies](mirror-action-changing-arclength.md) (N-88). Sharp L¹ control of density perturbations and the associated label derivative term.
 - [Five-radian physical birth trajectory](dommaschk-five-radian-birth-trace.md) (N-89). Both strict mirror-height bounds on the shared birth path through 160 slabs in each direction.
+- [Two complete physical action blocks](dommaschk-two-physical-action-blocks.md) (N-90). All 96 original panels around the launch hold on one true field line, with arclength given by the Cartesian derivative.

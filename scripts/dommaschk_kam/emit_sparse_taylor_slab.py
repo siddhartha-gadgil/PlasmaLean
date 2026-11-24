@@ -62,8 +62,9 @@ def models(terms, columns):
     return results
 
 
-def field(name, columns, input_name='trial'):
-    terms = coefficients(DATA.read_text(), name)
+def field(name, columns, input_name='trial', *, terms=None):
+    if terms is None:
+        terms = coefficients(DATA.read_text(), name)
     blocks = models(terms, columns)
     lines = []
     tail = ZERO

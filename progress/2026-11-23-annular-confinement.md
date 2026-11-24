@@ -140,3 +140,5 @@ On a single physical Q-16 field line the two packed action cells beside the laun
 For field lines with distinct arclength densities, the action comparison now charges their integrated absolute density difference times maximum clipped speed. A label derivative may likewise be bounded by separate field-profile and density terms. [Changing arclength theorem](https://github.com/siddhartha-gadgil/PlasmaLean/blob/main/notes/theory/mirror-action-changing-arclength.md)
 
 The physical phase-zero trajectory from every admitted radius-0.470 birth reaches [−5/2,5/2], stays below both mirror heights and has position error below 2.216 × 10⁻⁶. [Five-radian certificate and exact replay](https://github.com/siddhartha-gadgil/PlasmaLean/blob/main/notes/theory/dommaschk-five-radian-birth-trace.md)
+
+The two complete upper action blocks straddling the radius-0.470 launch now hold on one physical trajectory. All 96 original panels satisfy their pointwise physical bounds, including the version using the Cartesian derivative for actual arclength. [Complete block proofs](https://github.com/siddhartha-gadgil/PlasmaLean/blob/main/notes/theory/dommaschk-two-physical-action-blocks.md)
