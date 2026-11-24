@@ -204,6 +204,7 @@ public import PlasmaLean.Certificates.RadialSlabs
 public import PlasmaLean.Certificates.RadialObservableDerivatives
 public import PlasmaLean.Certificates.TrajectoryTaylorModel
 public import PlasmaLean.Certificates.PositionFrameChain
+public import PlasmaLean.Certificates.PositionFrameObservables
 public import PlasmaLean.Certificates.PositionFrameBall
 public import PlasmaLean.Certificates.TrajectorySpatialSplit
 public import PlasmaLean.Certificates.TrajectoryHarmonicSections

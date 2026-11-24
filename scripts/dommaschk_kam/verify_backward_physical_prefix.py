@@ -248,7 +248,8 @@ def main():
     overlay = union(cache,packages)
     if a.row is not None:
         public = {k:v for k,v in result[1].items() if k != 'artifacts'}
-        public.update(row=a.row,direction=-1,packet_sha256=checksum,import_paths=[str(overlay)])
+        public.update(row=a.row,direction=-1,lean_version=version,packet_sha256=checksum,
+                      import_paths=[str(overlay)])
         if a.output:
             save(a.output,public)
         print(json.dumps(public),flush=True)

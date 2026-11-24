@@ -25,6 +25,9 @@ leaves no axiom behind and is not detected by an axiom check.
 import PlasmaLean.Design.RationalStellaratorGCEwFamily
 import PlasmaLean.Certificates.DyadicTaylorCover
 import PlasmaLean.Design.DommaschkReflectedProjectedTrial
+import PlasmaLean.Design.DommaschkFirstMirrorLaunchSign
+import PlasmaLean.Design.DommaschkMirrorBracketSlab
+import PlasmaLean.Certificates.PositionFrameObservables
 import PlasmaLean.Design.RationalStellaratorGCMuWide
 import PlasmaLean.Design.RationalStellaratorGCMu3Confined
 import PlasmaLean.Design.RationalStellaratorGCMu4Confined
@@ -273,3 +276,8 @@ run_cmd do
 #print axioms PlasmaLean.Design.DommaschkStoredPowers.checkedChunk
 #print axioms PlasmaLean.Certificates.TrajectoryTaylorModel.dyadic_cover
 #print axioms PlasmaLean.Design.DommaschkProjectedTrial.reflected_membership
+#print axioms PlasmaLean.Design.DommaschkMirrorTubeCrossing.first_on_tube
+#print axioms PlasmaLean.Design.DommaschkFirstMirrorLaunchSign.first_tube_below
+#print axioms PlasmaLean.Design.DommaschkMirrorEndpointSign.physical_sign
+#print axioms PlasmaLean.Design.DommaschkMirrorBracketSlab.hit
+#print axioms PlasmaLean.Certificates.PositionFrameSlabs.first_contact_after_prefix
