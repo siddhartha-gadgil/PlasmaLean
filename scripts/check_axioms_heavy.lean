@@ -174,6 +174,7 @@ import PlasmaLean.Design.DommaschkRadialActionAlternative
 import PlasmaLean.Design.DommaschkFirstMirrorHeightSampling
 import PlasmaLean.Design.DommaschkRadialRibbonEntry
 import PlasmaLean.Design.DommaschkRadialFamilyContinuity
+import PlasmaLean.Design.DommaschkRadialSectionAction
 
 /-! Audit all declarations owned by project modules in the import closure (the on-demand top
 modules and everything they import). Fails on any non-standard axiom. -/
@@ -654,3 +655,5 @@ run_cmd do
 #print axioms PlasmaLean.Design.DommaschkRadialFamilyContinuity.transfer_well
 #print axioms PlasmaLean.Design.DommaschkRadialFamilyContinuity.alternative_of_passages
 #print axioms PlasmaLean.Design.DommaschkRadialFamilyContinuity.prescribed_of_regular
+#print axioms PlasmaLean.Design.DommaschkRadialSectionAction.from_section
+#print axioms PlasmaLean.Design.DommaschkRadialSectionAction.realized_of_sections
