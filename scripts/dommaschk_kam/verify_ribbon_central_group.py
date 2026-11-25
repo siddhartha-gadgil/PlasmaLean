@@ -84,6 +84,7 @@ def main():
     p.add_argument('--span',nargs=2,type=int,required=True)
     p.add_argument('--rows',type=int,nargs='+')
     p.add_argument('--fields-only',action='store_true')
+    p.add_argument('--integer',action='store_true',help='check each rounded Horner operation in integer numerator units')
     p.add_argument('--cache',type=Path,default=ROOT/'.lake/ribbon-central-defects')
     p.add_argument('--handoff',type=Path,help='canonical root for all four ribbon campaigns')
     p.add_argument('--output',type=Path,required=True)
@@ -100,7 +101,7 @@ def main():
     args.cache=args.cache.resolve()
     args.checksum=WITNESS_SHA
     env(args)
-    parents=group_fields(stem,ins,models,args)
+    parents=group_fields(stem,ins,models,args,integer=args.integer)
     fields=parents[-1][1]
     print(f'{stem} physical fields {fields["key"]} {fields["wall_seconds"]} seconds',flush=True)
     if args.fields_only:

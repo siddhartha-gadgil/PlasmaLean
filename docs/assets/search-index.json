@@ -3456,6 +3456,12 @@
     "text": "25 november 2026 — outward upper-height mirror orientation on all four radial intervals (n-172) implementation plan"
   },
   {
+    "title": "25 November 2026 — Integer Taylor certificates accelerate physical row proofs (N-177)",
+    "section": "Implementation plan",
+    "url": "implementation-plan.html#25-november-2026-integer-taylor-certificates-accelerate-physical-row-proofs-n-177",
+    "text": "25 november 2026 — integer taylor certificates accelerate physical row proofs (n-177) implementation plan"
+  },
+  {
     "title": "M0 · Exact symmetric equilibria: slab, screw pinch, Solov'ev, helical",
     "section": "Implementation plan · Lean verified — exact slab, screw-pinch, Solov'ev and helical equilibria with kernel force balance, all-time field-line/orbit confinement, Suydam both ways and screw-pinch Newcomb stability for every m ≠ 0 (reduced form supplied; idealized symmetric models).",
     "url": "implementation-plan.html",

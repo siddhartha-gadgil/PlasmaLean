@@ -1,6 +1,7 @@
 """Certify several original phase-zero central ODE defects from one higher-order harmonic evaluation."""
 import argparse
 from fractions import Fraction as F
+import json
 from pathlib import Path
 import subprocess
 
@@ -18,6 +19,7 @@ from verify_physical_trace_slabs import DESIGN,RECORD,ROOT,digest,save
 
 FIELDS='GroupedCentralFieldCache'
 LABELS=('q0r478','q0r523','q0r531')
+INTEGER_MARKER='verified-integer-horner.json'
 
 
 def inputs_source(name,values):
@@ -45,7 +47,15 @@ def data(label,a,b):
     return p,ins,models,rows
 
 
-def group_fields(stem,ins,models,args):
+def group_fields(stem,ins,models,args,*,integer=False):
+    campaign=getattr(args,'handoff',None)
+    if not integer and campaign is not None:
+        marker=campaign/INTEGER_MARKER
+        if marker.is_file():
+            selected=json.loads(marker.read_text())
+            integer=(selected.get('packet_sha256')==args.checksum and
+                     selected.get('theory_sha256')==digest(DESIGN/'DommaschkDyadicHorner.trace') and
+                     selected.get('backend')=='checked-dyadic-multiply-add')
     item=inputs_source(stem+'Inputs',ins)
     decls=[item]
     parents=[]
@@ -55,13 +65,15 @@ def group_fields(stem,ins,models,args):
         static=compile_modules(ROOT/'.lake/endpoint-horner-jacobians'/name,[emit_static_field(name,s,g)],[],
                   [DATA,args.version,digest(DESIGN/'DommaschkNativeActionModel.trace')],args,DATA)
         parents.append(static)
-        (n,src,proofs),m=emit_horner_field(stem+t,s,g,ins,name,item[0],DATA,FIELDS,degree=DEGREE)
+        (n,src,proofs),m=emit_horner_field(stem+t,s,g,ins,name,item[0],DATA,FIELDS,degree=DEGREE,integer=integer)
         if m.a!=expected.a or m.e!=expected.e:
             raise ValueError(f'inconsistent native physical field {n}')
         if t=='Z':
             src=src.replace('module\n',f'module\npublic import {FIELDS}.{stem}D\npublic import {FIELDS}.{stem}R\n',1)
         decls.append((n,src,proofs))
     keys=[args.version,args.checksum,digest(DESIGN/'DommaschkVariableHorner.trace'),*[m['key'] for _,m in parents]]
+    if integer:
+        keys.append(digest(DESIGN/'DommaschkDyadicHorner.trace'))
     group=compile_modules(args.cache/(stem+'Z'),decls,[union(args.cache,parents)],keys,args,FIELDS)
     return parents+[group]
 

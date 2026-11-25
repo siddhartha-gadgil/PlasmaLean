@@ -207,18 +207,21 @@ theorem back_space {{prev : State}} {{t : ℝ}} {{x : Plane}}
 
 
 MATCH = 'by constructor <;> apply eq_of_beq <;> kernel_fact'
+DYADIC_STEP = ('Certificates.DyadicHornerStep.MulAdd.dyadic (bits := 80) '
+               '(Certificates.DyadicHornerStep.le_of_sub_toNat_zero rfl)')
 
 
-def horner_proof(variable, models, name, *, degree=None):
+def horner_proof(variable, models, name, *, degree=None, integer=False):
     acc, *rest = models
-    prefix='DommaschkVariableHorner.' if degree is not None else ''
+    prefix='DommaschkDyadicHorner.' if integer else ('DommaschkVariableHorner.' if degree is not None else '')
     src = ''
     lines = []
     for j, c in enumerate(rest):
         acc = (acc*variable if degree is None else acc.product(variable,degree)) + c
         v = f'{name}_at{j+1}'
         src += f'private def {v} : Model := {model_literal(acc)}\n'
-        lines.append(f'  apply {prefix}Steps.cons (v := {v}) ({MATCH})\n')
+        proof=DYADIC_STEP if integer else MATCH
+        lines.append(f'  apply {prefix}Steps.cons (v := {v}) ({proof})\n')
     src += f'def {name} : Model := {model_literal(acc)}\n'
     return acc, src, ''.join(lines) + f'  exact {prefix}Steps.nil _\n'
 
@@ -229,12 +232,18 @@ def emit_field(i, sign, k, channels, ins, input_name, paired=False):
     return emit_horner_field(name, SP_FIELDS[k], channels, ins, data, input_name, DATA_PACKAGE, INPUT_PACKAGE)
 
 
-def emit_horner_field(name, symbol, channels, ins, data, input_name, data_package, input_package, *, degree=None):
+def emit_horner_field(name, symbol, channels, ins, data, input_name, data_package, input_package, *,
+                      degree=None, integer=False):
     _, u, z, angles = ins
     extra=['PlasmaLean.Design.DommaschkVariableHorner'] if degree is not None else []
     prefix='DommaschkVariableHorner.' if degree is not None else ''
     run=prefix+'Run'+(f' (⟨{degree},80⟩ : Format)' if degree is not None else '')
     format_arg=f' (F := ⟨{degree},80⟩)' if degree is not None else ''
+    if integer:
+        extra=['PlasmaLean.Design.DommaschkDyadicHorner']
+        prefix='DommaschkDyadicHorner.'
+        run=prefix+'Run'
+        format_arg=''
     src = header(name, [data_package+'.'+data, input_package+'.'+input_name,*extra])
     src += f'open {input_name}\n'
     amplitudes = {}
@@ -242,13 +251,13 @@ def emit_horner_field(name, symbol, channels, ins, data, input_name, data_packag
         row_values = []
         for j, row in enumerate(group):
             rn, coeffs = f'amp{w}row{j}', f'{data}.row{w}_{j}'
-            y, defs, proof = horner_proof(u, [m for _, m in row], rn,degree=degree)
+            y, defs, proof = horner_proof(u, [m for _, m in row], rn,degree=degree,integer=integer)
             row_values.append(y)
             src += defs + f'''private theorem {rn}_run : {run} displacement ({coeffs}.map Weight.model) {rn} := by
   apply {prefix}Run.cons
 {proof}'''
         amp = f'amp{w}'
-        model, defs, proof = horner_proof(z, row_values, amp,degree=degree)
+        model, defs, proof = horner_proof(z, row_values, amp,degree=degree,integer=integer)
         amplitudes[w] = model
         src += defs + f'private theorem {amp}_run : {run} vertical [' + ', '.join(
             f'{amp}row{j}' for j in range(len(group))) + f'] {amp} := by\n  apply {prefix}Run.cons\n' + proof
@@ -272,8 +281,12 @@ theorem sound {{s u z θ : ℝ}} (hs : |s| ≤ 1) (hu : displacement.Mem s u)
     model.Mem s (evR u z (Real.cos θ) (Real.sin θ) {symbol}) := by
   rw [← {data}.physical_identity]
 '''
-    for (w, _), tail in zip(channels, list(reversed(tails))[1:] + ['(constant 0)'], strict=True):
-        src += f'  apply {prefix}channel_cons{format_arg} (tail := {tail}) hs (amp{w}_sound hs hu hz) (ha .{WAVES[w]}) ?_ ({MATCH})\n'
+    zero='(ofDyadic 80 [0] 0)' if integer else '(constant 0)'
+    proof=DYADIC_STEP if integer else MATCH
+    for (w, _), tail in zip(channels, list(reversed(tails))[1:] + [zero], strict=True):
+        src += f'  apply {prefix}channel_cons{format_arg} (tail := {tail}) hs (amp{w}_sound hs hu hz) (ha .{WAVES[w]}) ?_ ({proof})\n'
+    if integer:
+        src += '  have zero : Matches (constant 0) (ofDyadic 80 [0] 0) := '+MATCH+'\n  rw [← zero.eq]\n'
     src += '  simpa only [exactChannels, List.map_nil, value, Rat.cast_zero] using constant_mem 0 s\n'
     return (name, src + footer(name), ['sound']), partial
 

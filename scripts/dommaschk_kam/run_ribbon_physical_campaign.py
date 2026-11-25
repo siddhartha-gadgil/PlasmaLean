@@ -66,6 +66,8 @@ def run(job,args):
          '--span',str(a),str(b),'--output',args.root/(name+'.json')]
     if kind=='spatial':
         cmd.extend(['--tiles',*map(str,tiles),'--handoff',args.spatial])
+        if args.dyadic_from is not None and a>=args.dyadic_from:
+            cmd.append('--dyadic')
     else:
         cmd.extend(['--tile',str(tiles[0]),'--packets',args.packets,'--handoff',args.physical,
                     '--central',args.central,'--spatial',args.spatial])
@@ -123,13 +125,15 @@ def main():
     p.add_argument('--ribbon',type=Path,required=True)
     p.add_argument('--packets',type=Path,required=True)
     p.add_argument('--workers',type=int,default=2)
+    p.add_argument('--dyadic-from',type=int,help='check later physical field jets with integer Horner arithmetic')
     p.add_argument('--reserve-gib',type=int,default=40)
     p.add_argument('--spatial',type=Path,default=ROOT/'.lake/ribbon-spatial-campaign')
     p.add_argument('--physical',type=Path,default=ROOT/'.lake/ribbon-physical-campaign')
     p.add_argument('--central',type=Path,default=ROOT/'.lake/ribbon-central-campaign')
     p.add_argument('--root',type=Path,default=ROOT/'.lake/ribbon-through-campaign')
     args=p.parse_args()
-    if args.workers<1 or args.reserve_gib<0 or digest(args.ribbon)!=WITNESS_SHA:
+    if (args.workers<1 or args.reserve_gib<0 or digest(args.ribbon)!=WITNESS_SHA or
+            args.dyadic_from is not None and not 0<=args.dyadic_from<LENGTH):
         p.error('expected the original wide-radius witness and valid worker and RAM limits')
     args.root.mkdir(parents=True,exist_ok=True)
     with (args.root/'manager.lock').open('a') as lock:

@@ -65,6 +65,7 @@ def main():
     p.add_argument('--prove-tiles',nargs='+',type=int)
     p.add_argument('--rows',nargs='+',type=int)
     p.add_argument('--fields-only',action='store_true')
+    p.add_argument('--dyadic',action='store_true',help='use kernel checked integer Horner multiply-adds')
     p.add_argument('--cache',type=Path,default=ROOT/'.lake/ribbon-spatial-checks')
     p.add_argument('--handoff',type=Path,default=ROOT/'.lake/ribbon-spatial-campaign')
     p.add_argument('--output',type=Path,required=True)
@@ -85,7 +86,11 @@ def main():
     args.cache=args.cache.resolve()
     prepare(args)
     stem='DommaschkRibbonSpatial'+''.join(map(str,tiles))+f'Span{a:03}To{b:03}'
-    fields,models,providers=shared_jet(stem,box,args)
+    if args.dyadic:
+        from verify_ribbon_dyadic_jet import dyadic_jet
+        fields,models,providers=dyadic_jet(stem,box,args)
+    else:
+        fields,models,providers=shared_jet(stem,box,args)
     if any(x.a!=y.a or x.e!=y.e for x,y in zip(models,candidate,strict=True)):
         raise ValueError('physical proof models differ from the screened enclosure')
     print(f'{stem} physical fields {fields[1]["key"]}',flush=True)
