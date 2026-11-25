@@ -184,6 +184,7 @@ import PlasmaLean.Design.DommaschkDyadicHorner
 import PlasmaLean.Design.DommaschkSectorAction
 import PlasmaLean.Design.DommaschkRadialAccessibleBirth
 import PlasmaLean.Design.DommaschkSectorFaces
+import PlasmaLean.Design.DommaschkConnectedActionLevel
 
 /-! Audit all declarations owned by project modules in the import closure (the on-demand top
 modules and everything they import). Fails on any non-standard axiom. -/
@@ -687,3 +688,5 @@ run_cmd do
 #print axioms PlasmaLean.Design.DommaschkRadialAccessibleBirth.from_seed
 #print axioms PlasmaLean.Design.DommaschkRadialAccessibleBirth.well_at_birth
 #print axioms PlasmaLean.Design.DommaschkSectorFaces.of_endpoint_witnesses
+#print axioms PlasmaLean.Design.DommaschkConnectedActionLevel.crossing_of_sector_profile
+#print axioms PlasmaLean.Design.DommaschkConnectedActionLevel.crossing_of_sector

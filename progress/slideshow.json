@@ -86,6 +86,52 @@
    ]
   },
   {
+   "id": "connected-radial-action",
+   "eyebrow": "Trapped-particle action",
+   "title": "A connected set of target-action births across a phase sector",
+   "lead": "The original field is below the upper mirror height near every launch in the rectangle. Opposite signs of the two radial-face actions allow a topological continuation theorem to join target wells across the sector.",
+   "metrics": [
+    {
+     "value": "0.470–0.478",
+     "label": "radial interpolation labels between the same embedded tori"
+    },
+    {
+     "value": "±1/8 rad",
+     "label": "submirror interval proved on every original birth line"
+    },
+    {
+     "value": "±331/64 rad",
+     "label": "outer caps for the unfinished long trajectory proof"
+    }
+   ],
+   "cards": [
+    {
+     "title": "First mirrors",
+     "text": "Lean has verified the signs on all 2,536 incoming tubes, the outward derivatives on all 112 mirror-collar tubes and the eight high caps.",
+     "status": "Tube inequalities proved",
+     "kind": "checked"
+    },
+    {
+     "title": "Connected continuation",
+     "text": "Once the true paths stay in the tubes through the caps, one compact connected level of exact birth actions projects onto every phase in the sector.",
+     "status": "Conditional on long trajectories",
+     "kind": "next"
+    }
+   ],
+   "progress": "The first signed physical trajectory segments and the original birth-to-section identifications have passed the kernel. The remaining segments are being checked in parallel.",
+   "boundary": "The phase half-width is 2⁻¹⁹ radian. Full-circle confinement and a quantified thermal birth fraction remain open.",
+   "evidence": [
+    {
+     "label": "Physical criterion and proof status",
+     "href": "progress.html#connected-target-actions-across-the-phase-sector"
+    },
+    {
+     "label": "Implementation plan",
+     "href": "implementation-plan.html"
+    }
+   ]
+  },
+  {
    "id": "stellarator-contract",
    "eyebrow": "1 · The stellarator contract",
    "title": "The aim: one candidate satisfying C1–C5 with common witnesses — not merely a non-axisymmetric field.",
