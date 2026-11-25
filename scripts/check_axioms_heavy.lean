@@ -178,6 +178,8 @@ import PlasmaLean.Design.DommaschkRadialSectionAction
 import PlasmaLean.Certificates.PositionFrameWide
 import PlasmaLean.Design.DommaschkWideTraceFields
 import PlasmaLean.Design.DommaschkRibbonThroughChains
+import PlasmaLean.Design.DommaschkRibbonGrazingAlternative
+import PlasmaLean.Design.DommaschkRibbonSlopeCover
 
 /-! Audit all declarations owned by project modules in the import closure (the on-demand top
 modules and everything they import). Fails on any non-standard axiom. -/
@@ -664,3 +666,10 @@ run_cmd do
 #print axioms PlasmaLean.Design.DommaschkWideTraceFields.forward_rectangle
 #print axioms PlasmaLean.Design.DommaschkWideTraceFields.backward_rectangle
 #print axioms PlasmaLean.Design.DommaschkRibbonThroughChains.from_chains
+#print axioms PlasmaLean.Design.DommaschkCompensatedMirrorSlope.numerator_eq
+#print axioms PlasmaLean.Design.DommaschkRibbonSlopeCover.slope
+#print axioms PlasmaLean.Design.DommaschkRibbonFirstMirrors.attach
+#print axioms PlasmaLean.Design.DommaschkRibbonFirstMirrors.attach_below
+#print axioms PlasmaLean.Design.DommaschkRibbonFirstMirrors.no_grazing
+#print axioms PlasmaLean.Design.DommaschkRibbonFirstMirrors.NoGrazing.well_slopes
+#print axioms PlasmaLean.Design.DommaschkRibbonFirstMirrors.NoGrazing.excludes_localMax
