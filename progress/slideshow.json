@@ -144,9 +144,9 @@
      "kind": "checked"
     },
     {
-     "title": "One full period",
-     "text": "Thirteen overlapping angular bounds cover a full period of the QA2R field. Periodicity then covers every real launch phase.",
-     "status": "Lean verified",
+     "title": "A signed physical interval",
+     "text": "For ±1/256 radian around every original phase the true field line stays below the lower mirror height by at least 1/1000. Both poloidal coordinate excursions are bounded by 1/1536.",
+     "status": "Cartesian field line verified",
      "kind": "checked"
     },
     {
@@ -156,12 +156,12 @@
      "kind": "next"
     }
    ],
-   "progress": "All original launch radii in the wide strip now have the full-period pointwise field bound.",
-   "boundary": "The field strength at launch alone does not determine the first mirror, the integrated action or a particle confinement time.",
+   "progress": "The all-phase field-line proof covers 25 swept phase sectors.",
+   "boundary": "First-mirror actions around the entire circle and thermal cross-field transport remain open.",
    "evidence": [
     {
-     "label": "Full-period original birth proof",
-     "href": "progress.html#original-births-over-the-full-field-period"
+     "label": "Signed field lines over the full period",
+     "href": "progress.html#signed-field-lines-over-the-full-birth-phase-circle"
     },
     {
      "label": "Implementation plan",

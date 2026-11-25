@@ -372,3 +372,7 @@ At the original quarter-turn inner birth label 0.470 the two separate physical O
 ### Completed physical first-well action levels
 
 Lean has joined all 2,656 physical ODE steps and discharged the through-cap hypothesis. On one pair of original nested embedded QA2R tori, a jointly continuous three-parameter family has true birth-centered first mirrors, compact connected target-action levels spanning the small phase sector, and positive radial sampling mass at every positive action tolerance. The thermal confinement and full-period action goals remain open. [Connected first-well action levels on one actual QA2R radial sector](https://github.com/siddhartha-gadgil/PlasmaLean/blob/main/notes/theory/completed-original-radial-sector.md)
+
+### Signed field lines over the full birth phase circle
+
+Across the full birth phase circle and all labels 0.44–0.54, Lean now proves a true QA2R field-line segment through ±1/256 radian, with strength below hL−1/1000. Each poloidal coordinate moves by at most 1/1536, and the Cartesian magnetic field-line equation holds on the interior. [A signed nonturning field-line collar for every original QA2R birth](https://github.com/siddhartha-gadgil/PlasmaLean/blob/main/notes/theory/periodic-original-fieldline-collar.md)

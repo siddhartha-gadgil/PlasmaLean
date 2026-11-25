@@ -27,7 +27,7 @@
     "title": "Birth accessibility now covers the full phase circle.",
     "section": "Progress slideshow",
     "url": "slides.html#all-phase-physical-births",
-    "text": "birth accessibility now covers the full phase circle. on the same two nested embedded tori, every launch label from 0.44 through 0.54 starts below the lower mirror height at every phase. all original launch radii in the wide strip now have the full-period pointwise field bound."
+    "text": "birth accessibility now covers the full phase circle. on the same two nested embedded tori, every launch label from 0.44 through 0.54 starts below the lower mirror height at every phase. the all-phase field-line proof covers 25 swept phase sectors."
   },
   {
     "title": "The aim: one candidate satisfying C1–C5 with common witnesses — not merely a non-axisymmetric field.",
@@ -3636,6 +3636,12 @@
     "text": "25 november 2026 — the four signed trajectories close the original first-well action theorem (n-205) implementation plan"
   },
   {
+    "title": "25 November 2026 — A true signed field-line interval around every birth over the whole period (N-203)",
+    "section": "Implementation plan",
+    "url": "implementation-plan.html#25-november-2026-a-true-signed-field-line-interval-around-every-birth-over-the-whole-period-n-203",
+    "text": "25 november 2026 — a true signed field-line interval around every birth over the whole period (n-203) implementation plan"
+  },
+  {
     "title": "M0 · Exact symmetric equilibria: slab, screw pinch, Solov'ev, helical",
     "section": "Implementation plan · Lean verified — exact slab, screw-pinch, Solov'ev and helical equilibria with kernel force balance, all-time field-line/orbit confinement, Suydam both ways and screw-pinch Newcomb stability for every m ≠ 0 (reduced form supplied; idealized symmetric models).",
     "url": "implementation-plan.html",
@@ -3940,5 +3946,11 @@
     "section": "Verified progress",
     "url": "progress.html#completed-physical-first-well-action-levels",
     "text": "completed physical first-well action levels verified progress"
+  },
+  {
+    "title": "Signed field lines over the full birth phase circle",
+    "section": "Verified progress",
+    "url": "progress.html#signed-field-lines-over-the-full-birth-phase-circle",
+    "text": "signed field lines over the full birth phase circle verified progress"
   }
 ]
