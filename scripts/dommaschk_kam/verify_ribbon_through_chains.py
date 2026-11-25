@@ -103,6 +103,35 @@ theorem {claim} {{i : ℕ}} (hi : i < {n}) (hr : i < {pn}.{tag}Rows.length)
     return name,src+'end PlasmaLean.Design.'+name+'\n',claims
 
 
+def build_package(a,term,keys,roots,package=PACKAGE):
+    deps=list(dict.fromkeys(keys))
+    paths=list(dict.fromkeys(map(Path,roots)))
+    links=merge_import_roots(a.cache,paths,deps)
+    root,r=compile_modules(a.cache/term[0],[term],[links],
+        [package,WITNESS_SHA,a.version,digest(DESIGN/(STATIC+'.trace')),deps],a,package)
+    return r['key'],root,links
+
+
+def checked_segment(a,k,start,stop,packet,checked):
+    parents={}
+    for i in range(start,stop):
+        row=json.loads((a.physical/f'tile{k}'/'steps'/f'{i:03}.json').read_text())
+        rr=Path(row['import_paths'][0])
+        rkey=(rr,row['module'],row['key'])
+        if rkey not in checked:
+            checked[rkey]=set(admitted(*rkey)['theorems'])
+        if row['tile']!=k or row['packet_sha256']!=WITNESS_SHA or any(
+                f'PlasmaLean.Design.DommaschkPhysical{label(k).upper()}{d}{i:03}.physical_step'
+                not in checked[rkey] for d in ('Forward','Back')):
+            raise ValueError(f'unmatched original signed step {k},{i}')
+        parents[row['key']]=row
+    term=segment(k,start,stop,packet['module'],parents.values())
+    pr,=map(Path,packet['import_paths'])
+    key,root,links=build_package(a,term,[packet['key'],*parents],
+                                [pr,*[s for r in parents.values() for s in r['import_paths']]])
+    return term[0],key,root,links
+
+
 def main():
     p=argparse.ArgumentParser(description=__doc__)
     p.add_argument('--packets',required=True,type=Path)
@@ -126,13 +155,6 @@ def main():
     all_keys=[]
     all_roots=[]
     checked={}
-    def build(term,keys,roots,package=PACKAGE):
-        deps=list(dict.fromkeys(keys))
-        paths=list(dict.fromkeys(map(Path,roots)))
-        links=merge_import_roots(a.cache,paths,deps)
-        root,r=compile_modules(a.cache/term[0],[term],[links],
-            [package,WITNESS_SHA,a.version,digest(DESIGN/(STATIC+'.trace')),deps],a,package)
-        return r['key'],root,links
     for k in range(4):
         packet=packets[str(k)]
         pn=packet['module']
@@ -147,32 +169,19 @@ def main():
         mods,keys,roots=[],[packet['key']],[pr]
         for start in range(0,n,8):
             stop=min(start+8,n)
-            parents={}
-            for i in range(start,stop):
-                row=json.loads((a.physical/f'tile{k}'/'steps'/f'{i:03}.json').read_text())
-                rr=Path(row['import_paths'][0])
-                if (rkey:=(rr,row['module'],row['key'])) not in checked:
-                    checked[rkey]=set(admitted(*rkey)['theorems'])
-                if row['tile']!=k or row['packet_sha256']!=WITNESS_SHA or any(
-                    f'PlasmaLean.Design.DommaschkPhysical{label(k).upper()}{d}{i:03}.physical_step'
-                        not in checked[rkey] for d in ('Forward','Back')):
-                    raise ValueError(f'unmatched original signed step {k},{i}')
-                parents[row['key']]=row
-            term=segment(k,start,stop,pn,parents.values())
-            key,rr,overlay=build(term,[packet['key'],*parents],
-                [pr,*[s for r in parents.values() for s in r['import_paths']]])
+            module,key,rr,overlay=checked_segment(a,k,start,stop,packet,checked)
             keys.append(key)
             roots.extend([rr,overlay])
-            mods.append(term[0])
+            mods.append(module)
         term=endpoint(k,n,pn,mods)
-        key,root,links=build(term,keys,roots,TILE_PACKAGE)
+        key,root,links=build_package(a,term,keys,roots,TILE_PACKAGE)
         produced.append(term[0])
         all_keys.append(key)
         all_roots.extend([root,links])
         print(f'{term[0]} {key}',flush=True)
     names=[packets[str(k)]['module'] for k in range(4)]
     term=regions(n,names) if a.regions_only else combined(n,produced,names)
-    key,root,links=build(term,all_keys,all_roots,FAMILY_PACKAGE)
+    key,root,links=build_package(a,term,all_keys,all_roots,FAMILY_PACKAGE)
     rec=admitted(root,term[0],key)
     result={k:v for k,v in rec.items() if k!='artifacts'}
     result.update(packet_sha256=WITNESS_SHA,package=FAMILY_PACKAGE,outer_rows=n,cap=f'{n-1}/64',tile_keys=all_keys,
