@@ -60,6 +60,19 @@ AW-M12. See "Headline re-check" below for what was re-verified on the laptop.
 build or axiom audit" until the final-layer sources are committed to an on-demand directory and
 audited by an opt-in script (user decision, see "Decisions").
 
+*Resolved, 25 November 2026 (user decision 1: commit the sources).* The generated modules cited
+in the notes (184), with every generated module they import, are in the repository: 43,435 Lean
+sources, stored as 258 compressed archives in `generated/qa2r/archives/` with a SHA-256 manifest
+and the campaign receipts. They form the on-demand Lake library `QA2RGenerated`. A cold
+`lake build` of all of them on the workstation passed (about 8.7 hours on 22 jobs; largest
+module 34 GB), and `scripts/check_axioms_qa2r.lean`, run once for each cited module, found only
+`propext`, `Classical.choice` and `Quot.sound` in about 4.97 million declarations of the
+43,435 modules; all 70,219 fully qualified receipt theorems exist. Report:
+`generated/qa2r/replay-report.json`. "On demand" now has its plan meaning for these modules.
+Generated modules that no note cites (about 27,000 in the workstation caches, mostly superseded
+versions) remain outside the repository and support no claim. The metadata findings (AW-M14)
+are not changed by this.
+
 **AW-H2 — the main C2 results cannot be reproduced from the repository.** 119 of the 161 new notes
 cite `/tmp` paths (354 distinct names). The N-205 replay needs `/tmp/plasma-n169-packets.json`,
 `/tmp/plasma-n186-height-band.json`, `/tmp/plasma-n188-faces.json`, produced by commands spread over
@@ -83,6 +96,15 @@ totalised `fderiv` (AW-M3); `axis` may be any compact set (AW-M4).
 `quadratic_guidingCentreBand` is the compiled regression for this finding.
 *Action:* treat every band-form instance with an existential horizon as not establishing C2
 (recorded in the plan); strengthening the clause is a contract change (user decision).
+
+*Resolved, 25 November 2026.* The evidence is the Lean sources, and these are now in the
+repository; `python3 scripts/qa2r/replay.py` unpacks them, checks the hashes, builds them with
+`lake build` and runs the axiom audit, reading nothing under `/tmp` and no campaign cache. The
+generators and their numerical inputs remain untrusted and are not needed for the replay.
+Regenerating the sources from the `/tmp` inputs is still not possible from the repository; this
+does not affect the validity of the Lean results. The cold build also answers AW-M10 for the
+committed modules (every module recompiled), and the replay report records the commit and a
+dirty-tree flag (AW-M11).
 
 ### Medium
 
@@ -207,7 +229,7 @@ not pin the poloidal angle), AV-M9, AV-M11, AV-L3, AV-L6 remain open; AV-M4 part
 
 ## Decisions for the user
 
-1. Commit the final-layer generated Lean sources (at least the headline modules and their
+1. *(Decided 25 November 2026: commit, as compressed archives; done, see AW-H1.)* Commit the final-layer generated Lean sources (at least the headline modules and their
    parents) to an on-demand directory with an opt-in axiom audit, or keep them workstation-only
    with labelled claims (AW-H1, AW-H2).
 2. Strengthen `GuidingCentreBand` with fixed inputs (horizon floor, absolutely continuous or

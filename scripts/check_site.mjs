@@ -1,3 +1,4 @@
+import { fileURLToPath } from 'node:url';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import path from 'node:path';
@@ -5,7 +6,7 @@ import vm from 'node:vm';
 import { execFileSync } from 'node:child_process';
 
 // Read-only structural regression checks. These do not claim browser/visual QA.
-const root = path.resolve(import.meta.dirname, '..');
+const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const docs = path.join(root, 'docs');
 const files = fs.readdirSync(docs).filter(file => file.endsWith('.html'));
 const contents = new Map(files.map(file => [file, fs.readFileSync(path.join(docs, file), 'utf8')]));

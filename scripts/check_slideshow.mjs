@@ -1,3 +1,4 @@
+import { fileURLToPath } from 'node:url';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import path from 'node:path';
@@ -5,7 +6,7 @@ import vm from 'node:vm';
 import { renderSlideshow } from './render_slideshow.mjs';
 
 // Dependency-free contract/controller tests; not browser layout or accessibility QA.
-const root = path.resolve(import.meta.dirname, '..');
+const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const read = file => fs.readFileSync(path.join(root, file), 'utf8');
 const deck = JSON.parse(read('progress/slideshow.json'));
 const progress = JSON.parse(read('progress/status.json'));

@@ -1,8 +1,9 @@
+import { fileURLToPath } from 'node:url';
 import fs from 'node:fs';
 import path from 'node:path';
 import { renderSlideshow } from './render_slideshow.mjs';
 
-const root = path.resolve(import.meta.dirname, '..');
+const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const docsDir = path.join(root, 'docs');
 const checkOnly = process.argv.includes('--check');
 function writeOutput(file, content) {
