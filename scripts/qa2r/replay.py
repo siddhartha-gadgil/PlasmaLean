@@ -194,7 +194,7 @@ def main():
         git = lambda *a: subprocess.check_output(["git", *a], cwd=ROOT, text=True).strip()
         report.update(
             audit=audit_summary, audit_seconds=round(time.time() - t0),
-            commit=git("rev-parse", "HEAD"), dirty=bool(git("status", "--porcelain")),
+            commit=git("rev-parse", "HEAD"), dirty=bool(git("status", "--porcelain", "--", ".", ":!generated/qa2r/replay-report.json")),
             lean=subprocess.check_output(["lake", "env", "lean", "--version"], cwd=ROOT, text=True).strip(),
             manifest_sha256=hashlib.sha256((OUT / "MANIFEST.sha256").read_bytes()).hexdigest(),
             host_cpus=os.cpu_count(), date=time.strftime("%Y-%m-%d"),
