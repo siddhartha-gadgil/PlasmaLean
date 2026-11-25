@@ -1,0 +1,108 @@
+{
+  "physical_witness_sha256": "c4f65ab5d7727fc5fdbae645c6924ecde6b474f521663a8b1b9de6be8d45a486",
+  "radial_tiles": 4,
+  "rows_per_signed_clock": 332,
+  "signed_ODE_steps": 2656,
+  "axioms": [
+    "Classical.choice",
+    "Quot.sound",
+    "propext"
+  ],
+  "proofs": {
+    "signed_ode": {
+      "module": "DommaschkRadialRibbonThrough",
+      "key": "7c006f93f184c56d80da9bc887072adf86ef57a3fb6f49b0e56dcf64dd07f974",
+      "declarations": [
+        "PlasmaLean.Design.DommaschkRadialRibbonThrough.from_seed"
+      ],
+      "artifacts": {
+        "RadialRibbonThroughFamilyCache/DommaschkRadialRibbonThrough.lean": "7e2db59e37e147419a99735f4240541bb0eb0ff9a0c0675354b97c57637d4d05",
+        "RadialRibbonThroughFamilyCache/DommaschkRadialRibbonThrough.olean": "6779392a89a5afb16e022892ca82ae403e1a298e774e3436fcbd8aebda250156",
+        "Audit.lean": "8f06a33be2e3f11116aa176a7609956ba13fb0b5e8b0602a2f368fe7e549da94"
+      }
+    },
+    "constant_target": {
+      "module": "DommaschkProvedRadialAttainmentOn391_328_48_16_48_16_8_5",
+      "key": "d3f3ce02ac8ae76861e1598844f10fb5e37800a5d03d606290b0217c5570d1df",
+      "declarations": [
+        "PlasmaLean.Design.DommaschkProvedRadialAttainmentOn391_328_48_16_48_16_8_5.sections",
+        "PlasmaLean.Design.DommaschkProvedRadialAttainmentOn391_328_48_16_48_16_8_5.from_tracks",
+        "PlasmaLean.Design.DommaschkProvedRadialAttainmentOn391_328_48_16_48_16_8_5.through",
+        "PlasmaLean.Design.DommaschkProvedRadialAttainmentOn391_328_48_16_48_16_8_5.on_nested_tori"
+      ],
+      "artifacts": {
+        "RadialActionAttainmentCache/DommaschkProvedRadialAttainmentOn391_328_48_16_48_16_8_5.lean": "96391f27f119d1425c795f2d76da0bc5741496722e8952224cd69e9a0564b0df",
+        "RadialActionAttainmentCache/DommaschkProvedRadialAttainmentOn391_328_48_16_48_16_8_5.olean": "5e3721b10cccc662418e851aa5228d5de50493f93e670f797838e3ccebd377c2",
+        "Audit.lean": "56194de98d0e6d072b53f2dede733bcc3074fe1c4af7e7a8e3e459c06afd6829"
+      }
+    },
+    "connected_level": {
+      "module": "DommaschkPhysicalConnectedLevelOn391_328_48_16_48_16_8_5",
+      "key": "3711e7a6f35f3c551b6b92da7fe4925e64a39aaf1d45bc8ca1d9acfe4d1c1a0f",
+      "declarations": [
+        "PlasmaLean.Design.DommaschkPhysicalConnectedLevelOn391_328_48_16_48_16_8_5.from_tracks",
+        "PlasmaLean.Design.DommaschkPhysicalConnectedLevelOn391_328_48_16_48_16_8_5.on_nested_tori"
+      ],
+      "artifacts": {
+        "ConnectedActionLevelCache/DommaschkPhysicalConnectedLevelOn391_328_48_16_48_16_8_5.lean": "70c4576893390bbeaaf30c50f64e38f21f433cd8baca40dd9606829a72fdf889",
+        "ConnectedActionLevelCache/DommaschkPhysicalConnectedLevelOn391_328_48_16_48_16_8_5.olean": "16cb31e8449300f7645ee1b45d7a3804a82fe10ed776775b44bf2af8df27adeb",
+        "Audit.lean": "56a05813eb2e4bb9f8a1c7045904089b4bdd613d8ac45214bc08a23c5c1d51b1"
+      }
+    },
+    "upper_height_prescriptions": {
+      "module": "DommaschkPhysicalActionBandOn391_328_48_16_48_16_8_5",
+      "key": "99657af4502f334d233a586ef21dc18701ddb247f23a3cc02a51c4d1dd3e33d3",
+      "declarations": [
+        "PlasmaLean.Design.DommaschkPhysicalActionBandOn391_328_48_16_48_16_8_5.from_tracks",
+        "PlasmaLean.Design.DommaschkPhysicalActionBandOn391_328_48_16_48_16_8_5.on_nested_tori"
+      ],
+      "artifacts": {
+        "ConnectedActionLevelCache/DommaschkPhysicalActionBandOn391_328_48_16_48_16_8_5.lean": "5f59795ffdcf64b4224b2f960d00d0a052f811b6520bf1479bc56a57c45b934a",
+        "ConnectedActionLevelCache/DommaschkPhysicalActionBandOn391_328_48_16_48_16_8_5.olean": "85fc1d36bbb3bb81ddf680b85e92e8103aad2c7e41896d476bf4b534e84bbebe",
+        "Audit.lean": "4d104bd2e32dfb3359b88fcdcc7f3c8aea05e6794c1c44993566ce771c2a2bb9"
+      }
+    },
+    "height_action_rectangle": {
+      "module": "DommaschkProvedRadialHeightActionRectangle",
+      "key": "15c455d720fc888b0324aedf9eba5f521ebb4f45283c60479f81220334432f21",
+      "declarations": [
+        "PlasmaLean.Design.DommaschkProvedRadialHeightActionRectangle.from_entries",
+        "PlasmaLean.Design.DommaschkProvedRadialHeightActionRectangle.from_nested_tori",
+        "PlasmaLean.Design.DommaschkProvedRadialHeightActionRectangle.through"
+      ],
+      "artifacts": {
+        "RadialHeightActionRectangleCache/DommaschkProvedRadialHeightActionRectangle.lean": "036d9440961e3ae04fc941576c08417e59fef24ccd36a2874a5cb5bf6cc9a7b1",
+        "RadialHeightActionRectangleCache/DommaschkProvedRadialHeightActionRectangle.olean": "644065eb21eea5ddc57474f9c08ec634770b67a957267546e1b3c3a94cf3f529",
+        "Audit.lean": "1efb083bfd8e726fba89cfc4c5b43b34127d82bce3f49276c2ef0a2691508a0d"
+      }
+    },
+    "radial_measure": {
+      "module": "DommaschkProvedRadialFirstWellActionWindows",
+      "key": "23da15fc37c3312eb40f19df17c58ade5acd29599f7b32a5f1f51318c1faf912",
+      "declarations": [
+        "PlasmaLean.UniformRadialWindow.uniform",
+        "PlasmaLean.UniformRadialWindow.lipschitz",
+        "PlasmaLean.UniformRadialWindow.HasInterval.volume",
+        "PlasmaLean.Design.DommaschkRadialActionWindows.of_faces",
+        "PlasmaLean.Design.DommaschkProvedRadialFirstWellActionWindows.from_nested_tori"
+      ],
+      "artifacts": {
+        "RadialFirstWellActionWindowsCache/DommaschkProvedRadialFirstWellActionWindows.lean": "cd61132bb22f71c053c13c52e117a8e28f17df080cc5c01723f63af8a02257f1",
+        "RadialFirstWellActionWindowsCache/DommaschkProvedRadialFirstWellActionWindows.olean": "c56ff06ed4d4297a0b0d4555f550ec0126729e8e1c4ddb4725673c2050094275",
+        "Audit.lean": "a1f2737c62b1affbed284008de0fa2c62e943f0da7f2d9b8bed4e102eaa9dc09"
+      }
+    },
+    "joint_theorem": {
+      "module": "DommaschkCertifiedRadialSector",
+      "key": "9d134c57b876eef02d439f54ee1e52faf6f7d101dcce7ef27fc32c8deec4613d",
+      "declarations": [
+        "PlasmaLean.Design.DommaschkCertifiedRadialSector.on_nested_tori"
+      ],
+      "artifacts": {
+        "CertifiedRadialSectorCache/DommaschkCertifiedRadialSector.lean": "faf97ea9c9a72a4d6c247f621082d603ea4bce40d47d61714cf6e1ecfe6a073b",
+        "CertifiedRadialSectorCache/DommaschkCertifiedRadialSector.olean": "50b943fc88a1aaec87b0ec84fde4596e7d8d8074f2e76e58c5ace0f8d8b0e729",
+        "Audit.lean": "71fc40773be5f962f0098cac157363d0d489a5d9ecf111f02c62ad1fda72407f"
+      }
+    }
+  }
+}
