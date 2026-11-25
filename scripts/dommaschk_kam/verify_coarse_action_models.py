@@ -115,7 +115,12 @@ def physical(stem,inp,fields,models,ops,i,sign,section,high):
 
 
 def verify(a,label,i,sign,data,static,*,mirror_height=None):
-    upper,height,counts,_,traces,packet,ar=endpoint_inputs(label)
+    return verify_packet(a,label,i,sign,data,static,endpoint_inputs(label),mirror_height=mirror_height)
+
+
+def verify_packet(a,label,i,sign,data,static,inputs,*,mirror_height=None):
+    """The same physical field proof, using an explicitly selected signed position archive."""
+    upper,height,counts,_,traces,packet,ar=inputs
     section=int(label[1])
     trace=traces[int(sign==1)]
     if mirror_height is not None and mirror_height not in HEIGHTS:

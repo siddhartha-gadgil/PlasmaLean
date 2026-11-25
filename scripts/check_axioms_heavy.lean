@@ -194,6 +194,9 @@ import PlasmaLean.Design.DommaschkRadialPassingCore
 import PlasmaLean.Design.DommaschkWideBirthBounds
 import PlasmaLean.Design.DommaschkRadialPassingTime
 import PlasmaLean.Design.DommaschkPhysicalActionExit
+import PlasmaLean.Certificates.PositiveSubwell
+import PlasmaLean.Design.DommaschkOppositeInnerSeed
+import PlasmaLean.Design.DommaschkShiftedActionSubwell
 
 /-! Audit all declarations owned by project modules in the import closure (the on-demand top
 modules and everything they import). Fails on any non-standard axiom. -/
@@ -733,3 +736,6 @@ run_cmd do
 #print axioms PlasmaLean.Design.DommaschkPhysicalActionExit.of_endpoint_witnesses
 #print axioms PlasmaLean.Design.DommaschkPhysicalActionExit.stays_inside
 #print axioms PlasmaLean.Design.DommaschkPhysicalActionExit.stays_inside_of_correction
+#print axioms PlasmaLean.Certificates.PositiveSubwell.floor_in_first_well
+#print axioms PlasmaLean.Design.DommaschkOppositeInnerSeed.from_nested_tori
+#print axioms PlasmaLean.Design.DommaschkShiftedActionSubwell.shifted
