@@ -192,6 +192,7 @@ import PlasmaLean.Design.DommaschkOppositeActionStrip
 import PlasmaLean.Design.DommaschkSectorHeightCrossings
 import PlasmaLean.Design.DommaschkRadialPassingCore
 import PlasmaLean.Design.DommaschkWideBirthBounds
+import PlasmaLean.Design.DommaschkRadialPassingTime
 
 /-! Audit all declarations owned by project modules in the import closure (the on-demand top
 modules and everything they import). Fails on any non-standard axiom. -/
@@ -724,3 +725,7 @@ run_cmd do
 #print axioms PlasmaLean.Design.DommaschkWideBirthBounds.angle_bounds
 #print axioms PlasmaLean.Design.DommaschkWideBirthBounds.birth_in_box
 #print axioms PlasmaLean.Design.DommaschkWideBirthBounds.from_sectors
+#print axioms PlasmaLean.Design.DommaschkRadialPassingTime.regular_rate
+#print axioms PlasmaLean.Design.DommaschkRadialPassingTime.duration
+#print axioms PlasmaLean.Design.DommaschkRadialPassingTime.clock_on
+#print axioms PlasmaLean.Design.DommaschkRadialPassingTime.times_about_birth
