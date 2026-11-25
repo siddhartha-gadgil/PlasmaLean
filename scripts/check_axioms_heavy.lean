@@ -200,6 +200,7 @@ import PlasmaLean.Design.DommaschkShiftedActionSubwell
 import PlasmaLean.Design.DommaschkPeriodicBirthCover
 import PlasmaLean.Design.DommaschkRadialActionWindows
 import PlasmaLean.Design.DommaschkOuterFaceFlight
+import PlasmaLean.Design.DommaschkOppositeInnerTrajectory
 
 /-! Audit all declarations owned by project modules in the import closure (the on-demand top
 modules and everything they import). Fails on any non-standard axiom. -/
@@ -750,3 +751,5 @@ run_cmd do
 #print axioms PlasmaLean.Design.DommaschkOuterFaceFlight.response
 #print axioms PlasmaLean.Design.DommaschkOuterFaceFlight.top_lipschitz
 #print axioms PlasmaLean.Design.DommaschkOuterFaceFlight.of_outer_witness
+#print axioms PlasmaLean.Design.DommaschkOppositeInnerTrajectory.from_seed
+#print axioms PlasmaLean.Design.DommaschkOppositeInnerTrajectory.from_entry

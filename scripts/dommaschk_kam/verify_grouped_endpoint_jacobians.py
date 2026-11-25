@@ -70,9 +70,10 @@ def restricted(models,a,b,i):
     return [row[j:j+3] for j in (0,3,6)]
 
 
-def trial_data(label,start,stop):
+def trial_data(label,start,stop,packet=None):
     """Group the physical coordinates, retaining every required signed matrix and budget."""
-    packet=RECORD.with_name(f'bounce_frame_{label[:2]}_u{label[3:]}.json.gz')
+    if packet is None:
+        packet=RECORD.with_name(f'bounce_frame_{label[:2]}_u{label[3:]}.json.gz')
     section=int(label[1])
     if section:
         rows=[[(1,forward),(-1,back)] for forward,back in trial_frames(packet,start,stop-1)]

@@ -25,7 +25,7 @@ def keys(version,checksum,parents):
 def checked_parents(row,root,version):
     label,sign,i=row['endpoint'],row['direction'],row['index']
     a,b=row['central_group']
-    if label not in LABELS or sign not in (-1,1) or not 0<=a<=i<b<=391:
+    if label not in (*LABELS,'q1r470') or sign not in (-1,1) or not 0<=a<=i<b<=391:
         raise ValueError('incorrect signed group or endpoint')
     group=stem(label,sign,a,b)
     ps=row['signed_grouped_central_parents']

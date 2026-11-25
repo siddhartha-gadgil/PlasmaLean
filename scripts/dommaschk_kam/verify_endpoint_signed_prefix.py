@@ -34,7 +34,7 @@ def input_root(row, label, direction, index, module, checksum, version):
     return root
 
 
-def physical_source(label, sign, pair, previous, jac, ref, reference_package=REFERENCE):
+def physical_source(label, sign, pair, previous, jac, ref, reference_package=REFERENCE, *, initial=None):
     i = pair.index
     tag = 'Forward' if sign == 1 else 'Back'
     angle = '0' if label[1] == '0' else '(Real.pi / 2)'
@@ -43,6 +43,10 @@ def physical_source(label, sign, pair, previous, jac, ref, reference_package=REF
     row = pair.forward if sign == 1 else pair.backward
     radial, vertical = pair.common_radii if sign == 1 else pair.backward_radii
     name = f'DommaschkPhysical{label.upper()}{tag}{i:03}'
+    if (previous is None) != (initial is not None) or (initial is not None and i!=0):
+        raise ValueError('row zero may use the original initial state in place of a preceding step')
+    prev = initial[1] if initial is not None else f'next ({step_literal(previous)})'
+    initial_import = 'public import '+initial[0]+'\n' if initial is not None else ''
     if sign == 1:
         prepare = f'''  have hm : CenterMatches row {jac}.trial := by constructor <;> with_unfolding_all rfl
   have hu : ({jac}.trial.u.radius : ℝ) = ({radial} : ℝ) / 2^80 := by
@@ -61,14 +65,14 @@ def physical_source(label, sign, pair, previous, jac, ref, reference_package=REF
 public import PlasmaLean.Design.{DEPENDENCY}
 public import {JACOBIAN}.{jac}
 public import {reference_package}.{ref}
-
+{initial_import}
 /-! # Physical {tag.lower()} continuation at {label}, slab {i} -/
 @[expose] public section
 noncomputable section
 namespace PlasmaLean.Design.{name}
 open Certificates PositionFrameSlabs DommaschkPhysicalTraceStep DommaschkBounceField DommaschkJacobian Set
 
-def previous : PositionFrameSlabs.State := next ({step_literal(previous)})
+def previous : PositionFrameSlabs.State := {prev}
 def row : Step := {step_literal(row)}
 
 theorem checked : test allLimits previous row = true := by with_unfolding_all rfl
