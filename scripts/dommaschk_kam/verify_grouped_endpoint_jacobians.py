@@ -99,6 +99,7 @@ def main():
     p.add_argument('--endpoint',choices=ENDPOINT_LABELS,default='q0r478')
     p.add_argument('--cache',type=Path,default=ROOT/'.lake/grouped-trial-jacobians')
     p.add_argument('--fields-only',action='store_true')
+    p.add_argument('--fused',action='store_true',help='use integer field and matrix checks in signed groups')
     p.add_argument('--preflight',action='store_true',help='evaluate the exact eight-panel matrix test without compiling')
     p.add_argument('--rows',type=int,nargs='+',help='check only the specified moving frames in this group')
     p.add_argument('--handoff',type=Path,help='atomically add accepted rows to a running endpoint campaign')
@@ -122,6 +123,19 @@ def main():
     args.cache = args.cache.resolve()
     args.keys = [[digest(packet)],lake('lean','--version')]
     prepare(args)
+    from enable_fused_endpoint_spatial import enabled
+    if args.fused or (args.handoff and enabled(args.handoff,args.endpoint,args.keys[0][0],args.keys[1])):
+        from verify_ribbon_dyadic_jet import dyadic_jet
+        from verify_fused_endpoint_jacobians import finish as finish_fused
+        stem=f'Dommaschk{args.endpoint.upper()}FusedTrial{a:03}To{b:03}'
+        result,models,providers=dyadic_jet(stem,box,args)
+        if any((m.a,m.e)!=(ref.a,ref.e) for m,ref in zip(models,candidate,strict=True)):
+            raise ValueError('the dyadic endpoint field differs from its original screened spatial enclosure')
+        if args.fields_only:
+            save(args.output,{k:v for k,v in result[1].items() if k!='artifacts'})
+            return
+        finish_fused(stem,a,b,rows,result,models,providers,args)
+        return
     stem = f'Dommaschk{args.endpoint.upper()}GroupedTrial{a:03}To{b:03}'
     result,models,providers = shared_jet(stem,box,args)
     if any(x.a != y.a or x.e != y.e for x,y in zip(models,candidate,strict=True)):

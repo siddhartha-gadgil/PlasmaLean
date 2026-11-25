@@ -229,6 +229,10 @@ def main():
                     from grouped_trial_jacobian_rows import checked_grouped_roots
                     jac_roots.extend(checked_grouped_roots(jac,jacdir,version))
                     jac_import = merge_import_roots(args.cache,jac_roots,[jac['key'],'grouped-trial-imports'])
+                elif 'fused_parents' in jac:
+                    from verify_fused_endpoint_jacobians import checked_roots
+                    jac_roots.extend(checked_roots(jac,jacdir,version))
+                    jac_import=merge_import_roots(args.cache,jac_roots,[jac['key'],'fused-signed-trial-imports'])
                 loaded[jm] = jac_import,jac_roots
             jac_import,jac_roots = loaded[jm]
             ref = references[sign,i]
