@@ -28,8 +28,11 @@ STATIC = ('DommaschkBackwardPrefix','DommaschkSectionReflection','DommaschkJacob
           'DommaschkPhysicalTraceStep','DommaschkPositionFramesBack')
 
 
-def compile_modules(work, declarations, links, common, args, package=PACKAGE):
-    key = key_of([common,declarations])
+def compile_modules(work, declarations, links, common, args, package=PACKAGE, *, qualified_claims=None):
+    key_data=[common,declarations]
+    if qualified_claims is not None:
+        key_data.append(qualified_claims)
+    key = key_of(key_data)
     root = work/key
     tree = root/package
     tree.mkdir(parents=True,exist_ok=True)
@@ -41,6 +44,8 @@ def compile_modules(work, declarations, links, common, args, package=PACKAGE):
             record = json.loads(marker.read_text())
             if record['key'] != key or record['module'] != top or set(record['axioms']) != ALLOWED:
                 raise ValueError(f'wrong cached backward result: {marker}')
+            if qualified_claims is not None and record['theorems']!=qualified_claims:
+                raise ValueError(f'wrong cached set of grouped theorems: {marker}')
             artifact_hashes(root,record)
             return root, record
         env = {**os.environ,'LEAN_NUM_THREADS':'1','LEAN_PATH':os.pathsep.join(
@@ -55,7 +60,8 @@ def compile_modules(work, declarations, links, common, args, package=PACKAGE):
             total,peak = total+seconds,max(peak,rss)
             files.extend([src,*tree.glob(name+'.olean*')])
         audit = root/'Audit.lean'
-        fq = [f'PlasmaLean.Design.{n}.{t}' for n,_,ts in declarations for t in ts]
+        fq = ([f'PlasmaLean.Design.{n}.{t}' for n,_,ts in declarations for t in ts]
+              if qualified_claims is None else qualified_claims)
         audit.write_text(f'import {package}.{top}\n'+''.join(f'#print axioms {t}\n' for t in fq))
         log = root/'audit.log'
         seconds,rss = run_lean([*cmd,str(audit)],env,root/'peak',log)

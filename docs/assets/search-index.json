@@ -3432,6 +3432,12 @@
     "text": "25 november 2026 — eight physical launches reach a common 1,998-slab checkpoint (n-174) implementation plan"
   },
   {
+    "title": "25 November 2026 — All four signed central inlet segments checked (N-173)",
+    "section": "Implementation plan",
+    "url": "implementation-plan.html#25-november-2026-all-four-signed-central-inlet-segments-checked-n-173",
+    "text": "25 november 2026 — all four signed central inlet segments checked (n-173) implementation plan"
+  },
+  {
     "title": "M0 · Exact symmetric equilibria: slab, screw pinch, Solov'ev, helical",
     "section": "Implementation plan · Lean verified — exact slab, screw-pinch, Solov'ev and helical equilibria with kernel force balance, all-time field-line/orbit confinement, Suydam both ways and screw-pinch Newcomb stability for every m ≠ 0 (reduced form supplied; idealized symmetric models).",
     "url": "implementation-plan.html",
