@@ -954,3 +954,9 @@ run_cmd do
 #print axioms PlasmaLean.RectangleLevelCrossing.level_crossing
 #print axioms PlasmaLean.RectangleLevelCrossing.interior_level_crossing
 #print axioms PlasmaLean.RectangleLevelCrossing.interior_level_crossing_subtype
+#print axioms PlasmaLean.AnnularLevelSeparator.cylinder_separator
+#print axioms PlasmaLean.AnnularLevelSeparator.different_complement_components
+#print axioms PlasmaLean.AnnularLevelSeparator.annulus_separator
+#print axioms PlasmaLean.AnnularLevelSeparator.periodic_separator
+#print axioms PlasmaLean.AnnularLevelSeparator.no_angular_lift
+#print axioms PlasmaLean.AnnularLevelSeparator.essential_inclusion
