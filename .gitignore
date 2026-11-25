@@ -7,4 +7,5 @@ __pycache__/
 generated/qa2r/replay.log
 generated/qa2r/audit.log
 # Unpacked generated sources (git stores generated/qa2r/archives/; scripts/qa2r/pack.py)
-generated/qa2r/*Cache/
+generated/qa2r/*/
+!generated/qa2r/archives/
