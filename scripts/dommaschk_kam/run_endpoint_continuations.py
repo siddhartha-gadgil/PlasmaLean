@@ -56,6 +56,36 @@ def allocation(labels,limit,epoch):
     return quotas
 
 
+def cap_allocation(labels,limit,reports,plan):
+    """Allocate by distinct remaining certificate groups and the terminal physical join."""
+    quotas={e:0 for e in labels}
+    remaining={}
+    for label in labels:
+        n=plan[label]['target']-1
+        report=reports.get(label,{})
+        spatial=max(0,n-report.get('rows_with_both_spatial_bounds',0))
+        central=max(0,n-report.get('rows_with_both_residuals',0))
+        remaining[label]=((spatial+11)//12+(central+7)//8,spatial+central)
+    ordered=sorted(labels,key=lambda e:(not e.startswith('q0'),remaining[e][1],e))
+    for e in ordered[:limit]:
+        quotas[e]=1
+    slots=limit-sum(quotas.values())
+    waiting=[e for e in ordered if remaining[e][0]]
+    if waiting:
+        primary=waiting[0]
+        extra=min(slots,max(0,min(7,1+remaining[primary][0],(limit+1)//2)-quotas[primary]))
+        quotas[primary]+=extra
+        slots-=extra
+    while slots:
+        choices=[e for e in ordered if quotas[e]<1+remaining[e][0]]
+        if not choices:
+            break
+        e=min(choices,key=lambda label:quotas[label])
+        quotas[e]+=1
+        slots-=1
+    return quotas
+
+
 def start(label,e,a,log):
     cmd=[sys.executable,HERE/'verify_endpoint_trace_campaign.py','--endpoint',label,'--length',str(e['target']),
         '--group-plan',a.plan,'--forward-launches',a.forward_launches,'--backward-launches',a.backward_launches,
@@ -65,6 +95,8 @@ def start(label,e,a,log):
         '--output',a.work/(label+'.json')]
     if label.startswith('q0'):
         cmd.append('--native-residuals')
+    if a.cap_priority:
+        cmd.extend(['--terminal-first','--checkpoint','96','160','224','288'])
     return subprocess.Popen(cmd,cwd=ROOT,stdout=log,stderr=subprocess.STDOUT,
         env={**os.environ,'LEAN_NUM_THREADS':'1','OPENBLAS_NUM_THREADS':'1','OMP_NUM_THREADS':'1'})
 
@@ -121,7 +153,9 @@ def supervise(a,logs):
             reports={e:read(a.work/(e+'.json')) for e in running if (a.work/(e+'.json')).exists()}
             busy=sum(len(d.get('active_jobs',[])) for d in reports.values())
             limit=min(target,busy+max(0,int((mem-a.reserve_gib)//7)))
-            shares=allocation([e for e in a.endpoints if e in running],limit,epoch//20)
+            labels=[e for e in a.endpoints if e in running]
+            shares=(cap_allocation(labels,limit,reports,plan) if a.cap_priority else
+                    allocation(labels,limit,epoch//20))
             save(a.work/'leases.json',shares)
             save(a.output,dict(state='complete' if len(complete)==len(a.endpoints) else 'running',
                  primary_key=primary,complete=complete,errors=errors,leases=shares,
@@ -153,6 +187,9 @@ def main():
     p.add_argument('--workers',type=int,default=10)
     p.add_argument('--reserve-cores',type=int,default=3)
     p.add_argument('--reserve-gib',type=int,default=36)
+    p.add_argument('--cap-priority',action='store_true',
+                   help='prefer complete physical caps and assign workers to remaining proof groups')
+    p.add_argument('--wait-manager',action='store_true',help='wait for an earlier manager to finish')
     p.add_argument('--campaign',type=Path,default=ROOT/'.lake/secondary-trace-campaign')
     p.add_argument('--work',type=Path,default=ROOT/'.lake/continuations-through-caps')
     p.add_argument('--output',type=Path,required=True)
@@ -163,7 +200,7 @@ def main():
     a.work.mkdir(parents=True,exist_ok=True)
     with ExitStack() as stack:
         lock=stack.enter_context((a.work/'campaign.lock').open('a'))
-        fcntl.flock(lock,fcntl.LOCK_EX|fcntl.LOCK_NB)
+        fcntl.flock(lock,fcntl.LOCK_EX if a.wait_manager else fcntl.LOCK_EX|fcntl.LOCK_NB)
         logs={e:stack.enter_context((a.work/(e+'.log')).open('a')) for e in a.endpoints}
         supervise(a,logs)
 

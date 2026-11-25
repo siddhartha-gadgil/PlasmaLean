@@ -142,6 +142,17 @@ def campaign(a):
     checkpoints=sorted({n for n in a.checkpoint if 2<=n<=a.length}|{a.length})
     running,errors,attempts={}, {}, {}
     fallback_groups={}
+    central_groups={}
+    if a.terminal_first:
+        marker=a.cache/('opposite-grouped-central-plan.json' if a.endpoint.startswith('q1')
+                        else 'grouped-central-plan.json')
+        if marker.is_file():
+            plan=read(marker)
+            if plan['packet_sha256']!=a.checksum:
+                raise ValueError('the central scheduling groups belong to a different original packet')
+            for g in plan['groups']:
+                if g['mode']=='grouped':
+                    central_groups.update({i:g['start'] for i in range(g['start'],g['stop'])})
     for stage in [*STAGES,'prefixes',*(['grouped-jacobians'] if a.groups else [])]:
         (a.cache/stage).mkdir(parents=True,exist_ok=True)
     for path in sorted((a.cache/'prefixes').glob('*.json')):
@@ -191,7 +202,8 @@ def campaign(a):
     def next_job():
         busy=set(running.values())
         joint=stages['references']&stages['jacobians']
-        for n in checkpoints:
+        order=[a.length,*[n for n in checkpoints if n!=a.length]] if a.terminal_first else checkpoints
+        for n in order:
             job=('prefixes',n)
             if n not in prefixes and job not in busy and job not in errors and all(i in joint for i in range(1,n)):
                 if not any(s=='prefixes' for s,_ in busy):
@@ -202,6 +214,9 @@ def campaign(a):
             for s in STAGES:
                 job=(s,i)
                 if s=='references' and a.defer_reference==i and a.reference_unit and active_unit(a.reference_unit):
+                    continue
+                if s=='references' and i in central_groups and any(
+                        stage=='references' and central_groups.get(j)==central_groups[i] for stage,j in busy):
                     continue
                 if s=='jacobians' and i in a.groups and a.groups[i][0] not in fallback_groups:
                     job=('grouped-jacobians',a.groups[i][0])
@@ -290,6 +305,8 @@ def main():
     p=argparse.ArgumentParser(description=__doc__)
     p.add_argument('--endpoint',choices=ENDPOINTS[1:],required=True)
     p.add_argument('--length',type=int,default=328)
+    p.add_argument('--terminal-first',action='store_true',
+                   help='prefer the archived exterior cap and avoid multiple claims on one central field group')
     p.add_argument('--checkpoint',type=int,nargs='*',default=CHECKPOINTS)
     p.add_argument('--forward-launches',type=Path,required=True)
     p.add_argument('--backward-launches',type=Path,required=True)
