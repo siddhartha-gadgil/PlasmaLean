@@ -963,3 +963,5 @@ run_cmd do
 #print axioms PlasmaLean.UniformRadialWindow.uniform
 #print axioms PlasmaLean.UniformRadialWindow.lipschitz
 #print axioms PlasmaLean.UniformRadialWindow.HasInterval.volume
+#print axioms PlasmaLean.MovingRadialFaces.separator
+#print axioms PlasmaLean.MovingRadialFaces.stays_between
