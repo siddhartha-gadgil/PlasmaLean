@@ -372,6 +372,7 @@ public import PlasmaLean.Theory.Geometry.TorusHodge
 public import PlasmaLean.Theory.Geometry.AnnulusFluxDescent
 public import PlasmaLean.Theory.Geometry.AnnulusOrbitExistence
 public import PlasmaLean.Theory.Geometry.PeriodicLevelGraphs
+public import PlasmaLean.Theory.Geometry.RectangleLevelCrossing
 public import PlasmaLean.Theory.Geometry.PeriodicOrientedCrossings
 public import PlasmaLean.Theory.Geometry.LocalLevelGraphs
 public import PlasmaLean.Theory.Kinetic.MirrorAction

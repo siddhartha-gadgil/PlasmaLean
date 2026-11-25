@@ -949,3 +949,8 @@ run_cmd do
 #print axioms PlasmaLean.Fields.TrajectoryFamily.continuousOn_of_enclosed
 #print axioms PlasmaLean.Fields.TrajectoryFamily.continuousOn_of_moving_birth
 #print axioms PlasmaLean.Kinetic.FirstWellContinuation.CappedFamily.continuous_first_wells
+#print axioms PlasmaLean.RectangleLevelCrossing.clopen_separator
+#print axioms PlasmaLean.RectangleLevelCrossing.parameter_fixed_points
+#print axioms PlasmaLean.RectangleLevelCrossing.level_crossing
+#print axioms PlasmaLean.RectangleLevelCrossing.interior_level_crossing
+#print axioms PlasmaLean.RectangleLevelCrossing.interior_level_crossing_subtype
