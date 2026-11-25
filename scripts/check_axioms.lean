@@ -938,3 +938,9 @@ run_cmd do
 #print axioms PlasmaLean.Kinetic.FirstWellContinuation.FirstContact.unique
 #print axioms PlasmaLean.Kinetic.FirstWellContinuation.action_split
 #print axioms PlasmaLean.Kinetic.FirstWellContinuation.CappedFamily.target_or_localMax
+#print axioms PlasmaLean.Kinetic.FirstMirror.measurable_good_heights
+#print axioms PlasmaLean.Kinetic.FirstMirror.uniformHeight_isProbability
+#print axioms PlasmaLean.Kinetic.FirstMirror.uniformHeight_lower
+#print axioms PlasmaLean.Kinetic.FirstMirror.probability_of_bad_density
+#print axioms PlasmaLean.Kinetic.FirstMirror.probability_of_height_map
+#print axioms PlasmaLean.Kinetic.FirstMirror.excluded_atom
