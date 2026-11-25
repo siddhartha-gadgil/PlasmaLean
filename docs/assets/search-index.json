@@ -1,7 +1,7 @@
 [
   {
     "title": "Progress slideshow",
-    "section": "Evidence updated 2026-11-25 · The same two embedded Dommaschk QA2R tori have zero net toroidal current and absolute transform at least 0.2386. Their certified off-QA defects are at most 0.0063 and 0.0090 times the absolute transform on C and A, respectively. A second, rational vacuum stellarator also satisfies C1. For QA2R, Lean has verified all 2,656 signed field-line steps on the original radial strip 0.470–0.478 and phases within 2⁻¹⁹ of zero. A compact connected set of true first wells realizes the target action throughout that sector. Every positive action tolerance has a uniformly positive radial sampling width. On the wider interval 0.44–0.54, a signed field line stays below mirror strength through ±1/256 radian at every launch phase. Inside the narrow sector a first-exit theorem permits a dimensionless action-drift budget of 0.000996 over a specified height band. Applying it to thermal particles requires control of guiding-centre drift, time, excursion and a birth population. The two invariant tori and vacuum force balance are established. Volume-filling flux surfaces, finite-pressure equilibrium and stability, and thermal performance on this candidate remain open.",
+    "section": "Evidence updated 2026-11-25 · The same two embedded Dommaschk QA2R tori have zero net toroidal current and absolute transform at least 0.2386. Their certified off-QA defects are at most 0.0063 and 0.0090 times the absolute transform on C and A, respectively. A second, rational vacuum stellarator also satisfies C1. For QA2R, workstation-generated Lean modules (receipts recorded; not yet in the repository build or axiom audit) verify all 2,656 signed field-line steps on the original radial strip 0.470–0.478 and phases within 2⁻¹⁹ of zero. A compact connected set of true first wells realizes the target action throughout that sector. Every positive action tolerance has a uniformly positive radial sampling width. On the wider interval 0.44–0.54, a signed field line stays below mirror strength through ±1/256 radian at every launch phase. Inside the narrow sector a first-exit theorem permits a dimensionless action-drift budget of 0.000996 over a specified height band. Applying it to thermal particles requires control of guiding-centre drift, time, excursion and a birth population. The two invariant tori and vacuum force balance are established. Volume-filling flux surfaces, finite-pressure equilibrium and stability, and thermal performance on this candidate remain open. Audit of 25 November 2026: no false theorem or unsound checker in the repository; the headline QA2R C2 results are workstation-generated modules outside the repository, and the band form of C2 admitted instances without confinement content. The band form now has fixed inputs (BandContract, N-213): a specification fixes the birth law, horizon, excursion and required fraction before any proof. No field is yet shown to meet it, so C2 remains open.",
     "url": "slides.html",
     "text": "progress slideshow presentation latest run evidence vacuum fixture"
   },
@@ -12,10 +12,10 @@
     "text": "both vacuum examples have embedded invariant tori with zero net toroidal current. the two dommaschk tori c and a are embedded and nested. the same pair has absolute rotational transform at least 0.2386 and the certified q-16 quasi-axisymmetry bounds. on the rational stellarator, the exact kam torus is embedded and has transform (75+√5)/562. for a regular annular periodic flow, shared invariant volume and a nonsingular averaged field tangent to both edges give a radial label and orbit existence and confinement through time c/ε². the next slide states the hypotheses and what remains to apply it to a stellarator."
   },
   {
-    "title": "A radial label from averaged flux controls particle motion for times of order ε⁻².",
+    "title": "A radial label from averaged flux controls a perturbed periodic flow for times of order ε⁻².",
     "section": "Progress slideshow",
     "url": "slides.html#annular-averaged-flux",
-    "text": "a radial label from averaged flux controls particle motion for times of order ε⁻². suppose periodic leading orbits fill a regular annulus. if both fields preserve the same positive volume, the averaged drift has no zeros, and it is tangent to both edge circles, its flux constructs a radial label. the constants work for all initial angles and phases. in an oscillatory example, radial speed is nonzero at phase zero, the phase average vanishes, and the corrected radius is exactly conserved."
+    "text": "a radial label from averaged flux controls a perturbed periodic flow for times of order ε⁻². suppose periodic leading orbits fill a regular annulus. if both fields preserve the same positive volume, the averaged drift has no zeros, and it is tangent to both edge circles, its flux constructs a radial label. the constants work for all initial angles and phases. in an oscillatory example, radial speed is nonzero at phase zero, the phase average vanishes, and the corrected radius is exactly conserved."
   },
   {
     "title": "A connected set of target-action births across a phase sector",
@@ -28,6 +28,12 @@
     "section": "Progress slideshow",
     "url": "slides.html#all-phase-physical-births",
     "text": "birth accessibility now covers the full phase circle. on the same two nested embedded tori, every launch label from 0.44 through 0.54 starts below the lower mirror height at every phase. the all-phase field-line proof covers 25 swept phase sectors."
+  },
+  {
+    "title": "Second refresh audit: nothing false in the repository; C2 evidence and the band clause tightened.",
+    "section": "Progress slideshow",
+    "url": "slides.html#refresh-audit-25-november",
+    "text": "second refresh audit: nothing false in the repository; c2 evidence and the band clause tightened. audited commit 0bec221: all 531 lean files changed since 23 november, the scripts that generate certificate modules, and 180 documents, by six independent read-only reviewers. no false or vacuous theorem in the repository and no certificate checker that can accept false data. c2 is unchanged: open. its target is now explicit: prove meetsband for an admissible specification, which for qa2r needs a horizon bound independent of the excursion cap (the action-drift estimate)."
   },
   {
     "title": "The aim: one candidate satisfying C1–C5 with common witnesses — not merely a non-axisymmetric field.",
@@ -267,7 +273,7 @@
     "title": "The next run must leave evidence, not just a promise.",
     "section": "Progress slideshow",
     "url": "slides.html#next-run",
-    "text": "the next run must leave evidence, not just a promise. the c2 application needs a regular physical bounce band, a bound on radial excursion and a measure of the births it covers. a current-free finite-pressure equilibrium and a thermal loss estimate for the same candidate remain open. the linked run records checked declarations, assumptions and validation. this slideshow is a summary of that evidence, not a new design certificate."
+    "text": "the next run must leave evidence, not just a promise. c2 needs a field meeting an admissible band specification: a horizon bound for dommaschk guiding centres independent of the excursion cap, phase coverage of the first wells and a thermal birth population. two decisions are pending: whether to commit the generated certificate modules, and the physical values of the band inputs. a current-free finite-pressure equilibrium and a thermal loss estimate for the same candidate remain open. the linked run records checked declarations, assumptions and validation. this slideshow is a summary of that evidence, not a new design certificate."
   },
   {
     "title": "Stellarator concepts",
@@ -3666,6 +3672,18 @@
     "text": "25 november 2026 — a compact action level can follow two moving radial faces (n-212) implementation plan"
   },
   {
+    "title": "25 November 2026 — Refresh audit of all changes since 23 November (AW-*)",
+    "section": "Implementation plan",
+    "url": "implementation-plan.html#25-november-2026-refresh-audit-of-all-changes-since-23-november-aw-",
+    "text": "25 november 2026 — refresh audit of all changes since 23 november (aw-*) implementation plan"
+  },
+  {
+    "title": "25 November 2026 — The band form of C2 with fixed inputs (N-213)",
+    "section": "Implementation plan",
+    "url": "implementation-plan.html#25-november-2026-the-band-form-of-c2-with-fixed-inputs-n-213",
+    "text": "25 november 2026 — the band form of c2 with fixed inputs (n-213) implementation plan"
+  },
+  {
     "title": "M0 · Exact symmetric equilibria: slab, screw pinch, Solov'ev, helical",
     "section": "Implementation plan · Lean verified — exact slab, screw-pinch, Solov'ev and helical equilibria with kernel force balance, all-time field-line/orbit confinement, Suydam both ways and screw-pinch Newcomb stability for every m ≠ 0 (reduced form supplied; idealized symmetric models).",
     "url": "implementation-plan.html",
@@ -3847,9 +3865,9 @@
   },
   {
     "title": "Verified progress",
-    "section": "The same two embedded Dommaschk QA2R tori have zero net toroidal current and absolute transform at least 0.2386. Their certified off-QA defects are at most 0.0063 and 0.0090 times the absolute transform on C and A, respectively. A second, rational vacuum stellarator also satisfies C1. For QA2R, Lean has verified all 2,656 signed field-line steps on the original radial strip 0.470–0.478 and phases within 2⁻¹⁹ of zero. A compact connected set of true first wells realizes the target action throughout that sector. Every positive action tolerance has a uniformly positive radial sampling width. On the wider interval 0.44–0.54, a signed field line stays below mirror strength through ±1/256 radian at every launch phase. Inside the narrow sector a first-exit theorem permits a dimensionless action-drift budget of 0.000996 over a specified height band. Applying it to thermal particles requires control of guiding-centre drift, time, excursion and a birth population. The two invariant tori and vacuum force balance are established. Volume-filling flux surfaces, finite-pressure equilibrium and stability, and thermal performance on this candidate remain open.",
+    "section": "The same two embedded Dommaschk QA2R tori have zero net toroidal current and absolute transform at least 0.2386. Their certified off-QA defects are at most 0.0063 and 0.0090 times the absolute transform on C and A, respectively. A second, rational vacuum stellarator also satisfies C1. For QA2R, workstation-generated Lean modules (receipts recorded; not yet in the repository build or axiom audit) verify all 2,656 signed field-line steps on the original radial strip 0.470–0.478 and phases within 2⁻¹⁹ of zero. A compact connected set of true first wells realizes the target action throughout that sector. Every positive action tolerance has a uniformly positive radial sampling width. On the wider interval 0.44–0.54, a signed field line stays below mirror strength through ±1/256 radian at every launch phase. Inside the narrow sector a first-exit theorem permits a dimensionless action-drift budget of 0.000996 over a specified height band. Applying it to thermal particles requires control of guiding-centre drift, time, excursion and a birth population. The two invariant tori and vacuum force balance are established. Volume-filling flux surfaces, finite-pressure equilibrium and stability, and thermal performance on this candidate remain open. Audit of 25 November 2026: no false theorem or unsound checker in the repository; the headline QA2R C2 results are workstation-generated modules outside the repository, and the band form of C2 admitted instances without confinement content. The band form now has fixed inputs (BandContract, N-213): a specification fixes the birth law, horizon, excursion and required fraction before any proof. No field is yet shown to meet it, so C2 remains open.",
     "url": "progress.html",
-    "text": "verified progress the same two embedded dommaschk qa2r tori have zero net toroidal current and absolute transform at least 0.2386. their certified off-qa defects are at most 0.0063 and 0.0090 times the absolute transform on c and a, respectively. a second, rational vacuum stellarator also satisfies c1. for qa2r, lean has verified all 2,656 signed field-line steps on the original radial strip 0.470–0.478 and phases within 2⁻¹⁹ of zero. a compact connected set of true first wells realizes the target action throughout that sector. every positive action tolerance has a uniformly positive radial sampling width. on the wider interval 0.44–0.54, a signed field line stays below mirror strength through ±1/256 radian at every launch phase. inside the narrow sector a first-exit theorem permits a dimensionless action-drift budget of 0.000996 over a specified height band. applying it to thermal particles requires control of guiding-centre drift, time, excursion and a birth population. the two invariant tori and vacuum force balance are established. volume-filling flux surfaces, finite-pressure equilibrium and stability, and thermal performance on this candidate remain open."
+    "text": "verified progress the same two embedded dommaschk qa2r tori have zero net toroidal current and absolute transform at least 0.2386. their certified off-qa defects are at most 0.0063 and 0.0090 times the absolute transform on c and a, respectively. a second, rational vacuum stellarator also satisfies c1. for qa2r, workstation-generated lean modules (receipts recorded; not yet in the repository build or axiom audit) verify all 2,656 signed field-line steps on the original radial strip 0.470–0.478 and phases within 2⁻¹⁹ of zero. a compact connected set of true first wells realizes the target action throughout that sector. every positive action tolerance has a uniformly positive radial sampling width. on the wider interval 0.44–0.54, a signed field line stays below mirror strength through ±1/256 radian at every launch phase. inside the narrow sector a first-exit theorem permits a dimensionless action-drift budget of 0.000996 over a specified height band. applying it to thermal particles requires control of guiding-centre drift, time, excursion and a birth population. the two invariant tori and vacuum force balance are established. volume-filling flux surfaces, finite-pressure equilibrium and stability, and thermal performance on this candidate remain open. audit of 25 november 2026: no false theorem or unsound checker in the repository; the headline qa2r c2 results are workstation-generated modules outside the repository, and the band form of c2 admitted instances without confinement content. the band form now has fixed inputs (bandcontract, n-213): a specification fixes the birth law, horizon, excursion and required fraction before any proof. no field is yet shown to meet it, so c2 remains open."
   },
   {
     "title": "Outcome",
@@ -3976,5 +3994,11 @@
     "section": "Verified progress",
     "url": "progress.html#signed-field-lines-over-the-full-birth-phase-circle",
     "text": "signed field lines over the full birth phase circle verified progress"
+  },
+  {
+    "title": "Refresh audit and the band form of C2, 25 November 2026",
+    "section": "Verified progress",
+    "url": "progress.html#refresh-audit-and-the-band-form-of-c2-25-november-2026",
+    "text": "refresh audit and the band form of c2, 25 november 2026 verified progress"
   }
 ]

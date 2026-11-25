@@ -45,7 +45,7 @@ Limits that apply throughout: the Noether and Hamiltonian theorems need a vector
 differentiable on all of space (AV-M4; the orbit theorems of `LorentzOrbitOpen` do not); the forms are on `ℝ³` or its open subsets, not on embedded flux surfaces;
 TauCeti's own proofs were not audited. Added after the audit (not yet audited): the
 complex structure of the lift and its `(1,1)`, primitive characterisation, closedness on
-`U × S¹` without regularity (`FormHYMComplex`); global existence of orbits under linear
+`U × S¹` (`FormHYMComplex`; for non-differentiable `ω` the criterion holds by Lean's junk value 0, audit AW-M1); global existence of orbits under linear
 growth or an energy bound (`Theory/Kinetic/LorentzGlobalExistence`); the loop current on the
 Dommaschk tori (`Design/DommaschkKamLoopCurrent`, on demand); the energy inequality for
 compactly supported variations of the lift and its local connection form (`FormHYMEnergy`);
@@ -600,8 +600,10 @@ modules written in parallel and rebuilt and axiom-checked in the main session:
   `liftOrientation`, and no holomorphic structure on a bundle is stated.
 - `mextDeriv_hymLiftCircleForm_eq_zero_iff'`, `mextDeriv_hymLiftRegionForm_eq_zero_iff`,
   `VacuumForm.hymLiftRegionForm_closed`: the closedness criterion on `Space × S¹` and on
-  `U × S¹` with no differentiability hypothesis on `ω`. This removes the limit recorded in the
-  third round.
+  `U × S¹` with no differentiability hypothesis on `ω`. Where `ω` is not differentiable both sides
+  are the junk value 0 (the step form `H(x₀) dx₁∧dx₂` passes although `dω ≠ 0` as a distribution),
+  so the criterion has content only for differentiable `ω`; it does not remove the limit recorded
+  in the third round (audit of 25 November 2026, AW-M1).
 - Sanity: explicit values on basis vectors; a self-dual form that is of type `(1,1)` but not
   primitive (the Kähler form), and one that is primitive but not of type `(1,1)`.
 

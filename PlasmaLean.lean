@@ -119,6 +119,7 @@ public import PlasmaLean.Theory.Fields.FormConvexRegion
 public import PlasmaLean.Sanity.ContractLoopCurrentFixture
 public import PlasmaLean.Sanity.MeridianCoil
 public import PlasmaLean.Sanity.TrappedBirthBand
+public import PlasmaLean.Sanity.BandSpec
 public import PlasmaLean.Theory.Kinetic.NoetherGaugeBridge
 public import PlasmaLean.Sanity.NoetherGaugeBridge
 public import PlasmaLean.Theory.Fields.FormHYMCircle
@@ -144,6 +145,7 @@ public import PlasmaLean.Theory.Fields.FormHYMBundle
 public import PlasmaLean.Sanity.FormHYMBundle
 public import PlasmaLean.Theory.Contract.EmbeddedSurfaces
 public import PlasmaLean.Theory.Contract.TrappedBirthBand
+public import PlasmaLean.Theory.Contract.BandSpec
 public import PlasmaLean.Theory.Contract.TrappedBirthCoordinates
 public import PlasmaLean.Sanity.EmbeddedSurfaces
 public import PlasmaLean.Theory.Fluids.EulerianODE
