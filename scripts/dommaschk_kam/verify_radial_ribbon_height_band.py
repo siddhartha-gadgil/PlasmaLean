@@ -30,14 +30,14 @@ def replay(a, name, src, claims, links, keys, package):
     return dict(module=name,key=rec['key'],axioms=rec['axioms'],import_paths=[str(root.resolve()),*[str(p.resolve()) for p in links]])
 
 
-def group(a, traces, parent, packets):
+def group(a, traces, parent, packets, *, clearance=CLEAR, name_prefix='DommaschkRibbonBandBelow', short_track=False):
     old = parent['module']
     lo, hi = parent['start'],parent['stop']
     if old != f'DommaschkRibbonUpperExclusion{lo:03}To{hi:03}':
         raise ValueError('unexpected incoming group')
     base, overlay = map(Path,parent['import_paths'])
     admitted(base,old,parent['key'])
-    name = f'DommaschkRibbonBandBelow{lo:03}To{hi:03}'
+    name = f'{name_prefix}{lo:03}To{hi:03}'
     src = (base/OUT/(old+'.lean')).read_text().replace('namespace PlasmaLean.Design.'+old+'\n',
             'namespace PlasmaLean.Design.'+name+'\n').replace('module\n','module\npublic import PlasmaLean.Design.DommaschkGroupGapRadius\n',1)
     before, final = src.split('  apply physical_sign false hR',1)
@@ -45,9 +45,9 @@ def group(a, traces, parent, packets):
         raise ValueError('unexpected sign projection')
     cap = radius_cap(cover(traces,range(4),lo,hi)[0])
     maximum = F(parent['upper_gap'])
-    if maximum + cap**16*(HEIGHTS[1]**2-CLEAR**2) >= 0:
+    if maximum + cap**16*(HEIGHTS[1]**2-clearance**2) >= 0:
         raise ValueError('insufficient grouped field margin')
-    before = before.replace('theorem below : group.Below (height true)', f'theorem below : group.Below ({CLEAR})')
+    before = before.replace('theorem below : group.Below (height true)', f'theorem below : group.Below ({clearance})')
     src = before + f'''  have box := enclose (c := ⟨[({cap/2})],({cap/2})⟩) hw hr (by kernel_fact)
   norm_num [Model.Mem, Certificates.QPoly.eval, abs_le] at box bound
   have old : gap R (height true) (atPoint dD R t z) (atPoint dnR R t z) (atPoint dnZ R t z) ≤ ({maximum}) := by
@@ -64,9 +64,10 @@ end PlasmaLean.Design.{name}
         links = [*map(Path,est['import_paths']),*map(Path,pkt['import_paths'])]
         key = [est['key'],pkt['key']]
         joins = merge_import_roots(a.cache,links,key)
-        item, hs = signed_rows('below',k,traces[k],pkt,dict(start=lo,stop=hi,module=name))
+        item, hs = signed_rows('below',k,traces[k],pkt,dict(start=lo,stop=hi,module=name),
+                               prefix=hi if short_track else None)
         n,code,claims = item
-        code = code.replace(OUT+'.'+name,EST+'.'+name).replace('(height true : ℝ)',f'({CLEAR} : ℝ)').replace('(height true)',f'({CLEAR})')
+        code = code.replace(OUT+'.'+name,EST+'.'+name).replace('(height true : ℝ)',f'({clearance} : ℝ)').replace('(height true)',f'({clearance})')
         row = replay(a,n,code,claims,[joins],[a.ribbon_key,key,digest(DESIGN/'DommaschkRibbonFirstMirrors.trace'),
                      *[digest(DESIGN/(h+'.trace')) for h in hs]],ROWS)
         physical.append(row)

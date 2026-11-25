@@ -190,6 +190,7 @@ import PlasmaLean.Design.DommaschkRadialMirrorHeightBand
 import PlasmaLean.Design.DommaschkSectorActionBand
 import PlasmaLean.Design.DommaschkOppositeActionStrip
 import PlasmaLean.Design.DommaschkSectorHeightCrossings
+import PlasmaLean.Design.DommaschkRadialPassingCore
 
 /-! Audit all declarations owned by project modules in the import closure (the on-demand top
 modules and everything they import). Fails on any non-standard axiom. -/
@@ -717,3 +718,5 @@ run_cmd do
 #print axioms PlasmaLean.Design.DommaschkSectorHeightCrossings.family_of_paths
 #print axioms PlasmaLean.Design.DommaschkSectorHeightCrossings.face_signs
 #print axioms PlasmaLean.Design.DommaschkSectorHeightCrossings.crossing
+#print axioms PlasmaLean.Design.DommaschkRadialPassingCore.passing_of_below
+#print axioms PlasmaLean.Design.DommaschkRadialPassingCore.from_seed
