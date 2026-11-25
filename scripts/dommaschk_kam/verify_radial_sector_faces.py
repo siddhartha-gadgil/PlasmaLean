@@ -12,7 +12,9 @@ from verify_physical_trace_slabs import DESIGN, ROOT, digest, save
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--action-window', action='store_true', help='retain the quantitative first-well bounds')
+    modes = parser.add_mutually_exclusive_group()
+    modes.add_argument('--exit-faces', action='store_true', help='observe either physical endpoint independently at its own birth')
+    modes.add_argument('--action-window', action='store_true', help='retain the quantitative first-well bounds')
     parser.add_argument('--flow', type=Path, required=True)
     parser.add_argument('--output', type=Path, required=True)
     parser.add_argument('--cache', type=Path, default=ROOT/'.lake/radial-sector-faces')
@@ -47,9 +49,11 @@ def main():
     witness = origin.split(marker_start,1)[1].split(marker_end,1)[0].rstrip('\n')
     if not witness.startswith('  obtain ⟨sign, approach,') or '  have pz : Enclosed z ' not in witness:
         parser.error('the original signed physical proof does not contain both endpoint enclosures')
-    if args.action_window:
+    if args.action_window or args.exit_faces:
         module = 'DommaschkSectorActionBand'
         prop = 'BandFaces'
+        if args.exit_faces:
+            module, prop = 'DommaschkPhysicalActionExit', 'BoundaryValues'
         cap, floor = 'innerCap', 'outerFloor'
         # The endpoint source supplies both exact absolute estimates in this conjunction.
         fields = 'innerWell,outerWell,_,_,low,high'
@@ -63,6 +67,11 @@ def main():
     src = (template.read_text().replace('FACE_MODULE', module).replace('FACE_PROPERTY', prop)
            .replace('INNER_BOUND', cap).replace('OUTER_BOUND', floor)
            .replace('SUFFIX', match[1]).replace('ENDPOINT_WITNESSES', witness))
+    birth_sides = ''
+    if args.exit_faces:
+        birth_sides = ('\n    ⟨by linarith [hl.2, (abs_le.mp small).1], by linarith [hr.1, (abs_le.mp small).2]⟩'
+                       '\n    ⟨by linarith [hL.2, (abs_le.mp small).1], by linarith [hR.1, (abs_le.mp small).2]⟩')
+    src = src.replace('EXTRA_BIRTH_BOUNDS', birth_sides)
     name = module+'On'+match[1]
     env(args)
     keys = [args.version,report['key'],digest(DESIGN/(module+'.trace'))]

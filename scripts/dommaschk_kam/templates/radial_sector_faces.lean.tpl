@@ -23,7 +23,7 @@ ENDPOINT_WITNESSES
   exact of_endpoint_witnesses
     ⟨by linarith [(abs_le.mp small).1],by linarith [(abs_le.mp small).2]⟩ py pz bornI bornO
     innerWell outerWell (Icc_subset_Icc (by linarith [hl.1]) (by linarith [hr.2]))
-    (Icc_subset_Icc (by linarith [hL.1]) (by linarith [hR.2])) INNER_BOUND OUTER_BOUND
+    (Icc_subset_Icc (by linarith [hL.1]) (by linarith [hR.2])) INNER_BOUND OUTER_BOUNDEXTRA_BIRTH_BOUNDS
 
 theorem from_nested_tori : ∃ (uC zC uA zA : FA) (R₀ z₀ : ℝ → ℝ) (ΘC ΘA : ℝ → ℝ → ℝ),
     IotaOnTorus (DommaschkQA2R.field DommaschkQA2R.candidate) (RofC uC) (Zof zC) DommaschkKamDio.dkIotaC ∧

@@ -193,6 +193,7 @@ import PlasmaLean.Design.DommaschkSectorHeightCrossings
 import PlasmaLean.Design.DommaschkRadialPassingCore
 import PlasmaLean.Design.DommaschkWideBirthBounds
 import PlasmaLean.Design.DommaschkRadialPassingTime
+import PlasmaLean.Design.DommaschkPhysicalActionExit
 
 /-! Audit all declarations owned by project modules in the import closure (the on-demand top
 modules and everything they import). Fails on any non-standard axiom. -/
@@ -729,3 +730,6 @@ run_cmd do
 #print axioms PlasmaLean.Design.DommaschkRadialPassingTime.duration
 #print axioms PlasmaLean.Design.DommaschkRadialPassingTime.clock_on
 #print axioms PlasmaLean.Design.DommaschkRadialPassingTime.times_about_birth
+#print axioms PlasmaLean.Design.DommaschkPhysicalActionExit.of_endpoint_witnesses
+#print axioms PlasmaLean.Design.DommaschkPhysicalActionExit.stays_inside
+#print axioms PlasmaLean.Design.DommaschkPhysicalActionExit.stays_inside_of_correction
