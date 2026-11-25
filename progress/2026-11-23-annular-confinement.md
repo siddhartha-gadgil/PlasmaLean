@@ -376,3 +376,5 @@ Lean has joined all 2,656 physical ODE steps and discharged the through-cap hypo
 ### Signed field lines over the full birth phase circle
 
 Across the full birth phase circle and all labels 0.44–0.54, Lean now proves a true QA2R field-line segment through ±1/256 radian, with strength below hL−1/1000. Each poloidal coordinate moves by at most 1/1536, and the Cartesian magnetic field-line equation holds on the interior. [A signed nonturning field-line collar for every original QA2R birth](https://github.com/siddhartha-gadgil/PlasmaLean/blob/main/notes/theory/periodic-original-fieldline-collar.md)
+
+On the original two radial faces Lean certifies a closed first-exit budget of 249/250000 for every height from h_U−1/500000 to h_U. The measured action must come from an actual first well in the certified phase sector at a possible first exit. An independent bound on pre-exit action drift is still required for a particle confinement conclusion. [A radial first-exit bound with varying mirror height](https://github.com/siddhartha-gadgil/PlasmaLean/blob/main/notes/theory/varying-height-first-exit.md)

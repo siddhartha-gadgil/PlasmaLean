@@ -202,6 +202,7 @@ import PlasmaLean.Design.DommaschkRadialActionWindows
 import PlasmaLean.Design.DommaschkOuterFaceFlight
 import PlasmaLean.Design.DommaschkOppositeInnerTrajectory
 import PlasmaLean.Design.DommaschkPeriodicCollarCartesian
+import PlasmaLean.Design.DommaschkHeightBandActionExit
 
 /-! Audit all declarations owned by project modules in the import closure (the on-demand top
 modules and everything they import). Fails on any non-standard axiom. -/
@@ -757,3 +758,7 @@ run_cmd do
 #print axioms PlasmaLean.Design.DommaschkPeriodicBirthCollar.at_original
 #print axioms PlasmaLean.Design.DommaschkPeriodicBirthCollar.from_period
 #print axioms PlasmaLean.Design.DommaschkPeriodicBirthCollar.Passage.cartesian
+#print axioms PlasmaLean.Design.DommaschkHeightBandActionExit.of_endpoints
+#print axioms PlasmaLean.Design.DommaschkHeightBandActionExit.stays_inside
+#print axioms PlasmaLean.Design.DommaschkHeightBandActionExit.stays_inside_of_correction
+#print axioms PlasmaLean.Design.DommaschkHeightBandActionExit.guard
