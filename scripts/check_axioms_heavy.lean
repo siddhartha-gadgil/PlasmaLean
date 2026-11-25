@@ -197,6 +197,7 @@ import PlasmaLean.Design.DommaschkPhysicalActionExit
 import PlasmaLean.Certificates.PositiveSubwell
 import PlasmaLean.Design.DommaschkOppositeInnerSeed
 import PlasmaLean.Design.DommaschkShiftedActionSubwell
+import PlasmaLean.Design.DommaschkPeriodicBirthCover
 
 /-! Audit all declarations owned by project modules in the import closure (the on-demand top
 modules and everything they import). Fails on any non-standard axiom. -/
@@ -739,3 +740,6 @@ run_cmd do
 #print axioms PlasmaLean.Certificates.PositiveSubwell.floor_in_first_well
 #print axioms PlasmaLean.Design.DommaschkOppositeInnerSeed.from_nested_tori
 #print axioms PlasmaLean.Design.DommaschkShiftedActionSubwell.shifted
+#print axioms PlasmaLean.Design.DommaschkPeriodicBirthCover.sector_join
+#print axioms PlasmaLean.Design.DommaschkPeriodicBirthCover.at_original
+#print axioms PlasmaLean.Design.DommaschkPeriodicBirthCover.from_period
