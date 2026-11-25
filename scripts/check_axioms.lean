@@ -947,3 +947,5 @@ run_cmd do
 #print axioms PlasmaLean.Fields.TrajectoryFamily.compact_lipschitz
 #print axioms PlasmaLean.Fields.TrajectoryFamily.dist_from_birth
 #print axioms PlasmaLean.Fields.TrajectoryFamily.continuousOn_of_enclosed
+#print axioms PlasmaLean.Fields.TrajectoryFamily.continuousOn_of_moving_birth
+#print axioms PlasmaLean.Kinetic.FirstWellContinuation.CappedFamily.continuous_first_wells

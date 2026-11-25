@@ -354,6 +354,7 @@ public import PlasmaLean.Theory.Fields.MovingFrameTrajectory
 public import PlasmaLean.Theory.Fields.RectangularODEStep
 public import PlasmaLean.Theory.Fields.TrajectorySlabs
 public import PlasmaLean.Theory.Fields.TrajectoryFamilyContinuity
+public import PlasmaLean.Theory.Fields.MovingBirthClock
 public import PlasmaLean.Theory.Fields.MovingFrameSlabs
 public import PlasmaLean.Theory.Fields.CylindricalLaunchFlux
 public import PlasmaLean.Theory.Fields.ODEContinuation
@@ -394,6 +395,7 @@ public import PlasmaLean.Theory.Kinetic.MirrorHeightBand
 public import PlasmaLean.Theory.Kinetic.FirstMirrorRegularValues
 public import PlasmaLean.Theory.Kinetic.FirstMirrorHeightDistribution
 public import PlasmaLean.Theory.Kinetic.FirstWellContinuation
+public import PlasmaLean.Theory.Kinetic.ContinuousFirstWellAction
 public import PlasmaLean.Theory.Kinetic.MirrorWellPersistence
 public import PlasmaLean.Theory.Kinetic.MirrorLocalFlowPersistence
 public import PlasmaLean.Theory.Kinetic.MirrorActionInverseBounds

@@ -181,6 +181,7 @@ import PlasmaLean.Design.DommaschkRibbonThroughChains
 import PlasmaLean.Design.DommaschkRibbonGrazingAlternative
 import PlasmaLean.Design.DommaschkRibbonSlopeCover
 import PlasmaLean.Design.DommaschkDyadicHorner
+import PlasmaLean.Design.DommaschkSectorAction
 
 /-! Audit all declarations owned by project modules in the import closure (the on-demand top
 modules and everything they import). Fails on any non-standard axiom. -/
@@ -678,3 +679,6 @@ run_cmd do
 #print axioms PlasmaLean.Certificates.DyadicHornerStep.MulAdd.mem
 #print axioms PlasmaLean.Design.DommaschkDyadicHorner.Run.mem
 #print axioms PlasmaLean.Design.DommaschkDyadicHorner.channel_cons
+#print axioms PlasmaLean.Design.DommaschkSectorAction.continuous_sector_birth
+#print axioms PlasmaLean.Design.DommaschkSectorAction.capped_sector
+#print axioms PlasmaLean.Design.DommaschkSectorAction.sector_of_sections
