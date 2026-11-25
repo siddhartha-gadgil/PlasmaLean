@@ -26,10 +26,11 @@ def main():
     while args.wait and not args.attainment.is_file():
         time.sleep(15)
     attainment = json.loads(args.attainment.read_text())
-    match = re.fullmatch(r"DommaschkSectorFacesOn(\d+(?:_\d+){7})", faces["module"])
+    match = re.fullmatch(r"DommaschkSector(Faces|ActionBand)On(\d+(?:_\d+){7})", faces["module"])
     if match is None or not re.fullmatch(r"DommaschkRadialAccessibleBirth\d{3}", access["module"]):
         parser.error("expected physical face comparison and accessible-birth receipts")
-    suffix = match.group(1)
+    band = match.group(1) == "ActionBand"
+    suffix = match.group(2)
     full = attainment.get("through_key") is not None
     expected = ("DommaschkProvedRadialAttainmentOn" if full else "DommaschkRadialAttainmentOn") + suffix
     if attainment["module"] != expected:
@@ -37,6 +38,14 @@ def main():
     roots = [*checked(faces, "from_nested_tori"), *checked(access, "in_ball"), *checked(attainment, "sections")]
     name = ("DommaschkPhysicalConnectedLevelOn" if full else "DommaschkConnectedLevelOn") + suffix
     joins = attainment["module"]
+    module = "DommaschkConnectedActionLevel"
+    property_name = "Crossing"
+    criterion = "crossing_of_sector"
+    if band:
+        module = "DommaschkSectorActionBand"
+        property_name = "Prescriptions"
+        criterion = "prescriptions_of_sector"
+        name = ("DommaschkPhysicalActionBandOn" if full else "DommaschkPrescribedActionBandOn") + suffix
     claims = ["from_tracks"]
     closed = ""
     if full:
@@ -44,7 +53,7 @@ def main():
         claims.append("on_nested_tori")
         closed = f"theorem on_nested_tori : OnNestedTori := from_tracks {joins}.through\n"
     source = f"""module
-public import PlasmaLean.Design.DommaschkConnectedActionLevel
+public import PlasmaLean.Design.{module}
 public import RadialSectorFacesCache.{faces['module']}
 public import RadialAccessibleBirthCache.{access['module']}
 public import RadialActionAttainmentCache.{joins}
@@ -53,7 +62,7 @@ public import RadialActionAttainmentCache.{joins}
 noncomputable section
 namespace PlasmaLean.Design.{name}
 open DommaschkKamC KamNewton Contract Forms Fields.VacuumBoozer Theory.KAM WEll1Z2
-open DommaschkSectorAction DommaschkConnectedActionLevel
+open DommaschkSectorAction {module}
 set_option maxRecDepth 16000
 set_option linter.style.longLine false
 
@@ -61,12 +70,12 @@ def OnNestedTori : Prop := ∃ (uC zC uA zA : FA) (R₀ z₀ : ℝ → ℝ) (ΘC
     IotaOnTorus (DommaschkQA2R.field DommaschkQA2R.candidate) (RofC uC) (Zof zC) DommaschkKamDio.dkIotaC ∧
     IotaOnTorus (DommaschkQA2R.field DommaschkQA2R.candidate) (RofC uA) (Zof zA) DommaschkKamDio.dkIotaA ∧
     DommaschkKamNested.NestedTori (RofC uC) (Zof zC) (RofC uA) (Zof zA) R₀ z₀ ΘC ΘA ∧
-    EmbeddedTorus (RofC uC) (Zof zC) ∧ EmbeddedTorus (RofC uA) (Zof zA) ∧ Crossing uC zC uA zA
+    EmbeddedTorus (RofC uC) (Zof zC) ∧ EmbeddedTorus (RofC uA) (Zof zA) ∧ {property_name} uC zC uA zA
 
 theorem from_tracks (joined : {joins}.Joined) : OnNestedTori := by
   obtain ⟨uC,zC,uA,zA,R,Z,C,A,ic,ia,nested,ec,ea,proof⟩ := {faces['module']}.from_nested_tori
   have every (φ : Phase) := proof (φ:ℝ) (abs_le.mpr φ.property)
-  refine ⟨uC,zC,uA,zA,R,Z,C,A,ic,ia,nested,ec,ea,crossing_of_sector ?_ (fun φ => (every φ).2.2) ?_⟩
+  refine ⟨uC,zC,uA,zA,R,Z,C,A,ic,ia,nested,ec,ea,{criterion} ?_ (fun φ => (every φ).2.2) ?_⟩
   · apply sector_of_sections ec ea (fun φ => (every φ).1) ({joins}.sections joined)
     intro φ Y born paths signs
     exact (every φ).2.1 Y born paths (fun u => (signs u).low) (fun u => (signs u).back)
@@ -80,7 +89,7 @@ end PlasmaLean.Design.{name}
 """
     env(args)
     parents = [args.version, faces["key"], access["key"], attainment["key"],
-               digest(DESIGN / "DommaschkConnectedActionLevel.trace")]
+               digest(DESIGN / (module + ".trace"))]
     overlay = merge_import_roots(args.cache, roots, parents)
     base, marker = compile_modules(args.cache / name, [(name, source, claims)], [overlay], parents, args,
                                    "ConnectedActionLevelCache")

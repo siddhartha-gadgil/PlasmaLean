@@ -12,6 +12,7 @@ from verify_physical_trace_slabs import DESIGN, ROOT, digest, save
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--action-window', action='store_true', help='retain the quantitative first-well bounds')
     parser.add_argument('--flow', type=Path, required=True)
     parser.add_argument('--output', type=Path, required=True)
     parser.add_argument('--cache', type=Path, default=ROOT/'.lake/radial-sector-faces')
@@ -46,10 +47,25 @@ def main():
     witness = origin.split(marker_start,1)[1].split(marker_end,1)[0].rstrip('\n')
     if not witness.startswith('  obtain ⟨sign, approach,') or '  have pz : Enclosed z ' not in witness:
         parser.error('the original signed physical proof does not contain both endpoint enclosures')
-    src = template.read_text().replace('SUFFIX',match[1]).replace('ENDPOINT_WITNESSES',witness)
-    name = 'DommaschkSectorFacesOn'+match[1]
+    if args.action_window:
+        module = 'DommaschkSectorActionBand'
+        prop = 'BandFaces'
+        cap, floor = 'innerCap', 'outerFloor'
+        # The endpoint source supplies both exact absolute estimates in this conjunction.
+        fields = 'innerWell,outerWell,_,_,low,high'
+        if witness.count(fields) != 1:
+            parser.error('expected the archived pair of absolute action bounds')
+        witness = witness.replace(fields, 'innerWell,outerWell,innerCap,outerFloor,low,high')
+    else:
+        module = 'DommaschkSectorFaces'
+        prop = 'FaceSigns'
+        cap, floor = 'low', 'high'
+    src = (template.read_text().replace('FACE_MODULE', module).replace('FACE_PROPERTY', prop)
+           .replace('INNER_BOUND', cap).replace('OUTER_BOUND', floor)
+           .replace('SUFFIX', match[1]).replace('ENDPOINT_WITNESSES', witness))
+    name = module+'On'+match[1]
     env(args)
-    keys = [args.version,report['key'],digest(DESIGN/'DommaschkSectorFaces.trace')]
+    keys = [args.version,report['key'],digest(DESIGN/(module+'.trace'))]
     item = name,src,['from_entries','from_nested_tori']
     root,rec = compile_modules(args.cache/name,[item],roots,keys,args,'RadialSectorFacesCache')
     out = {k:rec[k] for k in ('module','key','axioms','theorems','wall_seconds','peak_rss_kib')}

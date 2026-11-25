@@ -187,6 +187,7 @@ import PlasmaLean.Design.DommaschkSectorFaces
 import PlasmaLean.Design.DommaschkConnectedActionLevel
 import PlasmaLean.Design.DommaschkDyadicFrameModel
 import PlasmaLean.Design.DommaschkRadialMirrorHeightBand
+import PlasmaLean.Design.DommaschkSectorActionBand
 
 /-! Audit all declarations owned by project modules in the import closure (the on-demand top
 modules and everything they import). Fails on any non-standard axiom. -/
@@ -702,3 +703,6 @@ run_cmd do
 #print axioms PlasmaLean.Design.DommaschkRadialMirrorHeightBand.birth_well
 #print axioms PlasmaLean.Design.DommaschkRadialMirrorHeightBand.clock_displacement
 #print axioms PlasmaLean.Design.DommaschkRadialMirrorHeightBand.flight_bounds
+#print axioms PlasmaLean.Design.DommaschkSectorActionBand.width
+#print axioms PlasmaLean.Design.DommaschkSectorActionBand.of_endpoint_witnesses
+#print axioms PlasmaLean.Design.DommaschkSectorActionBand.prescriptions_of_sector
