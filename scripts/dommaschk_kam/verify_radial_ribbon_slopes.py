@@ -128,7 +128,7 @@ def value(table, q):
     return total
 
 
-def assemble(name, inp, providers, values, tube):
+def assemble(name, inp, providers, values, tube, *, rate=RATE):
     imports = [INPUT+'.'+inp, 'PlasmaLean.Design.DommaschkRibbonSlopeCover',
                'PlasmaLean.Design.DommaschkNativeActionGeometry',
                *[FIELDS+'.'+p for p in providers.values()]]
@@ -136,8 +136,8 @@ def assemble(name, inp, providers, values, tube):
     src += ('open DommaschkRibbonSlopeCover DommaschkNativeActionGeometry DommaschkPreMirrorSigns '
             'DommaschkBounceField DommaschkMirrorStrengthSlope\n')
     src += f'abbrev group := {inp}.group\n'
-    cols = {**values,'radius':tube[0],'rate':Model.rational(RATE)}
-    defs = [f'def rate : Weight := ⟨({RATE}), {cols["rate"].a[0]}, 0, by kernel_fact⟩']
+    cols = {**values,'radius':tube[0],'rate':Model.rational(rate)}
+    defs = [f'def rate : Weight := ⟨({rate}), {cols["rate"].a[0]}, 0, by kernel_fact⟩']
     lines = [f'  have hu := shifted_mem (u := {inp}.displacement) hr (eq_of_beq (by kernel_fact)) (by kernel_fact)',
              f'  have waves := {inp}.angles hw hc hs', '  have h_radius := hr',
              f'  have h_rate := rate.mem w']
@@ -186,7 +186,7 @@ def assemble(name, inp, providers, values, tube):
                   '  unfold atPoint',
                   '  dsimp only [rate] at boxmargin',
                   '  linarith only [boxmargin.1]'])
-    src+='\n'.join(defs)+f'\ntheorem outward : Outward group ({RATE}) := by\n'
+    src+='\n'.join(defs)+f'\ntheorem outward : Outward group ({rate}) := by\n'
     src+='  intro w R z t hw hr hz hc hs\n'+'\n'.join(lines)+footer(name)
     return (name,src,['outward']),cols['margin'].bound()[0]
 
