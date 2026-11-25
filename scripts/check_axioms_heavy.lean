@@ -173,6 +173,7 @@ import PlasmaLean.Design.DommaschkVariableHorner
 import PlasmaLean.Design.DommaschkRadialActionAlternative
 import PlasmaLean.Design.DommaschkFirstMirrorHeightSampling
 import PlasmaLean.Design.DommaschkRadialRibbonEntry
+import PlasmaLean.Design.DommaschkRadialFamilyContinuity
 
 /-! Audit all declarations owned by project modules in the import closure (the on-demand top
 modules and everything they import). Fails on any non-standard axiom. -/
@@ -648,3 +649,8 @@ run_cmd do
 #print axioms PlasmaLean.Design.DommaschkFirstMirrorHeightSampling.of_launch_width
 #print axioms PlasmaLean.Design.DommaschkRadialRibbonEntry.from_close
 #print axioms PlasmaLean.Design.DommaschkRadialRibbonEntry.from_nested_tori
+#print axioms PlasmaLean.Design.DommaschkRadialFamilyContinuity.capped_of_births
+#print axioms PlasmaLean.Design.DommaschkRadialFamilyContinuity.Enclosed.agree
+#print axioms PlasmaLean.Design.DommaschkRadialFamilyContinuity.transfer_well
+#print axioms PlasmaLean.Design.DommaschkRadialFamilyContinuity.alternative_of_passages
+#print axioms PlasmaLean.Design.DommaschkRadialFamilyContinuity.prescribed_of_regular

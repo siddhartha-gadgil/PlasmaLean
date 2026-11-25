@@ -353,6 +353,7 @@ public import PlasmaLean.Theory.Fields.ClosedIntervalODEUniqueness
 public import PlasmaLean.Theory.Fields.MovingFrameTrajectory
 public import PlasmaLean.Theory.Fields.RectangularODEStep
 public import PlasmaLean.Theory.Fields.TrajectorySlabs
+public import PlasmaLean.Theory.Fields.TrajectoryFamilyContinuity
 public import PlasmaLean.Theory.Fields.MovingFrameSlabs
 public import PlasmaLean.Theory.Fields.CylindricalLaunchFlux
 public import PlasmaLean.Theory.Fields.ODEContinuation

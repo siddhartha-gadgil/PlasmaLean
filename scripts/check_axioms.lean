@@ -944,3 +944,6 @@ run_cmd do
 #print axioms PlasmaLean.Kinetic.FirstMirror.probability_of_bad_density
 #print axioms PlasmaLean.Kinetic.FirstMirror.probability_of_height_map
 #print axioms PlasmaLean.Kinetic.FirstMirror.excluded_atom
+#print axioms PlasmaLean.Fields.TrajectoryFamily.compact_lipschitz
+#print axioms PlasmaLean.Fields.TrajectoryFamily.dist_from_birth
+#print axioms PlasmaLean.Fields.TrajectoryFamily.continuousOn_of_enclosed
