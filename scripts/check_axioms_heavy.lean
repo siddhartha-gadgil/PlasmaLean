@@ -189,6 +189,7 @@ import PlasmaLean.Design.DommaschkDyadicFrameModel
 import PlasmaLean.Design.DommaschkRadialMirrorHeightBand
 import PlasmaLean.Design.DommaschkSectorActionBand
 import PlasmaLean.Design.DommaschkOppositeActionStrip
+import PlasmaLean.Design.DommaschkSectorHeightCrossings
 
 /-! Audit all declarations owned by project modules in the import closure (the on-demand top
 modules and everything they import). Fails on any non-standard axiom. -/
@@ -711,3 +712,8 @@ run_cmd do
 #print axioms PlasmaLean.Design.DommaschkOppositeActionStrip.strict_margins
 #print axioms PlasmaLean.Design.DommaschkOppositeActionStrip.excludes
 #print axioms PlasmaLean.Design.DommaschkOppositeActionStrip.moving_label_excluded
+#print axioms PlasmaLean.Design.DommaschkSectorHeightAction.at_height
+#print axioms PlasmaLean.Design.DommaschkSectorHeightAction.lipschitz
+#print axioms PlasmaLean.Design.DommaschkSectorHeightCrossings.family_of_paths
+#print axioms PlasmaLean.Design.DommaschkSectorHeightCrossings.face_signs
+#print axioms PlasmaLean.Design.DommaschkSectorHeightCrossings.crossing
