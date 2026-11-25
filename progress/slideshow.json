@@ -42,7 +42,7 @@
   {
    "id": "annular-averaged-flux",
    "eyebrow": "Trapped-particle theory",
-   "title": "A radial label from averaged flux controls particle motion for times of order ε⁻².",
+   "title": "A radial label from averaged flux controls a perturbed periodic flow for times of order ε⁻².",
    "lead": "Suppose periodic leading orbits fill a regular annulus. If both fields preserve the same positive volume, the averaged drift has no zeros, and it is tangent to both edge circles, its flux constructs a radial label.",
    "metrics": [
     {
