@@ -16,6 +16,7 @@
 | Lean evidence | `GuidingCentreBand`, `GuidingCentreBand.radial_loss_le`, `radial_excursion_of_reduction`. N-51 supplies existence in its periodic coordinate model. |
 | Audit evidence | Physical reduction open. |
 | Last updated | 23 November 2026 |
+| Patched by / Alternatives | [N-213](band-form-fixed-inputs.md): the band form of C2 with fixed inputs (`BandContract`); `GuidingCentreBand` alone is no longer the contract clause |
 
 The first and second candidate screens, the rejected branch and the proof targets are recorded in [N-54](dommaschk-mirror-screen.md).
 

@@ -418,6 +418,14 @@ run_cmd do
 #print axioms PlasmaLean.Sanity.TrappedBirthBand.littlejohnVelocity_quadratic
 #print axioms PlasmaLean.Sanity.TrappedBirthBand.quadratic_guidingCentreBand
 #print axioms PlasmaLean.Sanity.TrappedBirthBand.quadratic_fieldDiv
+#print axioms PlasmaLean.Contract.MeetsBand.radial_loss_le
+#print axioms PlasmaLean.Contract.MeetsBand.exists_birth
+#print axioms PlasmaLean.Contract.MeetsBand.mono_horizon
+#print axioms PlasmaLean.Contract.MeetsBand.mono_tolerance
+#print axioms PlasmaLean.Contract.not_meetsBand_const
+#print axioms PlasmaLean.Sanity.BandSpec.dirac_not_admissible
+#print axioms PlasmaLean.Sanity.BandSpec.quadratic_fixture_not_admissible
+#print axioms PlasmaLean.Sanity.BandSpec.mirror_not_meetsBand
 #print axioms PlasmaLean.Contract.BirthCoverage.covered_pos
 #print axioms PlasmaLean.Contract.BirthCoverage.loss_le
 #print axioms PlasmaLean.Contract.not_birthCoverage_empty
