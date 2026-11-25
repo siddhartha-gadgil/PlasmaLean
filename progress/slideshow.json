@@ -1,7 +1,7 @@
 {
  "updated": "2026-11-25",
  "report": "2026-11-23-annular-confinement.md",
- "status": "Embedded C1 is proved on both vacuum examples. Thermal-particle confinement and operating temperature on the Dommaschk candidate remain open.",
+ "status": "Embedded C1 is proved on both vacuum examples. C2 is open: the Dommaschk first-well results are local field-line statements, and the band form of C2 now has fixed inputs with no instance yet. Operating temperature on the candidate remains open.",
  "slides": [
   {
    "id": "where-we-are",
@@ -15,7 +15,7 @@
     },
     {
      "value": "C2 open",
-     "label": "On two physical field lines at u=0.470 and 0.478, the inner first well lies inside the outer first well and the equal-height radial action secant exceeds 2/5 over the entire closed height band. At the upper endpoint these same lines bracket the action target and their radial secant is at least 0.50624. One positive local guiding-centre time covers both central arcs over all admitted birth phases, heights, velocity signs and a compatible energy interval. Thermal transport and the trapped fraction remain open."
+     "label": "On the Dommaschk QA2R field, a local first-well certificate (phases within 2⁻¹⁹ of zero, labels 0.470–0.478) and a conditional first-exit theorem reduce the band test to an action-drift estimate for real guiding centres. These are field-line statements, verified in workstation-generated Lean modules. The band form of C2 now has fixed inputs (BandContract); no field meets it yet."
     },
     {
      "value": "c/ε²",
@@ -23,7 +23,7 @@
     }
    ],
    "progress": "For a regular annular periodic flow, shared invariant volume and a nonsingular averaged field tangent to both edges give a radial label and orbit existence and confinement through time c/ε². The next slide states the hypotheses and what remains to apply it to a stellarator.",
-   "boundary": "The Dommaschk proof controls two surfaces. A flux chart throughout the intervening volume and a physical thermal trapped-particle band remain open.",
+   "boundary": "The Dommaschk proof controls two surfaces. A flux chart throughout the intervening volume, a guiding-centre drift bound and a thermal population meeting the band form of C2 remain open.",
    "evidence": [
     {
      "label": "Embeddedness theorem and examples",
@@ -108,18 +108,18 @@
     {
      "title": "Physical trajectories",
      "text": "Lean joined 332 slabs in each direction on all four radial tiles, then checked the lower fields, the collar slopes and the high caps on the true solutions.",
-     "status": "2,656 signed steps verified",
+     "status": "2,656 steps · workstation-generated Lean",
      "kind": "checked"
     },
     {
      "title": "Height and action",
      "text": "Continuous height and action prescriptions in the certified rectangle have connected sets of exact first wells spanning every admitted phase.",
-     "status": "Original tori verified",
+     "status": "Workstation-generated Lean",
      "kind": "checked"
     }
    ],
    "progress": "Each positive action tolerance has a uniformly positive radial sampling width on the same original launch family.",
-   "boundary": "The phase half-width is 2⁻¹⁹ radian. Full-period action bracketing, cross-field drift and a numerical thermal birth fraction remain open.",
+   "boundary": "The phase half-width is 2⁻¹⁹ radian. These are field-line statements, proved in script-generated modules outside the repository build (audit AW-H1). Full-period action bracketing, guiding-centre drift and a thermal birth fraction remain open.",
    "evidence": [
     {
      "label": "Completed theorem and kernel receipts",
@@ -180,6 +180,64 @@
     {
      "value": "13",
      "label": "overlapping checked angular field groups"
+    }
+   ]
+  },
+  {
+   "id": "refresh-audit-25-november",
+   "eyebrow": "Audit · 25 November 2026",
+   "title": "Second refresh audit: nothing false in the repository; C2 evidence and the band clause tightened.",
+   "lead": "Audited commit 0bec221: all 531 Lean files changed since 23 November, the scripts that generate certificate modules, and 180 documents, by six independent read-only reviewers. No false or vacuous theorem in the repository and no certificate checker that can accept false data.",
+   "metrics": [
+    {
+     "value": "0 critical",
+     "label": "3 high, 14 medium and 16 low findings, all recorded with fixes or decisions"
+    },
+    {
+     "value": "55,118",
+     "label": "project declarations passing the axiom audit after the fixes"
+    },
+    {
+     "value": "73%",
+     "label": "of the new notes rely at least partly on workstation-generated Lean modules outside the repository"
+    }
+   ],
+   "cards": [
+    {
+     "title": "Generated evidence",
+     "text": "The headline QA2R C2 results are stated by Lean modules that Python scripts generate and compile on the workstation, with axiom receipts. They are not in the repository, its build or its axiom scripts, and cannot yet be replayed from it. README, progress and notes now say so.",
+     "status": "AW-H1, AW-H2 · open",
+     "kind": "next"
+    },
+    {
+     "title": "The band clause",
+     "text": "GuidingCentreBand let the prover choose the population and horizon: a point mass with fraction one, or 'some time T > 0' from local existence, passed. N-213 adds BandSpec, Admissible, MeetsBand and BandContract: an absolutely continuous birth law, fixed horizon, excursion and fraction, and a C² divergence-free field.",
+     "status": "AW-H3 · fixed in Lean",
+     "kind": "checked"
+    },
+    {
+     "title": "Regressions",
+     "text": "dirac_not_admissible and quadratic_fixture_not_admissible reject the point-mass fixture; mirror_not_meetsBand rejects the non-Maxwell mirror field; not_meetsBand_const rejects uniform fields.",
+     "status": "Sanity · Lean verified",
+     "kind": "checked"
+    },
+    {
+     "title": "Wording",
+     "text": "Field-line statements are no longer described as particle confinement; existential-horizon results are lemmas, not C2 instances; the junk-value closedness of the HYM lift is described as such.",
+     "status": "Documents corrected",
+     "kind": "checked"
+    }
+   ],
+   "progress": "C2 is unchanged: open. Its target is now explicit: prove MeetsBand for an admissible specification, which for QA2R needs a horizon bound independent of the excursion cap (the action-drift estimate).",
+   "boundary": "An audit checks that statements say what is claimed. It does not validate the physical models, and it did not recompile the workstation-generated modules.",
+   "evidence": [
+    {
+     "label": "Audit and band form (progress report)",
+     "href": "progress.html#refresh-audit-and-the-band-form-of-c2-25-november-2026"
+    },
+    {
+     "label": "Implementation plan (audit status)",
+     "href": "implementation-plan.html"
     }
    ]
   },
@@ -1844,7 +1902,7 @@
    "id": "next-run",
    "eyebrow": "39 · Keep every step reviewable",
    "title": "The next run must leave evidence, not just a promise.",
-   "lead": "The C2 application needs a regular physical bounce band, a bound on radial excursion and a measure of the births it covers. A current-free finite-pressure equilibrium and a thermal loss estimate for the same candidate remain open.",
+   "lead": "C2 needs a field meeting an admissible band specification: a horizon bound for Dommaschk guiding centres independent of the excursion cap, phase coverage of the first wells and a thermal birth population. Two decisions are pending: whether to commit the generated certificate modules, and the physical values of the band inputs. A current-free finite-pressure equilibrium and a thermal loss estimate for the same candidate remain open.",
    "cards": [
     {
      "title": "Implement & challenge",
