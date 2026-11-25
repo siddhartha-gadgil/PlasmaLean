@@ -374,6 +374,7 @@ public import PlasmaLean.Theory.Geometry.AnnulusOrbitExistence
 public import PlasmaLean.Theory.Geometry.PeriodicLevelGraphs
 public import PlasmaLean.Theory.Geometry.RectangleLevelCrossing
 public import PlasmaLean.Theory.Geometry.AnnularLevelSeparator
+public import PlasmaLean.Theory.Geometry.UniformRadialWindow
 public import PlasmaLean.Theory.Geometry.PeriodicOrientedCrossings
 public import PlasmaLean.Theory.Geometry.LocalLevelGraphs
 public import PlasmaLean.Theory.Kinetic.MirrorAction

@@ -960,3 +960,6 @@ run_cmd do
 #print axioms PlasmaLean.AnnularLevelSeparator.periodic_separator
 #print axioms PlasmaLean.AnnularLevelSeparator.no_angular_lift
 #print axioms PlasmaLean.AnnularLevelSeparator.essential_inclusion
+#print axioms PlasmaLean.UniformRadialWindow.uniform
+#print axioms PlasmaLean.UniformRadialWindow.lipschitz
+#print axioms PlasmaLean.UniformRadialWindow.HasInterval.volume
