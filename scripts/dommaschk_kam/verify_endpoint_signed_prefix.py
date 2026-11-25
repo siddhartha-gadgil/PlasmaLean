@@ -263,6 +263,13 @@ def main():
                 grouped=[refdir,*checked_parents(ref,refdir,version)]
                 ref_roots=[merge_import_roots(args.cache,grouped,[ref['key'],'group-central-imports'])]
                 reference_package=grouped_package
+            elif 'signed_grouped_central_parents' in ref:
+                from verify_grouped_opposite_defects import PACKAGE as grouped_package, checked_parents
+                if ref['package']!=grouped_package or not label.startswith('q1'):
+                    raise ValueError('incorrect section or package for independent grouped central defects')
+                grouped=[refdir,*checked_parents(ref,refdir,version)]
+                ref_roots=[merge_import_roots(args.cache,grouped,[ref['key'],'signed-group-central-imports'])]
+                reference_package=grouped_package
             source = physical_source(label, sign, pair, prev.forward if sign == 1 else prev.backward,
                                      jm, fm, reference_package)
             name, code = source

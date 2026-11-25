@@ -50,8 +50,23 @@ def checked_parents(row,root,version):
     return [Path(p['root']) for p in parents]
 
 
+def physical_source(name,job,ratio,box,inputs,fields,field_import):
+    """Bind the exact signed centre, original frame and archived allowance to field memberships."""
+    _,sign,i,_,left,right,budget,_=job
+    x,y,den=box
+    template=TEMPLATE.read_text()
+    original_import='public import SignedCentralFieldCache.$fieldZ'
+    if template.count(original_import)!=1:
+        raise ValueError('missing the certified field import in the signed central template')
+    template=template.replace(original_import,'public import $field_import')
+    return Template(template).substitute(name=name,input=inputs,field_import=field_import,
+        fieldR=fields['R'],fieldZ=fields['Z'],fieldD=fields['D'],left=matrix_literal(left),
+        right=matrix_literal(right),budget=budget,x=x,y=y,den=den,ratio=', '.join(map(model_literal,ratio)),
+        i=i,stop=i+1,off=2*i+1,back=str(sign==-1).lower(),sign=sign)
+
+
 def check_direction(job,data,args):
-    section,sign,i,_,left,right,budget,_=job
+    section,sign,i,_,_,_,budget,_=job
     stem,name=names(args.endpoint,sign,i)
     (r,z,angles),actual,ratio,(x,y,den)=residual_data(job)
     if sharp_budget(x,y,den)>Fraction(budget):
@@ -74,10 +89,7 @@ def check_direction(job,data,args):
     jet=compile_modules(args.cache/(stem+'Z'),decls,[union(args.cache,parents)],field_keys,args,FIELDS)
     parents.append(jet)
     deps=[dict(module=m['module'],key=m['key'],root=str(path)) for path,m in parents]
-    src=Template(TEMPLATE.read_text()).substitute(name=name,input=stem+'Inputs',
-        fieldR=stem+'R',fieldZ=stem+'Z',fieldD=stem+'D',left=matrix_literal(left),
-        right=matrix_literal(right),budget=budget,x=x,y=y,den=den,ratio=', '.join(map(model_literal,ratio)),
-        i=i,stop=i+1,off=2*i+1,back=str(sign==-1).lower(),sign=sign)
+    src=physical_source(name,job,ratio,(x,y,den),stem+'Inputs',{t:stem+t for t in TAGS},FIELDS+'.'+stem+'Z')
     root,record=compile_modules(args.cache/name,[(name,src,['physical_defect'])],[union(args.cache,parents)],
                                 keys(version,checksum,deps),args,PACKAGE)
     row={k:v for k,v in record.items() if k!='artifacts'}
@@ -99,6 +111,13 @@ def main():
     a=p.parse_args()
     if not 0<=a.row<391:
         p.error('the original slab must lie in [0,391)')
+    if a.direction is None and a.output.parent.name=='references':
+        from plan_opposite_central_groups import MARKER,validate
+        if (a.output.parent.parent/MARKER).exists():
+            from campaign_grouped_central import dispatch
+            if dispatch(a,marker_name=MARKER,labels=ENDPOINTS[4:],check_plan=validate,
+                        producer='verify_grouped_opposite_defects.py'):
+                return
     a.cache=a.cache.resolve()
     packet=RECORD.with_name(f'bounce_frame_q1_u{a.endpoint[3:]}.json.gz')
     a.checksum=digest(packet)

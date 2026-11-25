@@ -11,18 +11,19 @@ from plan_grouped_central_defects import MARKER,validate
 from verify_physical_trace_slabs import HERE,ROOT,digest,save
 
 
-def dispatch(args):
+def dispatch(args, *, marker_name=MARKER, labels=('q0r523','q0r531'), check_plan=validate,
+             producer='verify_grouped_central_defects.py'):
     output=args.output
     i,label=args.row,args.endpoint
-    if (label not in ('q0r523','q0r531') or output.parent.name!='references' or
+    if (label not in labels or output.parent.name!='references' or
             output.name!=f'{i:03}.json' or output.parent.parent.name!=label):
         return False
     campaign=output.parent.parent
-    marker=campaign/MARKER
+    marker=campaign/marker_name
     if not marker.exists():
         return False
     plan=json.loads(marker.read_text())
-    validate(plan,label)
+    check_plan(plan,label)
     checksum=plan['packet_sha256']
     if output.exists():
         from verify_endpoint_trace_campaign import records_for
@@ -66,7 +67,7 @@ def dispatch(args):
                 continue
             log=work/f'{a:03}-{b:03}.log'
             group_out=work/f'{a:03}-{b:03}.json'
-            cmd=[sys.executable,HERE/'verify_grouped_central_defects.py','--endpoint',label,
+            cmd=[sys.executable,HERE/producer,'--endpoint',label,
                  '--span',str(a),str(b),'--handoff',campaign,'--output',group_out]
             with log.open('a') as handle:
                 rc=subprocess.run(cmd,cwd=ROOT,stdout=handle,stderr=subprocess.STDOUT,
