@@ -25,9 +25,10 @@ def rectangular_data(index):
     return start, step, radii
 
 
-def panel_certificate(name, packet, rate):
-    """Build the binary cover of eight rational normalized-time panels."""
-    count = 8
+def panel_certificate(name, packet, rate, count=8):
+    """Build a binary cover of the full normalized time interval."""
+    if count not in (1,2,4,8):
+        raise ValueError('the matrix time cover must use one, two, four or eight panels')
     source = header(['DommaschkJacobianPanels'],'Joint principal-minor bounds on a rectangle',
                     name,'DommaschkJacobian')
     source += 'def models : SymmetricModels := ⟨'+',\n  '.join(map(model_literal,packet))+'⟩\n'

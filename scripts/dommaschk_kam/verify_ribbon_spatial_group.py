@@ -17,7 +17,7 @@ from verify_physical_trace_slabs import DESIGN, ROOT, digest, save
 from verify_radial_ribbon_packets import load
 
 
-def spatial_sources(tile, pairs, group, models, providers, start, stop):
+def spatial_sources(tile, pairs, group, models, providers, start, stop, integer_frame=False):
     declarations = []
     claims = {}
     for pair in pairs:
@@ -30,7 +30,7 @@ def spatial_sources(tile, pairs, group, models, providers, start, stop):
         local = restrict_source(stem+'Restricted',inp[0],group,providers,jet,
                                 F(2*i+1-start-stop,stop-start),F(1,stop-start))
         matrix = endpoint_modules(label(tile),pair,jet,[local[0]+'.'+t for t in TAGS],inp[0],
-                                  field_imports=[ADAPTER+'.'+local[0]])
+                                  field_imports=[ADAPTER+'.'+local[0]],integer_frame=integer_frame)
         declarations.extend([inp,local,*matrix])
         claims[i] = (matrix[-1][0],matrix[-1][2][:3])
     return declarations,claims
@@ -66,6 +66,8 @@ def main():
     p.add_argument('--rows',nargs='+',type=int)
     p.add_argument('--fields-only',action='store_true')
     p.add_argument('--dyadic',action='store_true',help='use kernel checked integer Horner multiply-adds')
+    p.add_argument('--integer-frame',action='store_true',
+                   help='use integer matrix witnesses and the smallest sufficient dyadic time cover')
     p.add_argument('--cache',type=Path,default=ROOT/'.lake/ribbon-spatial-checks')
     p.add_argument('--handoff',type=Path,default=ROOT/'.lake/ribbon-spatial-campaign')
     p.add_argument('--output',type=Path,required=True)
@@ -104,7 +106,7 @@ def main():
         if k not in selected:
             continue
         group=[r for r in g if r.index in indices]
-        decls,claims=spatial_sources(k,group,stem,models,providers,a,b)
+        decls,claims=spatial_sources(k,group,stem,models,providers,a,b,args.integer_frame)
         name=stem+f'Tile{k}Rows{indices[0]:03}To{indices[-1]+1:03}'
         source=fuse(decls)
         static=[line.removeprefix('public import PlasmaLean.Design.')

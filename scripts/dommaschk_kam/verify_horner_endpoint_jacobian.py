@@ -128,16 +128,21 @@ theorem angles {{t : ℝ}} (ht : t ∈ Set.Icc ({i}/64:ℝ) ({i+1}/64)) (w : Wav
     return name,src+footer(name),['angles']
 
 
-def endpoint_modules(label, pair, jet, fields, shared, matrix_sign=None, field_imports=None):
+def endpoint_modules(label, pair, jet, fields, shared, matrix_sign=None, field_imports=None, integer_frame=False):
     i = pair.index
     tag = {None:'PairedForward', 1:'IndependentForward', -1:'IndependentBack'}[matrix_sign]
     stem = f'DommaschkJacobian{label.upper()}{tag}{i:03}'
     panel, core = stem+'Panels',stem+'Bounds'
-    psrc = panel_certificate(panel,frame_models(jet,pair),pair.common_rate)
+    count=8
+    if integer_frame:
+        from screen_endpoint_jacobian_sharing import first_failure
+        count=next((n for n in (1,2,4) if first_failure(jet,pair,n) is None),8)
+    psrc = panel_certificate(panel,frame_models(jet,pair),pair.common_rate,count)
     leaves = {tag:(f'{field}.model',symbol,m)
         for tag,field,symbol,m in zip(TAGS,fields,SYMBOLS,(m for g in jet for m in g),strict=True)}
     body = matrix_certificate(leaves,pair.forward,namespace=stem,start=pair.forward_left,
-                              dependencies=[panel],context='DommaschkJacobian',panel=panel,free_leaves=True)
+                              dependencies=[panel],context='DommaschkJacobian',panel=panel,free_leaves=True,
+                              integer_frame=integer_frame)
     body = body.replace('firstLeft','leftFrame').replace('firstRight','rightFrame')
     if field_imports is None:
         field_imports = [FIELDS+'.'+m for m in fields]

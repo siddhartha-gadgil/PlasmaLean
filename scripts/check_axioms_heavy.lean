@@ -185,6 +185,7 @@ import PlasmaLean.Design.DommaschkSectorAction
 import PlasmaLean.Design.DommaschkRadialAccessibleBirth
 import PlasmaLean.Design.DommaschkSectorFaces
 import PlasmaLean.Design.DommaschkConnectedActionLevel
+import PlasmaLean.Design.DommaschkDyadicFrameModel
 
 /-! Audit all declarations owned by project modules in the import closure (the on-demand top
 modules and everything they import). Fails on any non-standard axiom. -/
@@ -690,3 +691,8 @@ run_cmd do
 #print axioms PlasmaLean.Design.DommaschkSectorFaces.of_endpoint_witnesses
 #print axioms PlasmaLean.Design.DommaschkConnectedActionLevel.crossing_of_sector_profile
 #print axioms PlasmaLean.Design.DommaschkConnectedActionLevel.crossing_of_sector
+#print axioms PlasmaLean.Design.DommaschkDyadicFrameModel.frame_mem
+#print axioms PlasmaLean.Design.DommaschkDyadicFrameModel.velocity_mem
+#print axioms PlasmaLean.Design.DommaschkDyadicFrameModel.add_mem
+#print axioms PlasmaLean.Design.DommaschkDyadicFrameModel.sub_mem
+#print axioms PlasmaLean.Design.DommaschkDyadicFrameModel.neg_mem

@@ -81,14 +81,18 @@ theorem {name}_checked : Blocks {FORMAT} trial {name} {name}0 := {name}0_checked
 
 
 def matrix_certificate(source_models, step, *, namespace=PREFIX, start=None, dependencies=None,
-                       context="DommaschkBounceTaylorFirst", numeric=None, panel=None, free_leaves=False):
+                       context="DommaschkBounceTaylorFirst", numeric=None, panel=None, free_leaves=False,
+                       integer_frame=False):
     from bounce_phase_frame import FRAME_SCALE, affine_frame
 
     columns = ['DU', 'DZ', 'RU', 'RZ', 'ZU', 'ZZ']
     imports = ['DommaschkJacobianFrames', 'DommaschkBounceTaylorFirst'] + [PREFIX + x for x in columns]
     title = ('Checked trace and traceless parts of the first forward spatial Jacobian'
              if namespace == PREFIX else 'Checked trace and traceless parts of the spatial Jacobian')
-    out = header(imports if dependencies is None else dependencies, title, namespace, context)
+    dependencies=imports if dependencies is None else dependencies
+    if integer_frame:
+        dependencies=[*dependencies,'DommaschkDyadicFrameModel']
+    out = header(dependencies, title, namespace, context)
     out += 'open PlasmaLean.Certificates.PositionFrameSlabs\n\n'
     if start is None:
         start = [[FRAME_SCALE,0],[0,FRAME_SCALE]]
@@ -109,7 +113,12 @@ def matrix_certificate(source_models, step, *, namespace=PREFIX, start=None, dep
             name = tag+k
             md = 'model'+name
             defs.append(f'private def {md} : Model := {model_literal(model)}')
-            defs.append(f'''private theorem leaf{name} (t : ℝ) : {md}.Mem t (({val}).{k}) := by
+            if integer_frame:
+                lemma='frame_mem' if tag=='M' else 'velocity_mem'
+                defs.append(f'''private theorem leaf{name} (t : ℝ) : {md}.Mem t (({val}).{k}) :=
+  DommaschkDyadicFrameModel.{lemma} firstLeft.{k} firstRight.{k} t\n''')
+            else:
+                defs.append(f'''private theorem leaf{name} (t : ℝ) : {md}.Mem t (({val}).{k}) := by
   rw [show {md} = {model_literal(model)} by rfl, mem_ofDyadic_iff]
   norm_num [frameEntries, velocityEntries, firstLeft, firstRight, entry, Entries.sub, Entries.scale,
     PlasmaLean.Certificates.QPoly.eval_cons, PlasmaLean.Certificates.QPoly.eval_nil,
@@ -123,20 +132,34 @@ def matrix_certificate(source_models, step, *, namespace=PREFIX, start=None, dep
         model = {'add':add, 'mul':lambda a,b:a*b, 'sub':lambda a,b:a-b}[op](a,b)
         md = 'model'+name
         defs.append(f'private def {md} : Model := {model_literal(model)}')
-        defs.append(f'''private theorem check{name} : Matches (format.{op} {ax} {by}) {md} := by
+        if integer_frame:
+            operands={'mul':f'{ax} {by} (DommaschkDyadicFrameModel.constant 0)',
+                      'add':f'{ax} (DommaschkDyadicFrameModel.constant 1) {by}',
+                      'sub':f'{by} (DommaschkDyadicFrameModel.constant (-1)) {ax}'}[op]
+            defs.append(f'''private theorem check{name} : Certificates.DyadicHornerStep.MulAdd {operands} {md} :=
+  .dyadic (bits := 80) (Certificates.DyadicHornerStep.le_of_sub_toNat_zero rfl)\n''')
+            proof.append(f'  have h{name} := DommaschkDyadicFrameModel.{op}_mem check{name} ht h{x} h{y}')
+        else:
+            defs.append(f'''private theorem check{name} : Matches (format.{op} {ax} {by}) {md} := by
   constructor <;> apply eq_of_beq <;> kernel_fact
 ''')
-        proof.append(f'  have h{name} := (check{name}.eq ▸ format.{op}_mem ht h{x} h{y})')
+            proof.append(f'  have h{name} := (check{name}.eq ▸ format.{op}_mem ht h{x} h{y})')
         table[name] = md,model
         return name
     def neg(name,x):
         ax,a=table[x]
         md='model'+name
         defs.append(f'private def {md} : Model := {model_literal(-a)}')
-        defs.append(f'''private theorem check{name} : Matches (format.neg {ax}) {md} := by
+        if integer_frame:
+            defs.append(f'''private theorem check{name} : Certificates.DyadicHornerStep.MulAdd {ax}
+    (DommaschkDyadicFrameModel.constant (-1)) (DommaschkDyadicFrameModel.constant 0) {md} :=
+  .dyadic (bits := 80) (Certificates.DyadicHornerStep.le_of_sub_toNat_zero rfl)\n''')
+            proof.append(f'  have h{name} := DommaschkDyadicFrameModel.neg_mem check{name} ht h{x}')
+        else:
+            defs.append(f'''private theorem check{name} : Matches (format.neg {ax}) {md} := by
   constructor <;> apply eq_of_beq <;> kernel_fact
 ''')
-        proof.append(f'  have h{name} := (check{name}.eq ▸ format.neg_mem ht h{x})')
+            proof.append(f'  have h{name} := (check{name}.eq ▸ format.neg_mem ht h{x})')
         table[name] = md,-a
         return name
     den2 = binary('denSq','mul','D','D')
