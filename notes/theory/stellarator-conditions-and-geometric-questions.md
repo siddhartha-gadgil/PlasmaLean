@@ -68,3 +68,4 @@ Pursue well continuation and quantitative action control for C2 alongside the in
 | Lean evidence | Existing on-demand candidate results include `dommaschk_nested_embedded_C1`, `dommaschk_Q16_embedded` and `DommaschkPhysicalPrefix016.exists_nested_prefix`. The reusable results include `FieldTorus.embeddedTorus_of_irrational` and `FaceBounds.stays_inside`. |
 | Audit evidence | [23 November audit](../audit/2026-11-23-refresh-audit.md), especially AV-M7 and AV-M8 on the scope of C2. The 20-slab workstation snapshot used prefix key `c9d961f1b210`. |
 | Last updated | 24 November 2026. Assessment requested in discussion of the C1–C5 conditions and priorities for geometry and topology. |
+| Patched by | [N-210, updated C1–C5 assessment after the complete local field-line proof](stellarator-conditions-after-sector-closure.md) |
