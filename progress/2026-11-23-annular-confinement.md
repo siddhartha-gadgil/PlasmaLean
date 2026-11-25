@@ -360,3 +360,5 @@ For the original quarter-turn inner radius 0.470, all 15,360 exact positive quad
 ### Original births over the full field period
 
 For every real phase and radial label from 0.44 through 0.54, the QA2R field strength at the original birth on one pair of nested embedded tori is strictly below the lower mirror height. Thirteen exact field groups and a periodic reduction on the Fourier chart prove the result in Lean. Full-period action bracketing and transport remain open. [Submirror strength at every original birth over the full QA2R field period](https://github.com/siddhartha-gadgil/PlasmaLean/blob/main/notes/theory/periodic-original-birth-strength.md)
+
+The four radial tiles now have 240 signed physical slabs in each direction. Every initial birth in the small sector has positive parallel speed through ±237/64 and a unique position for every signed normalized time of magnitude at most 1941503/1048576. [The full radial birth family through 240 slabs in both directions](https://github.com/siddhartha-gadgil/PlasmaLean/blob/main/notes/theory/radial-passing-240.md)
