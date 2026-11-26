@@ -18,6 +18,7 @@
 | Lean evidence | `PlasmaLean/Theory/Kinetic/LabelDrift.lean` (default build): `LabelDrift.rate`, `label_hasDerivAt`, `rate_vacuum`, `abs_rate_vacuum_le`, `label_displacement_le`, `rate_const`. Standard axioms only. |
 | Audit evidence | Not audited. Numerics: `scripts/dommaschk_kam/screen_label_drift.py`, results `scripts/dommaschk_kam/results/label_drift_20261126.json`. |
 | Last updated | 26 November 2026 (created) |
+| Patched by / Alternatives | [N-215](lipschitz-labels-and-backward-bounds.md): Lipschitz-label version of the bound; corrects item 1 of "What a usable certificate needs" and the first open question (the existing Jacobian certificates do not give label gradients) |
 
 ## Purpose and scope
 

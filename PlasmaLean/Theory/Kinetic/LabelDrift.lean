@@ -7,6 +7,7 @@ module
 
 public import PlasmaLean.Theory.Kinetic.VacuumLittlejohnLocal
 public import PlasmaLean.Theory.Fields.BiotSavart
+public import PlasmaLean.Theory.Fields.LipschitzLabel
 
 /-!
 # Drift of field-line labels along Littlejohn guiding centres
@@ -26,6 +27,14 @@ alone.
 
 The last statement is the direct first-order drift bound. It has no averaging over the bounce
 motion, so it is useful on the scale of one bounce only.
+
+For labels that are only Lipschitz (for instance the point where the field line meets a section,
+with a Lipschitz constant from a Grönwall estimate):
+
+* `velocity_vacuum`: the guiding-centre velocity is `(v_∥/|B|) B` plus the drift
+  `(m v_∥² + μ|B|)/(q|B|²) b × ∇|B|`; `norm_drift_le` bounds the drift by the energy.
+* `lipschitz_displacement_le`: for a `K`-Lipschitz label that is constant on field lines,
+  `|L(X(t)) − L(X(0))| ≤ c t` when `K` times the drift bound is at most `c` along the orbit.
 -/
 
 @[expose] public section
@@ -136,5 +145,99 @@ theorem rate_const (F : Space) (w : Space × ℝ) :
   have hg : gradAbsB (fun _ => F) w.1 = 0 := by simp [gradAbsB]
   have hc : curlb (fun _ => F) w.1 = 0 := curlb_const F w.1
   simp [rate, hg, hc, cross]
+
+/-- In a nonvanishing curl-free field, `∇×b = |B|⁻¹ b × ∇|B|`. -/
+theorem curlb_vacuum {x : Space} (nzero : B x ≠ 0) (diff : DifferentiableAt ℝ B x)
+    (nocurl : curl (fderiv ℝ B x) = 0) :
+    curlb B x = ‖B x‖⁻¹ • cross (bhat B x) (gradAbsB B x) := by
+  have hn := norm_ne_zero_iff.mpr nzero
+  have dn := diff.norm ℝ nzero
+  have mul := curl_fderiv_smul (f := fun y => ‖B y‖⁻¹) (dn.inv hn) diff
+  have curl_unit : curlb B x = cross (gradient (fun y => ‖B y‖⁻¹) x) (B x) := by
+    change curl (fderiv ℝ (fun y => ‖B y‖⁻¹ • B y) x) = _
+    simpa only [nocurl, smul_zero, zero_add] using mul
+  have grad_inv : gradient (fun y => ‖B y‖⁻¹) x = (-(‖B x‖ ^ 2)⁻¹) • gradAbsB B x := by
+    have hi := (hasDerivAt_inv hn).comp_hasFDerivAt x dn.hasGradientAt.hasFDerivAt
+    have hg : HasGradientAt (fun y => ‖B y‖⁻¹) ((-(‖B x‖ ^ 2)⁻¹) • gradAbsB B x) x := by
+      rw [hasGradientAt_iff_hasFDerivAt]
+      convert hi using 1
+      · rfl
+      · rw [map_smul]
+        rfl
+    exact hg.gradient
+  have swap : cross (gradAbsB B x) (B x) = -cross (B x) (gradAbsB B x) := by
+    simp only [cross, ← WithLp.toLp_neg]
+    rw [← cross_anticomm]
+  have left (c : ℝ) (u w : Space) : cross (c • u) w = c • cross u w := by
+    simp only [cross, WithLp.ofLp_smul, map_smul, LinearMap.smul_apply, WithLp.toLp_smul]
+  rw [curl_unit, grad_inv, left, swap, bhat, left, smul_neg, neg_smul, neg_neg, smul_smul]
+  congr 1
+  field_simp
+
+/-- The cross-field drift velocity of a guiding centre in a curl-free field. -/
+def drift (B : Space → Space) (m q μ : ℝ) (w : Space × ℝ) : Space :=
+  ((m * w.2 ^ 2 + μ * ‖B w.1‖) / (q * ‖B w.1‖ ^ 2)) • cross (bhat B w.1) (gradAbsB B w.1)
+
+/-- In a nonvanishing curl-free field the guiding-centre velocity is parallel streaming plus
+the drift. -/
+theorem velocity_vacuum {x : Space} (nzero : B x ≠ 0) (diff : DifferentiableAt ℝ B x)
+    (nocurl : curl (fderiv ℝ B x) = 0) (hq : q ≠ 0) (v : ℝ) :
+    (littlejohnVelocity B m q μ (x, v)).1 = (v / ‖B x‖) • B x + drift B m q μ (x, v) := by
+  have hn := norm_ne_zero_iff.mpr nzero
+  simp only [littlejohnVelocity, drift, Bstar]
+  rw [VacuumLittlejohnLocal.parallel_eq_norm nzero diff nocurl, curlb_vacuum nzero diff nocurl]
+  simp only [smul_add, smul_smul, add_assoc]
+  congr 1
+  · congr 1
+    field_simp
+  · rw [← add_smul]
+    congr 1
+    field_simp
+
+/-- The drift speed is at most `2H/(|q||B|²) ‖∇|B|‖`. -/
+theorem norm_drift_le {x : Space} (nzero : B x ≠ 0) (hm : 0 ≤ m) (hμ : 0 ≤ μ) (v : ℝ) :
+    ‖drift B m q μ (x, v)‖ ≤
+      2 * hamiltonian m μ B x v / (|q| * ‖B x‖ ^ 2) * ‖gradAbsB B x‖ := by
+  have hn : 0 < ‖B x‖ := norm_pos_iff.mpr nzero
+  have den : |q * ‖B x‖ ^ 2| = |q| * ‖B x‖ ^ 2 := by rw [abs_mul, abs_of_pos (pow_pos hn 2)]
+  have num : |m * v ^ 2 + μ * ‖B x‖| ≤ 2 * hamiltonian m μ B x v := by
+    have h1 : 0 ≤ m * v ^ 2 := mul_nonneg hm (sq_nonneg v)
+    have h2 : 0 ≤ μ * ‖B x‖ := mul_nonneg hμ hn.le
+    rw [abs_of_nonneg (add_nonneg h1 h2), hamiltonian]
+    linarith
+  have unit : ‖bhat B x‖ = 1 := by
+    rw [bhat, norm_smul, norm_inv, norm_norm, inv_mul_cancel₀ hn.ne']
+  have geom : ‖cross (bhat B x) (gradAbsB B x)‖ ≤ ‖gradAbsB B x‖ := by
+    simpa only [unit, one_mul] using norm_cross_le (bhat B x) (gradAbsB B x)
+  have hH : 0 ≤ 2 * hamiltonian m μ B x v := (abs_nonneg _).trans num
+  rw [drift, norm_smul, Real.norm_eq_abs, abs_div, den]
+  gcongr
+
+/-- **Drift of a Lipschitz label.** In an open region where `B` is `C¹`, nonvanishing and
+curl-free, let `L` be constant on field lines and locally `K`-Lipschitz. If `K` times the drift
+bound is at most `c` at the states visited, the label moves by at most `c t`. -/
+theorem lipschitz_displacement_le {U : Set Space} {K : NNReal} {b : GCBirth}
+    {z : ℝ → Space × ℝ} {T c : ℝ} (hU : IsOpen U) (smooth : ∀ x ∈ U, ContDiffAt ℝ 1 B x)
+    (nzero : ∀ x ∈ U, B x ≠ 0) (nocurl : ∀ x ∈ U, curl (fderiv ℝ B x) = 0)
+    (lip : ∀ x ∈ U, ∃ W ∈ nhds x, LipschitzOnWith K L W)
+    (inv : Fields.LipschitzLabel.InvariantOn B L U)
+    (hm : 0 ≤ m) (hq : q ≠ 0) (hμ : 0 ≤ b.2.2) (orbit : GCBirthOrbitOn B m q b z T)
+    (inU : ∀ s ∈ Icc 0 T, (z s).1 ∈ U)
+    (bound : ∀ s ∈ Icc 0 T, K * (2 * hamiltonian m b.2.2 B (z s).1 (z s).2 /
+      (|q| * ‖B (z s).1‖ ^ 2) * ‖gradAbsB B (z s).1‖) ≤ c) :
+    ∀ t ∈ Icc 0 T, |L (z t).1 - L b.1| ≤ c * t := by
+  have start : (z 0).1 = b.1 := by rw [orbit.1]
+  have key := Fields.LipschitzLabel.displacement_le hU smooth lip inv
+    (X := fun s => (z s).1) (lam := fun s => (z s).2 / ‖B (z s).1‖)
+    (w := fun s => drift B m q b.2.2 (z s)) inU
+    (fun s hs => by
+      have pos : HasDerivAt (fun t => (z t).1) (littlejohnVelocity B m q b.2.2 (z s)).1 s :=
+        (ContinuousLinearMap.fst ℝ Space ℝ).hasFDerivAt.comp_hasDerivAt s (orbit.2 s hs)
+      have hx := inU s hs
+      rwa [show z s = ((z s).1, (z s).2) from rfl, velocity_vacuum (nzero _ hx)
+        ((smooth _ hx).differentiableAt (by norm_num)) (nocurl _ hx) hq] at pos)
+    (fun s hs => (mul_le_mul_of_nonneg_left
+      (norm_drift_le (nzero _ (inU s hs)) hm hμ (z s).2) K.coe_nonneg).trans (bound s hs))
+  simpa only [start] using key
 
 end PlasmaLean.Kinetic.LabelDrift

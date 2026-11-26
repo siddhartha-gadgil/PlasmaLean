@@ -26,7 +26,11 @@
    "net_per_eps": [
     2.845305935306186e-11,
     54.52138577544632
-   ]
+   ],
+   "label_lipschitz": 1.859093321770641,
+   "drift_speed_per_eps": 0.6172832341719491,
+   "direct_bound_per_eps": 91.96476526943006,
+   "uniform_bound_per_eps": 148.11056759637188
   },
   {
    "u": 0.474,
@@ -47,7 +51,11 @@
    "net_per_eps": [
     -1.517004265261246e-10,
     54.92268103940719
-   ]
+   ],
+   "label_lipschitz": 1.8594823005609855,
+   "drift_speed_per_eps": 0.6172513556528334,
+   "direct_bound_per_eps": 92.9060172589655,
+   "uniform_bound_per_eps": 149.43746312473573
   },
   {
    "u": 0.478,
@@ -68,7 +76,11 @@
    "net_per_eps": [
     -4.904131753469265e-10,
     55.36118764390624
-   ]
+   ],
+   "label_lipschitz": 1.8598720744341497,
+   "drift_speed_per_eps": 0.6172190587022118,
+   "direct_bound_per_eps": 93.93854176568519,
+   "uniform_bound_per_eps": 150.88644657498347
   }
  ]
 }

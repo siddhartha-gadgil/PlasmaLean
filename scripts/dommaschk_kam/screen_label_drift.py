@@ -76,6 +76,7 @@ def main():
         action = time = 0.0
         drift = np.zeros(2)
         banana = np.zeros(2)
+        direct = lipschitz = speed = 0.0
         for th in theta:
             phi = mid + half * np.sin(th)
             y = state(phi)
@@ -90,13 +91,21 @@ def main():
             fl = line(phi, y[:2])
             planar = np.array([g[0], g[2]]) - g[1] / R * fl  # remove motion along the field line
             rate = np.linalg.solve(y[2:].reshape(2, 2), planar)
+            # operator norm of the inverse variational matrix: Lipschitz constant of the label
+            inverse_norm = 1 / np.linalg.svd(y[2:].reshape(2, 2), compute_uv=False)[-1]
+            lipschitz = max(lipschitz, inverse_norm)
+            speed = max(speed, float(np.linalg.norm(planar)))
             dt = weight / np.sqrt(max(gap, 1e-300) / h)
             time += dt
             drift += rate * dt
+            direct += inverse_norm * float(np.linalg.norm(planar)) * dt
             banana = np.maximum(banana, np.abs(drift))
         rows.append(dict(u=u, birth=list(c + u * (a - c)), well=[left, right], action=action,
                          half_bounce_time=time, banana_per_eps=list(banana),
-                         net_per_eps=list(drift)))
+                         net_per_eps=list(drift),
+                         label_lipschitz=lipschitz, drift_speed_per_eps=speed,
+                         direct_bound_per_eps=direct,
+                         uniform_bound_per_eps=lipschitz * speed * time))
         print(json.dumps(rows[-1]), flush=True)
     # Label width of the certified phase window |phi| <= 2^-19 on the middle launch line.
     d = 1e-4

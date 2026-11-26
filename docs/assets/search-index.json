@@ -3702,6 +3702,12 @@
     "text": "26 november 2026 — label drift of guiding centres and the scales of the qa2r sector (n-214) implementation plan"
   },
   {
+    "title": "26 November 2026 — Lipschitz labels and the missing backward bound (N-215)",
+    "section": "Implementation plan",
+    "url": "implementation-plan.html#26-november-2026-lipschitz-labels-and-the-missing-backward-bound-n-215",
+    "text": "26 november 2026 — lipschitz labels and the missing backward bound (n-215) implementation plan"
+  },
+  {
     "title": "M0 · Exact symmetric equilibria: slab, screw pinch, Solov'ev, helical",
     "section": "Implementation plan · Lean verified — exact slab, screw-pinch, Solov'ev and helical equilibria with kernel force balance, all-time field-line/orbit confinement, Suydam both ways and screw-pinch Newcomb stability for every m ≠ 0 (reduced form supplied; idealized symmetric models).",
     "url": "implementation-plan.html",
