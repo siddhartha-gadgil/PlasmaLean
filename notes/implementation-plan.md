@@ -476,7 +476,9 @@ documents. Six independent read-only sub-audits; record
   into caches outside the repository. The 184 cited generated modules and their import closure
   (43,435 modules) are now the on-demand library `QA2RGenerated` (`generated/qa2r/`, stored as
   archives); a cold `lake build` passed and `scripts/check_axioms_qa2r.lean` found standard axioms
-  only.
+  only. After the opposite-inner closeout of 26 November the library has 186 cited roots and
+  55,818 modules, replayed at `8ae555c` (clean tree): standard axioms only in 6,440,911
+  declarations, 87,629 receipt theorems present.
 - **AW-H2 (high, resolved 25 November):** `python3 scripts/qa2r/replay.py` replays these results
   from the repository (hashes, build, axiom audit) without `/tmp` inputs. Regenerating the sources
   from the numerical inputs is not covered; the generators stay untrusted.
