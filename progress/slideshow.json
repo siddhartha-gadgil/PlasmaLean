@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-25",
+ "updated": "2026-11-26",
  "report": "2026-11-23-annular-confinement.md",
  "status": "Embedded C1 is proved on both vacuum examples. C2 is open: the Dommaschk first-well results are local field-line statements, and the band form of C2 now has fixed inputs with no instance yet. Operating temperature on the candidate remains open.",
  "slides": [

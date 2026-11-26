@@ -27,3 +27,16 @@ at least 64 GB of memory (the largest module peaks at about 34 GB) and several h
 The scripts that produced these sources, and their numerical inputs, are untrusted: the evidence
 is the Lean build and the axiom audit. Generated modules that no note cites stay in the
 workstation caches and support no claim.
+
+## Opposite-inner campaign closeout, 26 November 2026
+
+At the original QA2R radial label 0.470 and phases within 2⁻²⁷ radians of π/2, the signed field-line certificate joins 320 ODE rows in each direction and all 15,360 action panels on the angular interval [−5, 5] about that section. For every independently observed regular first well through one of those births at the specified upper height, the dimensionless one-way action is at least 287167485626455/211106232532992, strictly above the target by more than 0.0003. The inequality quantifies over qualifying observations. Existence of such an observation and thermal particle confinement are separate questions.
+
+| Archived root | Checked declaration | Campaign receipt key |
+| --- | --- | --- |
+| `OppositeInnerThroughCache.DommaschkOppositeInnerThrough320` | `from_nested_tori` | `810f6f41a3dc3ef923cc9402c044c06711a157871ba359e287e775bd55f52716` |
+| `OppositeObservedWellCache.DommaschkOppositeObservedWells320` | `grounded_exclusion` | `8eeee84f13cde027cf0c4e98d91881954f68412b69837ad131e95509bdebd3e0` |
+
+The 640 signed ODE rows and 640 signed action rows completed without a recorded row failure. The workstation journal records progress at 10:30 and 10:42 IST on 25 November. At 00:43 IST on 26 November the final assembly failed because Lean grouped successive list appends from the left. The repaired assembler groups the remaining blocks on the right as it joins each segment. It reused every checked row. The dependent first-well observer then completed.
+
+These two roots add 12,383 sources to the previously archived 43,435. To append accepted roots on a producer workstation with the prior archive unpacked, use `collect_generated.py --extend --extra-root MODULE` for the selected module names, followed by `pack.py pack`. The repository replay command above checks the full archive. [Original campaign specification](../../notes/theory/opposite-inner-physical-trace.md) · [Full replay report](replay-report.json)

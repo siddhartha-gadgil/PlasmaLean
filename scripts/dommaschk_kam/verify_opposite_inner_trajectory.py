@@ -108,7 +108,12 @@ def aggregate(n,pn,segments):
     groups=[(-b,-a,m+'.backward') for a,b,m in reversed(segments)]+[(a,b,m+'.forward') for a,b,m in segments]
     src+=f'def blocks := ({NAME}.slabs.drop {CUT-n}).take {2*n}\n'
     src+='theorem physical_cells (y : ℝ → Plane) (track : Tracks '+pn+'.forward '+pn+f'.backward {n} y) :\n    Covers false {angle_functions()} DommaschkNativeWellAction.level (-{n}/64) blocks := by\n'
-    src+='  rw [show blocks = '+' ++ '.join(m+'Blocks' for _,_,m in groups)+' by with_unfolding_all rfl]\n'
+    # Each covers_append_iff removes the first segment; Lean parses an unparenthesized
+    # chain of ++ from the left.
+    block_list = groups[-1][2] + 'Blocks'
+    for _, _, module in reversed(groups[:-1]):
+        block_list = f'{module}Blocks ++ ({block_list})'
+    src += f'  rw [show blocks = {block_list} by with_unfolding_all rfl]\n'
     for a,b,m in groups[:-1]:
         src+=f'''  apply (covers_append_iff _ _ _).mpr
   refine ⟨{m}_cells y track,?_⟩

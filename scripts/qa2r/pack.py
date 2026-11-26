@@ -40,6 +40,14 @@ def pack():
                 info.size, info.mode = len(data), 0o644
                 tar.addfile(info, io.BytesIO(data))
         target = ARCHIVES / (package + ".tar.zst")
+        if target.is_file() and target.stat().st_size <= 95e6:
+            # Verify the previous archive decodes to the exact canonical tar before reusing it.
+            with subprocess.Popen(["zstd", "-dcq", "--long=27", str(target)],
+                                  stdout=subprocess.PIPE) as previous:
+                archived = hashlib.file_digest(previous.stdout, "sha256").digest()
+            if previous.returncode == 0 and archived == hashlib.sha256(buffer.getbuffer()).digest():
+                total += target.stat().st_size
+                continue
         packed = subprocess.run(["zstd", "-19", "--long=27", "-T4", "-q", "-c"], input=buffer.getvalue(),
                                 capture_output=True, check=True).stdout
         if not target.exists() or target.read_bytes() != packed:

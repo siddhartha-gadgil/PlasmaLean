@@ -1,5 +1,7 @@
 # The actual opposite-section inner birth carries its first two action blocks
 
+**26 November closeout.** All 320 pairs and their 15,360 action panels have been joined on one physical field line, and the queued first-well observation theorem passed. The original one-pair checkpoint and run instructions below record the earlier stage. [Completed campaign, exact action bound and archived theorem names](../../generated/qa2r/README.md#opposite-inner-campaign-closeout-26-november-2026)
+
 For the original inner radius \(u=47/100\), both physical ODE steps from the \(\pi/2\) section are now Lean-certified. Their joined, increasing-angle field line carries 48 independently verified action panels on \([-1/64,1/64]\) relative to the section. Every original birth within \(2^{-27}\) of \(\pi/2\) follows the field to the initial point of this trajectory on the same pair of embedded tori. [Signed trajectory theorem](../../PlasmaLean/Design/DommaschkOppositeInnerTrajectory.lean) · [Original trajectory and panel assembler](../../scripts/dommaschk_kam/verify_opposite_inner_trajectory.py)
 
 | Field | Value |
@@ -9,7 +11,7 @@ For the original inner radius \(u=47/100\), both physical ODE steps from the \(\
 | Addresses | G-10, Q-16, Q-35 |
 | Depends on | N-195, the Q-16 embedded surfaces, independent phase-shifted moving-frame certificates, physical panel quadrature |
 | Produces | A common signed physical field line, two actual ODE steps, and a lower panel cover for the first 48 opposite-sector panels |
-| Status | One original pair of steps and 48 panels verified. The 320-pair signed trajectory and the full 15,360-panel cover are pending |
+| Status | The first checkpoint verified one signed pair. The 26 November closeout verifies all 320 pairs and 15,360 panels. |
 | Lean evidence | Generated `DommaschkOppositeInnerThrough001.from_nested_tori`, `.physical_cells`, `.forward_steps`, `.backward_steps`; reusable `DommaschkOppositeInnerTrajectory.from_seed` and `.from_entry` |
 | Audit evidence | All five trajectory assembly theorems use `propext`, `Classical.choice`, `Quot.sound`. The independent matrix, central defect, ODE and panel rows passed their own audits |
 | Updated | 2026-11-25 |

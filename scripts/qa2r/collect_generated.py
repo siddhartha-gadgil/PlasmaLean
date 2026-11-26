@@ -158,7 +158,21 @@ def main():
     parser.add_argument("--prefer", type=Path, action="append", default=[],
                         help="merged import root whose symlinks select among versions")
     parser.add_argument("--extra-root", action="append", default=[], help="further module names")
+    parser.add_argument("--extend", action="store_true",
+                        help="add explicit accepted roots to the unpacked archive, preserving prior sources and receipts")
     args = parser.parse_args()
+    prior, prior_roots, receipts = {}, set(), {}
+    if args.extend:
+        if not args.extra_root:
+            parser.error("--extend requires at least one --extra-root")
+        for line in (OUT / "MANIFEST.sha256").read_text().splitlines():
+            checksum, rel = line.split("  ", 1)
+            pkg, mod = rel[:-5].split("/", 1)
+            if not (OUT / rel).is_file() or sha(OUT / rel) != checksum:
+                parser.error(f"missing or changed archived source {rel}; unpack the archive first")
+            prior[pkg, mod] = line
+        prior_roots = {tuple(m.split(".", 1)) for m in (OUT / "roots.txt").read_text().splitlines()}
+        receipts = json.loads((OUT / "receipts.json").read_text())
     versions = scan()
     preferred = set()
     for root in args.prefer:
@@ -166,26 +180,38 @@ def main():
             preferred.add(str(link.resolve())[:-6] + ".lean")
     choice, ambiguous = {}, []
     for key, items in versions.items():
+        if key in prior:
+            continue
         accepted = [x for x in items if x[1] is not None]
         linked = [x for x in items if str(x[0]) in preferred]
         pool = linked or accepted or items
         if len({sha(x[0]) for x in pool}) > 1:
             ambiguous.append("/".join(key))
         choice[key] = max(pool, key=lambda x: x[0].stat().st_mtime)
-    text = subprocess.run(
-        "cat notes/theory/*.md notes/audit/*.md notes/implementation-plan.md README.md "
-        "progress/*.md progress/*.json docs/*.md", shell=True, cwd=ROOT, capture_output=True,
-        text=True).stdout
-    words = set(re.findall(r"[A-Za-z_][A-Za-z0-9_]*", text)) | set(args.extra_root)
-    committed = {p.stem for p in (ROOT / "PlasmaLean").rglob("*.lean")}
-    # A cited name whose only source was never accepted by the campaign is not a root: it stays
-    # out unless an accepted module imports it.
-    roots = sorted(k for k in choice
-                   if k[1] in words and k[1] not in committed and choice[k][1] is not None)
-    rooted = {k[1] for k in roots}
-    dropped = sorted({k[1] for k in choice
-                      if k[1] in words and k[1] not in committed and k[1] not in rooted})
-    seen, stack = set(), list(roots)
+    if args.extend:
+        requested = set(args.extra_root)
+        archived = {k for k in prior if k[1] in requested and f"{k[0]}/{k[1]}.lean" in receipts}
+        incoming = {k for k, (_, receipt) in choice.items() if k[1] in requested and receipt is not None}
+        roots = sorted(prior_roots | archived | incoming)
+        dropped = []
+        missing = requested - {k[1] for k in roots}
+        if missing:
+            parser.error(f"requested campaign roots lack an accepted source: {sorted(missing)}")
+    else:
+        text = subprocess.run(
+            "cat notes/theory/*.md notes/audit/*.md notes/implementation-plan.md README.md "
+            "progress/*.md progress/*.json docs/*.md", shell=True, cwd=ROOT, capture_output=True,
+            text=True).stdout
+        words = set(re.findall(r"[A-Za-z_][A-Za-z0-9_]*", text)) | set(args.extra_root)
+        committed = {p.stem for p in (ROOT / "PlasmaLean").rglob("*.lean")}
+        # A cited name whose only source was never accepted by the campaign is not a root: it stays
+        # out unless an accepted module imports it.
+        roots = sorted(k for k in choice
+                       if k[1] in words and k[1] not in committed and choice[k][1] is not None)
+        rooted = {k[1] for k in roots}
+        dropped = sorted({k[1] for k in choice
+                          if k[1] in words and k[1] not in committed and k[1] not in rooted})
+    seen, stack = set(prior), list(roots)
     while stack:
         key = stack.pop()
         if key in seen:
@@ -194,16 +220,21 @@ def main():
         for pkg, mod in imports(choice[key][0]):
             if pkg in ("PlasmaLean", "Mathlib", "TauCeti", "Lean", "Std", "Init", "Batteries"):
                 continue
+            if (pkg, mod) in prior:
+                continue
             if (pkg, mod) not in choice:
                 raise ValueError(f"{key}: import {pkg}.{mod} has no generated source")
             stack.append((pkg, mod))
-    if OUT.exists():
+    if OUT.exists() and not args.extend:
         for child in OUT.iterdir():
-            if child.is_dir():
+            if child.is_dir() and child.name != "archives":
                 shutil.rmtree(child)
     OUT.mkdir(parents=True, exist_ok=True)
-    manifest, receipts = [], {}
+    manifest = []
     for pkg, mod in sorted(seen):
+        if (pkg, mod) in prior:
+            manifest.append(prior[pkg, mod])
+            continue
         src, receipt = choice[(pkg, mod)]
         target = OUT / pkg / (mod + ".lean")
         target.parent.mkdir(exist_ok=True)
@@ -223,7 +254,7 @@ def main():
     (OUT / "packages.txt").write_text("".join(p + "\n" for p in sorted({k[0] for k in seen})))
     update_lakefile(sorted({k[0] for k in seen}))
     (ROOT / "scripts/check_axioms_qa2r.lean").write_text(AUDIT)
-    unreceipted = [f"{p}/{m}" for p, m in sorted(seen) if choice[(p, m)][1] is None]
+    unreceipted = [f"{p}/{m}" for p, m in sorted(seen) if (p, m) not in prior and choice[(p, m)][1] is None]
     in_closure = [a for a in ambiguous if tuple(a.split("/")) in seen]
     print(f"{len(roots)} cited modules, {len(seen)} sources, "
           f"{sum((OUT / l.split('  ')[1]).stat().st_size for l in manifest) / 1e6:.0f} MB")

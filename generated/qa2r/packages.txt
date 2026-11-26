@@ -135,6 +135,7 @@ OppositeInnerSegmentCache
 OppositeInnerThroughCache
 OppositeMirrorCapCache
 OppositeMirrorCrossingCache
+OppositeObservedWellCache
 OppositeSubmirrorBirths
 OppositeSubmirrorRows
 OuterFaceFlightCache
