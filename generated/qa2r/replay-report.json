@@ -3,40 +3,40 @@
   {
    "limit_gb": 4,
    "jobs": 20,
-   "modules": 39160,
-   "targets": 6631,
-   "wall_seconds": 20
+   "modules": 50224,
+   "targets": 9183,
+   "wall_seconds": 4539
   },
   {
    "limit_gb": 8,
-   "jobs": 12,
-   "modules": 43302,
-   "targets": 710,
-   "wall_seconds": 12
+   "jobs": 11,
+   "modules": 55683,
+   "targets": 750,
+   "wall_seconds": 225
   },
   {
    "limit_gb": 16,
-   "jobs": 6,
-   "modules": 43384,
-   "targets": 17,
-   "wall_seconds": 9
+   "jobs": 5,
+   "modules": 55767,
+   "targets": 18,
+   "wall_seconds": 25
   },
   {
    "limit_gb": 40,
    "jobs": 2,
-   "modules": 43435,
+   "modules": 55818,
    "targets": 22,
-   "wall_seconds": 10
+   "wall_seconds": 11
   }
  ],
- "modules": 43435,
- "audit": "QA2R axiom audit passed: 4974523 declarations in 43435 generated modules, standard axioms only; 184 audit runs; 70219 receipt theorems present",
- "audit_seconds": 877,
- "commit": "f4d98cb138842e5e892d041a68bb8043bdf86571",
+ "modules": 55818,
+ "audit": "QA2R axiom audit passed: 6440911 declarations in 55818 generated modules, standard axioms only; 186 audit runs; 87629 receipt theorems present",
+ "audit_seconds": 869,
+ "commit": "8ae555c5f3117bf3e39813c0ca44e5905dbd06a1",
  "dirty": false,
  "lean": "Lean (version 4.36.0, x86_64-unknown-linux-gnu, commit 611c117bfaf7b7ae1cfcf246ce6fba31e8f509e9, Release)",
- "manifest_sha256": "0c5b9bbb001e380b4225a6071554c02fe098f6c4dda0753aeed68c44017da913",
+ "manifest_sha256": "f42ba8f9e12c2238ddf59ccfeb014ccee7df43e7a7326e092f7de2eb556c4a0d",
  "host_cpus": 24,
- "date": "2026-11-25",
- "wall_seconds": 931
+ "date": "2026-11-26",
+ "wall_seconds": 5673
 }
