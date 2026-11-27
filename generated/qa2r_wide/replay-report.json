@@ -1,0 +1,12 @@
+{
+ "audit": "QA2R wide-tube axiom audit passed: 605245 declarations in 11290 modules; 332 slabs with two-sided Jacobian bounds and field bounds.",
+ "modules": 11290,
+ "build_seconds": 28517,
+ "jobs": 22,
+ "commit": "880c2fe0d4161afaefd45a9534bed204917ce709",
+ "dirty": false,
+ "lean": "Lean (version 4.36.0, x86_64-unknown-linux-gnu, commit 611c117bfaf7b7ae1cfcf246ce6fba31e8f509e9, Release)",
+ "manifest_sha256": "972cc471f818f20c495deeb07a89975c13a5e5efdb67ed9e250dad6d0dd2dd12",
+ "date": "2026-11-28",
+ "wall_seconds": 28608
+}
