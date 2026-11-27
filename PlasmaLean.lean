@@ -413,6 +413,7 @@ public import PlasmaLean.Theory.Kinetic.MirrorActionVariationLower
 public import PlasmaLean.Theory.Fields.BackwardDistance
 public import PlasmaLean.Theory.Fields.CylindricalLift
 public import PlasmaLean.Theory.Fields.FlowLabel
+public import PlasmaLean.Theory.Fields.FlowLabelSymmetric
 public import PlasmaLean.Theory.Fields.FrameJacobianVariation
 public import PlasmaLean.Theory.Fields.LipschitzLabel
 public import PlasmaLean.Theory.Fields.PiecewiseTube
