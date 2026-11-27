@@ -3768,6 +3768,12 @@
     "text": "28 november 2026 — two-sided tube structure for qa2r (n-216 stage 2b) implementation plan"
   },
   {
+    "title": "28 November 2026 — Stage 4 parts: envelope field bounds, continuation, guiding-centre lift (N-216)",
+    "section": "Implementation plan",
+    "url": "implementation-plan.html#28-november-2026-stage-4-parts-envelope-field-bounds-continuation-guiding-centre-lift-n-216",
+    "text": "28 november 2026 — stage 4 parts: envelope field bounds, continuation, guiding-centre lift (n-216) implementation plan"
+  },
+  {
     "title": "M0 · Exact symmetric equilibria: slab, screw pinch, Solov'ev, helical",
     "section": "Implementation plan · Lean verified — exact slab, screw-pinch, Solov'ev and helical equilibria with kernel force balance, all-time field-line/orbit confinement, Suydam both ways and screw-pinch Newcomb stability for every m ≠ 0 (reduced form supplied; idealized symmetric models).",
     "url": "implementation-plan.html",
