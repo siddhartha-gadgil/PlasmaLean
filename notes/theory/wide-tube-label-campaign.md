@@ -14,7 +14,7 @@
 | Dependency requirement | The Lipschitz-label drift theorem (compiled); the moving-frame slab format and its soundness theorem; the campaign receipts for cost data. |
 | Produces | Feasibility numbers, the target population, the certificate design and the stage list. |
 | Difficulty | Hard. Stages 2 and 3 need new Lean theory (a flow label on a tube) and a new slab certificate with a lower logarithmic-norm bound on wide balls. |
-| Status | Stages 1 and 2a done. Stage 3: Lean theory complete; **pilot passed** on 8 forward slabs (0–3, 268–271) at radius 3·10⁻⁴: two-sided Jacobian bound on the whole ball and full `FieldBounds`, compiled by Lean. Full forward trace (332 slabs) running. Backward direction, the connected chain from a real entrance set, stages 2b, 4, 5 not done. |
+| Status | Stages 1 and 2a done. Stage 3 forward: **all 332 slabs compiled** at radius 3·10⁻⁴ and joined into one chain from slab 0 (direct `lean` compile on the workstation; rebuild under `lake` from the repository archive in progress). Backward direction, the entrance-set theorem, stages 2b, 4, 5 not done. |
 | Lean evidence | Stage 2a: `PlasmaLean/Theory/Fields/BackwardDistance.lean` (default build): `LowerOneSidedOn`, `lowerOneSidedOn_of_jacobian`, `norm_sub_le_exp_mul_of_lower`, `norm_sub_le_exp_sum_mul_of_lower` (chain over slabs), sharpness example `norm_exp_smul_sub_zero_eq`. Standard axioms only. Stage 3, field-independent parts (on demand, in `scripts/check_axioms_heavy.lean`): `PositionFrameWideChain.Steps.trajectory` (a chain over `PositionFrameWide.valid`, no small-radius limits) and `DommaschkJacobianLower.spatial_log_norm_lower_of_bounds`, `spatial_log_norm_abs_of_bounds` (lower and two-sided bounds from the same trace and disk data). Mean-value step (default build): `FrameJacobianVariation.abs_quad_sub_le`, `abs_quad_le_of_center`, `directional_bound_of_basis`. Field-specific second derivatives (on demand): `DommaschkJacobianSecond.secondEntry`, `entry_derivative`, `velocityHessian`, `jacobian_derivative`, `abs_quad_le_of_center`, `abs_quad_le_of_central_bounds` (forward clock only). |
 | Audit evidence | Not audited. Numerics: `scripts/dommaschk_kam/screen_wide_tube.py`, `scripts/dommaschk_kam/results/wide_tube_20261127.json`. |
 | Last updated | 27 November 2026 (created) |
@@ -84,6 +84,17 @@ Measured cost: 276 generated modules, 3.05 CPU-hours, about 23 CPU-minutes per s
 
 Assumptions of the pilot (not proved): the reference line and frames are float proposals taken as given integers; the group 268–271 starts from an assumed entrance radius, so the two groups are not connected; no birth-set theorem is attached to the entrance of slab 0. The lower bound is proved per slab but not yet fed into `BackwardDistance`.
 
+## Forward trace result, 27 November 2026 (compiled Lean)
+
+All 332 forward slabs of the label-0.474 trace, 1/64 radian each (toroidal angle 0 to 5.1875), with frame trial radius 3·10⁻⁴ and entrance radius 2.3·10⁻⁴ at slab 0:
+
+- **Per slab** (`DommaschkWideTubeF000` … `F331`): `abs_quadratic` and `neg_le_quadratic` (two-sided bound on the frame-reduced Jacobian on the whole trial ball), `field_bounds`, `checked`. The certified μ lies between 0.0204 and 0.0524 (largest at slab 238); the values are in `generated/qa2r_wide/certified_mu.txt`. Their integral over the trace is 0.1761, so the backward growth factor is at most e^0.1761 ≈ 1.193.
+- **Joined** (`DommaschkWideTubeRows000Joined`): `steps`, `field_bounds`, and `trajectory`: every point of the entrance set launches one field line through all 332 slabs, lying in every recorded tube and ending in the exit set. Assembled from chunks of 8 slabs with `PositionFrameWideChain.Steps.append` and `fieldBoundsOn_append` (the generator's single-proof chain timed out at this length).
+- **Evidence:** 11,290 generated modules compiled with `lean -DwarningAsError=true`; 664 slab theorems and the three joined theorems report standard axioms only. Cost 167 CPU-hours, at most 2.5 GB per process.
+- **In the repository:** sources as `generated/qa2r_wide/WideTube.tar.zst` with `MANIFEST.sha256`; on-demand Lake library `QA2RWide`; `scripts/qa2r_wide/replay.py` (hashes, `lake build`, `scripts/check_axioms_qa2r_wide.lean`).
+
+Same assumptions as the pilot: the reference line and frames are numerical proposals taken as data, and no theorem yet relates the entrance set to births on the tori. These are statements about field lines of the vacuum field; no particle statement follows yet.
+
 ## Reproduction
 
 ```bash
@@ -93,4 +104,5 @@ cd ../.. && lake build PlasmaLean.Design.DommaschkWideTubeStep
 OPENBLAS_NUM_THREADS=1 .venv-ws/bin/python scripts/qa2r_wide/wide_trace.py
 OPENBLAS_NUM_THREADS=1 .venv-ws/bin/python scripts/qa2r_wide/wide_tube_pilot.py \
   --groups 0-3 268-271 --later-radius 284/1000000 --compile --jobs 8
+python3 scripts/qa2r_wide/replay.py        # the full forward trace from the repository archive
 ```

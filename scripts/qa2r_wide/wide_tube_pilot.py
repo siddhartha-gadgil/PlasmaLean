@@ -934,8 +934,8 @@ def main():
     parser.add_argument("--compile", action="store_true")
     parser.add_argument("--jobs", type=int, default=8)
     args = parser.parse_args()
-    if not 1 <= args.jobs <= 8:
-        parser.error("at most 8 Lean processes")
+    if not 1 <= args.jobs <= 22:
+        parser.error("at most 22 Lean processes (about 2.5 GB each)")
     trace = wide_trace.load(args.trace)["slabs"]
     trial = round(args.trial * SCALE)
     terms = jet_terms()

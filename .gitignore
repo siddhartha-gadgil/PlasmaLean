@@ -9,3 +9,6 @@ generated/qa2r/audit.log
 # Unpacked generated sources (git stores generated/qa2r/archives/; scripts/qa2r/pack.py)
 generated/qa2r/*/
 !generated/qa2r/archives/
+# Unpacked wide-tube sources (git stores generated/qa2r_wide/WideTube.tar.zst)
+generated/qa2r_wide/WideTube/
+generated/qa2r_wide/replay.log

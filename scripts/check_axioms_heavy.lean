@@ -693,6 +693,8 @@ run_cmd do
 #print axioms PlasmaLean.Certificates.PositionFrameWide.physical_step_on
 #print axioms PlasmaLean.Certificates.PositionFrameWideChain.Steps.of_run
 #print axioms PlasmaLean.Certificates.PositionFrameWideChain.Steps.trajectory
+#print axioms PlasmaLean.Certificates.PositionFrameWideChain.Steps.append
+#print axioms PlasmaLean.Certificates.PositionFrameWideChain.fieldBoundsOn_append
 #print axioms PlasmaLean.Design.DommaschkJacobianLower.quadratic_ge_of_trace
 #print axioms PlasmaLean.Design.DommaschkJacobianLower.spatial_log_norm_lower_of_bounds
 #print axioms PlasmaLean.Design.DommaschkJacobianLower.spatial_log_norm_abs_of_bounds

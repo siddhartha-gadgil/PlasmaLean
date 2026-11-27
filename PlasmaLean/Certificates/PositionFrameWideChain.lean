@@ -90,4 +90,33 @@ theorem Steps.trajectory_of_length {domain : RegularityDomain} {s e : State} {a 
   subst len
   exact h.trajectory bounds entry
 
+/-- Consecutive checked lists compose. -/
+theorem Steps.append {s m e : State} {l r : List Step} (h₁ : Steps s l m) (h₂ : Steps m r e) :
+    Steps s (l ++ r) e := by
+  induction l generalizing s with
+  | nil =>
+    change s = m at h₁
+    cases h₁
+    exact h₂
+  | cons x xs ih => exact ⟨h₁.1, ih h₁.2⟩
+
+/-- The field hypotheses of consecutive lists compose; the second list starts at the angle
+and state where the first one ends. -/
+theorem fieldBoundsOn_append {domain : RegularityDomain} {s m : State} {a b : ℝ}
+    {l r : List Step} {F : ℝ → Plane → Plane} {J : ℝ → Plane → Plane →L[ℝ] Plane}
+    (h : Steps s l m) (b₁ : FieldBoundsOn F J s a l domain)
+    (hb : b = a + l.length / 64) (b₂ : FieldBoundsOn F J m b r domain) :
+    FieldBoundsOn F J s a (l ++ r) domain := by
+  induction l generalizing s a with
+  | nil =>
+    change s = m at h
+    cases h
+    have : b = a := by simpa using hb
+    rw [← this]
+    exact b₂
+  | cons x xs ih =>
+    refine ⟨b₁.1, ih (h := h.2) (b₁ := b₁.2) (hb := ?_)⟩
+    rw [hb, List.length_cons, Nat.cast_add, Nat.cast_one]
+    ring
+
 end PlasmaLean.Certificates.PositionFrameWideChain
