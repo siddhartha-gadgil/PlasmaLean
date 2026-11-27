@@ -188,6 +188,8 @@ import PlasmaLean.Design.DommaschkRegionRegularity
 import PlasmaLean.Design.DommaschkRegionEnclosureSanity
 import PlasmaLean.Design.DommaschkCylindricalDrift
 import PlasmaLean.Design.DommaschkTubeDrift
+import PlasmaLean.Design.DommaschkTubeField
+import PlasmaLean.Design.DommaschkGradientCheckSanity
 import PlasmaLean.Design.DommaschkJacobianLower
 import PlasmaLean.Design.DommaschkJacobianSecond
 import PlasmaLean.Design.DommaschkWideTubeHessian
@@ -741,6 +743,9 @@ run_cmd do
 #print axioms PlasmaLean.Design.DommaschkTubeDrift.stays_in_tube
 #print axioms PlasmaLean.Design.DommaschkTubeDrift.tube
 #print axioms PlasmaLean.Design.DommaschkTubeDrift.section_of_check
+#print axioms PlasmaLean.Design.DommaschkGradientBridge.gradAbsB_sq
+#print axioms PlasmaLean.Design.DommaschkGradientCheck.fine_sound
+#print axioms PlasmaLean.Design.DommaschkGradientCheck.Fine.field
 #print axioms PlasmaLean.Design.DommaschkJacobianLower.quadratic_ge_of_trace
 #print axioms PlasmaLean.Design.DommaschkJacobianLower.spatial_log_norm_lower_of_bounds
 #print axioms PlasmaLean.Design.DommaschkJacobianLower.spatial_log_norm_abs_of_bounds
