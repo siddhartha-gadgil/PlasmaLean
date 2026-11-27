@@ -15,7 +15,7 @@
 | Produces | Feasibility numbers, the target population, the certificate design and the stage list. |
 | Difficulty | Hard. Stages 2 and 3 need new Lean theory (a flow label on a tube) and a new slab certificate with a lower logarithmic-norm bound on wide balls. |
 | Status | Stage 1 (screen) done. Stage 2a (backward distance estimate) verified. Stage 3 scoped (untrusted): the existing enclosure is too loose on wide balls; a mean-value form certifies \|μ\| ≤ 0.051 at radius 3·10⁻⁴ on all 332 slabs. Radius 3·10⁻⁴ adopted by the stop rule. Stages 2b, 3 (proofs), 4, 5 not started. |
-| Lean evidence | Stage 2a: `PlasmaLean/Theory/Fields/BackwardDistance.lean` (default build): `LowerOneSidedOn`, `lowerOneSidedOn_of_jacobian`, `norm_sub_le_exp_mul_of_lower`, `norm_sub_le_exp_sum_mul_of_lower` (chain over slabs), sharpness example `norm_exp_smul_sub_zero_eq`. Standard axioms only. |
+| Lean evidence | Stage 2a: `PlasmaLean/Theory/Fields/BackwardDistance.lean` (default build): `LowerOneSidedOn`, `lowerOneSidedOn_of_jacobian`, `norm_sub_le_exp_mul_of_lower`, `norm_sub_le_exp_sum_mul_of_lower` (chain over slabs), sharpness example `norm_exp_smul_sub_zero_eq`. Standard axioms only. Stage 3, field-independent parts (on demand, in `scripts/check_axioms_heavy.lean`): `PositionFrameWideChain.Steps.trajectory` (a chain over `PositionFrameWide.valid`, no small-radius limits) and `DommaschkJacobianLower.spatial_log_norm_lower_of_bounds`, `spatial_log_norm_abs_of_bounds` (lower and two-sided bounds from the same trace and disk data). |
 | Audit evidence | Not audited. Numerics: `scripts/dommaschk_kam/screen_wide_tube.py`, `scripts/dommaschk_kam/results/wide_tube_20261127.json`. |
 | Last updated | 27 November 2026 (created) |
 
