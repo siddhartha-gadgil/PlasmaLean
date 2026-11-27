@@ -14,7 +14,7 @@
 | Dependency requirement | The Lipschitz-label drift theorem (compiled); the moving-frame slab format and its soundness theorem; the campaign receipts for cost data. |
 | Produces | Feasibility numbers, the target population, the certificate design and the stage list. |
 | Difficulty | Hard. Stages 2 and 3 need new Lean theory (a flow label on a tube) and a new slab certificate with a lower logarithmic-norm bound on wide balls. |
-| Status | Stage 1 (screen) done. Stage 2a (backward distance estimate) verified. Stages 2b–5 not started. |
+| Status | Stage 1 (screen) done. Stage 2a (backward distance estimate) verified. Stage 3 scoped (untrusted): the existing enclosure is too loose on wide balls; a mean-value form certifies \|μ\| ≤ 0.051 at radius 3·10⁻⁴ on all 332 slabs. Radius 3·10⁻⁴ adopted by the stop rule. Stages 2b, 3 (proofs), 4, 5 not started. |
 | Lean evidence | Stage 2a: `PlasmaLean/Theory/Fields/BackwardDistance.lean` (default build): `LowerOneSidedOn`, `lowerOneSidedOn_of_jacobian`, `norm_sub_le_exp_mul_of_lower`, `norm_sub_le_exp_sum_mul_of_lower` (chain over slabs), sharpness example `norm_exp_smul_sub_zero_eq`. Standard axioms only. |
 | Audit evidence | Not audited. Numerics: `scripts/dommaschk_kam/screen_wide_tube.py`, `scripts/dommaschk_kam/results/wide_tube_20261127.json`. |
 | Last updated | 27 November 2026 (created) |
@@ -52,6 +52,22 @@ At ρ = 10⁻³ the tube is five percent of the minor radius and contains the wh
 5. **Band statement**: a `BandSpec` with the target above, orbit existence on the horizon, and the excursion constant.
 
 Budget: stage 3 is expected to cost of the order of the first campaign's trace work (hundreds of CPU-hours) only if wide balls do not degrade the enclosures; the pilot decides. Stop rule: if the pilot cannot certify |μ| ≤ 0.1 at ρ = 10⁻³, fall back to ρ = 3·10⁻⁴ before spending more.
+
+## Stage 3 scoping, 27 November 2026 (rigorous-style Python intervals; no Lean compiled)
+
+Scripts and data: `scripts/qa2r_wide/enclosure_pilot.py`, `scripts/qa2r_wide/sweep_forward_20261127.json` (all 332 forward slabs of the label-0.474 trace, exact rational intervals around float-proposed references and frames). Done by a sub-agent; the coordinator checked the cited Lean declarations and reran one slab.
+
+- **Correction to the stage 1 table.** The screen used the exact variational frame. The certificate format interpolates the frame affinely on each slab, which adds a term of about 0.02–0.04 to μ at any radius. The quantity a certificate must bound is therefore larger: float samples give at most 0.046 at ρ = 3·10⁻⁴ and 0.065 at 10⁻³ (not 0.010 and 0.034), and the growth over the half well is about 1.19 and 1.43 (not 1.02 and 1.08).
+- **The existing enclosure does not scale.** It puts the whole ball in the remainder of a Taylor model in time, monomial by monomial. At ρ = 10⁻³ it certifies |μ| up to 2.6 (mean 1.0); at 3·10⁻⁴ up to 0.74.
+- **A mean-value form works.** Bound the Jacobian on the central line as now, and add ρ times an interval bound on its spatial derivative over the tube. Result: |μ| ≤ 0.051 at ρ = 3·10⁻⁴ on every slab (integral 0.175 over the half well); at 10⁻³ it reaches 0.123, or 0.102 with a 2×2 split of the box.
+- **The lower bound is free.** The existing proof (`symmetric_bounds` in the generated Bounds modules) already has a two-sided trace bound and discards the lower half; `DommaschkJacobian.quadratic_le_of_trace` applied to the negated entries gives the lower bound with the same data.
+- **Radius limits.** `PositionFrameSlabs.growth` hard-codes a trial radius below 10⁻⁵ and the `Limits`; `Certificates/PositionFrameWide.lean` already drops them, but there is no generic chain over `PositionFrameWide.valid`.
+- **Inputs.** A label-0.474 trace needs only repository inputs (the candidate, the torus seeds, the committed field data and harmonic blocks); no `/tmp` packet.
+- **Cost estimate (extrapolated from receipts, unverified):** about 70 CPU-seconds per slab if grouped by 12 as in N-152, about 7 CPU-hours for 332 slabs; the backward direction by the phase-zero reflection.
+
+**Decision by the stop rule:** ρ = 3·10⁻⁴ (physical tube radius about 5.6·10⁻⁴ to 7·10⁻⁴). With a label constant near 1.86 × 1.19 ≈ 2.2, the direct bound keeps the illustrative electron inside for about 60 R₀/v, roughly a quarter of a bounce period (about 10⁻⁵ s), not a full one. The radius 10⁻³ needs a finer split or a second-order form and is deferred.
+
+**New Lean theory needed before the pilot** (field-independent first): a chain over `PositionFrameWide.valid`; the lower-bound corollary of `quadratic_le_of_trace`; a perturbation lemma (a two-sided central bound plus a bound on the directional derivative of the Jacobian on a convex tube gives two-sided bounds on the tube); derivative lemmas for the quotient-rule entries with second derivatives. The last two are the main risk: their formulas were only checked numerically.
 
 ## Reproduction
 
