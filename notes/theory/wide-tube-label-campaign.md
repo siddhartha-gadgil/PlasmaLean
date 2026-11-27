@@ -14,8 +14,8 @@
 | Dependency requirement | The Lipschitz-label drift theorem (compiled); the moving-frame slab format and its soundness theorem; the campaign receipts for cost data. |
 | Produces | Feasibility numbers, the target population, the certificate design and the stage list. |
 | Difficulty | Hard. Stages 2 and 3 need new Lean theory (a flow label on a tube) and a new slab certificate with a lower logarithmic-norm bound on wide balls. |
-| Status | Stage 1 (screen) done. Stages 2–5 not started. |
-| Lean evidence | none for this note |
+| Status | Stage 1 (screen) done. Stage 2a (backward distance estimate) verified. Stages 2b–5 not started. |
+| Lean evidence | Stage 2a: `PlasmaLean/Theory/Fields/BackwardDistance.lean` (default build): `LowerOneSidedOn`, `lowerOneSidedOn_of_jacobian`, `norm_sub_le_exp_mul_of_lower`, `norm_sub_le_exp_sum_mul_of_lower` (chain over slabs), sharpness example `norm_exp_smul_sub_zero_eq`. Standard axioms only. |
 | Audit evidence | Not audited. Numerics: `scripts/dommaschk_kam/screen_wide_tube.py`, `scripts/dommaschk_kam/results/wide_tube_20261127.json`. |
 | Last updated | 27 November 2026 (created) |
 

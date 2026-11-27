@@ -409,6 +409,7 @@ public import PlasmaLean.Theory.Kinetic.MirrorActionVariation
 public import PlasmaLean.Theory.Kinetic.MirrorBranchCaps
 public import PlasmaLean.Theory.Kinetic.MirrorActionHeightShift
 public import PlasmaLean.Theory.Kinetic.MirrorActionVariationLower
+public import PlasmaLean.Theory.Fields.BackwardDistance
 public import PlasmaLean.Theory.Fields.LipschitzLabel
 public import PlasmaLean.Theory.Kinetic.LabelDrift
 public import PlasmaLean.Theory.Kinetic.VacuumLittlejohnLocal
