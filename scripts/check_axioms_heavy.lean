@@ -182,6 +182,10 @@ import PlasmaLean.Certificates.PositionFrameTube
 import PlasmaLean.Design.DommaschkTubeCheck
 import PlasmaLean.Certificates.PositionFrameHalfTube
 import PlasmaLean.Design.DommaschkTubeSymmetry
+import PlasmaLean.Certificates.PositionFrameCore
+import PlasmaLean.Design.DommaschkRegionFieldBounds
+import PlasmaLean.Design.DommaschkRegionRegularity
+import PlasmaLean.Design.DommaschkRegionEnclosureSanity
 import PlasmaLean.Design.DommaschkJacobianLower
 import PlasmaLean.Design.DommaschkJacobianSecond
 import PlasmaLean.Design.DommaschkWideTubeHessian
@@ -717,6 +721,19 @@ run_cmd do
 #print axioms PlasmaLean.Certificates.PositionFrameTube.isOpen_region
 #print axioms PlasmaLean.Certificates.PositionFrameTube.const_of_check
 #print axioms PlasmaLean.Design.DommaschkTubeSymmetry.flow_symm
+#print axioms PlasmaLean.Certificates.PositionFrameTube.mem_core_of_label
+#print axioms PlasmaLean.Certificates.PositionFrameTube.coreD_subset
+#print axioms PlasmaLean.Certificates.PositionFrameTube.isClosed_coreD_window
+#print axioms PlasmaLean.Certificates.PositionFrameTube.core_subset_inner
+#print axioms PlasmaLean.Certificates.PositionFrameTube.eq_of_eq_forward
+#print axioms PlasmaLean.Certificates.PositionFrameTube.margin_of_check
+#print axioms PlasmaLean.Design.DommaschkRegionFieldBounds.planar_speed_le
+#print axioms PlasmaLean.Design.DommaschkRegionFieldBounds.strength_ge
+#print axioms PlasmaLean.Design.DommaschkRegionFieldBounds.strength_le
+#print axioms PlasmaLean.Design.DommaschkRegionFieldBounds.toroidal_bounds
+#print axioms PlasmaLean.Design.DommaschkRegionRegularity.vacuum_at
+#print axioms PlasmaLean.Design.DommaschkRegionRegularity.contDiffAt_spaceTime_region
+#print axioms PlasmaLean.Design.DommaschkRegionRegularity.norm_gradAbsB_le_region
 #print axioms PlasmaLean.Design.DommaschkJacobianLower.quadratic_ge_of_trace
 #print axioms PlasmaLean.Design.DommaschkJacobianLower.spatial_log_norm_lower_of_bounds
 #print axioms PlasmaLean.Design.DommaschkJacobianLower.spatial_log_norm_abs_of_bounds
