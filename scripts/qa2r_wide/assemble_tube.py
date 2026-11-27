@@ -43,6 +43,7 @@ public import WideTube.{group}Lower
 public import PlasmaLean.Certificates.PositionFrameHalfTube
 public import PlasmaLean.Design.DommaschkTubeCheck
 public import PlasmaLean.Design.DommaschkTubeSymmetry
+public import PlasmaLean.Design.DommaschkTubeDrift
 
 /-! # The tube around forward slabs 0–{n - 1} of the wide trace and its mirror image
 
@@ -141,6 +142,25 @@ theorem isOpen_region : IsOpen (FlowLabel.region (2 * 0 - time 0 rows.length)
     (time 0 rows.length) (FlowLabel.doubleV flipIso 0 (inner {group}.start 0 rows β))) :=
   PositionFrameTube.isOpen_region geo (radii_of_check radii_checked) flipIso flipIso_involutive
     positive
+
+theorem margin_checked : marginCheck rows beta = true := by with_unfolding_all rfl
+
+theorem section_checked : DommaschkTubeDrift.sectionCheck rows beta = true := by
+  with_unfolding_all rfl
+
+/-- All chain hypotheses of `DommaschkTubeDrift`, for the first {n} slabs. -/
+theorem chain : DommaschkTubeDrift.Chain {group}.start (next {group}.row{n - 1}) rows beta
+    exponent inverseBound :=
+  ⟨{joined}.stepsTo{j}, bounds, lower, radii_checked, margin_checked, envelope_checked,
+    constants_checked, rfl, positive⟩
+
+/-- The two-sided tube with the certified speed bound 9/25 on the envelope. -/
+theorem tube_certified :
+    FlowLabel.Tube (euclideanFlow 0 1) 0 (2 * 0 - DommaschkTubeDrift.stop rows)
+      (DommaschkTubeDrift.stop rows) (DommaschkTubeDrift.outerD {group}.start rows)
+      (DommaschkTubeDrift.innerD {group}.start rows beta)
+      (DommaschkTubeDrift.labelConstant exponent inverseBound) (9 / 25) :=
+  DommaschkTubeDrift.tube chain
 
 end PlasmaLean.Design.{group}Tube
 """
