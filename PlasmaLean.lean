@@ -370,6 +370,7 @@ public import PlasmaLean.Design.NearAxisQAExistenceFull
 public import PlasmaLean.Theory.Transport.RelativeEntropy
 public import PlasmaLean.Sanity.RelativeEntropy
 public import PlasmaLean.Sanity.AuditRefreshContract
+public import PlasmaLean.Sanity.CylindricalDrift
 public import PlasmaLean.Theory.Transport.RelativeEntropyCoercive
 public import PlasmaLean.Theory.Geometry.TorusHodge
 public import PlasmaLean.Theory.Geometry.AnnulusFluxDescent
@@ -418,6 +419,7 @@ public import PlasmaLean.Theory.Fields.FlowLabelSymmetric
 public import PlasmaLean.Theory.Fields.FrameJacobianVariation
 public import PlasmaLean.Theory.Fields.LipschitzLabel
 public import PlasmaLean.Theory.Fields.PiecewiseTube
+public import PlasmaLean.Theory.Kinetic.CylindricalDrift
 public import PlasmaLean.Theory.Kinetic.LabelDrift
 public import PlasmaLean.Theory.Kinetic.VacuumLittlejohnLocal
 public import PlasmaLean.Theory.Kinetic.VacuumLittlejohnWindow

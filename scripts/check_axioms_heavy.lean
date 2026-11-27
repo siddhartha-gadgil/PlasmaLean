@@ -186,6 +186,7 @@ import PlasmaLean.Certificates.PositionFrameCore
 import PlasmaLean.Design.DommaschkRegionFieldBounds
 import PlasmaLean.Design.DommaschkRegionRegularity
 import PlasmaLean.Design.DommaschkRegionEnclosureSanity
+import PlasmaLean.Design.DommaschkCylindricalDrift
 import PlasmaLean.Design.DommaschkJacobianLower
 import PlasmaLean.Design.DommaschkJacobianSecond
 import PlasmaLean.Design.DommaschkWideTubeHessian
@@ -734,6 +735,8 @@ run_cmd do
 #print axioms PlasmaLean.Design.DommaschkRegionRegularity.vacuum_at
 #print axioms PlasmaLean.Design.DommaschkRegionRegularity.contDiffAt_spaceTime_region
 #print axioms PlasmaLean.Design.DommaschkRegionRegularity.norm_gradAbsB_le_region
+#print axioms PlasmaLean.Design.DommaschkCylindricalDrift.exists_lift_decomp
+#print axioms PlasmaLean.Design.DommaschkCylindricalDrift.exists_lift_bounds
 #print axioms PlasmaLean.Design.DommaschkJacobianLower.quadratic_ge_of_trace
 #print axioms PlasmaLean.Design.DommaschkJacobianLower.spatial_log_norm_lower_of_bounds
 #print axioms PlasmaLean.Design.DommaschkJacobianLower.spatial_log_norm_abs_of_bounds
