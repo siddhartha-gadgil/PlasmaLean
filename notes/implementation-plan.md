@@ -3485,3 +3485,7 @@ Scoping with exact rational intervals in Python (`scripts/qa2r_wide/`, no Lean c
 ### 27 November 2026 — Wide chain and lower Jacobian bound (N-216 stage 3, field-independent parts)
 
 On-demand modules, standard axioms: `Certificates.PositionFrameWideChain` (`Steps`, `Steps.of_run`, `Steps.trajectory`: one trajectory through a list of steps checked by `PositionFrameWide.valid`, with the same `FieldBoundsOn` hypotheses as the narrow chain) and `Design.DommaschkJacobianLower` (`quadratic_ge_of_trace`, `spatial_log_norm_lower_of_bounds`, `spatial_log_norm_abs_of_bounds`). Written by a sub-agent; statements, build and axioms checked by the coordinator and added to `scripts/check_axioms_heavy.lean`. Still to do before the pilot: the mean-value lemmas for the Jacobian entries.
+
+### 27 November 2026 — Mean-value step for the frame-reduced Jacobian (N-216 stage 3)
+
+`Fields.FrameJacobianVariation` (default build, standard axioms): on a convex tube, a bound `γ‖w‖‖x‖²` on the quadratic form of the directional derivative of the Jacobian in frame directions gives `|⟪x, Ã(z₀+Mv)x⟫ − ⟪x, Ã(z₀)x⟫| ≤ γ‖v‖‖x‖²` (`abs_quad_sub_le`), hence a two-sided bound `(μ₀ + γρ)‖x‖²` on the tube from a central bound (`abs_quad_le_of_center`); for the plane, bounds `g₀, g₁` in the two frame directions give `γ = √(g₀² + g₁²)` (`directional_bound_of_basis`). Written by a sub-agent; statements, build and axioms checked by the coordinator. Remaining before the pilot: the derivative identities for the QA2R quotient-rule entries and the generator.
