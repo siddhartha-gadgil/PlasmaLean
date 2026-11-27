@@ -14,10 +14,10 @@
 | Dependency requirement | The Lipschitz-label drift theorem (compiled); the moving-frame slab format and its soundness theorem; the campaign receipts for cost data. |
 | Produces | Feasibility numbers, the target population, the certificate design and the stage list. |
 | Difficulty | Hard. Stages 2 and 3 need new Lean theory (a flow label on a tube) and a new slab certificate with a lower logarithmic-norm bound on wide balls. |
-| Status | Stages 1 and 2a done. Stage 3 forward: **all 332 slabs compiled** at radius 3·10⁻⁴ and joined into one chain from slab 0 (direct `lean` compile, then rebuilt under `lake` from the repository archive at commit `880c2fe` and audited on 28 November 2026: 11,290 modules, 605,245 declarations, standard axioms only; `generated/qa2r_wide/replay-report.json`). Backward direction, the entrance-set theorem, stages 2b, 4, 5 not done. |
+| Status | Stages 1 and 2a done. Stage 3 forward: **all 332 slabs compiled** at radius 3·10⁻⁴ and joined into one chain from slab 0 (direct `lean` compile, then rebuilt under `lake` from the repository archive at commit `880c2fe` and audited on 28 November 2026: 11,290 modules, 605,245 declarations, standard axioms only; `generated/qa2r_wide/replay-report.json`). Stage 2b: generic parts compiled on 28 November 2026 (flow label, cylindrical lift, slab-wise tube); the slab certificates are not yet connected to them. Stages 4, 5 not done. |
 | Lean evidence | Stage 2a: `PlasmaLean/Theory/Fields/BackwardDistance.lean` (default build): `LowerOneSidedOn`, `lowerOneSidedOn_of_jacobian`, `norm_sub_le_exp_mul_of_lower`, `norm_sub_le_exp_sum_mul_of_lower` (chain over slabs), sharpness example `norm_exp_smul_sub_zero_eq`. Standard axioms only. Stage 3, field-independent parts (on demand, in `scripts/check_axioms_heavy.lean`): `PositionFrameWideChain.Steps.trajectory` (a chain over `PositionFrameWide.valid`, no small-radius limits) and `DommaschkJacobianLower.spatial_log_norm_lower_of_bounds`, `spatial_log_norm_abs_of_bounds` (lower and two-sided bounds from the same trace and disk data). Mean-value step (default build): `FrameJacobianVariation.abs_quad_sub_le`, `abs_quad_le_of_center`, `directional_bound_of_basis`. Field-specific second derivatives (on demand): `DommaschkJacobianSecond.secondEntry`, `entry_derivative`, `velocityHessian`, `jacobian_derivative`, `abs_quad_le_of_center`, `abs_quad_le_of_central_bounds` (forward clock only). |
 | Audit evidence | Not audited. Numerics: `scripts/dommaschk_kam/screen_wide_tube.py`, `scripts/dommaschk_kam/results/wide_tube_20261127.json`. |
-| Last updated | 27 November 2026 (created) |
+| Last updated | 28 November 2026 |
 
 ## Target (default choice, to be confirmed)
 
@@ -94,6 +94,20 @@ All 332 forward slabs of the label-0.474 trace, 1/64 radian each (toroidal angle
 - **In the repository:** sources as `generated/qa2r_wide/WideTube.tar.zst` with `MANIFEST.sha256`; on-demand Lake library `QA2RWide`; `scripts/qa2r_wide/replay.py` (hashes, `lake build`, `scripts/check_axioms_qa2r_wide.lean`).
 
 Same assumptions as the pilot: the reference line and frames are numerical proposals taken as data, and no theorem yet relates the entrance set to births on the tori. These are statements about field lines of the vacuum field; no particle statement follows yet.
+
+## Stage 2b design and generic theorems, 28 November 2026
+
+**Design.** The label is built on space-time `ℝ × Plane` (toroidal angle on the universal cover, then radius and height), not on Cartesian space. This removes the angle branch cut and the need to prove that the tube does not overlap itself after a full turn. A guiding-centre path is lifted to these coordinates by integrating its angular velocity.
+
+**Compiled Lean (default build, standard axioms; the first two written by sub-agents, statements and axioms checked by the coordinator):**
+
+- `Theory/Fields/FlowLabel.lean`. For x′ = F(t, x): a structure `Tube F c a b W V C M` (from the inner tube V solutions reach the section time c inside the outer tube W; solutions in W are unique, at most C times further apart at the section, and have speed at most M). Then `label` (the section point) satisfies `norm_label_sub_le` (‖Δlabel‖ ≤ C(‖Δx‖ + M|Δt|)), `label_invariant` (constant along the field (1, F)), and `displacement_le`: a path with velocity λ·(1, F) + w that stays over V moves the label by at most C(1 + M) sup‖w‖ · t. Sanity: `tube_zero`, `label_zero`.
+- `Theory/Fields/CylindricalLift.lean`. `exists_lift`: a differentiable path off the z-axis has a lifted angle θ and radius R with X = cylPoint R θ z and velocity `cylVelocity` in the lifted coordinates; `norm_cylVelocity_le` (factor max(1, 1/R)).
+- `Theory/Fields/PiecewiseTube.lean`. `isOpen_region_inter`: a tube given slab by slab with different gauges is open when the later slab's set lies in the earlier one's at each node.
+
+**Still to do for the label on the QA2R tube.** (i) Backward existence on a slab and two-sided frame distance bounds from the slab certificates (in progress). (ii) Assemble `Tube` for a chain of slabs: backward radii, node jumps, the constant C = e^{Σμ/64} · max‖M⁻¹‖. (iii) Negative angles by the phase-zero reflection. (iv) The joined list of the 332 lower bounds.
+
+**Scoping numbers for stage 4 (untrusted, `scripts/qa2r_wide/scope_label.py`).** On the trial tube: R between 0.877 and 0.9955, |z| ≤ 0.0776, |B| between 1.0438 and 1.0604, ‖∇|B|‖ ≤ 1.35, ‖∇|B|‖/|B|² ≤ 1.22, planar field-line speed ≤ 0.136, ‖M⁻¹‖ ≤ 1.86 (1.54 on the first 220 slabs). With the crude drift bound of N-215 (twice the trapped-particle value) the label moves by about 2.6 ε per R₀/v, so a section ball of radius about 2.3·10⁻⁴ holds the illustrative electron for about 13 R₀/v, about 2·10⁻⁶ s, not the 10⁻⁵ s estimated above. In that time the orbit covers at most about 2 radians of toroidal angle if the parallel speed is bounded through a certified lower bound |B| ≥ 1.04 on the tube and the pitch window, so the first 140 to 220 slabs suffice. Stage 4 therefore also needs certified bounds on |B|, ∇|B| and the planar speed on the tube; none exists yet for this field.
 
 ## Reproduction
 
