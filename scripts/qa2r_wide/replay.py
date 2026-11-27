@@ -4,7 +4,7 @@
 
 1. unpack `generated/qa2r_wide/WideTube.tar.zst` if the sources are not there, and check every
    source against `MANIFEST.sha256`;
-2. `lake build WideTube.DommaschkWideTubeRows000Joined` (library `QA2RWide`; about 170 CPU-hours
+2. `lake build WideTube.DommaschkWideTubeRows000Lower` (library `QA2RWide`; about 170 CPU-hours
    from scratch, about 2.5 GB per Lean process);
 3. `lake env lean scripts/check_axioms_qa2r_wide.lean`;
 4. write `generated/qa2r_wide/replay-report.json`.
@@ -22,7 +22,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
 OUT = ROOT / "generated/qa2r_wide"
-TOP = "WideTube.DommaschkWideTubeRows000Joined"
+TOP = "WideTube.DommaschkWideTubeRows000Lower"
 
 
 def main():
@@ -50,7 +50,7 @@ def main():
                            capture_output=True, text=True)
     text = " ".join((audit.stdout + audit.stderr).split())
     standard = text.count("depends on axioms: [propext, Classical.choice, Quot.sound]")
-    if audit.returncode or "wide-tube axiom audit passed" not in text or standard != 3:
+    if audit.returncode or "wide-tube axiom audit passed" not in text or standard != 4:
         sys.exit("axiom audit failed:\n" + audit.stdout[-2000:] + audit.stderr[-2000:])
     git = lambda *a: subprocess.check_output(["git", *a], cwd=ROOT, text=True).strip()
     summary = text[text.index("QA2R wide-tube axiom audit passed"):].split(" 'PlasmaLean")[0]

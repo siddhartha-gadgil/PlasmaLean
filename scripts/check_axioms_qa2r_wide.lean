@@ -1,5 +1,5 @@
 import Lean.Util.CollectAxioms
-import WideTube.DommaschkWideTubeRows000Joined
+import WideTube.DommaschkWideTubeRows000Lower
 /-! Axiom audit of the script-generated wide-tube modules (`generated/qa2r_wide/`, library
 `QA2RWide`, note N-216). Run by `scripts/qa2r_wide/replay.py` after the build:
 `lake env lean scripts/check_axioms_qa2r_wide.lean`.
@@ -37,3 +37,4 @@ run_cmd do
 #print axioms PlasmaLean.Design.DommaschkWideTubeRows000Joined.steps
 #print axioms PlasmaLean.Design.DommaschkWideTubeRows000Joined.field_bounds
 #print axioms PlasmaLean.Design.DommaschkWideTubeRows000Joined.trajectory
+#print axioms PlasmaLean.Design.DommaschkWideTubeRows000Lower.lower
