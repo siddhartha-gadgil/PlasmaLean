@@ -179,6 +179,8 @@ import PlasmaLean.Certificates.PositionFrameWide
 import PlasmaLean.Certificates.PositionFrameWideChain
 import PlasmaLean.Design.DommaschkJacobianLower
 import PlasmaLean.Design.DommaschkJacobianSecond
+import PlasmaLean.Design.DommaschkWideTubeHessian
+import PlasmaLean.Design.DommaschkWideTubeStep
 import PlasmaLean.Design.DommaschkWideTraceFields
 import PlasmaLean.Design.DommaschkRibbonThroughChains
 import PlasmaLean.Design.DommaschkRibbonGrazingAlternative
@@ -698,6 +700,11 @@ run_cmd do
 #print axioms PlasmaLean.Design.DommaschkJacobianSecond.jacobian_derivative
 #print axioms PlasmaLean.Design.DommaschkJacobianSecond.abs_quad_le_of_center
 #print axioms PlasmaLean.Design.DommaschkJacobianSecond.abs_quad_le_of_central_bounds
+#print axioms PlasmaLean.Design.DommaschkWideTubeHessian.dU_dZ
+#print axioms PlasmaLean.Design.DommaschkWideTubeHessian.directional_bounds
+#print axioms PlasmaLean.Design.DommaschkWideTubeStep.abs_quadratic
+#print axioms PlasmaLean.Design.DommaschkWideTubeStep.neg_le_quadratic
+#print axioms PlasmaLean.Design.DommaschkWideTubeStep.field_bounds
 #print axioms PlasmaLean.Design.DommaschkWideTraceFields.forward_rectangle
 #print axioms PlasmaLean.Design.DommaschkWideTraceFields.backward_rectangle
 #print axioms PlasmaLean.Design.DommaschkRibbonThroughChains.from_chains

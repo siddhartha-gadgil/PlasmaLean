@@ -14,7 +14,7 @@
 | Dependency requirement | The Lipschitz-label drift theorem (compiled); the moving-frame slab format and its soundness theorem; the campaign receipts for cost data. |
 | Produces | Feasibility numbers, the target population, the certificate design and the stage list. |
 | Difficulty | Hard. Stages 2 and 3 need new Lean theory (a flow label on a tube) and a new slab certificate with a lower logarithmic-norm bound on wide balls. |
-| Status | Stage 1 (screen) done. Stage 2a (backward distance estimate) verified. Stage 3 scoped (untrusted): the existing enclosure is too loose on wide balls; a mean-value form certifies \|μ\| ≤ 0.051 at radius 3·10⁻⁴ on all 332 slabs. Radius 3·10⁻⁴ adopted by the stop rule. Stages 2b, 3 (proofs), 4, 5 not started. |
+| Status | Stages 1 and 2a done. Stage 3: Lean theory complete; **pilot passed** on 8 forward slabs (0–3, 268–271) at radius 3·10⁻⁴: two-sided Jacobian bound on the whole ball and full `FieldBounds`, compiled by Lean. Full forward trace (332 slabs) running. Backward direction, the connected chain from a real entrance set, stages 2b, 4, 5 not done. |
 | Lean evidence | Stage 2a: `PlasmaLean/Theory/Fields/BackwardDistance.lean` (default build): `LowerOneSidedOn`, `lowerOneSidedOn_of_jacobian`, `norm_sub_le_exp_mul_of_lower`, `norm_sub_le_exp_sum_mul_of_lower` (chain over slabs), sharpness example `norm_exp_smul_sub_zero_eq`. Standard axioms only. Stage 3, field-independent parts (on demand, in `scripts/check_axioms_heavy.lean`): `PositionFrameWideChain.Steps.trajectory` (a chain over `PositionFrameWide.valid`, no small-radius limits) and `DommaschkJacobianLower.spatial_log_norm_lower_of_bounds`, `spatial_log_norm_abs_of_bounds` (lower and two-sided bounds from the same trace and disk data). Mean-value step (default build): `FrameJacobianVariation.abs_quad_sub_le`, `abs_quad_le_of_center`, `directional_bound_of_basis`. Field-specific second derivatives (on demand): `DommaschkJacobianSecond.secondEntry`, `entry_derivative`, `velocityHessian`, `jacobian_derivative`, `abs_quad_le_of_center`, `abs_quad_le_of_central_bounds` (forward clock only). |
 | Audit evidence | Not audited. Numerics: `scripts/dommaschk_kam/screen_wide_tube.py`, `scripts/dommaschk_kam/results/wide_tube_20261127.json`. |
 | Last updated | 27 November 2026 (created) |
@@ -69,9 +69,28 @@ Scripts and data: `scripts/qa2r_wide/enclosure_pilot.py`, `scripts/qa2r_wide/swe
 
 **New Lean theory needed before the pilot** (field-independent first): a chain over `PositionFrameWide.valid`; the lower-bound corollary of `quadratic_le_of_trace`; a perturbation lemma (a two-sided central bound plus a bound on the directional derivative of the Jacobian on a convex tube gives two-sided bounds on the tube); derivative lemmas for the quotient-rule entries with second derivatives. The last two are the main risk: their formulas were only checked numerically.
 
+## Pilot result, 27 November 2026 (compiled Lean; generated modules in the workstation cache)
+
+Generator `scripts/qa2r_wide/wide_tube_pilot.py` (reference line and frames proposed by `wide_trace.py`, untrusted; every emitted bound validated in exact arithmetic, then checked by Lean). Hand-written support, on demand, standard axioms: `Design/DommaschkWideTubeHessian.lean` (`dU_dZ`, `directional_bounds`) and `Design/DommaschkWideTubeStep.lean` (`abs_quadratic`, `neg_le_quadratic`, `field_bounds`). Done by a sub-agent; the coordinator rebuilt the hand-written modules, re-ran the axiom check on a generated slab and both chains, and read the statements.
+
+For each of the 8 pilot slabs Lean proves, on the closed slab and the whole trial ball of frame radius 3·10⁻⁴: `abs_quadratic` (|⟪w, Ã w⟫| ≤ μ‖w‖²), `neg_le_quadratic`, `field_bounds` (the full `FieldBounds`) and `physical_step`; and for each group of four a chain with `trajectory`.
+
+| Slabs | Certified μ (two-sided) | Central part | Prototype prediction |
+| --- | --- | --- | --- |
+| 0–3 | 0.0249 – 0.0258 | 0.0197 – 0.0202 | 0.0250 – 0.0259 |
+| 268–271 | 0.0368 – 0.0375 | 0.0196 – 0.0206 | 0.0388 – 0.0396 |
+
+Measured cost: 276 generated modules, 3.05 CPU-hours, about 23 CPU-minutes per slab, at most 2.5 GB per process. The earlier estimate of 70 CPU-seconds per slab assumed grouped Horner enclosures, which are not implemented for the second derivatives; 98 % of the cost is the sparse monomial enclosures. The full forward trace therefore costs about 127 CPU-hours as is.
+
+Assumptions of the pilot (not proved): the reference line and frames are float proposals taken as given integers; the group 268–271 starts from an assumed entrance radius, so the two groups are not connected; no birth-set theorem is attached to the entrance of slab 0. The lower bound is proved per slab but not yet fed into `BackwardDistance`.
+
 ## Reproduction
 
 ```bash
 cd scripts/dommaschk_kam
 ../../.venv-ws/bin/python screen_wide_tube.py --output results/wide_tube_20261127.json
+cd ../.. && lake build PlasmaLean.Design.DommaschkWideTubeStep
+OPENBLAS_NUM_THREADS=1 .venv-ws/bin/python scripts/qa2r_wide/wide_trace.py
+OPENBLAS_NUM_THREADS=1 .venv-ws/bin/python scripts/qa2r_wide/wide_tube_pilot.py \
+  --groups 0-3 268-271 --later-radius 284/1000000 --compile --jobs 8
 ```
