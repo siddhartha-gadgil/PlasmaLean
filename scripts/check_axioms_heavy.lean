@@ -179,6 +179,7 @@ import PlasmaLean.Certificates.PositionFrameWide
 import PlasmaLean.Certificates.PositionFrameWideChain
 import PlasmaLean.Certificates.PositionFrameBackward
 import PlasmaLean.Certificates.PositionFrameTube
+import PlasmaLean.Design.DommaschkTubeCheck
 import PlasmaLean.Design.DommaschkJacobianLower
 import PlasmaLean.Design.DommaschkJacobianSecond
 import PlasmaLean.Design.DommaschkWideTubeHessian
@@ -708,6 +709,8 @@ run_cmd do
 #print axioms PlasmaLean.Certificates.PositionFrameTube.inner_relOpen
 #print axioms PlasmaLean.Certificates.PositionFrameTube.stationary_reach
 #print axioms PlasmaLean.Certificates.PositionFrameTube.lowerOn_append
+#print axioms PlasmaLean.Design.DommaschkTubeCheck.radii_of_check
+#print axioms PlasmaLean.Design.DommaschkTubeCheck.region_of_outer
 #print axioms PlasmaLean.Design.DommaschkJacobianLower.quadratic_ge_of_trace
 #print axioms PlasmaLean.Design.DommaschkJacobianLower.spatial_log_norm_lower_of_bounds
 #print axioms PlasmaLean.Design.DommaschkJacobianLower.spatial_log_norm_abs_of_bounds
