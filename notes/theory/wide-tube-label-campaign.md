@@ -155,6 +155,25 @@ New side conditions of `stays_in_tube` and `exists_orbit_stays_in_tube`: κ ≥ 
 
 **Band instance.** The pitch window is now μ/E > 47/50 (the top band has 1/h ≈ 0.9433), and `kappa`, `Inputs` use the new formulas with the factor (2 − (47/50)·1.039)·e₂. `inputs_example` now has horizon 30 (before 10) at m = q = 1, e₂ = 10⁻⁶. The caveats of stage 5 are unchanged, and the instance still fails the acceptance rule of N-213.
 
+## Scoping of a wider tube, 28 November 2026 (untrusted numerics; no Lean compiled)
+
+`scripts/qa2r_wide/enclosure_pilot.py` on forward slabs 1, 120, 238, 300 (`scripts/qa2r_wide/results/wide_radius_scope_20261128.json`). Two-sided bound μ of the frame-reduced Jacobian on the trial ball:
+
+| Frame radius | Sampled true value | Mean-value enclosure, one box | Mean-value enclosure, 4×4 boxes |
+| --- | --- | --- | --- |
+| 10⁻³ | 0.027 – 0.062 | 0.04 – 0.12 | 0.038 – 0.086 |
+| 2·10⁻³ | 0.039 – 0.086 | 0.07 – 0.30 | 0.06 – 0.16 |
+| 3·10⁻³ | 0.047 – 0.11 | 0.10 – 0.61 | 0.09 – 0.27 |
+
+**Conditional inference (arithmetic, not a theorem).**
+
+- *Label budget.* The direct bound charges the whole drift: N-215 measured ∫(Lipschitz constant × drift speed) ≈ 93 ε per half bounce, and the certified constants are 2 to 3.5 times looser. A half bounce at ε = 6.7·10⁻⁶ therefore needs an entrance radius of about 1.3·10⁻³ to 2.2·10⁻³, a trial radius of 2·10⁻³ to 3.5·10⁻³. At 2·10⁻³ with 4×4 boxes the growth over the well is about e^0.5 and the horizon would be about 54 R₀/v, 0.4 of a half bounce.
+- *Angle window.* With the present crude bound on the parallel speed the angle condition stops the argument at about 21 R₀/v on 224 slabs and about 29 on 332. Using the decrease of the parallel speed along the well (slab-wise lower bounds on |B|) would give about 27 on 224 slabs and of the order of 120 on 332. The 332-slab tube does not pass the envelope check, and its end at 5.19 radians is only just past the top-band mirror points, so a certified mirror barrier needs a longer trace.
+- *Cost.* 16 boxes per slab multiply the dominant cost (second-derivative enclosures) by about 16: of the order of 2,700 CPU-hours, about five days on this machine, before the extra field certificates.
+- *Ceiling.* Even at that cost the direct method reaches at most about one half bounce, and its bound grows linearly in time, so it cannot give many bounces. The banana excursion itself is bounded (25 ε), which only an averaged estimate with a corrector can use (N-206 `stays_inside_of_correction`, N-210).
+
+**Decision pending (user).** Whether to spend that compute on a half-bounce statement by the direct method, or to turn to the averaged estimate.
+
 ## Stage 5: a formal band-form instance, 28 November 2026 (compiled Lean, standard axioms)
 
 Done at the user's request, with the caveats below. Generic part `Design/DommaschkTubeBand.lean` (on demand); instance `DommaschkWideTubeRows000Band` in the generated library (it also imports `CommonLittlejohnCache` of `QA2RGenerated` for the regular mirror births). Written by a sub-agent; statements, axioms and the build checked by the coordinator. Replay and audit passed at `3153d3b` (11,323 modules).
