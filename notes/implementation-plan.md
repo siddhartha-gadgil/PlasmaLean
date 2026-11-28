@@ -485,10 +485,12 @@ documents. Six independent read-only sub-audits; record
 - **AW-H2 (high, resolved 25 November):** `python3 scripts/qa2r/replay.py` replays these results
   from the repository (hashes, build, axiom audit) without `/tmp` inputs. Regenerating the sources
   from the numerical inputs is not covered; the generators stay untrusted.
-- **AW-H3 (high, open):** `GuidingCentreBand` admits a point-mass population and an existential
-  horizon (`quadratic_guidingCentreBand`, `DommaschkCommonLittlejohnTime.BandAt`); band-form
-  instances of this kind do not count as C2 progress. Strengthening the clause is a contract
-  decision.
+- **AW-H3 (high, partly resolved; contract decision taken 29 November 2026):** `GuidingCentreBand`
+  admits a point-mass population and an existential horizon. `BandContract` (N-213) is now adopted
+  as the band form of C2, with an acceptance rule applied at review: horizon against the bounce
+  time, excursion against the orbit width, support fixed independently of the reference
+  population. The one existing instance (QA2R tube, N-216) is formal and does not meet the rule.
+  The Lean definition is not strengthened yet.
 - Medium findings AW-M1–AW-M14 (AW-M1, AW-M9, AW-M13 corrected in documents); low AW-L1–AW-L15
   (AW-L1 fixed). AV-M7 is sharpened by AW-H3; AV-M8, AV-M9, AV-M11, AV-L3, AV-L6 remain open.
 
@@ -3525,4 +3527,8 @@ Compiled, standard axioms: on the QA2R envelope `Region`, planar field-line spee
 ### 29 November 2026 — Formal band-form instance of C2 for QA2R, with caveats (N-216 stage 5)
 
 `DommaschkWideTubeRows000Band.band_contract` (library `QA2RWide`, 11,323 modules; replay and audit passed at `3153d3b`): `BandContract (spec m q ν e₁ e₂ T) B` for the QA2R field, for symbolic species and energy window, pitch μ/E > 9/10, the circle R = 15/16 as axis, excursion 1/8, fraction 1, and any horizon with κT ≤ 10⁻⁴ and two further explicit inequalities; with a concrete birth law (`band_contract_restrict`) and satisfiable inputs (`band_contract_example`). Caveats recorded in N-216: the support is the interior of the reference population of good births, so fraction 1 holds by construction (AW-H3 only partly addressed); the excursion is the envelope size; the horizon is of the order of 10⁻⁶ s at the illustrative electron scale; model units. The research target of C2 remains open.
+
+### 29 November 2026 — `BandContract` adopted as the band form of C2 (user decision)
+
+`Contract.BandContract` (N-213) is the band form of clause C2; `GuidingCentreBand` alone is a lemma-level predicate. The definition is unchanged. An instance counts as C2 progress only if its horizon is stated against the bounce time, its excursion against the orbit width, and its support is given independently of the trapped reference population; this rule is applied at review and recorded in N-213 and in the module docstring of `Theory/Contract/BandSpec.lean`. The QA2R instance of N-216 is formal and does not meet the rule. AW-H3 is partly resolved. C2 remains open.
 

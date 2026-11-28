@@ -107,7 +107,8 @@ and operating temperature remain open for that candidate.
 - **C2:**
   - **Contract.** The chart form uses a proved Boozer chart of the physical field
     (`Contract.BoozerModelOf`). Its only field-level instance is the vacuous ∇φ fixture. The
-    approved band form now has a Lean predicate, `GuidingCentreBand`, for one Littlejohn species.
+    approved band form is the Lean predicate `BandContract` (a specification fixed before the proof,
+    and the claim `GuidingCentreBand` with those inputs), for one Littlejohn species.
     It specifies the trapped birth population, its covered fraction, radial excursion and physical time.
     A quadratic mirror realizes the band predicate for a point-mass birth law. Establishing
     it for thermal populations on the candidate remains open. [Band test](notes/theory/hamiltonian-bounce-band-test.md)

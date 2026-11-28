@@ -12,10 +12,10 @@
 | Dependency requirement | The compiled single-species Littlejohn predicate `GuidingCentreBand` and its loss bound, unchanged. |
 | Produces | `BandSpec`, `BandSpec.Admissible`, `MeetsBand`, `BandContract` and their consequences; regressions for the audit findings |
 | Difficulty | routine (the definitions and regressions); research (any positive instance) |
-| Status | verified (definitions, consequences and regressions); positive instance open |
+| Status | verified (definitions, consequences and regressions). Adopted as the band form of C2 (user decision, 29 November 2026). One formal instance exists (N-216) and does not meet the acceptance rule; an accepted instance is open. |
 | Lean evidence | default build: `Theory/Contract/BandSpec` (`BandSpec`, `BandSpec.Admissible`, `Admissible.axis_compact`, `MeetsBand`, `BandContract`, `MeetsBand.radial_loss_le`, `MeetsBand.exists_birth`, `MeetsBand.mono_horizon`, `MeetsBand.mono_tolerance`, `not_meetsBand_const`); `Sanity/BandSpec` (`dirac_not_admissible`, `quadratic_fixture_not_admissible`, `mirror_not_meetsBand`) |
 | Audit evidence | addresses the refresh audit of 25 November 2026 (`0bec221`), AW-H3, AW-M3, AW-M4; not itself audited |
-| Last updated | 25 November 2026: created |
+| Last updated | 29 November 2026: adoption and acceptance rule |
 | Patches | N-53 (the band-form acceptance predicate) and the C2 band-form clause of `notes/formalization/00-model-contracts.md` |
 
 ## Purpose and scope
@@ -85,11 +85,24 @@ application adds `curl B = 0` through the field's own contract.
 - `mirror_not_meetsBand`: the quadratic-mirror field of that fixture, with divergence `2x₀`,
   meets no specification, although it satisfies the unrestricted `GuidingCentreBand`.
 
+## Adoption and acceptance rule (user decision, 29 November 2026)
+
+`BandContract` is the band form of clause C2. `GuidingCentreBand` on its own, and results with an existential horizon, are lemmas and not instances of the clause.
+
+The Lean definition is not strengthened for now. It leaves three things to the specification: how the support is described, the length of the horizon and the size of the excursion. A `BandContract` instance counts as progress on C2 only when all of the following hold; this is checked at review, not in Lean.
+
+1. **Horizon against a physical scale.** The specification or its note states the horizon in units of the bounce time of the population (and, where a device scale is fixed, in seconds). A horizon below one bounce is recorded as such and is not confinement of trapped particles.
+2. **Excursion against a physical scale.** The excursion is compared with the orbit (banana) width and the minor radius. An excursion of the size of the region in which the orbits are known to exist carries no information.
+3. **Support fixed independently.** The support is given in elementary terms (coordinates and inequalities), not through the trapped reference population itself, so that the fraction is a result and not a construction.
+4. **Inputs before proof.** Species, energy and pitch windows, birth law and device scale are stated before the proof, as N-213 already requires.
+
+The definition will be revisited (for example a horizon floor tied to the bounce time, or an elementary-support condition) once the horizon work of N-216 shows what a realistic instance looks like.
+
+**Current instance.** `DommaschkWideTubeRows000Band.band_contract` (N-216, stage 5) is a `BandContract` for the QA2R field. It fails items 1 to 3: the horizon is about a tenth of a half bounce, the excursion 1/8 is the envelope size, and the support is the interior of the reference population of good births. It is a formal instance and a regression target, not C2 progress in the sense above.
+
 ## What is not done
 
-- **No positive instance.** No admissible specification is shown to be met by any field. This is
-  the open content of C2 in band form (it sharpens AV-M7). For the Dommaschk QA2R field it needs
-  a horizon bound independent of the excursion cap, which is the action-drift estimate of N-210.
+- **No accepted instance.** One formal instance exists (above). No admissible specification meeting the acceptance rule is shown to be met by any field. This is the open content of C2 in band form (it sharpens AV-M7). For the Dommaschk QA2R field it needs a horizon of at least a bounce, which the direct drift bound of N-216 cannot give; beyond one bounce it needs the averaged estimate of N-210.
 - `GuidingCentreBand` and the theorems that produce it are unchanged and remain true. Results
   that conclude `GuidingCentreBand` with an existential horizon (N-125 and its uses) are lemmas,
   not band-form instances.

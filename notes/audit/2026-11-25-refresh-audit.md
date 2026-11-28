@@ -234,6 +234,6 @@ not pin the poloidal angle), AV-M9, AV-M11, AV-L3, AV-L6 remain open; AV-M4 part
 1. *(Decided 25 November 2026: commit, as compressed archives; done, see AW-H1.)* Commit the final-layer generated Lean sources (at least the headline modules and their
    parents) to an on-demand directory with an opt-in axiom audit, or keep them workstation-only
    with labelled claims (AW-H1, AW-H2).
-2. Strengthen `GuidingCentreBand` with fixed inputs (horizon floor, absolutely continuous or
+2. *(Decided 29 November 2026: `BandContract` of N-213 is adopted as the band form of C2, with an acceptance rule applied at review; the Lean definition is not strengthened yet. AW-H3 partly resolved.)* Strengthen `GuidingCentreBand` with fixed inputs (horizon floor, absolutely continuous or
    thermal birth density, fixed support with nonempty interior, fraction floor, Maxwell and
    regularity of `B`, axis as a curve) (AW-H3, AW-M3, AW-M4).

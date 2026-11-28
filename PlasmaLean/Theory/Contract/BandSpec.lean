@@ -32,6 +32,15 @@ ball as the "axis" (audit of 25 November 2026, AW-H3, AW-M3, AW-M4). This module
 The prover chooses only the region, the covered births and the attained fraction. A family of
 statements of the form "for each excursion there is some positive horizon" does not give
 `BandContract` for a specification whose horizon is fixed in advance.
+
+**Contract status (user decision, 29 November 2026).** `BandContract` is adopted as the band form
+of clause C2; `GuidingCentreBand` alone is a lemma-level predicate. The definition does not
+constrain how the support is described, how long the horizon is or how large the excursion is.
+An instance therefore counts as progress on C2 only if its specification states the horizon
+against the bounce time of the population and the excursion against the orbit width, and gives
+the support without reference to the trapped population it is compared with. This acceptance
+rule is applied at review, not in Lean (note N-213). The instance
+`DommaschkWideTubeRows000Band.band_contract` (note N-216) is formal and does not meet it.
 -/
 
 @[expose] public section
