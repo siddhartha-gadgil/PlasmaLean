@@ -190,6 +190,7 @@ import PlasmaLean.Design.DommaschkCylindricalDrift
 import PlasmaLean.Design.DommaschkTubeDrift
 import PlasmaLean.Design.DommaschkTubeField
 import PlasmaLean.Design.DommaschkTubeOrbit
+import PlasmaLean.Design.DommaschkTubeBand
 import PlasmaLean.Design.DommaschkGradientCheckSanity
 import PlasmaLean.Design.DommaschkJacobianLower
 import PlasmaLean.Design.DommaschkJacobianSecond
@@ -746,6 +747,8 @@ run_cmd do
 #print axioms PlasmaLean.Design.DommaschkTubeDrift.section_of_check
 #print axioms PlasmaLean.Design.DommaschkGradientBridge.gradAbsB_sq
 #print axioms PlasmaLean.Design.DommaschkTubeOrbit.exists_orbit
+#print axioms PlasmaLean.Design.DommaschkTubeBand.bandContract
+#print axioms PlasmaLean.Design.DommaschkTubeBand.bandContract_restrict
 #print axioms PlasmaLean.Design.DommaschkTubeOrbit.exists_orbit_stays_in_tube
 #print axioms PlasmaLean.Design.DommaschkGradientCheck.fine_sound
 #print axioms PlasmaLean.Design.DommaschkGradientCheck.Fine.field
