@@ -141,6 +141,20 @@ Certified inputs added for this (sub-agents; checked by the coordinator): on the
 
 **Not proved:** any statement about a population; anything beyond 1.5·10⁻⁶ s; the regular-mirror property of these births. The reference line and frames remain numerical proposals, but the theorem does not depend on their accuracy beyond what the certificates check.
 
+## Tightened constants, 28 November 2026 (compiled Lean, standard axioms; supersedes the constants stated in the stage 4 section above)
+
+The orbit theorem and the band instance were restated with three sharper inputs, all already certified (sub-agent; build, forbidden constructs and audit checked by the coordinator; replay passed at `49f0629`):
+
+- the tube-local planar speed 7/50 in place of the envelope bound 9/25;
+- the drift bounded by (2H − μ·1.039)/(|q|·1.039²)·‖∇|B|‖ in place of 2H/(|q|·1.039²)·‖∇|B|‖ (`DommaschkCylindricalDrift.norm_drift_le_strength`; the drift carries m v∥² + μ|B| = 2H − μ|B|);
+- the tube-local B_φ ≤ 21/20 in the angular rate, giving the factor (21/20)/(7/8) = 6/5 in place of (13/10)/(7/8).
+
+New side conditions of `stays_in_tube` and `exists_orbit_stays_in_tube`: κ ≥ `labelConstant`·(1 + 7/50)·(8/7)·((2H − μ·1.039)/(|q|·1.039²))·(11/8), and the angle condition with vpar/1.039·(6/5) and the same drift term. The label budget, the parallel-speed condition and the conclusions are unchanged.
+
+**Size (arithmetic on the certified constants, not a Lean theorem).** κ ≈ 3.29·H/|q| for a top-band particle (μ = H/1.0601), against 7.71·H/|q| before: a factor 2.3. At ε = 6.7·10⁻⁶ the label budget allows about 20.8 R₀/v and the angle window about 21.5 R₀/v, so the horizon is about 20.8 R₀/v, about 3.5·10⁻⁶ s at R₀ = 10 m, about a sixth of a half bounce (before: 8.9 R₀/v).
+
+**Band instance.** The pitch window is now μ/E > 47/50 (the top band has 1/h ≈ 0.9433), and `kappa`, `Inputs` use the new formulas with the factor (2 − (47/50)·1.039)·e₂. `inputs_example` now has horizon 30 (before 10) at m = q = 1, e₂ = 10⁻⁶. The caveats of stage 5 are unchanged, and the instance still fails the acceptance rule of N-213.
+
 ## Stage 5: a formal band-form instance, 28 November 2026 (compiled Lean, standard axioms)
 
 Done at the user's request, with the caveats below. Generic part `Design/DommaschkTubeBand.lean` (on demand); instance `DommaschkWideTubeRows000Band` in the generated library (it also imports `CommonLittlejohnCache` of `QA2RGenerated` for the regular mirror births). Written by a sub-agent; statements, axioms and the build checked by the coordinator. Replay and audit passed at `3153d3b` (11,323 modules).
@@ -151,12 +165,12 @@ Done at the user's request, with the caveats below. Generic part `Design/Dommasc
 | --- | --- |
 | Species | m > 0, q ≠ 0, symbolic |
 | Energy window | the open interval (e₁, e₂) |
-| Pitch window | μ/E > 9/10 |
+| Pitch window | μ/E > 47/50 (9/10 before the tightening) |
 | Axis | the circle R = 15/16, z = 0 |
 | Horizon | T > 0 |
 | Excursion | 1/8 |
 | Required fraction | 1 |
-| Support | the interior of the trapped reference population among the "good" births: position within toroidal angle 1/4 of the section and over the inner tube, label within 10⁻⁴ of the reference point, 0 < E < e₂, μ > 0.9 E |
+| Support | the interior of the trapped reference population among the "good" births: position within toroidal angle 1/4 of the section and over the inner tube, label within 10⁻⁴ of the reference point, 0 < E < e₂, μ > 0.94 E |
 
 `Inputs` consists of three inequalities between the inputs: κ·T ≤ 10⁻⁴ with κ = `labelConstant`·1.36·(8/7)·(2e₂/(|q|·1.039²))·(11/8); m·vp² ≥ 2e₂(1 − 0.9·1.039); and (vp/1.039·(13/10)/(7/8) + κ/(1.36·`labelConstant`))·T ≤ 3.
 

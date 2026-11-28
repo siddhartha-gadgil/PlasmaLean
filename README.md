@@ -38,7 +38,7 @@ Heavy numerics and large certificate builds can be offloaded to a workstation; s
 
 ## Progress
 
-**Guiding centres on a certified QA2R tube (26 to 28 November, N-214 to N-216).** The first-well sector certified earlier cannot carry a thermal band claim: a numerical screen (untrusted) shows a 10 keV guiding centre leaving its phase window in about 5·10⁻¹⁰ s. A wider tube around the label-0.474 field line is now certified in the on-demand library `QA2RWide`: 332 forward slabs with two-sided Jacobian bounds, and a Lipschitz field-line label on toroidal angles (−3.5, 3.5). On it Lean proves that a Littlejohn guiding centre born in the tube has an orbit on [0, T], stays over the tube and moves its field-line label at most κt, with κ ≥ 3.86·2H/|q| (`DommaschkWideTubeRows000Orbit.exists_orbit_stays_in_tube`). At the illustrative scale of a 10 keV electron, 5 T and 10 m (not a project decision) the horizon is about 1.5·10⁻⁶ s, about a fifteenth of a half bounce. This is the first compiled confinement statement for guiding centres of this field with physical constants. It covers one tube and a short time, and gives no population statement beyond the formal band instance described below. [Wide-tube campaign](notes/theory/wide-tube-label-campaign.md) · [Progress report](progress/2026-11-23-annular-confinement.md)
+**Guiding centres on a certified QA2R tube (26 to 28 November, N-214 to N-216).** The first-well sector certified earlier cannot carry a thermal band claim: a numerical screen (untrusted) shows a 10 keV guiding centre leaving its phase window in about 5·10⁻¹⁰ s. A wider tube around the label-0.474 field line is now certified in the on-demand library `QA2RWide`: 332 forward slabs with two-sided Jacobian bounds, and a Lipschitz field-line label on toroidal angles (−3.5, 3.5). On it Lean proves that a Littlejohn guiding centre born in the tube has an orbit on [0, T], stays over the tube and moves its field-line label at most κt, with κ ≥ about 3.3·H/|q| for top-band pitch (`DommaschkWideTubeRows000Orbit.exists_orbit_stays_in_tube`). At the illustrative scale of a 10 keV electron, 5 T and 10 m (not a project decision) the horizon is about 3.5·10⁻⁶ s, about a sixth of a half bounce. This is the first compiled confinement statement for guiding centres of this field with physical constants. It covers one tube and a short time, and gives no population statement beyond the formal band instance described below. [Wide-tube campaign](notes/theory/wide-tube-label-campaign.md) · [Progress report](progress/2026-11-23-annular-confinement.md)
 
 **25 November.** [Current C1–C5 assessment and the physical drift bound needed for C2](notes/theory/stellarator-conditions-after-sector-closure.md).
 
@@ -123,7 +123,7 @@ and operating temperature remain open for that candidate.
     defined through the reference population; the instance does not meet the acceptance rule, and
     these caveats keep the clause open as a design
     claim. On the same tube an orbit theorem with explicit constants holds for single guiding
-    centres (label motion at most κt for about 1.5·10⁻⁶ s at the illustrative electron scale).
+    centres (label motion at most κt for about 3.5·10⁻⁶ s at the illustrative electron scale).
     [Wide-tube campaign](notes/theory/wide-tube-label-campaign.md)
   - A numerical screen found a change of mirror well at mid-depth. A deeper family on the
     same Dommaschk field passed two grid resolutions, with two candidate winding curves at

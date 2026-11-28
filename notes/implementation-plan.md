@@ -3532,3 +3532,7 @@ Compiled, standard axioms: on the QA2R envelope `Region`, planar field-line spee
 
 `Contract.BandContract` (N-213) is the band form of clause C2; `GuidingCentreBand` alone is a lemma-level predicate. The definition is unchanged. An instance counts as C2 progress only if its horizon is stated against the bounce time, its excursion against the orbit width, and its support is given independently of the trapped reference population; this rule is applied at review and recorded in N-213 and in the module docstring of `Theory/Contract/BandSpec.lean`. The QA2R instance of N-216 is formal and does not meet the rule. AW-H3 is partly resolved. C2 remains open.
 
+### 28 November 2026 — Tighter constants in the QA2R orbit theorem (N-216)
+
+Without new certificates: tube-local speed 7/50 and B_φ ≤ 21/20, and the drift bounded through 2H − μ·1.039 instead of 2H (`DommaschkCylindricalDrift.norm_drift_le_strength`). The drift constant falls from 7.71·H/|q| to about 3.29·H/|q| for top-band particles, and the horizon at the illustrative electron scale rises from about 8.9 to about 20.8 R₀/v (about 3.5·10⁻⁶ s, a sixth of a half bounce; arithmetic on certified constants). The band instance uses the pitch floor 47/50 and its example horizon is 30 instead of 10. Replay and axiom audit passed at `49f0629`. The band instance still fails the acceptance rule; C2 remains open.
+
