@@ -12,10 +12,10 @@
 | Dependency requirement | The compiled single-species Littlejohn predicate `GuidingCentreBand` and its loss bound, unchanged. |
 | Produces | `BandSpec`, `BandSpec.Admissible`, `MeetsBand`, `BandContract` and their consequences; regressions for the audit findings |
 | Difficulty | routine (the definitions and regressions); research (any positive instance) |
-| Status | verified (definitions, consequences and regressions). Adopted as the band form of C2 (user decision, 29 November 2026). One formal instance exists (N-216) and does not meet the acceptance rule; an accepted instance is open. |
+| Status | verified (definitions, consequences and regressions). Adopted as the band form of C2 (user decision, 28 November 2026). One formal instance exists (N-216) and does not meet the acceptance rule; an accepted instance is open. |
 | Lean evidence | default build: `Theory/Contract/BandSpec` (`BandSpec`, `BandSpec.Admissible`, `Admissible.axis_compact`, `MeetsBand`, `BandContract`, `MeetsBand.radial_loss_le`, `MeetsBand.exists_birth`, `MeetsBand.mono_horizon`, `MeetsBand.mono_tolerance`, `not_meetsBand_const`); `Sanity/BandSpec` (`dirac_not_admissible`, `quadratic_fixture_not_admissible`, `mirror_not_meetsBand`) |
 | Audit evidence | addresses the refresh audit of 25 November 2026 (`0bec221`), AW-H3, AW-M3, AW-M4; not itself audited |
-| Last updated | 29 November 2026: adoption and acceptance rule |
+| Last updated | 28 November 2026: adoption and acceptance rule |
 | Patches | N-53 (the band-form acceptance predicate) and the C2 band-form clause of `notes/formalization/00-model-contracts.md` |
 
 ## Purpose and scope
@@ -85,7 +85,7 @@ application adds `curl B = 0` through the field's own contract.
 - `mirror_not_meetsBand`: the quadratic-mirror field of that fixture, with divergence `2x₀`,
   meets no specification, although it satisfies the unrestricted `GuidingCentreBand`.
 
-## Adoption and acceptance rule (user decision, 29 November 2026)
+## Adoption and acceptance rule (user decision, 28 November 2026)
 
 `BandContract` is the band form of clause C2. `GuidingCentreBand` on its own, and results with an existential horizon, are lemmas and not instances of the clause.
 

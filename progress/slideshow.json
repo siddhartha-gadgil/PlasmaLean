@@ -1,7 +1,7 @@
 {
- "updated": "2026-11-26",
+ "updated": "2026-11-28",
  "report": "2026-11-23-annular-confinement.md",
- "status": "Embedded C1 is proved on both vacuum examples. C2 is open: the Dommaschk first-well results are local field-line statements, and the band form of C2 now has fixed inputs with no instance yet. Operating temperature on the candidate remains open.",
+ "status": "Embedded C1 is proved on both vacuum examples. C2 is open: BandContract is adopted as its band form with an acceptance rule applied at review, and the one formal QA2R instance does not meet the rule. Operating temperature on the candidate remains open.",
  "slides": [
   {
    "id": "where-we-are",
@@ -15,7 +15,7 @@
     },
     {
      "value": "C2 open",
-     "label": "On the Dommaschk QA2R field, a local first-well certificate (phases within 2⁻¹⁹ of zero, labels 0.470–0.478) and a conditional first-exit theorem reduce the band test to an action-drift estimate for real guiding centres. These are field-line statements, verified in workstation-generated Lean modules. The band form of C2 now has fixed inputs (BandContract); no field meets it yet."
+     "label": "On the Dommaschk QA2R field, a guiding centre born in a certified tube around one field line stays over the tube and its field-line label moves at most κt; at the illustrative 10 keV electron scale the horizon is about 1.5·10⁻⁶ s, about a fifteenth of a half bounce. BandContract is adopted as the band form of C2 with an acceptance rule applied at review. One formal instance exists (short horizon, envelope-size excursion, support by construction) and does not meet the rule."
     },
     {
      "value": "c/ε²",
@@ -23,7 +23,7 @@
     }
    ],
    "progress": "For a regular annular periodic flow, shared invariant volume and a nonsingular averaged field tangent to both edges give a radial label and orbit existence and confinement through time c/ε². The next slide states the hypotheses and what remains to apply it to a stellarator.",
-   "boundary": "The Dommaschk proof controls two surfaces. A flux chart throughout the intervening volume, a guiding-centre drift bound and a thermal population meeting the band form of C2 remain open.",
+   "boundary": "The Dommaschk proof controls two surfaces. A flux chart throughout the intervening volume, a guiding-centre bound on a bounce time scale and a thermal population meeting the band form of C2 under its acceptance rule remain open.",
    "evidence": [
     {
      "label": "Embeddedness theorem and examples",
@@ -205,15 +205,15 @@
    "cards": [
     {
      "title": "Generated evidence",
-     "text": "The headline QA2R C2 results are stated by Lean modules that Python scripts generate and compile on the workstation, with axiom receipts. The 184 cited modules and their imports (43,435 modules) are now an on-demand library in the repository. A cold build passed and the axiom audit found standard axioms only.",
+     "text": "The headline QA2R C2 results are stated by Lean modules that Python scripts generate and compile on the workstation, with axiom receipts. The 184 cited modules and their imports (43,435 modules) are now an on-demand library in the repository. A cold build passed and the axiom audit found standard axioms only. After the closeout of 26 November the library has 55,818 modules, replayed from the repository with standard axioms only.",
      "status": "AW-H1, AW-H2 · resolved",
      "kind": "checked"
     },
     {
      "title": "The band clause",
-     "text": "GuidingCentreBand let the prover choose the population and horizon: a point mass with fraction one, or 'some time T > 0' from local existence, passed. N-213 adds BandSpec, Admissible, MeetsBand and BandContract: an absolutely continuous birth law, fixed horizon, excursion and fraction, and a C² divergence-free field.",
-     "status": "AW-H3 · fixed in Lean",
-     "kind": "checked"
+     "text": "GuidingCentreBand let the prover choose the population and horizon: a point mass with fraction one, or 'some time T > 0' from local existence, passed. N-213 adds BandSpec, Admissible, MeetsBand and BandContract: an absolutely continuous birth law, fixed horizon, excursion and fraction, and a C² divergence-free field. On 28 November 2026 BandContract was adopted as the band form of C2. The definition still leaves the description of the support, the length of the horizon and the size of the excursion to the specification, so an acceptance rule is applied at review.",
+     "status": "AW-H3 · partly resolved",
+     "kind": "partial"
     },
     {
      "title": "Regressions",
@@ -228,7 +228,7 @@
      "kind": "checked"
     }
    ],
-   "progress": "C2 is unchanged: open. Its target is now explicit: prove MeetsBand for an admissible specification, which for QA2R needs a horizon bound independent of the excursion cap (the action-drift estimate).",
+   "progress": "C2 remains open. BandContract is its band form (adopted 28 November 2026). An instance counts as progress only if its horizon is stated against the bounce time, its excursion against the orbit width, and its support is fixed independently of the reference population. The one formal instance, on the QA2R tube, does not meet this rule.",
    "boundary": "An audit checks that statements say what is claimed. It does not validate the physical models, and the generated modules were recompiled only afterwards, in the replay of 25 November.",
    "evidence": [
     {
@@ -236,7 +236,73 @@
      "href": "progress.html#refresh-audit-and-the-band-form-of-c2-25-november-2026"
     },
     {
+     "label": "Adoption and acceptance rule",
+     "href": "progress.html#band-form-of-c2-adopted-with-an-acceptance-rule-28-november-2026"
+    },
+    {
      "label": "Implementation plan (audit status)",
+     "href": "implementation-plan.html"
+    }
+   ]
+  },
+  {
+   "id": "wide-tube-orbit",
+   "eyebrow": "Guiding centres on the QA2R field · 26 to 28 November 2026",
+   "title": "A guiding centre born in a certified tube stays over it, for a short stated time.",
+   "lead": "The first-well sector certified earlier cannot carry a thermal band claim: a numerical screen (untrusted) shows a 10 keV guiding centre leaving its phase window in about 5·10⁻¹⁰ s. A wider tube around the label-0.474 field line, certified slab by slab, now carries a Lipschitz field-line label and an orbit theorem with explicit constants.",
+   "metrics": [
+    {
+     "value": "332 slabs",
+     "label": "forward slabs of 1/64 radian with two-sided Jacobian bounds, joined into one chain; the tube label uses the first 224 and the phase-zero reflection"
+    },
+    {
+     "value": "about 1.5·10⁻⁶ s",
+     "label": "horizon of the orbit theorem at the illustrative scale (10 keV electron, 5 T, 10 m; not a project decision): about a fifteenth of a half bounce. Arithmetic on the certified constants, not a Lean theorem"
+    },
+    {
+     "value": "11,323",
+     "label": "modules of the on-demand library QA2RWide; replay and axiom audit passed, standard axioms only"
+    }
+   ],
+   "cards": [
+    {
+     "title": "The tube and its label",
+     "text": "On toroidal angles (−3.5, 3.5), field lines from the inner tube reach the section, are unique, and are at most about 1.95 times further apart there. Certified on the tube: ‖∇|B|‖ ≤ 11/8, |B| ≥ 1.039, planar speed ≤ 7/50; on the envelope: speed ≤ 9/25 and 0.94 ≤ |B| ≤ 1.41. The reference line and frames are numerical proposals; the certificates are checked by Lean.",
+     "status": "Generated Lean, on demand",
+     "kind": "checked"
+    },
+    {
+     "title": "Orbit theorem",
+     "text": "exists_orbit_stays_in_tube: a Littlejohn guiding centre born in the tube has an orbit on [0, T], stays over the tube, and its field-line label moves at most κt, with κ ≥ 3.86·2H/|q| and explicit side conditions on the birth label, the horizon and the toroidal angle. Orbit existence is proved, not assumed.",
+     "status": "Lean verified · one tube, short horizon",
+     "kind": "checked"
+    },
+    {
+     "title": "A formal band instance",
+     "text": "band_contract proves a BandContract for the QA2R field. Caveats: the support is defined through the reference population, so the fraction 1 holds by construction; the excursion 1/8 is the envelope size; the horizon is about a tenth of a half bounce; lengths and field are in model units.",
+     "status": "Formal instance · not C2 progress",
+     "kind": "partial"
+    },
+    {
+     "title": "Adoption and acceptance rule",
+     "text": "BandContract is the band form of C2 (user decision, 28 November 2026). At review an instance must state its horizon against the bounce time and its excursion against the orbit width, and fix its support independently of the reference population. The QA2R instance does not meet the rule.",
+     "status": "C2 remains open",
+     "kind": "next"
+    }
+   ],
+   "progress": "General theorems compiled in the default build: the label drift of a Littlejohn orbit (N-214), the drift bound for Lipschitz labels (N-215), a flow label on lifted cylindrical coordinates, a continuation theorem and the cylindrical lift of a guiding-centre orbit (N-216). The orbit theorem is the first compiled confinement statement for guiding centres of this field with physical constants.",
+   "boundary": "One tube around one field line, in the static Littlejohn model of the vacuum field. No population statement beyond the formal instance, and nothing beyond about 1.5·10⁻⁶ s at the illustrative scale. The 332 slab proofs were rebuilt cold from the repository archive; later replays are incremental. The work has not been audited.",
+   "evidence": [
+    {
+     "label": "Wide-tube campaign (progress report)",
+     "href": "progress.html#label-drift-and-the-wide-tube-campaign-26-to-28-november-2026"
+    },
+    {
+     "label": "Adoption and acceptance rule",
+     "href": "progress.html#band-form-of-c2-adopted-with-an-acceptance-rule-28-november-2026"
+    },
+    {
+     "label": "Implementation plan",
      "href": "implementation-plan.html"
     }
    ]
@@ -255,7 +321,7 @@
     },
     {
      "title": "C2 · omnigeneity for thermal particles",
-     "text": "All eight endpoints have signed physical traces on one pair of nested Q-16 tori. Each reaches at least ±5/64 radian, and the u=0.478 trace stays submirror through ±2.5 radians with a margin greater than 1/270000. Its 317 incoming tubes per direction have checked submirror signs. The two physical phase-zero lines meet the field and arclength comparisons throughout ±5/16 radian. At u=0.470 a single field line covers all 782 signed slabs with position error below 3.327 × 10⁻⁶. Each admitted birth is a regular arclength mirror birth throughout the closed archive height band. The outward first mirror positions vary Lipschitz-continuously. Dimensionless one-way time is between 54.98668 and 264 on the whole band and above 57.80606 at the upper height. The height derivative of action is the one-way time. Upper-height action lies between 0.2765 and 1.357791, below the specified target. Certified angle-height area at fixed radius is 1.972 × 10⁻⁹. The regular birth set has positive 4D volume. For any positive excursion cap, open sets of births of both signs obey it on a common positive local time. Numerical time and fraction bounds and the bounce-averaged radial drift remain open.",
+     "text": "All eight endpoints have signed physical traces on one pair of nested Q-16 tori. Each reaches at least ±5/64 radian, and the u=0.478 trace stays submirror through ±2.5 radians with a margin greater than 1/270000. Its 317 incoming tubes per direction have checked submirror signs. The two physical phase-zero lines meet the field and arclength comparisons throughout ±5/16 radian. At u=0.470 a single field line covers all 782 signed slabs with position error below 3.327 × 10⁻⁶. Each admitted birth is a regular arclength mirror birth throughout the closed archive height band. The outward first mirror positions vary Lipschitz-continuously. Dimensionless one-way time is between 54.98668 and 264 on the whole band and above 57.80606 at the upper height. The height derivative of action is the one-way time. Upper-height action lies between 0.2765 and 1.357791, below the specified target. Certified angle-height area at fixed radius is 1.972 × 10⁻⁹. The regular birth set has positive 4D volume. For any positive excursion cap, open sets of births of both signs obey it on a common positive local time. Numerical time and fraction bounds and the bounce-averaged radial drift remain open. Since 28 November a guiding centre born in a certified tube around the label-0.474 line is proved to stay over the tube for a short stated time (about a fifteenth of a half bounce at the illustrative electron scale). A formal BandContract instance exists there and does not meet the acceptance rule.",
      "status": "Regular first mirrors throughout the pilot height band; thermal C2 open",
      "kind": "partial"
     },
@@ -1902,7 +1968,7 @@
    "id": "next-run",
    "eyebrow": "39 · Keep every step reviewable",
    "title": "The next run must leave evidence, not just a promise.",
-   "lead": "C2 needs a field meeting an admissible band specification: a horizon bound for Dommaschk guiding centres independent of the excursion cap, phase coverage of the first wells and a thermal birth population. Two decisions are pending: whether to commit the generated certificate modules, and the physical values of the band inputs. A current-free finite-pressure equilibrium and a thermal loss estimate for the same candidate remain open.",
+   "lead": "C2 needs a BandContract instance that meets the acceptance rule: a support fixed in elementary terms, an excursion on the scale of the orbit width, and for QA2R a horizon of at least a bounce, which the direct drift bound cannot give. A device scale for the band inputs has not been fixed. A current-free finite-pressure equilibrium and a thermal loss estimate for the same candidate remain open.",
    "cards": [
     {
      "title": "Implement & challenge",

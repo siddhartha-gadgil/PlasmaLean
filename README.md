@@ -38,11 +38,13 @@ Heavy numerics and large certificate builds can be offloaded to a workstation; s
 
 ## Progress
 
+**Guiding centres on a certified QA2R tube (26 to 28 November, N-214 to N-216).** The first-well sector certified earlier cannot carry a thermal band claim: a numerical screen (untrusted) shows a 10 keV guiding centre leaving its phase window in about 5·10⁻¹⁰ s. A wider tube around the label-0.474 field line is now certified in the on-demand library `QA2RWide`: 332 forward slabs with two-sided Jacobian bounds, and a Lipschitz field-line label on toroidal angles (−3.5, 3.5). On it Lean proves that a Littlejohn guiding centre born in the tube has an orbit on [0, T], stays over the tube and moves its field-line label at most κt, with κ ≥ 3.86·2H/|q| (`DommaschkWideTubeRows000Orbit.exists_orbit_stays_in_tube`). At the illustrative scale of a 10 keV electron, 5 T and 10 m (not a project decision) the horizon is about 1.5·10⁻⁶ s, about a fifteenth of a half bounce. This is the first compiled confinement statement for guiding centres of this field with physical constants. It covers one tube and a short time, and gives no population statement beyond the formal band instance described below. [Wide-tube campaign](notes/theory/wide-tube-label-campaign.md) · [Progress report](progress/2026-11-23-annular-confinement.md)
+
 **25 November.** [Current C1–C5 assessment and the physical drift bound needed for C2](notes/theory/stellarator-conditions-after-sector-closure.md).
 
-**Band form of C2 with fixed inputs (25 November, N-213).** After the audit, the band form of C2 is `BandContract s B`. A specification `s` fixes the birth law (absolutely continuous), the support, the axis, the horizon, the excursion and the required fraction before any proof, all symbolic. The claim `MeetsBand s B` also requires a `C²` divergence-free field on a region containing every orbit. Point-mass populations, existential horizons and non-Maxwell fields no longer count. No field meets the clause yet, so **C2 remains open**. [Patch note](notes/theory/band-form-fixed-inputs.md) · [Audit record](notes/audit/2026-11-25-refresh-audit.md)
+**Band form of C2 with fixed inputs (25 November, N-213).** After the audit, the band form of C2 is `BandContract s B`. A specification `s` fixes the birth law (absolutely continuous), the support, the axis, the horizon, the excursion and the required fraction before any proof, all symbolic. The claim `MeetsBand s B` also requires a `C²` divergence-free field on a region containing every orbit. Point-mass populations, existential horizons and non-Maxwell fields no longer count. On 28 November 2026 `BandContract` was adopted as the band form of C2 (user decision), with an acceptance rule applied at review: the horizon is stated against the bounce time, the excursion against the orbit width, and the support is fixed independently of the reference population. One formal instance exists, on the QA2R tube (N-216); it does not meet the rule, so **C2 remains open**. [Patch note](notes/theory/band-form-fixed-inputs.md) · [Audit record](notes/audit/2026-11-25-refresh-audit.md)
 
-**Evidence status (audit of 25 November 2026).** Below, "physical" and "actual" mean true solutions of the vacuum field-line ODE in dimensionless units, not particles or SI quantities. Many of the QA2R statements below (the full signed trace, the flight-time bounds, the full-period collar, the connected first-well actions) are stated by Lean modules that scripts in `scripts/dommaschk_kam/` generated. These modules are now in the repository as the on-demand library `QA2RGenerated` ([sources and replay](generated/qa2r/README.md)): 43,435 modules in the 25 November replay, built with `lake build` on the workstation and checked for standard axioms by `scripts/check_axioms_qa2r.lean`. They are not part of the default build. [Audit record](notes/audit/2026-11-25-refresh-audit.md) The opposite-inner campaign subsequently completed all 640 signed ODE rows and 15,360 action panels at radial label 0.470 near the quarter turn. [Campaign closeout and receipts](generated/qa2r/README.md#opposite-inner-campaign-closeout-26-november-2026)
+**Evidence status (audit of 25 November 2026).** Below, "physical" and "actual" mean true solutions of the vacuum field-line ODE in dimensionless units, not particles or SI quantities. Many of the QA2R statements below (the full signed trace, the flight-time bounds, the full-period collar, the connected first-well actions) are stated by Lean modules that scripts in `scripts/dommaschk_kam/` generated. These modules are now in the repository as the on-demand library `QA2RGenerated` ([sources and replay](generated/qa2r/README.md)): 43,435 modules in the 25 November replay, built with `lake build` on the workstation and checked for standard axioms by `scripts/check_axioms_qa2r.lean`. They are not part of the default build. After the opposite-inner closeout of 26 November the library has 55,818 modules, replayed with standard axioms only (`python3 scripts/qa2r/replay.py`). The wide-tube results of 27 to 28 November are in a second on-demand library, `QA2RWide` (11,323 modules in `generated/qa2r_wide/`; `python3 scripts/qa2r_wide/replay.py`): its 332 slab proofs were rebuilt cold from the repository archive, later replays are incremental, and the axiom audit found standard axioms only. [Audit record](notes/audit/2026-11-25-refresh-audit.md) The opposite-inner campaign subsequently completed all 640 signed ODE rows and 15,360 action panels at radial label 0.470 near the quarter turn. [Campaign closeout and receipts](generated/qa2r/README.md#opposite-inner-campaign-closeout-26-november-2026)
 
 **Physical first mirrors.** At the QA2R phase-zero launch with radial interpolation parameter 0.470, every admitted original birth lies on a signed physical field line across **782 slabs**. Its position stays within **3.327 × 10⁻⁶** of the indexed reference throughout [−391/64, 391/64] radians. In each outward direction the first lower-height mirror lies between 316/64 and 317/64 and the first upper-height mirror between 324/64 and 325/64. The first mirrors move Lipschitz-continuously over the closed height band. [Full signed trace](notes/theory/full-signed-pilot-birth.md) · [Continuous height band](notes/theory/dommaschk-mirror-height-band.md)
 
@@ -110,12 +112,19 @@ and operating temperature remain open for that candidate.
     approved band form is the Lean predicate `BandContract` (a specification fixed before the proof,
     and the claim `GuidingCentreBand` with those inputs), for one Littlejohn species.
     It specifies the trapped birth population, its covered fraction, radial excursion and physical time.
-    A quadratic mirror realizes the band predicate for a point-mass birth law. Establishing
-    it for thermal populations on the candidate remains open. [Band test](notes/theory/hamiltonian-bounce-band-test.md)
+    A quadratic mirror realizes the earlier predicate `GuidingCentreBand` for a point-mass birth
+    law; `BandContract` rejects that fixture. Establishing the clause for thermal populations on
+    the candidate remains open. [Band test](notes/theory/hamiltonian-bounce-band-test.md)
+    `BandContract` was adopted as the band form on 28 November 2026 with an acceptance rule applied
+    at review (horizon against the bounce time, excursion against the orbit width, support fixed
+    independently of the reference population). [N-213](notes/theory/band-form-fixed-inputs.md)
     A formal band instance now holds for the QA2R field on a certified tube around one field line,
     with a horizon of about a tenth of a half bounce, an envelope-size excursion and a support
-    defined through the reference population; these caveats keep the clause open as a design
-    claim. [Wide-tube campaign](notes/theory/wide-tube-label-campaign.md)
+    defined through the reference population; the instance does not meet the acceptance rule, and
+    these caveats keep the clause open as a design
+    claim. On the same tube an orbit theorem with explicit constants holds for single guiding
+    centres (label motion at most κt for about 1.5·10⁻⁶ s at the illustrative electron scale).
+    [Wide-tube campaign](notes/theory/wide-tube-label-campaign.md)
   - A numerical screen found a change of mirror well at mid-depth. A deeper family on the
     same Dommaschk field passed two grid resolutions, with two candidate winding curves at
     one scaled action. An outward-rounded continuum check encloses the whole launch strip and every field line for ±1/8 toroidal radian. A centred calculation reaches both simple mirrors on a smaller cell and brackets a unique mirror height at the target action. Full-circle drift and physical-time bounds remain open. [Full-strip enclosure](notes/theory/dommaschk-launch-collar.md) · [Local mirrors and action](notes/theory/dommaschk-regular-mirror-cell.md)
@@ -134,6 +143,8 @@ and operating temperature remain open for that candidate.
     these are now the on-demand library `QA2RGenerated`, rebuilt and axiom-checked from the
     repository (`python3 scripts/qa2r/replay.py`). The band form of C2 can be met by a point-mass population and
     an existential horizon, so its current instances carry no confinement content (AW-H3).
+    AW-H3 is partly resolved since 28 November 2026: `BandContract` is adopted with the acceptance
+    rule above, the Lean definition is not strengthened yet, and no instance meets the rule.
   - **The bridge:** in the Boozer guiding-centre model, quasisymmetry implies omnigeneity, exactly
     and with a per-bounce defect bound (`omnigenousOn_of_exactQS`, `approxOmnigenousOn_of_defect_le`).
     The `exactQA`/`reactorQA` results are statements about a supplied Boozer model.
@@ -152,7 +163,9 @@ and operating temperature remain open for that candidate.
   proved obstructions at measured confinement factors.
 
 The next priorities (choices for the maintainer):
-- C2 for the actual field: an approximate Boozer chart with a certified defect, or another route;
+- C2 for the actual field: a band instance meeting the acceptance rule (for QA2R a horizon of at
+  least a bounce, which the direct drift bound cannot give), an approximate Boozer chart with a
+  certified defect, or another route;
 - ε_eff in Lean;
 - a current-free finite-β equilibrium near the certified vacuum tori.
 

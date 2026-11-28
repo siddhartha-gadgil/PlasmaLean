@@ -33,7 +33,7 @@ The prover chooses only the region, the covered births and the attained fraction
 statements of the form "for each excursion there is some positive horizon" does not give
 `BandContract` for a specification whose horizon is fixed in advance.
 
-**Contract status (user decision, 29 November 2026).** `BandContract` is adopted as the band form
+**Contract status (user decision, 28 November 2026).** `BandContract` is adopted as the band form
 of clause C2; `GuidingCentreBand` alone is a lemma-level predicate. The definition does not
 constrain how the support is described, how long the horizon is or how large the excursion is.
 An instance therefore counts as progress on C2 only if its specification states the horizon

@@ -95,6 +95,7 @@ Guidance on choosing and stating goals is in [notes/goals/method.md](../notes/go
 | `PlasmaLean/Bridge/` | Theorems connecting abstract theory and finite certificates to domain claims, with a common witness |
 | `PlasmaLean/Certificates/` | Exact checkers, enclosures and certified data; external solvers stay untrusted |
 | `PlasmaLean/Design/` | Concrete candidates (rational stellarator field, Dommaschk field, coils, equilibria) composed from the verified layers |
+| `generated/` | Script-generated certificate modules stored as compressed archives, outside the default build: the on-demand libraries `QA2RGenerated` (`generated/qa2r/`, replay with `python3 scripts/qa2r/replay.py`) and `QA2RWide` (`generated/qa2r_wide/`, replay with `python3 scripts/qa2r_wide/replay.py`). A replay checks hashes, builds with `lake` and runs an axiom audit; both libraries have been replayed on the workstation only |
 | `scripts/` | Setup, axiom audits, oracles and generators (untrusted, exact validation before emitting Lean), the workstation pipeline, website generation |
 | `progress/`, `docs/` | Dated reports, the slideshow and the generated website |
 | `.agents/skills/` | Agent skills (`.claude` is a symlink to `.agents`) |

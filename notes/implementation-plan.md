@@ -485,7 +485,7 @@ documents. Six independent read-only sub-audits; record
 - **AW-H2 (high, resolved 25 November):** `python3 scripts/qa2r/replay.py` replays these results
   from the repository (hashes, build, axiom audit) without `/tmp` inputs. Regenerating the sources
   from the numerical inputs is not covered; the generators stay untrusted.
-- **AW-H3 (high, partly resolved; contract decision taken 29 November 2026):** `GuidingCentreBand`
+- **AW-H3 (high, partly resolved; contract decision taken 28 November 2026):** `GuidingCentreBand`
   admits a point-mass population and an existential horizon. `BandContract` (N-213) is now adopted
   as the band form of C2, with an acceptance rule applied at review: horizon against the bounce
   time, excursion against the orbit width, support fixed independently of the reference
@@ -670,7 +670,7 @@ with C1–C5), the critical path is now:
    Boozer-chart form (`OmnigeneityContract`) or in the band form: for stated species, energy
    and pitch ranges and a stated birth band of phase space, orbits stay within a stated radial
    range through a stated time (the N-51 form). A band-form claim must state its band, species,
-   time and model, and is weaker than omnigeneity; the Lean predicate is `GuidingCentreBand` in the static Littlejohn model (G-11).
+   time and model, and is weaker than omnigeneity; the Lean predicate is `GuidingCentreBand` in the static Littlejohn model (G-11). *Pointer, 28 November 2026:* the band form is now `BandContract` (N-213), adopted with an acceptance rule applied at review; `GuidingCentreBand` alone is a lemma-level predicate. One formal instance exists on a QA2R tube (N-216) and does not meet the rule; C2 remains open.
 3. **Finite β (Q-20), in parallel with the bounce screen.** N-55 excludes the strict Q-31 pressure-step criterion on torus A. An external enclosure gives the same obstruction on C. Screen a different interface or bound the full quadratic energy, allowing a mixed-sign curvature term. Defer sheet-current and transform estimates for a pressure step until the proposed construction can pass its own sign test. The cylinder benchmark Q-30(a) supplies a period-uniform mode gap under explicit multiplier bounds. Its curved-domain analogue Q-30(b) remains open.
 4. **Lean-ready items already in the registry:** Q-29 (a)–(b), Q-27 (a), Q-26, Q-28 (a). They are
    cheap and feed 2 and C5.
@@ -3520,15 +3520,15 @@ Compiled, standard axioms: on the QA2R envelope `Region`, planar field-line spee
 
 `DommaschkWideTubeRows000Orbit.stays_in_tube` (library `QA2RWide`, 11,322 modules; replay and axiom audit passed at `da3f8e4`): a Littlejohn orbit of the QA2R field born over the inner tube around the label-0.474 line, with label within r of the reference point, stays over the tube on [0, T] and its field-line label moves at most κt, where κ ≥ 3.86·2H/|q|, r + κT ≤ 2.3·10⁻⁴ and an explicit angle condition holds. Certified on the tube: ‖∇|B|‖ ≤ 11/8, |B| ≥ 1.039 (`DommaschkWideTubeRows000Field`). At the illustrative electron scale the horizon is about 1.5·10⁻⁶ s. The orbit's existence is a hypothesis and there is no population statement, so C2 remains open; this is the first compiled confinement statement for guiding centres of this field with physical constants.
 
-### 29 November 2026 — Orbit existence on the QA2R tube (N-216 stage 4)
+### 28 November 2026 — Orbit existence on the QA2R tube (N-216 stage 4)
 
 `DommaschkWideTubeRows000Orbit.exists_orbit_stays_in_tube`: under the side conditions of the orbit theorem, and with no assumption that an orbit exists, a Littlejohn orbit of the QA2R field exists on [0, T], stays over the tube and its label moves at most κt. Generic part: `Design.DommaschkTubeOrbit` (uses the existing `ODEGlobal.exists_forward_of_apriori`). Replay and axiom audit passed at `6190258`. Still no population statement; C2 remains open.
 
-### 29 November 2026 — Formal band-form instance of C2 for QA2R, with caveats (N-216 stage 5)
+### 28 November 2026 — Formal band-form instance of C2 for QA2R, with caveats (N-216 stage 5)
 
 `DommaschkWideTubeRows000Band.band_contract` (library `QA2RWide`, 11,323 modules; replay and audit passed at `3153d3b`): `BandContract (spec m q ν e₁ e₂ T) B` for the QA2R field, for symbolic species and energy window, pitch μ/E > 9/10, the circle R = 15/16 as axis, excursion 1/8, fraction 1, and any horizon with κT ≤ 10⁻⁴ and two further explicit inequalities; with a concrete birth law (`band_contract_restrict`) and satisfiable inputs (`band_contract_example`). Caveats recorded in N-216: the support is the interior of the reference population of good births, so fraction 1 holds by construction (AW-H3 only partly addressed); the excursion is the envelope size; the horizon is of the order of 10⁻⁶ s at the illustrative electron scale; model units. The research target of C2 remains open.
 
-### 29 November 2026 — `BandContract` adopted as the band form of C2 (user decision)
+### 28 November 2026 — `BandContract` adopted as the band form of C2 (user decision)
 
 `Contract.BandContract` (N-213) is the band form of clause C2; `GuidingCentreBand` alone is a lemma-level predicate. The definition is unchanged. An instance counts as C2 progress only if its horizon is stated against the bounce time, its excursion against the orbit width, and its support is given independently of the trapped reference population; this rule is applied at review and recorded in N-213 and in the module docstring of `Theory/Contract/BandSpec.lean`. The QA2R instance of N-216 is formal and does not meet the rule. AW-H3 is partly resolved. C2 remains open.
 

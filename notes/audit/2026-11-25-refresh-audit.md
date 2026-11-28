@@ -95,7 +95,7 @@ C2 progress. Related: the clause puts no Maxwell or regularity condition on `B` 
 totalised `fderiv` (AW-M3); `axis` may be any compact set (AW-M4).
 `quadratic_guidingCentreBand` is the compiled regression for this finding.
 
-*Addendum, 29 November 2026 (not an audit).* A `BandContract` instance for the QA2R field was proved at the user's request (`DommaschkWideTubeRows000Band.band_contract`, N-216 stage 5). Its horizon is an input bounded by an explicit inequality (not `∃ T > 0` from local existence), the birth law must be absolutely continuous, the field is Maxwell-regular on the region and the axis is a curve. It does not remove this finding: the support is defined as the interior of the reference population of good births, so the fraction 1 holds by construction, the excursion is the envelope size, and the horizon is about a tenth of a half bounce. The instance has not been audited.
+*Addendum, 28 November 2026 (not an audit).* A `BandContract` instance for the QA2R field was proved at the user's request (`DommaschkWideTubeRows000Band.band_contract`, N-216 stage 5). Its horizon is an input bounded by an explicit inequality (not `∃ T > 0` from local existence), the birth law must be absolutely continuous, the field is Maxwell-regular on the region and the axis is a curve. It does not remove this finding: the support is defined as the interior of the reference population of good births, so the fraction 1 holds by construction, the excursion is the envelope size, and the horizon is about a tenth of a half bounce. The instance has not been audited.
 *Action:* treat every band-form instance with an existential horizon as not establishing C2
 (recorded in the plan); strengthening the clause is a contract change (user decision).
 
@@ -234,6 +234,6 @@ not pin the poloidal angle), AV-M9, AV-M11, AV-L3, AV-L6 remain open; AV-M4 part
 1. *(Decided 25 November 2026: commit, as compressed archives; done, see AW-H1.)* Commit the final-layer generated Lean sources (at least the headline modules and their
    parents) to an on-demand directory with an opt-in axiom audit, or keep them workstation-only
    with labelled claims (AW-H1, AW-H2).
-2. *(Decided 29 November 2026: `BandContract` of N-213 is adopted as the band form of C2, with an acceptance rule applied at review; the Lean definition is not strengthened yet. AW-H3 partly resolved.)* Strengthen `GuidingCentreBand` with fixed inputs (horizon floor, absolutely continuous or
+2. *(Decided 28 November 2026: `BandContract` of N-213 is adopted as the band form of C2, with an acceptance rule applied at review; the Lean definition is not strengthened yet. AW-H3 partly resolved.)* Strengthen `GuidingCentreBand` with fixed inputs (horizon floor, absolutely continuous or
    thermal birth density, fixed support with nonempty interior, fraction floor, Maxwell and
    regularity of `B`, axis as a curve) (AW-H3, AW-M3, AW-M4).

@@ -43,4 +43,5 @@ Two independent ground builds produced content key `fc830215eaf15b2cf2c1c42ceaf4
 | Difficulty | Joint regularity in the physical moment, uniform time across an open neighborhood and uniqueness for every competing partial trajectory. |
 | Status | Verified and independently replayed ground theorem. |
 | Lean evidence | `LocalFlowDisplacement.common_window`, `.agree_from_start`, `VacuumLittlejohnWindow.exists_control`, `.Control.radial`, `.guidingCentreBand`, `DommaschkCommonLittlejohnTime.UniformAt.band`, `DommaschkCommonLittlejohn325.from_birth`, `.common_positive_mass`. |
-| Last updated | 25 November 2026 |
+| Last updated | 25 November 2026 (28 November 2026: pointer row added below; the note is otherwise unchanged) |
+| Patched by / Alternatives | [N-213](band-form-fixed-inputs.md): `BandContract` is the band form of C2 (adopted 28 November 2026); the `GuidingCentreBand` conclusion of this note has an existential horizon and is a lemma, not an instance of the clause. [N-216](wide-tube-label-campaign.md): an orbit theorem with explicit constants on a wider QA2R tube. |
