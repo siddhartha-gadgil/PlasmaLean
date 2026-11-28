@@ -14,7 +14,7 @@
 | Dependency requirement | The Lipschitz-label drift theorem (compiled); the moving-frame slab format and its soundness theorem; the campaign receipts for cost data. |
 | Produces | Feasibility numbers, the target population, the certificate design and the stage list. |
 | Difficulty | Hard. Stages 2 and 3 need new Lean theory (a flow label on a tube) and a new slab certificate with a lower logarithmic-norm bound on wide balls. |
-| Status | Stages 1 and 2a done. Stage 3 forward: **all 332 slabs compiled** at radius 3·10⁻⁴ and joined into one chain from slab 0 (direct `lean` compile, then rebuilt under `lake` from the repository archive at commit `880c2fe` and audited on 28 November 2026: 11,290 modules, 605,245 declarations, standard axioms only; `generated/qa2r_wide/replay-report.json`). Stage 2b: compiled on 28 November 2026 up to the two-sided tube structure for QA2R on toroidal angles (−3.5, 3.5) (`DommaschkWideTubeRows000Tube.tube`, `isOpen_region`), Stage 4: done on 28 November 2026 (`DommaschkWideTubeRows000Orbit.stays_in_tube`: a QA2R guiding centre born in the tube stays there and its label moves at most κt, for about 1.5·10⁻⁶ s at the illustrative electron scale). Stage 5 (band statement) not done. |
+| Status | Stages 1 and 2a done. Stage 3 forward: **all 332 slabs compiled** at radius 3·10⁻⁴ and joined into one chain from slab 0 (direct `lean` compile, then rebuilt under `lake` from the repository archive at commit `880c2fe` and audited on 28 November 2026: 11,290 modules, 605,245 declarations, standard axioms only; `generated/qa2r_wide/replay-report.json`). Stage 2b: compiled on 28 November 2026 up to the two-sided tube structure for QA2R on toroidal angles (−3.5, 3.5) (`DommaschkWideTubeRows000Tube.tube`, `isOpen_region`), Stage 4: done on 28 November 2026 (`DommaschkWideTubeRows000Orbit.stays_in_tube`: a QA2R guiding centre born in the tube stays there and its label moves at most κt, for about 1.5·10⁻⁶ s at the illustrative electron scale). Stage 5: a formal `BandContract` instance was proved on 29 November 2026 with recorded caveats (support defined through the reference, envelope-size excursion, horizon about 10⁻⁶ s). |
 | Lean evidence | Stage 2a: `PlasmaLean/Theory/Fields/BackwardDistance.lean` (default build): `LowerOneSidedOn`, `lowerOneSidedOn_of_jacobian`, `norm_sub_le_exp_mul_of_lower`, `norm_sub_le_exp_sum_mul_of_lower` (chain over slabs), sharpness example `norm_exp_smul_sub_zero_eq`. Standard axioms only. Stage 3, field-independent parts (on demand, in `scripts/check_axioms_heavy.lean`): `PositionFrameWideChain.Steps.trajectory` (a chain over `PositionFrameWide.valid`, no small-radius limits) and `DommaschkJacobianLower.spatial_log_norm_lower_of_bounds`, `spatial_log_norm_abs_of_bounds` (lower and two-sided bounds from the same trace and disk data). Mean-value step (default build): `FrameJacobianVariation.abs_quad_sub_le`, `abs_quad_le_of_center`, `directional_bound_of_basis`. Field-specific second derivatives (on demand): `DommaschkJacobianSecond.secondEntry`, `entry_derivative`, `velocityHessian`, `jacobian_derivative`, `abs_quad_le_of_center`, `abs_quad_le_of_central_bounds` (forward clock only). |
 | Audit evidence | Not audited. Numerics: `scripts/dommaschk_kam/screen_wide_tube.py`, `scripts/dommaschk_kam/results/wide_tube_20261127.json`. |
 | Last updated | 29 November 2026 |
@@ -141,9 +141,37 @@ Certified inputs added for this (sub-agents; checked by the coordinator): on the
 
 **Not proved:** any statement about a population; anything beyond 1.5·10⁻⁶ s; the regular-mirror property of these births. The reference line and frames remain numerical proposals, but the theorem does not depend on their accuracy beyond what the certificates check.
 
-**On stage 5.** The band form measures the change of distance to a reference axis. Along the tube the field line's own distance to any fixed circle varies by a few hundredths of R₀ over the angles covered, so the excursion of a band instance will be of that size, far above the tube radius. The label statement (the guiding centre stays within the tube around its field line) is the sharper result and will be stated separately.
+## Stage 5: a formal band-form instance, 29 November 2026 (compiled Lean, standard axioms)
 
-**Scoping numbers for stage 4 (untrusted, `scripts/qa2r_wide/scope_label.py`).** On the trial tube: R between 0.877 and 0.9955, |z| ≤ 0.0776, |B| between 1.0438 and 1.0604, ‖∇|B|‖ ≤ 1.35, ‖∇|B|‖/|B|² ≤ 1.22, planar field-line speed ≤ 0.136, ‖M⁻¹‖ ≤ 1.86 (1.54 on the first 220 slabs). With the crude drift bound of N-215 (twice the trapped-particle value) the label moves by about 2.6 ε per R₀/v, so a section ball of radius about 2.3·10⁻⁴ holds the illustrative electron for about 13 R₀/v, about 2·10⁻⁶ s, not the 10⁻⁵ s estimated above. In that time the orbit covers at most about 2 radians of toroidal angle if the parallel speed is bounded through a certified lower bound |B| ≥ 1.04 on the tube and the pitch window, so the first 140 to 220 slabs suffice. Stage 4 therefore also needs certified bounds on |B|, ∇|B| and the planar speed on the tube; none exists yet for this field.
+Done at the user's request, with the caveats below. Generic part `Design/DommaschkTubeBand.lean` (on demand); instance `DommaschkWideTubeRows000Band` in the generated library (it also imports `CommonLittlejohnCache` of `QA2RGenerated` for the regular mirror births). Written by a sub-agent; statements, axioms and the build checked by the coordinator. Replay and audit passed at `3153d3b` (11,323 modules).
+
+**`band_contract`.** For inputs satisfying `Inputs m q e₂ T vp` and any birth law ν that is absolutely continuous, finite and nonzero on the support, `BandContract (spec m q ν e₁ e₂ T) B` holds for the QA2R field, where the specification is:
+
+| Input | Value |
+| --- | --- |
+| Species | m > 0, q ≠ 0, symbolic |
+| Energy window | the open interval (e₁, e₂) |
+| Pitch window | μ/E > 9/10 |
+| Axis | the circle R = 15/16, z = 0 |
+| Horizon | T > 0 |
+| Excursion | 1/8 |
+| Required fraction | 1 |
+| Support | the interior of the trapped reference population among the "good" births: position within toroidal angle 1/4 of the section and over the inner tube, label within 10⁻⁴ of the reference point, 0 < E < e₂, μ > 0.9 E |
+
+`Inputs` consists of three inequalities between the inputs: κ·T ≤ 10⁻⁴ with κ = `labelConstant`·1.36·(8/7)·(2e₂/(|q|·1.039²))·(11/8); m·vp² ≥ 2e₂(1 − 0.9·1.039); and (vp/1.039·(13/10)/(7/8) + κ/(1.36·`labelConstant`))·T ≤ 3.
+
+Further theorems: `exists_seed` (the lifts of the original launch point, at every energy of the window, every height of the top mirror band and both signs, lie in the support; that point is within 5·10⁻⁵ of the tube's start point, `launch_near`), `band_contract_restrict` (a concrete birth law: volume restricted to a unit ball around a support point), `inputs_example` and `band_contract_example` (the inputs are satisfiable: m = q = 1, e₂ = 10⁻⁶, T = 10 in model units).
+
+**Caveats.**
+
+1. **The support is defined through the reference population.** It is the interior of the set of trapped births that are good, so every support point is in the reference and the fraction 1 holds by construction. The specification does not fix a support in elementary terms before the proof; this is the weakness named in audit finding AW-H3, addressed only in part. What is explicit: the support is open, nonempty, and contains the stated seed births.
+2. **The excursion 1/8 is the size of the envelope cross-section** around the circle R = 15/16, not a tube-scale bound. It says the guiding centre stays over the envelope. The sharper content is the label statement of stage 4, which is not expressible in the band form.
+3. **The horizon is short.** κT ≤ 10⁻⁴ gives T ≤ about 13 in the example's units; at the illustrative electron scale this is about a tenth of a half bounce, of the order of 10⁻⁶ s. A family of such statements does not give a band claim on a transport time scale.
+4. **Model units.** Lengths are in R₀ and the field in the model normalization; no SI device scale is fixed, although `BandSpec` documents SI.
+5. **Model.** Static Littlejohn guiding-centre equations in the vacuum field; no collisions, no electric field, no derivation from the Lorentz force.
+6. **A second library.** A cold replay of the band module needs the sources of `generated/qa2r/` as well.
+
+**Status of clause C2.** A formal `BandContract` instance for the actual field now exists. Because of caveats 1 to 3 it should not be read as establishing confinement of a trapped population; the research target of C2 (a predeclared population, a horizon of many bounces, a tube-scale excursion) remains open.
 
 ## Reproduction
 

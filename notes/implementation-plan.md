@@ -3522,3 +3522,7 @@ Compiled, standard axioms: on the QA2R envelope `Region`, planar field-line spee
 
 `DommaschkWideTubeRows000Orbit.exists_orbit_stays_in_tube`: under the side conditions of the orbit theorem, and with no assumption that an orbit exists, a Littlejohn orbit of the QA2R field exists on [0, T], stays over the tube and its label moves at most κt. Generic part: `Design.DommaschkTubeOrbit` (uses the existing `ODEGlobal.exists_forward_of_apriori`). Replay and axiom audit passed at `6190258`. Still no population statement; C2 remains open.
 
+### 29 November 2026 — Formal band-form instance of C2 for QA2R, with caveats (N-216 stage 5)
+
+`DommaschkWideTubeRows000Band.band_contract` (library `QA2RWide`, 11,323 modules; replay and audit passed at `3153d3b`): `BandContract (spec m q ν e₁ e₂ T) B` for the QA2R field, for symbolic species and energy window, pitch μ/E > 9/10, the circle R = 15/16 as axis, excursion 1/8, fraction 1, and any horizon with κT ≤ 10⁻⁴ and two further explicit inequalities; with a concrete birth law (`band_contract_restrict`) and satisfiable inputs (`band_contract_example`). Caveats recorded in N-216: the support is the interior of the reference population of good births, so fraction 1 holds by construction (AW-H3 only partly addressed); the excursion is the envelope size; the horizon is of the order of 10⁻⁶ s at the illustrative electron scale; model units. The research target of C2 remains open.
+

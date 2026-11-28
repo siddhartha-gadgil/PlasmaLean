@@ -111,6 +111,10 @@ and operating temperature remain open for that candidate.
     It specifies the trapped birth population, its covered fraction, radial excursion and physical time.
     A quadratic mirror realizes the band predicate for a point-mass birth law. Establishing
     it for thermal populations on the candidate remains open. [Band test](notes/theory/hamiltonian-bounce-band-test.md)
+    A formal band instance now holds for the QA2R field on a certified tube around one field line,
+    with a horizon of about a tenth of a half bounce, an envelope-size excursion and a support
+    defined through the reference population; these caveats keep the clause open as a design
+    claim. [Wide-tube campaign](notes/theory/wide-tube-label-campaign.md)
   - A numerical screen found a change of mirror well at mid-depth. A deeper family on the
     same Dommaschk field passed two grid resolutions, with two candidate winding curves at
     one scaled action. An outward-rounded continuum check encloses the whole launch strip and every field line for ±1/8 toroidal radian. A centred calculation reaches both simple mirrors on a smaller cell and brackets a unique mirror height at the target action. Full-circle drift and physical-time bounds remain open. [Full-strip enclosure](notes/theory/dommaschk-launch-collar.md) · [Local mirrors and action](notes/theory/dommaschk-regular-mirror-cell.md)

@@ -94,6 +94,8 @@ design content unless the horizon, the population and a fraction floor are fixed
 C2 progress. Related: the clause puts no Maxwell or regularity condition on `B` and uses the
 totalised `fderiv` (AW-M3); `axis` may be any compact set (AW-M4).
 `quadratic_guidingCentreBand` is the compiled regression for this finding.
+
+*Addendum, 29 November 2026 (not an audit).* A `BandContract` instance for the QA2R field was proved at the user's request (`DommaschkWideTubeRows000Band.band_contract`, N-216 stage 5). Its horizon is an input bounded by an explicit inequality (not `∃ T > 0` from local existence), the birth law must be absolutely continuous, the field is Maxwell-regular on the region and the axis is a curve. It does not remove this finding: the support is defined as the interior of the reference population of good births, so the fraction 1 holds by construction, the excursion is the envelope size, and the horizon is about a tenth of a half bounce. The instance has not been audited.
 *Action:* treat every band-form instance with an existential horizon as not establishing C2
 (recorded in the plan); strengthening the clause is a contract change (user decision).
 
