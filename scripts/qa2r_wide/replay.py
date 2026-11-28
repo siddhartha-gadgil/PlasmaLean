@@ -50,7 +50,7 @@ def main():
                            capture_output=True, text=True)
     text = " ".join((audit.stdout + audit.stderr).split())
     standard = text.count("depends on axioms: [propext, Classical.choice, Quot.sound]")
-    if audit.returncode or "wide-tube axiom audit passed" not in text or standard != 12:
+    if audit.returncode or "wide-tube axiom audit passed" not in text or standard != 13:
         sys.exit("axiom audit failed:\n" + audit.stdout[-2000:] + audit.stderr[-2000:])
     git = lambda *a: subprocess.check_output(["git", *a], cwd=ROOT, text=True).strip()
     summary = text[text.index("QA2R wide-tube axiom audit passed"):].split(" 'PlasmaLean")[0]

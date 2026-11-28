@@ -17,6 +17,7 @@ module
 
 public import WideTube.DommaschkWideTubeRows000Tube
 public import WideTube.DommaschkWideTubeRows000Field
+public import PlasmaLean.Design.DommaschkTubeOrbit
 
 /-! # A QA2R guiding centre born in the tube around the label-0.474 line stays in it
 
@@ -76,6 +77,41 @@ theorem stays_in_tube {m q κ r vpar b' T θ₀ R₀ z₀ : ℝ} {bth : GCBirth}
         Lab DommaschkWideTubeRows000.start rows (θ₀, WithLp.toLp 2 ![R₀, z₀])‖ ≤ κ * t :=
   DommaschkTubeDrift.stays_in_tube chain section_checked (by norm_num) field_bounds hm hq hμ
     start hp₀ orbit hT hκ hstart hball hvpar hvpar0 hwin hb'
+
+/-- **Existence.** Under the same side conditions the orbit exists on `[0, T]`, so the
+statement is unconditional: the guiding centre born there has a Littlejohn orbit up to time
+`T`, it stays over the tube, and its label moves at most `κ t`. -/
+theorem exists_orbit_stays_in_tube {m q κ r vpar b' T θ₀ R₀ z₀ : ℝ} {bth : GCBirth}
+    (hm : 0 < m) (hq : q ≠ 0) (hμ : 0 ≤ bth.2.2) (start : bth.1 = cylPoint R₀ θ₀ z₀)
+    (hp₀ : ((θ₀, WithLp.toLp 2 ![R₀, z₀]) : ℝ × Plane) ∈
+      FlowLabel.region (2 * 0 - stop rows) (stop rows)
+        (innerD DommaschkWideTubeRows000.start rows beta))
+    (hT : 0 ≤ T)
+    (hκ : labelConstant exponent inverseBound * (1 + 9 / 25) *
+      (8 / 7 * (2 * hamiltonian m bth.2.2 B bth.1 bth.2.1 / (|q| * (1039 / 1000) ^ 2) *
+        (11 / 8))) ≤ κ)
+    (hstart : ‖Lab DommaschkWideTubeRows000.start rows (θ₀, WithLp.toLp 2 ![R₀, z₀]) -
+      point DommaschkWideTubeRows000.start.point‖ ≤ r)
+    (hball : r + κ * T + 2 * |(DommaschkWideTubeRows000.start.point.y : ℝ)| / 2 ^ 80 ≤
+      DommaschkWideTubeRows000.start.radius / 2 ^ 80)
+    (hvpar : 2 * (hamiltonian m bth.2.2 B bth.1 bth.2.1 - bth.2.2 * (1039 / 1000)) ≤
+      m * vpar ^ 2)
+    (hvpar0 : 0 ≤ vpar)
+    (hwin : |θ₀| + (vpar / (1039 / 1000) * ((13 / 10) / (7 / 8)) +
+      8 / 7 * (2 * hamiltonian m bth.2.2 B bth.1 bth.2.1 / (|q| * (1039 / 1000) ^ 2) *
+        (11 / 8))) * T ≤ b')
+    (hb' : b' < stop rows) :
+    ∃ (z : ℝ → Space × ℝ) (X : ℝ → ℝ × Plane), GCBirthOrbitOn B m q bth z T ∧
+      X 0 = (θ₀, WithLp.toLp 2 ![R₀, z₀]) ∧ ∀ t ∈ Icc 0 T,
+      (z t).1 = cylPoint ((X t).2 0) (X t).1 ((X t).2 1) ∧
+      X t ∈ FlowLabel.region (2 * 0 - stop rows) (stop rows)
+        (innerD DommaschkWideTubeRows000.start rows beta) ∧
+      (X t).2 ∈ coreD DommaschkTubeSymmetry.flipIso DommaschkWideTubeRows000.start 0 rows (X t).1 ∧
+      |(X t).1| ≤ b' ∧
+      ‖Lab DommaschkWideTubeRows000.start rows (X t) -
+        Lab DommaschkWideTubeRows000.start rows (θ₀, WithLp.toLp 2 ![R₀, z₀])‖ ≤ κ * t :=
+  DommaschkTubeOrbit.exists_orbit_stays_in_tube chain section_checked (by norm_num) field_bounds
+    hm hq hμ start hp₀ hT hκ hstart hball hvpar hvpar0 hwin hb'
 
 end PlasmaLean.Design.DommaschkWideTubeRows000Orbit
 '''

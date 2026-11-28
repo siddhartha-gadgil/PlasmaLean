@@ -46,3 +46,4 @@ run_cmd do
 #print axioms PlasmaLean.Design.DommaschkWideTubeRows000Field.bounds
 #print axioms PlasmaLean.Design.DommaschkWideTubeRows000Orbit.field_bounds
 #print axioms PlasmaLean.Design.DommaschkWideTubeRows000Orbit.stays_in_tube
+#print axioms PlasmaLean.Design.DommaschkWideTubeRows000Orbit.exists_orbit_stays_in_tube
