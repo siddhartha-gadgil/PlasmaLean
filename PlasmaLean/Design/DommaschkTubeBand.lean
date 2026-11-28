@@ -13,7 +13,8 @@ public import PlasmaLean.Theory.Contract.TrappedBirthCoordinates
 # The band form of clause C2 from the orbit theorem of a certified tube
 
 Generic over the chain of position-frame slabs, with the field bounds on the outer tube as a
-hypothesis, exactly as in `DommaschkTubeDrift.stays_in_tube`. The field is the QA2R vacuum
+hypothesis, exactly as in `DommaschkTubeDrift.stays_in_tube` (gradient `g`, strength `bT`,
+toroidal component `cφ`, speed `M`), and over the pitch floor `p₀`. The field is the QA2R vacuum
 field `DommaschkCartesianAngleFlow.B`.
 
 * `circle`: the circle of radius `15/16` in the midplane, as a closed curve of period one;
@@ -21,10 +22,12 @@ field `DommaschkCartesianAngleFlow.B`.
   `1/8` of it, so the distance to it changes by at most `1/8` between two such points.
 * `chart`: the cylindrical chart `x ↦ (θ, (R, z))` on the half space `x₀ > 0`.
 * `good`: the births over the inner tube of the chain with angle below `a`, label within `ρ`
-  of the initial point of the chain, positive moment, energy in `(0, e₂)` and `μ/E > 9/10`;
-  `isOpen_good`: this set is open.
+  of the initial point of the chain, positive moment, energy in `(0, e₂)` and `μ/E > p₀`, for
+  a pitch floor `p₀` with `p₀ · bT ≤ 1`; `isOpen_good`: this set is open.
 * `conditions`: a good birth satisfies the side conditions of the orbit theorem, when three
-  inequalities between the constants hold.
+  inequalities between the constants hold. With the pitch floor the energy factor of the drift
+  is `2H - μ bT ≤ (2 - p₀ bT) e₂` and the parallel speed satisfies
+  `m v_∥² ≤ 2 e₂ (1 - p₀ bT)`.
 * `bandContract`: `Contract.BandContract` for any open set `W` of trapped reference births
   that are good, as support, and any birth law that is absolutely continuous with finite
   positive mass on `W`. Coverage fraction one holds because the support itself is contained in
@@ -50,6 +53,7 @@ open Certificates PositionFrameSlabs PositionFrameTube DommaschkJacobian Dommasc
 open DommaschkTubeSymmetry DommaschkSignedTraceDomain DommaschkJacobianReflection Fields Set
 open Contract Kinetic Kinetic.GCLittlejohn MeasureTheory
 open DommaschkCartesianAngleFlow DommaschkCylindricalDrift DommaschkTubeDrift
+open DommaschkKam (cylBphi)
 
 /-! ### The reference circle and the excursion -/
 
@@ -175,17 +179,17 @@ theorem continuousAt_chart {x : Space} (hx : 0 < x 0) : ContinuousAt chart x := 
 /-- **Good births** for a chain: births with positive first coordinate whose cylindrical
 coordinates lie over the two-sided inner tube of the chain at an angle of absolute value below
 `a`, whose field-line label is within `ρ` of the initial point of the chain, with positive
-magnetic moment, energy `E` in `(0, e₂)` and `9/10 · E < μ` (that is, pitch `μ/E > 9/10`). -/
-def good (s₀ : State) (rows : List Step) (bs : List ℕ) (m ρ a e₂ : ℝ) : Set GCBirth :=
+magnetic moment, energy `E` in `(0, e₂)` and `p₀ · E < μ` (that is, pitch `μ/E > p₀`). -/
+def good (s₀ : State) (rows : List Step) (bs : List ℕ) (m ρ a e₂ p₀ : ℝ) : Set GCBirth :=
   {b | 0 < b.1 0 ∧ |(chart b.1).1| < a ∧
     chart b.1 ∈ FlowLabel.region (2 * 0 - stop rows) (stop rows) (innerD s₀ rows bs) ∧
     ‖Lab s₀ rows (chart b.1) - point s₀.point‖ < ρ ∧ 0 < b.2.2 ∧
     0 < hamiltonian m b.2.2 B b.1 b.2.1 ∧ hamiltonian m b.2.2 B b.1 b.2.1 < e₂ ∧
-    9 / 10 * hamiltonian m b.2.2 B b.1 b.2.1 < b.2.2}
+    p₀ * hamiltonian m b.2.2 B b.1 b.2.1 < b.2.2}
 
 /-- Sanity: a good birth has positive magnetic moment. -/
-theorem good_subset_pos {s₀ : State} {rows : List Step} {bs : List ℕ} {m ρ a e₂ : ℝ} :
-    good s₀ rows bs m ρ a e₂ ⊆ {b | 0 < b.2.2} := fun _ hb => hb.2.2.2.2.1
+theorem good_subset_pos {s₀ : State} {rows : List Step} {bs : List ℕ} {m ρ a e₂ p₀ : ℝ} :
+    good s₀ rows bs m ρ a e₂ p₀ ⊆ {b | 0 < b.2.2} := fun _ hb => hb.2.2.2.2.1
 
 section ChainFacts
 
@@ -219,8 +223,8 @@ theorem region_of_chart (ch : Chain s₀ e rows bs E Bq) {x : Space}
   region_of_outerD ch ((tube ch).subset hp.1 hp.2)
 
 /-- **The good births form an open set.** -/
-theorem isOpen_good (ch : Chain s₀ e rows bs E Bq) (m ρ a e₂ : ℝ) :
-    IsOpen (good s₀ rows bs m ρ a e₂) := by
+theorem isOpen_good (ch : Chain s₀ e rows bs E Bq) (m ρ a e₂ p₀ : ℝ) :
+    IsOpen (good s₀ rows bs m ρ a e₂ p₀) := by
   refine isOpen_iff_mem_nhds.mpr fun b hb => ?_
   obtain ⟨hx, hθ, hp, hl, hμ, hE0, hE, hpitch⟩ := hb
   have cx : ContinuousAt (fun q : GCBirth => q.1) b := continuous_fst.continuousAt
@@ -302,15 +306,16 @@ end ChainFacts
 /-- **A birth at the section is good.** The lift of energy `e` and mirror height `h` at the
 point with cylindrical coordinates `(R, 0, z)` is a good birth when `(R, z)` is close to the
 first reference point of the chain and within `ρ` of its initial point, `e < e₂`, and the
-field strength at the point is below `h < 10/9`. -/
+field strength at the point is below `h` with `p₀ · h < 1`. -/
 theorem lift_mem_good {s₀ e' : State} {rows : List Step} {bs : List ℕ} {E Bq : ℚ}
-    (ch : Chain s₀ e' rows bs E Bq) {m ρ a e₂ R z e h : ℝ} (hm : 0 < m) (ha : 0 < a)
-    (hR : 0 < R) (he : 0 < e) (he₂ : e < e₂) (hh : h < 10 / 9)
+    (ch : Chain s₀ e' rows bs E Bq) {m ρ a e₂ p₀ R z e h : ℝ} (hm : 0 < m) (ha : 0 < a)
+    (hR : 0 < R) (he : 0 < e) (he₂ : e < e₂) (hh : p₀ * h < 1)
     (strict : ‖B (cylPoint R 0 z)‖ < h)
     (near : ‖(WithLp.toLp 2 ![R, z] : Plane) - reference 0 (rowAt rows 0) 0‖ +
       2 * |reference 0 (rowAt rows 0) 0 1| < radius bs 1)
     (lab : ‖(WithLp.toLp 2 ![R, z] : Plane) - point s₀.point‖ < ρ) (neg : Bool) :
-    TrappedBirthCoordinates.lift B m (cylPoint R 0 z) e h neg ∈ good s₀ rows bs m ρ a e₂ := by
+    TrappedBirthCoordinates.lift B m (cylPoint R 0 z) e h neg ∈
+      good s₀ rows bs m ρ a e₂ p₀ := by
   obtain ⟨atx, μpos, -, eq, -, -⟩ :=
     TrappedBirthCoordinates.lift_values (B := B) (x := cylPoint R 0 z) neg hm he strict
   have hreg := mem_region_zero ch near
@@ -331,58 +336,63 @@ theorem lift_mem_good {s₀ e' : State} {rows : List Step} {bs : List ℕ} {E Bq
   · rw [eq]
     exact he₂
   · rw [eq, moment, lt_div_iff₀ hh0]
-    nlinarith
+    nlinarith [mul_lt_mul_of_pos_left hh he]
 
 /-! ### The orbit theorem for good births -/
 
 section Band
 
 variable {s₀ e : State} {rows : List Step} {bs : List ℕ} {E Bq : ℚ}
-  {m q g bT κ ρ a e₂ vp b' T : ℝ}
+  {m q g bT cφ M p₀ κ ρ a e₂ vp b' T : ℝ}
   (ch : Chain s₀ e rows bs E Bq) (hsec : sectionCheck rows bs = true) (hbT : 0 < bT)
-  (hbT' : 9 / 10 * bT ≤ 1)
+  (hbT' : p₀ * bT ≤ 1)
   (hfield : ∀ t ∈ Ioo (-stop rows) (stop rows), ∀ x ∈ outerD s₀ rows t,
-    ‖gradAbsB B (cylPoint (x 0) t (x 1))‖ ≤ g ∧ bT ≤ ‖B (cylPoint (x 0) t (x 1))‖)
+    ‖gradAbsB B (cylPoint (x 0) t (x 1))‖ ≤ g ∧ bT ≤ ‖B (cylPoint (x 0) t (x 1))‖ ∧
+      cylBphi (x 0) t (x 1) ≤ cφ ∧ ‖euclideanFlow 0 1 t x‖ ≤ M)
   (hm : 0 < m) (hq : q ≠ 0)
-  (hκ : labelConstant E Bq * (1 + 9 / 25) * (8 / 7 * (2 * e₂ / (|q| * bT ^ 2) * g)) ≤ κ)
+  (hκ : labelConstant E Bq * (1 + M) *
+    (8 / 7 * ((2 - p₀ * bT) * e₂ / (|q| * bT ^ 2) * g)) ≤ κ)
   (hball : ρ + κ * T + 2 * |(s₀.point.y : ℝ)| / 2 ^ 80 ≤ s₀.radius / 2 ^ 80)
-  (hvp : 2 * e₂ * (1 - 9 / 10 * bT) ≤ m * vp ^ 2) (hvp0 : 0 ≤ vp)
-  (hwin : a + (vp / bT * ((13 / 10) / (7 / 8)) + 8 / 7 * (2 * e₂ / (|q| * bT ^ 2) * g)) * T ≤ b')
+  (hvp : 2 * e₂ * (1 - p₀ * bT) ≤ m * vp ^ 2) (hvp0 : 0 ≤ vp)
+  (hwin : a + (vp / bT * (cφ / (7 / 8)) +
+    8 / 7 * ((2 - p₀ * bT) * e₂ / (|q| * bT ^ 2) * g)) * T ≤ b')
   (hb' : b' < stop rows)
 
-include ch hbT hbT' hfield hq hκ hvp hwin in
+include ch hbT hbT' hfield hm hq hκ hvp hwin in
 /-- **A good birth satisfies the side conditions of the orbit theorem**, with the constants
 `κ`, `ρ`, `vp`, `b'` fixed by the three inequalities `hκ`, `hvp`, `hwin` in terms of the upper
-energy `e₂`. -/
-theorem conditions (hT : 0 ≤ T) {b : GCBirth} (hb : b ∈ good s₀ rows bs m ρ a e₂) :
+energy `e₂` and the pitch floor `p₀`. -/
+theorem conditions (hT : 0 ≤ T) {b : GCBirth} (hb : b ∈ good s₀ rows bs m ρ a e₂ p₀) :
     0 ≤ b.2.2 ∧
     b.1 = cylPoint (Real.sqrt (b.1 0 ^ 2 + b.1 1 ^ 2)) (Real.arctan (b.1 1 / b.1 0)) (b.1 2) ∧
     ((Real.arctan (b.1 1 / b.1 0),
         WithLp.toLp 2 ![Real.sqrt (b.1 0 ^ 2 + b.1 1 ^ 2), b.1 2]) : ℝ × Plane) ∈
       FlowLabel.region (2 * 0 - stop rows) (stop rows) (innerD s₀ rows bs) ∧
-    labelConstant E Bq * (1 + 9 / 25) *
-      (8 / 7 * (2 * hamiltonian m b.2.2 B b.1 b.2.1 / (|q| * bT ^ 2) * g)) ≤ κ ∧
+    labelConstant E Bq * (1 + M) * (8 / 7 *
+      ((2 * hamiltonian m b.2.2 B b.1 b.2.1 - b.2.2 * bT) / (|q| * bT ^ 2) * g)) ≤ κ ∧
     ‖Lab s₀ rows (Real.arctan (b.1 1 / b.1 0),
         WithLp.toLp 2 ![Real.sqrt (b.1 0 ^ 2 + b.1 1 ^ 2), b.1 2]) - point s₀.point‖ ≤ ρ ∧
     2 * (hamiltonian m b.2.2 B b.1 b.2.1 - b.2.2 * bT) ≤ m * vp ^ 2 ∧
-    |Real.arctan (b.1 1 / b.1 0)| + (vp / bT * ((13 / 10) / (7 / 8)) +
-      8 / 7 * (2 * hamiltonian m b.2.2 B b.1 b.2.1 / (|q| * bT ^ 2) * g)) * T ≤ b' := by
+    |Real.arctan (b.1 1 / b.1 0)| + (vp / bT * (cφ / (7 / 8)) + 8 / 7 *
+      ((2 * hamiltonian m b.2.2 B b.1 b.2.1 - b.2.2 * bT) / (|q| * bT ^ 2) * g)) * T ≤ b' := by
   obtain ⟨hx, hθ, hp, hl, hμ, hE0, hE, hpitch⟩ := hb
   have tb := tube ch
   have hC : 0 ≤ labelConstant E Bq := le_trans zero_le_one tb.one_le
-  have e0 : (2 : ℝ) * 0 - stop rows = -stop rows := by ring
-  have hg : 0 ≤ g := (norm_nonneg _).trans
-    (hfield _ (e0 ▸ hp.1) _ (tb.subset hp.1 hp.2)).1
+  obtain ⟨hg, -, hM, -⟩ :=
+    constants_nonneg ch hbT hfield hm hq hμ.le (cylPoint_chart hx).symm hp
   have hqa : 0 < |q| := abs_pos.mpr hq
   set H := hamiltonian m b.2.2 B b.1 b.2.1 with hH
-  have drift : 8 / 7 * (2 * H / (|q| * bT ^ 2) * g) ≤
-      8 / 7 * (2 * e₂ / (|q| * bT ^ 2) * g) := by
+  have h1 : p₀ * H * bT ≤ b.2.2 * bT := mul_le_mul_of_nonneg_right hpitch.le hbT.le
+  have num : 2 * H - b.2.2 * bT ≤ (2 - p₀ * bT) * e₂ := by
+    have h2 : H * (2 - p₀ * bT) ≤ e₂ * (2 - p₀ * bT) :=
+      mul_le_mul_of_nonneg_right hE.le (by linarith)
+    nlinarith
+  have drift : 8 / 7 * ((2 * H - b.2.2 * bT) / (|q| * bT ^ 2) * g) ≤
+      8 / 7 * ((2 - p₀ * bT) * e₂ / (|q| * bT ^ 2) * g) := by
     gcongr
   refine ⟨hμ.le, (cylPoint_chart hx).symm, hp, ?_, hl.le, ?_, ?_⟩
-  · refine le_trans ?_ hκ
-    gcongr
-  · have h1 : 9 / 10 * H * bT ≤ b.2.2 * bT := mul_le_mul_of_nonneg_right hpitch.le hbT.le
-    have h2 : H * (1 - 9 / 10 * bT) ≤ e₂ * (1 - 9 / 10 * bT) :=
+  · exact (mul_le_mul_of_nonneg_left drift (mul_nonneg hC (by linarith))).trans hκ
+  · have h2 : H * (1 - p₀ * bT) ≤ e₂ * (1 - p₀ * bT) :=
       mul_le_mul_of_nonneg_right hE.le (by linarith)
     nlinarith
   · have hθ' : |Real.arctan (b.1 1 / b.1 0)| ≤ a := hθ.le
@@ -402,7 +412,7 @@ The excursion `1/8` is the size of the cross-section of the cylindrical envelope
 tube. The horizon is limited by `hball`. -/
 theorem bandContract (hT : 0 < T) {W : Set GCBirth} {energies pitches : Set ℝ}
     (hW : IsOpen W)
-    (sub : W ⊆ trappedReference B m (good s₀ rows bs m ρ a e₂) energies pitches)
+    (sub : W ⊆ trappedReference B m (good s₀ rows bs m ρ a e₂ p₀) energies pitches)
     {ν : Measure GCBirth} (ac : ν ≪ volume) (fin : ν W ≠ ⊤) (pos : ν W ≠ 0) :
     BandContract
       { m := m, q := q, ν := ν, support := W, energy := energies, pitch := pitches,
@@ -424,7 +434,7 @@ theorem bandContract (hT : 0 < T) {W : Set GCBirth} {energies pitches : Set ℝ}
     intro b hb
     have hgood := (sub hb).1
     obtain ⟨hμ, start, hp₀, hκ', hstart, hvpar, hwin'⟩ :=
-      conditions ch hbT hbT' hfield hq hκ hvp hwin hT.le hgood
+      conditions ch hbT hbT' hfield hm hq hκ hvp hwin hT.le hgood
     refine ⟨DommaschkTubeOrbit.exists_orbit ch hsec hbT hfield hm hq hμ start hp₀ hT.le hκ'
       hstart hball hvpar hvp0 hwin' hb', ⟨_, _, region_of_chart ch hgood.2.2.1, start⟩, ?_⟩
     intro t ht z orbit
@@ -459,22 +469,22 @@ theorem bandContract (hT : 0 < T) {W : Set GCBirth} {energies pitches : Set ℝ}
 
 /-- The interior of the trapped reference population of good births of a chain: the canonical
 open support for `bandContract`. -/
-def support (s₀ : State) (rows : List Step) (bs : List ℕ) (m ρ a e₂ : ℝ)
+def support (s₀ : State) (rows : List Step) (bs : List ℕ) (m ρ a e₂ p₀ : ℝ)
     (energies pitches : Set ℝ) : Set GCBirth :=
-  interior (trappedReference B m (good s₀ rows bs m ρ a e₂) energies pitches)
+  interior (trappedReference B m (good s₀ rows bs m ρ a e₂ p₀) energies pitches)
 
 omit ch hsec hbT hbT' hfield hm hq hκ hball hvp hvp0 hwin hb' in
 /-- The support is open. -/
 theorem isOpen_support (energies pitches : Set ℝ) :
-    IsOpen (support s₀ rows bs m ρ a e₂ energies pitches) := isOpen_interior
+    IsOpen (support s₀ rows bs m ρ a e₂ p₀ energies pitches) := isOpen_interior
 
 /-- **The band form of C2 with the canonical support**: `bandContract` for the interior of the
 reference population of good births. -/
 theorem bandContract_support (hT : 0 < T) {energies pitches : Set ℝ} {ν : Measure GCBirth}
-    (ac : ν ≪ volume) (fin : ν (support s₀ rows bs m ρ a e₂ energies pitches) ≠ ⊤)
-    (pos : ν (support s₀ rows bs m ρ a e₂ energies pitches) ≠ 0) :
+    (ac : ν ≪ volume) (fin : ν (support s₀ rows bs m ρ a e₂ p₀ energies pitches) ≠ ⊤)
+    (pos : ν (support s₀ rows bs m ρ a e₂ p₀ energies pitches) ≠ 0) :
     BandContract
-      { m := m, q := q, ν := ν, support := support s₀ rows bs m ρ a e₂ energies pitches,
+      { m := m, q := q, ν := ν, support := support s₀ rows bs m ρ a e₂ p₀ energies pitches,
         energy := energies, pitch := pitches, axis := circle, horizon := T, excursion := 1 / 8,
         minFraction := 1 } B :=
   bandContract ch hsec hbT hbT' hfield hm hq hκ hball hvp hvp0 hwin hb' hT isOpen_interior
@@ -483,10 +493,10 @@ theorem bandContract_support (hT : 0 < T) {energies pitches : Set ℝ} {ν : Mea
 /-- **A concrete admissible birth law.** With the volume of the unit ball around a point of the
 canonical support as birth law, the band contract holds without hypotheses on the law. -/
 theorem bandContract_restrict (hT : 0 < T) {energies pitches : Set ℝ} {p : GCBirth}
-    (hp : p ∈ support s₀ rows bs m ρ a e₂ energies pitches) :
+    (hp : p ∈ support s₀ rows bs m ρ a e₂ p₀ energies pitches) :
     BandContract
       { m := m, q := q, ν := volume.restrict (Metric.ball p 1),
-        support := support s₀ rows bs m ρ a e₂ energies pitches, energy := energies,
+        support := support s₀ rows bs m ρ a e₂ p₀ energies pitches, energy := energies,
         pitch := pitches, axis := circle, horizon := T, excursion := 1 / 8,
         minFraction := 1 } B := by
   refine bandContract_support ch hsec hbT hbT' hfield hm hq hκ hball hvp hvp0 hwin hb' hT

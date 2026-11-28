@@ -27,7 +27,10 @@ the regular mirror births at the original launch point (`DommaschkRegularMirrorH
 `DommaschkCommonLittlejohnTime.from_path`).
 
 * `kappa`, `Inputs`: the drift constant and the numerical conditions on the inputs of the
-  specification (species, upper energy, horizon, a bound for the parallel speed).
+  specification (species, upper energy, horizon, a bound for the parallel speed). The pitch
+  floor is `47/50`, below `1/height true ≈ 0.9433`; the constants are those of the tube: speed
+  bound `7/50`, toroidal component at most `21/20`, field strength at least `1039/1000`, and
+  the energy factor `(2 - 47/50 · 1039/1000) e₂` of the drift.
 * `goodBirths`, `support`, `spec`: the good births of the tube, the support (the interior of
   the trapped reference population of good births) and the specification.
 * `band_contract`: the contract for every birth law that is absolutely continuous with finite
@@ -61,10 +64,12 @@ set_option linter.style.longLine false
 set_option maxRecDepth 16384
 
 /-- The drift constant of the label for upper energy `e₂` and charge `q`: the label constant
-of the tube times `1 + 9/25` times the bound for the drift speed. -/
+of the tube times `1 + 7/50` (speed bound on the tube) times the bound for the drift speed of
+births with pitch above `47/50`, whose energy factor `2H - μ bT` is at most
+`(2 - 47/50 · 1039/1000) e₂`. -/
 def kappa (q e₂ : ℝ) : ℝ :=
-  DommaschkTubeDrift.labelConstant exponent inverseBound * (1 + 9 / 25) *
-    (8 / 7 * (2 * e₂ / (|q| * (1039 / 1000) ^ 2) * (11 / 8)))
+  DommaschkTubeDrift.labelConstant exponent inverseBound * (1 + 7 / 50) *
+    (8 / 7 * ((2 - 47 / 50 * (1039 / 1000)) * e₂ / (|q| * (1039 / 1000) ^ 2) * (11 / 8)))
 
 /-- **Conditions on the inputs of the specification**: mass `m`, charge `q`, upper energy
 `e₂`, horizon `T` and a bound `vp` for the parallel speed. They are explicit inequalities
@@ -80,41 +85,41 @@ structure Inputs (m q e₂ T vp : ℝ) : Prop where
   drift : kappa q e₂ * T ≤ 1 / 10000
   /-- the bound for the parallel speed is nonnegative -/
   speed_nonneg : 0 ≤ vp
-  /-- the bound dominates the parallel speed allowed by energy `e₂` and pitch above `9/10` -/
-  speed : 2 * e₂ * (1 - 9 / 10 * (1039 / 1000)) ≤ m * vp ^ 2
+  /-- the bound dominates the parallel speed allowed by energy `e₂` and pitch above `47/50` -/
+  speed : 2 * e₂ * (1 - 47 / 50 * (1039 / 1000)) ≤ m * vp ^ 2
   /-- the toroidal angle changes by at most `3` up to the horizon -/
-  angle : (vp / (1039 / 1000) * ((13 / 10) / (7 / 8)) +
-    8 / 7 * (2 * e₂ / (|q| * (1039 / 1000) ^ 2) * (11 / 8))) * T ≤ 3
+  angle : (vp / (1039 / 1000) * ((21 / 20) / (7 / 8)) +
+    8 / 7 * ((2 - 47 / 50 * (1039 / 1000)) * e₂ / (|q| * (1039 / 1000) ^ 2) * (11 / 8))) * T ≤ 3
 
 /-- The good births of the tube: angle below `1/4`, label within `1/10000` of the initial point
-of the tube, positive moment, energy in `(0, e₂)` and pitch above `9/10`. -/
+of the tube, positive moment, energy in `(0, e₂)` and pitch above `47/50`. -/
 def goodBirths (m e₂ : ℝ) : Set GCBirth :=
-  good DommaschkWideTubeRows000.start rows beta m (1 / 10000) (1 / 4) e₂
+  good DommaschkWideTubeRows000.start rows beta m (1 / 10000) (1 / 4) e₂ (47 / 50)
 
 /-- The support: the interior of the trapped reference population of good births with energy
-in `(e₁, e₂)` and pitch above `9/10`. -/
+in `(e₁, e₂)` and pitch above `47/50`. -/
 def support (m e₁ e₂ : ℝ) : Set GCBirth :=
   DommaschkTubeBand.support DommaschkWideTubeRows000.start rows beta m (1 / 10000) (1 / 4) e₂
-    (Ioo e₁ e₂) (Ioi (9 / 10))
+    (47 / 50) (Ioo e₁ e₂) (Ioi (47 / 50))
 
 /-- The support is the interior of the reference population of good births. -/
 theorem support_eq (m e₁ e₂ : ℝ) : support m e₁ e₂ =
-    interior (trappedReference B m (goodBirths m e₂) (Ioo e₁ e₂) (Ioi (9 / 10))) := rfl
+    interior (trappedReference B m (goodBirths m e₂) (Ioo e₁ e₂) (Ioi (47 / 50))) := rfl
 
 /-- The support is open. -/
 theorem isOpen_support (m e₁ e₂ : ℝ) : IsOpen (support m e₁ e₂) := isOpen_interior
 
 /-- Every birth of the support is a trapped reference birth and a good birth. -/
 theorem support_subset (m e₁ e₂ : ℝ) :
-    support m e₁ e₂ ⊆ trappedReference B m (goodBirths m e₂) (Ioo e₁ e₂) (Ioi (9 / 10)) :=
+    support m e₁ e₂ ⊆ trappedReference B m (goodBirths m e₂) (Ioo e₁ e₂) (Ioi (47 / 50)) :=
   interior_subset
 
 /-- **The specification.** Species `(m, q)`, birth law `ν`, the support above, energy window
-`(e₁, e₂)`, pitch window `(9/10, ∞)`, the circle of radius `15/16` in the midplane as axis,
+`(e₁, e₂)`, pitch window `(47/50, ∞)`, the circle of radius `15/16` in the midplane as axis,
 horizon `T`, excursion `1/8` and required fraction one. -/
 def spec (m q : ℝ) (ν : Measure GCBirth) (e₁ e₂ T : ℝ) : BandSpec :=
   { m := m, q := q, ν := ν, support := support m e₁ e₂, energy := Ioo e₁ e₂,
-    pitch := Ioi (9 / 10), axis := circle, horizon := T, excursion := 1 / 8, minFraction := 1 }
+    pitch := Ioi (47 / 50), axis := circle, horizon := T, excursion := 1 / 8, minFraction := 1 }
 
 /-- **The band form of C2 for the QA2R vacuum field.** Under the conditions `Inputs` on the
 species, the upper energy and the horizon, and for every birth law `ν` that is absolutely
@@ -209,8 +214,8 @@ theorem seed_through_birth : ThroughBirth (fun φ y => φ = 0 →
   have strict : ‖B (cylPoint (y 0 0) 0 (y 0 1))‖ < h :=
     DommaschkTrappedBirthCoordinates.strict_at_birth (φ := 0) band.1 (by norm_num) hh
   have h0 : 0 < h := (norm_nonneg _).trans_lt strict
-  have top : h < 10 / 9 := by
-    have : ((height true : ℚ) : ℝ) < 10 / 9 := by norm_num [height]
+  have top : (47 / 50 : ℝ) * h < 1 := by
+    have : (47 / 50 : ℝ) * ((height true : ℚ) : ℝ) < 1 := by norm_num [height]
     linarith [hh.2]
   have zero : (0 : ℝ) ∈ Icc (-((325 : ℕ) : ℝ) / 64) ((325 : ℕ) / 64) := by
     constructor <;> norm_num
@@ -233,9 +238,10 @@ theorem seed_through_birth : ThroughBirth (fun φ y => φ = 0 →
     · rw [toLp_coords]
       linarith
   obtain ⟨_, _, both⟩ := u m 1 e h 1 hm one_ne_zero e0 hh one_pos (fun _ => goodBirths m e₂)
-    (Ioo e₁ e₂) (Ioi (9 / 10))
+    (Ioo e₁ e₂) (Ioi (47 / 50))
     (fun neg' => by
-      have op : IsOpen (goodBirths m e₂) := isOpen_good chain m (1 / 10000) (1 / 4) e₂
+      have op : IsOpen (goodBirths m e₂) :=
+        isOpen_good chain m (1 / 10000) (1 / 4) e₂ (47 / 50)
       rw [op.interior_eq]
       exact seed neg')
     (by rw [isOpen_Ioo.interior_eq]; exact he)
@@ -290,9 +296,9 @@ theorem band_contract_restrict {m q e₁ e₂ T vp : ℝ} (h : Inputs m q e₂ T
 /-! ### The conditions are satisfiable -/
 
 /-- **The conditions on the inputs hold for explicit numbers**: mass `1`, charge `1`, upper
-energy `10⁻⁶`, horizon `10` and parallel speed bound `10⁻³`, in the units of the model. -/
-theorem inputs_example : Inputs 1 1 (1 / 1000000) 10 (1 / 1000) := by
-  have hexp : Real.exp (223 / 2000) ≤ 113 / 100 := by
+energy `10⁻⁶`, horizon `30` and parallel speed bound `2.2·10⁻⁴`, in the units of the model. -/
+theorem inputs_example : Inputs 1 1 (1 / 1000000) 30 (11 / 50000) := by
+  have hexp : Real.exp (223 / 2000) ≤ 1126 / 1000 := by
     have h1 := Real.one_sub_le_exp_neg (223 / 2000)
     rw [Real.exp_neg] at h1
     have pos := Real.exp_pos (223 / 2000)
@@ -310,11 +316,11 @@ theorem inputs_example : Inputs 1 1 (1 / 1000000) 10 (1 / 1000) := by
   linarith
 
 /-- **The instance is not vacuous**: for mass `1`, charge `1`, energy window
-`(5·10⁻⁷, 10⁻⁶)` and horizon `10` (units of the model), there is a birth `p` of the support
+`(5·10⁻⁷, 10⁻⁶)` and horizon `30` (units of the model), there is a birth `p` of the support
 such that the QA2R field meets the band contract with the volume of the unit ball around `p`
 as birth law. The caveats of `band_contract` apply. -/
 theorem band_contract_example : ∃ p ∈ support 1 (1 / 2000000) (1 / 1000000),
-    BandContract (spec 1 1 (volume.restrict (Metric.ball p 1)) (1 / 2000000) (1 / 1000000) 10)
+    BandContract (spec 1 1 (volume.restrict (Metric.ball p 1)) (1 / 2000000) (1 / 1000000) 30)
       B :=
   band_contract_restrict inputs_example (by norm_num) (by norm_num)
 

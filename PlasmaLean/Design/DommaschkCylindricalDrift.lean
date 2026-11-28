@@ -31,6 +31,9 @@ equations are a supplied model.
   `47/50 ≤ B_φ/R ≤ (13/10)/(7/8)`, `|λ| ≤ |v_∥|/(47/50) · (13/10)/(7/8)`,
   `‖w‖ ≤ (8/7) · 2H/(|q| (47/50)²) ‖DB‖`.
 * `exists_lift_bounds`: the lifted orbit with these constants.
+* `norm_drift_le_strength`, `norm_perturbation_le_strength`: where `bT ≤ |B|`, the drift is at
+  most `(2H - μ bT)/(|q| bT²) ‖∇|B|‖` (the coefficient is `(2H - μ|B|)/(|q||B|²)`).
+* `omega_le`: an upper bound `cφ` of `B_φ` gives `B_φ / R ≤ cφ / (7/8)` on the envelope.
 
 The hypothesis on the orbit is stated in space (off the axis, `B ≠ 0`); it holds in particular
 while the orbit is over the envelope. The operator norm `‖DB‖` is left in the bounds: no
@@ -215,6 +218,66 @@ theorem exists_lift_bounds {m q : ℝ} {b : GCBirth} {z : ℝ → Space × ℝ} 
     exact norm_perturbation_le hG hpt hm.le hμ hq
   · rw [← energy τ hτ]
     exact CylindricalDrift.mass_mul_sq_le hμ _ _
+
+/-! ## Bounds with a lower bound of the field strength -/
+
+/-- **Drift bound with the magnetic moment.** Where `bT ≤ |F|`, the drift speed is at most
+`(2H - μ bT)/(|q| bT²) ‖∇|F|‖`: the coefficient of the drift is
+`(m v_∥² + μ|F|)/(|q||F|²)` and `m v_∥² + μ|F| = 2H - μ|F|`. This is smaller than the bound
+`2H/(|q||F|²) ‖∇|F|‖` of `LabelDrift.norm_drift_le` by the term with `μ`. -/
+theorem norm_drift_le_strength {F : Space → Space} {m q μ bT : ℝ} {x : Space} (hm : 0 ≤ m)
+    (hμ : 0 ≤ μ) (hq : q ≠ 0) (hbT : 0 < bT) (hstr : bT ≤ ‖F x‖) (v : ℝ) :
+    ‖LabelDrift.drift F m q μ (x, v)‖ ≤
+      (2 * hamiltonian m μ F x v - μ * bT) / (|q| * bT ^ 2) * ‖gradAbsB F x‖ := by
+  have hn : 0 < ‖F x‖ := hbT.trans_le hstr
+  have hqa : 0 < |q| := abs_pos.mpr hq
+  have den : |q * ‖F x‖ ^ 2| = |q| * ‖F x‖ ^ 2 := by rw [abs_mul, abs_of_pos (pow_pos hn 2)]
+  have h1 : 0 ≤ m * v ^ 2 := mul_nonneg hm (sq_nonneg v)
+  have h2 : 0 ≤ μ * ‖F x‖ := mul_nonneg hμ hn.le
+  have h3 : μ * bT ≤ μ * ‖F x‖ := mul_le_mul_of_nonneg_left hstr hμ
+  have unit : ‖bhat F x‖ = 1 := by
+    rw [bhat, norm_smul, norm_inv, norm_norm, inv_mul_cancel₀ hn.ne']
+  have geom : ‖cross (bhat F x) (gradAbsB F x)‖ ≤ ‖gradAbsB F x‖ := by
+    simpa only [unit, one_mul] using norm_cross_le (bhat F x) (gradAbsB F x)
+  have coeff : (m * v ^ 2 + μ * ‖F x‖) / (|q| * ‖F x‖ ^ 2) ≤
+      (2 * hamiltonian m μ F x v - μ * bT) / (|q| * bT ^ 2) := by
+    have sq : bT ^ 2 ≤ ‖F x‖ ^ 2 := pow_le_pow_left₀ hbT.le hstr 2
+    calc (m * v ^ 2 + μ * ‖F x‖) / (|q| * ‖F x‖ ^ 2)
+        ≤ (m * v ^ 2 + μ * ‖F x‖) / (|q| * bT ^ 2) :=
+          div_le_div_of_nonneg_left (add_nonneg h1 h2) (by positivity)
+            (mul_le_mul_of_nonneg_left sq hqa.le)
+      _ ≤ (2 * hamiltonian m μ F x v - μ * bT) / (|q| * bT ^ 2) := by
+          refine div_le_div_of_nonneg_right ?_ (by positivity)
+          rw [hamiltonian]
+          linarith
+  rw [LabelDrift.drift, norm_smul, Real.norm_eq_abs, abs_div, den,
+    abs_of_nonneg (add_nonneg h1 h2)]
+  exact mul_le_mul coeff geom (norm_nonneg _)
+    ((div_nonneg (add_nonneg h1 h2) (by positivity)).trans coeff)
+
+/-- The lifted drift where `bT ≤ |F|`: at most
+`max 1 R⁻¹ · (2H - μ bT)/(|q| bT²) ‖∇|F|‖`. -/
+theorem norm_perturbation_le_strength {F : Space → Space} {m q μ bT : ℝ} {p : ℝ × Plane}
+    {w : Space × ℝ} (hR : 0 < p.2 0) (hm : 0 ≤ m) (hμ : 0 ≤ μ) (hq : q ≠ 0) (hbT : 0 < bT)
+    (hstr : bT ≤ ‖F w.1‖) :
+    ‖CylindricalDrift.perturbation F m q μ w p‖ ≤ max 1 (p.2 0)⁻¹ *
+      ((2 * hamiltonian m μ F w.1 w.2 - μ * bT) / (|q| * bT ^ 2) * ‖gradAbsB F w.1‖) := by
+  obtain ⟨x, v⟩ := w
+  exact (norm_cylVelocity_le hR _ _).trans (mul_le_mul_of_nonneg_left
+    (norm_drift_le_strength hm hμ hq hbT hstr v) (le_max_of_le_left zero_le_one))
+
+/-- On the envelope, an upper bound `cφ` of the toroidal component gives
+`B_φ / R ≤ cφ / (7/8)`. -/
+theorem omega_le {p : ℝ × Plane} (reg : Region p.2) {cφ : ℝ}
+    (h : cylBphi (p.2 0) p.1 (p.2 1) ≤ cφ) : omega p ≤ cφ / (7 / 8) := by
+  have hr : 0 < p.2 0 := by linarith [reg.1.1]
+  have pos : 0 ≤ omega p := le_trans (by norm_num) (omega_bounds reg).1
+  have hc : 0 ≤ cφ := by
+    have e : cylBphi (p.2 0) p.1 (p.2 1) = omega p * p.2 0 := by
+      rw [omega, div_mul_cancel₀ _ hr.ne']
+    exact (e ▸ mul_nonneg pos hr.le).trans h
+  calc omega p ≤ cφ / p.2 0 := div_le_div_of_nonneg_right h hr.le
+    _ ≤ cφ / (7 / 8) := div_le_div_of_nonneg_left hc (by norm_num) reg.1.1
 
 /-! ## Sanity -/
 

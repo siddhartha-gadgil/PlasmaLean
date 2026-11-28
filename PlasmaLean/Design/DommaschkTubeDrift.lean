@@ -21,7 +21,8 @@ stays over the tube for an explicit time, and its label moves by at most `κ t`.
 
 * `Chain`: the checked data of a chain starting at angle `0` with the identity frame.
 * `halfTube`, `tube`, `isOpen_region`: the two-sided tube of the chain around angle `0`, with
-  the speed bound `9/25` of the envelope (`DommaschkRegionFieldBounds.planar_speed_le`).
+  the speed bound `9/25` of the envelope (`DommaschkRegionFieldBounds.planar_speed_le`);
+  `tube_of_speed`: the same tube with any bound `M` of the speed on the doubled trial tube.
 * `sectionCheck`, `section_of_check`, `section_of_flip`: the reflected core at angle `0` lies in
   the inner tube when the outgoing radius of the first record with twice the height of its
   reference point is below the backward radius of the first slab. The initial point need not
@@ -33,11 +34,16 @@ stays over the tube for an explicit time, and its label moves by at most `κ t`.
   angles is a compact subset of the region of the tube.
 * `mem_closed_of_bootstrap`: a continuation lemma for a path, an open set and a closed subset.
 * `exists_lift_full`: the lifted path of an orbit, differentiable at every time.
+* `constants_nonneg`: the constants of the hypotheses are nonnegative.
 * `lift_stays`: the conclusion on an interval on which the orbit is known to stay off the axis
   with nonvanishing field.
 * `stays_in_tube`: the assembled theorem, without that a-priori hypothesis.
 
-The bounds `g` for `‖∇|B|‖` and `bT` for `|B|` on the outer tube are hypotheses.
+The bounds on the doubled trial tube are hypotheses (`hfield`): `g` for `‖∇|B|‖`, `bT` for
+`|B|` from below, `cφ` for the toroidal component `B_φ` from above, and `M` for the speed of the
+planar field-line equation. The drift constant is
+`labelConstant · (1 + M) · (8/7) · (2H - μ bT)/(|q| bT²) · g` with `H` the energy at birth and
+`μ` the magnetic moment, and the angular rate is at most `vpar/bT · cφ/(7/8)` plus the drift.
 
 **Sanity.** `sectionCheck_stationary`, `sectionCheck_reject` are fixtures of the check, and
 `side_conditions_zero` shows that the numerical side conditions of `stays_in_tube` on `κ`,
@@ -54,6 +60,7 @@ open DommaschkTubeSymmetry DommaschkSignedTraceDomain DommaschkJacobianReflectio
 open Contract Kinetic Kinetic.GCLittlejohn
 open Fields.CylindricalLift (cylVelocity)
 open DommaschkCartesianAngleFlow DommaschkCylindricalDrift
+open DommaschkKam (cylBphi)
 
 /-! ### The data of a chain and its abbreviations -/
 
@@ -175,6 +182,17 @@ theorem tube (ch : Chain s₀ e rows bs E Bq) :
     FlowLabel.Tube (euclideanFlow 0 1) 0 (2 * 0 - stop rows) (stop rows) (outerD s₀ rows)
       (innerD s₀ rows bs) (labelConstant E Bq) (9 / 25) :=
   (halfTube ch).double
+
+/-- **Two-sided tube with a speed bound on the tube.** The two-sided tube with any bound `M`
+of the speed of the field-line equation on the doubled trial tube, in place of the bound `9/25`
+of the envelope. The tube and its label are the same. -/
+theorem tube_of_speed (ch : Chain s₀ e rows bs E Bq) {M : ℝ} (hM : 0 ≤ M)
+    (speed : ∀ t ∈ Ioo (2 * 0 - stop rows) (stop rows), ∀ x ∈ outerD s₀ rows t,
+      ‖euclideanFlow 0 1 t x‖ ≤ M) :
+    FlowLabel.Tube (euclideanFlow 0 1) 0 (2 * 0 - stop rows) (stop rows) (outerD s₀ rows)
+      (innerD s₀ rows bs) (labelConstant E Bq) M :=
+  have tb := tube ch
+  ⟨tb.section_mem, tb.one_le, hM, tb.reach, tb.contract, tb.unique, speed⟩
 
 /-- The space-time region over the two-sided inner tube is open. -/
 theorem isOpen_region (ch : Chain s₀ e rows bs E Bq) :
@@ -430,7 +448,8 @@ the QA2R field on `[0, T]` that stays off the axis and where the field does not 
 lifted path `X = (θ, (R, z))` with velocity `λ (1, euclideanFlow 0 1 θ (R, z)) + w` at every time
 of `[0, T]`, where `λ = (v_∥/|B|) B_φ/R`. The energy keeps its value at birth, and at the times
 at which the lifted point is over the envelope, `w` is the lifted drift, bounded in terms of
-the energy at birth. -/
+the energy at birth, the magnetic moment and any positive lower bound `bT` of the field
+strength at the point. -/
 theorem exists_lift_full {m q : ℝ} {bth : GCBirth} {z : ℝ → Space × ℝ} {T θ₀ R₀ z₀ : ℝ}
     (hT : 0 ≤ T) (hm : 0 < m) (hq : q ≠ 0) (hμ : 0 ≤ bth.2.2)
     (orbit : GCBirthOrbitOn B m q bth z T)
@@ -442,9 +461,10 @@ theorem exists_lift_full {m q : ℝ} {bth : GCBirth} {z : ℝ → Space × ℝ} 
         HasDerivAt X (CylindricalDrift.rate B omega (z τ) (X τ) •
           FlowLabel.field (euclideanFlow 0 1) (X τ) + w τ) τ ∧
         hamiltonian m bth.2.2 B (z τ).1 (z τ).2 = hamiltonian m bth.2.2 B bth.1 bth.2.1 ∧
-        (Region (X τ).2 → ‖w τ‖ ≤ max 1 ((X τ).2 0)⁻¹ *
-          (2 * hamiltonian m bth.2.2 B bth.1 bth.2.1 / (|q| * ‖B (z τ).1‖ ^ 2) *
-            ‖gradAbsB B (z τ).1‖)) := by
+        (Region (X τ).2 → ∀ bT : ℝ, 0 < bT → bT ≤ ‖B (z τ).1‖ →
+          ‖w τ‖ ≤ max 1 ((X τ).2 0)⁻¹ *
+            ((2 * hamiltonian m bth.2.2 B bth.1 bth.2.1 - bth.2.2 * bT) / (|q| * bT ^ 2) *
+              ‖gradAbsB B (z τ).1‖)) := by
   have hv := CylindricalDrift.continuousOn_velocity orbit (fun τ hτ =>
     continuousAt_velocity (reg τ hτ).1 (reg τ hτ).2 m q bth.2.2 (z τ).2)
   have diff : ∀ τ ∈ Icc 0 T, DifferentiableAt ℝ B (z τ).1 := fun τ hτ =>
@@ -457,7 +477,7 @@ theorem exists_lift_full {m q : ℝ} {bth : GCBirth} {z : ℝ → Space × ℝ} 
     CylindricalDrift.rate B omega (z τ) (X τ) • FlowLabel.field (euclideanFlow 0 1) (X τ),
     hX0, fun τ hτ => ?_⟩
   obtain ⟨hpt, hpos, hd⟩ := h τ hτ
-  refine ⟨hpt, by rwa [add_sub_cancel], energy τ hτ, fun hG => ?_⟩
+  refine ⟨hpt, by rwa [add_sub_cancel], energy τ hτ, fun hG bT hbT hstr => ?_⟩
   have nz : B (z τ).1 ≠ 0 := (reg τ hτ).2
   have nc : curl (fderiv ℝ B (z τ).1) = 0 := by
     rw [hpt]
@@ -469,30 +489,60 @@ theorem exists_lift_full {m q : ℝ} {bth : GCBirth} {z : ℝ → Space × ℝ} 
   beta_reduce
   rw [CylindricalDrift.cylVelocity_littlejohn nz (diff τ hτ) nc hq rl, add_sub_cancel_left,
     ← energy τ hτ]
-  exact CylindricalDrift.norm_perturbation_le hpos nz hm.le hμ
+  exact norm_perturbation_le_strength hpos hm.le hμ hq hbT hstr
 
 /-! ### The assembled theorem -/
 
 section Orbit
 
 variable {s₀ e : State} {rows : List Step} {bs : List ℕ} {E Bq : ℚ}
-  {m q g bT κ r vpar b' T θ₀ R₀ z₀ : ℝ} {bth : GCBirth} {z : ℝ → Space × ℝ}
+  {m q g bT cφ M κ r vpar b' T θ₀ R₀ z₀ : ℝ} {bth : GCBirth} {z : ℝ → Space × ℝ}
   (ch : Chain s₀ e rows bs E Bq) (hsec : sectionCheck rows bs = true) (hbT : 0 < bT)
   (hfield : ∀ t ∈ Ioo (-stop rows) (stop rows), ∀ x ∈ outerD s₀ rows t,
-    ‖gradAbsB B (cylPoint (x 0) t (x 1))‖ ≤ g ∧ bT ≤ ‖B (cylPoint (x 0) t (x 1))‖)
+    ‖gradAbsB B (cylPoint (x 0) t (x 1))‖ ≤ g ∧ bT ≤ ‖B (cylPoint (x 0) t (x 1))‖ ∧
+      cylBphi (x 0) t (x 1) ≤ cφ ∧ ‖euclideanFlow 0 1 t x‖ ≤ M)
   (hm : 0 < m) (hq : q ≠ 0) (hμ : 0 ≤ bth.2.2) (start : bth.1 = cylPoint R₀ θ₀ z₀)
   (hp₀ : ((θ₀, WithLp.toLp 2 ![R₀, z₀]) : ℝ × Plane) ∈
     FlowLabel.region (2 * 0 - stop rows) (stop rows) (innerD s₀ rows bs))
   (orbit : GCBirthOrbitOn B m q bth z T) (hT : 0 ≤ T)
-  (hκ : labelConstant E Bq * (1 + 9 / 25) *
-    (8 / 7 * (2 * hamiltonian m bth.2.2 B bth.1 bth.2.1 / (|q| * bT ^ 2) * g)) ≤ κ)
+  (hκ : labelConstant E Bq * (1 + M) * (8 / 7 *
+    ((2 * hamiltonian m bth.2.2 B bth.1 bth.2.1 - bth.2.2 * bT) / (|q| * bT ^ 2) * g)) ≤ κ)
   (hstart : ‖Lab s₀ rows (θ₀, WithLp.toLp 2 ![R₀, z₀]) - point s₀.point‖ ≤ r)
   (hball : r + κ * T + 2 * |(s₀.point.y : ℝ)| / 2 ^ 80 ≤ s₀.radius / 2 ^ 80)
   (hvpar : 2 * (hamiltonian m bth.2.2 B bth.1 bth.2.1 - bth.2.2 * bT) ≤ m * vpar ^ 2)
   (hvpar0 : 0 ≤ vpar)
-  (hwin : |θ₀| + (vpar / bT * ((13 / 10) / (7 / 8)) +
-    8 / 7 * (2 * hamiltonian m bth.2.2 B bth.1 bth.2.1 / (|q| * bT ^ 2) * g)) * T ≤ b')
+  (hwin : |θ₀| + (vpar / bT * (cφ / (7 / 8)) + 8 / 7 *
+    ((2 * hamiltonian m bth.2.2 B bth.1 bth.2.1 - bth.2.2 * bT) / (|q| * bT ^ 2) * g)) * T ≤ b')
   (hb' : b' < stop rows)
+
+include ch hbT hfield hm hq hμ start hp₀ in
+/-- **The constants are nonnegative.** For a birth over the inner tube, the bounds `g`, `cφ`
+and `M` of the hypothesis on the field are nonnegative, and so is the energy factor
+`(2H - μ bT)/(|q| bT²)` of the drift, because `2H - μ bT = m v_∥² + μ (2|B| - bT)` at birth
+and `bT ≤ |B|` there. -/
+theorem constants_nonneg :
+    0 ≤ g ∧ 0 ≤ cφ ∧ 0 ≤ M ∧
+      0 ≤ (2 * hamiltonian m bth.2.2 B bth.1 bth.2.1 - bth.2.2 * bT) / (|q| * bT ^ 2) := by
+  have tb := tube ch
+  have e0 : (2 : ℝ) * 0 - stop rows = -stop rows := by ring
+  have reg₀ : Region (WithLp.toLp 2 ![R₀, z₀] : Plane) :=
+    region_of_outerD ch (tb.subset hp₀.1 hp₀.2)
+  obtain ⟨h1, h2, h3, h4⟩ := hfield θ₀ (e0 ▸ hp₀.1) _ (tb.subset hp₀.1 hp₀.2)
+  have hB₀ : bT ≤ ‖B bth.1‖ := by
+    rw [start]
+    simpa only [PiLp.toLp_apply, Matrix.cons_val_zero, Matrix.cons_val_one] using h2
+  have hω := (omega_bounds (p := (θ₀, WithLp.toLp 2 ![R₀, z₀])) reg₀).1.trans
+    (omega_le (p := (θ₀, WithLp.toLp 2 ![R₀, z₀])) reg₀ h3)
+  have hqa : 0 < |q| := abs_pos.mpr hq
+  refine ⟨(norm_nonneg _).trans h1, ?_, (norm_nonneg _).trans h4,
+    div_nonneg ?_ (by positivity)⟩
+  · have : (0 : ℝ) ≤ cφ / (7 / 8) := le_trans (by norm_num) hω
+    linarith
+  · have a1 := mul_nonneg hμ (norm_nonneg (B bth.1))
+    have a2 := mul_nonneg hm.le (sq_nonneg bth.2.1)
+    have a3 := mul_le_mul_of_nonneg_left hB₀ hμ
+    rw [hamiltonian]
+    linarith
 
 include ch hsec hbT hfield hm hq hμ start hp₀ orbit hκ hstart hball hvpar hvpar0 hwin hb'
 
@@ -512,39 +562,38 @@ theorem lift_stays {T' : ℝ} (hT' : T' ∈ Icc 0 T)
   have e0 : (2 : ℝ) * 0 - stop rows = -stop rows := by ring
   have hfield' : ∀ p ∈ FlowLabel.region (2 * 0 - stop rows) (stop rows) (innerD s₀ rows bs),
       ‖gradAbsB B (cylPoint (p.2 0) p.1 (p.2 1))‖ ≤ g ∧
-        bT ≤ ‖B (cylPoint (p.2 0) p.1 (p.2 1))‖ :=
-    fun p hp => hfield p.1 (e0 ▸ hp.1) p.2 (tb.subset hp.1 hp.2)
-  have hg : 0 ≤ g := (norm_nonneg _).trans (hfield' _ hp₀).1
-  have hH : 0 ≤ 2 * hamiltonian m bth.2.2 B bth.1 bth.2.1 := by
-    have h1 := mul_nonneg hμ (norm_nonneg (B bth.1))
-    have h2 := mul_nonneg hm.le (sq_nonneg bth.2.1)
-    rw [hamiltonian]
-    linarith
+        bT ≤ ‖B (cylPoint (p.2 0) p.1 (p.2 1))‖ ∧ cylBphi (p.2 0) p.1 (p.2 1) ≤ cφ :=
+    fun p hp => ⟨(hfield p.1 (e0 ▸ hp.1) p.2 (tb.subset hp.1 hp.2)).1,
+      (hfield p.1 (e0 ▸ hp.1) p.2 (tb.subset hp.1 hp.2)).2.1,
+      (hfield p.1 (e0 ▸ hp.1) p.2 (tb.subset hp.1 hp.2)).2.2.1⟩
+  obtain ⟨hg, hcφ, hM, hc0⟩ := constants_nonneg ch hbT hfield hm hq hμ start hp₀
+  have tbM := tube_of_speed ch hM fun t ht x hx => (hfield t (e0 ▸ ht) x hx).2.2.2
   have hqa : 0 < |q| := abs_pos.mpr hq
   set H := hamiltonian m bth.2.2 B bth.1 bth.2.1 with hHdef
-  set D := 8 / 7 * (2 * H / (|q| * bT ^ 2) * g) with hD
-  have hD0 : 0 ≤ D := by positivity
+  set D := 8 / 7 * ((2 * H - bth.2.2 * bT) / (|q| * bT ^ 2) * g) with hD
+  have hD0 : 0 ≤ D := mul_nonneg (by norm_num) (mul_nonneg hc0 hg)
   have hκ0 : 0 ≤ κ := le_trans (by positivity) hκ
-  have hL0 : 0 ≤ vpar / bT * ((13 / 10) / (7 / 8)) + D := by positivity
+  have hL0 : 0 ≤ vpar / bT * (cφ / (7 / 8)) + D := by positivity
   obtain ⟨X, w, hX0, h⟩ := exists_lift_full hT'.1 hm hq hμ
     ⟨orbit.1, fun s hs => orbit.2 s ⟨hs.1, hs.2.trans hT'.2⟩⟩ reg start hR₀
   -- bounds at the times at which the lifted point is in the region of the tube
   have inreg : ∀ t ∈ Icc 0 T',
       X t ∈ FlowLabel.region (2 * 0 - stop rows) (stop rows) (innerD s₀ rows bs) →
       ‖w t‖ ≤ D ∧ |CylindricalDrift.rate B omega (z t) (X t)| ≤
-        vpar / bT * ((13 / 10) / (7 / 8)) := by
+        vpar / bT * (cφ / (7 / 8)) := by
     intro t ht hreg
     obtain ⟨hpt, -, energy, hw⟩ := h t ht
     have hG : Region (X t).2 := region_of_outerD ch (tb.subset hreg.1 hreg.2)
-    obtain ⟨hgrad, hstr⟩ := hfield' _ hreg
+    obtain ⟨hgrad, hstr, htor⟩ := hfield' _ hreg
     rw [← hpt] at hgrad hstr
     have hBpos : 0 < ‖B (z t).1‖ := hbT.trans_le hstr
     constructor
-    · refine (hw hG).trans ?_
+    · refine (hw hG bT hbT hstr).trans ?_
       have hmax := max_inv_le hG
       rw [hD]
       gcongr
-    · obtain ⟨lo, hi⟩ := omega_bounds hG
+    · obtain ⟨lo, -⟩ := omega_bounds hG
+      have hi := omega_le hG htor
       rw [CylindricalDrift.abs_rate_eq, abs_of_nonneg (by linarith : (0 : ℝ) ≤ omega (X t))]
       have hv : |(z t).2| ≤ vpar := by
         refine abs_le_of_sq_le_sq ?_ hvpar0
@@ -558,7 +607,7 @@ theorem lift_stays {T' : ℝ} (hT' : T' ∈ Icc 0 T)
     closedBall_subset_entry ch (by nlinarith [mul_le_mul_of_nonneg_left hT'.2 hκ0])
   have small : ∀ t ∈ Icc 0 T',
       (∀ s ∈ Icc 0 t, X s ∈ FlowLabel.region (2 * 0 - stop rows) (stop rows)
-        (innerD s₀ rows bs)) → labelConstant E Bq * (1 + 9 / 25) * ‖w t‖ ≤ κ := by
+        (innerD s₀ rows bs)) → labelConstant E Bq * (1 + M) * ‖w t‖ ≤ κ := by
     intro t ht inU
     have hw := (inreg t ht (inU t (right_mem_Icc.mpr ht.1))).1
     exact (mul_le_mul_of_nonneg_left hw (by positivity)).trans hκ
@@ -576,19 +625,19 @@ theorem lift_stays {T' : ℝ} (hT' : T' ∈ Icc 0 T)
       exact d.hasDerivWithinAt
     have bound : ∀ s ∈ Icc 0 t, ‖(CylindricalDrift.rate B omega (z s) (X s) •
         FlowLabel.field (euclideanFlow 0 1) (X s) + w s).1‖ ≤
-        vpar / bT * ((13 / 10) / (7 / 8)) + D := by
+        vpar / bT * (cφ / (7 / 8)) + D := by
       intro s hs
       obtain ⟨hw, hr⟩ := inreg s (sub hs) (inU s hs)
       rw [Real.norm_eq_abs]
       exact (CylindricalDrift.abs_angle_rate_le _ _ _ _).trans (add_le_add hr hw)
     have mv := (convex_Icc 0 t).norm_image_sub_le_of_norm_hasDerivWithin_le der bound
       (left_mem_Icc.mpr ht.1) (right_mem_Icc.mpr ht.1)
-    have mv' : |(X t).1 - θ₀| ≤ (vpar / bT * ((13 / 10) / (7 / 8)) + D) * t := by
+    have mv' : |(X t).1 - θ₀| ≤ (vpar / bT * (cφ / (7 / 8)) + D) * t := by
       simpa [hX0, abs_of_nonneg ht.1] using mv
     have hLt := mul_le_mul_of_nonneg_left (ht.2.trans hT'.2) hL0
     have tri := abs_sub_abs_le_abs_sub (X t).1 θ₀
     exact abs_le.mp (by linarith)
-  have main := FlowLabel.stays_core tb (isOpen_region ch)
+  have main := FlowLabel.stays_core tbM (isOpen_region ch)
     (fun p hp => DommaschkRegionRegularity.contDiffAt_spaceTime_region
       (region_of_outerD ch (tb.subset hp.1 hp.2)) p.1)
     (isClosed_window ch b') (window_subset ch hsec hb')
@@ -607,8 +656,11 @@ include hT
 on `[0, T]` in the QA2R field, born at a point of the region of the two-sided tube of the chain
 whose label is within `r` of the initial point of the chain, has a lifted path that stays in
 the region of the tube, in the doubled core and in the window of angles `[-b', b']`, and its
-label moves by at most `κ t`. Here `g` and `bT` bound `‖∇|B|‖` and `|B|` on the outer tube,
-`κ` dominates the label constant times the drift bound, the closed ball of radius `r + κ T`
+label moves by at most `κ t`. Here, on the doubled trial tube, `g` bounds `‖∇|B|‖`, `bT` bounds
+`|B|` from below, `cφ` bounds the toroidal component from above and `M` bounds the speed of the
+field-line equation; `κ` dominates the label constant times `1 + M` times the drift bound
+`(8/7) (2H - μ bT)/(|q| bT²) g`, with `H` the energy at birth and `μ` the magnetic moment (both
+constants of the orbit), the closed ball of radius `r + κ T`
 around the initial point lies in the entry set of the chain together with its mirror image,
 `vpar` bounds the parallel speed by the energy, and the angle does not leave `[-b', b']`. -/
 theorem stays_in_tube :
@@ -664,11 +716,12 @@ the window of the chain, the hypotheses of `stays_in_tube` on `κ`, `vpar` and `
 together for `T = 0`; the hypothesis on the label then reads
 `r + 2 |y₀| / 2⁸⁰ ≤ radius / 2⁸⁰`. This is a consistency check of the side conditions only: no
 chain and no orbit is constructed. -/
-theorem side_conditions_zero {C H m μ q g bT θ₀ b : ℝ} (hm : 0 < m) (hθ : |θ₀| < b) :
-    ∃ κ vpar b' : ℝ, C * (1 + 9 / 25) * (8 / 7 * (2 * H / (|q| * bT ^ 2) * g)) ≤ κ ∧
+theorem side_conditions_zero {C H m μ q g bT cφ M θ₀ b : ℝ} (hm : 0 < m) (hθ : |θ₀| < b) :
+    ∃ κ vpar b' : ℝ,
+      C * (1 + M) * (8 / 7 * ((2 * H - μ * bT) / (|q| * bT ^ 2) * g)) ≤ κ ∧
       2 * (H - μ * bT) ≤ m * vpar ^ 2 ∧ 0 ≤ vpar ∧
-      |θ₀| + (vpar / bT * ((13 / 10) / (7 / 8)) +
-        8 / 7 * (2 * H / (|q| * bT ^ 2) * g)) * 0 ≤ b' ∧ b' < b ∧
+      |θ₀| + (vpar / bT * (cφ / (7 / 8)) +
+        8 / 7 * ((2 * H - μ * bT) / (|q| * bT ^ 2) * g)) * 0 ≤ b' ∧ b' < b ∧
       ∀ r : ℝ, r + κ * 0 = r := by
   refine ⟨_, Real.sqrt (|2 * (H - μ * bT)| / m), |θ₀|, le_rfl, ?_, Real.sqrt_nonneg _, by simp,
     hθ, fun r => by simp⟩
