@@ -3518,3 +3518,7 @@ Compiled, standard axioms: on the QA2R envelope `Region`, planar field-line spee
 
 `DommaschkWideTubeRows000Orbit.stays_in_tube` (library `QA2RWide`, 11,322 modules; replay and axiom audit passed at `da3f8e4`): a Littlejohn orbit of the QA2R field born over the inner tube around the label-0.474 line, with label within r of the reference point, stays over the tube on [0, T] and its field-line label moves at most κt, where κ ≥ 3.86·2H/|q|, r + κT ≤ 2.3·10⁻⁴ and an explicit angle condition holds. Certified on the tube: ‖∇|B|‖ ≤ 11/8, |B| ≥ 1.039 (`DommaschkWideTubeRows000Field`). At the illustrative electron scale the horizon is about 1.5·10⁻⁶ s. The orbit's existence is a hypothesis and there is no population statement, so C2 remains open; this is the first compiled confinement statement for guiding centres of this field with physical constants.
 
+### 29 November 2026 — Orbit existence on the QA2R tube (N-216 stage 4)
+
+`DommaschkWideTubeRows000Orbit.exists_orbit_stays_in_tube`: under the side conditions of the orbit theorem, and with no assumption that an orbit exists, a Littlejohn orbit of the QA2R field exists on [0, T], stays over the tube and its label moves at most κt. Generic part: `Design.DommaschkTubeOrbit` (uses the existing `ODEGlobal.exists_forward_of_apriori`). Replay and axiom audit passed at `6190258`. Still no population statement; C2 remains open.
+
